@@ -8,7 +8,18 @@ An interactive visualization project for software testing concepts, including te
 
 Live demo: <https://skhuang.github.io/stvisual/>
 
-## Features
+## Preview
+
+![Application overview](docs/assets/app-overview.png)
+
+## Why This Project
+
+- Turns software testing concepts into an interactive visual teaching tool
+- Demonstrates graph-based coverage criteria with concrete requirements and test paths
+- Supports editable graphs so users can see coverage recomputed immediately
+- Shows optimization impact by comparing path counts before and after reduction
+
+## Feature Highlights
 
 - Visualizes testing method categories: black-box, white-box, gray-box, and their sub-techniques
 - Animates the testing workflow from requirements analysis to defect reporting
@@ -25,14 +36,33 @@ Live demo: <https://skhuang.github.io/stvisual/>
 - Displays before/after optimization metrics and saved path count
 - Lets users edit the graph structure live with nodes, edges, start node, and end node inputs
 
-## Highlights
+## Architecture
+
+```mermaid
+flowchart LR
+  A[index.html] --> B[bootstrap.js]
+  B -->|http/https| C[main.js]
+  B -->|file://| D[standalone.js]
+  C --> E[app.js]
+  E --> F[UI components]
+  E --> G[testingData.js]
+  E --> H[graphCoverage.js]
+  H --> F
+  I[Vitest + jsdom] --> E
+  J[Playwright] --> A
+  K[GitHub Actions] --> I
+  K --> J
+  K --> L[GitHub Pages]
+```
+
+## Showcase Notes
 
 - Deployable to GitHub Pages
 - Works directly from `file://` by using a standalone fallback bundle
 - Includes both unit tests and real browser tests
 - Covers the major graph coverage features with automated tests
 
-## Run Locally
+## Quick Start
 
 ### 1. Install dependencies
 
@@ -91,6 +121,22 @@ Relevant workflow files:
 - `.github/workflows/test.yml`
 - `.github/workflows/deploy-pages.yml`
 
+## Graph Coverage Focus
+
+The graph coverage section currently supports:
+
+- requirement generation
+- test path generation
+- approximate minimal test path selection
+- live graph editor recomputation
+- UI metrics for optimization before and after path reduction
+
+This project is useful for:
+- teaching graph coverage concepts
+- comparing different coverage criteria
+- observing the mapping between requirements and test paths
+- demonstrating path reduction with a set-cover style approximation
+
 ## GitHub Pages Deployment
 
 To prepare the static site output locally:
@@ -122,22 +168,6 @@ This command:
 ├── scripts/
 └── .github/workflows/
 ```
-
-## Graph Coverage Focus
-
-The graph coverage section currently supports:
-
-- requirement generation
-- test path generation
-- approximate minimal test path selection
-- live graph editor recomputation
-- UI metrics for optimization before and after path reduction
-
-This project is useful for:
-- teaching graph coverage concepts
-- comparing different coverage criteria
-- observing the mapping between requirements and test paths
-- demonstrating path reduction with a set-cover style approximation
 
 ## License
 
