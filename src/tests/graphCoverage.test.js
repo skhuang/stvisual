@@ -101,6 +101,9 @@ describe('graphCoverage utilities', () => {
 
     expect(optimized.uncoveredRequirements).toHaveLength(0);
     expect(optimized.selectedPaths.length).toBeLessThanOrEqual(naiveCount);
+    expect(optimized.optimizationMetrics.baselinePathCount).toBe(naiveCount);
+    expect(optimized.optimizationMetrics.optimizedPathCount).toBe(optimized.selectedPaths.length);
+    expect(optimized.optimizationMetrics.savedPathCount).toBeGreaterThanOrEqual(0);
   });
 
   it('set-cover 產生的路徑集合可覆蓋所有 complete-path requirements', () => {

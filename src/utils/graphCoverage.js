@@ -395,17 +395,17 @@ export function buildTestPathSetForRequirements(graph, requirements, options = {
     };
   });
 
+  const baselinePathSet = new Set(
+    requirementPaths
+      .filter((entry) => entry.covered)
+      .map((entry) => entry.path.join('->'))
+  );
+
   let selectedPaths;
   let uncoveredRequirementIds;
 
   if (optimizationMode === 'none') {
-    const uniquePathSet = new Set(
-      requirementPaths
-        .filter((entry) => entry.covered)
-        .map((entry) => entry.path.join('->'))
-    );
-
-    selectedPaths = Array.from(uniquePathSet).map((item) => item.split('->'));
+    selectedPaths = Array.from(baselinePathSet).map((item) => item.split('->'));
     uncoveredRequirementIds = new Set(
       requirementPaths
         .filter((entry) => !entry.covered)
@@ -421,6 +421,12 @@ export function buildTestPathSetForRequirements(graph, requirements, options = {
     candidatePaths,
     requirementPaths,
     selectedPaths,
+    optimizationMetrics: {
+      baselinePathCount: baselinePathSet.size,
+      optimizedPathCount: selectedPaths.length,
+      savedPathCount: Math.max(0, baselinePathSet.size - selectedPaths.length),
+      optimizationMode,
+    },
     uncoveredRequirements: requirementPaths
       .filter((entry) => !entry.covered || uncoveredRequirementIds.has(entry.requirement.id))
       .map((entry) => entry.requirement),
