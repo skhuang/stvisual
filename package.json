@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "serve": "python3 -m http.server 4173",
-    "pages:prepare": "node scripts/prepare-pages.mjs",
+    "build:standalone": "node scripts/build-standalone.mjs",
+    "pages:prepare": "npm run build:standalone && node scripts/prepare-pages.mjs",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@playwright/test": "^1.53.1",
     "@testing-library/jest-dom": "^6.4.0",
+    "esbuild": "^0.25.3",
     "jsdom": "^24.1.0",
     "vitest": "^1.6.0"
   }
