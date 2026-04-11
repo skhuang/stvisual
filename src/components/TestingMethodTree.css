@@ -1,0 +1,206 @@
+.testing-method-tree {
+  width: 100%;
+}
+
+.tree-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.btn-toggle-all {
+  padding: 8px 24px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.35);
+}
+.btn-toggle-all:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(52, 152, 219, 0.45);
+}
+.btn-toggle-all:active {
+  transform: translateY(0);
+}
+
+/* Grid */
+.tree-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 900px) {
+  .tree-cards { grid-template-columns: 1fr; }
+}
+
+/* Card base */
+.method-card {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  animation: fadeInUp 0.55s ease forwards;
+}
+.method-card:nth-child(1) { animation-delay: 0.1s; }
+.method-card:nth-child(2) { animation-delay: 0.2s; }
+.method-card:nth-child(3) { animation-delay: 0.3s; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.method-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14);
+}
+
+/* Dark scheme – Black Box */
+.method-card--dark { border: 2px solid #2c3e50; }
+.method-card--dark .method-card-header {
+  background: linear-gradient(135deg, #2c3e50 0%, #4a5568 100%);
+  color: #fff;
+}
+.method-card--dark .visibility-fill { background: #2c3e50; }
+
+/* Light scheme – White Box */
+.method-card--light { border: 2px solid #bdc3c7; }
+.method-card--light .method-card-header {
+  background: linear-gradient(135deg, #ecf0f1 0%, #dfe6e9 100%);
+  color: #2c3e50;
+}
+.method-card--light .visibility-fill { background: #95a5a6; }
+
+/* Medium scheme – Gray Box */
+.method-card--medium { border: 2px solid #7f8c8d; }
+.method-card--medium .method-card-header {
+  background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
+  color: #fff;
+}
+.method-card--medium .visibility-fill { background: #7f8c8d; }
+
+/* Header button */
+.method-card-header {
+  width: 100%;
+  padding: 22px 24px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  user-select: none;
+  transition: filter 0.2s;
+}
+.method-card-header:hover { filter: brightness(0.94); }
+
+.method-card-title h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.method-card-en {
+  font-size: 0.8rem;
+  opacity: 0.65;
+}
+.method-card-toggle {
+  font-size: 1.1rem;
+  transition: transform 0.35s ease;
+  display: inline-block;
+}
+.method-card-toggle.rotated { transform: rotate(90deg); }
+
+/* Body */
+.method-card-body {
+  background: #fff;
+  padding: 20px 22px;
+}
+.method-description {
+  color: #636e72;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* Visibility Meter */
+.visibility-meter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.visibility-label {
+  font-size: 0.75rem;
+  color: #9b9b9b;
+  white-space: nowrap;
+}
+.visibility-track {
+  flex: 1;
+  height: 8px;
+  background: #ecf0f1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.visibility-fill {
+  height: 100%;
+  border-radius: 4px;
+  animation: growWidth 1.1s ease forwards;
+}
+@keyframes growWidth {
+  from { width: 0 !important; }
+}
+.visibility-value {
+  font-size: 0.78rem;
+  color: #636e72;
+  min-width: 34px;
+  text-align: right;
+}
+
+/* Count badge */
+.method-count-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  background: #f0f4f8;
+  color: #636e72;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  margin-bottom: 14px;
+}
+
+/* Technique list */
+.technique-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.technique-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f4f8;
+  opacity: 0;
+  animation: slideInItem 0.3s ease forwards;
+}
+.technique-item:last-child { border-bottom: none; }
+@keyframes slideInItem {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.technique-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #2c3e50;
+}
+.technique-name-en {
+  font-size: 0.76rem;
+  color: #3498db;
+  margin: 2px 0;
+}
+.technique-desc {
+  font-size: 0.78rem;
+  color: #95a5a6;
+  line-height: 1.5;
+}

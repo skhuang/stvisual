@@ -1,0 +1,237 @@
+.testing-flow {
+  width: 100%;
+}
+
+.flow-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.flow-play-btn {
+  padding: 8px 22px;
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-family: inherit;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.35);
+}
+.flow-play-btn.playing {
+  background: #e67e22;
+  box-shadow: 0 2px 8px rgba(230, 126, 34, 0.35);
+}
+.flow-play-btn:hover {
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+}
+
+/* Flow track */
+.flow-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  padding: 30px 0 20px;
+}
+
+/* Step box */
+.flow-step {
+  position: relative;
+  background: #fff;
+  border: 2px solid #dfe6e9;
+  border-radius: 12px;
+  padding: 16px 14px;
+  text-align: center;
+  min-width: 100px;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+  user-select: none;
+  animation: stepAppear 0.5s ease forwards;
+}
+@keyframes stepAppear {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.flow-step:hover,
+.flow-step--hovered {
+  border-color: #3498db;
+  box-shadow: 0 4px 18px rgba(52, 152, 219, 0.2);
+  transform: translateY(-4px);
+}
+.flow-step--active {
+  border-color: #3498db;
+  background: linear-gradient(135deg, #ebf5fb, #d6eaf8);
+  box-shadow: 0 6px 24px rgba(52, 152, 219, 0.3);
+  transform: translateY(-6px);
+}
+
+.flow-step-num {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  background: #3498db;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flow-step--active .flow-step-num {
+  background: #2980b9;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.35);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.35); }
+  50%       { box-shadow: 0 0 0 7px rgba(52, 152, 219, 0.1); }
+}
+
+.flow-step-icon {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+  display: block;
+}
+.flow-step-label {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #2c3e50;
+}
+.flow-step-label-en {
+  font-size: 0.7rem;
+  color: #95a5a6;
+  margin-top: 2px;
+}
+
+/* Tooltip */
+.flow-step-tooltip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2c3e50;
+  color: #fff;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  width: 160px;
+  text-align: center;
+  z-index: 10;
+  animation: tooltipIn 0.2s ease;
+  pointer-events: none;
+}
+.flow-step-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #2c3e50;
+}
+@keyframes tooltipIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Arrow between steps */
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+.flow-arrow-line {
+  width: 28px;
+  height: 3px;
+  background: #dfe6e9;
+  border-radius: 2px;
+  transition: background 0.4s;
+  animation: none;
+}
+.flow-arrow-head {
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 10px solid #dfe6e9;
+  transition: border-left-color 0.4s;
+}
+
+/* passed */
+.flow-arrow--passed .flow-arrow-line {
+  background: #3498db;
+  animation: flowPulse 1.5s linear infinite;
+  background: linear-gradient(90deg, #2980b9, #74b9ff, #2980b9);
+  background-size: 200% 100%;
+}
+.flow-arrow--passed .flow-arrow-head { border-left-color: #2980b9; }
+
+/* active (current → next) */
+.flow-arrow--active .flow-arrow-line {
+  background: linear-gradient(90deg, #3498db, #74b9ff);
+  animation: flowPulse 0.8s linear infinite;
+  background-size: 200% 100%;
+}
+.flow-arrow--active .flow-arrow-head { border-left-color: #3498db; }
+
+@keyframes flowPulse {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+/* Progress bar */
+.flow-progress-bar {
+  margin-top: 24px;
+  height: 6px;
+  background: #ecf0f1;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.flow-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+.flow-progress-label {
+  text-align: center;
+  font-size: 0.82rem;
+  color: #7f8c8d;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .flow-track {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 40px;
+  }
+  .flow-arrow {
+    flex-direction: column;
+    align-items: center;
+    margin: 2px 0;
+  }
+  .flow-arrow-line {
+    width: 3px;
+    height: 22px;
+  }
+  .flow-arrow-head {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 10px solid #dfe6e9;
+    border-bottom: none;
+  }
+  .flow-arrow--passed .flow-arrow-head { border-top-color: #2980b9; border-left-color: transparent; }
+  .flow-arrow--active .flow-arrow-head { border-top-color: #3498db; border-left-color: transparent; }
+}

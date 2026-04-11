@@ -1,0 +1,5 @@
+@import url('./App.css');
+@import url('./components/TestingMethodTree.css');
+@import url('./components/TestingFlow.css');
+@import url('./components/TestingTypesTable.css');
+@import url('./components/GraphCoverageExplorer.css');
