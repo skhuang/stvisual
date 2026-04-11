@@ -78,4 +78,40 @@ test.describe('Code Upload to CFG', () => {
     await expect(page.getByTestId('detail-source-mapping')).toContainText('L10');
     await expect(page.getByTestId('program-source-line-10')).toHaveClass(/graph-source-line--active/);
   });
+
+  test('keeps source mapping consistent when switching node/edge/prime-path criteria', async ({ page }) => {
+    await page.goto('/index.html');
+
+    await page.getByTestId('program-language-select').selectOption('javascript');
+    await page.getByTestId('code-upload-input').setInputFiles({
+      name: 'triangle.js',
+      mimeType: 'application/javascript',
+      buffer: Buffer.from(`function classifyTriangle(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 'invalid';
+  }
+
+  if (a === b && b === c) {
+    return 'equilateral';
+  }
+
+  return 'scalene';
+}`),
+    });
+
+    await expect(page.getByTestId('graph-source-status')).toContainText('已根據 triangle.js 自動產生簡化 CFG。');
+
+    const assertMappedAfterSwitch = async (criterionId) => {
+      await page.getByTestId(`criterion-${criterionId}`).click();
+      await page.locator('[data-requirement-id]').nth(1).click();
+
+      await expect(page.getByTestId('detail-source-mapping')).toContainText('L');
+      const activeLineCount = await page.locator('.graph-source-line--active').count();
+      expect(activeLineCount).toBeGreaterThan(0);
+    };
+
+    await assertMappedAfterSwitch('node');
+    await assertMappedAfterSwitch('edge');
+    await assertMappedAfterSwitch('prime-path');
+  });
 });
