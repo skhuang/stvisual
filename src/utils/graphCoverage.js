@@ -97,6 +97,62 @@ function containsEdgePath(pathEdges, targetEdges) {
   return false;
 }
 
+function requirementCoveredByRecord(requirement, record) {
+  if (requirement.type === 'node') {
+    return record.path.includes(requirement.nodes[0]);
+  }
+
+  if (requirement.type === 'edge') {
+    return record.edgeIds.includes(requirement.edges[0]);
+  }
+
+  if (requirement.type === 'edge-pair') {
+    return containsEdgePath(record.edgeIds, requirement.edges);
+  }
+
+  if (requirement.type === 'prime-path' || requirement.type === 'complete-path') {
+    return containsNodePath(record.path, requirement.nodes);
+  }
+
+  return false;
+}
+
+function greedySetCover(pathRecords, requirements) {
+  const uncovered = new Set(requirements.map((item) => item.id));
+  const selected = [];
+
+  while (uncovered.size > 0) {
+    let bestRecord = null;
+    let bestGain = 0;
+
+    pathRecords.forEach((record) => {
+      const gain = record.covers.reduce(
+        (count, requirementId) => count + (uncovered.has(requirementId) ? 1 : 0),
+        0
+      );
+
+      if (gain > bestGain) {
+        bestGain = gain;
+        bestRecord = record;
+      }
+    });
+
+    if (!bestRecord || bestGain === 0) {
+      break;
+    }
+
+    selected.push(bestRecord.path);
+    bestRecord.covers.forEach((requirementId) => {
+      uncovered.delete(requirementId);
+    });
+  }
+
+  return {
+    selectedPaths: selected,
+    uncoveredRequirementIds: uncovered,
+  };
+}
+
 export function enumerateSimplePaths(graph) {
   const normalizedGraph = normalizeGraph(graph);
   const adjacency = buildAdjacency(normalizedGraph);
@@ -316,32 +372,21 @@ export function generateTestPaths(graph, options = {}) {
 export function buildTestPathSetForRequirements(graph, requirements, options = {}) {
   const normalizedGraph = normalizeGraph(graph);
   const candidatePaths = generateTestPaths(normalizedGraph, options);
+  const optimizationMode = options.optimization ?? 'greedy-set-cover';
 
   const pathRecords = candidatePaths.map((path) => ({
     path,
     edgeIds: edgeIdsFromPath(normalizedGraph, path),
   }));
 
+  pathRecords.forEach((record) => {
+    record.covers = requirements
+      .filter((requirement) => requirementCoveredByRecord(requirement, record))
+      .map((requirement) => requirement.id);
+  });
+
   const requirementPaths = requirements.map((requirement) => {
-    const matchedRecord = pathRecords.find((record) => {
-      if (requirement.type === 'node') {
-        return record.path.includes(requirement.nodes[0]);
-      }
-
-      if (requirement.type === 'edge') {
-        return record.edgeIds.includes(requirement.edges[0]);
-      }
-
-      if (requirement.type === 'edge-pair') {
-        return containsEdgePath(record.edgeIds, requirement.edges);
-      }
-
-      if (requirement.type === 'prime-path' || requirement.type === 'complete-path') {
-        return containsNodePath(record.path, requirement.nodes);
-      }
-
-      return false;
-    });
+    const matchedRecord = pathRecords.find((record) => requirementCoveredByRecord(requirement, record));
 
     return {
       requirement,
@@ -350,17 +395,35 @@ export function buildTestPathSetForRequirements(graph, requirements, options = {
     };
   });
 
-  const uniquePathSet = new Set(
-    requirementPaths
-      .filter((entry) => entry.covered)
-      .map((entry) => entry.path.join('->'))
-  );
+  let selectedPaths;
+  let uncoveredRequirementIds;
+
+  if (optimizationMode === 'none') {
+    const uniquePathSet = new Set(
+      requirementPaths
+        .filter((entry) => entry.covered)
+        .map((entry) => entry.path.join('->'))
+    );
+
+    selectedPaths = Array.from(uniquePathSet).map((item) => item.split('->'));
+    uncoveredRequirementIds = new Set(
+      requirementPaths
+        .filter((entry) => !entry.covered)
+        .map((entry) => entry.requirement.id)
+    );
+  } else {
+    const optimized = greedySetCover(pathRecords, requirements);
+    selectedPaths = optimized.selectedPaths;
+    uncoveredRequirementIds = optimized.uncoveredRequirementIds;
+  }
 
   return {
     candidatePaths,
     requirementPaths,
-    selectedPaths: Array.from(uniquePathSet).map((item) => item.split('->')),
-    uncoveredRequirements: requirementPaths.filter((entry) => !entry.covered).map((entry) => entry.requirement),
+    selectedPaths,
+    uncoveredRequirements: requirementPaths
+      .filter((entry) => !entry.covered || uncoveredRequirementIds.has(entry.requirement.id))
+      .map((entry) => entry.requirement),
   };
 }
 

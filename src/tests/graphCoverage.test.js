@@ -13,6 +13,17 @@ import {
   getPrimePaths,
 } from '../utils/graphCoverage';
 
+function naivePathCountForRequirements(graph, requirements) {
+  const plan = buildTestPathSetForRequirements(graph, requirements, { optimization: 'none' });
+  const unique = new Set(
+    plan.requirementPaths
+      .filter((entry) => entry.covered)
+      .map((entry) => entry.path.join('->'))
+  );
+
+  return unique.size;
+}
+
 describe('graphCoverage utilities', () => {
   it('node coverage 產生每個節點一個 requirement', () => {
     const requirements = getNodeRequirements(graphCoverageGraph);
@@ -80,6 +91,23 @@ describe('graphCoverage utilities', () => {
 
     expect(plan.selectedPaths.length).toBeGreaterThan(0);
     expect(plan.requirementPaths.length).toBe(requirements.length);
+    expect(plan.uncoveredRequirements).toHaveLength(0);
+  });
+
+  it('使用 set-cover 近似可得到更精簡或等量路徑集合', () => {
+    const requirements = getCoverageRequirements(graphCoverageGraph, 'edge-pair');
+    const optimized = buildTestPathSetForRequirements(graphCoverageGraph, requirements);
+    const naiveCount = naivePathCountForRequirements(graphCoverageGraph, requirements);
+
+    expect(optimized.uncoveredRequirements).toHaveLength(0);
+    expect(optimized.selectedPaths.length).toBeLessThanOrEqual(naiveCount);
+  });
+
+  it('set-cover 產生的路徑集合可覆蓋所有 complete-path requirements', () => {
+    const requirements = getCoverageRequirements(graphCoverageGraph, 'complete-path');
+    const plan = buildTestPathSetForRequirements(graphCoverageGraph, requirements);
+
+    expect(plan.selectedPaths.length).toBeGreaterThan(0);
     expect(plan.uncoveredRequirements).toHaveLength(0);
   });
 });
