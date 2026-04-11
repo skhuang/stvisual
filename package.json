@@ -8,9 +8,12 @@
     "pages:prepare": "node scripts/prepare-pages.mjs",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:browser": "playwright test",
+    "test:browser:headed": "playwright test --headed"
   },
   "devDependencies": {
+    "@playwright/test": "^1.53.1",
     "@testing-library/jest-dom": "^6.4.0",
     "jsdom": "^24.1.0",
     "vitest": "^1.6.0"

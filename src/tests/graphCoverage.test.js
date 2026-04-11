@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { graphCoverageGraph } from '../data/testingData';
 import {
+  buildTestPathSetForRequirements,
   enumerateSimplePaths,
   getCoverageRequirements,
+  getCompletePathRequirements,
+  getEdgePairRequirements,
   getEdgeRequirements,
   getNodeRequirements,
   getPrimePathRequirements,
+  generateTestPaths,
   getPrimePaths,
 } from '../utils/graphCoverage';
 
@@ -48,5 +52,34 @@ describe('graphCoverage utilities', () => {
     expect(getCoverageRequirements(graphCoverageGraph, 'node')).toHaveLength(8);
     expect(getCoverageRequirements(graphCoverageGraph, 'edge')).toHaveLength(10);
     expect(getCoverageRequirements(graphCoverageGraph, 'prime-path').length).toBeGreaterThan(0);
+    expect(getCoverageRequirements(graphCoverageGraph, 'edge-pair').length).toBeGreaterThan(0);
+    expect(getCoverageRequirements(graphCoverageGraph, 'complete-path').length).toBeGreaterThan(0);
+  });
+
+  it('edge-pair requirements 包含連續兩邊', () => {
+    const requirements = getEdgePairRequirements(graphCoverageGraph);
+    expect(requirements.map((item) => item.displayText)).toContain('S -> A -> B');
+    expect(requirements.map((item) => item.displayText)).toContain('D -> E -> B');
+  });
+
+  it('complete path requirements 來自 start 到 end 的完整路徑', () => {
+    const requirements = getCompletePathRequirements(graphCoverageGraph);
+    expect(requirements.map((item) => item.displayText)).toContain('S -> A -> B -> D -> E -> T');
+    expect(requirements.map((item) => item.displayText)).toContain('S -> A -> C -> D -> F -> T');
+  });
+
+  it('generateTestPaths 會產生 start 到 end 的候選路徑', () => {
+    const paths = generateTestPaths(graphCoverageGraph).map((path) => path.join('->'));
+    expect(paths).toContain('S->A->B->D->F->T');
+    expect(paths).toContain('S->A->C->D->F->T');
+  });
+
+  it('可將 requirements 組合成測試路徑集合', () => {
+    const requirements = getCoverageRequirements(graphCoverageGraph, 'edge-pair');
+    const plan = buildTestPathSetForRequirements(graphCoverageGraph, requirements);
+
+    expect(plan.selectedPaths.length).toBeGreaterThan(0);
+    expect(plan.requirementPaths.length).toBe(requirements.length);
+    expect(plan.uncoveredRequirements).toHaveLength(0);
   });
 });

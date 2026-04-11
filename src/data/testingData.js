@@ -79,6 +79,18 @@ export const graphCoverageCriteria = [
     labelZh: 'Prime Path 覆蓋',
     description: '所有 prime path 都必須被測試需求涵蓋，包含迴圈。',
   },
+  {
+    id: 'edge-pair',
+    label: 'Edge-Pair Coverage',
+    labelZh: '邊對覆蓋',
+    description: '每一組相鄰的兩條邊都要至少被一條測試路徑覆蓋。',
+  },
+  {
+    id: 'complete-path',
+    label: 'Complete Path Coverage',
+    labelZh: '完整路徑覆蓋',
+    description: '以有限深度列舉 start 到 end 的完整可行路徑集合。',
+  },
 ];
 
 export const graphCoverageGraph = {
