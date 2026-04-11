@@ -1,72 +1,106 @@
-# 軟體測試方法視覺化
+# Software Testing Visualization
 
-以互動式方式呈現軟體測試方法，包含測試方法分類、測試流程、常見測試類型，以及 graph coverage 的視覺化分析。
+[![Test](https://github.com/skhuang/stvisual/actions/workflows/test.yml/badge.svg)](https://github.com/skhuang/stvisual/actions/workflows/test.yml)
+[![Deploy GitHub Pages](https://github.com/skhuang/stvisual/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/skhuang/stvisual/actions/workflows/deploy-pages.yml)
+[![Live Demo](https://img.shields.io/badge/demo-GitHub%20Pages-0a7ea4)](https://skhuang.github.io/stvisual/)
 
-線上展示：<https://skhuang.github.io/stvisual/>
+An interactive visualization project for software testing concepts, including testing method taxonomy, testing flow, common testing types, and graph coverage analysis.
 
-## 功能
+Live demo: <https://skhuang.github.io/stvisual/>
 
-- 測試方法分類視覺化：黑盒、白盒、灰盒與子技術展開
-- 測試流程動畫：需求分析到缺陷報告的流程播放
-- 測試類型展示：單元、集成、系統、驗收測試
-- Graph Coverage 視覺化：
+## Preview
+
+![Application overview](docs/assets/app-overview.png)
+
+## Why This Project
+
+- Turns software testing concepts into an interactive visual teaching tool
+- Demonstrates graph-based coverage criteria with concrete requirements and test paths
+- Supports editable graphs so users can see coverage recomputed immediately
+- Shows optimization impact by comparing path counts before and after reduction
+
+## Feature Highlights
+
+- Visualizes testing method categories: black-box, white-box, gray-box, and their sub-techniques
+- Animates the testing workflow from requirements analysis to defect reporting
+- Shows common testing levels: unit, integration, system, and acceptance testing
+- Provides graph coverage visualization for:
   - Node Coverage
   - Edge Coverage
   - Prime Path Coverage
   - Edge-Pair Coverage
   - Complete Path Coverage
-- 自動產生 test requirements
-- 自動產生 test path set
-- 使用 greedy set-cover 近似做 test path 集合最佳化
-- 顯示最佳化前/後路徑數與精簡數量
-- 可編輯 graph（節點、邊、Start、End）並即時重算 coverage 結果
+- Automatically generates test requirements
+- Automatically generates test path sets
+- Applies a greedy set-cover approximation to reduce the selected test path set
+- Displays before/after optimization metrics and saved path count
+- Lets users edit the graph structure live with nodes, edges, start node, and end node inputs
 
-## 專案特色
+## Architecture
 
-- 可部署到 GitHub Pages
-- 可直接用 `file://` 開啟 `index.html`
-- 同時具備單元測試與真實瀏覽器測試
-- 所有主要 graph coverage 擴充功能都有測試覆蓋
+```mermaid
+flowchart LR
+  A[index.html] --> B[bootstrap.js]
+  B -->|http/https| C[main.js]
+  B -->|file://| D[standalone.js]
+  C --> E[app.js]
+  E --> F[UI components]
+  E --> G[testingData.js]
+  E --> H[graphCoverage.js]
+  H --> F
+  I[Vitest + jsdom] --> E
+  J[Playwright] --> A
+  K[GitHub Actions] --> I
+  K --> J
+  K --> L[GitHub Pages]
+```
 
-## 本機執行
+## Showcase Notes
 
-### 1. 安裝依賴
+- Deployable to GitHub Pages
+- Works directly from `file://` by using a standalone fallback bundle
+- Includes both unit tests and real browser tests
+- Covers the major graph coverage features with automated tests
+
+## Quick Start
+
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 2. 啟動本機靜態伺服器
+### 2. Start the local static server
 
 ```bash
 npm run serve
 ```
 
-預設網址：<http://127.0.0.1:4173>
+Default URL: <http://127.0.0.1:4173>
 
-### 3. 直接開啟檔案
+### 3. Open the app directly from the file system
 
-也可以直接打開 `index.html`。
+You can also open `index.html` directly.
 
-專案有兩種入口模式：
-- `http/https`：使用模組化入口
-- `file://`：自動使用 standalone fallback，避免 module CORS 問題
+The app supports two entry modes:
+- `http/https`: uses the modular runtime entry
+- `file://`: automatically switches to the standalone fallback to avoid module CORS restrictions
 
-## 測試
+## Testing
 
-### 單元測試
+### Unit tests
 
 ```bash
 npm run test:run
 ```
 
-### Browser E2E 測試
+### Browser E2E tests
 
 ```bash
 npm run test:browser
 ```
 
-### 有畫面的 Browser 測試
+### Browser tests with UI
 
 ```bash
 npm run test:browser:headed
@@ -74,33 +108,49 @@ npm run test:browser:headed
 
 ## GitHub Actions
 
-Repo 已配置兩類 workflow：
+The repository includes two workflow groups:
 
 - `Test`
   - `unit-test`
   - `browser-test`
 - `Deploy GitHub Pages`
-  - 測試通過後建立 Pages artifact
-  - 自動部署到 GitHub Pages
+  - builds the Pages artifact after tests pass
+  - deploys the static site to GitHub Pages automatically
 
-相關設定檔：
+Relevant workflow files:
 - `.github/workflows/test.yml`
 - `.github/workflows/deploy-pages.yml`
 
-## GitHub Pages 部署
+## Graph Coverage Focus
 
-靜態站台輸出指令：
+The graph coverage section currently supports:
+
+- requirement generation
+- test path generation
+- approximate minimal test path selection
+- live graph editor recomputation
+- UI metrics for optimization before and after path reduction
+
+This project is useful for:
+- teaching graph coverage concepts
+- comparing different coverage criteria
+- observing the mapping between requirements and test paths
+- demonstrating path reduction with a set-cover style approximation
+
+## GitHub Pages Deployment
+
+To prepare the static site output locally:
 
 ```bash
 npm run pages:prepare
 ```
 
-這會：
-- 重新產生 `src/standalone.js`
-- 建立 `site/` 靜態輸出
-- 供 GitHub Pages workflow 上傳與部署
+This command:
+- regenerates `src/standalone.js`
+- builds the `site/` output directory
+- prepares the artifact structure used by the GitHub Pages workflow
 
-## 專案結構
+## Project Structure
 
 ```text
 .
@@ -119,22 +169,6 @@ npm run pages:prepare
 └── .github/workflows/
 ```
 
-## Graph Coverage 重點
-
-Graph Coverage 區塊目前支援：
-
-- requirement 生成
-- test path 生成
-- 最小 test path 集合近似最佳化
-- graph editor 即時重算
-- UI 顯示最佳化前/後差異
-
-這個專案適合用來：
-- 教學展示 graph coverage 概念
-- 比較不同 coverage criteria 的差異
-- 觀察 requirement 與 test path 的對應關係
-- 示範 path reduction / set-cover 近似最佳化
-
 ## License
 
-目前未附加授權條款。如需公開授權，可再補上 LICENSE。
+No license file is currently included. Add a `LICENSE` file if you want to publish the project under an explicit open-source license.

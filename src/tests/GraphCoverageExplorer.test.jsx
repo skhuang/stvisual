@@ -90,4 +90,117 @@ describe('GraphCoverageExplorer', () => {
     expect(document.querySelector('[data-testid="graph-editor-status"]')).toHaveTextContent('Graph 已同步更新');
     expect(document.querySelector('[data-testid="requirement-list"]').children).toHaveLength(3);
   });
+
+  it('可載入固定程式範例', () => {
+    renderGraphCoverageExplorer();
+
+    const select = document.querySelector('[data-testid="program-example-select"]');
+    select.value = 'triangle-problem';
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+
+    expect(document.querySelector('[data-testid="program-source-name"]')).toHaveTextContent('Triangle Problem');
+    expect(document.querySelector('[data-testid="program-source-code"]')).toHaveTextContent('classifyTriangle');
+    expect(document.querySelector('[data-testid="selected-requirement-summary"]')).toHaveTextContent('Node Start');
+  });
+
+  it('可載入新增的經典程式範例', () => {
+    renderGraphCoverageExplorer();
+
+    const select = document.querySelector('[data-testid="program-example-select"]');
+    select.value = 'commission-problem';
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+
+    expect(document.querySelector('[data-testid="program-source-name"]')).toHaveTextContent('Commission Problem');
+    expect(document.querySelector('[data-testid="program-source-code"]')).toHaveTextContent('function commission');
+    expect(document.querySelector('[data-testid="requirement-list"]').children.length).toBeGreaterThan(3);
+  });
+
+  it('會顯示 requirement 對應的程式碼行號映射', () => {
+    renderGraphCoverageExplorer();
+
+    const select = document.querySelector('[data-testid="program-example-select"]');
+    select.value = 'calendar-days';
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+
+    document.querySelectorAll('[data-requirement-id]')[1].click();
+
+    expect(document.querySelector('[data-testid="program-source-line-2"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="detail-source-mapping"]')).toHaveTextContent('L2');
+  });
+
+  it('可上傳 graph JSON spec', async () => {
+    renderGraphCoverageExplorer();
+
+    const uploadInput = document.querySelector('[data-testid="graph-upload-input"]');
+    const file = {
+      name: 'demo-graph.json',
+      text: async () => JSON.stringify({
+        title: 'Uploaded Demo Graph',
+        description: 'Small uploaded CFG.',
+        sourceCode: 'function demo() { return true; }',
+        graph: {
+          startNodeId: 'S',
+          endNodeId: 'T',
+          nodes: [
+            { id: 'S', label: 'Start', x: 80, y: 170 },
+            { id: 'A', label: 'A', x: 220, y: 170 },
+            { id: 'T', label: 'End', x: 360, y: 170 },
+          ],
+          edges: [
+            { id: 'S-A', from: 'S', to: 'A' },
+            { id: 'A-T', from: 'A', to: 'T' },
+          ],
+        },
+      }),
+    };
+
+    Object.defineProperty(uploadInput, 'files', {
+      configurable: true,
+      value: [file],
+    });
+
+    uploadInput.dispatchEvent(new Event('change', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(document.querySelector('[data-testid="program-source-name"]')).toHaveTextContent('Uploaded Demo Graph');
+    expect(document.querySelector('[data-testid="program-source-code"]')).toHaveTextContent('function demo()');
+    expect(document.querySelector('[data-testid="graph-source-status"]')).toHaveTextContent('已載入上傳檔案：demo-graph.json');
+    expect(document.querySelector('[data-testid="requirement-list"]').children).toHaveLength(3);
+  });
+
+  it('可上傳程式碼並自動產生簡化 CFG', async () => {
+    renderGraphCoverageExplorer();
+
+    const languageSelect = document.querySelector('[data-testid="program-language-select"]');
+    languageSelect.value = 'javascript';
+    languageSelect.dispatchEvent(new Event('change', { bubbles: true }));
+
+    const uploadInput = document.querySelector('[data-testid="code-upload-input"]');
+    const file = {
+      name: 'triangle.js',
+      text: async () => `function classifyTriangle(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 'invalid';
+  }
+
+  return 'valid';
+}`,
+    };
+
+    Object.defineProperty(uploadInput, 'files', {
+      configurable: true,
+      value: [file],
+    });
+
+    uploadInput.dispatchEvent(new Event('change', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    document.querySelectorAll('[data-requirement-id]')[1].click();
+
+    expect(document.querySelector('[data-testid="program-source-name"]')).toHaveTextContent('triangle');
+    expect(document.querySelector('[data-testid="graph-source-status"]')).toHaveTextContent('已根據 triangle.js 自動產生簡化 CFG。');
+    expect(document.querySelector('[data-testid="program-source-code"]')).toHaveTextContent('classifyTriangle');
+    expect(document.querySelector('[data-testid="requirement-list"]').children.length).toBeGreaterThan(3);
+    expect(document.querySelector('[data-testid="detail-source-mapping"]')).toHaveTextContent('L2');
+  });
 });

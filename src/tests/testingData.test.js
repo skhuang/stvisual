@@ -4,7 +4,9 @@ import {
   testingFlow,
   testingTypes,
   graphCoverageCriteria,
+  graphCoverageCodeLanguages,
   graphCoverageGraph,
+  graphCoverageProgramExamples,
 } from '../data/testingData';
 
 describe('testingMethods', () => {
@@ -159,6 +161,10 @@ describe('graphCoverage data', () => {
     expect(graphCoverageCriteria.map((item) => item.id)).toEqual(['node', 'edge', 'prime-path', 'edge-pair', 'complete-path']);
   });
 
+  it('包含程式碼語言選項', () => {
+    expect(graphCoverageCodeLanguages.map((item) => item.id)).toEqual(['javascript', 'pseudocode']);
+  });
+
   it('graph 包含 8 個節點與 10 條邊', () => {
     expect(graphCoverageGraph.nodes).toHaveLength(8);
     expect(graphCoverageGraph.edges).toHaveLength(10);
@@ -172,5 +178,23 @@ describe('graphCoverage data', () => {
   it('graph 包含迴圈 E -> B', () => {
     const edgeIds = graphCoverageGraph.edges.map((edge) => edge.id);
     expect(edgeIds).toContain('E-B');
+  });
+
+  it('包含真實程式範例', () => {
+    expect(graphCoverageProgramExamples.map((item) => item.id)).toEqual([
+      'triangle-problem',
+      'next-date',
+      'commission-problem',
+      'next-date-leap-year',
+      'calendar-days',
+    ]);
+    graphCoverageProgramExamples.forEach((item) => {
+      expect(item.language).toBeTruthy();
+      expect(item.sourceCode).toContain('function');
+      if (item.graph) {
+        expect(item.graph.nodes.length).toBeGreaterThan(0);
+        expect(item.graph.edges.length).toBeGreaterThan(0);
+      }
+    });
   });
 });

@@ -1,5 +1,11 @@
-import { graphCoverageCriteria, graphCoverageGraph } from '../data/testingData.js';
+import {
+  graphCoverageCodeLanguages,
+  graphCoverageCriteria,
+  graphCoverageGraph,
+  graphCoverageProgramExamples,
+} from '../data/testingData.js';
 import { buildTestPathSetForRequirements, getCoverageRequirements } from '../utils/graphCoverage.js';
+import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
 
 function cloneGraph(graph) {
   return {
@@ -9,6 +15,24 @@ function cloneGraph(graph) {
       ...edge,
       control: edge.control ? { ...edge.control } : undefined,
     })),
+  };
+}
+
+function escapeHtml(value = '') {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function createDraftFromGraph(graph) {
+  return {
+    nodesText: serializeNodes(graph.nodes),
+    edgesText: serializeEdges(graph.edges),
+    startNodeId: graph.startNodeId,
+    endNodeId: graph.endNodeId,
   };
 }
 
@@ -126,13 +150,113 @@ function parseGraphDraft({ nodesText, edgesText, startNodeId, endNodeId }) {
   };
 }
 
+function parseUploadedGraphSpec(rawText) {
+  let payload;
+
+  try {
+    payload = JSON.parse(rawText);
+  } catch {
+    throw new Error('上傳內容不是有效的 JSON。');
+  }
+
+  const graphPayload = payload.graph || payload;
+
+  if (!graphPayload || !Array.isArray(graphPayload.nodes) || !Array.isArray(graphPayload.edges)) {
+    throw new Error('JSON 需包含 graph 物件，或直接包含 nodes / edges / startNodeId / endNodeId。');
+  }
+
+  const graph = {
+    ...graphPayload,
+    id: graphPayload.id || payload.id || 'uploaded-graph',
+    title: graphPayload.title || payload.title || 'Uploaded Graph',
+  };
+  const validatedGraph = parseGraphDraft(createDraftFromGraph(graph));
+
+  return {
+    program: {
+      id: payload.id || 'uploaded-spec',
+      name: payload.name || payload.title || graph.title,
+      description: payload.description || 'Uploaded graph specification for graph coverage exploration.',
+      sourceCode: payload.sourceCode || payload.code || '',
+      uploadName: payload.fileName || null,
+    },
+    graph: {
+      ...validatedGraph,
+      id: graph.id,
+      title: graph.title,
+    },
+  };
+}
+
+function readUploadedFile(file) {
+  if (typeof file.text === 'function') {
+    return file.text();
+  }
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+    reader.onerror = () => reject(new Error('無法讀取上傳檔案。'));
+    reader.readAsText(file);
+  });
+}
+
+function getSelectedSourceNodes(graph, requirement) {
+  if (!requirement) {
+    return [];
+  }
+
+  return requirement.nodes
+    .map((nodeId) => graph.nodes.find((node) => node.id === nodeId))
+    .filter((node) => node?.sourceLine)
+    .filter((node, index, nodes) => nodes.findIndex((item) => item.id === node.id) === index);
+}
+
+function renderSourceCode(sourceCode, selectedSourceNodes) {
+  if (!sourceCode) {
+    return '<p class="graph-source-empty" data-testid="program-source-empty">這個來源目前只提供 graph，沒有附帶程式碼片段。</p>';
+  }
+
+  const highlightedLines = new Set(selectedSourceNodes.map((node) => node.sourceLine));
+
+  return `
+    <pre class="graph-source-code" data-testid="program-source-code"><code>
+      ${sourceCode.split('\n').map((line, index) => `
+        <span class="graph-source-line${highlightedLines.has(index + 1) ? ' graph-source-line--active' : ''}" data-testid="program-source-line-${index + 1}">
+          <span class="graph-source-line-number">${index + 1}</span>
+          <span class="graph-source-line-text">${escapeHtml(line) || '&nbsp;'}</span>
+        </span>
+      `).join('')}
+    </code></pre>
+  `;
+}
+
+function resolveProgramGraph(program) {
+  if (program.sourceCode && program.language) {
+    return generateControlFlowGraphFromProgram({
+      sourceCode: program.sourceCode,
+      language: program.language,
+      title: `${program.name} Control Flow Graph`,
+    });
+  }
+
+  if (program.graph) {
+    return cloneGraph(program.graph);
+  }
+
+  throw new Error('找不到可用的 graph 來源。');
+}
+
 function createGraphCanvas(graph, requirement) {
   const highlightedNodes = new Set(requirement?.nodes || []);
   const highlightedEdges = new Set(requirement?.edges || []);
+  const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
+  const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
 
   return `
     <div class="graph-canvas" data-testid="graph-canvas">
-      <svg viewBox="0 0 920 340" role="img" aria-label="Graph coverage 控制流程圖">
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Graph coverage 控制流程圖">
         <defs>
           <marker id="arrow-default" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
             <path d="M0,0 L12,6 L0,12 z" fill="#9aa8b6"></path>
@@ -171,6 +295,7 @@ function createGraphCanvas(graph, requirement) {
         }).join('')}
         ${graph.nodes.map((node) => `
           <g class="graph-node${highlightedNodes.has(node.id) ? ' graph-node--active' : ''}" data-testid="graph-node-${node.id}">
+            ${node.sourceLine ? `<title>Line ${node.sourceLine}: ${escapeHtml(node.sourceText || node.label)}</title>` : ''}
             <circle cx="${node.x}" cy="${node.y}" r="28"></circle>
             <text x="${node.x}" y="${node.y + 5}" text-anchor="middle">${node.label}</text>
           </g>
@@ -183,18 +308,36 @@ function createGraphCanvas(graph, requirement) {
 export function createGraphCoverageExplorer() {
   const root = document.createElement('div');
   const defaultGraph = cloneGraph(graphCoverageGraph);
+  const defaultProgram = {
+    id: 'default-sample',
+    name: 'Default CFG Sample',
+    description: 'A generic control flow graph used to compare graph coverage criteria on the same structure.',
+    sourceCode: '',
+  };
 
   let graph = defaultGraph;
+  let baseGraph = cloneGraph(defaultGraph);
   let criterionId = 'node';
   let selectedRequirementId = null;
   let parseError = '';
+  let sourceStatus = '可切換固定程式範例，或上傳 JSON graph spec、程式碼檔案。';
+  let activeProgram = defaultProgram;
+  let selectedProgramId = defaultProgram.id;
+  let selectedCodeLanguage = 'javascript';
   let autoApplyTimer = null;
-  let draft = {
-    nodesText: serializeNodes(defaultGraph.nodes),
-    edgesText: serializeEdges(defaultGraph.edges),
-    startNodeId: defaultGraph.startNodeId,
-    endNodeId: defaultGraph.endNodeId,
-  };
+  let draft = createDraftFromGraph(defaultGraph);
+
+  function loadGraphSource(program, nextGraph, statusMessage) {
+    activeProgram = { ...program };
+    selectedProgramId = program.id;
+    baseGraph = cloneGraph(nextGraph);
+    graph = cloneGraph(nextGraph);
+    draft = createDraftFromGraph(graph);
+    parseError = '';
+    sourceStatus = statusMessage;
+    selectedRequirementId = null;
+    render();
+  }
 
   function scheduleAutoApply() {
     if (autoApplyTimer) {
@@ -203,8 +346,12 @@ export function createGraphCoverageExplorer() {
 
     autoApplyTimer = window.setTimeout(() => {
       try {
-        graph = parseGraphDraft(draft);
+        graph = {
+          ...parseGraphDraft(draft),
+          title: `${activeProgram.name} CFG`,
+        };
         parseError = '';
+        sourceStatus = `${activeProgram.name} 已依照編輯內容重新計算。`;
         selectedRequirementId = null;
         render();
       } catch (error) {
@@ -215,14 +362,10 @@ export function createGraphCoverageExplorer() {
   }
 
   function resetGraph() {
-    graph = cloneGraph(defaultGraph);
-    draft = {
-      nodesText: serializeNodes(graph.nodes),
-      edgesText: serializeEdges(graph.edges),
-      startNodeId: graph.startNodeId,
-      endNodeId: graph.endNodeId,
-    };
+    graph = cloneGraph(baseGraph);
+    draft = createDraftFromGraph(graph);
     parseError = '';
+    sourceStatus = `${activeProgram.name} 已還原為載入時的 graph。`;
     selectedRequirementId = null;
     render();
   }
@@ -247,14 +390,60 @@ export function createGraphCoverageExplorer() {
 
   function render() {
     const { requirements, selectedRequirement, selectedCriterion, pathPlan } = getState();
+    const selectedSourceNodes = getSelectedSourceNodes(graph, selectedRequirement);
 
     root.className = 'graph-coverage';
     root.dataset.testid = 'graph-coverage-explorer';
     root.innerHTML = `
+      <div class="graph-source-card" data-testid="graph-source-card">
+        <div class="graph-source-toolbar">
+          <label>
+            Program Example
+            <select data-testid="program-example-select">
+              <option value="${defaultProgram.id}"${selectedProgramId === defaultProgram.id ? ' selected' : ''}>Default CFG Sample</option>
+              ${graphCoverageProgramExamples.map((example) => `
+                <option value="${example.id}"${selectedProgramId === example.id ? ' selected' : ''}>${example.name}</option>
+              `).join('')}
+              <option value="uploaded-code"${selectedProgramId === 'uploaded-code' ? ' selected' : ''}>Uploaded Source Code</option>
+              <option value="uploaded-spec"${selectedProgramId === 'uploaded-spec' ? ' selected' : ''}>Uploaded Graph Spec</option>
+            </select>
+          </label>
+          <label class="graph-upload-field">
+            Upload JSON Graph Spec
+            <input type="file" accept="application/json,.json" data-testid="graph-upload-input" />
+          </label>
+          <label>
+            Code Language
+            <select data-testid="program-language-select">
+              ${graphCoverageCodeLanguages.map((language) => `
+                <option value="${language.id}"${selectedCodeLanguage === language.id ? ' selected' : ''}>${language.label}</option>
+              `).join('')}
+            </select>
+          </label>
+          <label class="graph-upload-field">
+            Upload Source Code
+            <input type="file" accept=".js,.txt,.code,.pseudo" data-testid="code-upload-input" />
+          </label>
+        </div>
+        <div class="graph-source-copy">
+          <div>
+            <span class="detail-label">Current Source</span>
+            <h4 data-testid="program-source-name">${activeProgram.name}</h4>
+            <p class="graph-source-description" data-testid="program-source-description">${activeProgram.description}</p>
+            <p class="graph-source-status${parseError ? ' graph-editor-status--error' : ''}" data-testid="graph-source-status">${parseError || sourceStatus}</p>
+          </div>
+          <div class="graph-upload-hint">
+            <span class="detail-label">Upload Format</span>
+            <p>JSON 可直接提供 graph 物件，或直接提供 nodes、edges、startNodeId、endNodeId，也可附帶 title、description、sourceCode。程式碼上傳則會依語言類型自動產生簡化 CFG。</p>
+          </div>
+        </div>
+        ${renderSourceCode(activeProgram.sourceCode, selectedSourceNodes)}
+      </div>
+
       <div class="graph-editor-card" data-testid="graph-editor-card">
         <div class="graph-editor-header">
           <h4>Graph Editor</h4>
-          <p>編輯後會即時計算 coverage requirements 與 test paths。</p>
+          <p>可從真實程式範例載入 CFG，再微調 graph 並即時計算 coverage requirements 與 test paths。</p>
         </div>
         <div class="graph-editor-meta">
           <label>
@@ -387,6 +576,14 @@ export function createGraphCoverageExplorer() {
                 <span class="detail-label">Criterion</span>
                 <p>${selectedCriterion?.labelZh || ''}</p>
               </div>
+              <div>
+                <span class="detail-label">Source Mapping</span>
+                <ul class="source-mapping-list" data-testid="detail-source-mapping">
+                  ${selectedSourceNodes.length
+                    ? selectedSourceNodes.map((node) => `<li>${node.label} -> L${node.sourceLine}: ${escapeHtml(node.sourceText || '')}</li>`).join('')
+                    : '<li>目前 requirement 沒有可對應的程式碼行號。</li>'}
+                </ul>
+              </div>
             </div>
           </div>
         </aside>
@@ -395,6 +592,87 @@ export function createGraphCoverageExplorer() {
 
     root.querySelector('[data-testid="graph-reset-btn"]').addEventListener('click', () => {
       resetGraph();
+    });
+
+    root.querySelector('[data-testid="program-example-select"]').addEventListener('change', (event) => {
+      const nextProgramId = event.target.value;
+
+      if (nextProgramId === defaultProgram.id) {
+        loadGraphSource(defaultProgram, defaultGraph, '已載入預設控制流程圖範例。');
+        return;
+      }
+
+      if (nextProgramId === 'uploaded-spec') {
+        selectedProgramId = nextProgramId;
+        sourceStatus = '請選擇 JSON 檔案以上傳 graph spec。';
+        render();
+        return;
+      }
+
+      if (nextProgramId === 'uploaded-code') {
+        selectedProgramId = nextProgramId;
+        sourceStatus = '請選擇程式碼檔案與語言類型，系統會自動產生簡化 CFG。';
+        render();
+        return;
+      }
+
+      const example = graphCoverageProgramExamples.find((item) => item.id === nextProgramId);
+      if (example) {
+        const nextGraph = resolveProgramGraph(example);
+        selectedCodeLanguage = example.language || selectedCodeLanguage;
+        loadGraphSource(example, nextGraph, `已載入 ${example.name}。`);
+      }
+    });
+
+    root.querySelector('[data-testid="program-language-select"]').addEventListener('change', (event) => {
+      selectedCodeLanguage = event.target.value;
+    });
+
+    root.querySelector('[data-testid="graph-upload-input"]').addEventListener('change', async (event) => {
+      const [file] = event.target.files || [];
+
+      if (!file) {
+        return;
+      }
+
+      try {
+        const spec = parseUploadedGraphSpec(await readUploadedFile(file));
+        loadGraphSource(
+          { ...spec.program, id: 'uploaded-spec' },
+          spec.graph,
+          `已載入上傳檔案：${file.name}`
+        );
+      } catch (error) {
+        selectedProgramId = 'uploaded-spec';
+        parseError = error.message;
+        render();
+      }
+    });
+
+    root.querySelector('[data-testid="code-upload-input"]').addEventListener('change', async (event) => {
+      const [file] = event.target.files || [];
+
+      if (!file) {
+        return;
+      }
+
+      try {
+        const sourceCode = await readUploadedFile(file);
+        const uploadedProgram = {
+          id: 'uploaded-code',
+          name: file.name.replace(/\.[^.]+$/, '') || 'Uploaded Code',
+          description: `Uploaded ${selectedCodeLanguage} source file converted into a simplified control flow graph.`,
+          sourceCode,
+          language: selectedCodeLanguage,
+        };
+        const generatedGraph = resolveProgramGraph(uploadedProgram);
+        selectedProgramId = 'uploaded-code';
+        loadGraphSource(uploadedProgram, generatedGraph, `已根據 ${file.name} 自動產生簡化 CFG。`);
+      } catch (error) {
+        parseError = error.message;
+        sourceStatus = '程式碼上傳失敗。';
+        render();
+      }
     });
 
     root.querySelectorAll('[data-draft-field]').forEach((input) => {
