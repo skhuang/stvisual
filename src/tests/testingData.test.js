@@ -154,9 +154,9 @@ describe('testingTypes', () => {
 });
 
 describe('graphCoverage data', () => {
-  it('包含三種 coverage criteria', () => {
-    expect(graphCoverageCriteria).toHaveLength(3);
-    expect(graphCoverageCriteria.map((item) => item.id)).toEqual(['node', 'edge', 'prime-path']);
+  it('包含五種 coverage criteria', () => {
+    expect(graphCoverageCriteria).toHaveLength(5);
+    expect(graphCoverageCriteria.map((item) => item.id)).toEqual(['node', 'edge', 'prime-path', 'edge-pair', 'complete-path']);
   });
 
   it('graph 包含 8 個節點與 10 條邊', () => {
