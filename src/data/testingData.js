@@ -93,6 +93,11 @@ export const graphCoverageCriteria = [
   },
 ];
 
+export const graphCoverageCodeLanguages = [
+  { id: 'javascript', label: 'JavaScript' },
+  { id: 'pseudocode', label: 'Pseudo Code' },
+];
+
 export const graphCoverageGraph = {
   id: 'control-flow-sample',
   title: '控制流程圖範例',
@@ -121,3 +126,163 @@ export const graphCoverageGraph = {
     { id: 'F-T', from: 'F', to: 'T' },
   ],
 };
+
+export const graphCoverageProgramExamples = [
+  {
+    id: 'triangle-problem',
+    name: 'Triangle Problem',
+    language: 'javascript',
+    description: 'Classic triangle classification logic with validity, equilateral, isosceles, and scalene branches.',
+    sourceCode: `function classifyTriangle(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 'invalid';
+  }
+
+  if (a + b <= c || a + c <= b || b + c <= a) {
+    return 'invalid';
+  }
+
+  if (a === b && b === c) {
+    return 'equilateral';
+  }
+
+  if (a === b || b === c || a === c) {
+    return 'isosceles';
+  }
+
+  return 'scalene';
+}`,
+    graph: {
+      id: 'triangle-problem-cfg',
+      title: 'Triangle Problem Control Flow Graph',
+      startNodeId: 'S',
+      endNodeId: 'T',
+      nodes: [
+        { id: 'S', label: 'Start', x: 80, y: 180, kind: 'start' },
+        { id: 'V', label: 'Positive?', x: 220, y: 180, kind: 'decision' },
+        { id: 'R1', label: 'Invalid', x: 380, y: 70, kind: 'node' },
+        { id: 'I', label: 'Triangle?', x: 380, y: 180, kind: 'decision' },
+        { id: 'E', label: 'Equilateral?', x: 560, y: 100, kind: 'decision' },
+        { id: 'J', label: 'Isosceles?', x: 560, y: 260, kind: 'decision' },
+        { id: 'R2', label: 'Equilateral', x: 740, y: 60, kind: 'node' },
+        { id: 'R3', label: 'Isosceles', x: 740, y: 180, kind: 'node' },
+        { id: 'R4', label: 'Scalene', x: 740, y: 300, kind: 'node' },
+        { id: 'T', label: 'End', x: 880, y: 180, kind: 'end' },
+      ],
+      edges: [
+        { id: 'S-V', from: 'S', to: 'V' },
+        { id: 'V-R1', from: 'V', to: 'R1' },
+        { id: 'V-I', from: 'V', to: 'I' },
+        { id: 'I-R1', from: 'I', to: 'R1' },
+        { id: 'I-E', from: 'I', to: 'E' },
+        { id: 'E-R2', from: 'E', to: 'R2' },
+        { id: 'E-J', from: 'E', to: 'J' },
+        { id: 'J-R3', from: 'J', to: 'R3' },
+        { id: 'J-R4', from: 'J', to: 'R4' },
+        { id: 'R1-T', from: 'R1', to: 'T' },
+        { id: 'R2-T', from: 'R2', to: 'T' },
+        { id: 'R3-T', from: 'R3', to: 'T' },
+        { id: 'R4-T', from: 'R4', to: 'T' },
+      ],
+    },
+  },
+  {
+    id: 'next-date',
+    name: 'Next Date',
+    language: 'javascript',
+    description: 'A simplified next-date program that validates the date, advances within a month, and handles year rollover.',
+    sourceCode: `function nextDate(year, month, day) {
+  if (!isValidDate(year, month, day)) {
+    return 'invalid';
+  }
+
+  if (day < daysInMonth(year, month)) {
+    return { year, month, day: day + 1 };
+  }
+
+  if (month === 12) {
+    return { year: year + 1, month: 1, day: 1 };
+  }
+
+  return { year, month: month + 1, day: 1 };
+}`,
+    graph: {
+      id: 'next-date-cfg',
+      title: 'Next Date Control Flow Graph',
+      startNodeId: 'S',
+      endNodeId: 'T',
+      nodes: [
+        { id: 'S', label: 'Start', x: 80, y: 180, kind: 'start' },
+        { id: 'V', label: 'Valid Date?', x: 230, y: 180, kind: 'decision' },
+        { id: 'R1', label: 'Invalid', x: 410, y: 70, kind: 'node' },
+        { id: 'D', label: 'Day < Max?', x: 410, y: 180, kind: 'decision' },
+        { id: 'R2', label: 'Next Day', x: 610, y: 70, kind: 'node' },
+        { id: 'M', label: 'Month=12?', x: 610, y: 250, kind: 'decision' },
+        { id: 'R3', label: 'Next Year', x: 790, y: 140, kind: 'node' },
+        { id: 'R4', label: 'Next Month', x: 790, y: 300, kind: 'node' },
+        { id: 'T', label: 'End', x: 900, y: 220, kind: 'end' },
+      ],
+      edges: [
+        { id: 'S-V', from: 'S', to: 'V' },
+        { id: 'V-R1', from: 'V', to: 'R1' },
+        { id: 'V-D', from: 'V', to: 'D' },
+        { id: 'D-R2', from: 'D', to: 'R2' },
+        { id: 'D-M', from: 'D', to: 'M' },
+        { id: 'M-R3', from: 'M', to: 'R3' },
+        { id: 'M-R4', from: 'M', to: 'R4' },
+        { id: 'R1-T', from: 'R1', to: 'T' },
+        { id: 'R2-T', from: 'R2', to: 'T' },
+        { id: 'R3-T', from: 'R3', to: 'T' },
+        { id: 'R4-T', from: 'R4', to: 'T' },
+      ],
+    },
+  },
+  {
+    id: 'commission-problem',
+    name: 'Commission Problem',
+    language: 'javascript',
+    description: 'A classic sales commission example with threshold-based decision logic.',
+    sourceCode: `function commission(locks, stocks, barrels) {
+  if (locks < 1 || stocks < 1 || barrels < 1) {
+    return 'invalid';
+  }
+
+  const sales = locks * 45 + stocks * 30 + barrels * 25;
+
+  if (sales <= 1000) {
+    return sales * 0.1;
+  }
+
+  if (sales <= 1800) {
+    return 100 + (sales - 1000) * 0.15;
+  }
+
+  return 220 + (sales - 1800) * 0.2;
+}`,
+  },
+  {
+    id: 'next-date-leap-year',
+    name: 'Next Date Leap-Year Variant',
+    language: 'javascript',
+    description: 'A next-date variant that separates leap-year February handling from other month transitions.',
+    sourceCode: `function nextDateLeapYear(year, month, day) {
+  if (!isValidDate(year, month, day)) {
+    return 'invalid';
+  }
+
+  if (month === 2 && isLeapYear(year) && day === 28) {
+    return { year, month: 2, day: 29 };
+  }
+
+  if (day < daysInMonth(year, month)) {
+    return { year, month, day: day + 1 };
+  }
+
+  if (month === 12) {
+    return { year: year + 1, month: 1, day: 1 };
+  }
+
+  return { year, month: month + 1, day: 1 };
+}`,
+  },
+];
