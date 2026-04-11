@@ -38,6 +38,51 @@ END IF`,
     expect(graph.nodes.filter((node) => node.label.includes('RETURN')).length).toBe(2);
   });
 
+  it('supports switch-case with break and source line mapping', () => {
+    const graph = generateControlFlowGraphFromProgram({
+      language: 'javascript',
+      title: 'Calendar',
+      sourceCode: `function daysInMonth(month, leapYear) {
+  switch (month) {
+    case 2:
+      if (leapYear) {
+        return 29;
+      }
+      break;
+    default:
+      return 31;
+  }
+}`,
+    });
+
+    expect(graph.nodes.some((node) => node.label.includes('switch month'))).toBe(true);
+    expect(graph.nodes.some((node) => node.label.includes('case 2'))).toBe(true);
+    expect(graph.nodes.some((node) => node.label.includes('break'))).toBe(true);
+    expect(graph.nodes.some((node) => node.sourceLine === 2)).toBe(true);
+  });
+
+  it('supports nested loops with continue', () => {
+    const graph = generateControlFlowGraphFromProgram({
+      language: 'javascript',
+      title: 'Loop Demo',
+      sourceCode: `function demo(items) {
+  for (const item of items) {
+    while (item.ready) {
+      if (item.skip) {
+        continue;
+      }
+      return item;
+    }
+  }
+  return null;
+}`,
+    });
+
+    expect(graph.nodes.some((node) => node.label.includes('const item of items'))).toBe(true);
+    expect(graph.nodes.some((node) => node.label.includes('item.ready'))).toBe(true);
+    expect(graph.nodes.some((node) => node.label.includes('continue'))).toBe(true);
+  });
+
   it('throws on unsupported language', () => {
     expect(() => generateControlFlowGraphFromProgram({
       language: 'python',

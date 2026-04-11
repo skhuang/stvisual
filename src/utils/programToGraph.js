@@ -1,4 +1,4 @@
-function summarizeText(text, maxLength = 26) {
+function summarizeText(text, maxLength = 28) {
   const normalized = text.replace(/\s+/g, ' ').trim();
 
   if (normalized.length <= maxLength) {
@@ -12,24 +12,63 @@ function stripBlockComments(source) {
   return source.replace(/\/\*[\s\S]*?\*\//g, '');
 }
 
+function splitJavascriptFragments(text) {
+  const fragments = [];
+  let remaining = text.trim();
+
+  if (!remaining) {
+    return fragments;
+  }
+
+  while (remaining.startsWith('} else if') || remaining.startsWith('} else')) {
+    fragments.push('}');
+    remaining = remaining.replace(/^}\s*/, '');
+  }
+
+  const caseMatch = remaining.match(/^(case\s+.+:|default:)(.+)$/);
+  if (caseMatch) {
+    fragments.push(caseMatch[1].trim());
+    if (caseMatch[2].trim()) {
+      fragments.push(caseMatch[2].trim());
+    }
+    return fragments;
+  }
+
+  fragments.push(remaining);
+  return fragments;
+}
+
 function normalizeJavascriptLines(source) {
   return stripBlockComments(source)
-    .replace(/}\s*else\s+if/g, '}\nelse if')
-    .replace(/}\s*else/g, '}\nelse')
     .split('\n')
-    .map((line) => line.replace(/\/\/.*$/g, '').trim())
-    .filter(Boolean);
+    .flatMap((rawLine, index) => {
+      const cleaned = rawLine.replace(/\/\/.*$/g, '').trim();
+
+      if (!cleaned) {
+        return [];
+      }
+
+      return splitJavascriptFragments(cleaned).map((text) => ({
+        text,
+        lineNumber: index + 1,
+        sourceText: cleaned,
+      }));
+    });
 }
 
 function normalizePseudocodeLines(source) {
   return stripBlockComments(source)
     .split('\n')
-    .map((line) => line.replace(/#.*$/g, '').replace(/\/\/.*$/g, '').trim())
-    .filter(Boolean);
+    .map((rawLine, index) => ({
+      text: rawLine.replace(/#.*$/g, '').replace(/\/\/.*$/g, '').trim(),
+      lineNumber: index + 1,
+      sourceText: rawLine.trim(),
+    }))
+    .filter((item) => item.text);
 }
 
-function extractParenthesizedContent(line) {
-  const match = line.match(/^[^(]*\((.*)\)\s*\{?\s*$/);
+function extractParenthesizedContent(text) {
+  const match = text.match(/^[^(]*\((.*)\)\s*\{?\s*$/);
   return match ? match[1].trim() : '';
 }
 
@@ -47,6 +86,29 @@ function consumeLine(state) {
   return line;
 }
 
+function createAstNode(type, line, extra = {}) {
+  return {
+    type,
+    sourceLine: line?.lineNumber ?? null,
+    sourceText: line?.sourceText || line?.text || '',
+    ...extra,
+  };
+}
+
+function isJavascriptStop(line, stopWhen) {
+  if (!line) {
+    return true;
+  }
+
+  return stopWhen.some((token) => {
+    if (token === '}') {
+      return line.text === '}';
+    }
+
+    return line.text.startsWith(token);
+  });
+}
+
 function parseJavascriptSingleStatement(state) {
   const line = currentLine(state);
 
@@ -54,95 +116,122 @@ function parseJavascriptSingleStatement(state) {
     return [];
   }
 
-  if (line.startsWith('if')) {
+  if (line.text.startsWith('if')) {
     return [parseJavascriptIf(state)];
   }
 
-  if (line.startsWith('while')) {
-    return [parseJavascriptWhile(state)];
+  if (line.text.startsWith('while')) {
+    return [parseJavascriptLoop(state, 'while')];
   }
 
-  if (line.startsWith('for')) {
-    return [parseJavascriptFor(state)];
+  if (line.text.startsWith('for')) {
+    return [parseJavascriptLoop(state, 'for')];
   }
 
-  if (line.startsWith('return')) {
+  if (line.text.startsWith('switch')) {
+    return [parseJavascriptSwitch(state)];
+  }
+
+  if (line.text.startsWith('return')) {
     consumeLine(state);
-    return [{ type: 'return', text: line.replace(/;$/, '') }];
+    return [createAstNode('return', line, { text: line.text.replace(/;$/, '') })];
+  }
+
+  if (line.text.startsWith('break')) {
+    consumeLine(state);
+    return [createAstNode('break', line, { text: line.text.replace(/;$/, '') })];
+  }
+
+  if (line.text.startsWith('continue')) {
+    consumeLine(state);
+    return [createAstNode('continue', line, { text: line.text.replace(/;$/, '') })];
   }
 
   consumeLine(state);
-  return [{ type: 'statement', text: line.replace(/;$/, '') }];
-}
-
-function parseJavascriptBlock(state) {
-  const line = currentLine(state);
-
-  if (!line) {
-    return [];
-  }
-
-  if (line === '{') {
-    consumeLine(state);
-    return parseJavascriptStatements(state);
-  }
-
-  if (line.endsWith('{')) {
-    return parseJavascriptStatements(state);
-  }
-
-  return parseJavascriptSingleStatement(state);
+  return [createAstNode('statement', line, { text: line.text.replace(/;$/, '') })];
 }
 
 function parseJavascriptIf(state) {
   const line = consumeLine(state);
-  const condition = extractParenthesizedContent(line) || line.replace(/^if\s*/, '').replace(/\{$/, '').trim();
-  const consequent = line.endsWith('{') ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
+  const condition = extractParenthesizedContent(line.text) || line.text.replace(/^if\s*/, '').replace(/\{$/, '').trim();
+  const consequent = line.text.endsWith('{')
+    ? parseJavascriptStatements(state)
+    : parseJavascriptSingleStatement(state);
 
   let alternate = [];
   const nextLine = currentLine(state);
 
-  if (nextLine?.startsWith('else if')) {
-    state.lines[state.index] = nextLine.replace(/^else\s+/, '');
+  if (nextLine?.text.startsWith('else if')) {
+    state.lines[state.index] = { ...nextLine, text: nextLine.text.replace(/^else\s+/, '') };
     alternate = [parseJavascriptIf(state)];
-  } else if (nextLine?.startsWith('else')) {
+  } else if (nextLine?.text.startsWith('else')) {
     const elseLine = consumeLine(state);
-    alternate = elseLine.endsWith('{') ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
+    alternate = elseLine.text.endsWith('{')
+      ? parseJavascriptStatements(state)
+      : parseJavascriptSingleStatement(state);
   }
 
-  return {
-    type: 'if',
+  return createAstNode('if', line, {
     condition,
     consequent,
     alternate,
-  };
+  });
 }
 
-function parseJavascriptWhile(state) {
+function parseJavascriptLoop(state, type) {
   const line = consumeLine(state);
-  const condition = extractParenthesizedContent(line) || line.replace(/^while\s*/, '').replace(/\{$/, '').trim();
-  const body = line.endsWith('{') ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
+  const condition = extractParenthesizedContent(line.text)
+    || line.text.replace(new RegExp(`^${type}\\s*`), '').replace(/\{$/, '').trim();
+  const body = line.text.endsWith('{')
+    ? parseJavascriptStatements(state)
+    : parseJavascriptSingleStatement(state);
 
-  return {
-    type: 'while',
+  return createAstNode(type, line, {
     condition,
     body,
-  };
+  });
 }
 
-function parseJavascriptFor(state) {
+function parseJavascriptSwitch(state) {
   const line = consumeLine(state);
-  const condition = extractParenthesizedContent(line) || line.replace(/^for\s*/, '').replace(/\{$/, '').trim();
-  const body = line.endsWith('{') ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
+  const expression = extractParenthesizedContent(line.text) || line.text.replace(/^switch\s*/, '').replace(/\{$/, '').trim();
+  const cases = [];
 
-  return {
-    type: 'for',
-    condition,
-    body,
-  };
+  while (state.index < state.lines.length) {
+    const nextLine = currentLine(state);
+
+    if (!nextLine) {
+      break;
+    }
+
+    if (nextLine.text === '}') {
+      consumeLine(state);
+      break;
+    }
+
+    if (/^(case\s+.+:|default:)$/i.test(nextLine.text)) {
+      const caseLine = consumeLine(state);
+      const isDefault = caseLine.text.startsWith('default:');
+      const label = isDefault ? 'default' : caseLine.text.replace(/^case\s+/i, '').replace(/:$/, '').trim();
+      const statements = parseJavascriptStatements(state, ['case ', 'default:', '}']);
+      cases.push(createAstNode('case', caseLine, {
+        label,
+        isDefault,
+        statements,
+      }));
+      continue;
+    }
+
+    consumeLine(state);
+  }
+
+  return createAstNode('switch', line, {
+    expression,
+    cases,
+  });
 }
 
-function parseJavascriptStatements(state) {
+function parseJavascriptStatements(state, stopWhen = ['}']) {
   const statements = [];
 
   while (state.index < state.lines.length) {
@@ -152,156 +241,122 @@ function parseJavascriptStatements(state) {
       break;
     }
 
-    if (line === '}') {
-      consumeLine(state);
+    if (isJavascriptStop(line, stopWhen)) {
+      if (line.text === '}') {
+        consumeLine(state);
+      }
       break;
     }
 
-    if (line.startsWith('else')) {
-      break;
-    }
-
-    if ((line.startsWith('function ') || line.startsWith('export function ')) && line.endsWith('{')) {
+    if ((line.text.startsWith('function ') || line.text.startsWith('export function ')) && line.text.endsWith('{')) {
       consumeLine(state);
       statements.push(...parseJavascriptStatements(state));
       continue;
     }
 
-    if (line === '{') {
+    if (line.text === '{') {
       consumeLine(state);
       statements.push(...parseJavascriptStatements(state));
       continue;
     }
 
-    if (line.startsWith('if')) {
-      statements.push(parseJavascriptIf(state));
-      continue;
-    }
-
-    if (line.startsWith('while')) {
-      statements.push(parseJavascriptWhile(state));
-      continue;
-    }
-
-    if (line.startsWith('for')) {
-      statements.push(parseJavascriptFor(state));
-      continue;
-    }
-
-    if (line.startsWith('return')) {
-      statements.push({ type: 'return', text: consumeLine(state).replace(/;$/, '') });
-      continue;
-    }
-
-    statements.push({ type: 'statement', text: consumeLine(state).replace(/;$/, '') });
+    statements.push(...parseJavascriptSingleStatement(state));
   }
 
   return statements;
 }
 
-function parsePseudocodeSingleStatement(state) {
-  const line = currentLine(state);
-
+function isPseudocodeStop(line, stopWhen) {
   if (!line) {
-    return [];
+    return true;
   }
 
-  if (/^IF\b/i.test(line)) {
-    return [parsePseudocodeIf(state)];
-  }
-
-  if (/^(WHILE|FOR)\b/i.test(line)) {
-    return [parsePseudocodeLoop(state)];
-  }
-
-  if (/^RETURN\b/i.test(line)) {
-    consumeLine(state);
-    return [{ type: 'return', text: line }];
-  }
-
-  consumeLine(state);
-  return [{ type: 'statement', text: line }];
+  const upper = line.text.toUpperCase();
+  return stopWhen.some((token) => upper.startsWith(token));
 }
 
 function parsePseudocodeIf(state) {
   const line = consumeLine(state);
-  const condition = line.replace(/^IF\s*/i, '').replace(/\s*THEN$/i, '').trim();
+  const condition = line.text.replace(/^IF\s*/i, '').replace(/\s*THEN$/i, '').trim();
   const consequent = parsePseudocodeStatements(state, ['ELSE', 'ELSE IF', 'END IF', 'ENDIF', 'END']);
   let alternate = [];
   const nextLine = currentLine(state);
 
-  if (/^ELSE IF\b/i.test(nextLine || '')) {
-    state.lines[state.index] = nextLine.replace(/^ELSE\s+/i, '');
+  if (/^ELSE IF\b/i.test(nextLine?.text || '')) {
+    state.lines[state.index] = { ...nextLine, text: nextLine.text.replace(/^ELSE\s+/i, '') };
     alternate = [parsePseudocodeIf(state)];
-  } else if (/^ELSE\b/i.test(nextLine || '')) {
+  } else if (/^ELSE\b/i.test(nextLine?.text || '')) {
     consumeLine(state);
     alternate = parsePseudocodeStatements(state, ['END IF', 'ENDIF', 'END']);
   }
 
-  if (/^(END IF|ENDIF|END)$/i.test(currentLine(state) || '')) {
+  if (/^(END IF|ENDIF|END)$/i.test(currentLine(state)?.text || '')) {
     consumeLine(state);
   }
 
-  return {
-    type: 'if',
+  return createAstNode('if', line, {
     condition,
     consequent,
     alternate,
-  };
+  });
 }
 
 function parsePseudocodeLoop(state) {
   const line = consumeLine(state);
-  const condition = line.replace(/^(WHILE|FOR)\s*/i, '').replace(/\s*DO$/i, '').trim();
+  const condition = line.text.replace(/^(WHILE|FOR)\s*/i, '').replace(/\s*DO$/i, '').trim();
   const body = parsePseudocodeStatements(state, ['END WHILE', 'END FOR', 'END']);
 
-  if (/^(END WHILE|END FOR|END)$/i.test(currentLine(state) || '')) {
+  if (/^(END WHILE|END FOR|END)$/i.test(currentLine(state)?.text || '')) {
     consumeLine(state);
   }
 
-  return {
-    type: /^WHILE\b/i.test(line) ? 'while' : 'for',
+  return createAstNode(/^WHILE\b/i.test(line.text) ? 'while' : 'for', line, {
     condition,
     body,
-  };
+  });
 }
 
-function parsePseudocodeStatements(state, stopTokens = []) {
+function parsePseudocodeStatements(state, stopWhen = []) {
   const statements = [];
 
   while (state.index < state.lines.length) {
     const line = currentLine(state);
 
-    if (!line) {
+    if (!line || isPseudocodeStop(line, stopWhen)) {
       break;
     }
 
-    const upper = line.toUpperCase();
-    if (stopTokens.some((token) => upper.startsWith(token))) {
-      break;
-    }
-
-    if (/^FUNCTION\b/i.test(line)) {
+    if (/^FUNCTION\b/i.test(line.text)) {
       consumeLine(state);
       continue;
     }
 
-    if (/^IF\b/i.test(line)) {
+    if (/^IF\b/i.test(line.text)) {
       statements.push(parsePseudocodeIf(state));
       continue;
     }
 
-    if (/^(WHILE|FOR)\b/i.test(line)) {
+    if (/^(WHILE|FOR)\b/i.test(line.text)) {
       statements.push(parsePseudocodeLoop(state));
       continue;
     }
 
-    if (/^RETURN\b/i.test(line)) {
-      statements.push({ type: 'return', text: consumeLine(state) });
+    if (/^RETURN\b/i.test(line.text)) {
+      statements.push(createAstNode('return', consumeLine(state), { text: line.text }));
       continue;
     }
 
-    statements.push({ type: 'statement', text: consumeLine(state) });
+    if (/^BREAK\b/i.test(line.text)) {
+      statements.push(createAstNode('break', consumeLine(state), { text: line.text }));
+      continue;
+    }
+
+    if (/^CONTINUE\b/i.test(line.text)) {
+      statements.push(createAstNode('continue', consumeLine(state), { text: line.text }));
+      continue;
+    }
+
+    statements.push(createAstNode('statement', consumeLine(state), { text: line.text }));
   }
 
   return statements;
@@ -323,32 +378,34 @@ function parseStructuredProgram(sourceCode, language) {
   throw new Error(`目前不支援 ${language} 的自動 CFG 產生。`);
 }
 
-function createGraphBuilder(title) {
+function createGraphBuilder() {
   return {
-    title,
     sequence: 0,
+    edgeSequence: 0,
     nodes: [{ id: 'S', label: 'Start', kind: 'start' }],
     edges: [],
-    terminalNodes: [],
+    terminalNodes: new Set(),
   };
 }
 
-function addNode(builder, label, kind = 'node') {
+function addNode(builder, label, kind = 'node', source = null) {
   builder.sequence += 1;
   const id = `N${builder.sequence}`;
+  const node = { id, label: summarizeText(label), kind };
 
-  builder.nodes.push({
-    id,
-    label: summarizeText(label),
-    kind,
-  });
+  if (source?.sourceLine) {
+    node.sourceLine = source.sourceLine;
+    node.sourceText = source.sourceText || '';
+  }
 
+  builder.nodes.push(node);
   return id;
 }
 
 function addEdge(builder, from, to) {
+  builder.edgeSequence += 1;
   builder.edges.push({
-    id: `${from}-${to}-${builder.edges.length + 1}`,
+    id: `E${builder.edgeSequence}`,
     from,
     to,
   });
@@ -356,7 +413,9 @@ function addEdge(builder, from, to) {
 
 function buildSequence(builder, statements) {
   let entry = null;
-  let exits = [];
+  let normalExits = [];
+  let breakExits = [];
+  let continueExits = [];
 
   statements.forEach((statement) => {
     const built = buildStatement(builder, statement);
@@ -365,22 +424,29 @@ function buildSequence(builder, statements) {
       entry = built.entry;
     }
 
-    exits.forEach((exitId) => {
+    normalExits.forEach((exitId) => {
       addEdge(builder, exitId, built.entry);
     });
 
-    exits = [...built.exits];
+    normalExits = [...built.normalExits];
+    breakExits = [...breakExits, ...built.breakExits];
+    continueExits = [...continueExits, ...built.continueExits];
   });
 
-  return { entry, exits };
+  return {
+    entry,
+    normalExits,
+    breakExits,
+    continueExits,
+  };
 }
 
 function buildIfStatement(builder, statement) {
-  const decisionId = addNode(builder, `${statement.condition}?`, 'decision');
-  const consequent = buildSequence(builder, statement.consequent);
+  const decisionId = addNode(builder, `${statement.condition}?`, 'decision', statement);
+  const consequent = buildSequence(builder, statement.consequent || []);
   const alternate = buildSequence(builder, statement.alternate || []);
-  const needsMerge = consequent.exits.length > 0 || alternate.exits.length > 0 || !statement.alternate?.length;
-  const mergeId = needsMerge ? addNode(builder, 'Merge', 'node') : null;
+  const needsMerge = !alternate.entry || consequent.normalExits.length > 0 || alternate.normalExits.length > 0;
+  const mergeId = needsMerge ? addNode(builder, 'Merge') : null;
 
   if (consequent.entry) {
     addEdge(builder, decisionId, consequent.entry);
@@ -394,13 +460,13 @@ function buildIfStatement(builder, statement) {
     addEdge(builder, decisionId, mergeId);
   }
 
-  consequent.exits.forEach((exitId) => {
+  consequent.normalExits.forEach((exitId) => {
     if (mergeId) {
       addEdge(builder, exitId, mergeId);
     }
   });
 
-  alternate.exits.forEach((exitId) => {
+  alternate.normalExits.forEach((exitId) => {
     if (mergeId) {
       addEdge(builder, exitId, mergeId);
     }
@@ -408,29 +474,83 @@ function buildIfStatement(builder, statement) {
 
   return {
     entry: decisionId,
-    exits: mergeId ? [mergeId] : [],
+    normalExits: mergeId ? [mergeId] : [],
+    breakExits: [...consequent.breakExits, ...alternate.breakExits],
+    continueExits: [...consequent.continueExits, ...alternate.continueExits],
   };
 }
 
 function buildLoopStatement(builder, statement) {
-  const decisionId = addNode(builder, `${statement.condition}?`, 'decision');
+  const decisionId = addNode(builder, `${statement.condition}?`, 'decision', statement);
   const body = buildSequence(builder, statement.body || []);
-  const mergeId = addNode(builder, 'Loop Exit', 'node');
-
-  if (body.entry) {
-    addEdge(builder, decisionId, body.entry);
-    body.exits.forEach((exitId) => {
-      addEdge(builder, exitId, decisionId);
-    });
-  } else {
-    addEdge(builder, decisionId, decisionId);
-  }
+  const mergeId = addNode(builder, 'Loop Exit');
 
   addEdge(builder, decisionId, mergeId);
 
+  if (body.entry) {
+    addEdge(builder, decisionId, body.entry);
+    body.normalExits.forEach((exitId) => {
+      addEdge(builder, exitId, decisionId);
+    });
+    body.continueExits.forEach((exitId) => {
+      addEdge(builder, exitId, decisionId);
+    });
+  }
+
+  body.breakExits.forEach((exitId) => {
+    addEdge(builder, exitId, mergeId);
+  });
+
   return {
     entry: decisionId,
-    exits: [mergeId],
+    normalExits: [mergeId],
+    breakExits: [],
+    continueExits: [],
+  };
+}
+
+function buildSwitchStatement(builder, statement) {
+  const decisionId = addNode(builder, `switch ${statement.expression}`, 'decision', statement);
+  const mergeId = addNode(builder, 'Switch Exit');
+  const continueExits = [];
+
+  if (!statement.cases.length) {
+    addEdge(builder, decisionId, mergeId);
+  }
+
+  statement.cases.forEach((switchCase) => {
+    const caseId = addNode(
+      builder,
+      switchCase.isDefault ? 'default' : `case ${switchCase.label}`,
+      'node',
+      switchCase
+    );
+    const built = buildSequence(builder, switchCase.statements || []);
+
+    addEdge(builder, decisionId, caseId);
+
+    if (built.entry) {
+      addEdge(builder, caseId, built.entry);
+    } else {
+      addEdge(builder, caseId, mergeId);
+    }
+
+    built.normalExits.forEach((exitId) => {
+      addEdge(builder, exitId, mergeId);
+    });
+
+    built.breakExits.forEach((exitId) => {
+      addEdge(builder, exitId, mergeId);
+    });
+
+    continueExits.push(...built.continueExits);
+  });
+
+  return {
+    entry: decisionId,
+    normalExits: [mergeId],
+    breakExits: [],
+    continueExits,
   };
 }
 
@@ -443,19 +563,47 @@ function buildStatement(builder, statement) {
     return buildLoopStatement(builder, statement);
   }
 
+  if (statement.type === 'switch') {
+    return buildSwitchStatement(builder, statement);
+  }
+
   if (statement.type === 'return') {
-    const returnId = addNode(builder, statement.text, 'node');
-    builder.terminalNodes.push(returnId);
+    const returnId = addNode(builder, statement.text, 'node', statement);
+    builder.terminalNodes.add(returnId);
     return {
       entry: returnId,
-      exits: [],
+      normalExits: [],
+      breakExits: [],
+      continueExits: [],
     };
   }
 
-  const statementId = addNode(builder, statement.text, 'node');
+  if (statement.type === 'break') {
+    const breakId = addNode(builder, statement.text, 'node', statement);
+    return {
+      entry: breakId,
+      normalExits: [],
+      breakExits: [breakId],
+      continueExits: [],
+    };
+  }
+
+  if (statement.type === 'continue') {
+    const continueId = addNode(builder, statement.text, 'node', statement);
+    return {
+      entry: continueId,
+      normalExits: [],
+      breakExits: [],
+      continueExits: [continueId],
+    };
+  }
+
+  const statementId = addNode(builder, statement.text, 'node', statement);
   return {
     entry: statementId,
-    exits: [statementId],
+    normalExits: [statementId],
+    breakExits: [],
+    continueExits: [],
   };
 }
 
@@ -498,7 +646,7 @@ function assignLayout(nodes, edges) {
   Array.from(grouped.entries()).forEach(([depth, group]) => {
     group.forEach((node, index) => {
       node.x = 90 + depth * 150;
-      node.y = 90 + index * 100;
+      node.y = 90 + index * 96;
     });
   });
 
@@ -510,7 +658,7 @@ function assignLayout(nodes, edges) {
     if (fromNode && toNode && toNode.x <= fromNode.x) {
       edge.control = {
         x: Math.round((fromNode.x + toNode.x) / 2),
-        y: Math.min(fromNode.y, toNode.y) - 70,
+        y: Math.min(fromNode.y, toNode.y) - 72,
       };
     }
   });
@@ -518,7 +666,7 @@ function assignLayout(nodes, edges) {
 
 export function generateControlFlowGraphFromProgram({ sourceCode, language, title }) {
   const statements = parseStructuredProgram(sourceCode, language);
-  const builder = createGraphBuilder(title || 'Generated Control Flow Graph');
+  const builder = createGraphBuilder();
   const built = buildSequence(builder, statements);
 
   builder.nodes.push({ id: 'T', label: 'End', kind: 'end' });
@@ -529,7 +677,7 @@ export function generateControlFlowGraphFromProgram({ sourceCode, language, titl
     addEdge(builder, 'S', 'T');
   }
 
-  built.exits.forEach((exitId) => {
+  built.normalExits.forEach((exitId) => {
     addEdge(builder, exitId, 'T');
   });
 

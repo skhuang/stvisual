@@ -285,4 +285,26 @@ export const graphCoverageProgramExamples = [
   return { year, month: month + 1, day: 1 };
 }`,
   },
+  {
+    id: 'calendar-days',
+    name: 'Calendar Days Switch Variant',
+    language: 'javascript',
+    description: 'A calendar-style example using switch-case branches to classify month lengths.',
+    sourceCode: `function daysInMonth(month, leapYear) {
+  switch (month) {
+    case 2:
+      if (leapYear) {
+        return 29;
+      }
+      break;
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+      return 30;
+    default:
+      return 31;
+  }
+}`,
+  },
 ];

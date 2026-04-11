@@ -115,6 +115,19 @@ describe('GraphCoverageExplorer', () => {
     expect(document.querySelector('[data-testid="requirement-list"]').children.length).toBeGreaterThan(3);
   });
 
+  it('會顯示 requirement 對應的程式碼行號映射', () => {
+    renderGraphCoverageExplorer();
+
+    const select = document.querySelector('[data-testid="program-example-select"]');
+    select.value = 'calendar-days';
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+
+    document.querySelectorAll('[data-requirement-id]')[1].click();
+
+    expect(document.querySelector('[data-testid="program-source-line-2"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="detail-source-mapping"]')).toHaveTextContent('L2');
+  });
+
   it('可上傳 graph JSON spec', async () => {
     renderGraphCoverageExplorer();
 
@@ -182,9 +195,12 @@ describe('GraphCoverageExplorer', () => {
     uploadInput.dispatchEvent(new Event('change', { bubbles: true }));
     await new Promise((resolve) => setTimeout(resolve, 0));
 
+    document.querySelectorAll('[data-requirement-id]')[1].click();
+
     expect(document.querySelector('[data-testid="program-source-name"]')).toHaveTextContent('triangle');
     expect(document.querySelector('[data-testid="graph-source-status"]')).toHaveTextContent('已根據 triangle.js 自動產生簡化 CFG。');
     expect(document.querySelector('[data-testid="program-source-code"]')).toHaveTextContent('classifyTriangle');
     expect(document.querySelector('[data-testid="requirement-list"]').children.length).toBeGreaterThan(3);
+    expect(document.querySelector('[data-testid="detail-source-mapping"]')).toHaveTextContent('L2');
   });
 });

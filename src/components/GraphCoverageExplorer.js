@@ -202,6 +202,36 @@ function readUploadedFile(file) {
   });
 }
 
+function getSelectedSourceNodes(graph, requirement) {
+  if (!requirement) {
+    return [];
+  }
+
+  return requirement.nodes
+    .map((nodeId) => graph.nodes.find((node) => node.id === nodeId))
+    .filter((node) => node?.sourceLine)
+    .filter((node, index, nodes) => nodes.findIndex((item) => item.id === node.id) === index);
+}
+
+function renderSourceCode(sourceCode, selectedSourceNodes) {
+  if (!sourceCode) {
+    return '<p class="graph-source-empty" data-testid="program-source-empty">這個來源目前只提供 graph，沒有附帶程式碼片段。</p>';
+  }
+
+  const highlightedLines = new Set(selectedSourceNodes.map((node) => node.sourceLine));
+
+  return `
+    <pre class="graph-source-code" data-testid="program-source-code"><code>
+      ${sourceCode.split('\n').map((line, index) => `
+        <span class="graph-source-line${highlightedLines.has(index + 1) ? ' graph-source-line--active' : ''}" data-testid="program-source-line-${index + 1}">
+          <span class="graph-source-line-number">${index + 1}</span>
+          <span class="graph-source-line-text">${escapeHtml(line) || '&nbsp;'}</span>
+        </span>
+      `).join('')}
+    </code></pre>
+  `;
+}
+
 function resolveProgramGraph(program) {
   if (program.sourceCode && program.language) {
     return generateControlFlowGraphFromProgram({
@@ -265,6 +295,7 @@ function createGraphCanvas(graph, requirement) {
         }).join('')}
         ${graph.nodes.map((node) => `
           <g class="graph-node${highlightedNodes.has(node.id) ? ' graph-node--active' : ''}" data-testid="graph-node-${node.id}">
+            ${node.sourceLine ? `<title>Line ${node.sourceLine}: ${escapeHtml(node.sourceText || node.label)}</title>` : ''}
             <circle cx="${node.x}" cy="${node.y}" r="28"></circle>
             <text x="${node.x}" y="${node.y + 5}" text-anchor="middle">${node.label}</text>
           </g>
@@ -359,6 +390,7 @@ export function createGraphCoverageExplorer() {
 
   function render() {
     const { requirements, selectedRequirement, selectedCriterion, pathPlan } = getState();
+    const selectedSourceNodes = getSelectedSourceNodes(graph, selectedRequirement);
 
     root.className = 'graph-coverage';
     root.dataset.testid = 'graph-coverage-explorer';
@@ -405,9 +437,7 @@ export function createGraphCoverageExplorer() {
             <p>JSON 可直接提供 graph 物件，或直接提供 nodes、edges、startNodeId、endNodeId，也可附帶 title、description、sourceCode。程式碼上傳則會依語言類型自動產生簡化 CFG。</p>
           </div>
         </div>
-        ${activeProgram.sourceCode
-          ? `<pre class="graph-source-code" data-testid="program-source-code"><code>${escapeHtml(activeProgram.sourceCode)}</code></pre>`
-          : '<p class="graph-source-empty" data-testid="program-source-empty">這個來源目前只提供 graph，沒有附帶程式碼片段。</p>'}
+        ${renderSourceCode(activeProgram.sourceCode, selectedSourceNodes)}
       </div>
 
       <div class="graph-editor-card" data-testid="graph-editor-card">
@@ -546,6 +576,14 @@ export function createGraphCoverageExplorer() {
                 <span class="detail-label">Criterion</span>
                 <p>${selectedCriterion?.labelZh || ''}</p>
               </div>
+              <div>
+                <span class="detail-label">Source Mapping</span>
+                <ul class="source-mapping-list" data-testid="detail-source-mapping">
+                  ${selectedSourceNodes.length
+                    ? selectedSourceNodes.map((node) => `<li>${node.label} -> L${node.sourceLine}: ${escapeHtml(node.sourceText || '')}</li>`).join('')
+                    : '<li>目前 requirement 沒有可對應的程式碼行號。</li>'}
+                </ul>
+              </div>
             </div>
           </div>
         </aside>
@@ -628,6 +666,7 @@ export function createGraphCoverageExplorer() {
           language: selectedCodeLanguage,
         };
         const generatedGraph = resolveProgramGraph(uploadedProgram);
+        selectedProgramId = 'uploaded-code';
         loadGraphSource(uploadedProgram, generatedGraph, `已根據 ${file.name} 自動產生簡化 CFG。`);
       } catch (error) {
         parseError = error.message;

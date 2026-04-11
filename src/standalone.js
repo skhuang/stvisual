@@ -280,6 +280,28 @@
 
   return { year, month: month + 1, day: 1 };
 }`
+    },
+    {
+      id: "calendar-days",
+      name: "Calendar Days Switch Variant",
+      language: "javascript",
+      description: "A calendar-style example using switch-case branches to classify month lengths.",
+      sourceCode: `function daysInMonth(month, leapYear) {
+  switch (month) {
+    case 2:
+      if (leapYear) {
+        return 29;
+      }
+      break;
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+      return 30;
+    default:
+      return 31;
+  }
+}`
     }
   ];
 
@@ -741,7 +763,7 @@
   }
 
   // src/utils/programToGraph.js
-  function summarizeText(text, maxLength = 26) {
+  function summarizeText(text, maxLength = 28) {
     const normalized = text.replace(/\s+/g, " ").trim();
     if (normalized.length <= maxLength) {
       return normalized;
@@ -751,14 +773,49 @@
   function stripBlockComments(source) {
     return source.replace(/\/\*[\s\S]*?\*\//g, "");
   }
+  function splitJavascriptFragments(text) {
+    const fragments = [];
+    let remaining = text.trim();
+    if (!remaining) {
+      return fragments;
+    }
+    while (remaining.startsWith("} else if") || remaining.startsWith("} else")) {
+      fragments.push("}");
+      remaining = remaining.replace(/^}\s*/, "");
+    }
+    const caseMatch = remaining.match(/^(case\s+.+:|default:)(.+)$/);
+    if (caseMatch) {
+      fragments.push(caseMatch[1].trim());
+      if (caseMatch[2].trim()) {
+        fragments.push(caseMatch[2].trim());
+      }
+      return fragments;
+    }
+    fragments.push(remaining);
+    return fragments;
+  }
   function normalizeJavascriptLines(source) {
-    return stripBlockComments(source).replace(/}\s*else\s+if/g, "}\nelse if").replace(/}\s*else/g, "}\nelse").split("\n").map((line) => line.replace(/\/\/.*$/g, "").trim()).filter(Boolean);
+    return stripBlockComments(source).split("\n").flatMap((rawLine, index) => {
+      const cleaned = rawLine.replace(/\/\/.*$/g, "").trim();
+      if (!cleaned) {
+        return [];
+      }
+      return splitJavascriptFragments(cleaned).map((text) => ({
+        text,
+        lineNumber: index + 1,
+        sourceText: cleaned
+      }));
+    });
   }
   function normalizePseudocodeLines(source) {
-    return stripBlockComments(source).split("\n").map((line) => line.replace(/#.*$/g, "").replace(/\/\/.*$/g, "").trim()).filter(Boolean);
+    return stripBlockComments(source).split("\n").map((rawLine, index) => ({
+      text: rawLine.replace(/#.*$/g, "").replace(/\/\/.*$/g, "").trim(),
+      lineNumber: index + 1,
+      sourceText: rawLine.trim()
+    })).filter((item) => item.text);
   }
-  function extractParenthesizedContent(line) {
-    const match = line.match(/^[^(]*\((.*)\)\s*\{?\s*$/);
+  function extractParenthesizedContent(text) {
+    const match = text.match(/^[^(]*\((.*)\)\s*\{?\s*$/);
     return match ? match[1].trim() : "";
   }
   function createParserState(lines) {
@@ -772,175 +829,220 @@
     state.index += 1;
     return line;
   }
+  function createAstNode(type, line, extra = {}) {
+    var _a;
+    return {
+      type,
+      sourceLine: (_a = line == null ? void 0 : line.lineNumber) != null ? _a : null,
+      sourceText: (line == null ? void 0 : line.sourceText) || (line == null ? void 0 : line.text) || "",
+      ...extra
+    };
+  }
+  function isJavascriptStop(line, stopWhen) {
+    if (!line) {
+      return true;
+    }
+    return stopWhen.some((token) => {
+      if (token === "}") {
+        return line.text === "}";
+      }
+      return line.text.startsWith(token);
+    });
+  }
   function parseJavascriptSingleStatement(state) {
     const line = currentLine(state);
     if (!line) {
       return [];
     }
-    if (line.startsWith("if")) {
+    if (line.text.startsWith("if")) {
       return [parseJavascriptIf(state)];
     }
-    if (line.startsWith("while")) {
-      return [parseJavascriptWhile(state)];
+    if (line.text.startsWith("while")) {
+      return [parseJavascriptLoop(state, "while")];
     }
-    if (line.startsWith("for")) {
-      return [parseJavascriptFor(state)];
+    if (line.text.startsWith("for")) {
+      return [parseJavascriptLoop(state, "for")];
     }
-    if (line.startsWith("return")) {
+    if (line.text.startsWith("switch")) {
+      return [parseJavascriptSwitch(state)];
+    }
+    if (line.text.startsWith("return")) {
       consumeLine(state);
-      return [{ type: "return", text: line.replace(/;$/, "") }];
+      return [createAstNode("return", line, { text: line.text.replace(/;$/, "") })];
+    }
+    if (line.text.startsWith("break")) {
+      consumeLine(state);
+      return [createAstNode("break", line, { text: line.text.replace(/;$/, "") })];
+    }
+    if (line.text.startsWith("continue")) {
+      consumeLine(state);
+      return [createAstNode("continue", line, { text: line.text.replace(/;$/, "") })];
     }
     consumeLine(state);
-    return [{ type: "statement", text: line.replace(/;$/, "") }];
+    return [createAstNode("statement", line, { text: line.text.replace(/;$/, "") })];
   }
   function parseJavascriptIf(state) {
     const line = consumeLine(state);
-    const condition = extractParenthesizedContent(line) || line.replace(/^if\s*/, "").replace(/\{$/, "").trim();
-    const consequent = line.endsWith("{") ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
+    const condition = extractParenthesizedContent(line.text) || line.text.replace(/^if\s*/, "").replace(/\{$/, "").trim();
+    const consequent = line.text.endsWith("{") ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
     let alternate = [];
     const nextLine = currentLine(state);
-    if (nextLine == null ? void 0 : nextLine.startsWith("else if")) {
-      state.lines[state.index] = nextLine.replace(/^else\s+/, "");
+    if (nextLine == null ? void 0 : nextLine.text.startsWith("else if")) {
+      state.lines[state.index] = { ...nextLine, text: nextLine.text.replace(/^else\s+/, "") };
       alternate = [parseJavascriptIf(state)];
-    } else if (nextLine == null ? void 0 : nextLine.startsWith("else")) {
+    } else if (nextLine == null ? void 0 : nextLine.text.startsWith("else")) {
       const elseLine = consumeLine(state);
-      alternate = elseLine.endsWith("{") ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
+      alternate = elseLine.text.endsWith("{") ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
     }
-    return {
-      type: "if",
+    return createAstNode("if", line, {
       condition,
       consequent,
       alternate
-    };
+    });
   }
-  function parseJavascriptWhile(state) {
+  function parseJavascriptLoop(state, type) {
     const line = consumeLine(state);
-    const condition = extractParenthesizedContent(line) || line.replace(/^while\s*/, "").replace(/\{$/, "").trim();
-    const body = line.endsWith("{") ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
-    return {
-      type: "while",
+    const condition = extractParenthesizedContent(line.text) || line.text.replace(new RegExp(`^${type}\\s*`), "").replace(/\{$/, "").trim();
+    const body = line.text.endsWith("{") ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
+    return createAstNode(type, line, {
       condition,
       body
-    };
+    });
   }
-  function parseJavascriptFor(state) {
+  function parseJavascriptSwitch(state) {
     const line = consumeLine(state);
-    const condition = extractParenthesizedContent(line) || line.replace(/^for\s*/, "").replace(/\{$/, "").trim();
-    const body = line.endsWith("{") ? parseJavascriptStatements(state) : parseJavascriptSingleStatement(state);
-    return {
-      type: "for",
-      condition,
-      body
-    };
+    const expression = extractParenthesizedContent(line.text) || line.text.replace(/^switch\s*/, "").replace(/\{$/, "").trim();
+    const cases = [];
+    while (state.index < state.lines.length) {
+      const nextLine = currentLine(state);
+      if (!nextLine) {
+        break;
+      }
+      if (nextLine.text === "}") {
+        consumeLine(state);
+        break;
+      }
+      if (/^(case\s+.+:|default:)$/i.test(nextLine.text)) {
+        const caseLine = consumeLine(state);
+        const isDefault = caseLine.text.startsWith("default:");
+        const label = isDefault ? "default" : caseLine.text.replace(/^case\s+/i, "").replace(/:$/, "").trim();
+        const statements = parseJavascriptStatements(state, ["case ", "default:", "}"]);
+        cases.push(createAstNode("case", caseLine, {
+          label,
+          isDefault,
+          statements
+        }));
+        continue;
+      }
+      consumeLine(state);
+    }
+    return createAstNode("switch", line, {
+      expression,
+      cases
+    });
   }
-  function parseJavascriptStatements(state) {
+  function parseJavascriptStatements(state, stopWhen = ["}"]) {
     const statements = [];
     while (state.index < state.lines.length) {
       const line = currentLine(state);
       if (!line) {
         break;
       }
-      if (line === "}") {
-        consumeLine(state);
+      if (isJavascriptStop(line, stopWhen)) {
+        if (line.text === "}") {
+          consumeLine(state);
+        }
         break;
       }
-      if (line.startsWith("else")) {
-        break;
-      }
-      if ((line.startsWith("function ") || line.startsWith("export function ")) && line.endsWith("{")) {
+      if ((line.text.startsWith("function ") || line.text.startsWith("export function ")) && line.text.endsWith("{")) {
         consumeLine(state);
         statements.push(...parseJavascriptStatements(state));
         continue;
       }
-      if (line === "{") {
+      if (line.text === "{") {
         consumeLine(state);
         statements.push(...parseJavascriptStatements(state));
         continue;
       }
-      if (line.startsWith("if")) {
-        statements.push(parseJavascriptIf(state));
-        continue;
-      }
-      if (line.startsWith("while")) {
-        statements.push(parseJavascriptWhile(state));
-        continue;
-      }
-      if (line.startsWith("for")) {
-        statements.push(parseJavascriptFor(state));
-        continue;
-      }
-      if (line.startsWith("return")) {
-        statements.push({ type: "return", text: consumeLine(state).replace(/;$/, "") });
-        continue;
-      }
-      statements.push({ type: "statement", text: consumeLine(state).replace(/;$/, "") });
+      statements.push(...parseJavascriptSingleStatement(state));
     }
     return statements;
   }
+  function isPseudocodeStop(line, stopWhen) {
+    if (!line) {
+      return true;
+    }
+    const upper = line.text.toUpperCase();
+    return stopWhen.some((token) => upper.startsWith(token));
+  }
   function parsePseudocodeIf(state) {
+    var _a;
     const line = consumeLine(state);
-    const condition = line.replace(/^IF\s*/i, "").replace(/\s*THEN$/i, "").trim();
+    const condition = line.text.replace(/^IF\s*/i, "").replace(/\s*THEN$/i, "").trim();
     const consequent = parsePseudocodeStatements(state, ["ELSE", "ELSE IF", "END IF", "ENDIF", "END"]);
     let alternate = [];
     const nextLine = currentLine(state);
-    if (/^ELSE IF\b/i.test(nextLine || "")) {
-      state.lines[state.index] = nextLine.replace(/^ELSE\s+/i, "");
+    if (/^ELSE IF\b/i.test((nextLine == null ? void 0 : nextLine.text) || "")) {
+      state.lines[state.index] = { ...nextLine, text: nextLine.text.replace(/^ELSE\s+/i, "") };
       alternate = [parsePseudocodeIf(state)];
-    } else if (/^ELSE\b/i.test(nextLine || "")) {
+    } else if (/^ELSE\b/i.test((nextLine == null ? void 0 : nextLine.text) || "")) {
       consumeLine(state);
       alternate = parsePseudocodeStatements(state, ["END IF", "ENDIF", "END"]);
     }
-    if (/^(END IF|ENDIF|END)$/i.test(currentLine(state) || "")) {
+    if (/^(END IF|ENDIF|END)$/i.test(((_a = currentLine(state)) == null ? void 0 : _a.text) || "")) {
       consumeLine(state);
     }
-    return {
-      type: "if",
+    return createAstNode("if", line, {
       condition,
       consequent,
       alternate
-    };
+    });
   }
   function parsePseudocodeLoop(state) {
+    var _a;
     const line = consumeLine(state);
-    const condition = line.replace(/^(WHILE|FOR)\s*/i, "").replace(/\s*DO$/i, "").trim();
+    const condition = line.text.replace(/^(WHILE|FOR)\s*/i, "").replace(/\s*DO$/i, "").trim();
     const body = parsePseudocodeStatements(state, ["END WHILE", "END FOR", "END"]);
-    if (/^(END WHILE|END FOR|END)$/i.test(currentLine(state) || "")) {
+    if (/^(END WHILE|END FOR|END)$/i.test(((_a = currentLine(state)) == null ? void 0 : _a.text) || "")) {
       consumeLine(state);
     }
-    return {
-      type: /^WHILE\b/i.test(line) ? "while" : "for",
+    return createAstNode(/^WHILE\b/i.test(line.text) ? "while" : "for", line, {
       condition,
       body
-    };
+    });
   }
-  function parsePseudocodeStatements(state, stopTokens = []) {
+  function parsePseudocodeStatements(state, stopWhen = []) {
     const statements = [];
     while (state.index < state.lines.length) {
       const line = currentLine(state);
-      if (!line) {
+      if (!line || isPseudocodeStop(line, stopWhen)) {
         break;
       }
-      const upper = line.toUpperCase();
-      if (stopTokens.some((token) => upper.startsWith(token))) {
-        break;
-      }
-      if (/^FUNCTION\b/i.test(line)) {
+      if (/^FUNCTION\b/i.test(line.text)) {
         consumeLine(state);
         continue;
       }
-      if (/^IF\b/i.test(line)) {
+      if (/^IF\b/i.test(line.text)) {
         statements.push(parsePseudocodeIf(state));
         continue;
       }
-      if (/^(WHILE|FOR)\b/i.test(line)) {
+      if (/^(WHILE|FOR)\b/i.test(line.text)) {
         statements.push(parsePseudocodeLoop(state));
         continue;
       }
-      if (/^RETURN\b/i.test(line)) {
-        statements.push({ type: "return", text: consumeLine(state) });
+      if (/^RETURN\b/i.test(line.text)) {
+        statements.push(createAstNode("return", consumeLine(state), { text: line.text }));
         continue;
       }
-      statements.push({ type: "statement", text: consumeLine(state) });
+      if (/^BREAK\b/i.test(line.text)) {
+        statements.push(createAstNode("break", consumeLine(state), { text: line.text }));
+        continue;
+      }
+      if (/^CONTINUE\b/i.test(line.text)) {
+        statements.push(createAstNode("continue", consumeLine(state), { text: line.text }));
+        continue;
+      }
+      statements.push(createAstNode("statement", consumeLine(state), { text: line.text }));
     }
     return statements;
   }
@@ -956,54 +1058,64 @@
     }
     throw new Error(`\u76EE\u524D\u4E0D\u652F\u63F4 ${language} \u7684\u81EA\u52D5 CFG \u7522\u751F\u3002`);
   }
-  function createGraphBuilder(title) {
+  function createGraphBuilder() {
     return {
-      title,
       sequence: 0,
+      edgeSequence: 0,
       nodes: [{ id: "S", label: "Start", kind: "start" }],
       edges: [],
-      terminalNodes: []
+      terminalNodes: /* @__PURE__ */ new Set()
     };
   }
-  function addNode(builder, label, kind = "node") {
+  function addNode(builder, label, kind = "node", source = null) {
     builder.sequence += 1;
     const id = `N${builder.sequence}`;
-    builder.nodes.push({
-      id,
-      label: summarizeText(label),
-      kind
-    });
+    const node = { id, label: summarizeText(label), kind };
+    if (source == null ? void 0 : source.sourceLine) {
+      node.sourceLine = source.sourceLine;
+      node.sourceText = source.sourceText || "";
+    }
+    builder.nodes.push(node);
     return id;
   }
   function addEdge(builder, from, to) {
+    builder.edgeSequence += 1;
     builder.edges.push({
-      id: `${from}-${to}-${builder.edges.length + 1}`,
+      id: `E${builder.edgeSequence}`,
       from,
       to
     });
   }
   function buildSequence(builder, statements) {
     let entry = null;
-    let exits = [];
+    let normalExits = [];
+    let breakExits = [];
+    let continueExits = [];
     statements.forEach((statement) => {
       const built = buildStatement(builder, statement);
       if (!entry) {
         entry = built.entry;
       }
-      exits.forEach((exitId) => {
+      normalExits.forEach((exitId) => {
         addEdge(builder, exitId, built.entry);
       });
-      exits = [...built.exits];
+      normalExits = [...built.normalExits];
+      breakExits = [...breakExits, ...built.breakExits];
+      continueExits = [...continueExits, ...built.continueExits];
     });
-    return { entry, exits };
+    return {
+      entry,
+      normalExits,
+      breakExits,
+      continueExits
+    };
   }
   function buildIfStatement(builder, statement) {
-    var _a;
-    const decisionId = addNode(builder, `${statement.condition}?`, "decision");
-    const consequent = buildSequence(builder, statement.consequent);
+    const decisionId = addNode(builder, `${statement.condition}?`, "decision", statement);
+    const consequent = buildSequence(builder, statement.consequent || []);
     const alternate = buildSequence(builder, statement.alternate || []);
-    const needsMerge = consequent.exits.length > 0 || alternate.exits.length > 0 || !((_a = statement.alternate) == null ? void 0 : _a.length);
-    const mergeId = needsMerge ? addNode(builder, "Merge", "node") : null;
+    const needsMerge = !alternate.entry || consequent.normalExits.length > 0 || alternate.normalExits.length > 0;
+    const mergeId = needsMerge ? addNode(builder, "Merge") : null;
     if (consequent.entry) {
       addEdge(builder, decisionId, consequent.entry);
     } else if (mergeId) {
@@ -1014,37 +1126,81 @@
     } else if (mergeId) {
       addEdge(builder, decisionId, mergeId);
     }
-    consequent.exits.forEach((exitId) => {
+    consequent.normalExits.forEach((exitId) => {
       if (mergeId) {
         addEdge(builder, exitId, mergeId);
       }
     });
-    alternate.exits.forEach((exitId) => {
+    alternate.normalExits.forEach((exitId) => {
       if (mergeId) {
         addEdge(builder, exitId, mergeId);
       }
     });
     return {
       entry: decisionId,
-      exits: mergeId ? [mergeId] : []
+      normalExits: mergeId ? [mergeId] : [],
+      breakExits: [...consequent.breakExits, ...alternate.breakExits],
+      continueExits: [...consequent.continueExits, ...alternate.continueExits]
     };
   }
   function buildLoopStatement(builder, statement) {
-    const decisionId = addNode(builder, `${statement.condition}?`, "decision");
+    const decisionId = addNode(builder, `${statement.condition}?`, "decision", statement);
     const body = buildSequence(builder, statement.body || []);
-    const mergeId = addNode(builder, "Loop Exit", "node");
+    const mergeId = addNode(builder, "Loop Exit");
+    addEdge(builder, decisionId, mergeId);
     if (body.entry) {
       addEdge(builder, decisionId, body.entry);
-      body.exits.forEach((exitId) => {
+      body.normalExits.forEach((exitId) => {
         addEdge(builder, exitId, decisionId);
       });
-    } else {
-      addEdge(builder, decisionId, decisionId);
+      body.continueExits.forEach((exitId) => {
+        addEdge(builder, exitId, decisionId);
+      });
     }
-    addEdge(builder, decisionId, mergeId);
+    body.breakExits.forEach((exitId) => {
+      addEdge(builder, exitId, mergeId);
+    });
     return {
       entry: decisionId,
-      exits: [mergeId]
+      normalExits: [mergeId],
+      breakExits: [],
+      continueExits: []
+    };
+  }
+  function buildSwitchStatement(builder, statement) {
+    const decisionId = addNode(builder, `switch ${statement.expression}`, "decision", statement);
+    const mergeId = addNode(builder, "Switch Exit");
+    const continueExits = [];
+    if (!statement.cases.length) {
+      addEdge(builder, decisionId, mergeId);
+    }
+    statement.cases.forEach((switchCase) => {
+      const caseId = addNode(
+        builder,
+        switchCase.isDefault ? "default" : `case ${switchCase.label}`,
+        "node",
+        switchCase
+      );
+      const built = buildSequence(builder, switchCase.statements || []);
+      addEdge(builder, decisionId, caseId);
+      if (built.entry) {
+        addEdge(builder, caseId, built.entry);
+      } else {
+        addEdge(builder, caseId, mergeId);
+      }
+      built.normalExits.forEach((exitId) => {
+        addEdge(builder, exitId, mergeId);
+      });
+      built.breakExits.forEach((exitId) => {
+        addEdge(builder, exitId, mergeId);
+      });
+      continueExits.push(...built.continueExits);
+    });
+    return {
+      entry: decisionId,
+      normalExits: [mergeId],
+      breakExits: [],
+      continueExits
     };
   }
   function buildStatement(builder, statement) {
@@ -1054,18 +1210,43 @@
     if (statement.type === "while" || statement.type === "for") {
       return buildLoopStatement(builder, statement);
     }
+    if (statement.type === "switch") {
+      return buildSwitchStatement(builder, statement);
+    }
     if (statement.type === "return") {
-      const returnId = addNode(builder, statement.text, "node");
-      builder.terminalNodes.push(returnId);
+      const returnId = addNode(builder, statement.text, "node", statement);
+      builder.terminalNodes.add(returnId);
       return {
         entry: returnId,
-        exits: []
+        normalExits: [],
+        breakExits: [],
+        continueExits: []
       };
     }
-    const statementId = addNode(builder, statement.text, "node");
+    if (statement.type === "break") {
+      const breakId = addNode(builder, statement.text, "node", statement);
+      return {
+        entry: breakId,
+        normalExits: [],
+        breakExits: [breakId],
+        continueExits: []
+      };
+    }
+    if (statement.type === "continue") {
+      const continueId = addNode(builder, statement.text, "node", statement);
+      return {
+        entry: continueId,
+        normalExits: [],
+        breakExits: [],
+        continueExits: [continueId]
+      };
+    }
+    const statementId = addNode(builder, statement.text, "node", statement);
     return {
       entry: statementId,
-      exits: [statementId]
+      normalExits: [statementId],
+      breakExits: [],
+      continueExits: []
     };
   }
   function computeDepths(nodes, edges) {
@@ -1102,7 +1283,7 @@
     Array.from(grouped.entries()).forEach(([depth, group]) => {
       group.forEach((node, index) => {
         node.x = 90 + depth * 150;
-        node.y = 90 + index * 100;
+        node.y = 90 + index * 96;
       });
     });
     const coordinates = new Map(nodes.map((node) => [node.id, node]));
@@ -1112,14 +1293,14 @@
       if (fromNode && toNode && toNode.x <= fromNode.x) {
         edge.control = {
           x: Math.round((fromNode.x + toNode.x) / 2),
-          y: Math.min(fromNode.y, toNode.y) - 70
+          y: Math.min(fromNode.y, toNode.y) - 72
         };
       }
     });
   }
   function generateControlFlowGraphFromProgram({ sourceCode, language, title }) {
     const statements = parseStructuredProgram(sourceCode, language);
-    const builder = createGraphBuilder(title || "Generated Control Flow Graph");
+    const builder = createGraphBuilder();
     const built = buildSequence(builder, statements);
     builder.nodes.push({ id: "T", label: "End", kind: "end" });
     if (built.entry) {
@@ -1127,7 +1308,7 @@
     } else {
       addEdge(builder, "S", "T");
     }
-    built.exits.forEach((exitId) => {
+    built.normalExits.forEach((exitId) => {
       addEdge(builder, exitId, "T");
     });
     builder.terminalNodes.forEach((terminalId) => {
@@ -1297,6 +1478,28 @@
       reader.readAsText(file);
     });
   }
+  function getSelectedSourceNodes(graph, requirement) {
+    if (!requirement) {
+      return [];
+    }
+    return requirement.nodes.map((nodeId) => graph.nodes.find((node) => node.id === nodeId)).filter((node) => node == null ? void 0 : node.sourceLine).filter((node, index, nodes) => nodes.findIndex((item) => item.id === node.id) === index);
+  }
+  function renderSourceCode(sourceCode, selectedSourceNodes) {
+    if (!sourceCode) {
+      return '<p class="graph-source-empty" data-testid="program-source-empty">\u9019\u500B\u4F86\u6E90\u76EE\u524D\u53EA\u63D0\u4F9B graph\uFF0C\u6C92\u6709\u9644\u5E36\u7A0B\u5F0F\u78BC\u7247\u6BB5\u3002</p>';
+    }
+    const highlightedLines = new Set(selectedSourceNodes.map((node) => node.sourceLine));
+    return `
+    <pre class="graph-source-code" data-testid="program-source-code"><code>
+      ${sourceCode.split("\n").map((line, index) => `
+        <span class="graph-source-line${highlightedLines.has(index + 1) ? " graph-source-line--active" : ""}" data-testid="program-source-line-${index + 1}">
+          <span class="graph-source-line-number">${index + 1}</span>
+          <span class="graph-source-line-text">${escapeHtml(line) || "&nbsp;"}</span>
+        </span>
+      `).join("")}
+    </code></pre>
+  `;
+  }
   function resolveProgramGraph(program) {
     if (program.sourceCode && program.language) {
       return generateControlFlowGraphFromProgram({
@@ -1354,6 +1557,7 @@
     }).join("")}
         ${graph.nodes.map((node) => `
           <g class="graph-node${highlightedNodes.has(node.id) ? " graph-node--active" : ""}" data-testid="graph-node-${node.id}">
+            ${node.sourceLine ? `<title>Line ${node.sourceLine}: ${escapeHtml(node.sourceText || node.label)}</title>` : ""}
             <circle cx="${node.x}" cy="${node.y}" r="28"></circle>
             <text x="${node.x}" y="${node.y + 5}" text-anchor="middle">${node.label}</text>
           </g>
@@ -1439,6 +1643,7 @@
     }
     function render() {
       const { requirements, selectedRequirement, selectedCriterion, pathPlan } = getState();
+      const selectedSourceNodes = getSelectedSourceNodes(graph, selectedRequirement);
       root2.className = "graph-coverage";
       root2.dataset.testid = "graph-coverage-explorer";
       root2.innerHTML = `
@@ -1484,7 +1689,7 @@
             <p>JSON \u53EF\u76F4\u63A5\u63D0\u4F9B graph \u7269\u4EF6\uFF0C\u6216\u76F4\u63A5\u63D0\u4F9B nodes\u3001edges\u3001startNodeId\u3001endNodeId\uFF0C\u4E5F\u53EF\u9644\u5E36 title\u3001description\u3001sourceCode\u3002\u7A0B\u5F0F\u78BC\u4E0A\u50B3\u5247\u6703\u4F9D\u8A9E\u8A00\u985E\u578B\u81EA\u52D5\u7522\u751F\u7C21\u5316 CFG\u3002</p>
           </div>
         </div>
-        ${activeProgram.sourceCode ? `<pre class="graph-source-code" data-testid="program-source-code"><code>${escapeHtml(activeProgram.sourceCode)}</code></pre>` : '<p class="graph-source-empty" data-testid="program-source-empty">\u9019\u500B\u4F86\u6E90\u76EE\u524D\u53EA\u63D0\u4F9B graph\uFF0C\u6C92\u6709\u9644\u5E36\u7A0B\u5F0F\u78BC\u7247\u6BB5\u3002</p>'}
+        ${renderSourceCode(activeProgram.sourceCode, selectedSourceNodes)}
       </div>
 
       <div class="graph-editor-card" data-testid="graph-editor-card">
@@ -1621,6 +1826,12 @@
                 <span class="detail-label">Criterion</span>
                 <p>${(selectedCriterion == null ? void 0 : selectedCriterion.labelZh) || ""}</p>
               </div>
+              <div>
+                <span class="detail-label">Source Mapping</span>
+                <ul class="source-mapping-list" data-testid="detail-source-mapping">
+                  ${selectedSourceNodes.length ? selectedSourceNodes.map((node) => `<li>${node.label} -> L${node.sourceLine}: ${escapeHtml(node.sourceText || "")}</li>`).join("") : "<li>\u76EE\u524D requirement \u6C92\u6709\u53EF\u5C0D\u61C9\u7684\u7A0B\u5F0F\u78BC\u884C\u865F\u3002</li>"}
+                </ul>
+              </div>
             </div>
           </div>
         </aside>
@@ -1690,6 +1901,7 @@
             language: selectedCodeLanguage
           };
           const generatedGraph = resolveProgramGraph(uploadedProgram);
+          selectedProgramId = "uploaded-code";
           loadGraphSource(uploadedProgram, generatedGraph, `\u5DF2\u6839\u64DA ${file.name} \u81EA\u52D5\u7522\u751F\u7C21\u5316 CFG\u3002`);
         } catch (error) {
           parseError = error.message;
