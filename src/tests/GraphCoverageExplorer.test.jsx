@@ -59,6 +59,10 @@ describe('GraphCoverageExplorer', () => {
     renderGraphCoverageExplorer();
     expect(document.querySelector('[data-testid="graph-test-path-card"]')).toBeInTheDocument();
     expect(document.querySelector('[data-testid="test-path-list"]')).toHaveTextContent('S -> A');
+    expect(document.querySelector('[data-testid="test-path-metrics"]')).toBeInTheDocument();
+    expect(Number(document.querySelector('[data-testid="baseline-path-count"]').textContent)).toBeGreaterThan(0);
+    expect(Number(document.querySelector('[data-testid="optimized-path-count"]').textContent)).toBeGreaterThan(0);
+    expect(Number(document.querySelector('[data-testid="saved-path-count"]').textContent)).toBeGreaterThanOrEqual(0);
   });
 
   it('編輯 graph 會即時計算 requirement', async () => {

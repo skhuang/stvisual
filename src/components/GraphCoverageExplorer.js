@@ -323,6 +323,20 @@ export function createGraphCoverageExplorer() {
           <div class="graph-test-path-card" data-testid="graph-test-path-card">
             <h4>Generated Test Path Set</h4>
             <p class="sidebar-text">將 requirement 自動組合成可執行測試路徑（Start 到 End）。</p>
+            <div class="test-path-metrics" data-testid="test-path-metrics">
+              <div class="test-path-metric">
+                <span class="detail-label">最佳化前</span>
+                <strong data-testid="baseline-path-count">${pathPlan.optimizationMetrics.baselinePathCount}</strong>
+              </div>
+              <div class="test-path-metric">
+                <span class="detail-label">最佳化後</span>
+                <strong data-testid="optimized-path-count">${pathPlan.optimizationMetrics.optimizedPathCount}</strong>
+              </div>
+              <div class="test-path-metric test-path-metric--accent">
+                <span class="detail-label">精簡數量</span>
+                <strong data-testid="saved-path-count">${pathPlan.optimizationMetrics.savedPathCount}</strong>
+              </div>
+            </div>
             <ul class="test-path-list" data-testid="test-path-list">
               ${pathPlan.selectedPaths.map((path, index) => `
                 <li data-testid="test-path-${index + 1}">T${index + 1}: ${path.join(' -> ')}</li>

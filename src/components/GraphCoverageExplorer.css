@@ -296,6 +296,31 @@
   margin-bottom: 8px;
 }
 
+.test-path-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0 14px;
+}
+
+.test-path-metric {
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  padding: 10px 12px;
+}
+
+.test-path-metric strong {
+  display: block;
+  font-size: 1.2rem;
+  color: #0f172a;
+}
+
+.test-path-metric--accent {
+  background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+  border-color: rgba(234, 88, 12, 0.25);
+}
+
 .test-path-list {
   list-style: none;
   display: grid;
@@ -412,6 +437,10 @@
 
 @media (max-width: 720px) {
   .graph-editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .test-path-metrics {
     grid-template-columns: 1fr;
   }
 
