@@ -9,7 +9,7 @@ export const cloudConfig = {
     measurementId: "G-RBRGPW34JQ",
   },
   drive: {
-    uploadFolderId: '333974166897-l4mfva3ntjghf90ogp5f3mqvik9rje2p.apps.googleusercontent.com',
+    uploadFolderId: '1B5hCB2Scte4Sds0d03mYNu-iGZS0JKbJ',
   },
 };
 
