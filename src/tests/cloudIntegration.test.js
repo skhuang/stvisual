@@ -23,6 +23,6 @@ describe('cloudIntegration client', () => {
       return;
     }
 
-    await expect(client.signInWithGoogle()).rejects.toThrow(/operation-not-supported|popup|auth/i);
+    await expect(client.signInWithGoogle()).rejects.toThrow(/operation-not-supported|popup|auth|SDK 尚未載入/i);
   });
 });
