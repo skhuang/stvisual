@@ -1,0 +1,141 @@
+.cloud-storage {
+  display: block;
+}
+
+.cloud-card {
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+  padding: 22px;
+}
+
+.cloud-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: start;
+}
+
+.cloud-kicker {
+  font-size: 0.78rem;
+  color: #0c4a6e;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.cloud-subtitle {
+  margin-top: 8px;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.cloud-warning {
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: #fff7ed;
+  color: #b45309;
+  padding: 8px 10px;
+  font-size: 0.84rem;
+}
+
+.cloud-auth-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cloud-btn {
+  border: none;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 10px;
+  height: 38px;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.cloud-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cloud-btn--secondary {
+  background: #334155;
+}
+
+.cloud-meta {
+  margin-top: 12px;
+  display: grid;
+  gap: 6px;
+  color: #1f2937;
+  font-size: 0.9rem;
+}
+
+.cloud-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.cloud-section {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.cloud-section h4 {
+  margin-bottom: 2px;
+}
+
+.cloud-section label {
+  display: grid;
+  gap: 6px;
+  color: #475569;
+  font-size: 0.84rem;
+}
+
+.cloud-section select,
+.cloud-section textarea,
+.cloud-section input[type='file'] {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-family: inherit;
+}
+
+.cloud-section textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.cloud-actions-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cloud-upload-list {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.cloud-upload-list li {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #f8fafc;
+}
+
+@media (max-width: 900px) {
+  .cloud-grid {
+    grid-template-columns: 1fr;
+  }
+}
