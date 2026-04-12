@@ -2,11 +2,13 @@ import { createTestingMethodTree } from './components/TestingMethodTree.js';
 import { createGraphCoverageExplorer } from './components/GraphCoverageExplorer.js';
 import { createTestingFlow } from './components/TestingFlow.js';
 import { createTestingTypesTable } from './components/TestingTypesTable.js';
+import { createCloudStoragePanel } from './components/CloudStoragePanel.js';
 
 const sectionsConfig = [
   { id: 'all', label: '全覽' },
   { id: 'methods', label: '測試方法' },
   { id: 'graph', label: 'Graph Coverage' },
+  { id: 'cloud', label: '雲端整合' },
   { id: 'flow', label: '測試流程' },
   { id: 'types', label: '測試類型' },
 ];
@@ -30,6 +32,10 @@ export function renderApp(container) {
           <h2>Graph Coverage 視覺化</h2>
           <div data-slot="graph"></div>
         </section>
+        <section data-testid="section-cloud">
+          <h2>Google 雲端整合</h2>
+          <div data-slot="cloud"></div>
+        </section>
         <section data-testid="section-flow">
           <h2>測試流程</h2>
           <div data-slot="flow"></div>
@@ -51,6 +57,7 @@ export function renderApp(container) {
   const sections = {
     methods: main.querySelector('[data-testid="section-methods"]'),
     graph: main.querySelector('[data-testid="section-graph"]'),
+    cloud: main.querySelector('[data-testid="section-cloud"]'),
     flow: main.querySelector('[data-testid="section-flow"]'),
     types: main.querySelector('[data-testid="section-types"]'),
   };
@@ -58,12 +65,14 @@ export function renderApp(container) {
   const components = {
     methods: createTestingMethodTree(),
     graph: createGraphCoverageExplorer(),
+    cloud: createCloudStoragePanel(),
     flow: createTestingFlow(),
     types: createTestingTypesTable(),
   };
 
   container.querySelector('[data-slot="methods"]').appendChild(components.methods);
   container.querySelector('[data-slot="graph"]').appendChild(components.graph);
+  container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
   container.querySelector('[data-slot="flow"]').appendChild(components.flow);
   container.querySelector('[data-slot="types"]').appendChild(components.types);
 
