@@ -19,6 +19,7 @@ await cp(path.join(projectRoot, 'src', 'styles.css'), path.join(outputDir, 'src'
 await cp(path.join(projectRoot, 'src', 'App.css'), path.join(outputDir, 'src', 'App.css'));
 await cp(path.join(projectRoot, 'src', 'components'), path.join(outputDir, 'src', 'components'), { recursive: true });
 await cp(path.join(projectRoot, 'src', 'data'), path.join(outputDir, 'src', 'data'), { recursive: true });
+await cp(path.join(projectRoot, 'src', 'config'), path.join(outputDir, 'src', 'config'), { recursive: true });
 await cp(path.join(projectRoot, 'src', 'utils'), path.join(outputDir, 'src', 'utils'), { recursive: true });
 await writeFile(path.join(outputDir, '.nojekyll'), '');
 
