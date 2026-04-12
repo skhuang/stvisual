@@ -1,6 +1,3 @@
-import { initializeApp, getApps } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
-import { doc, getDoc, getFirestore, serverTimestamp, setDoc } from 'firebase/firestore';
 import { getResolvedCloudConfig } from '../config/cloudConfig.js';
 
 const REQUIRED_FIREBASE_KEYS = ['apiKey', 'authDomain', 'projectId', 'appId'];
@@ -28,6 +25,7 @@ export function createCloudIntegrationClient() {
   const isFileProtocol = globalThis.location?.protocol === 'file:';
   const isSupportedOrigin = !isFileProtocol;
   const isConfigured = missingKeys.length === 0;
+  const firebase = globalThis.firebase;
 
   if (!isSupportedOrigin) {
     const originMessage = 'Google OAuth 不支援 file://。請改用 http://localhost 或 https 網址開啟頁面。';
@@ -87,9 +85,39 @@ export function createCloudIntegrationClient() {
     };
   }
 
-  const app = getApps()[0] || initializeApp(config.firebase);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+  if (!firebase?.apps || typeof firebase.initializeApp !== 'function') {
+    const sdkMessage = 'Firebase SDK 尚未載入，請確認 index.html 已引入 firebase-app/auth/firestore compat scripts。';
+
+    return {
+      isConfigured,
+      missingKeys,
+      isSupportedOrigin,
+      originWarning: '',
+      subscribeAuthState(callback) {
+        callback(null);
+        return () => {};
+      },
+      async signInWithGoogle() {
+        throw new Error(sdkMessage);
+      },
+      async signOutGoogle() {
+        throw new Error(sdkMessage);
+      },
+      async saveSettings() {
+        throw new Error(sdkMessage);
+      },
+      async loadSettings() {
+        throw new Error(sdkMessage);
+      },
+      async uploadFileToDrive() {
+        throw new Error(sdkMessage);
+      },
+    };
+  }
+
+  const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(config.firebase);
+  const auth = firebase.auth(app);
+  const db = firebase.firestore(app);
   let driveAccessToken = null;
 
   return {
@@ -98,14 +126,14 @@ export function createCloudIntegrationClient() {
     isSupportedOrigin,
     originWarning: '',
     subscribeAuthState(callback) {
-      return onAuthStateChanged(auth, callback);
+      return auth.onAuthStateChanged(callback);
     },
     async signInWithGoogle() {
-      const provider = new GoogleAuthProvider();
+      const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope(DRIVE_SCOPE);
 
-      const result = await signInWithPopup(auth, provider);
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const result = await auth.signInWithPopup(provider);
+      const credential = result.credential;
       driveAccessToken = credential?.accessToken || null;
 
       return {
@@ -115,10 +143,10 @@ export function createCloudIntegrationClient() {
     },
     async signOutGoogle() {
       driveAccessToken = null;
-      await signOut(auth);
+      await auth.signOut();
     },
     async loadSettings(userId) {
-      const snapshot = await getDoc(doc(db, 'users', userId, 'settings', 'default'));
+      const snapshot = await db.collection('users').doc(userId).collection('settings').doc('default').get();
 
       if (!snapshot.exists()) {
         return null;
@@ -127,9 +155,9 @@ export function createCloudIntegrationClient() {
       return snapshot.data();
     },
     async saveSettings(userId, settings) {
-      await setDoc(doc(db, 'users', userId, 'settings', 'default'), {
+      await db.collection('users').doc(userId).collection('settings').doc('default').set({
         ...settings,
-        updatedAt: serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       }, { merge: true });
     },
     async uploadFileToDrive(file, options = {}) {
