@@ -38,9 +38,9 @@ describe('testingMethods', () => {
     expect(blackbox.techniques).toHaveLength(4);
   });
 
-  it('白盒測試有 7 項技術', () => {
+  it('白盒測試有 8 項技術', () => {
     const whitebox = testingMethods.find((m) => m.id === 'whitebox');
-    expect(whitebox.techniques).toHaveLength(7);
+    expect(whitebox.techniques).toHaveLength(8);
   });
 
   it('灰盒測試有 2 項技術', () => {

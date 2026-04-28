@@ -1,0 +1,209 @@
+.logic-coverage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.logic-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.logic-input-label {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.logic-expression-input {
+  flex: 1 1 260px;
+  min-width: 220px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 0.95rem;
+  border: 2px solid #dfe6e9;
+  border-radius: 10px;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.logic-expression-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.18);
+}
+
+.logic-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.logic-example-btn {
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: 1px solid #b2bec3;
+  background: #fff;
+  color: #2d3436;
+  cursor: pointer;
+  font-size: 0.82rem;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.logic-example-btn:hover {
+  border-color: #3498db;
+  color: #2980b9;
+}
+.logic-example-btn.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: #fff;
+}
+
+.logic-error {
+  background: #fdecea;
+  color: #c0392b;
+  border-left: 4px solid #e74c3c;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.logic-criteria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.logic-criterion-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 2px solid #dfe6e9;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+.logic-criterion-btn:hover {
+  border-color: #74b9ff;
+  transform: translateY(-1px);
+}
+.logic-criterion-btn.active {
+  border-color: #2980b9;
+  background: linear-gradient(135deg, #ebf5fb, #d6eaf8);
+  box-shadow: 0 4px 14px rgba(52, 152, 219, 0.18);
+}
+.logic-criterion-label {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 0.92rem;
+}
+.logic-criterion-zh {
+  color: #7f8c8d;
+  font-size: 0.78rem;
+}
+
+.logic-summary {
+  background: #f8fafc;
+  border: 1px solid #ecf0f1;
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+.logic-summary-title {
+  margin: 0 0 4px;
+  color: #2c3e50;
+  font-size: 1.05rem;
+}
+.logic-summary-desc {
+  margin: 0 0 8px;
+  color: #34495e;
+  font-size: 0.9rem;
+}
+.logic-summary-stats {
+  margin: 0 0 8px;
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+.logic-divider {
+  margin: 0 6px;
+  color: #b2bec3;
+}
+.logic-test-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.logic-test-item {
+  font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 0.84rem;
+  color: #2d3436;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+}
+.logic-test-row {
+  font-weight: 700;
+  color: #2980b9;
+}
+.logic-test-pred.is-true { color: #27ae60; font-weight: 700; }
+.logic-test-pred.is-false { color: #c0392b; font-weight: 700; }
+.logic-test-label { color: #7f8c8d; font-size: 0.78rem; }
+.logic-unsatisfied {
+  margin-top: 8px;
+  color: #d35400;
+  font-size: 0.85rem;
+}
+
+.logic-truth-table-wrap {
+  overflow-x: auto;
+}
+
+.logic-truth-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 0.9rem;
+  background: #fff;
+  border: 1px solid #ecf0f1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.logic-truth-table th,
+.logic-truth-table td {
+  padding: 8px 12px;
+  text-align: center;
+  border-bottom: 1px solid #ecf0f1;
+}
+.logic-truth-table thead th {
+  background: #2c3e50;
+  color: #fff;
+  font-weight: 700;
+}
+.logic-truth-table tbody th {
+  background: #f8f9fa;
+  color: #7f8c8d;
+}
+.logic-row.active {
+  background: rgba(52, 152, 219, 0.12);
+}
+.logic-row.active td {
+  font-weight: 700;
+}
+.logic-cell-clause.determining {
+  background: rgba(241, 196, 15, 0.18);
+}
+.logic-cell-clause.major {
+  background: rgba(46, 204, 113, 0.22);
+  outline: 2px solid #27ae60;
+  outline-offset: -2px;
+}
+.logic-cell-result.is-true { color: #27ae60; font-weight: 700; }
+.logic-cell-result.is-false { color: #c0392b; font-weight: 700; }

@@ -3,4 +3,5 @@
 @import url('./components/TestingFlow.css');
 @import url('./components/TestingTypesTable.css');
 @import url('./components/GraphCoverageExplorer.css');
+@import url('./components/LogicCoverageExplorer.css');
 @import url('./components/CloudStoragePanel.css');

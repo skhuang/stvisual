@@ -24,6 +24,7 @@ export const testingMethods = [
       { id: 'sc', name: '語句覆蓋', nameEn: 'Statement Coverage', description: '確保每條語句至少執行一次' },
       { id: 'bc', name: '分支覆蓋', nameEn: 'Branch Coverage', description: '確保每個分支（true/false）都被執行' },
       { id: 'gc', name: '圖形覆蓋', nameEn: 'Graph Coverage', description: '以控制流程圖推導節點、邊與 Prime Path 的測試需求' },
+      { id: 'lc', name: '邏輯覆蓋', nameEn: 'Logic Coverage', description: '以述詞與子句為核心的覆蓋策略，包含 PC、CC、ACC 系列' },
       { id: 'pc', name: '路徑覆蓋', nameEn: 'Path Coverage', description: '確保每條獨立路徑都被執行' },
       { id: 'ppc', name: 'Prime Path Coverage', nameEn: 'Prime Path Coverage', description: '最小化且完整的路徑覆蓋集合' },
       { id: 'cc', name: '條件覆蓋', nameEn: 'Condition Coverage', description: '確保每個布林條件的真假都被測試' },
@@ -306,5 +307,65 @@ export const graphCoverageProgramExamples = [
       return 31;
   }
 }`,
+  },
+];
+
+export const logicCoverageCriteria = [
+  {
+    id: 'pc',
+    label: 'Predicate Coverage',
+    labelZh: 'Predicate Coverage',
+    description: '使整體 predicate 至少評估為 true 與 false 各一次。',
+  },
+  {
+    id: 'cc',
+    label: 'Clause Coverage',
+    labelZh: '子句覆蓋',
+    description: '每個子句皆至少各取 true 與 false 一次。',
+  },
+  {
+    id: 'coc',
+    label: 'Combinatorial Coverage',
+    labelZh: '組合覆蓋',
+    description: '列舉所有 2^n 個子句真假組合。',
+  },
+  {
+    id: 'gacc',
+    label: 'General Active Clause Coverage',
+    labelZh: 'GACC',
+    description: '對每個主子句找一對列，使該子句決定 predicate 的值。',
+  },
+  {
+    id: 'cacc',
+    label: 'Correlated Active Clause Coverage',
+    labelZh: 'CACC',
+    description: '主子句決定 predicate，且兩列產生不同的 predicate 值。',
+  },
+  {
+    id: 'racc',
+    label: 'Restricted Active Clause Coverage',
+    labelZh: 'RACC',
+    description: '主子句決定 predicate，且兩列的次子句值完全相同。',
+  },
+];
+
+export const logicCoveragePredicates = [
+  {
+    id: 'simple-and-or',
+    name: '(a && b) || c',
+    expression: '(a && b) || c',
+    description: '常見的混合 AND/OR predicate，三個子句。',
+  },
+  {
+    id: 'guarded-exit',
+    name: 'a && (b || !c)',
+    expression: 'a && (b || !c)',
+    description: '帶有否定子句的守衛條件。',
+  },
+  {
+    id: 'four-clause',
+    name: '(a || b) && (c || d)',
+    expression: '(a || b) && (c || d)',
+    description: '四個子句的乘積式 predicate，常見於範圍檢查。',
   },
 ];

@@ -1,0 +1,261 @@
+import {
+  logicCoverageCriteria,
+  logicCoveragePredicates,
+} from '../data/testingData.js';
+import {
+  buildAllCoverageSets,
+  parsePredicate,
+} from '../utils/logicCoverage.js';
+
+function escapeHtml(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+export function createLogicCoverageExplorer() {
+  const root = document.createElement('div');
+  root.className = 'logic-coverage';
+  root.dataset.testid = 'logic-coverage';
+
+  const state = {
+    expression: logicCoveragePredicates[0].expression,
+    selectedCriterion: 'pc',
+    error: null,
+    parsed: null,
+    analysis: null,
+  };
+
+  function recompute() {
+    try {
+      state.parsed = parsePredicate(state.expression);
+      if (state.parsed.clauses.length > 6) {
+        throw new Error('為了視覺化可讀性，子句數量請限制在 6 個以內。');
+      }
+      state.analysis = buildAllCoverageSets(state.parsed);
+      state.error = null;
+    } catch (err) {
+      state.parsed = null;
+      state.analysis = null;
+      state.error = err.message || String(err);
+    }
+  }
+
+  function getActiveSet() {
+    if (!state.analysis) return null;
+    return state.analysis.sets[state.selectedCriterion] || null;
+  }
+
+  function activeRowIds() {
+    const set = getActiveSet();
+    if (!set) return new Set();
+    return new Set(set.tests.map((t) => `r${t.row.index}`));
+  }
+
+  function render() {
+    const examplesMarkup = logicCoveragePredicates
+      .map((p) => `
+        <button
+          type="button"
+          class="logic-example-btn${state.expression === p.expression ? ' active' : ''}"
+          data-expression="${escapeHtml(p.expression)}"
+          data-testid="logic-example-${p.id}"
+          title="${escapeHtml(p.description)}"
+        >
+          ${escapeHtml(p.name)}
+        </button>
+      `)
+      .join('');
+
+    const criteriaMarkup = logicCoverageCriteria
+      .map((c) => `
+        <button
+          type="button"
+          class="logic-criterion-btn${state.selectedCriterion === c.id ? ' active' : ''}"
+          data-criterion="${c.id}"
+          data-testid="logic-criterion-${c.id}"
+        >
+          <span class="logic-criterion-label">${escapeHtml(c.label)}</span>
+          <span class="logic-criterion-zh">${escapeHtml(c.labelZh)}</span>
+        </button>
+      `)
+      .join('');
+
+    const truthTableMarkup = renderTruthTable();
+    const summaryMarkup = renderSummary();
+
+    root.innerHTML = `
+      <div class="logic-toolbar">
+        <label class="logic-input-label" for="logic-expression-input">Predicate</label>
+        <input
+          id="logic-expression-input"
+          class="logic-expression-input"
+          type="text"
+          value="${escapeHtml(state.expression)}"
+          spellcheck="false"
+          autocomplete="off"
+          data-testid="logic-expression-input"
+        />
+        <div class="logic-examples">${examplesMarkup}</div>
+      </div>
+
+      ${state.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml(state.error)}</div>` : ''}
+
+      <div class="logic-criteria" role="tablist" aria-label="Logic Coverage 準則">
+        ${criteriaMarkup}
+      </div>
+
+      <div class="logic-summary" data-testid="logic-summary">${summaryMarkup}</div>
+
+      <div class="logic-truth-table-wrap">${truthTableMarkup}</div>
+    `;
+
+    bindEvents();
+  }
+
+  function renderTruthTable() {
+    if (!state.analysis) {
+      return '';
+    }
+    const { rows, clauses } = state.analysis;
+    const highlighted = activeRowIds();
+    const activeSet = getActiveSet();
+    const majorByRow = new Map();
+
+    if (activeSet && (activeSet.id === 'gacc' || activeSet.id === 'cacc' || activeSet.id === 'racc')) {
+      activeSet.tests.forEach((test) => {
+        const key = `r${test.row.index}`;
+        if (!majorByRow.has(key)) {
+          majorByRow.set(key, new Set());
+        }
+        majorByRow.get(key).add(test.majorClause);
+      });
+    }
+
+    const headerCells = clauses
+      .map((c) => `<th scope="col">${escapeHtml(c)}</th>`)
+      .join('');
+
+    const bodyRows = rows
+      .map((row) => {
+        const rowKey = `r${row.index}`;
+        const isActive = highlighted.has(rowKey);
+        const majors = majorByRow.get(rowKey);
+        const cells = clauses
+          .map((c) => {
+            const determining = row.determines[c];
+            const isMajor = majors?.has(c);
+            return `
+              <td class="logic-cell-clause${determining ? ' determining' : ''}${isMajor ? ' major' : ''}" data-clause="${escapeHtml(c)}">
+                ${row.values[c] ? 'T' : 'F'}
+              </td>
+            `;
+          })
+          .join('');
+        return `
+          <tr class="logic-row${isActive ? ' active' : ''}${row.predicate ? ' p-true' : ' p-false'}" data-row="${row.index}" data-testid="logic-row-${row.index}">
+            <th scope="row">${row.index}</th>
+            ${cells}
+            <td class="logic-cell-result ${row.predicate ? 'is-true' : 'is-false'}">${row.predicate ? 'T' : 'F'}</td>
+          </tr>
+        `;
+      })
+      .join('');
+
+    return `
+      <table class="logic-truth-table" data-testid="logic-truth-table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            ${headerCells}
+            <th scope="col">P</th>
+          </tr>
+        </thead>
+        <tbody>${bodyRows}</tbody>
+      </table>
+    `;
+  }
+
+  function renderSummary() {
+    if (state.error || !state.analysis) {
+      return '';
+    }
+    const set = getActiveSet();
+    if (!set) return '';
+    const testList = set.tests
+      .map((t) => `
+        <li class="logic-test-item" data-testid="logic-test-${escapeHtml(t.id)}">
+          <span class="logic-test-row">#${t.row.index}</span>
+          <span class="logic-test-values">${state.analysis.clauses
+            .map((c) => `${c}=${t.row.values[c] ? 'T' : 'F'}`)
+            .join(', ')}</span>
+          <span class="logic-test-pred ${t.row.predicate ? 'is-true' : 'is-false'}">P=${t.row.predicate ? 'T' : 'F'}</span>
+          <span class="logic-test-label">${escapeHtml(t.label)}</span>
+        </li>
+      `)
+      .join('');
+
+    const unsatisfied = set.unsatisfied?.length
+      ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">無法找到下列子句的可決定列：${set.unsatisfied.join(', ')}</p>`
+      : '';
+
+    return `
+      <h3 class="logic-summary-title">${escapeHtml(set.name)}</h3>
+      <p class="logic-summary-desc">${escapeHtml(set.description)}</p>
+      <p class="logic-summary-stats">
+        測試列數：<strong data-testid="logic-test-count">${set.tests.length}</strong>
+        <span class="logic-divider">·</span>
+        建議測試需求：<strong>${set.requirementCount}</strong>
+      </p>
+      <ol class="logic-test-list">${testList}</ol>
+      ${unsatisfied}
+    `;
+  }
+
+  function bindEvents() {
+    const input = root.querySelector('[data-testid="logic-expression-input"]');
+    if (input) {
+      input.addEventListener('input', (event) => {
+        state.expression = event.target.value;
+        recompute();
+        renderPreservingFocus('logic-expression-input');
+      });
+    }
+
+    root.querySelectorAll('[data-expression]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.expression = btn.dataset.expression;
+        recompute();
+        render();
+      });
+    });
+
+    root.querySelectorAll('[data-criterion]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.selectedCriterion = btn.dataset.criterion;
+        render();
+      });
+    });
+  }
+
+  function renderPreservingFocus(testid) {
+    const previouslyFocused = root.querySelector(`[data-testid="${testid}"]`);
+    const selectionStart = previouslyFocused?.selectionStart;
+    const selectionEnd = previouslyFocused?.selectionEnd;
+    render();
+    const next = root.querySelector(`[data-testid="${testid}"]`);
+    if (next) {
+      next.focus();
+      if (typeof selectionStart === 'number' && typeof selectionEnd === 'number' && next.setSelectionRange) {
+        next.setSelectionRange(selectionStart, selectionEnd);
+      }
+    }
+  }
+
+  recompute();
+  render();
+  return root;
+}

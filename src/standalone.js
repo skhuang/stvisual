@@ -26,6 +26,7 @@
         { id: "sc", name: "\u8A9E\u53E5\u8986\u84CB", nameEn: "Statement Coverage", description: "\u78BA\u4FDD\u6BCF\u689D\u8A9E\u53E5\u81F3\u5C11\u57F7\u884C\u4E00\u6B21" },
         { id: "bc", name: "\u5206\u652F\u8986\u84CB", nameEn: "Branch Coverage", description: "\u78BA\u4FDD\u6BCF\u500B\u5206\u652F\uFF08true/false\uFF09\u90FD\u88AB\u57F7\u884C" },
         { id: "gc", name: "\u5716\u5F62\u8986\u84CB", nameEn: "Graph Coverage", description: "\u4EE5\u63A7\u5236\u6D41\u7A0B\u5716\u63A8\u5C0E\u7BC0\u9EDE\u3001\u908A\u8207 Prime Path \u7684\u6E2C\u8A66\u9700\u6C42" },
+        { id: "lc", name: "\u908F\u8F2F\u8986\u84CB", nameEn: "Logic Coverage", description: "\u4EE5\u8FF0\u8A5E\u8207\u5B50\u53E5\u70BA\u6838\u5FC3\u7684\u8986\u84CB\u7B56\u7565\uFF0C\u5305\u542B PC\u3001CC\u3001ACC \u7CFB\u5217" },
         { id: "pc", name: "\u8DEF\u5F91\u8986\u84CB", nameEn: "Path Coverage", description: "\u78BA\u4FDD\u6BCF\u689D\u7368\u7ACB\u8DEF\u5F91\u90FD\u88AB\u57F7\u884C" },
         { id: "ppc", name: "Prime Path Coverage", nameEn: "Prime Path Coverage", description: "\u6700\u5C0F\u5316\u4E14\u5B8C\u6574\u7684\u8DEF\u5F91\u8986\u84CB\u96C6\u5408" },
         { id: "cc", name: "\u689D\u4EF6\u8986\u84CB", nameEn: "Condition Coverage", description: "\u78BA\u4FDD\u6BCF\u500B\u5E03\u6797\u689D\u4EF6\u7684\u771F\u5047\u90FD\u88AB\u6E2C\u8A66" },
@@ -302,6 +303,64 @@
       return 31;
   }
 }`
+    }
+  ];
+  var logicCoverageCriteria = [
+    {
+      id: "pc",
+      label: "Predicate Coverage",
+      labelZh: "Predicate Coverage",
+      description: "\u4F7F\u6574\u9AD4 predicate \u81F3\u5C11\u8A55\u4F30\u70BA true \u8207 false \u5404\u4E00\u6B21\u3002"
+    },
+    {
+      id: "cc",
+      label: "Clause Coverage",
+      labelZh: "\u5B50\u53E5\u8986\u84CB",
+      description: "\u6BCF\u500B\u5B50\u53E5\u7686\u81F3\u5C11\u5404\u53D6 true \u8207 false \u4E00\u6B21\u3002"
+    },
+    {
+      id: "coc",
+      label: "Combinatorial Coverage",
+      labelZh: "\u7D44\u5408\u8986\u84CB",
+      description: "\u5217\u8209\u6240\u6709 2^n \u500B\u5B50\u53E5\u771F\u5047\u7D44\u5408\u3002"
+    },
+    {
+      id: "gacc",
+      label: "General Active Clause Coverage",
+      labelZh: "GACC",
+      description: "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\u627E\u4E00\u5C0D\u5217\uFF0C\u4F7F\u8A72\u5B50\u53E5\u6C7A\u5B9A predicate \u7684\u503C\u3002"
+    },
+    {
+      id: "cacc",
+      label: "Correlated Active Clause Coverage",
+      labelZh: "CACC",
+      description: "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate\uFF0C\u4E14\u5169\u5217\u7522\u751F\u4E0D\u540C\u7684 predicate \u503C\u3002"
+    },
+    {
+      id: "racc",
+      label: "Restricted Active Clause Coverage",
+      labelZh: "RACC",
+      description: "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate\uFF0C\u4E14\u5169\u5217\u7684\u6B21\u5B50\u53E5\u503C\u5B8C\u5168\u76F8\u540C\u3002"
+    }
+  ];
+  var logicCoveragePredicates = [
+    {
+      id: "simple-and-or",
+      name: "(a && b) || c",
+      expression: "(a && b) || c",
+      description: "\u5E38\u898B\u7684\u6DF7\u5408 AND/OR predicate\uFF0C\u4E09\u500B\u5B50\u53E5\u3002"
+    },
+    {
+      id: "guarded-exit",
+      name: "a && (b || !c)",
+      expression: "a && (b || !c)",
+      description: "\u5E36\u6709\u5426\u5B9A\u5B50\u53E5\u7684\u5B88\u885B\u689D\u4EF6\u3002"
+    },
+    {
+      id: "four-clause",
+      name: "(a || b) && (c || d)",
+      expression: "(a || b) && (c || d)",
+      description: "\u56DB\u500B\u5B50\u53E5\u7684\u4E58\u7A4D\u5F0F predicate\uFF0C\u5E38\u898B\u65BC\u7BC4\u570D\u6AA2\u67E5\u3002"
     }
   ];
 
@@ -1936,6 +1995,526 @@
     return root2;
   }
 
+  // src/utils/logicCoverage.js
+  var TOKEN_REGEX = /\s*(?:(\()|(\))|(&&)|(\|\|)|(!)|([A-Za-z_][A-Za-z0-9_]*))/y;
+  function tokenize(expression) {
+    const tokens = [];
+    TOKEN_REGEX.lastIndex = 0;
+    let lastIndex = 0;
+    while (TOKEN_REGEX.lastIndex < expression.length) {
+      const start = TOKEN_REGEX.lastIndex;
+      const match = TOKEN_REGEX.exec(expression);
+      if (!match) {
+        const remainder = expression.slice(start).trim();
+        if (!remainder) break;
+        throw new Error(`\u4E0D\u652F\u63F4\u7684\u5B57\u5143\uFF1A\u300C${remainder[0]}\u300D\u65BC\u4F4D\u7F6E ${start + 1}`);
+      }
+      const [, lparen, rparen, andOp, orOp, notOp, ident] = match;
+      if (lparen) tokens.push({ type: "lparen" });
+      else if (rparen) tokens.push({ type: "rparen" });
+      else if (andOp) tokens.push({ type: "and" });
+      else if (orOp) tokens.push({ type: "or" });
+      else if (notOp) tokens.push({ type: "not" });
+      else if (ident) tokens.push({ type: "ident", value: ident });
+      lastIndex = TOKEN_REGEX.lastIndex;
+    }
+    if (lastIndex < expression.length && expression.slice(lastIndex).trim()) {
+      throw new Error(`\u7121\u6CD5\u89E3\u6790\u5269\u9918\u5B57\u4E32\uFF1A\u300C${expression.slice(lastIndex).trim()}\u300D`);
+    }
+    return tokens;
+  }
+  function parseExpression(tokens) {
+    let pos = 0;
+    function peek() {
+      return tokens[pos];
+    }
+    function consume(type) {
+      const token = tokens[pos];
+      if (!token || token.type !== type) {
+        throw new Error(`\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u9810\u671F ${type}\uFF0C\u5BE6\u969B ${token ? token.type : "EOF"}`);
+      }
+      pos += 1;
+      return token;
+    }
+    function parseOr() {
+      var _a;
+      let node = parseAnd();
+      while (((_a = peek()) == null ? void 0 : _a.type) === "or") {
+        consume("or");
+        node = { type: "or", left: node, right: parseAnd() };
+      }
+      return node;
+    }
+    function parseAnd() {
+      var _a;
+      let node = parseNot();
+      while (((_a = peek()) == null ? void 0 : _a.type) === "and") {
+        consume("and");
+        node = { type: "and", left: node, right: parseNot() };
+      }
+      return node;
+    }
+    function parseNot() {
+      var _a;
+      if (((_a = peek()) == null ? void 0 : _a.type) === "not") {
+        consume("not");
+        return { type: "not", operand: parseNot() };
+      }
+      return parseAtom();
+    }
+    function parseAtom() {
+      const token = peek();
+      if (!token) throw new Error("\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u672A\u9810\u671F\u7684\u7D50\u5C3E\u3002");
+      if (token.type === "lparen") {
+        consume("lparen");
+        const node = parseOr();
+        consume("rparen");
+        return node;
+      }
+      if (token.type === "ident") {
+        consume("ident");
+        return { type: "clause", name: token.value };
+      }
+      throw new Error(`\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u672A\u9810\u671F\u7684 ${token.type}`);
+    }
+    const ast = parseOr();
+    if (pos !== tokens.length) {
+      throw new Error("\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u5269\u9918 token \u672A\u89E3\u6790\u3002");
+    }
+    return ast;
+  }
+  function evaluateAst(ast, values) {
+    switch (ast.type) {
+      case "clause": {
+        if (!(ast.name in values)) {
+          throw new Error(`\u7F3A\u5C11\u5B50\u53E5\u503C\uFF1A${ast.name}`);
+        }
+        return Boolean(values[ast.name]);
+      }
+      case "not":
+        return !evaluateAst(ast.operand, values);
+      case "and":
+        return evaluateAst(ast.left, values) && evaluateAst(ast.right, values);
+      case "or":
+        return evaluateAst(ast.left, values) || evaluateAst(ast.right, values);
+      default:
+        throw new Error(`\u672A\u77E5 AST \u7BC0\u9EDE\uFF1A${ast.type}`);
+    }
+  }
+  function collectClauses(ast, accumulator = []) {
+    if (ast.type === "clause") {
+      if (!accumulator.includes(ast.name)) accumulator.push(ast.name);
+    } else if (ast.type === "not") {
+      collectClauses(ast.operand, accumulator);
+    } else {
+      collectClauses(ast.left, accumulator);
+      collectClauses(ast.right, accumulator);
+    }
+    return accumulator;
+  }
+  function parsePredicate(expression) {
+    const trimmed = String(expression || "").trim();
+    if (!trimmed) {
+      throw new Error("Predicate \u4E0D\u80FD\u70BA\u7A7A\u3002");
+    }
+    const tokens = tokenize(trimmed);
+    if (!tokens.length) {
+      throw new Error("Predicate \u4E0D\u542B\u4EFB\u4F55 token\u3002");
+    }
+    const ast = parseExpression(tokens);
+    const clauses = collectClauses(ast);
+    return { ast, clauses, expression: trimmed };
+  }
+  function buildTruthTable(parsed) {
+    const { ast, clauses } = parsed;
+    const total = 1 << clauses.length;
+    const rows = [];
+    for (let mask = 0; mask < total; mask += 1) {
+      const values = {};
+      clauses.forEach((clause, index) => {
+        values[clause] = Boolean(mask >> clauses.length - 1 - index & 1);
+      });
+      const predicate = evaluateAst(ast, values);
+      const determines = {};
+      clauses.forEach((clause) => {
+        const flipped = { ...values, [clause]: !values[clause] };
+        const flippedResult = evaluateAst(ast, flipped);
+        determines[clause] = flippedResult !== predicate;
+      });
+      rows.push({ index: mask, values, predicate, determines });
+    }
+    return rows;
+  }
+  function rowKey(row) {
+    return `r${row.index}`;
+  }
+  function buildPredicateCoverageSet(rows) {
+    const truthRow = rows.find((row) => row.predicate === true);
+    const falseRow = rows.find((row) => row.predicate === false);
+    const tests = [];
+    if (truthRow) tests.push({ id: rowKey(truthRow), row: truthRow, label: "P = T" });
+    if (falseRow) tests.push({ id: rowKey(falseRow), row: falseRow, label: "P = F" });
+    return {
+      id: "pc",
+      name: "Predicate Coverage",
+      description: "\u8B93\u6574\u500B predicate \u81F3\u5C11\u8A55\u4F30\u70BA true \u8207 false \u5404\u4E00\u6B21\u3002",
+      tests,
+      requirementCount: 2
+    };
+  }
+  function buildClauseCoverageSet(rows, clauses) {
+    const tests = [];
+    const used = /* @__PURE__ */ new Set();
+    clauses.forEach((clause) => {
+      ["T", "F"].forEach((label) => {
+        const target = label === "T";
+        const row = rows.find((r) => r.values[clause] === target);
+        if (!row) return;
+        const id = `${rowKey(row)}-${clause}=${label}`;
+        if (used.has(id)) return;
+        used.add(id);
+        tests.push({ id, row, label: `${clause} = ${label}` });
+      });
+    });
+    return {
+      id: "cc",
+      name: "Clause Coverage",
+      description: "\u6BCF\u500B\u5B50\u53E5\u90FD\u5FC5\u9808\u5404\u53D6 true \u8207 false \u4E00\u6B21\u3002",
+      tests,
+      requirementCount: clauses.length * 2
+    };
+  }
+  function buildCombinatorialCoverageSet(rows) {
+    return {
+      id: "coc",
+      name: "Combinatorial Coverage",
+      description: "\u5217\u8209\u6240\u6709\u5B50\u53E5\u771F\u5047\u7D44\u5408\uFF08\u5171 2^n \u5217\uFF09\u3002",
+      tests: rows.map((row) => ({ id: rowKey(row), row, label: `Row ${row.index}` })),
+      requirementCount: rows.length
+    };
+  }
+  function pickPair(rows, clause, mode) {
+    const tCandidates = rows.filter((row) => row.determines[clause] && row.values[clause] === true);
+    const fCandidates = rows.filter((row) => row.determines[clause] && row.values[clause] === false);
+    if (!tCandidates.length || !fCandidates.length) {
+      return null;
+    }
+    if (mode === "gacc") {
+      return [tCandidates[0], fCandidates[0]];
+    }
+    if (mode === "cacc") {
+      for (const tRow of tCandidates) {
+        for (const fRow of fCandidates) {
+          if (tRow.predicate !== fRow.predicate) {
+            return [tRow, fRow];
+          }
+        }
+      }
+      return null;
+    }
+    if (mode === "racc") {
+      for (const tRow of tCandidates) {
+        const minorMatch = fCandidates.find(
+          (fRow) => Object.keys(tRow.values).every(
+            (name) => name === clause ? fRow.values[name] !== tRow.values[name] : fRow.values[name] === tRow.values[name]
+          )
+        );
+        if (minorMatch) {
+          return [tRow, minorMatch];
+        }
+      }
+      return null;
+    }
+    return null;
+  }
+  function buildActiveClauseSet(id, name, description, rows, clauses, mode) {
+    const tests = [];
+    const seen = /* @__PURE__ */ new Set();
+    const unsatisfied = [];
+    clauses.forEach((clause) => {
+      const pair = pickPair(rows, clause, mode);
+      if (!pair) {
+        unsatisfied.push(clause);
+        return;
+      }
+      pair.forEach((row, index) => {
+        const testId = `${rowKey(row)}-${clause}-${index}`;
+        if (seen.has(testId)) return;
+        seen.add(testId);
+        tests.push({
+          id: testId,
+          row,
+          label: `${clause}=${row.values[clause] ? "T" : "F"} (\u4E3B\u5C0E ${clause})`,
+          majorClause: clause
+        });
+      });
+    });
+    return {
+      id,
+      name,
+      description,
+      tests,
+      requirementCount: clauses.length * 2,
+      unsatisfied
+    };
+  }
+  function buildGACCSet(rows, clauses) {
+    return buildActiveClauseSet(
+      "gacc",
+      "General Active Clause Coverage",
+      "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\uFF0C\u627E\u4E00\u5C0D\u5217\u4F7F\u5176\u6C7A\u5B9A predicate \u7684\u503C\uFF0C\u6B21\u5B50\u53E5\u53EF\u4EFB\u610F\u3002",
+      rows,
+      clauses,
+      "gacc"
+    );
+  }
+  function buildCACCSet(rows, clauses) {
+    return buildActiveClauseSet(
+      "cacc",
+      "Correlated Active Clause Coverage",
+      "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate \u7D50\u679C\uFF0C\u4E14\u5169\u5217\u7522\u751F\u4E0D\u540C\u7684 predicate \u503C\u3002",
+      rows,
+      clauses,
+      "cacc"
+    );
+  }
+  function buildRACCSet(rows, clauses) {
+    return buildActiveClauseSet(
+      "racc",
+      "Restricted Active Clause Coverage",
+      "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate \u7D50\u679C\uFF0C\u4E14\u5169\u5217\u7684\u6B21\u5B50\u53E5\u503C\u5B8C\u5168\u76F8\u540C\u3002",
+      rows,
+      clauses,
+      "racc"
+    );
+  }
+  function buildAllCoverageSets(parsed) {
+    const rows = buildTruthTable(parsed);
+    return {
+      rows,
+      clauses: parsed.clauses,
+      sets: {
+        pc: buildPredicateCoverageSet(rows),
+        cc: buildClauseCoverageSet(rows, parsed.clauses),
+        coc: buildCombinatorialCoverageSet(rows),
+        gacc: buildGACCSet(rows, parsed.clauses),
+        cacc: buildCACCSet(rows, parsed.clauses),
+        racc: buildRACCSet(rows, parsed.clauses)
+      }
+    };
+  }
+
+  // src/components/LogicCoverageExplorer.js
+  function escapeHtml2(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function createLogicCoverageExplorer() {
+    const root2 = document.createElement("div");
+    root2.className = "logic-coverage";
+    root2.dataset.testid = "logic-coverage";
+    const state = {
+      expression: logicCoveragePredicates[0].expression,
+      selectedCriterion: "pc",
+      error: null,
+      parsed: null,
+      analysis: null
+    };
+    function recompute() {
+      try {
+        state.parsed = parsePredicate(state.expression);
+        if (state.parsed.clauses.length > 6) {
+          throw new Error("\u70BA\u4E86\u8996\u89BA\u5316\u53EF\u8B80\u6027\uFF0C\u5B50\u53E5\u6578\u91CF\u8ACB\u9650\u5236\u5728 6 \u500B\u4EE5\u5167\u3002");
+        }
+        state.analysis = buildAllCoverageSets(state.parsed);
+        state.error = null;
+      } catch (err) {
+        state.parsed = null;
+        state.analysis = null;
+        state.error = err.message || String(err);
+      }
+    }
+    function getActiveSet() {
+      if (!state.analysis) return null;
+      return state.analysis.sets[state.selectedCriterion] || null;
+    }
+    function activeRowIds() {
+      const set = getActiveSet();
+      if (!set) return /* @__PURE__ */ new Set();
+      return new Set(set.tests.map((t) => `r${t.row.index}`));
+    }
+    function render() {
+      const examplesMarkup = logicCoveragePredicates.map((p) => `
+        <button
+          type="button"
+          class="logic-example-btn${state.expression === p.expression ? " active" : ""}"
+          data-expression="${escapeHtml2(p.expression)}"
+          data-testid="logic-example-${p.id}"
+          title="${escapeHtml2(p.description)}"
+        >
+          ${escapeHtml2(p.name)}
+        </button>
+      `).join("");
+      const criteriaMarkup = logicCoverageCriteria.map((c) => `
+        <button
+          type="button"
+          class="logic-criterion-btn${state.selectedCriterion === c.id ? " active" : ""}"
+          data-criterion="${c.id}"
+          data-testid="logic-criterion-${c.id}"
+        >
+          <span class="logic-criterion-label">${escapeHtml2(c.label)}</span>
+          <span class="logic-criterion-zh">${escapeHtml2(c.labelZh)}</span>
+        </button>
+      `).join("");
+      const truthTableMarkup = renderTruthTable();
+      const summaryMarkup = renderSummary();
+      root2.innerHTML = `
+      <div class="logic-toolbar">
+        <label class="logic-input-label" for="logic-expression-input">Predicate</label>
+        <input
+          id="logic-expression-input"
+          class="logic-expression-input"
+          type="text"
+          value="${escapeHtml2(state.expression)}"
+          spellcheck="false"
+          autocomplete="off"
+          data-testid="logic-expression-input"
+        />
+        <div class="logic-examples">${examplesMarkup}</div>
+      </div>
+
+      ${state.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state.error)}</div>` : ""}
+
+      <div class="logic-criteria" role="tablist" aria-label="Logic Coverage \u6E96\u5247">
+        ${criteriaMarkup}
+      </div>
+
+      <div class="logic-summary" data-testid="logic-summary">${summaryMarkup}</div>
+
+      <div class="logic-truth-table-wrap">${truthTableMarkup}</div>
+    `;
+      bindEvents();
+    }
+    function renderTruthTable() {
+      if (!state.analysis) {
+        return "";
+      }
+      const { rows, clauses } = state.analysis;
+      const highlighted = activeRowIds();
+      const activeSet = getActiveSet();
+      const majorByRow = /* @__PURE__ */ new Map();
+      if (activeSet && (activeSet.id === "gacc" || activeSet.id === "cacc" || activeSet.id === "racc")) {
+        activeSet.tests.forEach((test) => {
+          const key = `r${test.row.index}`;
+          if (!majorByRow.has(key)) {
+            majorByRow.set(key, /* @__PURE__ */ new Set());
+          }
+          majorByRow.get(key).add(test.majorClause);
+        });
+      }
+      const headerCells = clauses.map((c) => `<th scope="col">${escapeHtml2(c)}</th>`).join("");
+      const bodyRows = rows.map((row) => {
+        const rowKey2 = `r${row.index}`;
+        const isActive = highlighted.has(rowKey2);
+        const majors = majorByRow.get(rowKey2);
+        const cells = clauses.map((c) => {
+          const determining = row.determines[c];
+          const isMajor = majors == null ? void 0 : majors.has(c);
+          return `
+              <td class="logic-cell-clause${determining ? " determining" : ""}${isMajor ? " major" : ""}" data-clause="${escapeHtml2(c)}">
+                ${row.values[c] ? "T" : "F"}
+              </td>
+            `;
+        }).join("");
+        return `
+          <tr class="logic-row${isActive ? " active" : ""}${row.predicate ? " p-true" : " p-false"}" data-row="${row.index}" data-testid="logic-row-${row.index}">
+            <th scope="row">${row.index}</th>
+            ${cells}
+            <td class="logic-cell-result ${row.predicate ? "is-true" : "is-false"}">${row.predicate ? "T" : "F"}</td>
+          </tr>
+        `;
+      }).join("");
+      return `
+      <table class="logic-truth-table" data-testid="logic-truth-table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            ${headerCells}
+            <th scope="col">P</th>
+          </tr>
+        </thead>
+        <tbody>${bodyRows}</tbody>
+      </table>
+    `;
+    }
+    function renderSummary() {
+      var _a;
+      if (state.error || !state.analysis) {
+        return "";
+      }
+      const set = getActiveSet();
+      if (!set) return "";
+      const testList = set.tests.map((t) => `
+        <li class="logic-test-item" data-testid="logic-test-${escapeHtml2(t.id)}">
+          <span class="logic-test-row">#${t.row.index}</span>
+          <span class="logic-test-values">${state.analysis.clauses.map((c) => `${c}=${t.row.values[c] ? "T" : "F"}`).join(", ")}</span>
+          <span class="logic-test-pred ${t.row.predicate ? "is-true" : "is-false"}">P=${t.row.predicate ? "T" : "F"}</span>
+          <span class="logic-test-label">${escapeHtml2(t.label)}</span>
+        </li>
+      `).join("");
+      const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">\u7121\u6CD5\u627E\u5230\u4E0B\u5217\u5B50\u53E5\u7684\u53EF\u6C7A\u5B9A\u5217\uFF1A${set.unsatisfied.join(", ")}</p>` : "";
+      return `
+      <h3 class="logic-summary-title">${escapeHtml2(set.name)}</h3>
+      <p class="logic-summary-desc">${escapeHtml2(set.description)}</p>
+      <p class="logic-summary-stats">
+        \u6E2C\u8A66\u5217\u6578\uFF1A<strong data-testid="logic-test-count">${set.tests.length}</strong>
+        <span class="logic-divider">\xB7</span>
+        \u5EFA\u8B70\u6E2C\u8A66\u9700\u6C42\uFF1A<strong>${set.requirementCount}</strong>
+      </p>
+      <ol class="logic-test-list">${testList}</ol>
+      ${unsatisfied}
+    `;
+    }
+    function bindEvents() {
+      const input = root2.querySelector('[data-testid="logic-expression-input"]');
+      if (input) {
+        input.addEventListener("input", (event) => {
+          state.expression = event.target.value;
+          recompute();
+          renderPreservingFocus("logic-expression-input");
+        });
+      }
+      root2.querySelectorAll("[data-expression]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.expression = btn.dataset.expression;
+          recompute();
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-criterion]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.selectedCriterion = btn.dataset.criterion;
+          render();
+        });
+      });
+    }
+    function renderPreservingFocus(testid) {
+      const previouslyFocused = root2.querySelector(`[data-testid="${testid}"]`);
+      const selectionStart = previouslyFocused == null ? void 0 : previouslyFocused.selectionStart;
+      const selectionEnd = previouslyFocused == null ? void 0 : previouslyFocused.selectionEnd;
+      render();
+      const next = root2.querySelector(`[data-testid="${testid}"]`);
+      if (next) {
+        next.focus();
+        if (typeof selectionStart === "number" && typeof selectionEnd === "number" && next.setSelectionRange) {
+          next.setSelectionRange(selectionStart, selectionEnd);
+        }
+      }
+    }
+    recompute();
+    render();
+    return root2;
+  }
+
   // src/components/TestingFlow.js
   function createTestingFlow() {
     const root2 = document.createElement("div");
@@ -2110,7 +2689,7 @@
       measurementId: "G-RBRGPW34JQ"
     },
     drive: {
-      uploadFolderId: "333974166897-l4mfva3ntjghf90ogp5f3mqvik9rje2p.apps.googleusercontent.com"
+      uploadFolderId: "1B5hCB2Scte4Sds0d03mYNu-iGZS0JKbJ"
     }
   };
   function getResolvedCloudConfig() {
@@ -2501,6 +3080,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     { id: "all", label: "\u5168\u89BD" },
     { id: "methods", label: "\u6E2C\u8A66\u65B9\u6CD5" },
     { id: "graph", label: "Graph Coverage" },
+    { id: "logic", label: "Logic Coverage" },
     { id: "cloud", label: "\u96F2\u7AEF\u6574\u5408" },
     { id: "flow", label: "\u6E2C\u8A66\u6D41\u7A0B" },
     { id: "types", label: "\u6E2C\u8A66\u985E\u578B" }
@@ -2523,6 +3103,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <section data-testid="section-graph">
           <h2>Graph Coverage \u8996\u89BA\u5316</h2>
           <div data-slot="graph"></div>
+        </section>
+        <section data-testid="section-logic">
+          <h2>Logic Coverage \u8996\u89BA\u5316</h2>
+          <div data-slot="logic"></div>
         </section>
         <section data-testid="section-cloud">
           <h2>Google \u96F2\u7AEF\u6574\u5408</h2>
@@ -2548,6 +3132,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     const sections = {
       methods: main.querySelector('[data-testid="section-methods"]'),
       graph: main.querySelector('[data-testid="section-graph"]'),
+      logic: main.querySelector('[data-testid="section-logic"]'),
       cloud: main.querySelector('[data-testid="section-cloud"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]')
@@ -2555,12 +3140,14 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     const components = {
       methods: createTestingMethodTree(),
       graph: createGraphCoverageExplorer(),
+      logic: createLogicCoverageExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       types: createTestingTypesTable()
     };
     container.querySelector('[data-slot="methods"]').appendChild(components.methods);
     container.querySelector('[data-slot="graph"]').appendChild(components.graph);
+    container.querySelector('[data-slot="logic"]').appendChild(components.logic);
     container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
     container.querySelector('[data-slot="flow"]').appendChild(components.flow);
     container.querySelector('[data-slot="types"]').appendChild(components.types);

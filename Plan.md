@@ -16,7 +16,10 @@
 - 語句覆蓋
 - 分支覆蓋
 - 路徑覆蓋
+-  Prime path coverage
 - 條件覆蓋
+-  multiple conditions
+- Logic Coverage (PC / CC / ACC)
 
 ### 3. 灰盒測試 (Gray Box Testing)
 - 結合黑盒與白盒
