@@ -125,7 +125,7 @@ export function createLogicCoverageExplorer() {
     const activeSet = getActiveSet();
     const majorByRow = new Map();
 
-    if (activeSet && (activeSet.id === 'gacc' || activeSet.id === 'cacc' || activeSet.id === 'racc')) {
+    if (activeSet && ['gacc', 'cacc', 'racc', 'gicc', 'ricc'].includes(activeSet.id)) {
       activeSet.tests.forEach((test) => {
         const key = `r${test.row.index}`;
         if (!majorByRow.has(key)) {

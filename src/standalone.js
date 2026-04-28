@@ -341,6 +341,18 @@
       label: "Restricted Active Clause Coverage",
       labelZh: "RACC",
       description: "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate\uFF0C\u4E14\u5169\u5217\u7684\u6B21\u5B50\u53E5\u503C\u5B8C\u5168\u76F8\u540C\u3002"
+    },
+    {
+      id: "gicc",
+      label: "General Inactive Clause Coverage",
+      labelZh: "GICC",
+      description: "\u4E3B\u5B50\u53E5\u4E0D\u6C7A\u5B9A predicate\uFF0C\u8986\u84CB (c=T/F)\xD7(P=T/F) \u5171 4 \u7A2E\u7D44\u5408\u3002"
+    },
+    {
+      id: "ricc",
+      label: "Restricted Inactive Clause Coverage",
+      labelZh: "RICC",
+      description: "\u540C GICC\uFF0C\u4F46\u6210\u5C0D\u5217\u9700\u6240\u6709\u6B21\u5B50\u53E5\u76F8\u540C\uFF0C\u50C5\u4E3B\u5B50\u53E5\u7FFB\u8F49\u3002"
     }
   ];
   var logicCoveragePredicates = [
@@ -2288,6 +2300,95 @@
       "racc"
     );
   }
+  function buildInactiveClauseSet(id, name, description, rows, clauses, mode) {
+    const tests = [];
+    const seen = /* @__PURE__ */ new Set();
+    const unsatisfied = [];
+    clauses.forEach((clause) => {
+      const nonDet = rows.filter((row) => !row.determines[clause]);
+      const combos = [
+        [true, true],
+        [true, false],
+        [false, true],
+        [false, false]
+      ];
+      function addRow(row, comboLabel) {
+        const testId = `${rowKey(row)}-${clause}-${comboLabel}`;
+        if (seen.has(testId)) return;
+        seen.add(testId);
+        tests.push({
+          id: testId,
+          row,
+          label: `${clause}=${row.values[clause] ? "T" : "F"}, P=${row.predicate ? "T" : "F"} (\u975E\u4E3B\u5C0E ${clause})`,
+          majorClause: clause
+        });
+      }
+      if (mode === "gicc") {
+        combos.forEach(([cVal, pVal]) => {
+          const row = nonDet.find((r) => r.values[clause] === cVal && r.predicate === pVal);
+          if (!row) {
+            unsatisfied.push(`${clause}@(c=${cVal ? "T" : "F"},p=${pVal ? "T" : "F"})`);
+            return;
+          }
+          addRow(row, `c${cVal ? "T" : "F"}p${pVal ? "T" : "F"}`);
+        });
+        return;
+      }
+      if (mode === "ricc") {
+        [true, false].forEach((pVal) => {
+          const tCandidates = nonDet.filter((r) => r.values[clause] === true && r.predicate === pVal);
+          const fCandidates = nonDet.filter((r) => r.values[clause] === false && r.predicate === pVal);
+          let pair = null;
+          for (const tRow of tCandidates) {
+            const minorMatch = fCandidates.find(
+              (fRow) => Object.keys(tRow.values).every(
+                (name2) => name2 === clause ? true : fRow.values[name2] === tRow.values[name2]
+              )
+            );
+            if (minorMatch) {
+              pair = [tRow, minorMatch];
+              break;
+            }
+          }
+          if (!pair) {
+            unsatisfied.push(`${clause}@p=${pVal ? "T" : "F"}`);
+            return;
+          }
+          pair.forEach((row, index) => {
+            addRow(row, `p${pVal ? "T" : "F"}-${index}`);
+          });
+        });
+      }
+    });
+    return {
+      id,
+      name,
+      description,
+      tests,
+      requirementCount: clauses.length * 4,
+      unsatisfied
+    };
+  }
+  function buildGICCSet(rows, clauses) {
+    return buildInactiveClauseSet(
+      "gicc",
+      "General Inactive Clause Coverage",
+      "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\uFF0C\u65BC\u4E0D\u6C7A\u5B9A predicate \u7684\u5217\u4E2D\uFF0C\u8986\u84CB (c=T/F)\xD7(P=T/F) \u5171 4 \u7A2E\u7D44\u5408\u3002",
+      rows,
+      clauses,
+      "gicc"
+    );
+  }
+  function buildRICCSet(rows, clauses) {
+    return buildInactiveClauseSet(
+      "ricc",
+      "Restricted Inactive Clause Coverage",
+      "\u540C GICC\uFF0C\u4F46\u6210\u5C0D\u5217\uFF08\u540C P \u503C\uFF09\u9700\u6240\u6709\u6B21\u5B50\u53E5\u5B8C\u5168\u76F8\u540C\uFF0C\u50C5\u4E3B\u5B50\u53E5\u7FFB\u8F49\u3002",
+      rows,
+      clauses,
+      "ricc"
+    );
+  }
   function buildAllCoverageSets(parsed) {
     const rows = buildTruthTable(parsed);
     return {
@@ -2299,7 +2400,9 @@
         coc: buildCombinatorialCoverageSet(rows),
         gacc: buildGACCSet(rows, parsed.clauses),
         cacc: buildCACCSet(rows, parsed.clauses),
-        racc: buildRACCSet(rows, parsed.clauses)
+        racc: buildRACCSet(rows, parsed.clauses),
+        gicc: buildGICCSet(rows, parsed.clauses),
+        ricc: buildRICCSet(rows, parsed.clauses)
       }
     };
   }
@@ -2402,7 +2505,7 @@
       const highlighted = activeRowIds();
       const activeSet = getActiveSet();
       const majorByRow = /* @__PURE__ */ new Map();
-      if (activeSet && (activeSet.id === "gacc" || activeSet.id === "cacc" || activeSet.id === "racc")) {
+      if (activeSet && ["gacc", "cacc", "racc", "gicc", "ricc"].includes(activeSet.id)) {
         activeSet.tests.forEach((test) => {
           const key = `r${test.row.index}`;
           if (!majorByRow.has(key)) {

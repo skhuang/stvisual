@@ -347,6 +347,18 @@ export const logicCoverageCriteria = [
     labelZh: 'RACC',
     description: '主子句決定 predicate，且兩列的次子句值完全相同。',
   },
+  {
+    id: 'gicc',
+    label: 'General Inactive Clause Coverage',
+    labelZh: 'GICC',
+    description: '主子句不決定 predicate，覆蓋 (c=T/F)×(P=T/F) 共 4 種組合。',
+  },
+  {
+    id: 'ricc',
+    label: 'Restricted Inactive Clause Coverage',
+    labelZh: 'RICC',
+    description: '同 GICC，但成對列需所有次子句相同，僅主子句翻轉。',
+  },
 ];
 
 export const logicCoveragePredicates = [

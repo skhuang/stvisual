@@ -8,6 +8,8 @@ import {
   buildGACCSet,
   buildCACCSet,
   buildRACCSet,
+  buildGICCSet,
+  buildRICCSet,
   buildAllCoverageSets,
 } from '../utils/logicCoverage.js';
 
@@ -128,9 +130,50 @@ describe('buildAllCoverageSets', () => {
     const parsed = parsePredicate('a && (b || !c)');
     const analysis = buildAllCoverageSets(parsed);
     expect(analysis.rows).toHaveLength(8);
-    ['pc', 'cc', 'coc', 'gacc', 'cacc', 'racc'].forEach((id) => {
+    ['pc', 'cc', 'coc', 'gacc', 'cacc', 'racc', 'gicc', 'ricc'].forEach((id) => {
       expect(analysis.sets[id]).toBeDefined();
       expect(analysis.sets[id].tests.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe('inactive clause coverage', () => {
+  const parsed = parsePredicate('(a && b) || c');
+  const rows = buildTruthTable(parsed);
+
+  it('GICC rows do NOT determine the major clause and cover 4 (c,p) combos when feasible', () => {
+    const set = buildGICCSet(rows, parsed.clauses);
+    const byMajor = new Map();
+    set.tests.forEach((t) => {
+      expect(t.row.determines[t.majorClause]).toBe(false);
+      const key = t.majorClause;
+      if (!byMajor.has(key)) byMajor.set(key, new Set());
+      byMajor.get(key).add(`${t.row.values[t.majorClause] ? 'T' : 'F'}${t.row.predicate ? 'T' : 'F'}`);
+    });
+    byMajor.forEach((combos) => {
+      expect(combos.size).toBeGreaterThanOrEqual(2);
+    });
+  });
+
+  it('RICC pairs share minor clause values within the same predicate value', () => {
+    const set = buildRICCSet(rows, parsed.clauses);
+    const grouped = new Map();
+    set.tests.forEach((t) => {
+      const key = `${t.majorClause}|p=${t.row.predicate}`;
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key).push(t.row);
+    });
+    grouped.forEach((pair, key) => {
+      if (pair.length !== 2) return;
+      const [a, b] = pair;
+      const major = key.split('|')[0];
+      Object.keys(a.values).forEach((clause) => {
+        if (clause === major) {
+          expect(a.values[clause]).not.toBe(b.values[clause]);
+        } else {
+          expect(a.values[clause]).toBe(b.values[clause]);
+        }
+      });
     });
   });
 });

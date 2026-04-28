@@ -336,6 +336,103 @@ export function buildRACCSet(rows, clauses) {
   );
 }
 
+function buildInactiveClauseSet(id, name, description, rows, clauses, mode) {
+  const tests = [];
+  const seen = new Set();
+  const unsatisfied = [];
+
+  clauses.forEach((clause) => {
+    const nonDet = rows.filter((row) => !row.determines[clause]);
+    const combos = [
+      [true, true],
+      [true, false],
+      [false, true],
+      [false, false],
+    ];
+
+    function addRow(row, comboLabel) {
+      const testId = `${rowKey(row)}-${clause}-${comboLabel}`;
+      if (seen.has(testId)) return;
+      seen.add(testId);
+      tests.push({
+        id: testId,
+        row,
+        label: `${clause}=${row.values[clause] ? 'T' : 'F'}, P=${row.predicate ? 'T' : 'F'} (非主導 ${clause})`,
+        majorClause: clause,
+      });
+    }
+
+    if (mode === 'gicc') {
+      combos.forEach(([cVal, pVal]) => {
+        const row = nonDet.find((r) => r.values[clause] === cVal && r.predicate === pVal);
+        if (!row) {
+          unsatisfied.push(`${clause}@(c=${cVal ? 'T' : 'F'},p=${pVal ? 'T' : 'F'})`);
+          return;
+        }
+        addRow(row, `c${cVal ? 'T' : 'F'}p${pVal ? 'T' : 'F'}`);
+      });
+      return;
+    }
+
+    if (mode === 'ricc') {
+      [true, false].forEach((pVal) => {
+        const tCandidates = nonDet.filter((r) => r.values[clause] === true && r.predicate === pVal);
+        const fCandidates = nonDet.filter((r) => r.values[clause] === false && r.predicate === pVal);
+        let pair = null;
+        for (const tRow of tCandidates) {
+          const minorMatch = fCandidates.find((fRow) =>
+            Object.keys(tRow.values).every((name) =>
+              name === clause ? true : fRow.values[name] === tRow.values[name],
+            ),
+          );
+          if (minorMatch) {
+            pair = [tRow, minorMatch];
+            break;
+          }
+        }
+        if (!pair) {
+          unsatisfied.push(`${clause}@p=${pVal ? 'T' : 'F'}`);
+          return;
+        }
+        pair.forEach((row, index) => {
+          addRow(row, `p${pVal ? 'T' : 'F'}-${index}`);
+        });
+      });
+    }
+  });
+
+  return {
+    id,
+    name,
+    description,
+    tests,
+    requirementCount: clauses.length * 4,
+    unsatisfied,
+  };
+}
+
+export function buildGICCSet(rows, clauses) {
+  return buildInactiveClauseSet(
+    'gicc',
+    'General Inactive Clause Coverage',
+    '對每個主子句，於不決定 predicate 的列中，覆蓋 (c=T/F)×(P=T/F) 共 4 種組合。',
+    rows,
+    clauses,
+    'gicc',
+  );
+}
+
+export function buildRICCSet(rows, clauses) {
+  return buildInactiveClauseSet(
+    'ricc',
+    'Restricted Inactive Clause Coverage',
+    '同 GICC，但成對列（同 P 值）需所有次子句完全相同，僅主子句翻轉。',
+    rows,
+    clauses,
+    'ricc',
+  );
+}
+
 export function buildAllCoverageSets(parsed) {
   const rows = buildTruthTable(parsed);
   return {
@@ -348,6 +445,8 @@ export function buildAllCoverageSets(parsed) {
       gacc: buildGACCSet(rows, parsed.clauses),
       cacc: buildCACCSet(rows, parsed.clauses),
       racc: buildRACCSet(rows, parsed.clauses),
+      gicc: buildGICCSet(rows, parsed.clauses),
+      ricc: buildRICCSet(rows, parsed.clauses),
     },
   };
 }
