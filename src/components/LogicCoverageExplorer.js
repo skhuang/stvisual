@@ -6,6 +6,7 @@ import {
   buildAllCoverageSets,
   parsePredicate,
 } from '../utils/logicCoverage.js';
+import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
 
 const RECENT_KEY = 'stvisual.logic.recentPredicates';
 const RECENT_LIMIT = 8;
@@ -86,7 +87,27 @@ export function createLogicCoverageExplorer() {
     parsed: null,
     analysis: null,
     recent: loadRecent(),
+    cloudUser: null,
   };
+
+  let cloudClient = null;
+  try {
+    cloudClient = createCloudIntegrationClient();
+  } catch {
+    cloudClient = null;
+  }
+
+  function pushRecentToCloud(list) {
+    if (!cloudClient || !state.cloudUser || typeof cloudClient.saveLogicRecent !== 'function') return;
+    cloudClient.saveLogicRecent(state.cloudUser.uid, list).catch(() => {
+      // 忽略雲端錯誤，仍保留本地紀錄。
+    });
+  }
+
+  function persistRecent() {
+    saveRecent(state.recent);
+    pushRecentToCloud(state.recent);
+  }
 
   function rememberCurrentExpression() {
     const expr = state.expression.trim();
@@ -97,7 +118,7 @@ export function createLogicCoverageExplorer() {
       return false;
     }
     state.recent = next;
-    saveRecent(state.recent);
+    persistRecent();
     return true;
   }
 
@@ -105,7 +126,7 @@ export function createLogicCoverageExplorer() {
     const next = state.recent.filter((item) => item !== expr);
     if (next.length === state.recent.length) return;
     state.recent = next;
-    saveRecent(state.recent);
+    persistRecent();
     render();
   }
 
@@ -419,5 +440,38 @@ export function createLogicCoverageExplorer() {
 
   recompute();
   render();
+
+  if (cloudClient && typeof cloudClient.subscribeAuthState === 'function') {
+    cloudClient.subscribeAuthState(async (user) => {
+      state.cloudUser = user || null;
+      if (!user || typeof cloudClient.loadLogicRecent !== 'function') {
+        return;
+      }
+      try {
+        const remote = await cloudClient.loadLogicRecent(user.uid);
+        const merged = [];
+        const seen = new Set();
+        [...remote, ...state.recent].forEach((expr) => {
+          if (typeof expr !== 'string') return;
+          if (seen.has(expr)) return;
+          seen.add(expr);
+          merged.push(expr);
+        });
+        const next = merged.slice(0, RECENT_LIMIT);
+        const changed = next.length !== state.recent.length
+          || next.some((v, i) => v !== state.recent[i]);
+        state.recent = next;
+        saveRecent(state.recent);
+        // 若本地原本有遠端缺少的條目，把合併結果寫回雲端。
+        if (next.length !== remote.length || next.some((v, i) => v !== remote[i])) {
+          pushRecentToCloud(state.recent);
+        }
+        if (changed) render();
+      } catch {
+        // 忽略雲端讀取錯誤
+      }
+    });
+  }
+
   return root;
 }

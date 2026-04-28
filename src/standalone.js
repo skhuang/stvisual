@@ -2752,6 +2752,237 @@
     };
   }
 
+  // src/config/cloudConfig.js
+  var cloudConfig = {
+    firebase: {
+      apiKey: "AIzaSyB9QlOS2IodbRQWxGGe_a8cEviSZURyo3k",
+      authDomain: "stvisual-a88cd.firebaseapp.com",
+      projectId: "stvisual-a88cd",
+      storageBucket: "stvisual-a88cd.firebasestorage.app",
+      messagingSenderId: "1030102454109",
+      appId: "1:1030102454109:web:cb50e6da22b4b5dda2a2b4",
+      measurementId: "G-RBRGPW34JQ"
+    },
+    drive: {
+      uploadFolderId: "1B5hCB2Scte4Sds0d03mYNu-iGZS0JKbJ"
+    }
+  };
+  function getResolvedCloudConfig() {
+    const runtimeConfig = globalThis.STVISUAL_CLOUD_CONFIG || {};
+    return {
+      ...cloudConfig,
+      ...runtimeConfig,
+      firebase: {
+        ...cloudConfig.firebase,
+        ...runtimeConfig.firebase || {}
+      },
+      drive: {
+        ...cloudConfig.drive,
+        ...runtimeConfig.drive || {}
+      }
+    };
+  }
+
+  // src/utils/cloudIntegration.js
+  var REQUIRED_FIREBASE_KEYS = ["apiKey", "authDomain", "projectId", "appId"];
+  var DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
+  function getMissingFirebaseKeys(firebaseConfig) {
+    return REQUIRED_FIREBASE_KEYS.filter((key) => !(firebaseConfig == null ? void 0 : firebaseConfig[key]));
+  }
+  function createMultipartBody(file, metadata) {
+    const boundary = `stvisual-${Date.now()}`;
+    const head = `--${boundary}\r
+Content-Type: application/json; charset=UTF-8\r
+\r
+${JSON.stringify(metadata)}\r
+`;
+    const middle = `--${boundary}\r
+Content-Type: ${file.type || "application/octet-stream"}\r
+\r
+`;
+    const tail = `\r
+--${boundary}--`;
+    return {
+      boundary,
+      body: new Blob([head, middle, file, tail])
+    };
+  }
+  function createCloudIntegrationClient() {
+    var _a;
+    const config = getResolvedCloudConfig();
+    const missingKeys = getMissingFirebaseKeys(config.firebase);
+    const isFileProtocol = ((_a = globalThis.location) == null ? void 0 : _a.protocol) === "file:";
+    const isSupportedOrigin = !isFileProtocol;
+    const isConfigured = missingKeys.length === 0;
+    const firebase = globalThis.firebase;
+    if (!isSupportedOrigin) {
+      const originMessage = "Google OAuth \u4E0D\u652F\u63F4 file://\u3002\u8ACB\u6539\u7528 http://localhost \u6216 https \u7DB2\u5740\u958B\u555F\u9801\u9762\u3002";
+      return {
+        isConfigured,
+        missingKeys,
+        isSupportedOrigin,
+        originWarning: originMessage,
+        subscribeAuthState(callback) {
+          callback(null);
+          return () => {
+          };
+        },
+        async signInWithGoogle() {
+          throw new Error(originMessage);
+        },
+        async signOutGoogle() {
+          throw new Error(originMessage);
+        },
+        async saveSettings() {
+          throw new Error(originMessage);
+        },
+        async loadSettings() {
+          throw new Error(originMessage);
+        },
+        async uploadFileToDrive() {
+          throw new Error(originMessage);
+        }
+      };
+    }
+    if (!isConfigured) {
+      return {
+        isConfigured,
+        missingKeys,
+        isSupportedOrigin,
+        originWarning: "",
+        subscribeAuthState(callback) {
+          callback(null);
+          return () => {
+          };
+        },
+        async signInWithGoogle() {
+          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
+        },
+        async signOutGoogle() {
+          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
+        },
+        async saveSettings() {
+          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
+        },
+        async loadSettings() {
+          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
+        },
+        async uploadFileToDrive() {
+          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
+        }
+      };
+    }
+    if (!(firebase == null ? void 0 : firebase.apps) || typeof firebase.initializeApp !== "function") {
+      const sdkMessage = "Firebase SDK \u5C1A\u672A\u8F09\u5165\uFF0C\u8ACB\u78BA\u8A8D index.html \u5DF2\u5F15\u5165 firebase-app/auth/firestore compat scripts\u3002";
+      return {
+        isConfigured,
+        missingKeys,
+        isSupportedOrigin,
+        originWarning: "",
+        subscribeAuthState(callback) {
+          callback(null);
+          return () => {
+          };
+        },
+        async signInWithGoogle() {
+          throw new Error(sdkMessage);
+        },
+        async signOutGoogle() {
+          throw new Error(sdkMessage);
+        },
+        async saveSettings() {
+          throw new Error(sdkMessage);
+        },
+        async loadSettings() {
+          throw new Error(sdkMessage);
+        },
+        async uploadFileToDrive() {
+          throw new Error(sdkMessage);
+        }
+      };
+    }
+    const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(config.firebase);
+    const auth = firebase.auth(app);
+    const db = firebase.firestore(app);
+    let driveAccessToken = null;
+    return {
+      isConfigured,
+      missingKeys,
+      isSupportedOrigin,
+      originWarning: "",
+      subscribeAuthState(callback) {
+        return auth.onAuthStateChanged(callback);
+      },
+      async signInWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope(DRIVE_SCOPE);
+        const result = await auth.signInWithPopup(provider);
+        const credential = result.credential;
+        driveAccessToken = (credential == null ? void 0 : credential.accessToken) || null;
+        return {
+          user: result.user,
+          hasDriveToken: Boolean(driveAccessToken)
+        };
+      },
+      async signOutGoogle() {
+        driveAccessToken = null;
+        await auth.signOut();
+      },
+      async loadSettings(userId) {
+        const snapshot = await db.collection("users").doc(userId).collection("settings").doc("default").get();
+        if (!snapshot.exists()) {
+          return null;
+        }
+        return snapshot.data();
+      },
+      async saveSettings(userId, settings) {
+        await db.collection("users").doc(userId).collection("settings").doc("default").set({
+          ...settings,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      },
+      async loadLogicRecent(userId) {
+        const snapshot = await db.collection("users").doc(userId).collection("settings").doc("logicCoverage").get();
+        if (!snapshot.exists()) return [];
+        const data = snapshot.data() || {};
+        return Array.isArray(data.recentPredicates) ? data.recentPredicates.filter((p) => typeof p === "string") : [];
+      },
+      async saveLogicRecent(userId, list) {
+        await db.collection("users").doc(userId).collection("settings").doc("logicCoverage").set({
+          recentPredicates: Array.isArray(list) ? list.filter((p) => typeof p === "string") : [],
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      },
+      async uploadFileToDrive(file, options = {}) {
+        var _a2;
+        if (!driveAccessToken) {
+          throw new Error("\u76EE\u524D\u6C92\u6709 Drive \u5B58\u53D6\u6B0A\u6756\uFF0C\u8ACB\u5148\u91CD\u65B0 Google \u767B\u5165\u3002");
+        }
+        const metadata = {
+          name: file.name
+        };
+        const folderId = options.folderId || config.drive.uploadFolderId;
+        if (folderId) {
+          metadata.parents = [folderId];
+        }
+        const { boundary, body } = createMultipartBody(file, metadata);
+        const response = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${driveAccessToken}`,
+            "Content-Type": `multipart/related; boundary=${boundary}`
+          },
+          body
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(((_a2 = payload == null ? void 0 : payload.error) == null ? void 0 : _a2.message) || "\u4E0A\u50B3\u5230 Google Drive \u5931\u6557\u3002");
+        }
+        return payload;
+      }
+    };
+  }
+
   // src/components/LogicCoverageExplorer.js
   var RECENT_KEY = "stvisual.logic.recentPredicates";
   var RECENT_LIMIT = 8;
@@ -2809,8 +3040,24 @@
       error: null,
       parsed: null,
       analysis: null,
-      recent: loadRecent()
+      recent: loadRecent(),
+      cloudUser: null
     };
+    let cloudClient = null;
+    try {
+      cloudClient = createCloudIntegrationClient();
+    } catch {
+      cloudClient = null;
+    }
+    function pushRecentToCloud(list) {
+      if (!cloudClient || !state.cloudUser || typeof cloudClient.saveLogicRecent !== "function") return;
+      cloudClient.saveLogicRecent(state.cloudUser.uid, list).catch(() => {
+      });
+    }
+    function persistRecent() {
+      saveRecent(state.recent);
+      pushRecentToCloud(state.recent);
+    }
     function rememberCurrentExpression() {
       const expr = state.expression.trim();
       if (!expr || state.error) return false;
@@ -2820,14 +3067,14 @@
         return false;
       }
       state.recent = next;
-      saveRecent(state.recent);
+      persistRecent();
       return true;
     }
     function removeRecent(expr) {
       const next = state.recent.filter((item) => item !== expr);
       if (next.length === state.recent.length) return;
       state.recent = next;
-      saveRecent(state.recent);
+      persistRecent();
       render();
     }
     function recompute() {
@@ -3089,6 +3336,34 @@
     }
     recompute();
     render();
+    if (cloudClient && typeof cloudClient.subscribeAuthState === "function") {
+      cloudClient.subscribeAuthState(async (user) => {
+        state.cloudUser = user || null;
+        if (!user || typeof cloudClient.loadLogicRecent !== "function") {
+          return;
+        }
+        try {
+          const remote = await cloudClient.loadLogicRecent(user.uid);
+          const merged = [];
+          const seen = /* @__PURE__ */ new Set();
+          [...remote, ...state.recent].forEach((expr) => {
+            if (typeof expr !== "string") return;
+            if (seen.has(expr)) return;
+            seen.add(expr);
+            merged.push(expr);
+          });
+          const next = merged.slice(0, RECENT_LIMIT);
+          const changed = next.length !== state.recent.length || next.some((v, i) => v !== state.recent[i]);
+          state.recent = next;
+          saveRecent(state.recent);
+          if (next.length !== remote.length || next.some((v, i) => v !== remote[i])) {
+            pushRecentToCloud(state.recent);
+          }
+          if (changed) render();
+        } catch {
+        }
+      });
+    }
     return root2;
   }
 
@@ -3252,225 +3527,6 @@
     </div>
   `;
     return root2;
-  }
-
-  // src/config/cloudConfig.js
-  var cloudConfig = {
-    firebase: {
-      apiKey: "AIzaSyB9QlOS2IodbRQWxGGe_a8cEviSZURyo3k",
-      authDomain: "stvisual-a88cd.firebaseapp.com",
-      projectId: "stvisual-a88cd",
-      storageBucket: "stvisual-a88cd.firebasestorage.app",
-      messagingSenderId: "1030102454109",
-      appId: "1:1030102454109:web:cb50e6da22b4b5dda2a2b4",
-      measurementId: "G-RBRGPW34JQ"
-    },
-    drive: {
-      uploadFolderId: "1B5hCB2Scte4Sds0d03mYNu-iGZS0JKbJ"
-    }
-  };
-  function getResolvedCloudConfig() {
-    const runtimeConfig = globalThis.STVISUAL_CLOUD_CONFIG || {};
-    return {
-      ...cloudConfig,
-      ...runtimeConfig,
-      firebase: {
-        ...cloudConfig.firebase,
-        ...runtimeConfig.firebase || {}
-      },
-      drive: {
-        ...cloudConfig.drive,
-        ...runtimeConfig.drive || {}
-      }
-    };
-  }
-
-  // src/utils/cloudIntegration.js
-  var REQUIRED_FIREBASE_KEYS = ["apiKey", "authDomain", "projectId", "appId"];
-  var DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
-  function getMissingFirebaseKeys(firebaseConfig) {
-    return REQUIRED_FIREBASE_KEYS.filter((key) => !(firebaseConfig == null ? void 0 : firebaseConfig[key]));
-  }
-  function createMultipartBody(file, metadata) {
-    const boundary = `stvisual-${Date.now()}`;
-    const head = `--${boundary}\r
-Content-Type: application/json; charset=UTF-8\r
-\r
-${JSON.stringify(metadata)}\r
-`;
-    const middle = `--${boundary}\r
-Content-Type: ${file.type || "application/octet-stream"}\r
-\r
-`;
-    const tail = `\r
---${boundary}--`;
-    return {
-      boundary,
-      body: new Blob([head, middle, file, tail])
-    };
-  }
-  function createCloudIntegrationClient() {
-    var _a;
-    const config = getResolvedCloudConfig();
-    const missingKeys = getMissingFirebaseKeys(config.firebase);
-    const isFileProtocol = ((_a = globalThis.location) == null ? void 0 : _a.protocol) === "file:";
-    const isSupportedOrigin = !isFileProtocol;
-    const isConfigured = missingKeys.length === 0;
-    const firebase = globalThis.firebase;
-    if (!isSupportedOrigin) {
-      const originMessage = "Google OAuth \u4E0D\u652F\u63F4 file://\u3002\u8ACB\u6539\u7528 http://localhost \u6216 https \u7DB2\u5740\u958B\u555F\u9801\u9762\u3002";
-      return {
-        isConfigured,
-        missingKeys,
-        isSupportedOrigin,
-        originWarning: originMessage,
-        subscribeAuthState(callback) {
-          callback(null);
-          return () => {
-          };
-        },
-        async signInWithGoogle() {
-          throw new Error(originMessage);
-        },
-        async signOutGoogle() {
-          throw new Error(originMessage);
-        },
-        async saveSettings() {
-          throw new Error(originMessage);
-        },
-        async loadSettings() {
-          throw new Error(originMessage);
-        },
-        async uploadFileToDrive() {
-          throw new Error(originMessage);
-        }
-      };
-    }
-    if (!isConfigured) {
-      return {
-        isConfigured,
-        missingKeys,
-        isSupportedOrigin,
-        originWarning: "",
-        subscribeAuthState(callback) {
-          callback(null);
-          return () => {
-          };
-        },
-        async signInWithGoogle() {
-          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
-        },
-        async signOutGoogle() {
-          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
-        },
-        async saveSettings() {
-          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
-        },
-        async loadSettings() {
-          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
-        },
-        async uploadFileToDrive() {
-          throw new Error(`Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF0C\u7F3A\u5C11\uFF1A${missingKeys.join(", ")}`);
-        }
-      };
-    }
-    if (!(firebase == null ? void 0 : firebase.apps) || typeof firebase.initializeApp !== "function") {
-      const sdkMessage = "Firebase SDK \u5C1A\u672A\u8F09\u5165\uFF0C\u8ACB\u78BA\u8A8D index.html \u5DF2\u5F15\u5165 firebase-app/auth/firestore compat scripts\u3002";
-      return {
-        isConfigured,
-        missingKeys,
-        isSupportedOrigin,
-        originWarning: "",
-        subscribeAuthState(callback) {
-          callback(null);
-          return () => {
-          };
-        },
-        async signInWithGoogle() {
-          throw new Error(sdkMessage);
-        },
-        async signOutGoogle() {
-          throw new Error(sdkMessage);
-        },
-        async saveSettings() {
-          throw new Error(sdkMessage);
-        },
-        async loadSettings() {
-          throw new Error(sdkMessage);
-        },
-        async uploadFileToDrive() {
-          throw new Error(sdkMessage);
-        }
-      };
-    }
-    const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(config.firebase);
-    const auth = firebase.auth(app);
-    const db = firebase.firestore(app);
-    let driveAccessToken = null;
-    return {
-      isConfigured,
-      missingKeys,
-      isSupportedOrigin,
-      originWarning: "",
-      subscribeAuthState(callback) {
-        return auth.onAuthStateChanged(callback);
-      },
-      async signInWithGoogle() {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope(DRIVE_SCOPE);
-        const result = await auth.signInWithPopup(provider);
-        const credential = result.credential;
-        driveAccessToken = (credential == null ? void 0 : credential.accessToken) || null;
-        return {
-          user: result.user,
-          hasDriveToken: Boolean(driveAccessToken)
-        };
-      },
-      async signOutGoogle() {
-        driveAccessToken = null;
-        await auth.signOut();
-      },
-      async loadSettings(userId) {
-        const snapshot = await db.collection("users").doc(userId).collection("settings").doc("default").get();
-        if (!snapshot.exists()) {
-          return null;
-        }
-        return snapshot.data();
-      },
-      async saveSettings(userId, settings) {
-        await db.collection("users").doc(userId).collection("settings").doc("default").set({
-          ...settings,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-      },
-      async uploadFileToDrive(file, options = {}) {
-        var _a2;
-        if (!driveAccessToken) {
-          throw new Error("\u76EE\u524D\u6C92\u6709 Drive \u5B58\u53D6\u6B0A\u6756\uFF0C\u8ACB\u5148\u91CD\u65B0 Google \u767B\u5165\u3002");
-        }
-        const metadata = {
-          name: file.name
-        };
-        const folderId = options.folderId || config.drive.uploadFolderId;
-        if (folderId) {
-          metadata.parents = [folderId];
-        }
-        const { boundary, body } = createMultipartBody(file, metadata);
-        const response = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${driveAccessToken}`,
-            "Content-Type": `multipart/related; boundary=${boundary}`
-          },
-          body
-        });
-        const payload = await response.json();
-        if (!response.ok) {
-          throw new Error(((_a2 = payload == null ? void 0 : payload.error) == null ? void 0 : _a2.message) || "\u4E0A\u50B3\u5230 Google Drive \u5931\u6557\u3002");
-        }
-        return payload;
-      }
-    };
   }
 
   // src/components/CloudStoragePanel.js

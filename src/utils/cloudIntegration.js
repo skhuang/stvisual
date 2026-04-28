@@ -160,6 +160,20 @@ export function createCloudIntegrationClient() {
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       }, { merge: true });
     },
+    async loadLogicRecent(userId) {
+      const snapshot = await db.collection('users').doc(userId).collection('settings').doc('logicCoverage').get();
+      if (!snapshot.exists()) return [];
+      const data = snapshot.data() || {};
+      return Array.isArray(data.recentPredicates)
+        ? data.recentPredicates.filter((p) => typeof p === 'string')
+        : [];
+    },
+    async saveLogicRecent(userId, list) {
+      await db.collection('users').doc(userId).collection('settings').doc('logicCoverage').set({
+        recentPredicates: Array.isArray(list) ? list.filter((p) => typeof p === 'string') : [],
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+    },
     async uploadFileToDrive(file, options = {}) {
       if (!driveAccessToken) {
         throw new Error('目前沒有 Drive 存取權杖，請先重新 Google 登入。');
