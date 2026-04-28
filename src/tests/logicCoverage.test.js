@@ -16,6 +16,7 @@ import {
   buildCUTPNFPSet,
   buildAllCoverageSets,
   toDNF,
+  minimalDNF,
 } from '../utils/logicCoverage.js';
 
 describe('parsePredicate', () => {
@@ -162,6 +163,23 @@ describe('syntactic logic coverage (DNF)', () => {
     expect(negatives).toHaveLength(negDnf.length);
     positives.forEach((t) => expect(t.row.predicate).toBe(true));
     negatives.forEach((t) => expect(t.row.predicate).toBe(false));
+  });
+
+  it('minimalDNF reduces (a && b) || (a && !b) to {a}', () => {
+    const parsed = parsePredicate('(a && b) || (a && !b)');
+    const rows = buildTruthTable(parsed);
+    const dnf = minimalDNF(rows, parsed.clauses, true);
+    expect(dnf).toHaveLength(1);
+    expect(dnf[0]).toHaveLength(1);
+    expect(dnf[0][0]).toEqual({ name: 'a', negated: false });
+  });
+
+  it('buildAllCoverageSets exposes minimal DNF for f and ¬f', () => {
+    const parsed = parsePredicate('(a && b) || (a && !b)');
+    const analysis = buildAllCoverageSets(parsed);
+    expect(analysis.dnf).toHaveLength(1);
+    expect(analysis.negDnf).toHaveLength(1);
+    expect(analysis.negDnf[0]).toEqual([{ name: 'a', negated: true }]);
   });
 
   it('UTPC rows satisfy exactly one implicant', () => {

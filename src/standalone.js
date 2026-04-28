@@ -2415,8 +2415,8 @@
   }
   function buildAllCoverageSets(parsed) {
     const rows = buildTruthTable(parsed);
-    const dnf = toDNF(parsed.ast);
-    const negDnf = toDNF({ type: "not", operand: parsed.ast });
+    const dnf = minimalDNF(rows, parsed.clauses, true);
+    const negDnf = minimalDNF(rows, parsed.clauses, false);
     return {
       rows,
       clauses: parsed.clauses,
@@ -2441,84 +2441,101 @@
   function literalKey(lit) {
     return `${lit.negated ? "!" : ""}${lit.name}`;
   }
-  function termKey(term) {
-    return term.map(literalKey).sort().join("&");
-  }
   function termToString(term) {
     if (!term.length) return "true";
     return term.map(literalKey).join(" && ");
   }
-  function mergeLiterals(a, b) {
-    const map = /* @__PURE__ */ new Map();
-    for (const lit of [...a, ...b]) {
-      const existing = map.get(lit.name);
-      if (existing && existing.negated !== lit.negated) {
-        return null;
+  function minimalDNF(rows, clauses, target = true) {
+    const n = clauses.length;
+    const onSet = rows.filter((r) => r.predicate === target).map((r) => r.index);
+    if (!onSet.length) return [];
+    if (onSet.length === 1 << n) return [[]];
+    let current = onSet.map((i) => ({ bits: i, dash: 0, covers: /* @__PURE__ */ new Set([i]) }));
+    const primes = [];
+    while (current.length) {
+      const used = new Array(current.length).fill(false);
+      const seen = /* @__PURE__ */ new Map();
+      const next = [];
+      for (let i = 0; i < current.length; i += 1) {
+        for (let j = i + 1; j < current.length; j += 1) {
+          const a = current[i];
+          const b = current[j];
+          if (a.dash !== b.dash) continue;
+          const diff = a.bits ^ b.bits;
+          if (diff && (diff & diff - 1) === 0 && (diff & a.dash) === 0) {
+            used[i] = true;
+            used[j] = true;
+            const newDash = a.dash | diff;
+            const newBits = a.bits & ~diff;
+            const key = `${newBits}|${newDash}`;
+            if (!seen.has(key)) {
+              const covers = /* @__PURE__ */ new Set([...a.covers, ...b.covers]);
+              const entry = { bits: newBits, dash: newDash, covers };
+              seen.set(key, entry);
+              next.push(entry);
+            } else {
+              const ex = seen.get(key);
+              a.covers.forEach((v) => ex.covers.add(v));
+              b.covers.forEach((v) => ex.covers.add(v));
+            }
+          }
+        }
       }
-      if (!existing) {
-        map.set(lit.name, lit);
-      }
+      current.forEach((imp, idx) => {
+        if (!used[idx]) primes.push(imp);
+      });
+      current = next;
     }
-    return [...map.values()];
-  }
-  function dedupeTerms(terms) {
-    const seen = /* @__PURE__ */ new Set();
-    const out = [];
-    terms.forEach((t) => {
-      const key = termKey(t);
-      if (!seen.has(key)) {
-        seen.add(key);
-        out.push(t);
-      }
+    const remaining = new Set(onSet);
+    const chargeMap = /* @__PURE__ */ new Map();
+    primes.forEach((p, idx) => {
+      p.covers.forEach((m) => {
+        if (!chargeMap.has(m)) chargeMap.set(m, []);
+        chargeMap.get(m).push(idx);
+      });
     });
-    return out;
-  }
-  function dnfFromAst(ast) {
-    switch (ast.type) {
-      case "clause":
-        return [[{ name: ast.name, negated: false }]];
-      case "not":
-        return dnfNegate(ast.operand);
-      case "and": {
-        const left = dnfFromAst(ast.left);
-        const right = dnfFromAst(ast.right);
-        const terms = [];
-        left.forEach((lt) => right.forEach((rt) => {
-          const merged = mergeLiterals(lt, rt);
-          if (merged) terms.push(merged);
-        }));
-        return dedupeTerms(terms);
+    const chosen = /* @__PURE__ */ new Set();
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const m of [...remaining]) {
+        const list = chargeMap.get(m).filter((idx) => !chosen.has(idx));
+        if (list.length === 1) {
+          chosen.add(list[0]);
+          primes[list[0]].covers.forEach((c) => remaining.delete(c));
+          changed = true;
+        }
       }
-      case "or":
-        return dedupeTerms([...dnfFromAst(ast.left), ...dnfFromAst(ast.right)]);
-      default:
-        throw new Error(`\u672A\u77E5 AST \u7BC0\u9EDE\uFF1A${ast.type}`);
     }
-  }
-  function dnfNegate(ast) {
-    switch (ast.type) {
-      case "clause":
-        return [[{ name: ast.name, negated: true }]];
-      case "not":
-        return dnfFromAst(ast.operand);
-      case "and":
-        return dedupeTerms([...dnfNegate(ast.left), ...dnfNegate(ast.right)]);
-      case "or": {
-        const left = dnfNegate(ast.left);
-        const right = dnfNegate(ast.right);
-        const terms = [];
-        left.forEach((lt) => right.forEach((rt) => {
-          const merged = mergeLiterals(lt, rt);
-          if (merged) terms.push(merged);
-        }));
-        return dedupeTerms(terms);
+    while (remaining.size) {
+      let best = -1;
+      let bestCover = -1;
+      primes.forEach((p, idx) => {
+        if (chosen.has(idx)) return;
+        let cnt = 0;
+        p.covers.forEach((m) => {
+          if (remaining.has(m)) cnt += 1;
+        });
+        if (cnt > bestCover) {
+          bestCover = cnt;
+          best = idx;
+        }
+      });
+      if (best === -1) break;
+      chosen.add(best);
+      primes[best].covers.forEach((c) => remaining.delete(c));
+    }
+    return [...chosen].map((idx) => {
+      const p = primes[idx];
+      const lits = [];
+      for (let bit = 0; bit < n; bit += 1) {
+        const mask = 1 << n - 1 - bit;
+        if (p.dash & mask) continue;
+        const val = Boolean(p.bits & mask);
+        lits.push({ name: clauses[bit], negated: !val });
       }
-      default:
-        throw new Error(`\u672A\u77E5 AST \u7BC0\u9EDE\uFF1A${ast.type}`);
-    }
-  }
-  function toDNF(ast) {
-    return dnfFromAst(ast);
+      return lits;
+    });
   }
   function termSatisfiedBy(term, values) {
     return term.every((lit) => Boolean(values[lit.name]) !== lit.negated);
@@ -2561,7 +2578,7 @@
     return {
       id: "ic",
       name: "Implicant Coverage",
-      description: "\u5C0D f \u7684 DNF \u8207 \xACf \u7684 DNF \u4E2D\u6BCF\u500B implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B\u4F7F\u5176\u70BA\u771F\u7684 row\u3002",
+      description: "\u5C0D f \u8207 \xACf \u7684\u6700\u5C0F DNF \u4E2D\u6BCF\u500B prime implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B\u4F7F\u5176\u70BA\u771F\u7684 row\u3002",
       tests,
       requirementCount: dnf.length + negDnf.length,
       unsatisfied
@@ -2931,7 +2948,7 @@
         </li>
       `).join("");
       const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">\u7121\u6CD5\u627E\u5230\u4E0B\u5217\u9700\u6C42\u5C0D\u61C9\u5217\uFF1A${set.unsatisfied.join(", ")}</p>` : "";
-      const dnfMarkup = ["ic", "utpc", "nfpc", "cutpnfp"].includes(set.id) && state.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">f \u7684 DNF\uFF1A${state.analysis.dnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>${set.id === "ic" && state.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">\xACf \u7684 DNF\uFF1A${state.analysis.negDnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>` : ""}` : "";
+      const dnfMarkup = ["ic", "utpc", "nfpc", "cutpnfp"].includes(set.id) && state.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">f \u7684\u6700\u5C0F DNF\uFF1A${state.analysis.dnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>${set.id === "ic" && state.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">\xACf \u7684\u6700\u5C0F DNF\uFF1A${state.analysis.negDnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>` : ""}` : "";
       return `
       <h3 class="logic-summary-title">${escapeHtml2(set.name)}</h3>
       <p class="logic-summary-desc">${escapeHtml2(set.description)}</p>

@@ -435,8 +435,8 @@ export function buildRICCSet(rows, clauses) {
 
 export function buildAllCoverageSets(parsed) {
   const rows = buildTruthTable(parsed);
-  const dnf = toDNF(parsed.ast);
-  const negDnf = toDNF({ type: 'not', operand: parsed.ast });
+  const dnf = minimalDNF(rows, parsed.clauses, true);
+  const negDnf = minimalDNF(rows, parsed.clauses, false);
   return {
     rows,
     clauses: parsed.clauses,
@@ -551,6 +551,99 @@ export function toDNF(ast) {
   return dnfFromAst(ast);
 }
 
+// 透過 Quine–McCluskey 找 prime implicants，
+// 再用 essential + greedy 找最小覆蓋，產生最小 DNF。
+export function minimalDNF(rows, clauses, target = true) {
+  const n = clauses.length;
+  const onSet = rows.filter((r) => r.predicate === target).map((r) => r.index);
+  if (!onSet.length) return [];
+  if (onSet.length === (1 << n)) return [[]]; // tautology
+
+  let current = onSet.map((i) => ({ bits: i, dash: 0, covers: new Set([i]) }));
+  const primes = [];
+  while (current.length) {
+    const used = new Array(current.length).fill(false);
+    const seen = new Map();
+    const next = [];
+    for (let i = 0; i < current.length; i += 1) {
+      for (let j = i + 1; j < current.length; j += 1) {
+        const a = current[i];
+        const b = current[j];
+        if (a.dash !== b.dash) continue;
+        const diff = a.bits ^ b.bits;
+        if (diff && (diff & (diff - 1)) === 0 && (diff & a.dash) === 0) {
+          used[i] = true;
+          used[j] = true;
+          const newDash = a.dash | diff;
+          const newBits = a.bits & ~diff;
+          const key = `${newBits}|${newDash}`;
+          if (!seen.has(key)) {
+            const covers = new Set([...a.covers, ...b.covers]);
+            const entry = { bits: newBits, dash: newDash, covers };
+            seen.set(key, entry);
+            next.push(entry);
+          } else {
+            const ex = seen.get(key);
+            a.covers.forEach((v) => ex.covers.add(v));
+            b.covers.forEach((v) => ex.covers.add(v));
+          }
+        }
+      }
+    }
+    current.forEach((imp, idx) => {
+      if (!used[idx]) primes.push(imp);
+    });
+    current = next;
+  }
+
+  const remaining = new Set(onSet);
+  const chargeMap = new Map();
+  primes.forEach((p, idx) => {
+    p.covers.forEach((m) => {
+      if (!chargeMap.has(m)) chargeMap.set(m, []);
+      chargeMap.get(m).push(idx);
+    });
+  });
+  const chosen = new Set();
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const m of [...remaining]) {
+      const list = chargeMap.get(m).filter((idx) => !chosen.has(idx));
+      if (list.length === 1) {
+        chosen.add(list[0]);
+        primes[list[0]].covers.forEach((c) => remaining.delete(c));
+        changed = true;
+      }
+    }
+  }
+  while (remaining.size) {
+    let best = -1;
+    let bestCover = -1;
+    primes.forEach((p, idx) => {
+      if (chosen.has(idx)) return;
+      let cnt = 0;
+      p.covers.forEach((m) => { if (remaining.has(m)) cnt += 1; });
+      if (cnt > bestCover) { bestCover = cnt; best = idx; }
+    });
+    if (best === -1) break;
+    chosen.add(best);
+    primes[best].covers.forEach((c) => remaining.delete(c));
+  }
+
+  return [...chosen].map((idx) => {
+    const p = primes[idx];
+    const lits = [];
+    for (let bit = 0; bit < n; bit += 1) {
+      const mask = 1 << (n - 1 - bit);
+      if (p.dash & mask) continue;
+      const val = Boolean(p.bits & mask);
+      lits.push({ name: clauses[bit], negated: !val });
+    }
+    return lits;
+  });
+}
+
 function termSatisfiedBy(term, values) {
   return term.every((lit) => Boolean(values[lit.name]) !== lit.negated);
 }
@@ -599,7 +692,7 @@ export function buildImplicantCoverageSet(rows, dnf, negDnf = []) {
   return {
     id: 'ic',
     name: 'Implicant Coverage',
-    description: '對 f 的 DNF 與 ¬f 的 DNF 中每個 implicant，至少找到一個使其為真的 row。',
+    description: '對 f 與 ¬f 的最小 DNF 中每個 prime implicant，至少找到一個使其為真的 row。',
     tests,
     requirementCount: dnf.length + negDnf.length,
     unsatisfied,
