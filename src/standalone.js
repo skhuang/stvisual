@@ -2740,6 +2740,22 @@
     if (!term.length) return "true";
     return term.map((lit) => `${lit.negated ? "!" : ""}${lit.name}`).join(" \u2227 ");
   }
+  function literalToCompactHtml(lit) {
+    const name = escapeHtml2(lit.name);
+    return lit.negated ? `<span class="logic-overline">${name}</span>` : name;
+  }
+  function termToCompactHtml(term) {
+    if (!term.length) return "1";
+    return term.map(literalToCompactHtml).join("");
+  }
+  function dnfToHtml(dnf) {
+    if (!dnf.length) return "<code>false</code>";
+    return dnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ");
+  }
+  function dnfToCompactHtml(dnf) {
+    if (!dnf.length) return "<code>0</code>";
+    return dnf.map((term) => `<code>${termToCompactHtml(term)}</code>`).join(" &nbsp;+&nbsp; ");
+  }
   function createLogicCoverageExplorer() {
     const root2 = document.createElement("div");
     root2.className = "logic-coverage";
@@ -2948,7 +2964,11 @@
         </li>
       `).join("");
       const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">\u7121\u6CD5\u627E\u5230\u4E0B\u5217\u9700\u6C42\u5C0D\u61C9\u5217\uFF1A${set.unsatisfied.join(", ")}</p>` : "";
-      const dnfMarkup = ["ic", "utpc", "nfpc", "cutpnfp"].includes(set.id) && state.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">f \u7684\u6700\u5C0F DNF\uFF1A${state.analysis.dnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>${set.id === "ic" && state.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">\xACf \u7684\u6700\u5C0F DNF\uFF1A${state.analysis.negDnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>` : ""}` : "";
+      const dnfMarkup = ["ic", "utpc", "nfpc", "cutpnfp"].includes(set.id) && state.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">f \u7684\u6700\u5C0F DNF\uFF1A${dnfToHtml(state.analysis.dnf)}
+          <span class="logic-dnf-alt">\uFF08\u6559\u79D1\u66F8\u8A18\u865F\uFF1A${dnfToCompactHtml(state.analysis.dnf)}\uFF09</span>
+        </p>${set.id === "ic" && state.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">\xACf \u7684\u6700\u5C0F DNF\uFF1A${dnfToHtml(state.analysis.negDnf)}
+                <span class="logic-dnf-alt">\uFF08\u6559\u79D1\u66F8\u8A18\u865F\uFF1A${dnfToCompactHtml(state.analysis.negDnf)}\uFF09</span>
+              </p>` : ""}` : "";
       return `
       <h3 class="logic-summary-title">${escapeHtml2(set.name)}</h3>
       <p class="logic-summary-desc">${escapeHtml2(set.description)}</p>

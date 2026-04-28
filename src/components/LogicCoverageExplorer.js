@@ -47,6 +47,33 @@ function termToHtml(term) {
   return term.map((lit) => `${lit.negated ? '!' : ''}${lit.name}`).join(' ∧ ');
 }
 
+// 教科書記號：相鄰代表 AND、+ 代表 OR、上方橫線代表 NOT。
+function literalToCompactHtml(lit) {
+  const name = escapeHtml(lit.name);
+  return lit.negated
+    ? `<span class="logic-overline">${name}</span>`
+    : name;
+}
+
+function termToCompactHtml(term) {
+  if (!term.length) return '1';
+  return term.map(literalToCompactHtml).join('');
+}
+
+function dnfToHtml(dnf) {
+  if (!dnf.length) return '<code>false</code>';
+  return dnf
+    .map((term) => `<code>${escapeHtml(termToHtml(term))}</code>`)
+    .join(' &nbsp;∨&nbsp; ');
+}
+
+function dnfToCompactHtml(dnf) {
+  if (!dnf.length) return '<code>0</code>';
+  return dnf
+    .map((term) => `<code>${termToCompactHtml(term)}</code>`)
+    .join(' &nbsp;+&nbsp; ');
+}
+
 export function createLogicCoverageExplorer() {
   const root = document.createElement('div');
   root.className = 'logic-coverage';
@@ -297,17 +324,13 @@ export function createLogicCoverageExplorer() {
       : '';
 
     const dnfMarkup = ['ic', 'utpc', 'nfpc', 'cutpnfp'].includes(set.id) && state.analysis.dnf
-      ? `<p class="logic-dnf" data-testid="logic-dnf">f 的最小 DNF：${
-          state.analysis.dnf
-            .map((term) => `<code>${escapeHtml(termToHtml(term))}</code>`)
-            .join(' &nbsp;∨&nbsp; ') || '<code>true</code>'
-        }</p>${
+      ? `<p class="logic-dnf" data-testid="logic-dnf">f 的最小 DNF：${dnfToHtml(state.analysis.dnf)}
+          <span class="logic-dnf-alt">（教科書記號：${dnfToCompactHtml(state.analysis.dnf)}）</span>
+        </p>${
           set.id === 'ic' && state.analysis.negDnf
-            ? `<p class="logic-dnf" data-testid="logic-dnf-neg">¬f 的最小 DNF：${
-                state.analysis.negDnf
-                  .map((term) => `<code>${escapeHtml(termToHtml(term))}</code>`)
-                  .join(' &nbsp;∨&nbsp; ') || '<code>true</code>'
-              }</p>`
+            ? `<p class="logic-dnf" data-testid="logic-dnf-neg">¬f 的最小 DNF：${dnfToHtml(state.analysis.negDnf)}
+                <span class="logic-dnf-alt">（教科書記號：${dnfToCompactHtml(state.analysis.negDnf)}）</span>
+              </p>`
             : ''
         }`
       : '';
