@@ -664,35 +664,78 @@ function termLabel(term) {
 
 export function buildImplicantCoverageSet(rows, dnf, negDnf = []) {
   const tests = [];
-  const seen = new Set();
   const unsatisfied = [];
 
-  function pushFor(term, index, kind) {
-    const candidates = findRowsForTerm(rows, term);
-    if (!candidates.length) {
-      unsatisfied.push(`${kind} implicant {${termLabel(term)}}`);
-      return;
+  // 對單一 polarity 求最小 row 集合，使每個 implicant 至少被一個 row 覆蓋。
+  function selectMinimalRows(implicants, predicateValue, kind) {
+    if (!implicants.length) return;
+    // 每個 implicant 對應的候選 rows（須符合 predicate 真值）。
+    const candidatesPerImp = implicants.map((term) =>
+      findRowsForTerm(rows, term).filter((r) => r.predicate === predicateValue),
+    );
+    candidatesPerImp.forEach((cands, idx) => {
+      if (!cands.length) {
+        unsatisfied.push(`${kind} implicant {${termLabel(implicants[idx])}}`);
+      }
+    });
+    // row.index -> Set(implicant indices it covers)
+    const rowCoverage = new Map();
+    candidatesPerImp.forEach((cands, impIdx) => {
+      cands.forEach((row) => {
+        if (!rowCoverage.has(row.index)) rowCoverage.set(row.index, { row, covers: new Set() });
+        rowCoverage.get(row.index).covers.add(impIdx);
+      });
+    });
+    const remaining = new Set(implicants.map((_, i) => i).filter((i) => candidatesPerImp[i].length));
+    const chosen = [];
+    // essential：只有單一 row 能覆蓋的 implicant，必選那個 row。
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const impIdx of [...remaining]) {
+        const owners = [...rowCoverage.values()].filter((entry) => entry.covers.has(impIdx));
+        if (owners.length === 1 && !chosen.includes(owners[0])) {
+          chosen.push(owners[0]);
+          owners[0].covers.forEach((c) => remaining.delete(c));
+          changed = true;
+        }
+      }
     }
-    const row = candidates[0];
-    const key = `r${row.index}-${kind}${index}`;
-    if (seen.has(key)) return;
-    seen.add(key);
-    tests.push({
-      id: key,
-      row,
-      label: `${kind === 'pos' ? 'P=T implicant' : '¬P=T implicant'} {${termLabel(term)}}`,
-      implicantIndex: index,
-      polarity: kind,
+    // greedy：每次選覆蓋最多剩餘 implicant 的 row。
+    while (remaining.size) {
+      let best = null;
+      let bestCount = -1;
+      rowCoverage.forEach((entry) => {
+        if (chosen.includes(entry)) return;
+        let cnt = 0;
+        entry.covers.forEach((c) => { if (remaining.has(c)) cnt += 1; });
+        if (cnt > bestCount) { bestCount = cnt; best = entry; }
+      });
+      if (!best || bestCount <= 0) break;
+      chosen.push(best);
+      best.covers.forEach((c) => remaining.delete(c));
+    }
+    chosen.forEach((entry) => {
+      const coveredImps = [...entry.covers].sort((a, b) => a - b);
+      const labels = coveredImps.map((i) => `{${termLabel(implicants[i])}}`).join(', ');
+      tests.push({
+        id: `r${entry.row.index}-${kind}`,
+        row: entry.row,
+        label: `${kind === 'pos' ? 'P=T' : '¬P=T'} implicants ${labels}`,
+        implicantIndex: coveredImps[0],
+        implicantIndices: coveredImps,
+        polarity: kind,
+      });
     });
   }
 
-  dnf.forEach((term, index) => pushFor(term, index, 'pos'));
-  negDnf.forEach((term, index) => pushFor(term, index, 'neg'));
+  selectMinimalRows(dnf, true, 'pos');
+  selectMinimalRows(negDnf, false, 'neg');
 
   return {
     id: 'ic',
     name: 'Implicant Coverage',
-    description: '對 f 與 ¬f 的最小 DNF 中每個 prime implicant，至少找到一個使其為真的 row。',
+    description: '對 f 與 ¬f 的最小 DNF 中每個 prime implicant，至少找到一個使其為真的 row（已最小化測試列數）。',
     tests,
     requirementCount: dnf.length + negDnf.length,
     unsatisfied,

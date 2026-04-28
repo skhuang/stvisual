@@ -2553,32 +2553,75 @@
   }
   function buildImplicantCoverageSet(rows, dnf, negDnf = []) {
     const tests = [];
-    const seen = /* @__PURE__ */ new Set();
     const unsatisfied = [];
-    function pushFor(term, index, kind) {
-      const candidates = findRowsForTerm(rows, term);
-      if (!candidates.length) {
-        unsatisfied.push(`${kind} implicant {${termLabel(term)}}`);
-        return;
+    function selectMinimalRows(implicants, predicateValue, kind) {
+      if (!implicants.length) return;
+      const candidatesPerImp = implicants.map(
+        (term) => findRowsForTerm(rows, term).filter((r) => r.predicate === predicateValue)
+      );
+      candidatesPerImp.forEach((cands, idx) => {
+        if (!cands.length) {
+          unsatisfied.push(`${kind} implicant {${termLabel(implicants[idx])}}`);
+        }
+      });
+      const rowCoverage = /* @__PURE__ */ new Map();
+      candidatesPerImp.forEach((cands, impIdx) => {
+        cands.forEach((row) => {
+          if (!rowCoverage.has(row.index)) rowCoverage.set(row.index, { row, covers: /* @__PURE__ */ new Set() });
+          rowCoverage.get(row.index).covers.add(impIdx);
+        });
+      });
+      const remaining = new Set(implicants.map((_, i) => i).filter((i) => candidatesPerImp[i].length));
+      const chosen = [];
+      let changed = true;
+      while (changed) {
+        changed = false;
+        for (const impIdx of [...remaining]) {
+          const owners = [...rowCoverage.values()].filter((entry) => entry.covers.has(impIdx));
+          if (owners.length === 1 && !chosen.includes(owners[0])) {
+            chosen.push(owners[0]);
+            owners[0].covers.forEach((c) => remaining.delete(c));
+            changed = true;
+          }
+        }
       }
-      const row = candidates[0];
-      const key = `r${row.index}-${kind}${index}`;
-      if (seen.has(key)) return;
-      seen.add(key);
-      tests.push({
-        id: key,
-        row,
-        label: `${kind === "pos" ? "P=T implicant" : "\xACP=T implicant"} {${termLabel(term)}}`,
-        implicantIndex: index,
-        polarity: kind
+      while (remaining.size) {
+        let best = null;
+        let bestCount = -1;
+        rowCoverage.forEach((entry) => {
+          if (chosen.includes(entry)) return;
+          let cnt = 0;
+          entry.covers.forEach((c) => {
+            if (remaining.has(c)) cnt += 1;
+          });
+          if (cnt > bestCount) {
+            bestCount = cnt;
+            best = entry;
+          }
+        });
+        if (!best || bestCount <= 0) break;
+        chosen.push(best);
+        best.covers.forEach((c) => remaining.delete(c));
+      }
+      chosen.forEach((entry) => {
+        const coveredImps = [...entry.covers].sort((a, b) => a - b);
+        const labels = coveredImps.map((i) => `{${termLabel(implicants[i])}}`).join(", ");
+        tests.push({
+          id: `r${entry.row.index}-${kind}`,
+          row: entry.row,
+          label: `${kind === "pos" ? "P=T" : "\xACP=T"} implicants ${labels}`,
+          implicantIndex: coveredImps[0],
+          implicantIndices: coveredImps,
+          polarity: kind
+        });
       });
     }
-    dnf.forEach((term, index) => pushFor(term, index, "pos"));
-    negDnf.forEach((term, index) => pushFor(term, index, "neg"));
+    selectMinimalRows(dnf, true, "pos");
+    selectMinimalRows(negDnf, false, "neg");
     return {
       id: "ic",
       name: "Implicant Coverage",
-      description: "\u5C0D f \u8207 \xACf \u7684\u6700\u5C0F DNF \u4E2D\u6BCF\u500B prime implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B\u4F7F\u5176\u70BA\u771F\u7684 row\u3002",
+      description: "\u5C0D f \u8207 \xACf \u7684\u6700\u5C0F DNF \u4E2D\u6BCF\u500B prime implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B\u4F7F\u5176\u70BA\u771F\u7684 row\uFF08\u5DF2\u6700\u5C0F\u5316\u6E2C\u8A66\u5217\u6578\uFF09\u3002",
       tests,
       requirementCount: dnf.length + negDnf.length,
       unsatisfied

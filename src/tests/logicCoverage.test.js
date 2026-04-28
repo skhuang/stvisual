@@ -150,19 +150,28 @@ describe('syntactic logic coverage (DNF)', () => {
     expect(keys.sort()).toEqual(['a&b', 'c']);
   });
 
-  it('IC covers implicants of both f and ¬f', () => {
+  it('IC covers implicants of both f and ¬f with minimal rows', () => {
     const parsed = parsePredicate('(a && b) || c');
     const rows = buildTruthTable(parsed);
     const dnf = toDNF(parsed.ast);
     const negDnf = toDNF({ type: 'not', operand: parsed.ast });
     const set = buildImplicantCoverageSet(rows, dnf, negDnf);
     expect(set.requirementCount).toBe(dnf.length + negDnf.length);
+    // 最少測試列數應 <= implicants 總數，且每個 implicant 都被覆蓋。
+    expect(set.tests.length).toBeLessThanOrEqual(dnf.length + negDnf.length);
+    const posCovered = new Set();
+    const negCovered = new Set();
+    set.tests.forEach((t) => {
+      const target = t.polarity === 'pos' ? posCovered : negCovered;
+      (t.implicantIndices ?? [t.implicantIndex]).forEach((i) => target.add(i));
+      if (t.polarity === 'pos') expect(t.row.predicate).toBe(true);
+      else expect(t.row.predicate).toBe(false);
+    });
+    expect(posCovered.size).toBe(dnf.length);
+    expect(negCovered.size).toBe(negDnf.length);
+    // (a∧b) ∨ c：a=b=c=1 同時涵蓋兩個正向 implicants → 1 個正向測試即可。
     const positives = set.tests.filter((t) => t.polarity === 'pos');
-    const negatives = set.tests.filter((t) => t.polarity === 'neg');
-    expect(positives).toHaveLength(dnf.length);
-    expect(negatives).toHaveLength(negDnf.length);
-    positives.forEach((t) => expect(t.row.predicate).toBe(true));
-    negatives.forEach((t) => expect(t.row.predicate).toBe(false));
+    expect(positives.length).toBeLessThan(dnf.length);
   });
 
   it('minimalDNF reduces (a && b) || (a && !b) to {a}', () => {
