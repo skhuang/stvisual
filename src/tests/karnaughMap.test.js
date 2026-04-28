@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parsePredicate, buildTruthTable } from '../utils/logicCoverage.js';
+import { parsePredicate, buildTruthTable, minimalDNF } from '../utils/logicCoverage.js';
 import { buildKMap } from '../utils/karnaughMap.js';
 
 describe('buildKMap', () => {
@@ -63,5 +63,35 @@ describe('buildKMap', () => {
     const zero = map.grid[0].cells[0];
     expect(zero.minterm).toBe(0);
     expect(zero.value).toBe(false);
+  });
+
+  it('tags cells with covering implicant indices when DNF is provided', () => {
+    const parsed = parsePredicate('(a && b) || c');
+    const rows = buildTruthTable(parsed);
+    const dnf = minimalDNF(rows, parsed.clauses, true);
+    const map = buildKMap(rows, parsed.clauses, true, dnf);
+    // 收集每個 implicant 對應的 minterms。
+    const byImp = new Map();
+    map.grid.flatMap((r) => r.cells).forEach((cell) => {
+      cell.implicants.forEach((idx) => {
+        if (!byImp.has(idx)) byImp.set(idx, new Set());
+        byImp.get(idx).add(cell.minterm);
+      });
+    });
+    // 應該有兩個 implicants：{a∧b} → {6,7}、{c} → {1,3,5,7}。
+    const sortedSets = [...byImp.values()]
+      .map((s) => [...s].sort((a, b) => a - b).join(','))
+      .sort();
+    expect(sortedSets).toEqual(['1,3,5,7', '6,7']);
+  });
+
+  it('off-cells carry no implicants', () => {
+    const parsed = parsePredicate('a && b');
+    const rows = buildTruthTable(parsed);
+    const dnf = minimalDNF(rows, parsed.clauses, true);
+    const map = buildKMap(rows, parsed.clauses, true, dnf);
+    map.grid.flatMap((r) => r.cells).forEach((cell) => {
+      if (!cell.value) expect(cell.implicants).toEqual([]);
+    });
   });
 });
