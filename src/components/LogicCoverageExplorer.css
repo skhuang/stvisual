@@ -61,6 +61,57 @@
   color: #fff;
 }
 
+.logic-recent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex-basis: 100%;
+}
+.logic-recent-label {
+  color: #7f8c8d;
+  font-size: 0.78rem;
+}
+.logic-recent-chip {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid #b2bec3;
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+  transition: border-color 0.15s, background 0.15s;
+}
+.logic-recent-chip:hover { border-color: #3498db; }
+.logic-recent-chip.active {
+  border-color: #2980b9;
+  background: #ebf5fb;
+}
+.logic-recent-select {
+  border: none;
+  background: transparent;
+  padding: 4px 8px 4px 10px;
+  font-size: 0.78rem;
+  color: #2d3436;
+  cursor: pointer;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.logic-recent-remove {
+  border: none;
+  background: transparent;
+  padding: 0 8px;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: #95a5a6;
+  cursor: pointer;
+  border-left: 1px solid #ecf0f1;
+}
+.logic-recent-remove:hover { color: #c0392b; background: #fdecea; }
+
 .logic-error {
   background: #fdecea;
   color: #c0392b;

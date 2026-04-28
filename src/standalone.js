@@ -2688,6 +2688,29 @@
   }
 
   // src/components/LogicCoverageExplorer.js
+  var RECENT_KEY = "stvisual.logic.recentPredicates";
+  var RECENT_LIMIT = 8;
+  function loadRecent() {
+    var _a;
+    try {
+      const raw = (_a = globalThis.localStorage) == null ? void 0 : _a.getItem(RECENT_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed.filter((p) => typeof p === "string") : [];
+    } catch {
+      return [];
+    }
+  }
+  function saveRecent(list) {
+    var _a;
+    try {
+      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(RECENT_KEY, JSON.stringify(list));
+    } catch {
+    }
+  }
+  function isBuiltinExpression(expr) {
+    return logicCoveragePredicates.some((p) => p.expression === expr);
+  }
   function escapeHtml2(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
@@ -2704,8 +2727,28 @@
       selectedCriterion: "pc",
       error: null,
       parsed: null,
-      analysis: null
+      analysis: null,
+      recent: loadRecent()
     };
+    function rememberCurrentExpression() {
+      const expr = state.expression.trim();
+      if (!expr || state.error) return false;
+      if (isBuiltinExpression(expr)) return false;
+      const next = [expr, ...state.recent.filter((item) => item !== expr)].slice(0, RECENT_LIMIT);
+      if (next.length === state.recent.length && next[0] === state.recent[0]) {
+        return false;
+      }
+      state.recent = next;
+      saveRecent(state.recent);
+      return true;
+    }
+    function removeRecent(expr) {
+      const next = state.recent.filter((item) => item !== expr);
+      if (next.length === state.recent.length) return;
+      state.recent = next;
+      saveRecent(state.recent);
+      render();
+    }
     function recompute() {
       try {
         state.parsed = parsePredicate(state.expression);
@@ -2741,6 +2784,28 @@
           ${escapeHtml2(p.name)}
         </button>
       `).join("");
+      const recentMarkup = state.recent.length ? `
+        <div class="logic-recent" data-testid="logic-recent">
+          <span class="logic-recent-label">\u6700\u8FD1\uFF1A</span>
+          ${state.recent.map((expr) => `
+              <span class="logic-recent-chip${state.expression === expr ? " active" : ""}" data-testid="logic-recent-chip">
+                <button
+                  type="button"
+                  class="logic-recent-select"
+                  data-recent-select="${escapeHtml2(expr)}"
+                  title="${escapeHtml2(expr)}"
+                >${escapeHtml2(expr)}</button>
+                <button
+                  type="button"
+                  class="logic-recent-remove"
+                  data-recent-remove="${escapeHtml2(expr)}"
+                  aria-label="\u79FB\u9664 ${escapeHtml2(expr)}"
+                  title="\u79FB\u9664"
+                >\xD7</button>
+              </span>
+            `).join("")}
+        </div>
+      ` : "";
       const criteriaMarkup = logicCoverageCriteria.map((c) => `
         <button
           type="button"
@@ -2767,6 +2832,7 @@
           data-testid="logic-expression-input"
         />
         <div class="logic-examples">${examplesMarkup}</div>
+        ${recentMarkup}
       </div>
 
       ${state.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state.error)}</div>` : ""}
@@ -2886,12 +2952,34 @@
           recompute();
           renderPreservingFocus("logic-expression-input");
         });
+        input.addEventListener("blur", () => {
+          if (rememberCurrentExpression()) render();
+        });
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            if (rememberCurrentExpression()) render();
+          }
+        });
       }
       root2.querySelectorAll("[data-expression]").forEach((btn) => {
         btn.addEventListener("click", () => {
           state.expression = btn.dataset.expression;
           recompute();
           render();
+        });
+      });
+      root2.querySelectorAll("[data-recent-select]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.expression = btn.dataset.recentSelect;
+          recompute();
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-recent-remove]").forEach((btn) => {
+        btn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          removeRecent(btn.dataset.recentRemove);
         });
       });
       root2.querySelectorAll("[data-criterion]").forEach((btn) => {

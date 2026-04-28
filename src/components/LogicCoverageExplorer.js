@@ -7,6 +7,32 @@ import {
   parsePredicate,
 } from '../utils/logicCoverage.js';
 
+const RECENT_KEY = 'stvisual.logic.recentPredicates';
+const RECENT_LIMIT = 8;
+
+function loadRecent() {
+  try {
+    const raw = globalThis.localStorage?.getItem(RECENT_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((p) => typeof p === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveRecent(list) {
+  try {
+    globalThis.localStorage?.setItem(RECENT_KEY, JSON.stringify(list));
+  } catch {
+    // ignore quota/availability errors
+  }
+}
+
+function isBuiltinExpression(expr) {
+  return logicCoveragePredicates.some((p) => p.expression === expr);
+}
+
 function escapeHtml(value = '') {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -32,7 +58,29 @@ export function createLogicCoverageExplorer() {
     error: null,
     parsed: null,
     analysis: null,
+    recent: loadRecent(),
   };
+
+  function rememberCurrentExpression() {
+    const expr = state.expression.trim();
+    if (!expr || state.error) return false;
+    if (isBuiltinExpression(expr)) return false;
+    const next = [expr, ...state.recent.filter((item) => item !== expr)].slice(0, RECENT_LIMIT);
+    if (next.length === state.recent.length && next[0] === state.recent[0]) {
+      return false;
+    }
+    state.recent = next;
+    saveRecent(state.recent);
+    return true;
+  }
+
+  function removeRecent(expr) {
+    const next = state.recent.filter((item) => item !== expr);
+    if (next.length === state.recent.length) return;
+    state.recent = next;
+    saveRecent(state.recent);
+    render();
+  }
 
   function recompute() {
     try {
@@ -75,6 +123,33 @@ export function createLogicCoverageExplorer() {
       `)
       .join('');
 
+    const recentMarkup = state.recent.length
+      ? `
+        <div class="logic-recent" data-testid="logic-recent">
+          <span class="logic-recent-label">最近：</span>
+          ${state.recent
+            .map((expr) => `
+              <span class="logic-recent-chip${state.expression === expr ? ' active' : ''}" data-testid="logic-recent-chip">
+                <button
+                  type="button"
+                  class="logic-recent-select"
+                  data-recent-select="${escapeHtml(expr)}"
+                  title="${escapeHtml(expr)}"
+                >${escapeHtml(expr)}</button>
+                <button
+                  type="button"
+                  class="logic-recent-remove"
+                  data-recent-remove="${escapeHtml(expr)}"
+                  aria-label="移除 ${escapeHtml(expr)}"
+                  title="移除"
+                >×</button>
+              </span>
+            `)
+            .join('')}
+        </div>
+      `
+      : '';
+
     const criteriaMarkup = logicCoverageCriteria
       .map((c) => `
         <button
@@ -105,6 +180,7 @@ export function createLogicCoverageExplorer() {
           data-testid="logic-expression-input"
         />
         <div class="logic-examples">${examplesMarkup}</div>
+        ${recentMarkup}
       </div>
 
       ${state.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml(state.error)}</div>` : ''}
@@ -254,6 +330,15 @@ export function createLogicCoverageExplorer() {
         recompute();
         renderPreservingFocus('logic-expression-input');
       });
+      input.addEventListener('blur', () => {
+        if (rememberCurrentExpression()) render();
+      });
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          if (rememberCurrentExpression()) render();
+        }
+      });
     }
 
     root.querySelectorAll('[data-expression]').forEach((btn) => {
@@ -261,6 +346,21 @@ export function createLogicCoverageExplorer() {
         state.expression = btn.dataset.expression;
         recompute();
         render();
+      });
+    });
+
+    root.querySelectorAll('[data-recent-select]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.expression = btn.dataset.recentSelect;
+        recompute();
+        render();
+      });
+    });
+
+    root.querySelectorAll('[data-recent-remove]').forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        removeRecent(btn.dataset.recentRemove);
       });
     });
 
