@@ -11,52 +11,76 @@ function bits(value, width) {
   return value.toString(2).padStart(width, '0');
 }
 
+// 把 row/col 上的位元（依 rowClauseIdx / colClauseIdx 中的順序為 MSB→LSB）
+// 還原成 truth table 的 minterm 編號（clauses[0] 在 minterm 中是 MSB）。
+function composeMinterm(n, rowBits, colBits, rowClauseIdx, colClauseIdx) {
+  let minterm = 0;
+  rowClauseIdx.forEach((clauseIdx, i) => {
+    const localBit = (rowBits >> (rowClauseIdx.length - 1 - i)) & 1;
+    if (localBit) minterm |= 1 << (n - 1 - clauseIdx);
+  });
+  colClauseIdx.forEach((clauseIdx, i) => {
+    const localBit = (colBits >> (colClauseIdx.length - 1 - i)) & 1;
+    if (localBit) minterm |= 1 << (n - 1 - clauseIdx);
+  });
+  return minterm;
+}
+
 export function buildKMap(rows, clauses, target = true) {
   const n = clauses.length;
   if (n < 1 || n > 4) {
     return { unsupported: true, n };
   }
 
-  // 對每列以該列代表的 minterm index 建表（依 clauses 依序為 MSB → LSB）。
   const map = new Map();
   rows.forEach((row) => {
-    const value = row.predicate === target;
-    map.set(row.index, { value, minterm: row.index });
+    map.set(row.index, { value: row.predicate === target, minterm: row.index });
   });
 
   let rowOrder;
   let colOrder;
   let rowVars;
   let colVars;
+  let rowClauseIdx;
+  let colClauseIdx;
 
   if (n === 1) {
     rowOrder = [0];
     colOrder = GRAY2;
     rowVars = [];
     colVars = [clauses[0]];
+    rowClauseIdx = [];
+    colClauseIdx = [0];
   } else if (n === 2) {
     rowOrder = GRAY2;
     colOrder = GRAY2;
     rowVars = [clauses[0]];
     colVars = [clauses[1]];
+    rowClauseIdx = [0];
+    colClauseIdx = [1];
   } else if (n === 3) {
+    // 列：c；欄：ab（Gray code 00/01/11/10）。
     rowOrder = GRAY2;
     colOrder = GRAY4;
-    rowVars = [clauses[0]];
-    colVars = [clauses[1], clauses[2]];
+    rowVars = [clauses[2]];
+    colVars = [clauses[0], clauses[1]];
+    rowClauseIdx = [2];
+    colClauseIdx = [0, 1];
   } else {
     rowOrder = GRAY4;
     colOrder = GRAY4;
     rowVars = [clauses[0], clauses[1]];
     colVars = [clauses[2], clauses[3]];
+    rowClauseIdx = [0, 1];
+    colClauseIdx = [2, 3];
   }
 
-  const rowWidth = rowVars.length;
-  const colWidth = colVars.length;
+  const rowWidth = rowClauseIdx.length;
+  const colWidth = colClauseIdx.length;
 
   const grid = rowOrder.map((rBits) => {
     const cells = colOrder.map((cBits) => {
-      const minterm = (rBits << colWidth) | cBits;
+      const minterm = composeMinterm(n, rBits, cBits, rowClauseIdx, colClauseIdx);
       const entry = map.get(minterm);
       return {
         minterm,
