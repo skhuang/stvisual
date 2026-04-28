@@ -2770,14 +2770,14 @@
     });
     return minterm;
   }
-  function buildKMap(rows, clauses, target = true) {
+  function buildKMap(rows, clauses, target = true, dnf = []) {
     const n = clauses.length;
     if (n < 1 || n > 4) {
       return { unsupported: true, n };
     }
     const map = /* @__PURE__ */ new Map();
     rows.forEach((row) => {
-      map.set(row.index, { value: row.predicate === target, minterm: row.index });
+      map.set(row.index, { value: row.predicate === target, minterm: row.index, values: row.values });
     });
     let rowOrder;
     let colOrder;
@@ -2820,9 +2820,19 @@
       const cells = colOrder.map((cBits) => {
         const minterm = composeMinterm(n, rBits, cBits, rowClauseIdx, colClauseIdx);
         const entry = map.get(minterm);
+        const values = (entry == null ? void 0 : entry.values) || {};
+        const implicants = [];
+        if (entry == null ? void 0 : entry.value) {
+          dnf.forEach((term, idx) => {
+            if (term.every((lit) => Boolean(values[lit.name]) !== lit.negated)) {
+              implicants.push(idx);
+            }
+          });
+        }
         return {
           minterm,
-          value: entry ? entry.value : false
+          value: entry ? entry.value : false,
+          implicants
         };
       });
       return {
@@ -3118,12 +3128,23 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     if (!dnf.length) return "<code>0</code>";
     return dnf.map((term) => `<code>${termToCompactHtml(term)}</code>`).join(" &nbsp;+&nbsp; ");
   }
-  function renderKMap(rows, clauses, target, title) {
-    const map = buildKMap(rows, clauses, target);
+  function renderKMap(rows, clauses, target, title, dnf = []) {
+    const map = buildKMap(rows, clauses, target, dnf);
     if (map.unsupported) {
       return `<div class="logic-kmap"><h4 class="logic-kmap-title">${escapeHtml2(title)}</h4>
       <p class="logic-kmap-note">Karnaugh map \u50C5\u652F\u63F4 1\u20134 \u500B clauses\uFF08\u76EE\u524D\u70BA ${map.n}\uFF09\u3002</p></div>`;
     }
+    const palette = [
+      "#e74c3c",
+      "#3498db",
+      "#27ae60",
+      "#9b59b6",
+      "#f39c12",
+      "#16a085",
+      "#d35400",
+      "#2c3e50"
+    ];
+    const colorOf = (idx) => palette[idx % palette.length];
     const colHeaderLabel = map.colVars.length ? map.colVars.join("") : "";
     const rowHeaderLabel = map.rowVars.length ? map.rowVars.join("") : "";
     const colHeadHtml = map.colHeaders.map((h) => `<th scope="col">${escapeHtml2(h)}</th>`).join("");
@@ -3131,16 +3152,25 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const cells = row.cells.map((cell) => {
         const cls = cell.value ? "logic-kmap-cell logic-kmap-on" : "logic-kmap-cell";
         const text = cell.value ? "1" : "0";
-        return `<td class="${cls}" title="m${cell.minterm}">${text}<sub>${cell.minterm}</sub></td>`;
+        let style = "";
+        if (cell.implicants.length) {
+          const shadows = cell.implicants.map((impIdx, k) => `inset 0 0 0 ${(k + 1) * 3}px ${colorOf(impIdx)}`).join(", ");
+          style = ` style="box-shadow:${shadows}"`;
+        }
+        return `<td class="${cls}"${style} title="m${cell.minterm}">${text}<sub>${cell.minterm}</sub></td>`;
       }).join("");
       const rowHead = rowHeaderLabel ? `<th scope="row">${escapeHtml2(row.header)}</th>` : "";
       return `<tr>${rowHead}${cells}</tr>`;
     }).join("");
     const corner = rowHeaderLabel ? `<th class="logic-kmap-corner"><span>${escapeHtml2(rowHeaderLabel)}</span><span class="logic-kmap-slash">\\</span><span>${escapeHtml2(colHeaderLabel)}</span></th>` : `<th class="logic-kmap-corner">${escapeHtml2(colHeaderLabel)}</th>`;
+    const legendHtml = dnf.length ? `<ul class="logic-kmap-legend">${dnf.map(
+      (term, idx) => `<li><span class="logic-kmap-swatch" style="border-color:${colorOf(idx)}"></span><code>${termToCompactHtml(term)}</code></li>`
+    ).join("")}</ul>` : "";
     return `<div class="logic-kmap" data-testid="${target ? "logic-kmap-f" : "logic-kmap-not-f"}">
     <h4 class="logic-kmap-title">${escapeHtml2(title)}</h4>
     <table class="logic-kmap-table"><thead><tr>${corner}${colHeadHtml}</tr></thead>
     <tbody>${bodyHtml}</tbody></table>
+    ${legendHtml}
   </div>`;
   }
   function createLogicCoverageExplorer() {
@@ -3373,8 +3403,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
                 <span class="logic-dnf-alt">\uFF08\u6559\u79D1\u66F8\u8A18\u865F\uFF1A${dnfToCompactHtml(state.analysis.negDnf)}\uFF09</span>
               </p>` : ""}` : "";
       const kmapMarkup = set.id === "ic" && state.parsed ? `<div class="logic-kmap-row">
-          ${renderKMap(state.analysis.rows, state.parsed.clauses, true, "f \u7684 Karnaugh Map")}
-          ${renderKMap(state.analysis.rows, state.parsed.clauses, false, "\xACf \u7684 Karnaugh Map")}
+          ${renderKMap(state.analysis.rows, state.parsed.clauses, true, "f \u7684 Karnaugh Map", state.analysis.dnf)}
+          ${renderKMap(state.analysis.rows, state.parsed.clauses, false, "\xACf \u7684 Karnaugh Map", state.analysis.negDnf)}
         </div>` : "";
       return `
       <h3 class="logic-summary-title">${escapeHtml2(set.name)}</h3>

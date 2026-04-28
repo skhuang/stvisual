@@ -263,6 +263,31 @@
   color: #b08900;
   font-weight: 700;
 }
+.logic-kmap-legend {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 0.8rem;
+  color: #2c3e50;
+  font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+}
+.logic-kmap-legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.logic-kmap-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border-width: 3px;
+  border-style: solid;
+  background: transparent;
+}
 .logic-divider {
   margin: 0 6px;
   color: #b2bec3;
