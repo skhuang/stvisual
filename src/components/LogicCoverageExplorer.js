@@ -6,6 +6,7 @@ import {
   buildAllCoverageSets,
   parsePredicate,
 } from '../utils/logicCoverage.js';
+import { buildKMap } from '../utils/karnaughMap.js';
 import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
 
 const RECENT_KEY = 'stvisual.logic.recentPredicates';
@@ -73,6 +74,42 @@ function dnfToCompactHtml(dnf) {
   return dnf
     .map((term) => `<code>${termToCompactHtml(term)}</code>`)
     .join(' &nbsp;+&nbsp; ');
+}
+
+function renderKMap(rows, clauses, target, title) {
+  const map = buildKMap(rows, clauses, target);
+  if (map.unsupported) {
+    return `<div class="logic-kmap"><h4 class="logic-kmap-title">${escapeHtml(title)}</h4>
+      <p class="logic-kmap-note">Karnaugh map 僅支援 1–4 個 clauses（目前為 ${map.n}）。</p></div>`;
+  }
+  const colHeaderLabel = map.colVars.length ? map.colVars.join('') : '';
+  const rowHeaderLabel = map.rowVars.length ? map.rowVars.join('') : '';
+  const colHeadHtml = map.colHeaders
+    .map((h) => `<th scope="col">${escapeHtml(h)}</th>`)
+    .join('');
+  const bodyHtml = map.grid
+    .map((row) => {
+      const cells = row.cells
+        .map((cell) => {
+          const cls = cell.value ? 'logic-kmap-cell logic-kmap-on' : 'logic-kmap-cell';
+          const text = cell.value ? '1' : '0';
+          return `<td class="${cls}" title="m${cell.minterm}">${text}<sub>${cell.minterm}</sub></td>`;
+        })
+        .join('');
+      const rowHead = rowHeaderLabel
+        ? `<th scope="row">${escapeHtml(row.header)}</th>`
+        : '';
+      return `<tr>${rowHead}${cells}</tr>`;
+    })
+    .join('');
+  const corner = rowHeaderLabel
+    ? `<th class="logic-kmap-corner"><span>${escapeHtml(rowHeaderLabel)}</span><span class="logic-kmap-slash">\\</span><span>${escapeHtml(colHeaderLabel)}</span></th>`
+    : `<th class="logic-kmap-corner">${escapeHtml(colHeaderLabel)}</th>`;
+  return `<div class="logic-kmap" data-testid="${target ? 'logic-kmap-f' : 'logic-kmap-not-f'}">
+    <h4 class="logic-kmap-title">${escapeHtml(title)}</h4>
+    <table class="logic-kmap-table"><thead><tr>${corner}${colHeadHtml}</tr></thead>
+    <tbody>${bodyHtml}</tbody></table>
+  </div>`;
 }
 
 export function createLogicCoverageExplorer() {
@@ -356,10 +393,18 @@ export function createLogicCoverageExplorer() {
         }`
       : '';
 
+    const kmapMarkup = set.id === 'ic' && state.parsed
+      ? `<div class="logic-kmap-row">
+          ${renderKMap(state.analysis.rows, state.parsed.clauses, true, 'f 的 Karnaugh Map')}
+          ${renderKMap(state.analysis.rows, state.parsed.clauses, false, '¬f 的 Karnaugh Map')}
+        </div>`
+      : '';
+
     return `
       <h3 class="logic-summary-title">${escapeHtml(set.name)}</h3>
       <p class="logic-summary-desc">${escapeHtml(set.description)}</p>
       ${dnfMarkup}
+      ${kmapMarkup}
       <p class="logic-summary-stats">
         測試列數：<strong data-testid="logic-test-count">${totalCount}</strong>
         <span class="logic-divider">·</span>

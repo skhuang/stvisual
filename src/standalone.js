@@ -2752,6 +2752,73 @@
     };
   }
 
+  // src/utils/karnaughMap.js
+  var GRAY2 = [0, 1];
+  var GRAY4 = [0, 1, 3, 2];
+  function bits(value, width) {
+    return value.toString(2).padStart(width, "0");
+  }
+  function buildKMap(rows, clauses, target = true) {
+    const n = clauses.length;
+    if (n < 1 || n > 4) {
+      return { unsupported: true, n };
+    }
+    const map = /* @__PURE__ */ new Map();
+    rows.forEach((row) => {
+      const value = row.predicate === target;
+      map.set(row.index, { value, minterm: row.index });
+    });
+    let rowOrder;
+    let colOrder;
+    let rowVars;
+    let colVars;
+    if (n === 1) {
+      rowOrder = [0];
+      colOrder = GRAY2;
+      rowVars = [];
+      colVars = [clauses[0]];
+    } else if (n === 2) {
+      rowOrder = GRAY2;
+      colOrder = GRAY2;
+      rowVars = [clauses[0]];
+      colVars = [clauses[1]];
+    } else if (n === 3) {
+      rowOrder = GRAY2;
+      colOrder = GRAY4;
+      rowVars = [clauses[0]];
+      colVars = [clauses[1], clauses[2]];
+    } else {
+      rowOrder = GRAY4;
+      colOrder = GRAY4;
+      rowVars = [clauses[0], clauses[1]];
+      colVars = [clauses[2], clauses[3]];
+    }
+    const rowWidth = rowVars.length;
+    const colWidth = colVars.length;
+    const grid = rowOrder.map((rBits) => {
+      const cells = colOrder.map((cBits) => {
+        const minterm = rBits << colWidth | cBits;
+        const entry = map.get(minterm);
+        return {
+          minterm,
+          value: entry ? entry.value : false
+        };
+      });
+      return {
+        header: rowWidth ? bits(rBits, rowWidth) : "",
+        cells
+      };
+    });
+    return {
+      unsupported: false,
+      n,
+      rowVars,
+      colVars,
+      colHeaders: colOrder.map((cBits) => bits(cBits, colWidth)),
+      grid
+    };
+  }
+
   // src/config/cloudConfig.js
   var cloudConfig = {
     firebase: {
@@ -3030,6 +3097,31 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     if (!dnf.length) return "<code>0</code>";
     return dnf.map((term) => `<code>${termToCompactHtml(term)}</code>`).join(" &nbsp;+&nbsp; ");
   }
+  function renderKMap(rows, clauses, target, title) {
+    const map = buildKMap(rows, clauses, target);
+    if (map.unsupported) {
+      return `<div class="logic-kmap"><h4 class="logic-kmap-title">${escapeHtml2(title)}</h4>
+      <p class="logic-kmap-note">Karnaugh map \u50C5\u652F\u63F4 1\u20134 \u500B clauses\uFF08\u76EE\u524D\u70BA ${map.n}\uFF09\u3002</p></div>`;
+    }
+    const colHeaderLabel = map.colVars.length ? map.colVars.join("") : "";
+    const rowHeaderLabel = map.rowVars.length ? map.rowVars.join("") : "";
+    const colHeadHtml = map.colHeaders.map((h) => `<th scope="col">${escapeHtml2(h)}</th>`).join("");
+    const bodyHtml = map.grid.map((row) => {
+      const cells = row.cells.map((cell) => {
+        const cls = cell.value ? "logic-kmap-cell logic-kmap-on" : "logic-kmap-cell";
+        const text = cell.value ? "1" : "0";
+        return `<td class="${cls}" title="m${cell.minterm}">${text}<sub>${cell.minterm}</sub></td>`;
+      }).join("");
+      const rowHead = rowHeaderLabel ? `<th scope="row">${escapeHtml2(row.header)}</th>` : "";
+      return `<tr>${rowHead}${cells}</tr>`;
+    }).join("");
+    const corner = rowHeaderLabel ? `<th class="logic-kmap-corner"><span>${escapeHtml2(rowHeaderLabel)}</span><span class="logic-kmap-slash">\\</span><span>${escapeHtml2(colHeaderLabel)}</span></th>` : `<th class="logic-kmap-corner">${escapeHtml2(colHeaderLabel)}</th>`;
+    return `<div class="logic-kmap" data-testid="${target ? "logic-kmap-f" : "logic-kmap-not-f"}">
+    <h4 class="logic-kmap-title">${escapeHtml2(title)}</h4>
+    <table class="logic-kmap-table"><thead><tr>${corner}${colHeadHtml}</tr></thead>
+    <tbody>${bodyHtml}</tbody></table>
+  </div>`;
+  }
   function createLogicCoverageExplorer() {
     const root2 = document.createElement("div");
     root2.className = "logic-coverage";
@@ -3259,10 +3351,15 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </p>${set.id === "ic" && state.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">\xACf \u7684\u6700\u5C0F DNF\uFF1A${dnfToHtml(state.analysis.negDnf)}
                 <span class="logic-dnf-alt">\uFF08\u6559\u79D1\u66F8\u8A18\u865F\uFF1A${dnfToCompactHtml(state.analysis.negDnf)}\uFF09</span>
               </p>` : ""}` : "";
+      const kmapMarkup = set.id === "ic" && state.parsed ? `<div class="logic-kmap-row">
+          ${renderKMap(state.analysis.rows, state.parsed.clauses, true, "f \u7684 Karnaugh Map")}
+          ${renderKMap(state.analysis.rows, state.parsed.clauses, false, "\xACf \u7684 Karnaugh Map")}
+        </div>` : "";
       return `
       <h3 class="logic-summary-title">${escapeHtml2(set.name)}</h3>
       <p class="logic-summary-desc">${escapeHtml2(set.description)}</p>
       ${dnfMarkup}
+      ${kmapMarkup}
       <p class="logic-summary-stats">
         \u6E2C\u8A66\u5217\u6578\uFF1A<strong data-testid="logic-test-count">${totalCount}</strong>
         <span class="logic-divider">\xB7</span>

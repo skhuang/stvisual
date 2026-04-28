@@ -201,6 +201,68 @@
   text-decoration: overline;
   text-decoration-thickness: 1.5px;
 }
+.logic-kmap-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 8px 0 12px;
+}
+.logic-kmap {
+  background: #fff;
+  border: 1px solid #dfe6e9;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+.logic-kmap-title {
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+.logic-kmap-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #777;
+}
+.logic-kmap-table {
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 0.85rem;
+}
+.logic-kmap-table th,
+.logic-kmap-table td {
+  border: 1px solid #b2bec3;
+  padding: 4px 8px;
+  text-align: center;
+  min-width: 36px;
+}
+.logic-kmap-table thead th {
+  background: #f1f3f5;
+  color: #2c3e50;
+}
+.logic-kmap-table tbody th {
+  background: #f8f9fa;
+  color: #2c3e50;
+  font-weight: 600;
+}
+.logic-kmap-corner {
+  background: #ecf0f1 !important;
+  color: #555;
+  font-weight: 500;
+}
+.logic-kmap-slash {
+  margin: 0 2px;
+  color: #95a5a6;
+}
+.logic-kmap-cell sub {
+  margin-left: 2px;
+  color: #95a5a6;
+  font-size: 0.7em;
+}
+.logic-kmap-on {
+  background: #fff3bf;
+  color: #b08900;
+  font-weight: 700;
+}
 .logic-divider {
   margin: 0 6px;
   color: #b2bec3;
