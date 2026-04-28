@@ -359,6 +359,30 @@ export const logicCoverageCriteria = [
     labelZh: 'RICC',
     description: '同 GICC，但成對列需所有次子句相同，僅主子句翻轉。',
   },
+  {
+    id: 'ic',
+    label: 'Implicant Coverage',
+    labelZh: 'IC',
+    description: '對 DNF 的每個 implicant，至少找到一個 true point。',
+  },
+  {
+    id: 'utpc',
+    label: 'Unique True Point Coverage',
+    labelZh: 'UTPC',
+    description: '為每個 implicant 挑一個只滿足該 implicant 的 unique true point。',
+  },
+  {
+    id: 'nfpc',
+    label: 'Near False Point Coverage',
+    labelZh: 'NFPC',
+    description: '為每個 implicant 的每個 literal 找一個翻轉後使 P 為 false 的列。',
+  },
+  {
+    id: 'cutpnfp',
+    label: 'Corresponding UTP + NFP Pair Coverage',
+    labelZh: 'CUTPNFP',
+    description: '為每個 implicant 的每個 literal，挑一對僅在該 literal 不同的 UTP 與 NFP。',
+  },
 ];
 
 export const logicCoveragePredicates = [

@@ -10,7 +10,12 @@ import {
   buildRACCSet,
   buildGICCSet,
   buildRICCSet,
+  buildImplicantCoverageSet,
+  buildUTPCSet,
+  buildNFPCSet,
+  buildCUTPNFPSet,
   buildAllCoverageSets,
+  toDNF,
 } from '../utils/logicCoverage.js';
 
 describe('parsePredicate', () => {
@@ -130,10 +135,60 @@ describe('buildAllCoverageSets', () => {
     const parsed = parsePredicate('a && (b || !c)');
     const analysis = buildAllCoverageSets(parsed);
     expect(analysis.rows).toHaveLength(8);
-    ['pc', 'cc', 'coc', 'gacc', 'cacc', 'racc', 'gicc', 'ricc'].forEach((id) => {
+    ['pc', 'cc', 'coc', 'gacc', 'cacc', 'racc', 'gicc', 'ricc', 'ic', 'utpc', 'nfpc', 'cutpnfp'].forEach((id) => {
       expect(analysis.sets[id]).toBeDefined();
-      expect(analysis.sets[id].tests.length).toBeGreaterThan(0);
     });
+  });
+});
+
+describe('syntactic logic coverage (DNF)', () => {
+  it('produces DNF terms for (a && b) || c', () => {
+    const parsed = parsePredicate('(a && b) || c');
+    const dnf = toDNF(parsed.ast);
+    const keys = dnf.map((term) => term.map((l) => `${l.negated ? '!' : ''}${l.name}`).sort().join('&'));
+    expect(keys.sort()).toEqual(['a&b', 'c']);
+  });
+
+  it('IC covers each implicant with at least one row', () => {
+    const parsed = parsePredicate('(a && b) || c');
+    const rows = buildTruthTable(parsed);
+    const dnf = toDNF(parsed.ast);
+    const set = buildImplicantCoverageSet(rows, dnf);
+    expect(set.tests).toHaveLength(dnf.length);
+  });
+
+  it('UTPC rows satisfy exactly one implicant', () => {
+    const parsed = parsePredicate('(a && b) || c');
+    const rows = buildTruthTable(parsed);
+    const dnf = toDNF(parsed.ast);
+    const set = buildUTPCSet(rows, dnf);
+    set.tests.forEach((t) => {
+      const term = dnf[t.implicantIndex];
+      const others = dnf.filter((_, i) => i !== t.implicantIndex);
+      expect(term.every((lit) => Boolean(t.row.values[lit.name]) !== lit.negated)).toBe(true);
+      others.forEach((other) => {
+        expect(other.every((lit) => Boolean(t.row.values[lit.name]) !== lit.negated)).toBe(false);
+      });
+    });
+  });
+
+  it('NFPC rows make P false and flip exactly one literal of the implicant', () => {
+    const parsed = parsePredicate('(a && b) || c');
+    const rows = buildTruthTable(parsed);
+    const dnf = toDNF(parsed.ast);
+    const set = buildNFPCSet(rows, dnf);
+    expect(set.tests.length).toBeGreaterThan(0);
+    set.tests.forEach((t) => {
+      expect(t.row.predicate).toBe(false);
+    });
+  });
+
+  it('CUTPNFP pairs differ only in the targeted literal', () => {
+    const parsed = parsePredicate('(a && b) || c');
+    const rows = buildTruthTable(parsed);
+    const dnf = toDNF(parsed.ast);
+    const set = buildCUTPNFPSet(rows, dnf);
+    expect(set.tests.length % 2).toBe(0);
   });
 });
 

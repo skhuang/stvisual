@@ -435,9 +435,11 @@ export function buildRICCSet(rows, clauses) {
 
 export function buildAllCoverageSets(parsed) {
   const rows = buildTruthTable(parsed);
+  const dnf = toDNF(parsed.ast);
   return {
     rows,
     clauses: parsed.clauses,
+    dnf,
     sets: {
       pc: buildPredicateCoverageSet(rows),
       cc: buildClauseCoverageSet(rows, parsed.clauses),
@@ -447,6 +449,287 @@ export function buildAllCoverageSets(parsed) {
       racc: buildRACCSet(rows, parsed.clauses),
       gicc: buildGICCSet(rows, parsed.clauses),
       ricc: buildRICCSet(rows, parsed.clauses),
+      ic: buildImplicantCoverageSet(rows, dnf),
+      utpc: buildUTPCSet(rows, dnf),
+      nfpc: buildNFPCSet(rows, dnf),
+      cutpnfp: buildCUTPNFPSet(rows, dnf),
     },
+  };
+}
+
+// ---------- Syntactic Logic Coverage (DNF-based) ----------
+
+function literalKey(lit) {
+  return `${lit.negated ? '!' : ''}${lit.name}`;
+}
+
+function termKey(term) {
+  return term.map(literalKey).sort().join('&');
+}
+
+export function termToString(term) {
+  if (!term.length) return 'true';
+  return term.map(literalKey).join(' && ');
+}
+
+function mergeLiterals(a, b) {
+  const map = new Map();
+  for (const lit of [...a, ...b]) {
+    const existing = map.get(lit.name);
+    if (existing && existing.negated !== lit.negated) {
+      return null;
+    }
+    if (!existing) {
+      map.set(lit.name, lit);
+    }
+  }
+  return [...map.values()];
+}
+
+function dedupeTerms(terms) {
+  const seen = new Set();
+  const out = [];
+  terms.forEach((t) => {
+    const key = termKey(t);
+    if (!seen.has(key)) {
+      seen.add(key);
+      out.push(t);
+    }
+  });
+  return out;
+}
+
+function dnfFromAst(ast) {
+  switch (ast.type) {
+    case 'clause':
+      return [[{ name: ast.name, negated: false }]];
+    case 'not':
+      return dnfNegate(ast.operand);
+    case 'and': {
+      const left = dnfFromAst(ast.left);
+      const right = dnfFromAst(ast.right);
+      const terms = [];
+      left.forEach((lt) => right.forEach((rt) => {
+        const merged = mergeLiterals(lt, rt);
+        if (merged) terms.push(merged);
+      }));
+      return dedupeTerms(terms);
+    }
+    case 'or':
+      return dedupeTerms([...dnfFromAst(ast.left), ...dnfFromAst(ast.right)]);
+    default:
+      throw new Error(`未知 AST 節點：${ast.type}`);
+  }
+}
+
+function dnfNegate(ast) {
+  switch (ast.type) {
+    case 'clause':
+      return [[{ name: ast.name, negated: true }]];
+    case 'not':
+      return dnfFromAst(ast.operand);
+    case 'and':
+      return dedupeTerms([...dnfNegate(ast.left), ...dnfNegate(ast.right)]);
+    case 'or': {
+      const left = dnfNegate(ast.left);
+      const right = dnfNegate(ast.right);
+      const terms = [];
+      left.forEach((lt) => right.forEach((rt) => {
+        const merged = mergeLiterals(lt, rt);
+        if (merged) terms.push(merged);
+      }));
+      return dedupeTerms(terms);
+    }
+    default:
+      throw new Error(`未知 AST 節點：${ast.type}`);
+  }
+}
+
+export function toDNF(ast) {
+  return dnfFromAst(ast);
+}
+
+function termSatisfiedBy(term, values) {
+  return term.every((lit) => Boolean(values[lit.name]) !== lit.negated);
+}
+
+function findRowsForTerm(rows, term) {
+  return rows.filter((row) => termSatisfiedBy(term, row.values));
+}
+
+function uniqueTruePointsForTerm(rows, term, dnf, termIndex) {
+  return findRowsForTerm(rows, term).filter((row) =>
+    dnf.every((other, idx) => idx === termIndex || !termSatisfiedBy(other, row.values)),
+  );
+}
+
+function termLabel(term) {
+  return termToString(term);
+}
+
+export function buildImplicantCoverageSet(rows, dnf) {
+  const tests = [];
+  const seen = new Set();
+  const unsatisfied = [];
+
+  dnf.forEach((term, index) => {
+    const candidates = findRowsForTerm(rows, term);
+    if (!candidates.length) {
+      unsatisfied.push(`implicant {${termLabel(term)}}`);
+      return;
+    }
+    const row = candidates[0];
+    const key = `r${row.index}-i${index}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    tests.push({
+      id: key,
+      row,
+      label: `implicant {${termLabel(term)}}`,
+      implicantIndex: index,
+    });
+  });
+
+  return {
+    id: 'ic',
+    name: 'Implicant Coverage',
+    description: '對 DNF 中每個 implicant，至少找到一個使其為真的 true point。',
+    tests,
+    requirementCount: dnf.length,
+    unsatisfied,
+  };
+}
+
+export function buildUTPCSet(rows, dnf) {
+  const tests = [];
+  const seen = new Set();
+  const unsatisfied = [];
+
+  dnf.forEach((term, index) => {
+    const utps = uniqueTruePointsForTerm(rows, term, dnf, index);
+    if (!utps.length) {
+      unsatisfied.push(`UTP for {${termLabel(term)}}`);
+      return;
+    }
+    const row = utps[0];
+    const key = `r${row.index}-utp${index}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    tests.push({
+      id: key,
+      row,
+      label: `UTP for {${termLabel(term)}}`,
+      implicantIndex: index,
+    });
+  });
+
+  return {
+    id: 'utpc',
+    name: 'Unique True Point Coverage',
+    description: '對每個 implicant，挑一個只滿足該 implicant 的 unique true point。',
+    tests,
+    requirementCount: dnf.length,
+    unsatisfied,
+  };
+}
+
+function nearFalsePointsFor(rows, term, literalIndex) {
+  const literal = term[literalIndex];
+  return rows.filter((row) => {
+    if (row.predicate) return false;
+    if (Boolean(row.values[literal.name]) === !literal.negated) return false;
+    return term.every((lit, idx) => {
+      if (idx === literalIndex) return true;
+      return Boolean(row.values[lit.name]) === !lit.negated;
+    });
+  });
+}
+
+export function buildNFPCSet(rows, dnf) {
+  const tests = [];
+  const seen = new Set();
+  const unsatisfied = [];
+  let requirementCount = 0;
+
+  dnf.forEach((term, index) => {
+    term.forEach((literal, literalIndex) => {
+      requirementCount += 1;
+      const nfps = nearFalsePointsFor(rows, term, literalIndex);
+      if (!nfps.length) {
+        unsatisfied.push(`NFP {${termLabel(term)}} on ${literalKey(literal)}`);
+        return;
+      }
+      const row = nfps[0];
+      const key = `r${row.index}-nfp${index}-${literalIndex}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      tests.push({
+        id: key,
+        row,
+        label: `NFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`,
+        implicantIndex: index,
+      });
+    });
+  });
+
+  return {
+    id: 'nfpc',
+    name: 'Near False Point Coverage',
+    description: '對每個 implicant 的每個 literal，找一個翻轉該 literal 後使 implicant 為假且 P 為假的 row。',
+    tests,
+    requirementCount,
+    unsatisfied,
+  };
+}
+
+export function buildCUTPNFPSet(rows, dnf) {
+  const tests = [];
+  const seen = new Set();
+  const unsatisfied = [];
+  let requirementCount = 0;
+
+  dnf.forEach((term, index) => {
+    const utps = uniqueTruePointsForTerm(rows, term, dnf, index);
+    term.forEach((literal, literalIndex) => {
+      requirementCount += 1;
+      let pair = null;
+      for (const utp of utps) {
+        const nfp = rows.find((row) => {
+          if (row.predicate) return false;
+          return Object.keys(utp.values).every((name) => {
+            if (name === literal.name) return row.values[name] !== utp.values[name];
+            return row.values[name] === utp.values[name];
+          });
+        });
+        if (nfp) {
+          pair = [utp, nfp];
+          break;
+        }
+      }
+      if (!pair) {
+        unsatisfied.push(`CUTPNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`);
+        return;
+      }
+      pair.forEach((row, role) => {
+        const key = `r${row.index}-cutp${index}-${literalIndex}-${role}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        tests.push({
+          id: key,
+          row,
+          label: `${role === 0 ? 'UTP' : 'NFP'} pair {${termLabel(term)}} 翻轉 ${literalKey(literal)}`,
+          implicantIndex: index,
+        });
+      });
+    });
+  });
+
+  return {
+    id: 'cutpnfp',
+    name: 'Corresponding UTP + NFP Pair Coverage',
+    description: '為每個 implicant 的每個 literal，挑一對僅在該 literal 不同的 UTP 與 NFP。',
+    tests,
+    requirementCount,
+    unsatisfied,
   };
 }

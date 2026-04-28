@@ -129,6 +129,18 @@
   color: #2c3e50;
   font-size: 0.9rem;
 }
+.logic-dnf {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  color: #2c3e50;
+  font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+  word-break: break-word;
+}
+.logic-dnf code {
+  background: #ecf0f1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
 .logic-divider {
   margin: 0 6px;
   color: #b2bec3;

@@ -16,6 +16,11 @@ function escapeHtml(value = '') {
     .replaceAll("'", '&#39;');
 }
 
+function termToHtml(term) {
+  if (!term.length) return 'true';
+  return term.map((lit) => `${lit.negated ? '!' : ''}${lit.name}`).join(' ∧ ');
+}
+
 export function createLogicCoverageExplorer() {
   const root = document.createElement('div');
   root.className = 'logic-coverage';
@@ -212,12 +217,21 @@ export function createLogicCoverageExplorer() {
       .join('');
 
     const unsatisfied = set.unsatisfied?.length
-      ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">無法找到下列子句的可決定列：${set.unsatisfied.join(', ')}</p>`
+      ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">無法找到下列需求對應列：${set.unsatisfied.join(', ')}</p>`
+      : '';
+
+    const dnfMarkup = ['ic', 'utpc', 'nfpc', 'cutpnfp'].includes(set.id) && state.analysis.dnf
+      ? `<p class="logic-dnf" data-testid="logic-dnf">DNF：${
+          state.analysis.dnf
+            .map((term) => `<code>${escapeHtml(termToHtml(term))}</code>`)
+            .join(' &nbsp;∨&nbsp; ') || '<code>true</code>'
+        }</p>`
       : '';
 
     return `
       <h3 class="logic-summary-title">${escapeHtml(set.name)}</h3>
       <p class="logic-summary-desc">${escapeHtml(set.description)}</p>
+      ${dnfMarkup}
       <p class="logic-summary-stats">
         測試列數：<strong data-testid="logic-test-count">${totalCount}</strong>
         <span class="logic-divider">·</span>
