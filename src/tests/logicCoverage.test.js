@@ -149,12 +149,19 @@ describe('syntactic logic coverage (DNF)', () => {
     expect(keys.sort()).toEqual(['a&b', 'c']);
   });
 
-  it('IC covers each implicant with at least one row', () => {
+  it('IC covers implicants of both f and ¬f', () => {
     const parsed = parsePredicate('(a && b) || c');
     const rows = buildTruthTable(parsed);
     const dnf = toDNF(parsed.ast);
-    const set = buildImplicantCoverageSet(rows, dnf);
-    expect(set.tests).toHaveLength(dnf.length);
+    const negDnf = toDNF({ type: 'not', operand: parsed.ast });
+    const set = buildImplicantCoverageSet(rows, dnf, negDnf);
+    expect(set.requirementCount).toBe(dnf.length + negDnf.length);
+    const positives = set.tests.filter((t) => t.polarity === 'pos');
+    const negatives = set.tests.filter((t) => t.polarity === 'neg');
+    expect(positives).toHaveLength(dnf.length);
+    expect(negatives).toHaveLength(negDnf.length);
+    positives.forEach((t) => expect(t.row.predicate).toBe(true));
+    negatives.forEach((t) => expect(t.row.predicate).toBe(false));
   });
 
   it('UTPC rows satisfy exactly one implicant', () => {

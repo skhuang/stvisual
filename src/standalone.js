@@ -2416,10 +2416,12 @@
   function buildAllCoverageSets(parsed) {
     const rows = buildTruthTable(parsed);
     const dnf = toDNF(parsed.ast);
+    const negDnf = toDNF({ type: "not", operand: parsed.ast });
     return {
       rows,
       clauses: parsed.clauses,
       dnf,
+      negDnf,
       sets: {
         pc: buildPredicateCoverageSet(rows),
         cc: buildClauseCoverageSet(rows, parsed.clauses),
@@ -2429,7 +2431,7 @@
         racc: buildRACCSet(rows, parsed.clauses),
         gicc: buildGICCSet(rows, parsed.clauses),
         ricc: buildRICCSet(rows, parsed.clauses),
-        ic: buildImplicantCoverageSet(rows, dnf),
+        ic: buildImplicantCoverageSet(rows, dnf, negDnf),
         utpc: buildUTPCSet(rows, dnf),
         nfpc: buildNFPCSet(rows, dnf),
         cutpnfp: buildCUTPNFPSet(rows, dnf)
@@ -2532,33 +2534,36 @@
   function termLabel(term) {
     return termToString(term);
   }
-  function buildImplicantCoverageSet(rows, dnf) {
+  function buildImplicantCoverageSet(rows, dnf, negDnf = []) {
     const tests = [];
     const seen = /* @__PURE__ */ new Set();
     const unsatisfied = [];
-    dnf.forEach((term, index) => {
+    function pushFor(term, index, kind) {
       const candidates = findRowsForTerm(rows, term);
       if (!candidates.length) {
-        unsatisfied.push(`implicant {${termLabel(term)}}`);
+        unsatisfied.push(`${kind} implicant {${termLabel(term)}}`);
         return;
       }
       const row = candidates[0];
-      const key = `r${row.index}-i${index}`;
+      const key = `r${row.index}-${kind}${index}`;
       if (seen.has(key)) return;
       seen.add(key);
       tests.push({
         id: key,
         row,
-        label: `implicant {${termLabel(term)}}`,
-        implicantIndex: index
+        label: `${kind === "pos" ? "P=T implicant" : "\xACP=T implicant"} {${termLabel(term)}}`,
+        implicantIndex: index,
+        polarity: kind
       });
-    });
+    }
+    dnf.forEach((term, index) => pushFor(term, index, "pos"));
+    negDnf.forEach((term, index) => pushFor(term, index, "neg"));
     return {
       id: "ic",
       name: "Implicant Coverage",
-      description: "\u5C0D DNF \u4E2D\u6BCF\u500B implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B\u4F7F\u5176\u70BA\u771F\u7684 true point\u3002",
+      description: "\u5C0D f \u7684 DNF \u8207 \xACf \u7684 DNF \u4E2D\u6BCF\u500B implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B\u4F7F\u5176\u70BA\u771F\u7684 row\u3002",
       tests,
-      requirementCount: dnf.length,
+      requirementCount: dnf.length + negDnf.length,
       unsatisfied
     };
   }
@@ -2926,7 +2931,7 @@
         </li>
       `).join("");
       const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">\u7121\u6CD5\u627E\u5230\u4E0B\u5217\u9700\u6C42\u5C0D\u61C9\u5217\uFF1A${set.unsatisfied.join(", ")}</p>` : "";
-      const dnfMarkup = ["ic", "utpc", "nfpc", "cutpnfp"].includes(set.id) && state.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">DNF\uFF1A${state.analysis.dnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>` : "";
+      const dnfMarkup = ["ic", "utpc", "nfpc", "cutpnfp"].includes(set.id) && state.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">f \u7684 DNF\uFF1A${state.analysis.dnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>${set.id === "ic" && state.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">\xACf \u7684 DNF\uFF1A${state.analysis.negDnf.map((term) => `<code>${escapeHtml2(termToHtml(term))}</code>`).join(" &nbsp;\u2228&nbsp; ") || "<code>true</code>"}</p>` : ""}` : "";
       return `
       <h3 class="logic-summary-title">${escapeHtml2(set.name)}</h3>
       <p class="logic-summary-desc">${escapeHtml2(set.description)}</p>

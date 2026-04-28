@@ -436,10 +436,12 @@ export function buildRICCSet(rows, clauses) {
 export function buildAllCoverageSets(parsed) {
   const rows = buildTruthTable(parsed);
   const dnf = toDNF(parsed.ast);
+  const negDnf = toDNF({ type: 'not', operand: parsed.ast });
   return {
     rows,
     clauses: parsed.clauses,
     dnf,
+    negDnf,
     sets: {
       pc: buildPredicateCoverageSet(rows),
       cc: buildClauseCoverageSet(rows, parsed.clauses),
@@ -449,7 +451,7 @@ export function buildAllCoverageSets(parsed) {
       racc: buildRACCSet(rows, parsed.clauses),
       gicc: buildGICCSet(rows, parsed.clauses),
       ricc: buildRICCSet(rows, parsed.clauses),
-      ic: buildImplicantCoverageSet(rows, dnf),
+      ic: buildImplicantCoverageSet(rows, dnf, negDnf),
       utpc: buildUTPCSet(rows, dnf),
       nfpc: buildNFPCSet(rows, dnf),
       cutpnfp: buildCUTPNFPSet(rows, dnf),
@@ -567,35 +569,39 @@ function termLabel(term) {
   return termToString(term);
 }
 
-export function buildImplicantCoverageSet(rows, dnf) {
+export function buildImplicantCoverageSet(rows, dnf, negDnf = []) {
   const tests = [];
   const seen = new Set();
   const unsatisfied = [];
 
-  dnf.forEach((term, index) => {
+  function pushFor(term, index, kind) {
     const candidates = findRowsForTerm(rows, term);
     if (!candidates.length) {
-      unsatisfied.push(`implicant {${termLabel(term)}}`);
+      unsatisfied.push(`${kind} implicant {${termLabel(term)}}`);
       return;
     }
     const row = candidates[0];
-    const key = `r${row.index}-i${index}`;
+    const key = `r${row.index}-${kind}${index}`;
     if (seen.has(key)) return;
     seen.add(key);
     tests.push({
       id: key,
       row,
-      label: `implicant {${termLabel(term)}}`,
+      label: `${kind === 'pos' ? 'P=T implicant' : '¬P=T implicant'} {${termLabel(term)}}`,
       implicantIndex: index,
+      polarity: kind,
     });
-  });
+  }
+
+  dnf.forEach((term, index) => pushFor(term, index, 'pos'));
+  negDnf.forEach((term, index) => pushFor(term, index, 'neg'));
 
   return {
     id: 'ic',
     name: 'Implicant Coverage',
-    description: '對 DNF 中每個 implicant，至少找到一個使其為真的 true point。',
+    description: '對 f 的 DNF 與 ¬f 的 DNF 中每個 implicant，至少找到一個使其為真的 row。',
     tests,
-    requirementCount: dnf.length,
+    requirementCount: dnf.length + negDnf.length,
     unsatisfied,
   };
 }

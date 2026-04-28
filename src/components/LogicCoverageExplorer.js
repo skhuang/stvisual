@@ -297,11 +297,19 @@ export function createLogicCoverageExplorer() {
       : '';
 
     const dnfMarkup = ['ic', 'utpc', 'nfpc', 'cutpnfp'].includes(set.id) && state.analysis.dnf
-      ? `<p class="logic-dnf" data-testid="logic-dnf">DNF：${
+      ? `<p class="logic-dnf" data-testid="logic-dnf">f 的 DNF：${
           state.analysis.dnf
             .map((term) => `<code>${escapeHtml(termToHtml(term))}</code>`)
             .join(' &nbsp;∨&nbsp; ') || '<code>true</code>'
-        }</p>`
+        }</p>${
+          set.id === 'ic' && state.analysis.negDnf
+            ? `<p class="logic-dnf" data-testid="logic-dnf-neg">¬f 的 DNF：${
+                state.analysis.negDnf
+                  .map((term) => `<code>${escapeHtml(termToHtml(term))}</code>`)
+                  .join(' &nbsp;∨&nbsp; ') || '<code>true</code>'
+              }</p>`
+            : ''
+        }`
       : '';
 
     return `
