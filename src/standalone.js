@@ -2453,12 +2453,23 @@
       }
       const set = getActiveSet();
       if (!set) return "";
-      const testList = set.tests.map((t) => `
-        <li class="logic-test-item" data-testid="logic-test-${escapeHtml2(t.id)}">
+      const seenRows = /* @__PURE__ */ new Set();
+      const annotated = set.tests.map((t) => {
+        const key = `r${t.row.index}`;
+        const isDuplicate = seenRows.has(key);
+        if (!isDuplicate) seenRows.add(key);
+        return { test: t, isDuplicate };
+      });
+      const totalCount = annotated.length;
+      const duplicateCount = annotated.filter((item) => item.isDuplicate).length;
+      const uniqueCount = totalCount - duplicateCount;
+      const testList = annotated.map(({ test: t, isDuplicate }) => `
+        <li class="logic-test-item${isDuplicate ? " duplicate" : ""}" data-testid="logic-test-${escapeHtml2(t.id)}">
           <span class="logic-test-row">#${t.row.index}</span>
           <span class="logic-test-values">${state.analysis.clauses.map((c) => `${c}=${t.row.values[c] ? "T" : "F"}`).join(", ")}</span>
           <span class="logic-test-pred ${t.row.predicate ? "is-true" : "is-false"}">P=${t.row.predicate ? "T" : "F"}</span>
           <span class="logic-test-label">${escapeHtml2(t.label)}</span>
+          ${isDuplicate ? '<span class="logic-test-dup-tag" aria-label="\u91CD\u8907">\u91CD\u8907</span>' : ""}
         </li>
       `).join("");
       const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">\u7121\u6CD5\u627E\u5230\u4E0B\u5217\u5B50\u53E5\u7684\u53EF\u6C7A\u5B9A\u5217\uFF1A${set.unsatisfied.join(", ")}</p>` : "";
@@ -2466,7 +2477,11 @@
       <h3 class="logic-summary-title">${escapeHtml2(set.name)}</h3>
       <p class="logic-summary-desc">${escapeHtml2(set.description)}</p>
       <p class="logic-summary-stats">
-        \u6E2C\u8A66\u5217\u6578\uFF1A<strong data-testid="logic-test-count">${set.tests.length}</strong>
+        \u6E2C\u8A66\u5217\u6578\uFF1A<strong data-testid="logic-test-count">${totalCount}</strong>
+        <span class="logic-divider">\xB7</span>
+        \u5BE6\u969B\u9700\u8981\uFF08\u53BB\u91CD\uFF09\uFF1A<strong data-testid="logic-test-unique-count">${uniqueCount}</strong>
+        <span class="logic-divider">\xB7</span>
+        \u91CD\u8907\u6578\u91CF\uFF1A<strong data-testid="logic-test-duplicate-count">${duplicateCount}</strong>
         <span class="logic-divider">\xB7</span>
         \u5EFA\u8B70\u6E2C\u8A66\u9700\u6C42\uFF1A<strong>${set.requirementCount}</strong>
       </p>

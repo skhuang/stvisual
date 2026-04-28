@@ -185,15 +185,28 @@ export function createLogicCoverageExplorer() {
     }
     const set = getActiveSet();
     if (!set) return '';
-    const testList = set.tests
-      .map((t) => `
-        <li class="logic-test-item" data-testid="logic-test-${escapeHtml(t.id)}">
+
+    const seenRows = new Set();
+    const annotated = set.tests.map((t) => {
+      const key = `r${t.row.index}`;
+      const isDuplicate = seenRows.has(key);
+      if (!isDuplicate) seenRows.add(key);
+      return { test: t, isDuplicate };
+    });
+    const totalCount = annotated.length;
+    const duplicateCount = annotated.filter((item) => item.isDuplicate).length;
+    const uniqueCount = totalCount - duplicateCount;
+
+    const testList = annotated
+      .map(({ test: t, isDuplicate }) => `
+        <li class="logic-test-item${isDuplicate ? ' duplicate' : ''}" data-testid="logic-test-${escapeHtml(t.id)}">
           <span class="logic-test-row">#${t.row.index}</span>
           <span class="logic-test-values">${state.analysis.clauses
             .map((c) => `${c}=${t.row.values[c] ? 'T' : 'F'}`)
             .join(', ')}</span>
           <span class="logic-test-pred ${t.row.predicate ? 'is-true' : 'is-false'}">P=${t.row.predicate ? 'T' : 'F'}</span>
           <span class="logic-test-label">${escapeHtml(t.label)}</span>
+          ${isDuplicate ? '<span class="logic-test-dup-tag" aria-label="重複">重複</span>' : ''}
         </li>
       `)
       .join('');
@@ -206,7 +219,11 @@ export function createLogicCoverageExplorer() {
       <h3 class="logic-summary-title">${escapeHtml(set.name)}</h3>
       <p class="logic-summary-desc">${escapeHtml(set.description)}</p>
       <p class="logic-summary-stats">
-        測試列數：<strong data-testid="logic-test-count">${set.tests.length}</strong>
+        測試列數：<strong data-testid="logic-test-count">${totalCount}</strong>
+        <span class="logic-divider">·</span>
+        實際需要（去重）：<strong data-testid="logic-test-unique-count">${uniqueCount}</strong>
+        <span class="logic-divider">·</span>
+        重複數量：<strong data-testid="logic-test-duplicate-count">${duplicateCount}</strong>
         <span class="logic-divider">·</span>
         建議測試需求：<strong>${set.requirementCount}</strong>
       </p>

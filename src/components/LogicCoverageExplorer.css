@@ -156,6 +156,28 @@
 .logic-test-pred.is-true { color: #27ae60; font-weight: 700; }
 .logic-test-pred.is-false { color: #c0392b; font-weight: 700; }
 .logic-test-label { color: #7f8c8d; font-size: 0.78rem; }
+.logic-test-item.duplicate {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #b2bec3;
+  color: #95a5a6;
+}
+.logic-test-item.duplicate .logic-test-row,
+.logic-test-item.duplicate .logic-test-pred,
+.logic-test-item.duplicate .logic-test-label {
+  color: #95a5a6;
+}
+.logic-test-dup-tag {
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: #f1c40f;
+  color: #7f5d00;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
 .logic-unsatisfied {
   margin-top: 8px;
   color: #d35400;
