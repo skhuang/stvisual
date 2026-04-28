@@ -45,6 +45,26 @@ describe('buildKMap', () => {
     expect(map.n).toBe(5);
   });
 
+  it('uses columns=ab and rows=cd for 4 clauses', () => {
+    const parsed = parsePredicate('(a || b) && (c || d)');
+    const rows = buildTruthTable(parsed);
+    const map = buildKMap(rows, parsed.clauses, true);
+    expect(map.unsupported).toBe(false);
+    expect(map.colVars).toEqual(['a', 'b']);
+    expect(map.rowVars).toEqual(['c', 'd']);
+    expect(map.colHeaders).toEqual(['00', '01', '11', '10']);
+    expect(map.grid).toHaveLength(4);
+    map.grid.forEach((r) => expect(r.cells).toHaveLength(4));
+    // a=1,b=0,c=0,d=1 → minterm 1001 = 9 → ab=10 col, cd=01 row → row[1] col[3]
+    const cell = map.grid[1].cells[3];
+    expect(cell.minterm).toBe(9);
+    expect(cell.value).toBe(true);
+    // a=b=c=d=0 → minterm 0 → false
+    const zero = map.grid[0].cells[0];
+    expect(zero.minterm).toBe(0);
+    expect(zero.value).toBe(false);
+  });
+
   it('tags cells with covering implicant indices when DNF is provided', () => {
     const parsed = parsePredicate('(a && b) || c');
     const rows = buildTruthTable(parsed);
