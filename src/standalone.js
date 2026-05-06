@@ -3224,6 +3224,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     const auth = firebase.auth(app);
     const db = firebase.firestore(app);
     let driveAccessToken = null;
+    function snapshotExists(snapshot) {
+      if (!snapshot) return false;
+      return typeof snapshot.exists === "function" ? snapshot.exists() : Boolean(snapshot.exists);
+    }
     return {
       isConfigured,
       missingKeys,
@@ -3249,7 +3253,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       },
       async loadSettings(userId) {
         const snapshot = await db.collection("users").doc(userId).collection("settings").doc("default").get();
-        if (!snapshot.exists()) {
+        if (!snapshotExists(snapshot)) {
           return null;
         }
         return snapshot.data();
@@ -3262,13 +3266,25 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       },
       async loadLogicRecent(userId) {
         const snapshot = await db.collection("users").doc(userId).collection("settings").doc("logicCoverage").get();
-        if (!snapshot.exists()) return [];
+        if (!snapshotExists(snapshot)) return [];
         const data = snapshot.data() || {};
         return Array.isArray(data.recentPredicates) ? data.recentPredicates.filter((p) => typeof p === "string") : [];
       },
       async saveLogicRecent(userId, list) {
         await db.collection("users").doc(userId).collection("settings").doc("logicCoverage").set({
           recentPredicates: Array.isArray(list) ? list.filter((p) => typeof p === "string") : [],
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      },
+      async loadSyntaxTests(userId) {
+        const snapshot = await db.collection("users").doc(userId).collection("settings").doc("syntaxCoverage").get();
+        if (!snapshotExists(snapshot)) return {};
+        const data = snapshot.data() || {};
+        return data.programs && typeof data.programs === "object" ? data.programs : {};
+      },
+      async saveSyntaxTests(userId, programs) {
+        await db.collection("users").doc(userId).collection("settings").doc("syntaxCoverage").set({
+          programs: programs && typeof programs === "object" ? programs : {},
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
       },
@@ -4240,12 +4256,957 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     return root2;
   }
 
+  // src/data/mutationData.js
+  var mutationOperators = [
+    { id: "AOR", label: "Arithmetic Operator Replacement", desc: "\u66FF\u63DB + - * / % \u7B49\u7B97\u8853\u904B\u7B97\u5B50\u3002" },
+    { id: "ROR", label: "Relational Operator Replacement", desc: "\u66FF\u63DB < <= > >= == != === !==\u3002" },
+    { id: "LOR", label: "Logical Operator Replacement", desc: "\u66FF\u63DB && \u8207 ||\u3002" },
+    { id: "COR", label: "Conditional Operator Replacement", desc: "\u66FF\u63DB\u689D\u4EF6\u904B\u7B97\u5B50\uFF08\u8207 LOR \u76F8\u540C\u96C6\u5408\uFF09\u3002" },
+    { id: "UOI", label: "Unary Operator Insertion", desc: "\u5728\u8B58\u5225\u5B57\u524D\u63D2\u5165 ! \u6216 -\u3002" },
+    { id: "ABS", label: "Absolute Value Insertion", desc: "\u628A\u8B58\u5225\u5B57\u5305\u6210 Math.abs(x) \u6216 -(x)\u3002" }
+  ];
+  var programExamples = [
+    {
+      id: "max",
+      name: "max(a, b)",
+      params: ["a", "b"],
+      body: "return a > b ? a : b;",
+      description: "\u56DE\u50B3\u5169\u6578\u4E2D\u8F03\u5927\u8005\u3002",
+      tests: [
+        { id: "t1", args: [3, 5], expected: 5 },
+        { id: "t2", args: [7, 2], expected: 7 },
+        { id: "t3", args: [4, 4], expected: 4 },
+        { id: "t4", args: [-1, -3], expected: -1 }
+      ]
+    },
+    {
+      id: "isLeapYear",
+      name: "isLeapYear(y)",
+      params: ["y"],
+      body: "return (y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0);",
+      description: "\u5224\u65B7\u662F\u5426\u70BA\u958F\u5E74\u3002",
+      tests: [
+        { id: "t1", args: [2024], expected: true },
+        { id: "t2", args: [1900], expected: false },
+        { id: "t3", args: [2e3], expected: true },
+        { id: "t4", args: [2023], expected: false }
+      ]
+    },
+    {
+      id: "triangle",
+      name: "triangle(a, b, c)",
+      params: ["a", "b", "c"],
+      body: [
+        'if (a <= 0 || b <= 0 || c <= 0) return "invalid";',
+        'if (a + b <= c || a + c <= b || b + c <= a) return "invalid";',
+        'if (a === b && b === c) return "equilateral";',
+        'if (a === b || b === c || a === c) return "isosceles";',
+        'return "scalene";'
+      ].join("\n"),
+      description: "\u4F9D\u4E09\u908A\u9577\u5224\u65B7\u4E09\u89D2\u5F62\u985E\u578B\u3002",
+      tests: [
+        { id: "t1", args: [3, 3, 3], expected: "equilateral" },
+        { id: "t2", args: [3, 3, 4], expected: "isosceles" },
+        { id: "t3", args: [3, 4, 5], expected: "scalene" },
+        { id: "t4", args: [1, 2, 5], expected: "invalid" },
+        { id: "t5", args: [0, 1, 1], expected: "invalid" }
+      ]
+    }
+  ];
+
+  // src/utils/mutation.js
+  var OPERATORS = {
+    AOR: ["+", "-", "*", "/", "%"],
+    ROR: ["<", "<=", ">", ">=", "==", "!=", "===", "!=="],
+    LOR: ["&&", "||"],
+    COR: ["&&", "||"]
+    // 同 LOR，但與 ! 一同套用時為條件運算的補集
+  };
+  var SORTED = {
+    AOR: [...OPERATORS.AOR].sort((a, b) => b.length - a.length),
+    ROR: [...OPERATORS.ROR].sort((a, b) => b.length - a.length),
+    LOR: [...OPERATORS.LOR].sort((a, b) => b.length - a.length),
+    COR: [...OPERATORS.COR].sort((a, b) => b.length - a.length)
+  };
+  var ID_REGEX = /[A-Za-z_$][A-Za-z0-9_$]*/y;
+  function buildSkipMap(source) {
+    const skip = new Array(source.length).fill(false);
+    let i = 0;
+    while (i < source.length) {
+      const ch = source[i];
+      const next = source[i + 1];
+      if (ch === "/" && next === "/") {
+        while (i < source.length && source[i] !== "\n") {
+          skip[i] = true;
+          i += 1;
+        }
+      } else if (ch === "/" && next === "*") {
+        while (i < source.length && !(source[i] === "*" && source[i + 1] === "/")) {
+          skip[i] = true;
+          i += 1;
+        }
+        if (i < source.length) {
+          skip[i] = skip[i + 1] = true;
+          i += 2;
+        }
+      } else if (ch === '"' || ch === "'" || ch === "`") {
+        const quote = ch;
+        skip[i] = true;
+        i += 1;
+        while (i < source.length && source[i] !== quote) {
+          if (source[i] === "\\") {
+            skip[i] = skip[i + 1] = true;
+            i += 2;
+          } else {
+            skip[i] = true;
+            i += 1;
+          }
+        }
+        if (i < source.length) {
+          skip[i] = true;
+          i += 1;
+        }
+      } else {
+        i += 1;
+      }
+    }
+    return skip;
+  }
+  function lineColOf(source, index) {
+    let line = 1;
+    let col = 1;
+    for (let i = 0; i < index && i < source.length; i += 1) {
+      if (source[i] === "\n") {
+        line += 1;
+        col = 1;
+      } else {
+        col += 1;
+      }
+    }
+    return { line, col };
+  }
+  function applyReplacement(source, start, end, replacement) {
+    return source.slice(0, start) + replacement + source.slice(end);
+  }
+  function findOperatorOccurrences(source, operatorList, skip) {
+    const hits = [];
+    for (let i = 0; i < source.length; i += 1) {
+      if (skip[i]) continue;
+      for (const op of operatorList) {
+        if (i + op.length > source.length) continue;
+        if (source.slice(i, i + op.length) !== op) continue;
+        const before = source[i - 1] || "";
+        const after = source[i + op.length] || "";
+        if (op === "=" || op.endsWith("=")) {
+        }
+        if (after === "=" && op.length === 1 && "+-*/%".includes(op)) continue;
+        if (op === "*" && (before === "*" || after === "*")) continue;
+        if ((op === "||" || op === "&&") && after === "=") continue;
+        if (op === "<" && (after === "<" || before === "<")) continue;
+        if (op === ">" && (after === ">" || before === ">")) continue;
+        hits.push({ start: i, end: i + op.length, text: op });
+        i += op.length - 1;
+        break;
+      }
+    }
+    return hits;
+  }
+  function findIdentifierOccurrences(source, skip) {
+    const hits = [];
+    let i = 0;
+    while (i < source.length) {
+      if (skip[i]) {
+        i += 1;
+        continue;
+      }
+      ID_REGEX.lastIndex = i;
+      const m = ID_REGEX.exec(source);
+      if (m && m.index === i) {
+        const keywords = /* @__PURE__ */ new Set([
+          "true",
+          "false",
+          "null",
+          "undefined",
+          "return",
+          "if",
+          "else",
+          "for",
+          "while",
+          "do",
+          "switch",
+          "case",
+          "break",
+          "continue",
+          "function",
+          "var",
+          "let",
+          "const",
+          "new",
+          "typeof",
+          "in",
+          "of",
+          "this"
+        ]);
+        if (!keywords.has(m[0])) {
+          hits.push({ start: i, end: i + m[0].length, text: m[0] });
+        }
+        i += m[0].length;
+      } else {
+        i += 1;
+      }
+    }
+    return hits;
+  }
+  function generateForOperator(source, opName, skip, idCounter) {
+    const list = SORTED[opName];
+    if (!list) return [];
+    const hits = findOperatorOccurrences(source, list, skip);
+    const mutants = [];
+    hits.forEach((hit) => {
+      list.forEach((replacement) => {
+        if (replacement === hit.text) return;
+        const mutated = applyReplacement(source, hit.start, hit.end, replacement);
+        const { line, col } = lineColOf(source, hit.start);
+        mutants.push({
+          id: `M${idCounter.value++}`,
+          operator: opName,
+          line,
+          col,
+          original: hit.text,
+          mutated: replacement,
+          source: mutated,
+          status: "live",
+          killedBy: []
+        });
+      });
+    });
+    return mutants;
+  }
+  function generateUOI(source, skip, idCounter) {
+    const hits = findIdentifierOccurrences(source, skip);
+    const mutants = [];
+    hits.forEach((hit) => {
+      ["!", "-"].forEach((unary) => {
+        const mutated = applyReplacement(source, hit.start, hit.end, `${unary}${hit.text}`);
+        const { line, col } = lineColOf(source, hit.start);
+        mutants.push({
+          id: `M${idCounter.value++}`,
+          operator: "UOI",
+          line,
+          col,
+          original: hit.text,
+          mutated: `${unary}${hit.text}`,
+          source: mutated,
+          status: "live",
+          killedBy: []
+        });
+      });
+    });
+    return mutants;
+  }
+  function generateABS(source, skip, idCounter) {
+    const hits = findIdentifierOccurrences(source, skip);
+    const mutants = [];
+    hits.forEach((hit) => {
+      const variants = [
+        { suffix: "abs", text: `Math.abs(${hit.text})` },
+        { suffix: "neg", text: `(-(${hit.text}))` }
+      ];
+      variants.forEach(({ suffix, text }) => {
+        const mutated = applyReplacement(source, hit.start, hit.end, text);
+        const { line, col } = lineColOf(source, hit.start);
+        mutants.push({
+          id: `M${idCounter.value++}`,
+          operator: "ABS",
+          line,
+          col,
+          original: hit.text,
+          mutated: text,
+          source: mutated,
+          status: "live",
+          killedBy: [],
+          variant: suffix
+        });
+      });
+    });
+    return mutants;
+  }
+  function generateMutants(source, operators = ["AOR", "ROR", "LOR", "UOI"]) {
+    const skip = buildSkipMap(source);
+    const idCounter = { value: 1 };
+    const out = [];
+    operators.forEach((op) => {
+      if (op === "UOI") {
+        out.push(...generateUOI(source, skip, idCounter));
+      } else if (op === "ABS") {
+        out.push(...generateABS(source, skip, idCounter));
+      } else {
+        out.push(...generateForOperator(source, op, skip, idCounter));
+      }
+    });
+    return out;
+  }
+  function compileFunction(params, body) {
+    return new Function(...params, body);
+  }
+  function deepEqual(a, b) {
+    if (a === b) return true;
+    if (typeof a === "number" && typeof b === "number" && Number.isNaN(a) && Number.isNaN(b)) return true;
+    if (Array.isArray(a) && Array.isArray(b)) {
+      if (a.length !== b.length) return false;
+      return a.every((v, i) => deepEqual(v, b[i]));
+    }
+    if (a && b && typeof a === "object" && typeof b === "object") {
+      const ak = Object.keys(a);
+      const bk = Object.keys(b);
+      if (ak.length !== bk.length) return false;
+      return ak.every((k) => deepEqual(a[k], b[k]));
+    }
+    return false;
+  }
+  function runOnce(fn, args) {
+    try {
+      const result = fn(...args);
+      return { ok: true, value: result };
+    } catch (err) {
+      return { ok: false, error: (err == null ? void 0 : err.message) || String(err) };
+    }
+  }
+  function runTestSuite(params, body, tests) {
+    const fn = compileFunction(params, body);
+    return tests.map((t) => {
+      const outcome = runOnce(fn, t.args);
+      const expected = t.expected;
+      const passed = outcome.ok && deepEqual(outcome.value, expected);
+      return { id: t.id, passed, outcome };
+    });
+  }
+  function evaluateMutants(params, body, tests, mutants) {
+    const baseFn = compileFunction(params, body);
+    const baseOutcomes = tests.map((t) => runOnce(baseFn, t.args));
+    return mutants.map((m) => {
+      let mutantFn;
+      try {
+        mutantFn = compileFunction(params, m.source);
+      } catch (err) {
+        return { ...m, status: "killed", killedBy: tests.map((t) => t.id), compileError: err == null ? void 0 : err.message };
+      }
+      const killedBy = [];
+      tests.forEach((t, i) => {
+        const base = baseOutcomes[i];
+        const mut = runOnce(mutantFn, t.args);
+        const sameOk = base.ok === mut.ok;
+        const sameValue = sameOk && (base.ok ? deepEqual(base.value, mut.value) : true);
+        if (!sameOk || !sameValue) killedBy.push(t.id);
+      });
+      return {
+        ...m,
+        status: killedBy.length ? "killed" : "live",
+        killedBy
+      };
+    });
+  }
+  function computeMutationScore(mutants) {
+    const total = mutants.length;
+    const equivalent = mutants.filter((m) => m.status === "equivalent").length;
+    const killed = mutants.filter((m) => m.status === "killed").length;
+    const live = mutants.filter((m) => m.status === "live").length;
+    const denominator = total - equivalent;
+    const score = denominator === 0 ? 1 : killed / denominator;
+    return { total, killed, live, equivalent, score };
+  }
+
+  // src/components/SyntaxCoverageExplorer.js
+  var DEFAULT_OPERATORS = ["AOR", "ROR", "LOR", "UOI"];
+  var STORAGE_KEY = "stvisual.syntaxTests.v1";
+  var SAVE_DEBOUNCE_MS = 600;
+  function loadLocalPrograms() {
+    var _a;
+    try {
+      const raw = (_a = globalThis.localStorage) == null ? void 0 : _a.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+  function saveLocalPrograms(programs) {
+    var _a;
+    try {
+      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY, JSON.stringify(programs));
+    } catch {
+    }
+  }
+  function defaultProgramSnapshot(ex) {
+    return {
+      params: ex.params.join(", "),
+      body: ex.body,
+      tests: ex.tests.map((t) => ({
+        id: t.id,
+        argsText: t.args.map((a) => JSON.stringify(a)).join(", "),
+        expectedText: JSON.stringify(t.expected)
+      }))
+    };
+  }
+  function escapeHtml3(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function formatValue(v) {
+    if (v === void 0) return "undefined";
+    if (typeof v === "string") return JSON.stringify(v);
+    try {
+      return JSON.stringify(v);
+    } catch {
+      return String(v);
+    }
+  }
+  function parseTestArgs(text) {
+    const trimmed = text.trim();
+    if (!trimmed) return [];
+    try {
+      return JSON.parse(`[${trimmed}]`);
+    } catch (err) {
+      throw new Error(`\u53C3\u6578\u89E3\u6790\u5931\u6557\uFF1A${err.message}`);
+    }
+  }
+  function parseExpected(text) {
+    const trimmed = text.trim();
+    if (!trimmed) return void 0;
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return trimmed;
+    }
+  }
+  function createSyntaxCoverageExplorer() {
+    var _a;
+    const root2 = document.createElement("div");
+    root2.className = "syntax-coverage";
+    root2.dataset.testid = "syntax-coverage";
+    const initial = programExamples[0];
+    const localPrograms = loadLocalPrograms();
+    const initialSnapshot = localPrograms[initial.id] || defaultProgramSnapshot(initial);
+    const state = {
+      exampleId: initial.id,
+      params: initialSnapshot.params,
+      body: initialSnapshot.body,
+      operators: new Set(DEFAULT_OPERATORS),
+      tests: initialSnapshot.tests.map((t) => ({ ...t })),
+      programs: localPrograms,
+      mutants: [],
+      suiteResults: [],
+      parsedTests: [],
+      parsedParams: [],
+      score: { total: 0, killed: 0, live: 0, equivalent: 0, score: 0 },
+      error: null,
+      selectedMutantId: null,
+      cloudUser: null,
+      cloudStatus: "idle",
+      // 'idle' | 'syncing' | 'synced' | 'error'
+      cloudMessage: ""
+    };
+    let cloudClient = null;
+    try {
+      cloudClient = createCloudIntegrationClient();
+    } catch {
+      cloudClient = null;
+    }
+    function snapshotCurrent() {
+      return {
+        params: state.params,
+        body: state.body,
+        tests: state.tests.map((t) => ({
+          id: t.id,
+          argsText: t.argsText,
+          expectedText: t.expectedText
+        }))
+      };
+    }
+    function persistCurrent() {
+      state.programs[state.exampleId] = snapshotCurrent();
+      saveLocalPrograms(state.programs);
+      pushToCloud();
+    }
+    let saveTimer = null;
+    let pendingSave = null;
+    function pushToCloud() {
+      if (!cloudClient || !state.cloudUser || typeof cloudClient.saveSyntaxTests !== "function") return;
+      if (saveTimer) clearTimeout(saveTimer);
+      state.cloudStatus = "syncing";
+      state.cloudMessage = "";
+      updateCloudIndicator();
+      pendingSave = new Promise((resolve) => {
+        saveTimer = setTimeout(async () => {
+          saveTimer = null;
+          try {
+            await cloudClient.saveSyntaxTests(state.cloudUser.uid, state.programs);
+            state.cloudStatus = "synced";
+            state.cloudMessage = "\u5DF2\u540C\u6B65\u5230\u96F2\u7AEF";
+          } catch (err) {
+            state.cloudStatus = "error";
+            state.cloudMessage = `\u96F2\u7AEF\u5132\u5B58\u5931\u6557\uFF1A${(err == null ? void 0 : err.message) || err}`;
+          }
+          updateCloudIndicator();
+          resolve();
+          pendingSave = null;
+        }, SAVE_DEBOUNCE_MS);
+      });
+    }
+    async function flushPendingSave() {
+      if (!pendingSave) return;
+      if (saveTimer) {
+        clearTimeout(saveTimer);
+        saveTimer = null;
+        try {
+          await cloudClient.saveSyntaxTests(state.cloudUser.uid, state.programs);
+        } catch {
+        }
+      } else {
+        await pendingSave;
+      }
+      pendingSave = null;
+    }
+    function updateCloudIndicator() {
+      const node = root2.querySelector('[data-testid="syntax-cloud-indicator"]');
+      if (!node) return;
+      node.dataset.status = state.cloudStatus;
+      node.textContent = cloudIndicatorText();
+    }
+    function cloudIndicatorText() {
+      if (!state.cloudUser) return "";
+      switch (state.cloudStatus) {
+        case "syncing":
+          return "\u2601 \u6B63\u5728\u540C\u6B65\u2026";
+        case "synced":
+          return `\u2601 ${state.cloudMessage || "\u5DF2\u540C\u6B65\u5230\u96F2\u7AEF"}`;
+        case "error":
+          return `\u2601 ${state.cloudMessage || "\u540C\u6B65\u5931\u6557"}`;
+        default:
+          return `\u2601 \u5DF2\u9023\u7D50 ${state.cloudUser.email || state.cloudUser.uid}`;
+      }
+    }
+    async function reloadFromCloud({ force = false } = {}) {
+      var _a2, _b;
+      if (!cloudClient || !state.cloudUser) return;
+      if (typeof cloudClient.loadSyntaxTests !== "function") return;
+      await flushPendingSave();
+      state.cloudStatus = "syncing";
+      state.cloudMessage = force ? "\u91CD\u65B0\u4ECE\u96F2\u7AEF\u8B80\u53D6\u2026" : "";
+      updateCloudIndicator();
+      try {
+        const remote = await cloudClient.loadSyntaxTests(state.cloudUser.uid);
+        const remoteObj = remote && typeof remote === "object" ? remote : {};
+        const localOnly = Object.keys(state.programs).filter((k) => !(k in remoteObj));
+        const merged = { ...remoteObj };
+        localOnly.forEach((k) => {
+          merged[k] = state.programs[k];
+        });
+        state.programs = merged;
+        saveLocalPrograms(state.programs);
+        const current = state.programs[state.exampleId];
+        if (current) {
+          state.params = (_a2 = current.params) != null ? _a2 : state.params;
+          state.body = (_b = current.body) != null ? _b : state.body;
+          state.tests = Array.isArray(current.tests) ? current.tests.map((t) => ({ ...t })) : state.tests;
+          state.selectedMutantId = null;
+        }
+        state.cloudStatus = "synced";
+        state.cloudMessage = "\u5DF2\u5F9E\u96F2\u7AEF\u8F09\u5165";
+        render();
+        if (localOnly.length > 0) pushToCloud();
+      } catch (err) {
+        state.cloudStatus = "error";
+        state.cloudMessage = `\u96F2\u7AEF\u8B80\u53D6\u5931\u6557\uFF1A${(err == null ? void 0 : err.message) || err}`;
+        updateCloudIndicator();
+      }
+    }
+    function recompute() {
+      var _a2;
+      state.error = null;
+      let params;
+      try {
+        params = state.params.split(",").map((s) => s.trim()).filter(Boolean);
+      } catch (err) {
+        state.error = `\u53C3\u6578\u89E3\u6790\u5931\u6557\uFF1A${err.message}`;
+        return;
+      }
+      let parsedTests;
+      try {
+        parsedTests = state.tests.map((t) => ({
+          id: t.id,
+          args: parseTestArgs(t.argsText),
+          expected: parseExpected(t.expectedText)
+        }));
+      } catch (err) {
+        state.error = err.message;
+        return;
+      }
+      let suiteResults;
+      try {
+        suiteResults = runTestSuite(params, state.body, parsedTests);
+      } catch (err) {
+        state.error = `\u539F\u7A0B\u5F0F\u7DE8\u8B6F/\u57F7\u884C\u5931\u6557\uFF1A${err.message}`;
+        return;
+      }
+      const operators = [...state.operators];
+      const generated = generateMutants(state.body, operators);
+      const evaluated = evaluateMutants(params, state.body, parsedTests, generated);
+      const prevEquivalent = new Set(
+        state.mutants.filter((m) => m.status === "equivalent").map((m) => m.id)
+      );
+      const finalMutants = evaluated.map(
+        (m) => prevEquivalent.has(m.id) ? { ...m, status: "equivalent", killedBy: [] } : m
+      );
+      state.suiteResults = suiteResults;
+      state.parsedTests = parsedTests;
+      state.parsedParams = params;
+      state.mutants = finalMutants;
+      state.score = computeMutationScore(finalMutants);
+      if (!state.mutants.find((m) => m.id === state.selectedMutantId)) {
+        state.selectedMutantId = ((_a2 = finalMutants[0]) == null ? void 0 : _a2.id) || null;
+      }
+    }
+    function loadExample(id) {
+      const ex = programExamples.find((e) => e.id === id);
+      if (!ex) return;
+      state.exampleId = id;
+      const snap = state.programs[id] || defaultProgramSnapshot(ex);
+      state.params = snap.params;
+      state.body = snap.body;
+      state.tests = snap.tests.map((t) => ({ ...t }));
+      state.selectedMutantId = null;
+    }
+    function render() {
+      recompute();
+      const exampleButtons = programExamples.map((ex) => `
+      <button
+        type="button"
+        class="syntax-example-btn${state.exampleId === ex.id ? " active" : ""}"
+        data-example="${ex.id}"
+        title="${escapeHtml3(ex.description)}"
+        data-testid="syntax-example-${ex.id}"
+      >${escapeHtml3(ex.name)}</button>
+    `).join("");
+      const operatorButtons = mutationOperators.map((op) => `
+      <label class="syntax-op-btn${state.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(op.desc)}">
+        <input type="checkbox" data-operator="${op.id}" ${state.operators.has(op.id) ? "checked" : ""} />
+        <span>${escapeHtml3(op.id)}</span>
+      </label>
+    `).join("");
+      const selectedMutant = state.mutants.find((m) => m.id === state.selectedMutantId) || null;
+      let mutantSuiteResults = null;
+      if (selectedMutant) {
+        try {
+          mutantSuiteResults = runTestSuite(
+            state.parsedParams,
+            selectedMutant.source,
+            state.parsedTests
+          );
+        } catch {
+          mutantSuiteResults = state.parsedTests.map(() => ({
+            outcome: { ok: false, error: "compile error" }
+          }));
+        }
+      }
+      const showMutantCol = !!selectedMutant;
+      const killedByIds = selectedMutant ? new Set(selectedMutant.killedBy) : /* @__PURE__ */ new Set();
+      const testRows = state.tests.map((t, i) => {
+        const result = state.suiteResults[i];
+        const passClass = (result == null ? void 0 : result.passed) ? "pass" : result ? "fail" : "";
+        const actual = (result == null ? void 0 : result.outcome.ok) ? formatValue(result.outcome.value) : `\u26A0 ${(result == null ? void 0 : result.outcome.error) || ""}`;
+        let mutantCell = "";
+        let killClass = "";
+        if (showMutantCol) {
+          const mr = mutantSuiteResults == null ? void 0 : mutantSuiteResults[i];
+          const mutantActual = (mr == null ? void 0 : mr.outcome.ok) ? formatValue(mr.outcome.value) : `\u26A0 ${(mr == null ? void 0 : mr.outcome.error) || ""}`;
+          const isKilled = killedByIds.has(t.id);
+          killClass = isKilled ? "killed-by" : "survived-by";
+          mutantCell = `<td class="syntax-test-mutant ${killClass}"><code>${escapeHtml3(mutantActual)}</code>${isKilled ? '<span class="syntax-test-kill-badge">killed</span>' : ""}</td>`;
+        }
+        return `
+        <tr class="syntax-test-row ${passClass} ${killClass}" data-testid="syntax-test-row-${t.id}">
+          <td><code>${escapeHtml3(t.id)}</code></td>
+          <td><input type="text" class="syntax-test-input" data-test-args="${t.id}" value="${escapeHtml3(t.argsText)}" /></td>
+          <td><input type="text" class="syntax-test-input" data-test-expected="${t.id}" value="${escapeHtml3(t.expectedText)}" /></td>
+          <td><code>${escapeHtml3(actual)}</code></td>
+          ${mutantCell}
+          <td>
+            <button type="button" class="syntax-test-remove" data-remove-test="${t.id}" aria-label="\u79FB\u9664">\xD7</button>
+          </td>
+        </tr>
+      `;
+      }).join("");
+      const mutantHeaderCol = showMutantCol ? `<th class="syntax-test-mutant-head">mutant actual${selectedMutant ? `<br><small>(${escapeHtml3(selectedMutant.id)})</small>` : ""}</th>` : "";
+      const grouped = /* @__PURE__ */ new Map();
+      state.mutants.forEach((m) => {
+        if (!grouped.has(m.operator)) grouped.set(m.operator, []);
+        grouped.get(m.operator).push(m);
+      });
+      const mutantList = [...grouped.entries()].map(([op, list]) => {
+        const items = list.map((m) => `
+        <li class="syntax-mutant-item ${m.status}${state.selectedMutantId === m.id ? " selected" : ""}" data-mutant-id="${m.id}" data-testid="syntax-mutant-${m.id}">
+          <span class="syntax-mutant-id">${escapeHtml3(m.id)}</span>
+          <span class="syntax-mutant-loc">L${m.line}:${m.col}</span>
+          <span class="syntax-mutant-diff"><code>${escapeHtml3(m.original)}</code> \u2192 <code>${escapeHtml3(m.mutated)}</code></span>
+          <span class="syntax-mutant-status">${escapeHtml3(m.status)}</span>
+        </li>
+      `).join("");
+        return `
+        <div class="syntax-mutant-group" data-testid="syntax-mutant-group-${op}">
+          <h5>${escapeHtml3(op)}\uFF08${list.length}\uFF09</h5>
+          <ul>${items}</ul>
+        </div>
+      `;
+      }).join("");
+      const selected = selectedMutant;
+      const selectedDetail = selected ? `
+      <div class="syntax-mutant-detail" data-testid="syntax-mutant-detail">
+        <h4>${escapeHtml3(selected.id)} <span class="syntax-mutant-op">${escapeHtml3(selected.operator)}</span></h4>
+        <p class="syntax-mutant-meta">L${selected.line}:${selected.col} \xB7 \u72C0\u614B\uFF1A<strong>${escapeHtml3(selected.status)}</strong></p>
+        <pre class="syntax-mutant-source"><code>${escapeHtml3(selected.source)}</code></pre>
+        <p class="syntax-mutant-killed">
+          ${selected.killedBy.length ? `\u88AB\u4EE5\u4E0B test killed\uFF1A${selected.killedBy.map((id) => `<code>${escapeHtml3(id)}</code>`).join(", ")}` : "\u6B64 mutant \u4ECD live\uFF1B\u53EF\u624B\u52D5\u6A19\u70BA equivalent\u3002"}
+        </p>
+        <div class="syntax-mutant-actions">
+          <button type="button" data-toggle-equivalent="${selected.id}">
+            ${selected.status === "equivalent" ? "\u53D6\u6D88\u6A19\u8A18\u70BA equivalent" : "\u6A19\u8A18\u70BA equivalent"}
+          </button>
+        </div>
+      </div>
+    ` : '<p class="syntax-mutant-empty">\u9EDE\u9078\u5DE6\u5074 mutant \u67E5\u770B\u7D30\u7BC0\u3002</p>';
+      const scorePct = Math.round(state.score.score * 100);
+      root2.innerHTML = `
+      <div class="syntax-toolbar">
+        <div class="syntax-examples" role="tablist">${exampleButtons}</div>
+        <div class="syntax-operators" data-testid="syntax-operators">${operatorButtons}</div>
+      </div>
+      <div class="syntax-cloud-bar">
+        <span
+          class="syntax-cloud-indicator"
+          data-testid="syntax-cloud-indicator"
+          data-status="${state.cloudStatus}"
+        >${escapeHtml3(cloudIndicatorText())}</span>
+        <span class="syntax-cloud-actions">
+          ${state.cloudUser ? '<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB \u5F9E\u96F2\u7AEF\u91CD\u65B0\u8F09\u5165</button>' : ""}
+          <button type="button" class="syntax-reset-btn" data-testid="syntax-reset-program">\u21BA \u9084\u539F\u6B64\u7BC4\u4F8B\u9810\u8A2D</button>
+        </span>
+      </div>
+
+      <div class="syntax-grid">
+        <section class="syntax-program">
+          <label class="syntax-label">\u53C3\u6578\uFF08\u9017\u865F\u5206\u9694\uFF09</label>
+          <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml3(state.params)}" />
+          <label class="syntax-label">\u51FD\u5F0F\u5167\u5BB9</label>
+          <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml3(state.body)}</textarea>
+        </section>
+
+        <section class="syntax-tests">
+          <header class="syntax-tests-header">
+            <h4>\u6E2C\u8A66\u6848\u4F8B</h4>
+            <button type="button" class="syntax-test-add" data-testid="syntax-test-add">\uFF0B \u65B0\u589E test</button>
+          </header>
+          <table class="syntax-test-table" data-testid="syntax-test-table">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>args\uFF08JSON \u5143\u7D20\uFF0C\u9017\u865F\u5206\u9694\uFF09</th>
+                <th>expected\uFF08JSON\uFF09</th>
+                <th>actual</th>
+                ${mutantHeaderCol}
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>${testRows}</tbody>
+          </table>
+        </section>
+      </div>
+
+      ${state.error ? `<p class="syntax-error" data-testid="syntax-error">${escapeHtml3(state.error)}</p>` : ""}
+
+      <section class="syntax-score-section">
+        <div class="syntax-score-bar">
+          <div class="syntax-score-fill" style="width:${scorePct}%" data-testid="syntax-score-fill"></div>
+        </div>
+        <p class="syntax-score-stats" data-testid="syntax-score-stats">
+          Mutation Score\uFF1A<strong>${scorePct}%</strong>
+          <span class="syntax-divider">\xB7</span>
+          \u7E3D\u6578 ${state.score.total}
+          <span class="syntax-divider">\xB7</span>
+          killed <strong>${state.score.killed}</strong>
+          <span class="syntax-divider">\xB7</span>
+          live <strong>${state.score.live}</strong>
+          <span class="syntax-divider">\xB7</span>
+          equivalent <strong>${state.score.equivalent}</strong>
+        </p>
+      </section>
+
+      <section class="syntax-mutant-section">
+        <div class="syntax-mutant-list" data-testid="syntax-mutant-list">${mutantList || '<p class="syntax-mutant-empty">\u7121 mutants\uFF08\u8ACB\u9078\u64C7\u81F3\u5C11\u4E00\u500B operator\uFF09\u3002</p>'}</div>
+        ${selectedDetail}
+      </section>
+    `;
+      bindEvents();
+    }
+    function bindEvents() {
+      root2.querySelectorAll("[data-example]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          loadExample(btn.dataset.example);
+          render();
+        });
+      });
+      const resetBtn = root2.querySelector('[data-testid="syntax-reset-program"]');
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          const ex = programExamples.find((e) => e.id === state.exampleId);
+          if (!ex) return;
+          const snap = defaultProgramSnapshot(ex);
+          state.params = snap.params;
+          state.body = snap.body;
+          state.tests = snap.tests.map((t) => ({ ...t }));
+          state.selectedMutantId = null;
+          persistCurrent();
+          render();
+        });
+      }
+      const reloadBtn = root2.querySelector('[data-testid="syntax-cloud-reload"]');
+      if (reloadBtn) {
+        reloadBtn.addEventListener("click", () => {
+          reloadFromCloud({ force: true });
+        });
+      }
+      root2.querySelectorAll("[data-operator]").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          const op = cb.dataset.operator;
+          if (cb.checked) state.operators.add(op);
+          else state.operators.delete(op);
+          render();
+        });
+      });
+      const params = root2.querySelector('[data-testid="syntax-params"]');
+      if (params) {
+        params.addEventListener("input", (e) => {
+          state.params = e.target.value;
+          persistCurrent();
+        });
+        params.addEventListener("change", (e) => {
+          state.params = e.target.value;
+          persistCurrent();
+          render();
+        });
+      }
+      const body = root2.querySelector('[data-testid="syntax-body"]');
+      if (body) {
+        body.addEventListener("input", (e) => {
+          state.body = e.target.value;
+          persistCurrent();
+        });
+        body.addEventListener("change", (e) => {
+          state.body = e.target.value;
+          persistCurrent();
+          render();
+        });
+      }
+      root2.querySelectorAll("[data-test-args]").forEach((input) => {
+        input.addEventListener("input", (e) => {
+          const id = input.dataset.testArgs;
+          const t = state.tests.find((x) => x.id === id);
+          if (t) t.argsText = e.target.value;
+          persistCurrent();
+        });
+        input.addEventListener("change", (e) => {
+          const id = input.dataset.testArgs;
+          const t = state.tests.find((x) => x.id === id);
+          if (t) t.argsText = e.target.value;
+          persistCurrent();
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-test-expected]").forEach((input) => {
+        input.addEventListener("input", (e) => {
+          const id = input.dataset.testExpected;
+          const t = state.tests.find((x) => x.id === id);
+          if (t) t.expectedText = e.target.value;
+          persistCurrent();
+        });
+        input.addEventListener("change", (e) => {
+          const id = input.dataset.testExpected;
+          const t = state.tests.find((x) => x.id === id);
+          if (t) t.expectedText = e.target.value;
+          persistCurrent();
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-remove-test]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.tests = state.tests.filter((t) => t.id !== btn.dataset.removeTest);
+          persistCurrent();
+          render();
+        });
+      });
+      const addBtn = root2.querySelector('[data-testid="syntax-test-add"]');
+      if (addBtn) {
+        addBtn.addEventListener("click", () => {
+          const next = `t${state.tests.length + 1}`;
+          state.tests.push({ id: next, argsText: "", expectedText: "" });
+          persistCurrent();
+          render();
+        });
+      }
+      root2.querySelectorAll("[data-mutant-id]").forEach((li) => {
+        li.addEventListener("click", () => {
+          state.selectedMutantId = li.dataset.mutantId;
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-toggle-equivalent]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const m = state.mutants.find((x) => x.id === btn.dataset.toggleEquivalent);
+          if (!m) return;
+          m.status = m.status === "equivalent" ? m.killedBy.length ? "killed" : "live" : "equivalent";
+          state.score = computeMutationScore(state.mutants);
+          render();
+        });
+      });
+    }
+    render();
+    if (cloudClient && typeof cloudClient.subscribeAuthState === "function") {
+      cloudClient.subscribeAuthState(async (user) => {
+        state.cloudUser = user || null;
+        if (!user) {
+          state.cloudStatus = "idle";
+          state.cloudMessage = "";
+          render();
+          return;
+        }
+        await reloadFromCloud();
+      });
+      if (typeof ((_a = globalThis.document) == null ? void 0 : _a.addEventListener) === "function") {
+        globalThis.document.addEventListener("visibilitychange", () => {
+          if (globalThis.document.visibilityState === "visible" && state.cloudUser) {
+            reloadFromCloud();
+          }
+        });
+      }
+      if (typeof globalThis.addEventListener === "function") {
+        globalThis.addEventListener("pagehide", () => {
+          flushPendingSave();
+        });
+        globalThis.addEventListener("beforeunload", () => {
+          flushPendingSave();
+        });
+      }
+    }
+    return root2;
+  }
+
   // src/app.js
   var sectionsConfig = [
     { id: "all", label: "\u5168\u89BD" },
     { id: "methods", label: "\u6E2C\u8A66\u65B9\u6CD5" },
     { id: "graph", label: "Graph Coverage" },
     { id: "logic", label: "Logic Coverage" },
+    { id: "syntax", label: "Syntax-Based Testing" },
     { id: "cloud", label: "\u96F2\u7AEF\u6574\u5408" },
     { id: "flow", label: "\u6E2C\u8A66\u6D41\u7A0B" },
     { id: "types", label: "\u6E2C\u8A66\u985E\u578B" }
@@ -4273,6 +5234,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <h2>Logic Coverage \u8996\u89BA\u5316</h2>
           <div data-slot="logic"></div>
         </section>
+        <section data-testid="section-syntax">
+          <h2>Syntax-Based Testing\uFF1AProgram Mutation</h2>
+          <div data-slot="syntax"></div>
+        </section>
         <section data-testid="section-cloud">
           <h2>Google \u96F2\u7AEF\u6574\u5408</h2>
           <div data-slot="cloud"></div>
@@ -4298,6 +5263,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       methods: main.querySelector('[data-testid="section-methods"]'),
       graph: main.querySelector('[data-testid="section-graph"]'),
       logic: main.querySelector('[data-testid="section-logic"]'),
+      syntax: main.querySelector('[data-testid="section-syntax"]'),
       cloud: main.querySelector('[data-testid="section-cloud"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]')
@@ -4306,6 +5272,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       methods: createTestingMethodTree(),
       graph: createGraphCoverageExplorer(),
       logic: createLogicCoverageExplorer(),
+      syntax: createSyntaxCoverageExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       types: createTestingTypesTable()
@@ -4313,6 +5280,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     container.querySelector('[data-slot="methods"]').appendChild(components.methods);
     container.querySelector('[data-slot="graph"]').appendChild(components.graph);
     container.querySelector('[data-slot="logic"]').appendChild(components.logic);
+    container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
     container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
     container.querySelector('[data-slot="flow"]').appendChild(components.flow);
     container.querySelector('[data-slot="types"]').appendChild(components.types);

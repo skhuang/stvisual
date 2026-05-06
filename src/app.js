@@ -4,12 +4,14 @@ import { createLogicCoverageExplorer } from './components/LogicCoverageExplorer.
 import { createTestingFlow } from './components/TestingFlow.js';
 import { createTestingTypesTable } from './components/TestingTypesTable.js';
 import { createCloudStoragePanel } from './components/CloudStoragePanel.js';
+import { createSyntaxCoverageExplorer } from './components/SyntaxCoverageExplorer.js';
 
 const sectionsConfig = [
   { id: 'all', label: '全覽' },
   { id: 'methods', label: '測試方法' },
   { id: 'graph', label: 'Graph Coverage' },
   { id: 'logic', label: 'Logic Coverage' },
+  { id: 'syntax', label: 'Syntax-Based Testing' },
   { id: 'cloud', label: '雲端整合' },
   { id: 'flow', label: '測試流程' },
   { id: 'types', label: '測試類型' },
@@ -38,6 +40,10 @@ export function renderApp(container) {
           <h2>Logic Coverage 視覺化</h2>
           <div data-slot="logic"></div>
         </section>
+        <section data-testid="section-syntax">
+          <h2>Syntax-Based Testing：Program Mutation</h2>
+          <div data-slot="syntax"></div>
+        </section>
         <section data-testid="section-cloud">
           <h2>Google 雲端整合</h2>
           <div data-slot="cloud"></div>
@@ -64,6 +70,7 @@ export function renderApp(container) {
     methods: main.querySelector('[data-testid="section-methods"]'),
     graph: main.querySelector('[data-testid="section-graph"]'),
     logic: main.querySelector('[data-testid="section-logic"]'),
+    syntax: main.querySelector('[data-testid="section-syntax"]'),
     cloud: main.querySelector('[data-testid="section-cloud"]'),
     flow: main.querySelector('[data-testid="section-flow"]'),
     types: main.querySelector('[data-testid="section-types"]'),
@@ -73,6 +80,7 @@ export function renderApp(container) {
     methods: createTestingMethodTree(),
     graph: createGraphCoverageExplorer(),
     logic: createLogicCoverageExplorer(),
+    syntax: createSyntaxCoverageExplorer(),
     cloud: createCloudStoragePanel(),
     flow: createTestingFlow(),
     types: createTestingTypesTable(),
@@ -81,6 +89,7 @@ export function renderApp(container) {
   container.querySelector('[data-slot="methods"]').appendChild(components.methods);
   container.querySelector('[data-slot="graph"]').appendChild(components.graph);
   container.querySelector('[data-slot="logic"]').appendChild(components.logic);
+  container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
   container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
   container.querySelector('[data-slot="flow"]').appendChild(components.flow);
   container.querySelector('[data-slot="types"]').appendChild(components.types);

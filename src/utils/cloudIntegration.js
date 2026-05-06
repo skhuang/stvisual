@@ -120,6 +120,12 @@ export function createCloudIntegrationClient() {
   const db = firebase.firestore(app);
   let driveAccessToken = null;
 
+  function snapshotExists(snapshot) {
+    if (!snapshot) return false;
+    // compat SDK 是 boolean property；modular SDK 是 function。
+    return typeof snapshot.exists === 'function' ? snapshot.exists() : Boolean(snapshot.exists);
+  }
+
   return {
     isConfigured,
     missingKeys,
@@ -148,7 +154,7 @@ export function createCloudIntegrationClient() {
     async loadSettings(userId) {
       const snapshot = await db.collection('users').doc(userId).collection('settings').doc('default').get();
 
-      if (!snapshot.exists()) {
+      if (!snapshotExists(snapshot)) {
         return null;
       }
 
@@ -162,7 +168,7 @@ export function createCloudIntegrationClient() {
     },
     async loadLogicRecent(userId) {
       const snapshot = await db.collection('users').doc(userId).collection('settings').doc('logicCoverage').get();
-      if (!snapshot.exists()) return [];
+      if (!snapshotExists(snapshot)) return [];
       const data = snapshot.data() || {};
       return Array.isArray(data.recentPredicates)
         ? data.recentPredicates.filter((p) => typeof p === 'string')
@@ -171,6 +177,18 @@ export function createCloudIntegrationClient() {
     async saveLogicRecent(userId, list) {
       await db.collection('users').doc(userId).collection('settings').doc('logicCoverage').set({
         recentPredicates: Array.isArray(list) ? list.filter((p) => typeof p === 'string') : [],
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+    },
+    async loadSyntaxTests(userId) {
+      const snapshot = await db.collection('users').doc(userId).collection('settings').doc('syntaxCoverage').get();
+      if (!snapshotExists(snapshot)) return {};
+      const data = snapshot.data() || {};
+      return (data.programs && typeof data.programs === 'object') ? data.programs : {};
+    },
+    async saveSyntaxTests(userId, programs) {
+      await db.collection('users').doc(userId).collection('settings').doc('syntaxCoverage').set({
+        programs: programs && typeof programs === 'object' ? programs : {},
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       }, { merge: true });
     },
