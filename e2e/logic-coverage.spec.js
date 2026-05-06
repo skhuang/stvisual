@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ context }) => {
+  await context.addInitScript(() => {
+    try { window.localStorage.setItem('stvisual.locale', 'zh'); } catch { /* ignore */ }
+  });
+});
+
 test.describe('Logic Coverage Explorer', () => {
   test('default predicate renders truth table with 8 rows', async ({ page }) => {
     await page.goto('/index.html');

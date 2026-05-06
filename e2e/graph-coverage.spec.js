@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ context }) => {
+  await context.addInitScript(() => {
+    try { window.localStorage.setItem('stvisual.locale', 'zh'); } catch { /* ignore */ }
+  });
+});
+
 test.describe('Graph Coverage Browser Tests', () => {
   test('supports advanced criteria and generated test paths', async ({ page }) => {
     await page.goto('/index.html');

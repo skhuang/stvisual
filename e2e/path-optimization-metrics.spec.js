@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ context }) => {
+  await context.addInitScript(() => {
+    try { window.localStorage.setItem('stvisual.locale', 'zh'); } catch { /* ignore */ }
+  });
+});
+
 test.describe('Path Optimization Metrics', () => {
   test('shows before and after path counts', async ({ page }) => {
     await page.goto('/index.html');

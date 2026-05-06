@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Code Upload to CFG', () => {
+  test.beforeEach(async ({ context }) => {
+    await context.addInitScript(() => {
+      try { window.localStorage.setItem('stvisual.locale', 'zh'); } catch { /* ignore */ }
+    });
+  });
   test('uploads source code, generates CFG, and shows source mapping', async ({ page }) => {
     await page.goto('/index.html');
 
