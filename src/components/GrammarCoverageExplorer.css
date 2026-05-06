@@ -346,6 +346,130 @@
   color: #92400e;
 }
 
+/* Phase 3: Mutation on Strings */
+.grammar-string-block {
+  margin-top: 22px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.4);
+  padding-top: 16px;
+}
+
+.grammar-string-subtitle {
+  margin: 4px 0 10px;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.grammar-string-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.grammar-string-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.grammar-string-controls select,
+.grammar-string-controls input {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.grammar-string-stats {
+  font-size: 0.85rem;
+  color: #475569;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.grammar-string-mutant-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.grammar-string-mutant-table th,
+.grammar-string-mutant-table td {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.grammar-string-mutant-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #475569;
+}
+
+.grammar-string-row {
+  cursor: pointer;
+}
+
+.grammar-string-row:hover {
+  background: #f8fafc;
+}
+
+.grammar-string-row.active {
+  background: #eef2ff;
+}
+
+.grammar-string-row.positive code {
+  color: #047857;
+}
+
+.grammar-string-row.negative code {
+  color: #b91c1c;
+}
+
+.grammar-op-tag {
+  display: inline-block;
+  background: #6366f1;
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  font-family: ui-monospace, monospace;
+}
+
+.grammar-string-kind.positive {
+  color: #047857;
+  font-weight: 600;
+}
+
+.grammar-string-kind.negative {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.grammar-string-detail {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+}
+
+.grammar-string-detail code {
+  font-family: ui-monospace, monospace;
+}
+
+.grammar-string-flip {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.grammar-string-same {
+  color: #475569;
+}
+
 @media (max-width: 900px) {
   .grammar-editor-grid,
   .grammar-mutation-grid {

@@ -7,6 +7,10 @@ import {
   recognizes,
   evaluateMutantsAgainstStrings,
   GRAMMAR_OPERATORS,
+  STRING_MUTATION_OPERATORS,
+  generateStringMutants,
+  classifyStringMutants,
+  deriveAlphabet,
 } from '../utils/grammar.js';
 
 const arithText = [
@@ -93,5 +97,54 @@ describe('generateGrammarMutants', () => {
     const evaluated = evaluateMutantsAgainstStrings(g, mutants, strings);
     // At least one SD mutant should be killed.
     expect(evaluated.some((m) => m.killed)).toBe(true);
+  });
+});
+
+describe('string mutation (Phase 3)', () => {
+  it('exports the documented operator list', () => {
+    expect(STRING_MUTATION_OPERATORS).toEqual(['REP', 'DEL', 'DUP', 'INS', 'SWP']);
+  });
+
+  it('produces distinct mutants of the seed for each requested operator', () => {
+    const seed = '0+1';
+    const mutants = generateStringMutants(seed, STRING_MUTATION_OPERATORS, {
+      alphabet: ['0', '1', '+'],
+      maxPerOp: 50,
+    });
+    // None should equal the seed.
+    expect(mutants.every((m) => m.mutated !== seed)).toBe(true);
+    // All declared operators should have at least one mutant.
+    const ops = new Set(mutants.map((m) => m.operator));
+    for (const op of STRING_MUTATION_OPERATORS) {
+      expect(ops.has(op)).toBe(true);
+    }
+    // Sanity: DEL of the seed has length-1, DUP has length+1.
+    const del = mutants.find((m) => m.operator === 'DEL');
+    const dup = mutants.find((m) => m.operator === 'DUP');
+    expect(del.mutated.length).toBe(seed.length - 1);
+    expect(dup.mutated.length).toBe(seed.length + 1);
+  });
+
+  it('classifies mutants as positive or negative against the grammar', () => {
+    const g = parseGrammar(arithText);
+    const ds = generateDerivations(g, { maxStrings: 4, maxDepth: 8 });
+    const seed = ds[0].string;
+    const alphabet = deriveAlphabet(g, ds.map((d) => d.string));
+    const raw = generateStringMutants(seed, ['DEL', 'INS'], { alphabet, maxPerOp: 12 });
+    const classified = classifyStringMutants(g, raw);
+    // Every classified mutant should have a kind and origAccepts === true (seed is in language).
+    for (const m of classified) {
+      expect(m.origAccepts).toBe(true);
+      expect(m.kind === 'positive' || m.kind === 'negative').toBe(true);
+      expect(m.mutAccepts).toBe(m.kind === 'positive');
+    }
+    // For arithmetic with single-char terminals, deletion of "+" or operands typically yields negatives.
+    expect(classified.some((m) => m.kind === 'negative')).toBe(true);
+  });
+
+  it('deriveAlphabet decomposes multi-character terminals', () => {
+    const g = parseGrammar('<S> ::= "true" | "false"');
+    const alpha = deriveAlphabet(g);
+    expect(new Set(alpha)).toEqual(new Set(['t', 'r', 'u', 'e', 'f', 'a', 'l', 's']));
   });
 });

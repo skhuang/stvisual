@@ -633,3 +633,52 @@ CloudStoragePanel 為每個檔案（含上傳清單與 Drive 既有檔案）多�
 - `npm run test:run` → **149/149**（在 §11 的 142 之上 +7 grammar tests）。
 - `npx playwright test` → **9/9**（e2e 已 pin locale=zh，不受新增功能影響）。
 - `node scripts/build-standalone.mjs` → 重新產出 `src/standalone.js`。
+
+## 13. Mutation on Strings / BNF Mutation（2026-05-06，第三階段）
+
+延續第二階段（Grammar Coverage / Grammar Mutants），第三階段把目標從**修改 grammar**轉為**修改由 grammar 產生的字串**。對應 Ammann/Offutt §9.2 之「mutation on ground strings」：以一個合法字串為種子，套用簡單的字元層級突變運算子，再用同一個 recognizer 判定突變後字串是否仍屬於該語言。
+
+### 13.1 運算子
+
+實作於 `src/utils/grammar.js` 的 `STRING_MUTATION_OPERATORS = ['REP','DEL','DUP','INS','SWP']`：
+
+| Op  | 說明 |
+| --- | --- |
+| REP | 將某一位置的字元換成 alphabet 中的其他字元 |
+| DEL | 刪除一個字元 |
+| DUP | 重複一個字元 |
+| INS | 在某位置插入 alphabet 中的字元 |
+| SWP | 交換兩個相鄰且不同的字元 |
+
+每個運算子可設 `maxPerOp`（預設 12，UI 上限 50）以控制突變數量。Alphabet 由 `deriveAlphabet(grammar, derivations)` 萃取：將文法所有 terminal 拆解為單字元，再聯集所有衍生字串中的字元。
+
+### 13.2 分類
+
+`classifyStringMutants(grammar, mutants)` 對每個 mutant 計算 `origAccepts` / `mutAccepts` / `kind`：
+- `kind === 'positive'`：mutant 仍屬於語言，可作為**正向測試**（壓力測試 parser 的 happy path）。
+- `kind === 'negative'`：mutant 不屬於語言，可作為**負向測試**（檢查 parser 的錯誤處理）。
+
+`flipped` 旗標指出 mutant 是否與種子在語言歸屬上相反；對於從合法字串衍生而來的 mutant，`flipped` 等同於 `kind === 'negative'`。
+
+### 13.3 UI
+
+`GrammarCoverageExplorer` 在 Grammar Mutants 區塊下方新增 **Mutation on Strings** 區塊（`data-testid="grammar-string-block"`）：
+
+- 種子下拉：列出目前 derivations，使用者選擇要突變的字串。
+- 每運算子最大 mutants 數欄位（1–50）。
+- 5 個運算子 checkbox（預設 REP / DEL）。
+- 表格：Op / Mutated / Result（綠勾＝in language，紅叉＝not in language）。
+- 統計列：positive / negative 數量。
+- 細節面板：原字串、突變字串、是否翻轉語言歸屬。
+
+### 13.4 測試
+
+`src/tests/grammar.test.js` 新增 `describe('string mutation (Phase 3)')`：
+- 運算子常數 / 多運算子產生不重複 mutant / DEL 與 DUP 的長度不變式。
+- 以 arithmetic 文法分類 mutants：每個 mutant 必有 `origAccepts === true`，且 `mutAccepts === (kind === 'positive')`。
+- `deriveAlphabet` 對 multi-char terminal（`"true"` / `"false"`）正確展開。
+
+### 13.5 驗證
+
+- `npm run test:run` → **153/153**（§12 的 149 之上 +4 string-mutation tests）。
+- `node scripts/build-standalone.mjs` → 重新產出 `src/standalone.js`。
