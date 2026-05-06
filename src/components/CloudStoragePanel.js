@@ -107,6 +107,7 @@ export function createCloudStoragePanel() {
                 <div class="cloud-upload-actions">
                   <button type="button" class="cloud-btn cloud-btn--small" data-use-target="mutation" data-use-idx="${idx}">${t('cloud.useForMutation')}</button>
                   <button type="button" class="cloud-btn cloud-btn--small" data-use-target="graph" data-use-idx="${idx}">${t('cloud.useForGraph')}</button>
+                  <button type="button" class="cloud-btn cloud-btn--small" data-use-target="grammar" data-use-idx="${idx}">${t('cloud.useForGrammar')}</button>
                 </div>
               </li>`).join('') || `<li>${t('cloud.noFiles')}</li>`}
             </ul>
@@ -125,6 +126,7 @@ export function createCloudStoragePanel() {
                     <div class="cloud-upload-actions">
                       <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="mutation" data-drive-idx="${idx}">${t('cloud.useForMutation')}</button>
                       <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="graph" data-drive-idx="${idx}">${t('cloud.useForGraph')}</button>
+                      <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="grammar" data-drive-idx="${idx}">${t('cloud.useForGrammar')}</button>
                     </div>
                   </li>`).join('')}
             </ul>
@@ -265,7 +267,7 @@ export function createCloudStoragePanel() {
           render();
           return;
         }
-        const sectionId = target === 'mutation' ? 'section-syntax' : 'section-graph';
+        const sectionId = target === 'graph' ? 'section-graph' : 'section-syntax';
         const targetSection = globalThis.document?.querySelector(`[data-testid="${sectionId}"]`);
         targetSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         globalThis.dispatchEvent?.(new CustomEvent('stvisual:load-program-source', {
@@ -273,7 +275,9 @@ export function createCloudStoragePanel() {
         }));
         status = target === 'mutation'
           ? t('cloud.sentToMutation', { name: item.name })
-          : t('cloud.sentToGraph', { name: item.name });
+          : target === 'grammar'
+            ? t('cloud.sentToGrammar', { name: item.name })
+            : t('cloud.sentToGraph', { name: item.name });
         render();
       });
     });
@@ -304,7 +308,7 @@ export function createCloudStoragePanel() {
           status = t('cloud.downloading', { name: f.name });
           render();
           const content = await client.downloadDriveFile(f.id);
-          const sectionId = target === 'mutation' ? 'section-syntax' : 'section-graph';
+          const sectionId = target === 'graph' ? 'section-graph' : 'section-syntax';
           const targetSection = globalThis.document?.querySelector(`[data-testid="${sectionId}"]`);
           targetSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
           globalThis.dispatchEvent?.(new CustomEvent('stvisual:load-program-source', {
@@ -312,7 +316,9 @@ export function createCloudStoragePanel() {
           }));
           status = target === 'mutation'
             ? t('cloud.sentToMutation', { name: f.name })
-            : t('cloud.sentToGraph', { name: f.name });
+            : target === 'grammar'
+              ? t('cloud.sentToGrammar', { name: f.name })
+              : t('cloud.sentToGraph', { name: f.name });
         } catch (err) {
           status = t('cloud.readError', { msg: err?.message || err });
         }

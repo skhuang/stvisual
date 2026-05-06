@@ -1,0 +1,354 @@
+.grammar-coverage {
+  display: block;
+  margin-top: 24px;
+}
+
+.grammar-card {
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+  padding: 22px;
+}
+
+.grammar-header {
+  margin-bottom: 14px;
+}
+
+.grammar-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6366f1;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.grammar-header h3 {
+  margin: 0 0 4px;
+}
+
+.grammar-subtitle {
+  color: #475569;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.grammar-example-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.grammar-example-btn {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: #f8fafc;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.grammar-example-btn.active {
+  background: #6366f1;
+  color: #fff;
+  border-color: #6366f1;
+}
+
+.grammar-editor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.grammar-editor-col textarea {
+  width: 100%;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  padding: 8px;
+}
+
+.grammar-editor-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.grammar-controls-row {
+  display: flex;
+  gap: 12px;
+  margin: 8px 0;
+}
+
+.grammar-controls-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.grammar-controls-row input {
+  width: 80px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+}
+
+.grammar-error {
+  background: #fef2f2;
+  color: #b91c1c;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin: 6px 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+}
+
+.grammar-productions {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 10px;
+  padding: 10px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.grammar-prod {
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.grammar-prod.covered {
+  background: rgba(74, 222, 128, 0.12);
+}
+
+.grammar-prod-id {
+  color: #94a3b8;
+  margin-right: 6px;
+}
+
+.grammar-arrow {
+  color: #94a3b8;
+  margin: 0 4px;
+}
+
+.grammar-nt { color: #93c5fd; }
+.grammar-t { color: #fcd34d; }
+
+.grammar-coverage-summary {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0 6px;
+}
+
+.grammar-metric {
+  display: flex;
+  flex-direction: column;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 8px 12px;
+  flex: 1;
+}
+
+.grammar-metric-label {
+  font-size: 0.75rem;
+  color: #6366f1;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.grammar-metric-value {
+  font-size: 1.05rem;
+  color: #0f172a;
+}
+
+.grammar-terminals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.grammar-terminal-chip {
+  background: #e2e8f0;
+  color: #334155;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+}
+
+.grammar-terminal-chip.covered {
+  background: #bbf7d0;
+  color: #14532d;
+}
+
+.grammar-derivation-block,
+.grammar-mutation-block {
+  margin-top: 18px;
+}
+
+.grammar-derivations {
+  list-style: decimal inside;
+  padding: 0;
+  margin: 0;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.grammar-derivations li {
+  padding: 2px 0;
+  font-family: ui-monospace, monospace;
+}
+
+.grammar-derivation-meta {
+  color: #94a3b8;
+  margin-left: 8px;
+  font-size: 0.8rem;
+}
+
+.grammar-empty {
+  color: #64748b;
+  font-style: italic;
+}
+
+.grammar-mutation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.grammar-score {
+  background: #ecfeff;
+  color: #0e7490;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.grammar-op-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+
+.grammar-op-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.grammar-op-btn input { display: none; }
+
+.grammar-op-btn.active {
+  background: #6366f1;
+  color: #fff;
+}
+
+.grammar-mutation-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.grammar-mutant-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.grammar-mutant-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.grammar-mutant-btn.active {
+  outline: 2px solid #6366f1;
+}
+
+.grammar-mutant-btn.killed { background: #ecfdf5; }
+.grammar-mutant-btn.live { background: #fef3c7; }
+
+.grammar-mutant-op {
+  font-weight: 600;
+  color: #6366f1;
+  min-width: 32px;
+}
+
+.grammar-mutant-status {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+.grammar-mutant-btn.killed .grammar-mutant-status { background: #14532d; color: #ecfdf5; }
+.grammar-mutant-btn.live .grammar-mutant-status { background: #92400e; color: #fffbeb; }
+
+.grammar-mutant-desc {
+  flex: 1;
+  font-family: ui-monospace, monospace;
+}
+
+.grammar-mutant-detail {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.grammar-mutant-detail h5 {
+  margin: 0 0 4px;
+  font-family: ui-monospace, monospace;
+}
+
+.grammar-killer-list {
+  list-style: disc inside;
+  padding: 0;
+  margin: 4px 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+}
+
+.grammar-mutant-live {
+  color: #92400e;
+}
+
+@media (max-width: 900px) {
+  .grammar-editor-grid,
+  .grammar-mutation-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
