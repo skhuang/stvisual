@@ -2,12 +2,22 @@
 // MVP：Program Mutation 用的小型 JavaScript 函式 + 對應 test set。
 
 export const mutationOperators = [
-  { id: 'AOR', label: 'Arithmetic Operator Replacement', desc: '替換 + - * / % 等算術運算子。' },
-  { id: 'ROR', label: 'Relational Operator Replacement', desc: '替換 < <= > >= == != === !==。' },
-  { id: 'LOR', label: 'Logical Operator Replacement', desc: '替換 && 與 ||。' },
-  { id: 'COR', label: 'Conditional Operator Replacement', desc: '替換條件運算子（與 LOR 相同集合）。' },
-  { id: 'UOI', label: 'Unary Operator Insertion', desc: '在識別字前插入 ! 或 -。' },
-  { id: 'ABS', label: 'Absolute Value Insertion', desc: '把識別字包成 Math.abs(x) 或 -(x)。' },
+  { id: 'AOR', label: 'Arithmetic Operator Replacement', desc: '替換 + - * / % 等算術運算子。', labelEn: 'Arithmetic Operator Replacement', descEn: 'Replace + - * / % arithmetic operators.' },
+  { id: 'ROR', label: 'Relational Operator Replacement', desc: '替換 < <= > >= == != === !==。', labelEn: 'Relational Operator Replacement', descEn: 'Replace < <= > >= == != === !==.' },
+  { id: 'LOR', label: 'Logical Operator Replacement', desc: '替換 && 與 ||。', labelEn: 'Logical Operator Replacement', descEn: 'Replace && and ||.' },
+  { id: 'COR', label: 'Conditional Operator Replacement', desc: '替換條件運算子（與 LOR 相同集合）。', labelEn: 'Conditional Operator Replacement', descEn: 'Replace conditional operators (same set as LOR).' },
+  { id: 'SOR', label: 'Shift Operator Replacement', desc: '替換 << >> >>> 位移運算子。', labelEn: 'Shift Operator Replacement', descEn: 'Replace << >> >>> shift operators.' },
+  { id: 'ASR', label: 'Assignment Operator Replacement', desc: '替換 += -= *= /= %= <<= >>= >>>= &= |= ^= 複合指派。', labelEn: 'Assignment Operator Replacement', descEn: 'Replace += -= *= /= %= <<= >>= >>>= &= |= ^= compound assignments.' },
+  { id: 'UOI', label: 'Unary Operator Insertion', desc: '在識別字前插入 ! 或 -。', labelEn: 'Unary Operator Insertion', descEn: 'Insert ! or - before identifiers.' },
+  { id: 'UOD', label: 'Unary Operator Deletion', desc: '刪除 expression 前的一元運算子（!、-、+、~）。', labelEn: 'Unary Operator Deletion', descEn: 'Delete a leading unary operator (!, -, +, ~) before an expression.' },
+  { id: 'SVR', label: 'Scalar Variable Replacement', desc: '把識別字替換為另一個 in-scope 識別字。', labelEn: 'Scalar Variable Replacement', descEn: 'Replace an identifier with another in-scope identifier.' },
+  { id: 'BSR', label: 'Bomb Statement Replacement', desc: '把整行陳述替換成 throw（必被任何 test 殺死）。', labelEn: 'Bomb Statement Replacement', descEn: 'Replace a whole statement with throw (always killed by any test that runs it).' },
+  { id: 'ABS', label: 'Absolute Value Insertion', desc: '把識別字包成 Math.abs(x) 或 -(x)。', labelEn: 'Absolute Value Insertion', descEn: 'Wrap an identifier as Math.abs(x) or -(x).' },
+  // Object-Oriented mutation operators
+  { id: 'JTD', label: 'OO: this Deletion', desc: '刪除 `this.` 前綴，常用以暴露遺漏成員存取的測試。', labelEn: 'OO: this Deletion', descEn: 'Delete the `this.` prefix to expose tests that miss member access.' },
+  { id: 'ISD', label: 'OO: super Call Deletion', desc: '把 `super(...)` 或 `super.method(...)` 整段呼叫替換為 undefined。', labelEn: 'OO: super Call Deletion', descEn: 'Replace `super(...)` or `super.method(...)` calls with undefined.' },
+  { id: 'IOD', label: 'OO: Overriding Method Deletion', desc: '刪除 class 內非 constructor 的整個方法定義，迫使呼叫 fallback 至父類別。', labelEn: 'OO: Overriding Method Deletion', descEn: 'Delete a non-constructor class method, falling back to the parent class.' },
+  { id: 'PRV', label: 'OO: Reference Type Change', desc: '把 `new ClassA(...)` 換成同檔案內其他 class，例如 `new ClassB(...)`。', labelEn: 'OO: Reference Type Change', descEn: 'Replace `new ClassA(...)` with another in-file class, e.g. `new ClassB(...)`.' },
 ];
 
 export const programExamples = [
@@ -55,6 +65,37 @@ export const programExamples = [
       { id: 't3', args: [3, 4, 5], expected: 'scalene' },
       { id: 't4', args: [1, 2, 5], expected: 'invalid' },
       { id: 't5', args: [0, 1, 1], expected: 'invalid' },
+    ],
+  },
+  {
+    id: 'shapeHierarchy',
+    name: 'shape(kind, size)',
+    params: ['kind', 'size'],
+    body: [
+      'class Shape {',
+      '  constructor(n) { this.n = n; }',
+      '  area() { return 0; }',
+      '  describe() { return "shape:" + this.area(); }',
+      '}',
+      'class Square extends Shape {',
+      '  constructor(side) { super(side); this.side = side; }',
+      '  area() { return this.side * this.side; }',
+      '}',
+      'class Circle extends Shape {',
+      '  constructor(r) { super(r); this.r = r; }',
+      '  area() { return Math.round(this.r * this.r * 3); }',
+      '}',
+      'if (kind === "sq") return new Square(size).describe();',
+      'if (kind === "ci") return new Circle(size).describe();',
+      'return "unknown";',
+    ].join('\n'),
+    description: 'OO 範例：Shape / Square / Circle 繼承階層，可示範 JTD、ISD、IOD、PRV。',
+    tests: [
+      { id: 't1', args: ['sq', 3], expected: 'shape:9' },
+      { id: 't2', args: ['sq', 5], expected: 'shape:25' },
+      { id: 't3', args: ['ci', 2], expected: 'shape:12' },
+      { id: 't4', args: ['ci', 4], expected: 'shape:48' },
+      { id: 't5', args: ['xx', 1], expected: 'unknown' },
     ],
   },
 ];

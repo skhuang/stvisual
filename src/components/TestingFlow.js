@@ -1,4 +1,5 @@
 import { testingFlow } from '../data/testingData.js';
+import { t, getLocale, pickField } from '../i18n/index.js';
 
 export function createTestingFlow() {
   const root = document.createElement('div');
@@ -30,9 +31,9 @@ export function createTestingFlow() {
           class="flow-play-btn${isPlaying ? ' playing' : ''}"
           type="button"
           data-testid="flow-play-btn"
-          aria-label="${isPlaying ? '暫停動畫' : '播放動畫'}"
+          aria-label="${isPlaying ? t('flow.pause') : t('flow.play')}"
         >
-          ${isPlaying ? '⏸ 暫停' : '▶ 播放'}
+          ${isPlaying ? `⏸ ${t('flow.pause')}` : `▶ ${t('flow.play')}`}
         </button>
       </div>
       <div class="flow-track" data-testid="flow-track">
@@ -44,14 +45,14 @@ export function createTestingFlow() {
               data-step-index="${index}"
               role="button"
               tabindex="0"
-              aria-label="步驟 ${index + 1}: ${step.label}"
+              aria-label="${t('flow.step', { n: index + 1, label: pickField(step, 'label') })}"
             >
               <div class="flow-step-num">${index + 1}</div>
               <div class="flow-step-icon">${step.icon}</div>
-              <div class="flow-step-label">${step.label}</div>
-              <div class="flow-step-label-en">${step.labelEn}</div>
+              <div class="flow-step-label">${pickField(step, 'label')}</div>
+              <div class="flow-step-label-en">${getLocale() === 'en' ? step.label : step.labelEn}</div>
               ${(hoveredStep === index || activeStep === index) ? `
-                <div class="flow-step-tooltip" data-testid="flow-tooltip-${step.id}">${step.description}</div>
+                <div class="flow-step-tooltip" data-testid="flow-tooltip-${step.id}">${pickField(step, 'description')}</div>
               ` : ''}
             </div>
             ${index < testingFlow.length - 1 ? `
@@ -74,7 +75,7 @@ export function createTestingFlow() {
           style="width: ${((activeStep + 1) / testingFlow.length) * 100}%"
         ></div>
       </div>
-      <div class="flow-progress-label">進度：${activeStep + 1} / ${testingFlow.length} — ${testingFlow[activeStep].label}</div>
+      <div class="flow-progress-label">${t('flow.progress', { current: activeStep + 1, total: testingFlow.length, label: pickField(testingFlow[activeStep], 'label') })}</div>
     `;
 
     root.querySelector('[data-testid="flow-play-btn"]').addEventListener('click', () => {

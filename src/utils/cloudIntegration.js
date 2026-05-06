@@ -223,5 +223,41 @@ export function createCloudIntegrationClient() {
 
       return payload;
     },
+    async listDriveFiles(options = {}) {
+      if (!driveAccessToken) {
+        throw new Error('目前沒有 Drive 存取權杖，請先重新 Google 登入。');
+      }
+      const params = new URLSearchParams({
+        pageSize: String(options.pageSize || 30),
+        fields: 'files(id,name,mimeType,modifiedTime,webViewLink)',
+        orderBy: 'modifiedTime desc',
+      });
+      const folderId = options.folderId || config.drive.uploadFolderId;
+      const queryParts = ['trashed=false'];
+      if (folderId) queryParts.push(`'${folderId}' in parents`);
+      params.set('q', queryParts.join(' and '));
+      const response = await fetch(`https://www.googleapis.com/drive/v3/files?${params.toString()}`, {
+        headers: { Authorization: `Bearer ${driveAccessToken}` },
+      });
+      const payload = await response.json();
+      if (!response.ok) {
+        throw new Error(payload?.error?.message || '讀取 Google Drive 檔案列表失敗。');
+      }
+      return Array.isArray(payload.files) ? payload.files : [];
+    },
+    async downloadDriveFile(fileId) {
+      if (!driveAccessToken) {
+        throw new Error('目前沒有 Drive 存取權杖，請先重新 Google 登入。');
+      }
+      const response = await fetch(`https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?alt=media`, {
+        headers: { Authorization: `Bearer ${driveAccessToken}` },
+      });
+      if (!response.ok) {
+        let msg = '下載 Google Drive 檔案失敗。';
+        try { const j = await response.json(); msg = j?.error?.message || msg; } catch { /* ignore */ }
+        throw new Error(msg);
+      }
+      return response.text();
+    },
   };
 }

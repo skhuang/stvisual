@@ -1,4 +1,5 @@
 import { testingMethods } from '../data/testingData.js';
+import { t, getLocale, pickField } from '../i18n/index.js';
 
 export function createTestingMethodTree() {
   const root = document.createElement('div');
@@ -12,7 +13,7 @@ export function createTestingMethodTree() {
     root.innerHTML = `
       <div class="tree-controls">
         <button class="btn-toggle-all" type="button" data-testid="toggle-all-btn">
-          ${allExpanded ? '全部收合' : '全部展開'}
+          ${allExpanded ? t('methods.collapseAll') : t('methods.expandAll')}
         </button>
       </div>
       <div class="tree-cards">
@@ -27,15 +28,15 @@ export function createTestingMethodTree() {
                 aria-expanded="${expanded}"
               >
                 <div class="method-card-title">
-                  <h3>${method.name}</h3>
-                  <span class="method-card-en">${method.nameEn}</span>
+                  <h3>${pickField(method, 'name')}</h3>
+                  <span class="method-card-en">${getLocale() === 'en' ? method.name : method.nameEn}</span>
                 </div>
                 <span class="method-card-toggle${expanded ? ' rotated' : ''}">▷</span>
               </button>
               <div class="method-card-body">
-                <p class="method-description">${method.description}</p>
-                <div class="visibility-meter" aria-label="代碼可見度 ${method.visibility}%">
-                  <span class="visibility-label">代碼可見度</span>
+                <p class="method-description">${pickField(method, 'description')}</p>
+                <div class="visibility-meter" aria-label="${t('methods.codeVisibility')} ${method.visibility}%">
+                  <span class="visibility-label">${t('methods.codeVisibility')}</span>
                   <div class="visibility-track">
                     <div
                       class="visibility-fill"
@@ -49,7 +50,7 @@ export function createTestingMethodTree() {
                   </div>
                   <span class="visibility-value">${method.visibility}%</span>
                 </div>
-                <div class="method-count-badge">${method.techniques.length} 項技術</div>
+                <div class="method-count-badge">${t('methods.countBadge', { n: method.techniques.length })}</div>
                 ${expanded ? `
                   <ul class="technique-list" data-testid="technique-list-${method.id}">
                     ${method.techniques.map((tech, index) => `
@@ -58,9 +59,9 @@ export function createTestingMethodTree() {
                         data-testid="technique-${tech.id}"
                         style="animation-delay: ${index * 0.06}s"
                       >
-                        <div class="technique-name">${tech.name}</div>
-                        <div class="technique-name-en">${tech.nameEn}</div>
-                        <div class="technique-desc">${tech.description}</div>
+                        <div class="technique-name">${pickField(tech, 'name')}</div>
+                        <div class="technique-name-en">${getLocale() === 'en' ? tech.name : tech.nameEn}</div>
+                        <div class="technique-desc">${pickField(tech, 'description')}</div>
                       </li>
                     `).join('')}
                   </ul>

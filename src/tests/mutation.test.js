@@ -102,3 +102,44 @@ describe('evaluateMutants 與 mutation score', () => {
     expect(score.score).toBeCloseTo(0.5);
   });
 });
+
+describe('OO mutation operators', () => {
+  const ooSource = [
+    'class Shape {',
+    '  constructor(n) { this.n = n; }',
+    '  area() { return 0; }',
+    '  describe() { return "shape:" + this.area(); }',
+    '}',
+    'class Square extends Shape {',
+    '  constructor(side) { super(side); this.side = side; }',
+    '  area() { return this.side * this.side; }',
+    '}',
+    'return new Square(kind).describe();',
+  ].join('\n');
+
+  it('JTD：刪除 this. 前綴', () => {
+    const mutants = generateMutants(ooSource, ['JTD']);
+    expect(mutants.length).toBeGreaterThan(0);
+    expect(mutants.every((m) => m.operator === 'JTD' && m.original === 'this.')).toBe(true);
+  });
+
+  it('ISD：把 super(...) 換成 undefined', () => {
+    const mutants = generateMutants(ooSource, ['ISD']);
+    expect(mutants).toHaveLength(1);
+    expect(mutants[0].mutated).toBe('undefined');
+    expect(mutants[0].original.startsWith('super')).toBe(true);
+  });
+
+  it('IOD：刪除非 constructor 的方法定義', () => {
+    const mutants = generateMutants(ooSource, ['IOD']);
+    // Shape.area, Shape.describe, Square.area
+    expect(mutants).toHaveLength(3);
+    expect(mutants.every((m) => m.operator === 'IOD')).toBe(true);
+  });
+
+  it('PRV：new Square(...) 可換成 new Shape(...)', () => {
+    const mutants = generateMutants(ooSource, ['PRV']);
+    expect(mutants.length).toBeGreaterThan(0);
+    expect(mutants.some((m) => m.mutated === 'new Shape')).toBe(true);
+  });
+});

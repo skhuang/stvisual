@@ -471,3 +471,113 @@ stvisual/
 - 匯出覆蓋報告（Markdown / JSON / PDF）供教學評量使用。
 - Cloud：將 Graph Coverage 編輯器內容也納入 Firestore 同步；提供分享連結。
 - 加入更多教科書 predicate 範例（重用 `logicCoveragePredicates`）。
+
+---
+
+## 11. 雙語介面與雲端程式碼來源（2026-05-06 更新）
+
+本節記錄此次（2026-05-06）導入的兩大功能：(A) 全系統 i18n（英文/繁中切換）、(B) 將 Google Drive 上的程式碼載入 Mutation Test / Graph Coverage 區塊。
+
+### 11.1 i18n 雙語切換
+
+| 項目 | 內容 |
+| --- | --- |
+| 預設語系 | `en`（英文） |
+| 支援語系 | `en`, `zh` |
+| 儲存位置 | `localStorage['stvisual.locale']` |
+| 切換 UI | 頁首右上 `<select id="app-lang-select">` |
+| 觸發方式 | `setLocale(locale)` → `onLocaleChange(callback)` → `app.js paint()` 全頁重繪 |
+
+新增模組：
+
+- [src/i18n/index.js](../src/i18n/index.js)
+  - `getLocale()` / `setLocale(locale)` / `getSupportedLocales()` / `onLocaleChange(callback)`
+  - `t(key, params)`：依 key 查詢字典；`{name}` 風格的字串內插（regex `/\{(\w+)\}/g`）。
+  - `tx(value)`：可接受 `{ en, zh }` 物件或純字串。
+  - `pickField(item, base)`：在資料物件中挑選 `base` 或 `baseEn` 欄位（如 `name` / `nameEn`）。
+  - 同步設定 `<html lang>` 屬性方便輔助技術讀取。
+- [src/i18n/dict.js](../src/i18n/dict.js)：扁平 key 字典，覆蓋 app shell、所有 8 大區塊、common、cloud、methods、types、flow、graph、logic、syntax 等命名空間。
+
+資料層雙語策略：
+
+- 多筆物件資料（`testingMethods` / `testingFlow` / `testingTypes` / `graphCoverageCriteria` / `logicCoverageCriteria` / `mutationOperators` / `programExamples` 等）採「兄弟欄位」設計，例如 `name` / `nameEn`、`description` / `descriptionEn`、`label` / `labelEn`，元件透過 `pickField` 取值。
+- 元件內所有訊息字串改以 `t('key', { ... })` 取得。
+
+測試相容：[src/setupTests.js](../src/setupTests.js) 在每次測試啟動時呼叫 `setLocale('zh')`，確保現有以中文字串為斷言的測試不會破壞。
+
+### 11.2 Mutation Test 新增 OO 與更多 Procedural Operators
+
+[src/utils/mutation.js](../src/utils/mutation.js) 與 [src/data/mutationData.js](../src/data/mutationData.js) 擴充至 15 個 operator：
+
+| 類別 | Operator | 說明 |
+| --- | --- | --- |
+| Procedural（新增） | SOR | shift operator replacement（`<<` `>>` `>>>`） |
+| Procedural（新增） | ASR | assignment operator replacement（`+=` `-=` `*=` … `^=`） |
+| Procedural（新增） | UOI | unary operator insertion |
+| Procedural（新增） | UOD | unary operator deletion（避開 `!=`/`--` 等情境） |
+| Procedural（新增） | SVR | scalar variable replacement |
+| Procedural（新增） | BSR | bomb statement replacement |
+| Object-Oriented（新增） | JTD | this 關鍵字刪除 |
+| Object-Oriented（新增） | ISD | super(...) 呼叫刪除 |
+| Object-Oriented（新增） | IOD | 覆寫方法（override）刪除 |
+| Object-Oriented（新增） | PRV | new ClassA → new ClassB |
+
+並新增 `Shape / Square / Circle` 類別範例（含 `area()` 與 `describe()`）作為 OO operator 演示，4 個對應單元測試補入 [src/tests/mutation.test.js](../src/tests/mutation.test.js)。
+
+### 11.3 Cloud Storage：登入後 UX
+
+- 登入後，原本的「Google 登入」按鈕替換為綠色徽章 `✓ 已登入 / ✓ Signed in`，避免重複登入按下。
+- CSS：`.cloud-signed-in` 新增於 [src/components/CloudStoragePanel.css](../src/components/CloudStoragePanel.css)。
+
+### 11.4 Cloud Storage：上傳檔案 → 指派給 Mutation / Graph Coverage
+
+新流程：
+
+1. 使用者於 Cloud Storage 區塊選擇 `.js` 檔案，按 **Upload to Google Drive**。
+2. 上傳成功後，列表中每個檔案顯示兩顆動作鈕：
+   - **Use for Mutation Test** → 將該檔內容送入 Syntax-Based Testing 編輯器。
+   - **Use for Graph Coverage** → 將該檔內容轉成 CFG 顯示。
+3. 點擊任一鈕後，頁面平滑捲動至對應區塊。
+
+上傳時優先以 `File.text()` 讀取內容；若不可用則以 `FileReader.readAsText` 後備。如果上傳當下無法取得內容，按下動作鈕時會以快取的 `File` 物件再次嘗試。
+
+### 11.5 Cloud Storage：列出 Drive 既有檔案
+
+- [src/utils/cloudIntegration.js](../src/utils/cloudIntegration.js) 新增方法：
+  - `listDriveFiles({ pageSize?, folderId? })`：以 `drive.file` scope 透過 `https://www.googleapis.com/drive/v3/files` 列出最近 30 筆，依 `modifiedTime desc` 排序；若 `cloudConfig.drive.uploadFolderId` 有值則以 `'<folder>' in parents` 過濾。
+  - `downloadDriveFile(fileId)`：透過 `?alt=media` 下載文字內容。
+- 面板新增 **Refresh Drive list** 按鈕與 `cloud-drive-list`，每個檔案同樣可選擇送至 Mutation Test 或 Graph Coverage。
+- 登入完成時自動嘗試載入一次（失敗保持靜默，使用者可手動 refresh）。
+
+### 11.6 Mutation Test：上傳的程式建立新範例（不覆蓋既有）
+
+從 Cloud Storage 指派到 Mutation Test 時，[src/components/SyntaxCoverageExplorer.js](../src/components/SyntaxCoverageExplorer.js) 不再覆蓋目前選中的 `max(a, b)` 等內建範例，而是：
+
+1. 以 `uploaded-<timestamp>` 為新 id 建立 `customExamples` 條目。
+2. 嘗試以 `parseFunctionSource()`（自動花括號平衡）解析 `function name(params) { body }`：
+   - 解析成功 → `params` 與 `body` 分別填入編輯器。
+   - 解析失敗 → 整段內容當作 body，params 留空。
+3. 將新範例追加在原有範例按鈕列之後並設為 active；測試列表預設為空。
+4. 寫入 `state.programs[id]` 並 `persistCurrent()`，確保重新整理後仍存在。
+
+### 11.7 跨元件事件協定
+
+新自訂事件：
+
+```text
+window.dispatchEvent(new CustomEvent('stvisual:load-program-source', {
+  detail: { target: 'mutation' | 'graph', name: string, content: string }
+}));
+```
+
+- `SyntaxCoverageExplorer` 與 `GraphCoverageExplorer` 各自監聽，並以 `root.isConnected` 守護避免語言切換重繪後遺留的舊 instance 收到事件。
+- 對應 dict keys：`cloud.useForMutation` / `cloud.useForGraph` / `cloud.sentToMutation` / `cloud.sentToGraph` / `cloud.refreshDriveFiles` / `cloud.driveListed` / `cloud.driveListError` / `cloud.downloading` / `cloud.readError` / `cloud.noContent`。
+
+### 11.8 OAuth Scope 注意事項
+
+Drive 列表只會顯示「本應用程式建立或使用者透過本應用程式開啟」的檔案，因為 OAuth scope 是 `https://www.googleapis.com/auth/drive.file`（最小授權原則）。若日後需要列出整個 Drive，需要切換到 `drive.readonly`。
+
+### 11.9 測試與佈署驗證
+
+- `npm run test:run` → 142/142 通過（含新增的 4 個 OO mutation 測試）。
+- `node scripts/build-standalone.mjs` → `Built standalone bundle at src/standalone.js`，供 `file://` 模式使用。

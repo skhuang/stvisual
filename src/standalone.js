@@ -6,13 +6,14 @@
       name: "\u9ED1\u76D2\u6E2C\u8A66",
       nameEn: "Black Box Testing",
       description: "\u4E0D\u8003\u616E\u5167\u90E8\u5BE6\u73FE\uFF0C\u5B8C\u5168\u805A\u7126\u8F38\u5165\u8207\u8F38\u51FA\u884C\u70BA",
+      descriptionEn: "Ignores internal implementation; focuses entirely on input and output behavior.",
       visibility: 0,
       colorScheme: "dark",
       techniques: [
-        { id: "bva", name: "\u908A\u754C\u503C\u5206\u6790", nameEn: "Boundary Value Analysis", description: "\u6E2C\u8A66\u8F38\u5165\u7684\u908A\u754C\u689D\u4EF6" },
-        { id: "ep", name: "\u7B49\u50F9\u985E\u5206\u5272", nameEn: "Equivalence Partitioning", description: "\u5C07\u8F38\u5165\u7A7A\u9593\u5283\u5206\u70BA\u7B49\u50F9\u985E" },
-        { id: "ceg", name: "\u56E0\u679C\u5716", nameEn: "Cause-Effect Graph", description: "\u5206\u6790\u8F38\u5165\u8F38\u51FA\u9593\u7684\u56E0\u679C\u95DC\u4FC2" },
-        { id: "stt", name: "\u72C0\u614B\u9077\u79FB\u6E2C\u8A66", nameEn: "State Transition Testing", description: "\u9A57\u8B49\u7CFB\u7D71\u7684\u72C0\u614B\u8F49\u63DB\u884C\u70BA" }
+        { id: "bva", name: "\u908A\u754C\u503C\u5206\u6790", nameEn: "Boundary Value Analysis", description: "\u6E2C\u8A66\u8F38\u5165\u7684\u908A\u754C\u689D\u4EF6", descriptionEn: "Test inputs at the boundaries of input domains." },
+        { id: "ep", name: "\u7B49\u50F9\u985E\u5206\u5272", nameEn: "Equivalence Partitioning", description: "\u5C07\u8F38\u5165\u7A7A\u9593\u5283\u5206\u70BA\u7B49\u50F9\u985E", descriptionEn: "Partition the input space into equivalence classes." },
+        { id: "ceg", name: "\u56E0\u679C\u5716", nameEn: "Cause-Effect Graph", description: "\u5206\u6790\u8F38\u5165\u8F38\u51FA\u9593\u7684\u56E0\u679C\u95DC\u4FC2", descriptionEn: "Analyze cause-effect relations between inputs and outputs." },
+        { id: "stt", name: "\u72C0\u614B\u9077\u79FB\u6E2C\u8A66", nameEn: "State Transition Testing", description: "\u9A57\u8B49\u7CFB\u7D71\u7684\u72C0\u614B\u8F49\u63DB\u884C\u70BA", descriptionEn: "Validate the state transition behavior of the system." }
       ]
     },
     {
@@ -20,17 +21,18 @@
       name: "\u767D\u76D2\u6E2C\u8A66",
       nameEn: "White Box Testing",
       description: "\u57FA\u65BC\u5167\u90E8\u4EE3\u78BC\u7D50\u69CB\uFF0C\u78BA\u4FDD\u6240\u6709\u8DEF\u5F91\u7686\u88AB\u8986\u84CB",
+      descriptionEn: "Based on internal code structure; aims to cover all paths.",
       visibility: 100,
       colorScheme: "light",
       techniques: [
-        { id: "sc", name: "\u8A9E\u53E5\u8986\u84CB", nameEn: "Statement Coverage", description: "\u78BA\u4FDD\u6BCF\u689D\u8A9E\u53E5\u81F3\u5C11\u57F7\u884C\u4E00\u6B21" },
-        { id: "bc", name: "\u5206\u652F\u8986\u84CB", nameEn: "Branch Coverage", description: "\u78BA\u4FDD\u6BCF\u500B\u5206\u652F\uFF08true/false\uFF09\u90FD\u88AB\u57F7\u884C" },
-        { id: "gc", name: "\u5716\u5F62\u8986\u84CB", nameEn: "Graph Coverage", description: "\u4EE5\u63A7\u5236\u6D41\u7A0B\u5716\u63A8\u5C0E\u7BC0\u9EDE\u3001\u908A\u8207 Prime Path \u7684\u6E2C\u8A66\u9700\u6C42" },
-        { id: "lc", name: "\u908F\u8F2F\u8986\u84CB", nameEn: "Logic Coverage", description: "\u4EE5\u8FF0\u8A5E\u8207\u5B50\u53E5\u70BA\u6838\u5FC3\u7684\u8986\u84CB\u7B56\u7565\uFF0C\u5305\u542B PC\u3001CC\u3001ACC \u7CFB\u5217" },
-        { id: "pc", name: "\u8DEF\u5F91\u8986\u84CB", nameEn: "Path Coverage", description: "\u78BA\u4FDD\u6BCF\u689D\u7368\u7ACB\u8DEF\u5F91\u90FD\u88AB\u57F7\u884C" },
-        { id: "ppc", name: "Prime Path Coverage", nameEn: "Prime Path Coverage", description: "\u6700\u5C0F\u5316\u4E14\u5B8C\u6574\u7684\u8DEF\u5F91\u8986\u84CB\u96C6\u5408" },
-        { id: "cc", name: "\u689D\u4EF6\u8986\u84CB", nameEn: "Condition Coverage", description: "\u78BA\u4FDD\u6BCF\u500B\u5E03\u6797\u689D\u4EF6\u7684\u771F\u5047\u90FD\u88AB\u6E2C\u8A66" },
-        { id: "mc", name: "\u591A\u91CD\u689D\u4EF6\u8986\u84CB", nameEn: "Multiple Conditions", description: "\u6E2C\u8A66\u6240\u6709\u689D\u4EF6\u7D44\u5408\u7684\u771F\u5047\u60C5\u6CC1" }
+        { id: "sc", name: "\u8A9E\u53E5\u8986\u84CB", nameEn: "Statement Coverage", description: "\u78BA\u4FDD\u6BCF\u689D\u8A9E\u53E5\u81F3\u5C11\u57F7\u884C\u4E00\u6B21", descriptionEn: "Ensure every statement executes at least once." },
+        { id: "bc", name: "\u5206\u652F\u8986\u84CB", nameEn: "Branch Coverage", description: "\u78BA\u4FDD\u6BCF\u500B\u5206\u652F\uFF08true/false\uFF09\u90FD\u88AB\u57F7\u884C", descriptionEn: "Ensure every branch (true/false) is executed." },
+        { id: "gc", name: "\u5716\u5F62\u8986\u84CB", nameEn: "Graph Coverage", description: "\u4EE5\u63A7\u5236\u6D41\u7A0B\u5716\u63A8\u5C0E\u7BC0\u9EDE\u3001\u908A\u8207 Prime Path \u7684\u6E2C\u8A66\u9700\u6C42", descriptionEn: "Derive node, edge, and prime-path requirements from the CFG." },
+        { id: "lc", name: "\u908F\u8F2F\u8986\u84CB", nameEn: "Logic Coverage", description: "\u4EE5\u8FF0\u8A5E\u8207\u5B50\u53E5\u70BA\u6838\u5FC3\u7684\u8986\u84CB\u7B56\u7565\uFF0C\u5305\u542B PC\u3001CC\u3001ACC \u7CFB\u5217", descriptionEn: "Predicate/clause-centric strategy: PC, CC, ACC family, etc." },
+        { id: "pc", name: "\u8DEF\u5F91\u8986\u84CB", nameEn: "Path Coverage", description: "\u78BA\u4FDD\u6BCF\u689D\u7368\u7ACB\u8DEF\u5F91\u90FD\u88AB\u57F7\u884C", descriptionEn: "Ensure each independent path is executed." },
+        { id: "ppc", name: "Prime Path Coverage", nameEn: "Prime Path Coverage", description: "\u6700\u5C0F\u5316\u4E14\u5B8C\u6574\u7684\u8DEF\u5F91\u8986\u84CB\u96C6\u5408", descriptionEn: "Minimal yet complete prime-path coverage set." },
+        { id: "cc", name: "\u689D\u4EF6\u8986\u84CB", nameEn: "Condition Coverage", description: "\u78BA\u4FDD\u6BCF\u500B\u5E03\u6797\u689D\u4EF6\u7684\u771F\u5047\u90FD\u88AB\u6E2C\u8A66", descriptionEn: "Ensure each Boolean condition is tested for true and false." },
+        { id: "mc", name: "\u591A\u91CD\u689D\u4EF6\u8986\u84CB", nameEn: "Multiple Conditions", description: "\u6E2C\u8A66\u6240\u6709\u689D\u4EF6\u7D44\u5408\u7684\u771F\u5047\u60C5\u6CC1", descriptionEn: "Test all true/false combinations of conditions." }
       ]
     },
     {
@@ -38,59 +40,35 @@
       name: "\u7070\u76D2\u6E2C\u8A66",
       nameEn: "Gray Box Testing",
       description: "\u90E8\u5206\u4E86\u89E3\u5167\u90E8\u5BE6\u73FE\uFF0C\u7D50\u5408\u5169\u8005\u512A\u9EDE\u4EE5\u63D0\u9AD8\u6548\u7387",
+      descriptionEn: "Partial knowledge of internals; combines black- and white-box advantages.",
       visibility: 50,
       colorScheme: "medium",
       techniques: [
-        { id: "combined", name: "\u7D50\u5408\u9ED1\u76D2\u8207\u767D\u76D2", nameEn: "Combined Approach", description: "\u9748\u6D3B\u904B\u7528\u5169\u7A2E\u65B9\u6CD5\u7684\u6E2C\u8A66\u7B56\u7565" },
-        { id: "partial", name: "\u90E8\u5206\u4EE3\u78BC\u53EF\u898B", nameEn: "Partial Code Visibility", description: "\u5229\u7528\u53EF\u898B\u7684\u90E8\u5206\u5BE6\u73FE\u8F14\u52A9\u8A2D\u8A08\u6E2C\u8A66" }
+        { id: "combined", name: "\u7D50\u5408\u9ED1\u76D2\u8207\u767D\u76D2", nameEn: "Combined Approach", description: "\u9748\u6D3B\u904B\u7528\u5169\u7A2E\u65B9\u6CD5\u7684\u6E2C\u8A66\u7B56\u7565", descriptionEn: "Flexible mix of both black- and white-box strategies." },
+        { id: "partial", name: "\u90E8\u5206\u4EE3\u78BC\u53EF\u898B", nameEn: "Partial Code Visibility", description: "\u5229\u7528\u53EF\u898B\u7684\u90E8\u5206\u5BE6\u73FE\u8F14\u52A9\u8A2D\u8A08\u6E2C\u8A66", descriptionEn: "Use the visible portion of the code to guide test design." }
       ]
     }
   ];
   var testingFlow = [
-    { id: "req", label: "\u9700\u6C42\u5206\u6790", labelEn: "Requirements", icon: "\u{1F4CB}", description: "\u5206\u6790\u8EDF\u9AD4\u9700\u6C42\uFF0C\u78BA\u5B9A\u6E2C\u8A66\u76EE\u6A19\u8207\u7BC4\u570D" },
-    { id: "plan", label: "\u6E2C\u8A66\u8A08\u5283", labelEn: "Test Plan", icon: "\u{1F4DD}", description: "\u5236\u5B9A\u6E2C\u8A66\u7B56\u7565\u3001\u8CC7\u6E90\u5206\u914D\u8207\u9032\u5EA6\u8A08\u5283" },
-    { id: "design", label: "\u6E2C\u8A66\u8A2D\u8A08", labelEn: "Test Design", icon: "\u270F\uFE0F", description: "\u8A2D\u8A08\u6E2C\u8A66\u7528\u4F8B\u3001\u8173\u672C\u8207\u6E2C\u8A66\u6578\u64DA" },
-    { id: "exec", label: "\u6E2C\u8A66\u57F7\u884C", labelEn: "Execution", icon: "\u25B6\uFE0F", description: "\u57F7\u884C\u6E2C\u8A66\u7528\u4F8B\uFF0C\u8A18\u9304\u5BE6\u969B\u8207\u9810\u671F\u7D50\u679C" },
-    { id: "analysis", label: "\u7D50\u679C\u5206\u6790", labelEn: "Analysis", icon: "\u{1F50D}", description: "\u6BD4\u8F03\u7D50\u679C\uFF0C\u8B58\u5225\u7F3A\u9677\u4E26\u8A55\u4F30\u6E2C\u8A66\u8986\u84CB\u7387" },
-    { id: "report", label: "\u7F3A\u9677\u5831\u544A", labelEn: "Defect Report", icon: "\u{1F4CA}", description: "\u64B0\u5BEB\u6E2C\u8A66\u5831\u544A\uFF0C\u8FFD\u8E64\u7F3A\u9677\u4FEE\u5FA9\u72C0\u614B" }
+    { id: "req", label: "\u9700\u6C42\u5206\u6790", labelEn: "Requirements", icon: "\u{1F4CB}", description: "\u5206\u6790\u8EDF\u9AD4\u9700\u6C42\uFF0C\u78BA\u5B9A\u6E2C\u8A66\u76EE\u6A19\u8207\u7BC4\u570D", descriptionEn: "Analyze requirements; determine test goals and scope." },
+    { id: "plan", label: "\u6E2C\u8A66\u8A08\u5283", labelEn: "Test Plan", icon: "\u{1F4DD}", description: "\u5236\u5B9A\u6E2C\u8A66\u7B56\u7565\u3001\u8CC7\u6E90\u5206\u914D\u8207\u9032\u5EA6\u8A08\u5283", descriptionEn: "Define test strategy, resource allocation, and schedule." },
+    { id: "design", label: "\u6E2C\u8A66\u8A2D\u8A08", labelEn: "Test Design", icon: "\u270F\uFE0F", description: "\u8A2D\u8A08\u6E2C\u8A66\u7528\u4F8B\u3001\u8173\u672C\u8207\u6E2C\u8A66\u6578\u64DA", descriptionEn: "Design test cases, scripts, and test data." },
+    { id: "exec", label: "\u6E2C\u8A66\u57F7\u884C", labelEn: "Execution", icon: "\u25B6\uFE0F", description: "\u57F7\u884C\u6E2C\u8A66\u7528\u4F8B\uFF0C\u8A18\u9304\u5BE6\u969B\u8207\u9810\u671F\u7D50\u679C", descriptionEn: "Execute test cases; record actual vs. expected results." },
+    { id: "analysis", label: "\u7D50\u679C\u5206\u6790", labelEn: "Analysis", icon: "\u{1F50D}", description: "\u6BD4\u8F03\u7D50\u679C\uFF0C\u8B58\u5225\u7F3A\u9677\u4E26\u8A55\u4F30\u6E2C\u8A66\u8986\u84CB\u7387", descriptionEn: "Compare results, identify defects, and assess coverage." },
+    { id: "report", label: "\u7F3A\u9677\u5831\u544A", labelEn: "Defect Report", icon: "\u{1F4CA}", description: "\u64B0\u5BEB\u6E2C\u8A66\u5831\u544A\uFF0C\u8FFD\u8E64\u7F3A\u9677\u4FEE\u5FA9\u72C0\u614B", descriptionEn: "Write reports and track defect-fix status." }
   ];
   var testingTypes = [
-    { id: "unit", type: "\u55AE\u5143\u6E2C\u8A66", typeEn: "Unit Testing", purpose: "\u6E2C\u8A66\u6700\u5C0F\u55AE\u4F4D", timing: "\u958B\u767C\u968E\u6BB5", color: "#3498db", width: 30 },
-    { id: "integration", type: "\u96C6\u6210\u6E2C\u8A66", typeEn: "Integration Testing", purpose: "\u6E2C\u8A66\u6A21\u7D44\u7D44\u5408", timing: "\u958B\u767C\u5F8C\u671F", color: "#27ae60", width: 55 },
-    { id: "system", type: "\u7CFB\u7D71\u6E2C\u8A66", typeEn: "System Testing", purpose: "\u6E2C\u8A66\u6574\u9AD4\u7CFB\u7D71", timing: "\u96C6\u6210\u5B8C\u6210\u5F8C", color: "#f39c12", width: 80 },
-    { id: "acceptance", type: "\u9A57\u6536\u6E2C\u8A66", typeEn: "Acceptance Testing", purpose: "\u9A57\u8B49\u9700\u6C42\u9054\u6210", timing: "\u90E8\u7F72\u524D", color: "#e74c3c", width: 100 }
+    { id: "unit", type: "\u55AE\u5143\u6E2C\u8A66", typeEn: "Unit Testing", purpose: "\u6E2C\u8A66\u6700\u5C0F\u55AE\u4F4D", purposeEn: "Test the smallest units of code.", timing: "\u958B\u767C\u968E\u6BB5", timingEn: "Development", color: "#3498db", width: 30 },
+    { id: "integration", type: "\u96C6\u6210\u6E2C\u8A66", typeEn: "Integration Testing", purpose: "\u6E2C\u8A66\u6A21\u7D44\u7D44\u5408", purposeEn: "Test combinations of modules.", timing: "\u958B\u767C\u5F8C\u671F", timingEn: "Late development", color: "#27ae60", width: 55 },
+    { id: "system", type: "\u7CFB\u7D71\u6E2C\u8A66", typeEn: "System Testing", purpose: "\u6E2C\u8A66\u6574\u9AD4\u7CFB\u7D71", purposeEn: "Test the system as a whole.", timing: "\u96C6\u6210\u5B8C\u6210\u5F8C", timingEn: "After integration", color: "#f39c12", width: 80 },
+    { id: "acceptance", type: "\u9A57\u6536\u6E2C\u8A66", typeEn: "Acceptance Testing", purpose: "\u9A57\u8B49\u9700\u6C42\u9054\u6210", purposeEn: "Verify requirements are satisfied.", timing: "\u90E8\u7F72\u524D", timingEn: "Before deployment", color: "#e74c3c", width: 100 }
   ];
   var graphCoverageCriteria = [
-    {
-      id: "node",
-      label: "Node Coverage",
-      labelZh: "\u7BC0\u9EDE\u8986\u84CB",
-      description: "\u6BCF\u500B\u7BC0\u9EDE\u81F3\u5C11\u88AB\u4E00\u500B\u6E2C\u8A66\u8DEF\u5F91\u62DC\u8A2A\u4E00\u6B21\u3002"
-    },
-    {
-      id: "edge",
-      label: "Edge Coverage",
-      labelZh: "\u908A\u8986\u84CB",
-      description: "\u6BCF\u689D\u6709\u5411\u908A\u81F3\u5C11\u88AB\u4E00\u500B\u6E2C\u8A66\u8DEF\u5F91\u7D93\u904E\u4E00\u6B21\u3002"
-    },
-    {
-      id: "prime-path",
-      label: "Prime Path Coverage",
-      labelZh: "Prime Path \u8986\u84CB",
-      description: "\u6240\u6709 prime path \u90FD\u5FC5\u9808\u88AB\u6E2C\u8A66\u9700\u6C42\u6DB5\u84CB\uFF0C\u5305\u542B\u8FF4\u5708\u3002"
-    },
-    {
-      id: "edge-pair",
-      label: "Edge-Pair Coverage",
-      labelZh: "\u908A\u5C0D\u8986\u84CB",
-      description: "\u6BCF\u4E00\u7D44\u76F8\u9130\u7684\u5169\u689D\u908A\u90FD\u8981\u81F3\u5C11\u88AB\u4E00\u689D\u6E2C\u8A66\u8DEF\u5F91\u8986\u84CB\u3002"
-    },
-    {
-      id: "complete-path",
-      label: "Complete Path Coverage",
-      labelZh: "\u5B8C\u6574\u8DEF\u5F91\u8986\u84CB",
-      description: "\u4EE5\u6709\u9650\u6DF1\u5EA6\u5217\u8209 start \u5230 end \u7684\u5B8C\u6574\u53EF\u884C\u8DEF\u5F91\u96C6\u5408\u3002"
-    }
+    { id: "node", label: "Node Coverage", labelZh: "\u7BC0\u9EDE\u8986\u84CB", description: "\u6BCF\u500B\u7BC0\u9EDE\u81F3\u5C11\u88AB\u4E00\u500B\u6E2C\u8A66\u8DEF\u5F91\u62DC\u8A2A\u4E00\u6B21\u3002", descriptionEn: "Every node is visited by at least one test path." },
+    { id: "edge", label: "Edge Coverage", labelZh: "\u908A\u8986\u84CB", description: "\u6BCF\u689D\u6709\u5411\u908A\u81F3\u5C11\u88AB\u4E00\u500B\u6E2C\u8A66\u8DEF\u5F91\u7D93\u904E\u4E00\u6B21\u3002", descriptionEn: "Every directed edge is traversed by at least one test path." },
+    { id: "prime-path", label: "Prime Path Coverage", labelZh: "Prime Path \u8986\u84CB", description: "\u6240\u6709 prime path \u90FD\u5FC5\u9808\u88AB\u6E2C\u8A66\u9700\u6C42\u6DB5\u84CB\uFF0C\u5305\u542B\u8FF4\u5708\u3002", descriptionEn: "All prime paths (including loops) must be covered." },
+    { id: "edge-pair", label: "Edge-Pair Coverage", labelZh: "\u908A\u5C0D\u8986\u84CB", description: "\u6BCF\u4E00\u7D44\u76F8\u9130\u7684\u5169\u689D\u908A\u90FD\u8981\u81F3\u5C11\u88AB\u4E00\u689D\u6E2C\u8A66\u8DEF\u5F91\u8986\u84CB\u3002", descriptionEn: "Every pair of adjacent edges must be covered by some test path." },
+    { id: "complete-path", label: "Complete Path Coverage", labelZh: "\u5B8C\u6574\u8DEF\u5F91\u8986\u84CB", description: "\u4EE5\u6709\u9650\u6DF1\u5EA6\u5217\u8209 start \u5230 end \u7684\u5B8C\u6574\u53EF\u884C\u8DEF\u5F91\u96C6\u5408\u3002", descriptionEn: "Enumerate all complete feasible paths from start to end up to a finite depth." }
   ];
   var graphCoverageCodeLanguages = [
     { id: "javascript", label: "JavaScript" },
@@ -99,6 +77,7 @@
   var graphCoverageGraph = {
     id: "control-flow-sample",
     title: "\u63A7\u5236\u6D41\u7A0B\u5716\u7BC4\u4F8B",
+    titleEn: "Sample Control Flow Graph",
     startNodeId: "S",
     endNodeId: "T",
     nodes: [
@@ -310,85 +289,99 @@
       id: "pc",
       label: "Predicate Coverage",
       labelZh: "Predicate Coverage",
-      description: "\u4F7F\u6574\u9AD4 predicate \u81F3\u5C11\u8A55\u4F30\u70BA true \u8207 false \u5404\u4E00\u6B21\u3002"
+      description: "\u4F7F\u6574\u9AD4 predicate \u81F3\u5C11\u8A55\u4F30\u70BA true \u8207 false \u5404\u4E00\u6B21\u3002",
+      descriptionEn: "The predicate as a whole evaluates to true and to false at least once each."
     },
     {
       id: "cc",
       label: "Clause Coverage",
       labelZh: "\u5B50\u53E5\u8986\u84CB",
-      description: "\u6BCF\u500B\u5B50\u53E5\u7686\u81F3\u5C11\u5404\u53D6 true \u8207 false \u4E00\u6B21\u3002"
+      description: "\u6BCF\u500B\u5B50\u53E5\u7686\u81F3\u5C11\u5404\u53D6 true \u8207 false \u4E00\u6B21\u3002",
+      descriptionEn: "Every clause takes both true and false at least once."
     },
     {
       id: "coc",
       label: "Combinatorial Coverage",
       labelZh: "\u7D44\u5408\u8986\u84CB",
-      description: "\u5217\u8209\u6240\u6709 2^n \u500B\u5B50\u53E5\u771F\u5047\u7D44\u5408\u3002"
+      description: "\u5217\u8209\u6240\u6709 2^n \u500B\u5B50\u53E5\u771F\u5047\u7D44\u5408\u3002",
+      descriptionEn: "Enumerate all 2^n true/false combinations of the clauses."
     },
     {
       id: "gacc",
       label: "General Active Clause Coverage",
       labelZh: "GACC",
-      description: "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\u627E\u4E00\u5C0D\u5217\uFF0C\u4F7F\u8A72\u5B50\u53E5\u6C7A\u5B9A predicate \u7684\u503C\u3002"
+      description: "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\u627E\u4E00\u5C0D\u5217\uFF0C\u4F7F\u8A72\u5B50\u53E5\u6C7A\u5B9A predicate \u7684\u503C\u3002",
+      descriptionEn: "For each major clause find a pair of rows where it determines the predicate."
     },
     {
       id: "cacc",
       label: "Correlated Active Clause Coverage",
       labelZh: "CACC",
-      description: "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate\uFF0C\u4E14\u5169\u5217\u7522\u751F\u4E0D\u540C\u7684 predicate \u503C\u3002"
+      description: "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate\uFF0C\u4E14\u5169\u5217\u7522\u751F\u4E0D\u540C\u7684 predicate \u503C\u3002",
+      descriptionEn: "Major clause determines the predicate, and the two rows yield different predicate values."
     },
     {
       id: "racc",
       label: "Restricted Active Clause Coverage",
       labelZh: "RACC",
-      description: "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate\uFF0C\u4E14\u5169\u5217\u7684\u6B21\u5B50\u53E5\u503C\u5B8C\u5168\u76F8\u540C\u3002"
+      description: "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate\uFF0C\u4E14\u5169\u5217\u7684\u6B21\u5B50\u53E5\u503C\u5B8C\u5168\u76F8\u540C\u3002",
+      descriptionEn: "Major clause determines the predicate, and the two rows have identical minor-clause values."
     },
     {
       id: "gicc",
       label: "General Inactive Clause Coverage",
       labelZh: "GICC",
-      description: "\u4E3B\u5B50\u53E5\u4E0D\u6C7A\u5B9A predicate\uFF0C\u8986\u84CB (c=T/F)\xD7(P=T/F) \u5171 4 \u7A2E\u7D44\u5408\u3002"
+      description: "\u4E3B\u5B50\u53E5\u4E0D\u6C7A\u5B9A predicate\uFF0C\u8986\u84CB (c=T/F)\xD7(P=T/F) \u5171 4 \u7A2E\u7D44\u5408\u3002",
+      descriptionEn: "Major clause does not determine the predicate; cover (c=T/F)\xD7(P=T/F) \u2014 four combinations."
     },
     {
       id: "ricc",
       label: "Restricted Inactive Clause Coverage",
       labelZh: "RICC",
-      description: "\u540C GICC\uFF0C\u4F46\u6210\u5C0D\u5217\u9700\u6240\u6709\u6B21\u5B50\u53E5\u76F8\u540C\uFF0C\u50C5\u4E3B\u5B50\u53E5\u7FFB\u8F49\u3002"
+      description: "\u540C GICC\uFF0C\u4F46\u6210\u5C0D\u5217\u9700\u6240\u6709\u6B21\u5B50\u53E5\u76F8\u540C\uFF0C\u50C5\u4E3B\u5B50\u53E5\u7FFB\u8F49\u3002",
+      descriptionEn: "Same as GICC but the paired rows keep all minor clauses identical; only the major clause flips."
     },
     {
       id: "ic",
       label: "Implicant Coverage",
       labelZh: "IC",
-      description: "\u5C0D DNF \u7684\u6BCF\u500B implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B true point\u3002"
+      description: "\u5C0D DNF \u7684\u6BCF\u500B implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B true point\u3002",
+      descriptionEn: "For every implicant of the DNF, find at least one true point."
     },
     {
       id: "utpc",
       label: "Unique True Point Coverage",
       labelZh: "UTPC",
-      description: "\u70BA\u6BCF\u500B implicant \u6311\u4E00\u500B\u53EA\u6EFF\u8DB3\u8A72 implicant \u7684 unique true point\u3002"
+      description: "\u70BA\u6BCF\u500B implicant \u6311\u4E00\u500B\u53EA\u6EFF\u8DB3\u8A72 implicant \u7684 unique true point\u3002",
+      descriptionEn: "For every implicant pick a unique true point that satisfies only that implicant."
     },
     {
       id: "mutpc",
       label: "Multiple Unique True Point Coverage",
       labelZh: "MUTPC",
-      description: "\u70BA\u6BCF\u500B implicant \u6311\u4E00\u7D44 UTPs\uFF0C\u4F7F\u6BCF\u500B\u6B21\u5B50\u53E5\u90FD\u81F3\u5C11\u51FA\u73FE\u4E00\u6B21 T \u8207\u4E00\u6B21 F\u3002"
+      description: "\u70BA\u6BCF\u500B implicant \u6311\u4E00\u7D44 UTPs\uFF0C\u4F7F\u6BCF\u500B\u6B21\u5B50\u53E5\u90FD\u81F3\u5C11\u51FA\u73FE\u4E00\u6B21 T \u8207\u4E00\u6B21 F\u3002",
+      descriptionEn: "For every implicant pick a set of UTPs such that each minor clause takes both T and F."
     },
     {
       id: "nfpc",
       label: "Near False Point Coverage",
       labelZh: "NFPC",
-      description: "\u70BA\u6BCF\u500B implicant \u7684\u6BCF\u500B literal \u627E\u4E00\u500B\u7FFB\u8F49\u5F8C\u4F7F P \u70BA false \u7684\u5217\u3002"
+      description: "\u70BA\u6BCF\u500B implicant \u7684\u6BCF\u500B literal \u627E\u4E00\u500B\u7FFB\u8F49\u5F8C\u4F7F P \u70BA false \u7684\u5217\u3002",
+      descriptionEn: "For every literal of every implicant find a row that, after flipping that literal, makes P false."
     },
     {
       id: "mnfpc",
       label: "Multiple Near False Point Coverage",
       labelZh: "MNFPC",
-      description: "\u70BA\u6BCF\u500B implicant \u7684\u6BCF\u500B literal \u6311\u4E00\u7D44 NFPs\uFF0C\u4F7F\u6BCF\u500B\u6B21\u5B50\u53E5\u90FD\u81F3\u5C11\u51FA\u73FE\u4E00\u6B21 T \u8207\u4E00\u6B21 F\u3002"
+      description: "\u70BA\u6BCF\u500B implicant \u7684\u6BCF\u500B literal \u6311\u4E00\u7D44 NFPs\uFF0C\u4F7F\u6BCF\u500B\u6B21\u5B50\u53E5\u90FD\u81F3\u5C11\u51FA\u73FE\u4E00\u6B21 T \u8207\u4E00\u6B21 F\u3002",
+      descriptionEn: "For every implicant pick a set of NFPs such that each minor clause takes both T and F."
     },
     {
       id: "cutpnfp",
       label: "Corresponding UTP + NFP Pair Coverage",
       labelZh: "CUTPNFP",
-      description: "\u70BA\u6BCF\u500B implicant \u7684\u6BCF\u500B literal\uFF0C\u6311\u4E00\u5C0D\u50C5\u5728\u8A72 literal \u4E0D\u540C\u7684 UTP \u8207 NFP\u3002"
+      description: "\u70BA\u6BCF\u500B implicant \u7684\u6BCF\u500B literal\uFF0C\u6311\u4E00\u5C0D\u50C5\u5728\u8A72 literal \u4E0D\u540C\u7684 UTP \u8207 NFP\u3002",
+      descriptionEn: "For every literal of every implicant pick a UTP/NFP pair that differs only in that literal."
     }
   ];
   var logicCoveragePredicates = [
@@ -396,21 +389,593 @@
       id: "simple-and-or",
       name: "(a && b) || c",
       expression: "(a && b) || c",
-      description: "\u5E38\u898B\u7684\u6DF7\u5408 AND/OR predicate\uFF0C\u4E09\u500B\u5B50\u53E5\u3002"
+      description: "\u5E38\u898B\u7684\u6DF7\u5408 AND/OR predicate\uFF0C\u4E09\u500B\u5B50\u53E5\u3002",
+      descriptionEn: "A common mixed AND/OR predicate with three clauses."
     },
     {
       id: "guarded-exit",
       name: "a && (b || !c)",
       expression: "a && (b || !c)",
-      description: "\u5E36\u6709\u5426\u5B9A\u5B50\u53E5\u7684\u5B88\u885B\u689D\u4EF6\u3002"
+      description: "\u5E36\u6709\u5426\u5B9A\u5B50\u53E5\u7684\u5B88\u885B\u689D\u4EF6\u3002",
+      descriptionEn: "A guarded condition that includes a negated clause."
     },
     {
       id: "four-clause",
       name: "(a || b) && (c || d)",
       expression: "(a || b) && (c || d)",
-      description: "\u56DB\u500B\u5B50\u53E5\u7684\u4E58\u7A4D\u5F0F predicate\uFF0C\u5E38\u898B\u65BC\u7BC4\u570D\u6AA2\u67E5\u3002"
+      description: "\u56DB\u500B\u5B50\u53E5\u7684\u4E58\u7A4D\u5F0F predicate\uFF0C\u5E38\u898B\u65BC\u7BC4\u570D\u6AA2\u67E5\u3002",
+      descriptionEn: "A four-clause product predicate, common in range checks."
     }
   ];
+
+  // src/i18n/dict.js
+  var messages = {
+    en: {
+      // App shell
+      "app.title": "Software Testing Methods Visualization",
+      "app.subtitle": "Software Testing Methods Visualization",
+      "app.nav.aria": "Switch section",
+      "app.footer": "Built per Plan.md \xB7 Software Testing Methods Visualization",
+      "app.lang.label": "Language",
+      "app.lang.en": "English",
+      "app.lang.zh": "\u4E2D\u6587",
+      // Sections
+      "section.all": "Overview",
+      "section.methods": "Testing Methods",
+      "section.graph": "Graph Coverage",
+      "section.logic": "Logic Coverage",
+      "section.syntax": "Syntax-Based Testing",
+      "section.cloud": "Cloud Integration",
+      "section.flow": "Testing Flow",
+      "section.types": "Testing Types",
+      "section.methods.title": "Testing Method Categories",
+      "section.graph.title": "Graph Coverage Visualization",
+      "section.logic.title": "Logic Coverage Visualization",
+      "section.syntax.title": "Syntax-Based Testing: Program Mutation",
+      "section.cloud.title": "Google Cloud Integration",
+      "section.flow.title": "Testing Flow",
+      "section.types.title": "Common Testing Types",
+      // Common
+      "common.run": "Run",
+      "common.reset": "Reset",
+      "common.save": "Save",
+      "common.delete": "Delete",
+      "common.add": "Add",
+      "common.notes": "Notes",
+      "common.actual": "Actual",
+      "common.expected": "Expected",
+      "common.input": "Input",
+      "common.output": "Output",
+      "common.status": "Status",
+      "common.passed": "Passed",
+      "common.failed": "Failed",
+      "common.killed": "Killed",
+      "common.live": "Live",
+      "common.equivalent": "Equivalent",
+      "common.markEquivalent": "Mark equivalent",
+      "common.unmarkEquivalent": "Unmark equivalent",
+      "common.reload": "Reload",
+      "common.signedIn": "\u2713 Signed in",
+      "common.notSignedIn": "Not signed in",
+      "common.googleSignIn": "Google Sign in",
+      "common.signOut": "Sign out",
+      // Cloud panel
+      "cloud.kicker": "Google + Firebase",
+      "cloud.title": "Cloud settings & file storage",
+      "cloud.subtitle": "Sign in with Google: settings stored in Firebase, files uploaded to Google Drive.",
+      "cloud.fileWarning": "Currently in file:// mode. Google OAuth requires http://localhost or https.",
+      "cloud.signInPrompt": "Sign in with Google to save settings or upload files.",
+      "cloud.userPrefix": "Current user: {name}",
+      "cloud.section.settings": "Settings (Firebase Firestore)",
+      "cloud.section.files": "Files (Google Drive)",
+      "cloud.preferredCriterion": "Default Coverage Criterion",
+      "cloud.notes": "Notes",
+      "cloud.extras": "Extra settings JSON",
+      "cloud.saveSettings": "Save settings",
+      "cloud.upload": "Upload to Google Drive",
+      "cloud.refreshFiles": "Refresh file list",
+      "cloud.uploadHint": "Choose a file to upload",
+      "cloud.pendingUpload": "Pending: {name}",
+      "cloud.noFileSelected": "No file selected",
+      "cloud.noSavedSettings": "No settings saved in Firebase yet.",
+      "cloud.extrasJsonError": "Extra settings JSON is malformed.",
+      "cloud.loadSettings": "Load settings",
+      "cloud.signedInOk": "Signed in. Drive upload permission granted.",
+      "cloud.signedInNoDrive": "Signed in but Drive permission not granted. Please sign in again.",
+      "cloud.signedOut": "Signed out.",
+      "cloud.savedOk": "Settings saved to Firebase.",
+      "cloud.loadedOk": "Settings loaded from Firebase.",
+      "cloud.uploadedOk": "File uploaded: {name}",
+      "cloud.noFiles": "No uploads yet",
+      "cloud.openFile": "Open",
+      "cloud.useForMutation": "Use for Mutation Test",
+      "cloud.useForGraph": "Use for Graph Coverage",
+      "cloud.sentToMutation": "Sent {name} to Mutation Test section.",
+      "cloud.sentToGraph": "Sent {name} to Graph Coverage section.",
+      "cloud.readError": "Could not read file: {msg}",
+      "cloud.noContent": "File content is unavailable. Please re-upload the file.",
+      "cloud.driveFilesTitle": "Files in Google Drive",
+      "cloud.refreshDriveFiles": "Refresh Drive list",
+      "cloud.refreshing": "Refreshing\u2026",
+      "cloud.noDriveFiles": "No files found in Drive yet.",
+      "cloud.signInToList": "Sign in to list your Drive files.",
+      "cloud.driveListed": "Loaded {count} file(s) from Drive.",
+      "cloud.driveListError": "Could not list Drive files: {msg}",
+      "cloud.downloading": "Downloading {name}\u2026",
+      "cloud.firebaseMissing": "Firebase config incomplete: {keys}",
+      // Testing method tree
+      "methods.intro": "Hierarchical view of common testing methods. Hover or click each branch.",
+      "methods.expandAll": "Expand all",
+      "methods.collapseAll": "Collapse all",
+      "methods.codeVisibility": "Code visibility",
+      "methods.countBadge": "{n} techniques",
+      // Testing flow
+      "flow.intro": "A typical testing flow:",
+      "flow.play": "Play",
+      "flow.pause": "Pause",
+      "flow.step": "Step {n}: {label}",
+      "flow.progress": "Progress: {current} / {total} \u2014 {label}",
+      // Testing types
+      "types.intro": "Common testing types in the industry:",
+      "types.col.name": "Type",
+      "types.col.purpose": "Purpose",
+      "types.col.example": "Example",
+      "types.col.timing": "Timing",
+      "types.pyramid.title": "Test Pyramid (bottom to top)",
+      // Graph coverage
+      "graph.title": "Graph Coverage Explorer",
+      "graph.subtitle": "Choose a sample program or upload your own JS function. The system extracts CFG and covers it by selected criterion.",
+      "graph.example": "Sample program",
+      "graph.criterion": "Coverage criterion",
+      "graph.uploadLabel": "Upload JS file",
+      "graph.uploadHint": "Upload a single function written in JavaScript.",
+      "graph.run": "Generate coverage",
+      "graph.cfg": "Control Flow Graph",
+      "graph.paths": "Paths satisfying criterion",
+      "graph.coverage": "Coverage report",
+      "graph.testCases": "Suggested test cases",
+      "graph.noTests": "No test inputs needed for this criterion.",
+      "graph.parseError": "Parse error: {msg}",
+      // Common (extra)
+      "common.none": "(none)",
+      // Graph coverage
+      "graph.aria.canvas": "Graph coverage CFG",
+      "graph.aria.switcher": "Switch coverage criteria",
+      "graph.customTitle": "Custom Control Flow Graph",
+      "graph.source.empty": "This source only provides a graph; no source code snippet attached.",
+      "graph.headerDesc": "Same CFG, switch criteria to instantly see the nodes/edges/paths that must be covered.",
+      "graph.editor.help": "Load a CFG from a real program example, then tweak the graph and recompute coverage requirements/test paths in real time.",
+      "graph.editor.reset": "Reset graph",
+      "graph.editor.synced": "Graph updated.",
+      "graph.uploadFormatHelp": "JSON may provide a graph object directly, or top-level nodes/edges/startNodeId/endNodeId, plus optional title/description/sourceCode. Code uploads are converted into a simplified CFG by language.",
+      "graph.summary.current": "Current requirement",
+      "graph.path.help": "Combine requirements into executable test paths (Start \u2192 End).",
+      "graph.path.before": "Before optimization",
+      "graph.path.after": "After optimization",
+      "graph.path.saved": "Reduced by",
+      "graph.path.none": "No available paths",
+      "graph.path.uncovered": "Not yet covered: {items}",
+      "graph.path.allCovered": "All requirements mapped to test paths.",
+      "graph.req.help": "When the criterion changes, this list recomputes the corresponding requirements.",
+      "graph.detail.noSourceMap": "This requirement has no associated source-line mapping.",
+      "graph.status.initial": "Pick a built-in program example, or upload a JSON graph spec / source-code file.",
+      "graph.status.recomputed": "{name} recomputed from edited graph.",
+      "graph.status.reset": "{name} restored to the originally loaded graph.",
+      "graph.status.defaultLoaded": "Loaded the default control-flow-graph sample.",
+      "graph.status.pickJson": "Pick a JSON file to upload as a graph spec.",
+      "graph.status.pickCode": "Pick a source-code file and language; the system will produce a simplified CFG.",
+      "graph.status.exampleLoaded": "Loaded {name}.",
+      "graph.status.uploadLoaded": "Loaded uploaded file: {name}",
+      "graph.status.codeGenerated": "Generated a simplified CFG from {name}.",
+      "graph.status.codeFailed": "Code upload failed.",
+      "graph.err.nodesEmpty": "Nodes cannot be empty.",
+      "graph.err.nodeFmt": "Bad node format (line {line}); expected id,label,x,y.",
+      "graph.err.nodeCoord": "Bad node coordinate (line {line}); x,y must be numbers.",
+      "graph.err.edgesEmpty": "Edges cannot be empty.",
+      "graph.err.edgeFmt": "Bad edge format (line {line}); use from,to or id,from,to or id,from,to,cx,cy.",
+      "graph.err.edgeMissing": "Bad edge (line {line}); missing from/to.",
+      "graph.err.edgeNode": "Edge endpoint not found (line {line}): {from} -> {to}",
+      "graph.err.edgeCtl": "Bad edge control point (line {line}); cx,cy must be numbers.",
+      "graph.err.startMissing": "Start node is not in the node list.",
+      "graph.err.endMissing": "End node is not in the node list.",
+      "graph.err.notJson": "Uploaded content is not valid JSON.",
+      "graph.err.jsonShape": "JSON must include a graph object, or top-level nodes / edges / startNodeId / endNodeId.",
+      "graph.err.readFile": "Failed to read uploaded file.",
+      "graph.err.noSource": "No usable graph source found.",
+      // Logic coverage
+      "logic.title": "Logic Coverage Explorer",
+      "logic.subtitle": "Pick a Boolean predicate; the system computes truth tables, K-maps, and ACC/CACC/MUTPC/MNFPC.",
+      "logic.predicate": "Predicate",
+      "logic.criterion": "Coverage criterion",
+      "logic.truthTable": "Truth Table",
+      "logic.kmap": "Karnaugh Map",
+      "logic.implicants": "Prime Implicants",
+      "logic.testRows": "Test rows",
+      "logic.utp": "UTP",
+      "logic.nfp": "NFP",
+      "logic.notation.adjacency": "adjacency notation",
+      "logic.notation.plus": "+ notation",
+      "logic.kmap.unsupported": "Karnaugh map supports only 1\u20134 clauses (currently {n}).",
+      "logic.err.tooManyClauses": "For visual readability, please limit clauses to 6 or fewer.",
+      "logic.recent": "Recent:",
+      "logic.remove": "Remove",
+      "logic.inputHint": "Supports <code>&amp;&amp;</code> / <code>||</code> / <code>!</code>; textbook notation also accepted: adjacency = AND (e.g. <code>ab</code>), <code>+</code> = OR (e.g. <code>a+b</code>).",
+      "logic.aria.criteria": "Logic Coverage criteria",
+      "logic.duplicate": "Duplicate",
+      "logic.unsatisfied": "No matching rows found for: {items}",
+      "logic.dnfPrefix": "Minimal DNF of f: ",
+      "logic.dnfNegPrefix": "Minimal DNF of \xACf: ",
+      "logic.textbookOpen": " (textbook notation: ",
+      "logic.textbookClose": ")",
+      "logic.kmap.title.fStar": "Karnaugh Map of f (\u2605 = chosen test case)",
+      "logic.kmap.title.fNegStar": "Karnaugh Map of \xACf (\u2605 = chosen test case)",
+      "logic.kmap.title.utp": "Karnaugh Map of f (\u2605 = chosen UTP)",
+      "logic.kmap.title.mutp": "Karnaugh Map of f (\u2605 = chosen MUTP)",
+      "logic.kmap.title.mnfp": "Karnaugh Map of f (MNFP: NFPs per implicant \xD7 literal)",
+      "logic.kmap.title.nfp": "Karnaugh Map of f (NFP and corresponding UTP)",
+      "logic.kmap.title.cutpnfp": "Karnaugh Map of f (\u2605 = chosen test case; UTP\u2194NFP paired)",
+      "logic.flipLabel": "{{term}} flip {lit}",
+      "logic.metric.total": "Test rows: ",
+      "logic.metric.unique": "Unique rows: ",
+      "logic.metric.duplicate": "Duplicates: ",
+      "logic.metric.requirements": "Suggested requirements: ",
+      // Syntax / mutation
+      "syntax.title": "Syntax-Based Testing: Program Mutation",
+      "syntax.subtitle": "Pick a program, choose mutation operators, and a test set; the system generates mutants and reports the score.",
+      "syntax.example": "Sample program",
+      "syntax.params": "Parameters (comma-separated)",
+      "syntax.body": "Function body (JS)",
+      "syntax.operators": "Mutation operators",
+      "syntax.tests": "Test set",
+      "syntax.test.args": "Args",
+      "syntax.test.expected": "Expected",
+      "syntax.test.add": "Add test",
+      "syntax.test.delete": "Delete",
+      "syntax.run": "Generate & evaluate mutants",
+      "syntax.reset": "Reset to sample defaults",
+      "syntax.score": "Mutation Score",
+      "syntax.summary": "{killed} killed / {total} mutants ({equivalent} equivalent)",
+      "syntax.mutants": "Mutants",
+      "syntax.mutant.line": "Line {line}",
+      "syntax.mutant.original": "Original",
+      "syntax.mutant.mutated": "Mutated",
+      "syntax.mutant.killedBy": "Killed by",
+      "syntax.mutant.survived": "Survived",
+      "syntax.cloud.idle": "Cloud sync idle.",
+      "syntax.cloud.syncing": "\u2601 Syncing\u2026",
+      "syntax.cloud.synced": "Synced to cloud",
+      "syntax.cloud.error": "Cloud sync error: {msg}",
+      "syntax.cloud.notSignedIn": "Sign in with Google to sync test sets across devices.",
+      "syntax.cloud.reload": "Reload from cloud",
+      "syntax.parseError": "Parse error in args: {msg}",
+      "syntax.cloud.failed": "Sync failed",
+      "syntax.cloud.linked": "Linked: {name}",
+      "syntax.cloud.reloading": "Reloading from cloud\u2026",
+      "syntax.cloud.loaded": "Loaded from cloud",
+      "syntax.cloud.saveError": "Cloud save failed: {msg}",
+      "syntax.cloud.loadError": "Cloud load failed: {msg}",
+      "syntax.removeTest": "Remove",
+      "syntax.mutant.statusLabel": "Status: ",
+      "syntax.mutant.killedByList": "Killed by: {ids}",
+      "syntax.mutant.liveHint": "This mutant is still live; you can mark it equivalent.",
+      "syntax.mutant.empty": "Click a mutant on the left to see details.",
+      "syntax.col.args": "args (JSON elements, comma-separated)",
+      "syntax.totalLabel": "Total",
+      "syntax.noMutants": "No mutants (please select at least one operator).",
+      "syntax.err.argsParse": "Failed to parse args: {msg}",
+      "syntax.err.compile": "Original program failed to compile/run: {msg}"
+    },
+    zh: {
+      "app.title": "\u8EDF\u9AD4\u6E2C\u8A66\u65B9\u6CD5\u8996\u89BA\u5316",
+      "app.subtitle": "Software Testing Methods Visualization",
+      "app.nav.aria": "\u5207\u63DB\u5340\u584A",
+      "app.footer": "\u6839\u64DA Plan.md \u5EFA\u7ACB \xB7 \u8EDF\u9AD4\u6E2C\u8A66\u65B9\u6CD5\u8996\u89BA\u5316\u7CFB\u7D71",
+      "app.lang.label": "\u8A9E\u8A00",
+      "app.lang.en": "English",
+      "app.lang.zh": "\u4E2D\u6587",
+      "section.all": "\u5168\u89BD",
+      "section.methods": "\u6E2C\u8A66\u65B9\u6CD5",
+      "section.graph": "Graph Coverage",
+      "section.logic": "Logic Coverage",
+      "section.syntax": "Syntax-Based Testing",
+      "section.cloud": "\u96F2\u7AEF\u6574\u5408",
+      "section.flow": "\u6E2C\u8A66\u6D41\u7A0B",
+      "section.types": "\u6E2C\u8A66\u985E\u578B",
+      "section.methods.title": "\u6E2C\u8A66\u65B9\u6CD5\u5206\u985E",
+      "section.graph.title": "Graph Coverage \u8996\u89BA\u5316",
+      "section.logic.title": "Logic Coverage \u8996\u89BA\u5316",
+      "section.syntax.title": "Syntax-Based Testing\uFF1AProgram Mutation",
+      "section.cloud.title": "Google \u96F2\u7AEF\u6574\u5408",
+      "section.flow.title": "\u6E2C\u8A66\u6D41\u7A0B",
+      "section.types.title": "\u5E38\u898B\u6E2C\u8A66\u985E\u578B",
+      "common.run": "\u57F7\u884C",
+      "common.reset": "\u91CD\u8A2D",
+      "common.save": "\u5132\u5B58",
+      "common.delete": "\u522A\u9664",
+      "common.add": "\u65B0\u589E",
+      "common.notes": "\u5099\u8A3B",
+      "common.actual": "\u5BE6\u969B",
+      "common.expected": "\u9810\u671F",
+      "common.input": "\u8F38\u5165",
+      "common.output": "\u8F38\u51FA",
+      "common.status": "\u72C0\u614B",
+      "common.passed": "\u901A\u904E",
+      "common.failed": "\u5931\u6557",
+      "common.killed": "\u88AB\u6BBA\u6B7B",
+      "common.live": "\u5B58\u6D3B",
+      "common.equivalent": "\u7B49\u50F9",
+      "common.markEquivalent": "\u6A19\u8A18\u70BA\u7B49\u50F9",
+      "common.unmarkEquivalent": "\u53D6\u6D88\u7B49\u50F9\u6A19\u8A18",
+      "common.reload": "\u91CD\u65B0\u8F09\u5165",
+      "common.signedIn": "\u2713 \u5DF2\u767B\u5165",
+      "common.notSignedIn": "\u5C1A\u672A\u767B\u5165",
+      "common.googleSignIn": "Google \u767B\u5165",
+      "common.signOut": "\u767B\u51FA",
+      "cloud.kicker": "Google + Firebase",
+      "cloud.title": "\u96F2\u7AEF\u8A2D\u5B9A\u8207\u6A94\u6848\u5132\u5B58",
+      "cloud.subtitle": "Google \u767B\u5165\u5F8C\uFF1A\u8A2D\u5B9A\u5B58 Firebase\u3001\u6A94\u6848\u4E0A\u50B3\u5230 Google Drive\u3002",
+      "cloud.fileWarning": "\u76EE\u524D\u70BA file:// \u6A21\u5F0F\u3002Google OAuth \u9700\u8981 http://localhost \u6216 https\u3002",
+      "cloud.signInPrompt": "\u8ACB\u5148\u4EE5 Google \u767B\u5165\u5F8C\uFF0C\u518D\u5132\u5B58\u8A2D\u5B9A\u6216\u4E0A\u50B3\u6A94\u6848\u3002",
+      "cloud.userPrefix": "\u76EE\u524D\u4F7F\u7528\u8005\uFF1A{name}",
+      "cloud.section.settings": "\u8A2D\u5B9A\uFF08Firebase Firestore\uFF09",
+      "cloud.section.files": "\u6A94\u6848\uFF08Google Drive\uFF09",
+      "cloud.preferredCriterion": "\u9810\u8A2D Coverage Criterion",
+      "cloud.notes": "\u5099\u8A3B",
+      "cloud.extras": "\u984D\u5916\u8A2D\u5B9A JSON",
+      "cloud.saveSettings": "\u5132\u5B58\u8A2D\u5B9A",
+      "cloud.upload": "\u4E0A\u50B3\u5230 Google Drive",
+      "cloud.refreshFiles": "\u91CD\u65B0\u6574\u7406\u6A94\u6848\u5217\u8868",
+      "cloud.uploadHint": "\u9078\u64C7\u8981\u4E0A\u50B3\u7684\u6A94\u6848",
+      "cloud.pendingUpload": "\u5F85\u4E0A\u50B3\uFF1A{name}",
+      "cloud.noFileSelected": "\u5C1A\u672A\u9078\u64C7\u6A94\u6848",
+      "cloud.noSavedSettings": "Firebase \u5C1A\u7121\u5DF2\u5132\u5B58\u8A2D\u5B9A\u3002",
+      "cloud.extrasJsonError": "\u984D\u5916\u8A2D\u5B9A JSON \u683C\u5F0F\u932F\u8AA4\u3002",
+      "cloud.loadSettings": "\u8B80\u53D6\u8A2D\u5B9A",
+      "cloud.signedInOk": "Google \u767B\u5165\u6210\u529F\uFF0C\u5DF2\u53D6\u5F97 Drive \u4E0A\u50B3\u6B0A\u9650\u3002",
+      "cloud.signedInNoDrive": "Google \u767B\u5165\u6210\u529F\uFF0C\u4F46\u672A\u53D6\u5F97 Drive \u6B0A\u9650\uFF0C\u8ACB\u91CD\u65B0\u767B\u5165\u3002",
+      "cloud.signedOut": "\u5DF2\u767B\u51FA\u3002",
+      "cloud.savedOk": "\u8A2D\u5B9A\u5DF2\u5132\u5B58\u5230 Firebase\u3002",
+      "cloud.loadedOk": "\u5DF2\u5F9E Firebase \u8F09\u5165\u8A2D\u5B9A\u3002",
+      "cloud.uploadedOk": "\u6A94\u6848\u5DF2\u4E0A\u50B3\uFF1A{name}",
+      "cloud.noFiles": "\u5C1A\u7121\u4E0A\u50B3\u7D00\u9304",
+      "cloud.openFile": "\u958B\u555F",
+      "cloud.useForMutation": "\u7528\u65BC Mutation Test",
+      "cloud.useForGraph": "\u7528\u65BC Graph Coverage",
+      "cloud.sentToMutation": "\u5DF2\u5C07 {name} \u50B3\u9001\u81F3 Mutation Test \u5340\u584A\u3002",
+      "cloud.sentToGraph": "\u5DF2\u5C07 {name} \u50B3\u9001\u81F3 Graph Coverage \u5340\u584A\u3002",
+      "cloud.readError": "\u7121\u6CD5\u8B80\u53D6\u6A94\u6848\uFF1A{msg}",
+      "cloud.noContent": "\u6A94\u6848\u5167\u5BB9\u4E0D\u53EF\u7528\uFF0C\u8ACB\u91CD\u65B0\u4E0A\u50B3\u3002",
+      "cloud.driveFilesTitle": "Google Drive \u6A94\u6848",
+      "cloud.refreshDriveFiles": "\u91CD\u65B0\u6574\u7406 Drive \u6A94\u6848",
+      "cloud.refreshing": "\u8B80\u53D6\u4E2D\u2026",
+      "cloud.noDriveFiles": "Drive \u4E2D\u5C1A\u7121\u6A94\u6848\u3002",
+      "cloud.signInToList": "\u8ACB\u5148\u767B\u5165\u4EE5\u8B80\u53D6 Drive \u6A94\u6848\u3002",
+      "cloud.driveListed": "\u5DF2\u5F9E Drive \u8B80\u53D6 {count} \u500B\u6A94\u6848\u3002",
+      "cloud.driveListError": "\u8B80\u53D6 Drive \u6A94\u6848\u5217\u8868\u5931\u6557\uFF1A{msg}",
+      "cloud.downloading": "\u4E0B\u8F09 {name} \u4E2D\u2026",
+      "cloud.firebaseMissing": "Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF1A{keys}",
+      "methods.intro": "\u5C64\u7D1A\u5F0F\u5448\u73FE\u5E38\u898B\u6E2C\u8A66\u65B9\u6CD5\u5206\u985E\uFF0C\u53EF\u6ED1\u9F20\u79FB\u4E0A\u6216\u9EDE\u9078\u67E5\u770B\u7D30\u7BC0\u3002",
+      "methods.expandAll": "\u5168\u90E8\u5C55\u958B",
+      "methods.collapseAll": "\u5168\u90E8\u6536\u5408",
+      "methods.codeVisibility": "\u4EE3\u78BC\u53EF\u898B\u5EA6",
+      "methods.countBadge": "{n} \u9805\u6280\u8853",
+      "flow.intro": "\u4E00\u500B\u5178\u578B\u7684\u6E2C\u8A66\u6D41\u7A0B\uFF1A",
+      "flow.play": "\u64AD\u653E",
+      "flow.pause": "\u66AB\u505C",
+      "flow.step": "\u6B65\u9A5F {n}: {label}",
+      "flow.progress": "\u9032\u5EA6\uFF1A{current} / {total} \u2014 {label}",
+      "types.intro": "\u696D\u754C\u5E38\u898B\u7684\u6E2C\u8A66\u985E\u578B\uFF1A",
+      "types.col.name": "\u985E\u578B",
+      "types.col.purpose": "\u76EE\u7684",
+      "types.col.example": "\u7BC4\u4F8B",
+      "types.col.timing": "\u6642\u6A5F",
+      "types.pyramid.title": "\u6E2C\u8A66\u91D1\u5B57\u5854\uFF08\u7531\u5E95\u5C64\u81F3\u9802\u5C64\uFF09",
+      "graph.title": "Graph Coverage \u4E92\u52D5\u63A2\u7D22",
+      "graph.subtitle": "\u9078\u64C7\u7BC4\u4F8B\u7A0B\u5F0F\u6216\u81EA\u884C\u4E0A\u50B3 JS \u51FD\u5F0F\uFF0C\u7CFB\u7D71\u6703\u62BD\u53D6 CFG \u4E26\u4F9D\u6E96\u5247\u8986\u84CB\u3002",
+      "graph.example": "\u7BC4\u4F8B\u7A0B\u5F0F",
+      "graph.criterion": "Coverage \u6E96\u5247",
+      "graph.uploadLabel": "\u4E0A\u50B3 JS \u6A94\u6848",
+      "graph.uploadHint": "\u4E0A\u50B3\u4EE5 JavaScript \u64B0\u5BEB\u7684\u55AE\u4E00\u51FD\u5F0F\u3002",
+      "graph.run": "\u7522\u751F\u8986\u84CB\u7D50\u679C",
+      "graph.cfg": "\u63A7\u5236\u6D41\u7A0B\u5716\uFF08CFG\uFF09",
+      "graph.paths": "\u6EFF\u8DB3\u6E96\u5247\u4E4B\u8DEF\u5F91",
+      "graph.coverage": "Coverage \u5831\u544A",
+      "graph.testCases": "\u5EFA\u8B70\u6E2C\u8A66\u6848\u4F8B",
+      "graph.noTests": "\u6B64\u6E96\u5247\u4E0D\u9700\u6E2C\u8A66\u8F38\u5165\u3002",
+      "graph.parseError": "\u89E3\u6790\u932F\u8AA4\uFF1A{msg}",
+      "common.none": "\u7121",
+      "graph.aria.canvas": "Graph coverage \u63A7\u5236\u6D41\u7A0B\u5716",
+      "graph.aria.switcher": "coverage criteria \u5207\u63DB",
+      "graph.customTitle": "\u81EA\u8A02\u63A7\u5236\u6D41\u7A0B\u5716",
+      "graph.source.empty": "\u9019\u500B\u4F86\u6E90\u76EE\u524D\u53EA\u63D0\u4F9B graph\uFF0C\u6C92\u6709\u9644\u5E36\u7A0B\u5F0F\u78BC\u7247\u6BB5\u3002",
+      "graph.headerDesc": "\u7528\u540C\u4E00\u5F35\u63A7\u5236\u6D41\u7A0B\u5716\uFF0C\u5207\u63DB\u4E0D\u540C coverage criteria\uFF0C\u76F4\u63A5\u770B\u5230\u5FC5\u9808\u6DB5\u84CB\u7684\u7BC0\u9EDE\u3001\u908A\u8207 path\u3002",
+      "graph.editor.help": "\u53EF\u5F9E\u771F\u5BE6\u7A0B\u5F0F\u7BC4\u4F8B\u8F09\u5165 CFG\uFF0C\u518D\u5FAE\u8ABF graph \u4E26\u5373\u6642\u8A08\u7B97 coverage requirements \u8207 test paths\u3002",
+      "graph.editor.reset": "\u9084\u539F\u9810\u8A2D\u5716",
+      "graph.editor.synced": "Graph \u5DF2\u540C\u6B65\u66F4\u65B0",
+      "graph.uploadFormatHelp": "JSON \u53EF\u76F4\u63A5\u63D0\u4F9B graph \u7269\u4EF6\uFF0C\u6216\u76F4\u63A5\u63D0\u4F9B nodes\u3001edges\u3001startNodeId\u3001endNodeId\uFF0C\u4E5F\u53EF\u9644\u5E36 title\u3001description\u3001sourceCode\u3002\u7A0B\u5F0F\u78BC\u4E0A\u50B3\u5247\u6703\u4F9D\u8A9E\u8A00\u985E\u578B\u81EA\u52D5\u7522\u751F\u7C21\u5316 CFG\u3002",
+      "graph.summary.current": "\u76EE\u524D requirement",
+      "graph.path.help": "\u5C07 requirement \u81EA\u52D5\u7D44\u5408\u6210\u53EF\u57F7\u884C\u6E2C\u8A66\u8DEF\u5F91\uFF08Start \u5230 End\uFF09\u3002",
+      "graph.path.before": "\u6700\u4F73\u5316\u524D",
+      "graph.path.after": "\u6700\u4F73\u5316\u5F8C",
+      "graph.path.saved": "\u7CBE\u7C21\u6578\u91CF",
+      "graph.path.none": "\u7121\u53EF\u7528\u8DEF\u5F91",
+      "graph.path.uncovered": "\u5C1A\u672A\u8986\u84CB\uFF1A{items}",
+      "graph.path.allCovered": "\u5168\u90E8 requirement \u5DF2\u5C0D\u61C9\u5230 test paths",
+      "graph.req.help": "\u5207\u63DB criteria \u5F8C\uFF0C\u5217\u8868\u6703\u91CD\u7B97\u5C0D\u61C9\u5FC5\u9808\u8986\u84CB\u7684 requirement\u3002",
+      "graph.detail.noSourceMap": "\u76EE\u524D requirement \u6C92\u6709\u53EF\u5C0D\u61C9\u7684\u7A0B\u5F0F\u78BC\u884C\u865F\u3002",
+      "graph.status.initial": "\u53EF\u5207\u63DB\u56FA\u5B9A\u7A0B\u5F0F\u7BC4\u4F8B\uFF0C\u6216\u4E0A\u50B3 JSON graph spec\u3001\u7A0B\u5F0F\u78BC\u6A94\u6848\u3002",
+      "graph.status.recomputed": "{name} \u5DF2\u4F9D\u7167\u7DE8\u8F2F\u5167\u5BB9\u91CD\u65B0\u8A08\u7B97\u3002",
+      "graph.status.reset": "{name} \u5DF2\u9084\u539F\u70BA\u8F09\u5165\u6642\u7684 graph\u3002",
+      "graph.status.defaultLoaded": "\u5DF2\u8F09\u5165\u9810\u8A2D\u63A7\u5236\u6D41\u7A0B\u5716\u7BC4\u4F8B\u3002",
+      "graph.status.pickJson": "\u8ACB\u9078\u64C7 JSON \u6A94\u6848\u4EE5\u4E0A\u50B3 graph spec\u3002",
+      "graph.status.pickCode": "\u8ACB\u9078\u64C7\u7A0B\u5F0F\u78BC\u6A94\u6848\u8207\u8A9E\u8A00\u985E\u578B\uFF0C\u7CFB\u7D71\u6703\u81EA\u52D5\u7522\u751F\u7C21\u5316 CFG\u3002",
+      "graph.status.exampleLoaded": "\u5DF2\u8F09\u5165 {name}\u3002",
+      "graph.status.uploadLoaded": "\u5DF2\u8F09\u5165\u4E0A\u50B3\u6A94\u6848\uFF1A{name}",
+      "graph.status.codeGenerated": "\u5DF2\u6839\u64DA {name} \u81EA\u52D5\u7522\u751F\u7C21\u5316 CFG\u3002",
+      "graph.status.codeFailed": "\u7A0B\u5F0F\u78BC\u4E0A\u50B3\u5931\u6557\u3002",
+      "graph.err.nodesEmpty": "\u7BC0\u9EDE\u4E0D\u80FD\u70BA\u7A7A\u3002",
+      "graph.err.nodeFmt": "\u7BC0\u9EDE\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C {line} \u884C\uFF09\uFF0C\u8ACB\u4F7F\u7528 id,label,x,y\u3002",
+      "graph.err.nodeCoord": "\u7BC0\u9EDE\u5EA7\u6A19\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C {line} \u884C\uFF09\uFF0Cx,y \u5FC5\u9808\u662F\u6578\u5B57\u3002",
+      "graph.err.edgesEmpty": "\u908A\u4E0D\u80FD\u70BA\u7A7A\u3002",
+      "graph.err.edgeFmt": "\u908A\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C {line} \u884C\uFF09\uFF0C\u8ACB\u4F7F\u7528 from,to \u6216 id,from,to \u6216 id,from,to,cx,cy\u3002",
+      "graph.err.edgeMissing": "\u908A\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C {line} \u884C\uFF09\uFF0C\u7F3A\u5C11 from/to\u3002",
+      "graph.err.edgeNode": "\u908A\u7BC0\u9EDE\u4E0D\u5B58\u5728\uFF08\u7B2C {line} \u884C\uFF09\uFF1A{from} -> {to}",
+      "graph.err.edgeCtl": "\u908A\u63A7\u5236\u9EDE\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C {line} \u884C\uFF09\uFF0Ccx,cy \u5FC5\u9808\u662F\u6578\u5B57\u3002",
+      "graph.err.startMissing": "Start node \u4E0D\u5B58\u5728\u65BC\u7BC0\u9EDE\u6E05\u55AE\u3002",
+      "graph.err.endMissing": "End node \u4E0D\u5B58\u5728\u65BC\u7BC0\u9EDE\u6E05\u55AE\u3002",
+      "graph.err.notJson": "\u4E0A\u50B3\u5167\u5BB9\u4E0D\u662F\u6709\u6548\u7684 JSON\u3002",
+      "graph.err.jsonShape": "JSON \u9700\u5305\u542B graph \u7269\u4EF6\uFF0C\u6216\u76F4\u63A5\u5305\u542B nodes / edges / startNodeId / endNodeId\u3002",
+      "graph.err.readFile": "\u7121\u6CD5\u8B80\u53D6\u4E0A\u50B3\u6A94\u6848\u3002",
+      "graph.err.noSource": "\u627E\u4E0D\u5230\u53EF\u7528\u7684 graph \u4F86\u6E90\u3002",
+      "logic.title": "Logic Coverage \u4E92\u52D5\u63A2\u7D22",
+      "logic.subtitle": "\u6311\u9078\u5E03\u6797\u8FF0\u8A5E\uFF0C\u7CFB\u7D71\u6703\u8A08\u7B97\u771F\u503C\u8868\u3001K-map \u8207 ACC / CACC / MUTPC / MNFPC\u3002",
+      "logic.predicate": "\u8FF0\u8A5E",
+      "logic.criterion": "Coverage \u6E96\u5247",
+      "logic.truthTable": "\u771F\u503C\u8868",
+      "logic.kmap": "Karnaugh Map",
+      "logic.implicants": "Prime Implicants",
+      "logic.testRows": "\u6E2C\u8A66\u5217",
+      "logic.utp": "UTP",
+      "logic.nfp": "NFP",
+      "logic.notation.adjacency": "\u76F8\u9130\u8868\u793A\u6CD5",
+      "logic.notation.plus": "+ \u8868\u793A\u6CD5",
+      "logic.kmap.unsupported": "Karnaugh map \u50C5\u652F\u63F4 1\u20134 \u500B clauses\uFF08\u76EE\u524D\u70BA {n}\uFF09\u3002",
+      "logic.err.tooManyClauses": "\u70BA\u4E86\u8996\u89BA\u5316\u53EF\u8B80\u6027\uFF0C\u5B50\u53E5\u6578\u91CF\u8ACB\u9650\u5236\u5728 6 \u500B\u4EE5\u5167\u3002",
+      "logic.recent": "\u6700\u8FD1\uFF1A",
+      "logic.remove": "\u79FB\u9664",
+      "logic.inputHint": "\u652F\u63F4 <code>&amp;&amp;</code> / <code>||</code> / <code>!</code>\uFF0C\u4E5F\u63A5\u53D7\u6559\u79D1\u66F8\u8A18\u865F\uFF1A\u76F8\u9130\u5373 AND\uFF08\u5982 <code>ab</code>\uFF09\u3001<code>+</code> \u70BA OR\uFF08\u5982 <code>a+b</code>\uFF09\u3002",
+      "logic.aria.criteria": "Logic Coverage \u6E96\u5247",
+      "logic.duplicate": "\u91CD\u8907",
+      "logic.unsatisfied": "\u7121\u6CD5\u627E\u5230\u4E0B\u5217\u9700\u6C42\u5C0D\u61C9\u5217\uFF1A{items}",
+      "logic.dnfPrefix": "f \u7684\u6700\u5C0F DNF\uFF1A",
+      "logic.dnfNegPrefix": "\xACf \u7684\u6700\u5C0F DNF\uFF1A",
+      "logic.textbookOpen": "\uFF08\u6559\u79D1\u66F8\u8A18\u865F\uFF1A",
+      "logic.textbookClose": "\uFF09",
+      "logic.kmap.title.fStar": "f \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u7528 test case\uFF09",
+      "logic.kmap.title.fNegStar": "\xACf \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u7528 test case\uFF09",
+      "logic.kmap.title.utp": "f \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u53D6\u7684 UTP\uFF09",
+      "logic.kmap.title.mutp": "f \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u53D6\u7684 MUTP\uFF09",
+      "logic.kmap.title.mnfp": "f \u7684 Karnaugh Map\uFF08MNFP\uFF1A\u6BCF\u500B implicant \xD7 literal \u9078\u53D6\u7684 NFPs\uFF09",
+      "logic.kmap.title.nfp": "f \u7684 Karnaugh Map\uFF08NFP \u8207\u5C0D\u61C9 UTP\uFF09",
+      "logic.kmap.title.cutpnfp": "f \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u53D6\u7684 test case\uFF1BUTP\u2194NFP \u6210\u5C0D\u6A19\u793A\uFF09",
+      "logic.flipLabel": "{{term}} \u7FFB\u8F49 {lit}",
+      "logic.metric.total": "\u6E2C\u8A66\u5217\u6578\uFF1A",
+      "logic.metric.unique": "\u5BE6\u969B\u9700\u8981\uFF08\u53BB\u91CD\uFF09\uFF1A",
+      "logic.metric.duplicate": "\u91CD\u8907\u6578\u91CF\uFF1A",
+      "logic.metric.requirements": "\u5EFA\u8B70\u6E2C\u8A66\u9700\u6C42\uFF1A",
+      "syntax.title": "Syntax-Based Testing\uFF1AProgram Mutation",
+      "syntax.subtitle": "\u6311\u9078\u7A0B\u5F0F\u3001\u9078\u64C7 mutation operators \u8207 test set\uFF0C\u7CFB\u7D71\u6703\u7522\u751F mutants \u4E26\u8A08\u5206\u3002",
+      "syntax.example": "\u7BC4\u4F8B\u7A0B\u5F0F",
+      "syntax.params": "\u53C3\u6578\uFF08\u4EE5\u9017\u865F\u5206\u9694\uFF09",
+      "syntax.body": "\u51FD\u5F0F\u5167\u5BB9\uFF08JS\uFF09",
+      "syntax.operators": "Mutation operators",
+      "syntax.tests": "\u6E2C\u8A66\u96C6\u5408",
+      "syntax.test.args": "\u53C3\u6578",
+      "syntax.test.expected": "\u9810\u671F",
+      "syntax.test.add": "\u65B0\u589E\u6E2C\u8A66",
+      "syntax.test.delete": "\u522A\u9664",
+      "syntax.run": "\u7522\u751F & \u8A55\u4F30 mutants",
+      "syntax.reset": "\u9084\u539F\u6210\u7BC4\u4F8B\u9810\u8A2D\u503C",
+      "syntax.score": "Mutation Score",
+      "syntax.summary": "{killed} \u88AB\u6BBA / \u5171 {total} \u500B mutants\uFF08\u5176\u4E2D {equivalent} equivalent\uFF09",
+      "syntax.mutants": "Mutants",
+      "syntax.mutant.line": "\u7B2C {line} \u884C",
+      "syntax.mutant.original": "\u539F\u59CB",
+      "syntax.mutant.mutated": "\u7A81\u8B8A",
+      "syntax.mutant.killedBy": "\u88AB\u6BBA\u65BC",
+      "syntax.mutant.survived": "\u5B58\u6D3B",
+      "syntax.cloud.idle": "\u96F2\u7AEF\u540C\u6B65\uFF1A\u9592\u7F6E\u3002",
+      "syntax.cloud.syncing": "\u2601 \u6B63\u5728\u540C\u6B65\u2026",
+      "syntax.cloud.synced": "\u5DF2\u540C\u6B65\u5230\u96F2\u7AEF",
+      "syntax.cloud.error": "\u96F2\u7AEF\u540C\u6B65\u932F\u8AA4\uFF1A{msg}",
+      "syntax.cloud.notSignedIn": "\u4EE5 Google \u767B\u5165\u5373\u53EF\u8DE8\u88DD\u7F6E\u540C\u6B65\u6E2C\u8A66\u96C6\u5408\u3002",
+      "syntax.cloud.reload": "\u5F9E\u96F2\u7AEF\u91CD\u65B0\u8F09\u5165",
+      "syntax.parseError": "\u53C3\u6578\u89E3\u6790\u932F\u8AA4\uFF1A{msg}",
+      "syntax.cloud.failed": "\u540C\u6B65\u5931\u6557",
+      "syntax.cloud.linked": "\u5DF2\u9023\u7D50 {name}",
+      "syntax.cloud.reloading": "\u91CD\u65B0\u5F9E\u96F2\u7AEF\u8B80\u53D6\u2026",
+      "syntax.cloud.loaded": "\u5DF2\u5F9E\u96F2\u7AEF\u8F09\u5165",
+      "syntax.cloud.saveError": "\u96F2\u7AEF\u5132\u5B58\u5931\u6557\uFF1A{msg}",
+      "syntax.cloud.loadError": "\u96F2\u7AEF\u8B80\u53D6\u5931\u6557\uFF1A{msg}",
+      "syntax.removeTest": "\u79FB\u9664",
+      "syntax.mutant.statusLabel": "\u72C0\u614B\uFF1A",
+      "syntax.mutant.killedByList": "\u88AB\u4EE5\u4E0B test killed\uFF1A{ids}",
+      "syntax.mutant.liveHint": "\u6B64 mutant \u4ECD live\uFF1B\u53EF\u624B\u52D5\u6A19\u70BA equivalent\u3002",
+      "syntax.mutant.empty": "\u9EDE\u9078\u5DE6\u5074 mutant \u67E5\u770B\u7D30\u7BC0\u3002",
+      "syntax.col.args": "args\uFF08JSON \u5143\u7D20\uFF0C\u9017\u865F\u5206\u9694\uFF09",
+      "syntax.totalLabel": "\u7E3D\u6578",
+      "syntax.noMutants": "\u7121 mutants\uFF08\u8ACB\u9078\u64C7\u81F3\u5C11\u4E00\u500B operator\uFF09\u3002",
+      "syntax.err.argsParse": "\u53C3\u6578\u89E3\u6790\u5931\u6557\uFF1A{msg}",
+      "syntax.err.compile": "\u539F\u7A0B\u5F0F\u7DE8\u8B6F/\u57F7\u884C\u5931\u6557\uFF1A{msg}"
+    }
+  };
+
+  // src/i18n/index.js
+  var STORAGE_KEY = "stvisual.locale";
+  var DEFAULT_LOCALE = "en";
+  var SUPPORTED = ["en", "zh"];
+  var current = (() => {
+    var _a2;
+    try {
+      const saved = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY);
+      if (saved && SUPPORTED.includes(saved)) return saved;
+    } catch {
+    }
+    return DEFAULT_LOCALE;
+  })();
+  var listeners = /* @__PURE__ */ new Set();
+  function getLocale() {
+    return current;
+  }
+  function setLocale(locale) {
+    var _a2, _b;
+    if (!SUPPORTED.includes(locale) || locale === current) return;
+    current = locale;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY, locale);
+    } catch {
+    }
+    listeners.forEach((cb) => {
+      try {
+        cb(locale);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+    if (typeof document !== "undefined") {
+      (_b = document.documentElement) == null ? void 0 : _b.setAttribute("lang", locale === "zh" ? "zh-TW" : "en");
+    }
+  }
+  function onLocaleChange(callback) {
+    listeners.add(callback);
+    return () => listeners.delete(callback);
+  }
+  function t(key, params) {
+    const table = messages[current] || messages[DEFAULT_LOCALE];
+    let value = table[key];
+    if (value === void 0) {
+      value = messages[DEFAULT_LOCALE][key];
+    }
+    if (value === void 0) {
+      return key;
+    }
+    if (params) {
+      return String(value).replace(/\{(\w+)\}/g, (m, name) => Object.prototype.hasOwnProperty.call(params, name) ? String(params[name]) : m);
+    }
+    return value;
+  }
+  function pickField(item, base) {
+    var _a2, _b, _c, _d;
+    if (!item) return "";
+    if (current === "en") {
+      return (_b = (_a2 = item[base + "En"]) != null ? _a2 : item[base]) != null ? _b : "";
+    }
+    return (_d = (_c = item[base]) != null ? _c : item[base + "En"]) != null ? _d : "";
+  }
+  var _a;
+  if (typeof document !== "undefined") {
+    (_a = document.documentElement) == null ? void 0 : _a.setAttribute("lang", current === "zh" ? "zh-TW" : "en");
+  }
 
   // src/components/TestingMethodTree.js
   function createTestingMethodTree() {
@@ -423,7 +988,7 @@
       root2.innerHTML = `
       <div class="tree-controls">
         <button class="btn-toggle-all" type="button" data-testid="toggle-all-btn">
-          ${allExpanded ? "\u5168\u90E8\u6536\u5408" : "\u5168\u90E8\u5C55\u958B"}
+          ${allExpanded ? t("methods.collapseAll") : t("methods.expandAll")}
         </button>
       </div>
       <div class="tree-cards">
@@ -438,15 +1003,15 @@
                 aria-expanded="${expanded}"
               >
                 <div class="method-card-title">
-                  <h3>${method.name}</h3>
-                  <span class="method-card-en">${method.nameEn}</span>
+                  <h3>${pickField(method, "name")}</h3>
+                  <span class="method-card-en">${getLocale() === "en" ? method.name : method.nameEn}</span>
                 </div>
                 <span class="method-card-toggle${expanded ? " rotated" : ""}">\u25B7</span>
               </button>
               <div class="method-card-body">
-                <p class="method-description">${method.description}</p>
-                <div class="visibility-meter" aria-label="\u4EE3\u78BC\u53EF\u898B\u5EA6 ${method.visibility}%">
-                  <span class="visibility-label">\u4EE3\u78BC\u53EF\u898B\u5EA6</span>
+                <p class="method-description">${pickField(method, "description")}</p>
+                <div class="visibility-meter" aria-label="${t("methods.codeVisibility")} ${method.visibility}%">
+                  <span class="visibility-label">${t("methods.codeVisibility")}</span>
                   <div class="visibility-track">
                     <div
                       class="visibility-fill"
@@ -460,7 +1025,7 @@
                   </div>
                   <span class="visibility-value">${method.visibility}%</span>
                 </div>
-                <div class="method-count-badge">${method.techniques.length} \u9805\u6280\u8853</div>
+                <div class="method-count-badge">${t("methods.countBadge", { n: method.techniques.length })}</div>
                 ${expanded ? `
                   <ul class="technique-list" data-testid="technique-list-${method.id}">
                     ${method.techniques.map((tech, index) => `
@@ -469,9 +1034,9 @@
                         data-testid="technique-${tech.id}"
                         style="animation-delay: ${index * 0.06}s"
                       >
-                        <div class="technique-name">${tech.name}</div>
-                        <div class="technique-name-en">${tech.nameEn}</div>
-                        <div class="technique-desc">${tech.description}</div>
+                        <div class="technique-name">${pickField(tech, "name")}</div>
+                        <div class="technique-name-en">${getLocale() === "en" ? tech.name : tech.nameEn}</div>
+                        <div class="technique-desc">${pickField(tech, "description")}</div>
                       </li>
                     `).join("")}
                   </ul>
@@ -763,10 +1328,10 @@
     }));
   }
   function generateTestPaths(graph, options = {}) {
-    var _a, _b;
+    var _a2, _b;
     const normalizedGraph = normalizeGraph(graph);
     const adjacency = buildAdjacency(normalizedGraph);
-    const nodeVisitLimit = (_a = options.nodeVisitLimit) != null ? _a : 2;
+    const nodeVisitLimit = (_a2 = options.nodeVisitLimit) != null ? _a2 : 2;
     const maxDepthMultiplier = (_b = options.maxDepthMultiplier) != null ? _b : 2;
     const maxDepth = Math.max(2, normalizedGraph.nodes.length * maxDepthMultiplier);
     const uniquePaths = /* @__PURE__ */ new Map();
@@ -803,10 +1368,10 @@
     return Array.from(uniquePaths.values());
   }
   function buildTestPathSetForRequirements(graph, requirements, options = {}) {
-    var _a;
+    var _a2;
     const normalizedGraph = normalizeGraph(graph);
     const candidatePaths = generateTestPaths(normalizedGraph, options);
-    const optimizationMode = (_a = options.optimization) != null ? _a : "greedy-set-cover";
+    const optimizationMode = (_a2 = options.optimization) != null ? _a2 : "greedy-set-cover";
     const pathRecords = candidatePaths.map((path) => ({
       path,
       edgeIds: edgeIdsFromPath(normalizedGraph, path)
@@ -937,10 +1502,10 @@
     return line;
   }
   function createAstNode(type, line, extra = {}) {
-    var _a;
+    var _a2;
     return {
       type,
-      sourceLine: (_a = line == null ? void 0 : line.lineNumber) != null ? _a : null,
+      sourceLine: (_a2 = line == null ? void 0 : line.lineNumber) != null ? _a2 : null,
       sourceText: (line == null ? void 0 : line.sourceText) || (line == null ? void 0 : line.text) || "",
       ...extra
     };
@@ -1083,7 +1648,7 @@
     return stopWhen.some((token) => upper.startsWith(token));
   }
   function parsePseudocodeIf(state) {
-    var _a;
+    var _a2;
     const line = consumeLine(state);
     const condition = line.text.replace(/^IF\s*/i, "").replace(/\s*THEN$/i, "").trim();
     const consequent = parsePseudocodeStatements(state, ["ELSE", "ELSE IF", "END IF", "ENDIF", "END"]);
@@ -1096,7 +1661,7 @@
       consumeLine(state);
       alternate = parsePseudocodeStatements(state, ["END IF", "ENDIF", "END"]);
     }
-    if (/^(END IF|ENDIF|END)$/i.test(((_a = currentLine(state)) == null ? void 0 : _a.text) || "")) {
+    if (/^(END IF|ENDIF|END)$/i.test(((_a2 = currentLine(state)) == null ? void 0 : _a2.text) || "")) {
       consumeLine(state);
     }
     return createAstNode("if", line, {
@@ -1106,11 +1671,11 @@
     });
   }
   function parsePseudocodeLoop(state) {
-    var _a;
+    var _a2;
     const line = consumeLine(state);
     const condition = line.text.replace(/^(WHILE|FOR)\s*/i, "").replace(/\s*DO$/i, "").trim();
     const body = parsePseudocodeStatements(state, ["END WHILE", "END FOR", "END"]);
-    if (/^(END WHILE|END FOR|END)$/i.test(((_a = currentLine(state)) == null ? void 0 : _a.text) || "")) {
+    if (/^(END WHILE|END FOR|END)$/i.test(((_a2 = currentLine(state)) == null ? void 0 : _a2.text) || "")) {
       consumeLine(state);
     }
     return createAstNode(/^WHILE\b/i.test(line.text) ? "while" : "for", line, {
@@ -1361,13 +1926,13 @@
     const depths = /* @__PURE__ */ new Map([["S", 0]]);
     const queue = ["S"];
     edges.forEach((edge) => {
-      var _a;
-      (_a = adjacency.get(edge.from)) == null ? void 0 : _a.push(edge.to);
+      var _a2;
+      (_a2 = adjacency.get(edge.from)) == null ? void 0 : _a2.push(edge.to);
     });
     while (queue.length) {
-      const current = queue.shift();
-      const currentDepth = depths.get(current) || 0;
-      (adjacency.get(current) || []).forEach((next) => {
+      const current2 = queue.shift();
+      const currentDepth = depths.get(current2) || 0;
+      (adjacency.get(current2) || []).forEach((next) => {
         if (!depths.has(next)) {
           depths.set(next, currentDepth + 1);
           queue.push(next);
@@ -1380,8 +1945,8 @@
     const depths = computeDepths(nodes, edges);
     const grouped = /* @__PURE__ */ new Map();
     nodes.forEach((node) => {
-      var _a;
-      const depth = (_a = depths.get(node.id)) != null ? _a : 1;
+      var _a2;
+      const depth = (_a2 = depths.get(node.id)) != null ? _a2 : 1;
       if (!grouped.has(depth)) {
         grouped.set(depth, []);
       }
@@ -1459,8 +2024,8 @@
   }
   function serializeEdges(edges) {
     return edges.map((edge) => {
-      var _a, _b;
-      if (((_a = edge.control) == null ? void 0 : _a.x) !== void 0 && ((_b = edge.control) == null ? void 0 : _b.y) !== void 0) {
+      var _a2, _b;
+      if (((_a2 = edge.control) == null ? void 0 : _a2.x) !== void 0 && ((_b = edge.control) == null ? void 0 : _b.y) !== void 0) {
         return `${edge.id},${edge.from},${edge.to},${edge.control.x},${edge.control.y}`;
       }
       return `${edge.id},${edge.from},${edge.to}`;
@@ -1469,17 +2034,17 @@
   function parseNodesText(nodesText) {
     const rows = nodesText.split("\n").map((item) => item.trim()).filter(Boolean);
     if (!rows.length) {
-      throw new Error("\u7BC0\u9EDE\u4E0D\u80FD\u70BA\u7A7A\u3002");
+      throw new Error(t("graph.err.nodesEmpty"));
     }
     return rows.map((row, index) => {
       const [id, label, x, y] = row.split(",").map((item) => item.trim());
       if (!id || !label || x === void 0 || y === void 0) {
-        throw new Error(`\u7BC0\u9EDE\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C ${index + 1} \u884C\uFF09\uFF0C\u8ACB\u4F7F\u7528 id,label,x,y\u3002`);
+        throw new Error(t("graph.err.nodeFmt", { line: index + 1 }));
       }
       const parsedX = Number(x);
       const parsedY = Number(y);
       if (!Number.isFinite(parsedX) || !Number.isFinite(parsedY)) {
-        throw new Error(`\u7BC0\u9EDE\u5EA7\u6A19\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C ${index + 1} \u884C\uFF09\uFF0Cx,y \u5FC5\u9808\u662F\u6578\u5B57\u3002`);
+        throw new Error(t("graph.err.nodeCoord", { line: index + 1 }));
       }
       return { id, label, x: parsedX, y: parsedY, kind: "node" };
     });
@@ -1487,7 +2052,7 @@
   function parseEdgesText(edgesText, nodeIds) {
     const rows = edgesText.split("\n").map((item) => item.trim()).filter(Boolean);
     if (!rows.length) {
-      throw new Error("\u908A\u4E0D\u80FD\u70BA\u7A7A\u3002");
+      throw new Error(t("graph.err.edgesEmpty"));
     }
     return rows.map((row, index) => {
       const cols = row.split(",").map((item) => item.trim());
@@ -1504,19 +2069,19 @@
       } else if (cols.length === 5) {
         [id, from, to, controlX, controlY] = cols;
       } else {
-        throw new Error(`\u908A\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C ${index + 1} \u884C\uFF09\uFF0C\u8ACB\u4F7F\u7528 from,to \u6216 id,from,to \u6216 id,from,to,cx,cy\u3002`);
+        throw new Error(t("graph.err.edgeFmt", { line: index + 1 }));
       }
       if (!from || !to) {
-        throw new Error(`\u908A\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C ${index + 1} \u884C\uFF09\uFF0C\u7F3A\u5C11 from/to\u3002`);
+        throw new Error(t("graph.err.edgeMissing", { line: index + 1 }));
       }
       if (!nodeIds.has(from) || !nodeIds.has(to)) {
-        throw new Error(`\u908A\u7BC0\u9EDE\u4E0D\u5B58\u5728\uFF08\u7B2C ${index + 1} \u884C\uFF09\uFF1A${from} -> ${to}`);
+        throw new Error(t("graph.err.edgeNode", { line: index + 1, from, to }));
       }
       if (controlX !== void 0 && controlY !== void 0) {
         const cx = Number(controlX);
         const cy = Number(controlY);
         if (!Number.isFinite(cx) || !Number.isFinite(cy)) {
-          throw new Error(`\u908A\u63A7\u5236\u9EDE\u683C\u5F0F\u932F\u8AA4\uFF08\u7B2C ${index + 1} \u884C\uFF09\uFF0Ccx,cy \u5FC5\u9808\u662F\u6578\u5B57\u3002`);
+          throw new Error(t("graph.err.edgeCtl", { line: index + 1 }));
         }
         return { id, from, to, control: { x: cx, y: cy } };
       }
@@ -1528,14 +2093,14 @@
     const nodeIds = new Set(nodes.map((node) => node.id));
     const edges = parseEdgesText(edgesText, nodeIds);
     if (!nodeIds.has(startNodeId)) {
-      throw new Error("Start node \u4E0D\u5B58\u5728\u65BC\u7BC0\u9EDE\u6E05\u55AE\u3002");
+      throw new Error(t("graph.err.startMissing"));
     }
     if (!nodeIds.has(endNodeId)) {
-      throw new Error("End node \u4E0D\u5B58\u5728\u65BC\u7BC0\u9EDE\u6E05\u55AE\u3002");
+      throw new Error(t("graph.err.endMissing"));
     }
     return {
       id: "custom-graph",
-      title: "\u81EA\u8A02\u63A7\u5236\u6D41\u7A0B\u5716",
+      title: t("graph.customTitle"),
       nodes,
       edges,
       startNodeId,
@@ -1547,11 +2112,11 @@
     try {
       payload = JSON.parse(rawText);
     } catch {
-      throw new Error("\u4E0A\u50B3\u5167\u5BB9\u4E0D\u662F\u6709\u6548\u7684 JSON\u3002");
+      throw new Error(t("graph.err.notJson"));
     }
     const graphPayload = payload.graph || payload;
     if (!graphPayload || !Array.isArray(graphPayload.nodes) || !Array.isArray(graphPayload.edges)) {
-      throw new Error("JSON \u9700\u5305\u542B graph \u7269\u4EF6\uFF0C\u6216\u76F4\u63A5\u5305\u542B nodes / edges / startNodeId / endNodeId\u3002");
+      throw new Error(t("graph.err.jsonShape"));
     }
     const graph = {
       ...graphPayload,
@@ -1581,7 +2146,7 @@
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : "");
-      reader.onerror = () => reject(new Error("\u7121\u6CD5\u8B80\u53D6\u4E0A\u50B3\u6A94\u6848\u3002"));
+      reader.onerror = () => reject(new Error(t("graph.err.readFile")));
       reader.readAsText(file);
     });
   }
@@ -1593,7 +2158,7 @@
   }
   function renderSourceCode(sourceCode, selectedSourceNodes) {
     if (!sourceCode) {
-      return '<p class="graph-source-empty" data-testid="program-source-empty">\u9019\u500B\u4F86\u6E90\u76EE\u524D\u53EA\u63D0\u4F9B graph\uFF0C\u6C92\u6709\u9644\u5E36\u7A0B\u5F0F\u78BC\u7247\u6BB5\u3002</p>';
+      return `<p class="graph-source-empty" data-testid="program-source-empty">${t("graph.source.empty")}</p>`;
     }
     const highlightedLines = new Set(selectedSourceNodes.map((node) => node.sourceLine));
     return `
@@ -1618,7 +2183,7 @@
     if (program.graph) {
       return cloneGraph(program.graph);
     }
-    throw new Error("\u627E\u4E0D\u5230\u53EF\u7528\u7684 graph \u4F86\u6E90\u3002");
+    throw new Error(t("graph.err.noSource"));
   }
   function createGraphCanvas(graph, requirement) {
     const highlightedNodes = new Set((requirement == null ? void 0 : requirement.nodes) || []);
@@ -1627,7 +2192,7 @@
     const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
     return `
     <div class="graph-canvas" data-testid="graph-canvas">
-      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Graph coverage \u63A7\u5236\u6D41\u7A0B\u5716">
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t("graph.aria.canvas")}">
         <defs>
           <marker id="arrow-default" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
             <path d="M0,0 L12,6 L0,12 z" fill="#9aa8b6"></path>
@@ -1687,7 +2252,7 @@
     let criterionId = "node";
     let selectedRequirementId = null;
     let parseError = "";
-    let sourceStatus = "\u53EF\u5207\u63DB\u56FA\u5B9A\u7A0B\u5F0F\u7BC4\u4F8B\uFF0C\u6216\u4E0A\u50B3 JSON graph spec\u3001\u7A0B\u5F0F\u78BC\u6A94\u6848\u3002";
+    let sourceStatus = t("graph.status.initial");
     let activeProgram = defaultProgram;
     let selectedProgramId = defaultProgram.id;
     let selectedCodeLanguage = "javascript";
@@ -1715,7 +2280,7 @@
             title: `${activeProgram.name} CFG`
           };
           parseError = "";
-          sourceStatus = `${activeProgram.name} \u5DF2\u4F9D\u7167\u7DE8\u8F2F\u5167\u5BB9\u91CD\u65B0\u8A08\u7B97\u3002`;
+          sourceStatus = t("graph.status.recomputed", { name: activeProgram.name });
           selectedRequirementId = null;
           render();
         } catch (error) {
@@ -1728,15 +2293,15 @@
       graph = cloneGraph(baseGraph);
       draft = createDraftFromGraph(graph);
       parseError = "";
-      sourceStatus = `${activeProgram.name} \u5DF2\u9084\u539F\u70BA\u8F09\u5165\u6642\u7684 graph\u3002`;
+      sourceStatus = t("graph.status.reset", { name: activeProgram.name });
       selectedRequirementId = null;
       render();
     }
     function getState() {
-      var _a;
+      var _a2;
       const requirements = getCoverageRequirements(graph, criterionId);
       if (!requirements.some((item) => item.id === selectedRequirementId)) {
-        selectedRequirementId = ((_a = requirements[0]) == null ? void 0 : _a.id) || null;
+        selectedRequirementId = ((_a2 = requirements[0]) == null ? void 0 : _a2.id) || null;
       }
       const selectedRequirement = requirements.find((item) => item.id === selectedRequirementId) || requirements[0] || null;
       const selectedCriterion = graphCoverageCriteria.find((item) => item.id === criterionId);
@@ -1793,7 +2358,7 @@
           </div>
           <div class="graph-upload-hint">
             <span class="detail-label">Upload Format</span>
-            <p>JSON \u53EF\u76F4\u63A5\u63D0\u4F9B graph \u7269\u4EF6\uFF0C\u6216\u76F4\u63A5\u63D0\u4F9B nodes\u3001edges\u3001startNodeId\u3001endNodeId\uFF0C\u4E5F\u53EF\u9644\u5E36 title\u3001description\u3001sourceCode\u3002\u7A0B\u5F0F\u78BC\u4E0A\u50B3\u5247\u6703\u4F9D\u8A9E\u8A00\u985E\u578B\u81EA\u52D5\u7522\u751F\u7C21\u5316 CFG\u3002</p>
+            <p>${t("graph.uploadFormatHelp")}</p>
           </div>
         </div>
         ${renderSourceCode(activeProgram.sourceCode, selectedSourceNodes)}
@@ -1802,7 +2367,7 @@
       <div class="graph-editor-card" data-testid="graph-editor-card">
         <div class="graph-editor-header">
           <h4>Graph Editor</h4>
-          <p>\u53EF\u5F9E\u771F\u5BE6\u7A0B\u5F0F\u7BC4\u4F8B\u8F09\u5165 CFG\uFF0C\u518D\u5FAE\u8ABF graph \u4E26\u5373\u6642\u8A08\u7B97 coverage requirements \u8207 test paths\u3002</p>
+          <p>${t("graph.editor.help")}</p>
         </div>
         <div class="graph-editor-meta">
           <label>
@@ -1813,7 +2378,7 @@
             End
             <input type="text" value="${draft.endNodeId}" data-testid="graph-end-input" data-draft-field="endNodeId" />
           </label>
-          <button type="button" class="graph-editor-reset" data-testid="graph-reset-btn">\u9084\u539F\u9810\u8A2D\u5716</button>
+          <button type="button" class="graph-editor-reset" data-testid="graph-reset-btn">${t("graph.editor.reset")}</button>
         </div>
         <div class="graph-editor-grid">
           <label>
@@ -1826,7 +2391,7 @@
           </label>
         </div>
         <p class="graph-editor-status${parseError ? " graph-editor-status--error" : ""}" data-testid="graph-editor-status">
-          ${parseError || "Graph \u5DF2\u540C\u6B65\u66F4\u65B0"}
+          ${parseError || t("graph.editor.synced")}
         </p>
       </div>
 
@@ -1834,7 +2399,7 @@
         <div>
           <p class="graph-coverage-kicker">White Box Testing</p>
           <h3>${graph.title}</h3>
-          <p class="graph-coverage-desc">\u7528\u540C\u4E00\u5F35\u63A7\u5236\u6D41\u7A0B\u5716\uFF0C\u5207\u63DB\u4E0D\u540C coverage criteria\uFF0C\u76F4\u63A5\u770B\u5230\u5FC5\u9808\u6DB5\u84CB\u7684\u7BC0\u9EDE\u3001\u908A\u8207 path\u3002</p>
+          <p class="graph-coverage-desc">${t("graph.headerDesc")}</p>
         </div>
         <div class="graph-coverage-stats">
           <div class="graph-stat-card"><span class="graph-stat-label">Nodes</span><strong>${graph.nodes.length}</strong></div>
@@ -1843,7 +2408,7 @@
         </div>
       </div>
 
-      <div class="graph-criterion-switcher" role="tablist" aria-label="coverage criteria \u5207\u63DB">
+      <div class="graph-criterion-switcher" role="tablist" aria-label="${t("graph.aria.switcher")}">
         ${graphCoverageCriteria.map((criterion) => `
           <button
             class="criterion-chip${criterionId === criterion.id ? " active" : ""}"
@@ -1853,7 +2418,7 @@
             role="tab"
             aria-selected="${criterionId === criterion.id}"
           >
-            <span>${criterion.labelZh}</span>
+            <span>${pickField(criterion, "label")}</span>
             <small>${criterion.label}</small>
           </button>
         `).join("")}
@@ -1863,44 +2428,44 @@
         <div class="graph-main-panel">
           ${createGraphCanvas(graph, selectedRequirement)}
           <div class="graph-selected-summary" data-testid="selected-requirement-summary">
-            <span class="summary-label">\u76EE\u524D requirement</span>
-            <strong>${(selectedRequirement == null ? void 0 : selectedRequirement.label) || "\u7121"}</strong>
+            <span class="summary-label">${t("graph.summary.current")}</span>
+            <strong>${(selectedRequirement == null ? void 0 : selectedRequirement.label) || t("common.none")}</strong>
             <p>${(selectedCriterion == null ? void 0 : selectedCriterion.description) || ""}</p>
           </div>
 
           <div class="graph-test-path-card" data-testid="graph-test-path-card">
             <h4>Generated Test Path Set</h4>
-            <p class="sidebar-text">\u5C07 requirement \u81EA\u52D5\u7D44\u5408\u6210\u53EF\u57F7\u884C\u6E2C\u8A66\u8DEF\u5F91\uFF08Start \u5230 End\uFF09\u3002</p>
+            <p class="sidebar-text">${t("graph.path.help")}</p>
             <div class="test-path-metrics" data-testid="test-path-metrics">
               <div class="test-path-metric">
-                <span class="detail-label">\u6700\u4F73\u5316\u524D</span>
+                <span class="detail-label">${t("graph.path.before")}</span>
                 <strong data-testid="baseline-path-count">${pathPlan.optimizationMetrics.baselinePathCount}</strong>
               </div>
               <div class="test-path-metric">
-                <span class="detail-label">\u6700\u4F73\u5316\u5F8C</span>
+                <span class="detail-label">${t("graph.path.after")}</span>
                 <strong data-testid="optimized-path-count">${pathPlan.optimizationMetrics.optimizedPathCount}</strong>
               </div>
               <div class="test-path-metric test-path-metric--accent">
-                <span class="detail-label">\u7CBE\u7C21\u6578\u91CF</span>
+                <span class="detail-label">${t("graph.path.saved")}</span>
                 <strong data-testid="saved-path-count">${pathPlan.optimizationMetrics.savedPathCount}</strong>
               </div>
             </div>
             <ul class="test-path-list" data-testid="test-path-list">
               ${pathPlan.selectedPaths.map((path, index) => `
                 <li data-testid="test-path-${index + 1}">T${index + 1}: ${path.join(" -> ")}</li>
-              `).join("") || "<li>\u7121\u53EF\u7528\u8DEF\u5F91</li>"}
+              `).join("") || `<li>${t("graph.path.none")}</li>`}
             </ul>
             <p class="test-path-meta" data-testid="test-path-meta">
               Covered Requirements: ${pathPlan.requirementPaths.filter((item) => item.covered).length} / ${pathPlan.requirementPaths.length}
             </p>
-            ${pathPlan.uncoveredRequirements.length ? `<p class="graph-editor-status graph-editor-status--error">\u5C1A\u672A\u8986\u84CB\uFF1A${pathPlan.uncoveredRequirements.map((item) => item.displayText).join("\u3001")}</p>` : '<p class="graph-editor-status">\u5168\u90E8 requirement \u5DF2\u5C0D\u61C9\u5230 test paths</p>'}
+            ${pathPlan.uncoveredRequirements.length ? `<p class="graph-editor-status graph-editor-status--error">${t("graph.path.uncovered", { items: pathPlan.uncoveredRequirements.map((item) => item.displayText).join("\u3001") })}</p>` : `<p class="graph-editor-status">${t("graph.path.allCovered")}</p>`}
           </div>
         </div>
 
         <aside class="graph-sidebar">
           <div class="graph-sidebar-card">
             <h4>Test Requirements</h4>
-            <p class="sidebar-text">\u5207\u63DB criteria \u5F8C\uFF0C\u5217\u8868\u6703\u91CD\u7B97\u5C0D\u61C9\u5FC5\u9808\u8986\u84CB\u7684 requirement\u3002</p>
+            <p class="sidebar-text">${t("graph.req.help")}</p>
             <ul class="requirement-list" data-testid="requirement-list">
               ${requirements.map((requirement) => `
                 <li>
@@ -1923,20 +2488,20 @@
             <div class="detail-grid">
               <div>
                 <span class="detail-label">Nodes</span>
-                <p data-testid="detail-nodes">${(selectedRequirement == null ? void 0 : selectedRequirement.nodes.join(" -> ")) || "\u7121"}</p>
+                <p data-testid="detail-nodes">${(selectedRequirement == null ? void 0 : selectedRequirement.nodes.join(" -> ")) || t("common.none")}</p>
               </div>
               <div>
                 <span class="detail-label">Edges</span>
-                <p data-testid="detail-edges">${(selectedRequirement == null ? void 0 : selectedRequirement.edges.join(", ")) || "\u7121"}</p>
+                <p data-testid="detail-edges">${(selectedRequirement == null ? void 0 : selectedRequirement.edges.join(", ")) || t("common.none")}</p>
               </div>
               <div>
                 <span class="detail-label">Criterion</span>
-                <p>${(selectedCriterion == null ? void 0 : selectedCriterion.labelZh) || ""}</p>
+                <p>${selectedCriterion ? pickField(selectedCriterion, "label") : ""}</p>
               </div>
               <div>
                 <span class="detail-label">Source Mapping</span>
                 <ul class="source-mapping-list" data-testid="detail-source-mapping">
-                  ${selectedSourceNodes.length ? selectedSourceNodes.map((node) => `<li>${node.label} -> L${node.sourceLine}: ${escapeHtml(node.sourceText || "")}</li>`).join("") : "<li>\u76EE\u524D requirement \u6C92\u6709\u53EF\u5C0D\u61C9\u7684\u7A0B\u5F0F\u78BC\u884C\u865F\u3002</li>"}
+                  ${selectedSourceNodes.length ? selectedSourceNodes.map((node) => `<li>${node.label} -> L${node.sourceLine}: ${escapeHtml(node.sourceText || "")}</li>`).join("") : `<li>${t("graph.detail.noSourceMap")}</li>`}
                 </ul>
               </div>
             </div>
@@ -1950,18 +2515,18 @@
       root2.querySelector('[data-testid="program-example-select"]').addEventListener("change", (event) => {
         const nextProgramId = event.target.value;
         if (nextProgramId === defaultProgram.id) {
-          loadGraphSource(defaultProgram, defaultGraph, "\u5DF2\u8F09\u5165\u9810\u8A2D\u63A7\u5236\u6D41\u7A0B\u5716\u7BC4\u4F8B\u3002");
+          loadGraphSource(defaultProgram, defaultGraph, t("graph.status.defaultLoaded"));
           return;
         }
         if (nextProgramId === "uploaded-spec") {
           selectedProgramId = nextProgramId;
-          sourceStatus = "\u8ACB\u9078\u64C7 JSON \u6A94\u6848\u4EE5\u4E0A\u50B3 graph spec\u3002";
+          sourceStatus = t("graph.status.pickJson");
           render();
           return;
         }
         if (nextProgramId === "uploaded-code") {
           selectedProgramId = nextProgramId;
-          sourceStatus = "\u8ACB\u9078\u64C7\u7A0B\u5F0F\u78BC\u6A94\u6848\u8207\u8A9E\u8A00\u985E\u578B\uFF0C\u7CFB\u7D71\u6703\u81EA\u52D5\u7522\u751F\u7C21\u5316 CFG\u3002";
+          sourceStatus = t("graph.status.pickCode");
           render();
           return;
         }
@@ -1969,7 +2534,7 @@
         if (example) {
           const nextGraph = resolveProgramGraph(example);
           selectedCodeLanguage = example.language || selectedCodeLanguage;
-          loadGraphSource(example, nextGraph, `\u5DF2\u8F09\u5165 ${example.name}\u3002`);
+          loadGraphSource(example, nextGraph, t("graph.status.exampleLoaded", { name: example.name }));
         }
       });
       root2.querySelector('[data-testid="program-language-select"]').addEventListener("change", (event) => {
@@ -1985,7 +2550,7 @@
           loadGraphSource(
             { ...spec.program, id: "uploaded-spec" },
             spec.graph,
-            `\u5DF2\u8F09\u5165\u4E0A\u50B3\u6A94\u6848\uFF1A${file.name}`
+            t("graph.status.uploadLoaded", { name: file.name })
           );
         } catch (error) {
           selectedProgramId = "uploaded-spec";
@@ -2009,10 +2574,10 @@
           };
           const generatedGraph = resolveProgramGraph(uploadedProgram);
           selectedProgramId = "uploaded-code";
-          loadGraphSource(uploadedProgram, generatedGraph, `\u5DF2\u6839\u64DA ${file.name} \u81EA\u52D5\u7522\u751F\u7C21\u5316 CFG\u3002`);
+          loadGraphSource(uploadedProgram, generatedGraph, t("graph.status.codeGenerated", { name: file.name }));
         } catch (error) {
           parseError = error.message;
-          sourceStatus = "\u7A0B\u5F0F\u78BC\u4E0A\u50B3\u5931\u6557\u3002";
+          sourceStatus = t("graph.status.codeFailed");
           render();
         }
       });
@@ -2040,6 +2605,31 @@
       });
     }
     render();
+    if (typeof globalThis.addEventListener === "function") {
+      globalThis.addEventListener("stvisual:load-program-source", (event) => {
+        var _a2;
+        if (!root2.isConnected) return;
+        const detail = event.detail || {};
+        if (detail.target !== "graph") return;
+        const content = String((_a2 = detail.content) != null ? _a2 : "");
+        const fileName = detail.name || "uploaded.code";
+        try {
+          const uploadedProgram = {
+            id: "uploaded-code",
+            name: fileName.replace(/\.[^.]+$/, "") || "Uploaded Code",
+            description: `Uploaded ${selectedCodeLanguage} source from cloud, converted into a simplified control flow graph.`,
+            sourceCode: content,
+            language: selectedCodeLanguage
+          };
+          const generatedGraph = resolveProgramGraph(uploadedProgram);
+          loadGraphSource(uploadedProgram, generatedGraph, t("graph.status.codeGenerated", { name: fileName }));
+        } catch (error) {
+          parseError = error.message;
+          sourceStatus = t("graph.status.codeFailed");
+          render();
+        }
+      });
+    }
     return root2;
   }
 
@@ -2085,9 +2675,9 @@
       return token;
     }
     function parseOr() {
-      var _a;
+      var _a2;
       let node = parseAnd();
-      while (((_a = peek()) == null ? void 0 : _a.type) === "or") {
+      while (((_a2 = peek()) == null ? void 0 : _a2.type) === "or") {
         consume("or");
         node = { type: "or", left: node, right: parseAnd() };
       }
@@ -2110,8 +2700,8 @@
       return node;
     }
     function parseNot() {
-      var _a;
-      if (((_a = peek()) == null ? void 0 : _a.type) === "not") {
+      var _a2;
+      if (((_a2 = peek()) == null ? void 0 : _a2.type) === "not") {
         consume("not");
         return { type: "not", operand: parseNot() };
       }
@@ -2471,16 +3061,16 @@
     const onSet = rows.filter((r) => r.predicate === target).map((r) => r.index);
     if (!onSet.length) return [];
     if (onSet.length === 1 << n) return [[]];
-    let current = onSet.map((i) => ({ bits: i, dash: 0, covers: /* @__PURE__ */ new Set([i]) }));
+    let current2 = onSet.map((i) => ({ bits: i, dash: 0, covers: /* @__PURE__ */ new Set([i]) }));
     const primes = [];
-    while (current.length) {
-      const used = new Array(current.length).fill(false);
+    while (current2.length) {
+      const used = new Array(current2.length).fill(false);
       const seen = /* @__PURE__ */ new Map();
       const next = [];
-      for (let i = 0; i < current.length; i += 1) {
-        for (let j = i + 1; j < current.length; j += 1) {
-          const a = current[i];
-          const b = current[j];
+      for (let i = 0; i < current2.length; i += 1) {
+        for (let j = i + 1; j < current2.length; j += 1) {
+          const a = current2[i];
+          const b = current2[j];
           if (a.dash !== b.dash) continue;
           const diff = a.bits ^ b.bits;
           if (diff && (diff & diff - 1) === 0 && (diff & a.dash) === 0) {
@@ -2502,10 +3092,10 @@
           }
         }
       }
-      current.forEach((imp, idx) => {
+      current2.forEach((imp, idx) => {
         if (!used[idx]) primes.push(imp);
       });
-      current = next;
+      current2 = next;
     }
     const remaining = new Set(onSet);
     const chargeMap = /* @__PURE__ */ new Map();
@@ -3127,10 +3717,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     };
   }
   function createCloudIntegrationClient() {
-    var _a;
+    var _a2;
     const config = getResolvedCloudConfig();
     const missingKeys = getMissingFirebaseKeys(config.firebase);
-    const isFileProtocol = ((_a = globalThis.location) == null ? void 0 : _a.protocol) === "file:";
+    const isFileProtocol = ((_a2 = globalThis.location) == null ? void 0 : _a2.protocol) === "file:";
     const isSupportedOrigin = !isFileProtocol;
     const isConfigured = missingKeys.length === 0;
     const firebase = globalThis.firebase;
@@ -3289,7 +3879,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         }, { merge: true });
       },
       async uploadFileToDrive(file, options = {}) {
-        var _a2;
+        var _a3;
         if (!driveAccessToken) {
           throw new Error("\u76EE\u524D\u6C92\u6709 Drive \u5B58\u53D6\u6B0A\u6756\uFF0C\u8ACB\u5148\u91CD\u65B0 Google \u767B\u5165\u3002");
         }
@@ -3311,9 +3901,51 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
         const payload = await response.json();
         if (!response.ok) {
-          throw new Error(((_a2 = payload == null ? void 0 : payload.error) == null ? void 0 : _a2.message) || "\u4E0A\u50B3\u5230 Google Drive \u5931\u6557\u3002");
+          throw new Error(((_a3 = payload == null ? void 0 : payload.error) == null ? void 0 : _a3.message) || "\u4E0A\u50B3\u5230 Google Drive \u5931\u6557\u3002");
         }
         return payload;
+      },
+      async listDriveFiles(options = {}) {
+        var _a3;
+        if (!driveAccessToken) {
+          throw new Error("\u76EE\u524D\u6C92\u6709 Drive \u5B58\u53D6\u6B0A\u6756\uFF0C\u8ACB\u5148\u91CD\u65B0 Google \u767B\u5165\u3002");
+        }
+        const params = new URLSearchParams({
+          pageSize: String(options.pageSize || 30),
+          fields: "files(id,name,mimeType,modifiedTime,webViewLink)",
+          orderBy: "modifiedTime desc"
+        });
+        const folderId = options.folderId || config.drive.uploadFolderId;
+        const queryParts = ["trashed=false"];
+        if (folderId) queryParts.push(`'${folderId}' in parents`);
+        params.set("q", queryParts.join(" and "));
+        const response = await fetch(`https://www.googleapis.com/drive/v3/files?${params.toString()}`, {
+          headers: { Authorization: `Bearer ${driveAccessToken}` }
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(((_a3 = payload == null ? void 0 : payload.error) == null ? void 0 : _a3.message) || "\u8B80\u53D6 Google Drive \u6A94\u6848\u5217\u8868\u5931\u6557\u3002");
+        }
+        return Array.isArray(payload.files) ? payload.files : [];
+      },
+      async downloadDriveFile(fileId) {
+        var _a3;
+        if (!driveAccessToken) {
+          throw new Error("\u76EE\u524D\u6C92\u6709 Drive \u5B58\u53D6\u6B0A\u6756\uFF0C\u8ACB\u5148\u91CD\u65B0 Google \u767B\u5165\u3002");
+        }
+        const response = await fetch(`https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?alt=media`, {
+          headers: { Authorization: `Bearer ${driveAccessToken}` }
+        });
+        if (!response.ok) {
+          let msg = "\u4E0B\u8F09 Google Drive \u6A94\u6848\u5931\u6557\u3002";
+          try {
+            const j = await response.json();
+            msg = ((_a3 = j == null ? void 0 : j.error) == null ? void 0 : _a3.message) || msg;
+          } catch {
+          }
+          throw new Error(msg);
+        }
+        return response.text();
       }
     };
   }
@@ -3322,9 +3954,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   var RECENT_KEY = "stvisual.logic.recentPredicates";
   var RECENT_LIMIT = 8;
   function loadRecent() {
-    var _a;
+    var _a2;
     try {
-      const raw = (_a = globalThis.localStorage) == null ? void 0 : _a.getItem(RECENT_KEY);
+      const raw = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(RECENT_KEY);
       if (!raw) return [];
       const parsed = JSON.parse(raw);
       return Array.isArray(parsed) ? parsed.filter((p) => typeof p === "string") : [];
@@ -3333,9 +3965,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
   }
   function saveRecent(list) {
-    var _a;
+    var _a2;
     try {
-      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(RECENT_KEY, JSON.stringify(list));
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(RECENT_KEY, JSON.stringify(list));
     } catch {
     }
   }
@@ -3388,7 +4020,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     const map = buildKMap(rows, clauses, target);
     if (map.unsupported) {
       return `<div class="logic-kmap"><h4 class="logic-kmap-title">${escapeHtml2(title)}</h4>
-      <p class="logic-kmap-note">Karnaugh map \u50C5\u652F\u63F4 1\u20134 \u500B clauses\uFF08\u76EE\u524D\u70BA ${map.n}\uFF09\u3002</p></div>`;
+      <p class="logic-kmap-note">${t("logic.kmap.unsupported", { n: map.n })}</p></div>`;
     }
     const colHeaderLabel = map.colVars.length ? map.colVars.join("") : "";
     const rowHeaderLabel = map.rowVars.length ? map.rowVars.join("") : "";
@@ -3425,12 +4057,12 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }).join("");
     const corner = rowHeaderLabel ? `<th class="logic-kmap-corner"><span>${escapeHtml2(rowHeaderLabel)}</span><span class="logic-kmap-slash">\\</span><span>${escapeHtml2(colHeaderLabel)}</span></th>` : `<th class="logic-kmap-corner">${escapeHtml2(colHeaderLabel)}</th>`;
     const legend = implicantGroups.length ? `<ul class="logic-kmap-legend">${implicantGroups.map((g) => {
-      var _a;
+      var _a2;
       return `
           <li>
             <span class="logic-kmap-dot" style="background:${g.color}"></span>
             <code>${g.labelHtml || escapeHtml2(g.label)}</code>
-            ${((_a = g.testRowIndices) == null ? void 0 : _a.length) ? `<span class="logic-kmap-legend-tests">tests: ${g.testRowIndices.map((i) => `m${i}`).join(", ")}</span>` : ""}
+            ${((_a2 = g.testRowIndices) == null ? void 0 : _a2.length) ? `<span class="logic-kmap-legend-tests">tests: ${g.testRowIndices.map((i) => `m${i}`).join(", ")}</span>` : ""}
           </li>`;
     }).join("")}</ul>` : "";
     return `<div class="logic-kmap" data-testid="${target ? "logic-kmap-f" : "logic-kmap-not-f"}">
@@ -3445,10 +4077,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const minterms = new Set(
         rows.filter((row) => row.predicate === target && term.every((lit) => Boolean(row.values[lit.name]) !== lit.negated)).map((row) => row.index)
       );
-      const testRowIndices = testsForPolarity.filter((t) => {
-        var _a;
-        return ((_a = t.implicantIndices) == null ? void 0 : _a.includes(idx)) || t.implicantIndex === idx;
-      }).map((t) => t.row.index);
+      const testRowIndices = testsForPolarity.filter((t2) => {
+        var _a2;
+        return ((_a2 = t2.implicantIndices) == null ? void 0 : _a2.includes(idx)) || t2.implicantIndex === idx;
+      }).map((t2) => t2.row.index);
       return {
         color: IMPLICANT_PALETTE[(idx + paletteOffset) % IMPLICANT_PALETTE.length],
         label: termToString(term),
@@ -3509,7 +4141,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       try {
         state.parsed = parsePredicate(state.expression);
         if (state.parsed.clauses.length > 6) {
-          throw new Error("\u70BA\u4E86\u8996\u89BA\u5316\u53EF\u8B80\u6027\uFF0C\u5B50\u53E5\u6578\u91CF\u8ACB\u9650\u5236\u5728 6 \u500B\u4EE5\u5167\u3002");
+          throw new Error(t("logic.err.tooManyClauses"));
         }
         state.analysis = buildAllCoverageSets(state.parsed);
         state.error = null;
@@ -3526,7 +4158,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     function activeRowIds() {
       const set = getActiveSet();
       if (!set) return /* @__PURE__ */ new Set();
-      return new Set(set.tests.map((t) => `r${t.row.index}`));
+      return new Set(set.tests.map((t2) => `r${t2.row.index}`));
     }
     function render() {
       const examplesMarkup = logicCoveragePredicates.map((p) => `
@@ -3542,7 +4174,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       `).join("");
       const recentMarkup = state.recent.length ? `
         <div class="logic-recent" data-testid="logic-recent">
-          <span class="logic-recent-label">\u6700\u8FD1\uFF1A</span>
+          <span class="logic-recent-label">${t("logic.recent")}</span>
           ${state.recent.map((expr) => `
               <span class="logic-recent-chip${state.expression === expr ? " active" : ""}" data-testid="logic-recent-chip">
                 <button
@@ -3555,8 +4187,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
                   type="button"
                   class="logic-recent-remove"
                   data-recent-remove="${escapeHtml2(expr)}"
-                  aria-label="\u79FB\u9664 ${escapeHtml2(expr)}"
-                  title="\u79FB\u9664"
+                  aria-label="${t("logic.remove")} ${escapeHtml2(expr)}"
+                  title="${t("logic.remove")}"
                 >\xD7</button>
               </span>
             `).join("")}
@@ -3570,7 +4202,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           data-testid="logic-criterion-${c.id}"
         >
           <span class="logic-criterion-label">${escapeHtml2(c.label)}</span>
-          <span class="logic-criterion-zh">${escapeHtml2(c.labelZh)}</span>
+          <span class="logic-criterion-zh">${escapeHtml2(getLocale() === "en" ? c.descriptionEn || c.description || "" : c.labelZh)}</span>
         </button>
       `).join("");
       const truthTableMarkup = renderTruthTable();
@@ -3587,14 +4219,14 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           autocomplete="off"
           data-testid="logic-expression-input"
         />
-        <p class="logic-input-hint">\u652F\u63F4 <code>&amp;&amp;</code> / <code>||</code> / <code>!</code>\uFF0C\u4E5F\u63A5\u53D7\u6559\u79D1\u66F8\u8A18\u865F\uFF1A\u76F8\u9130\u5373 AND\uFF08\u5982 <code>ab</code>\uFF09\u3001<code>+</code> \u70BA OR\uFF08\u5982 <code>a+b</code>\uFF09\u3002</p>
+        <p class="logic-input-hint">${t("logic.inputHint")}</p>
         <div class="logic-examples">${examplesMarkup}</div>
         ${recentMarkup}
       </div>
 
       ${state.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state.error)}</div>` : ""}
 
-      <div class="logic-criteria" role="tablist" aria-label="Logic Coverage \u6E96\u5247">
+      <div class="logic-criteria" role="tablist" aria-label="${t("logic.aria.criteria")}">
         ${criteriaMarkup}
       </div>
 
@@ -3657,40 +4289,40 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     `;
     }
     function renderSummary() {
-      var _a;
+      var _a2;
       if (state.error || !state.analysis) {
         return "";
       }
       const set = getActiveSet();
       if (!set) return "";
       const seenRows = /* @__PURE__ */ new Set();
-      const annotated = set.tests.map((t) => {
-        const key = `r${t.row.index}`;
+      const annotated = set.tests.map((t2) => {
+        const key = `r${t2.row.index}`;
         const isDuplicate = seenRows.has(key);
         if (!isDuplicate) seenRows.add(key);
-        return { test: t, isDuplicate };
+        return { test: t2, isDuplicate };
       });
       const totalCount = annotated.length;
       const duplicateCount = annotated.filter((item) => item.isDuplicate).length;
       const uniqueCount = totalCount - duplicateCount;
-      const testList = annotated.map(({ test: t, isDuplicate }) => `
-        <li class="logic-test-item${isDuplicate ? " duplicate" : ""}" data-testid="logic-test-${escapeHtml2(t.id)}">
-          <span class="logic-test-row">#${t.row.index}</span>
-          <span class="logic-test-values">${state.analysis.clauses.map((c) => `${c}=${t.row.values[c] ? "T" : "F"}`).join(", ")}</span>
-          <span class="logic-test-pred ${t.row.predicate ? "is-true" : "is-false"}">P=${t.row.predicate ? "T" : "F"}</span>
-          <span class="logic-test-label">${escapeHtml2(t.label)}</span>
-          ${isDuplicate ? '<span class="logic-test-dup-tag" aria-label="\u91CD\u8907">\u91CD\u8907</span>' : ""}
+      const testList = annotated.map(({ test: t2, isDuplicate }) => `
+        <li class="logic-test-item${isDuplicate ? " duplicate" : ""}" data-testid="logic-test-${escapeHtml2(t2.id)}">
+          <span class="logic-test-row">#${t2.row.index}</span>
+          <span class="logic-test-values">${state.analysis.clauses.map((c) => `${c}=${t2.row.values[c] ? "T" : "F"}`).join(", ")}</span>
+          <span class="logic-test-pred ${t2.row.predicate ? "is-true" : "is-false"}">P=${t2.row.predicate ? "T" : "F"}</span>
+          <span class="logic-test-label">${escapeHtml2(t2.label)}</span>
+          ${isDuplicate ? `<span class="logic-test-dup-tag" aria-label="${t2("logic.duplicate")}">${t2("logic.duplicate")}</span>` : ""}
         </li>
       `).join("");
-      const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">\u7121\u6CD5\u627E\u5230\u4E0B\u5217\u9700\u6C42\u5C0D\u61C9\u5217\uFF1A${set.unsatisfied.join(", ")}</p>` : "";
-      const dnfMarkup = ["ic", "utpc", "mutpc", "nfpc", "mnfpc", "cutpnfp"].includes(set.id) && state.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">f \u7684\u6700\u5C0F DNF\uFF1A${dnfToHtml(state.analysis.dnf)}
-          <span class="logic-dnf-alt">\uFF08\u6559\u79D1\u66F8\u8A18\u865F\uFF1A${dnfToCompactHtml(state.analysis.dnf)}\uFF09</span>
-        </p>${set.id === "ic" && state.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">\xACf \u7684\u6700\u5C0F DNF\uFF1A${dnfToHtml(state.analysis.negDnf)}
-                <span class="logic-dnf-alt">\uFF08\u6559\u79D1\u66F8\u8A18\u865F\uFF1A${dnfToCompactHtml(state.analysis.negDnf)}\uFF09</span>
+      const unsatisfied = ((_a2 = set.unsatisfied) == null ? void 0 : _a2.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">${t("logic.unsatisfied", { items: set.unsatisfied.join(", ") })}</p>` : "";
+      const dnfMarkup = ["ic", "utpc", "mutpc", "nfpc", "mnfpc", "cutpnfp"].includes(set.id) && state.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">${t("logic.dnfPrefix")}${dnfToHtml(state.analysis.dnf)}
+          <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state.analysis.dnf)}${t("logic.textbookClose")}</span>
+        </p>${set.id === "ic" && state.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">${t("logic.dnfNegPrefix")}${dnfToHtml(state.analysis.negDnf)}
+                <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state.analysis.negDnf)}${t("logic.textbookClose")}</span>
               </p>` : ""}` : "";
       const kmapMarkup = state.parsed && (set.id === "ic" || set.id === "utpc" || set.id === "mutpc" || set.id === "nfpc" || set.id === "mnfpc" || set.id === "cutpnfp") ? set.id === "ic" ? (() => {
-        const posTests = set.tests.filter((t) => t.polarity === "pos");
-        const negTests = set.tests.filter((t) => t.polarity === "neg");
+        const posTests = set.tests.filter((t2) => t2.polarity === "pos");
+        const negTests = set.tests.filter((t2) => t2.polarity === "neg");
         const posGroups = buildImplicantGroups(
           state.analysis.rows,
           state.analysis.dnf || [],
@@ -3705,21 +4337,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           (state.analysis.dnf || []).length,
           negTests
         );
-        const posTestSet = new Set(posTests.map((t) => t.row.index));
-        const negTestSet = new Set(negTests.map((t) => t.row.index));
+        const posTestSet = new Set(posTests.map((t2) => t2.row.index));
+        const negTestSet = new Set(negTests.map((t2) => t2.row.index));
         return `<div class="logic-kmap-row">
                 ${renderKMap(
           state.analysis.rows,
           state.parsed.clauses,
           true,
-          "f \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u7528 test case\uFF09",
+          t("logic.kmap.title.fStar"),
           { highlightedMinterms: posTestSet, implicantGroups: posGroups, highlightLabel: "test" }
         )}
                 ${renderKMap(
           state.analysis.rows,
           state.parsed.clauses,
           false,
-          "\xACf \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u7528 test case\uFF09",
+          t("logic.kmap.title.fNegStar"),
           { highlightedMinterms: negTestSet, implicantGroups: negGroups, highlightLabel: "test" }
         )}
               </div>`;
@@ -3728,8 +4360,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         state.analysis.rows,
         state.parsed.clauses,
         true,
-        "f \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u53D6\u7684 UTP\uFF09",
-        { highlightedMinterms: new Set(set.tests.map((t) => t.row.index)) }
+        t("logic.kmap.title.utp"),
+        { highlightedMinterms: new Set(set.tests.map((t2) => t2.row.index)) }
       )}
               </div>` : set.id === "mutpc" ? (() => {
         const dnf = state.analysis.dnf || [];
@@ -3739,9 +4371,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           state.analysis.rows,
           state.parsed.clauses,
           true,
-          "f \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u53D6\u7684 MUTP\uFF09",
+          t("logic.kmap.title.mutp"),
           {
-            highlightedMinterms: new Set(set.tests.map((t) => t.row.index)),
+            highlightedMinterms: new Set(set.tests.map((t2) => t2.row.index)),
             implicantGroups: groups,
             highlightLabel: "MUTP"
           }
@@ -3752,17 +4384,17 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const groups = buildImplicantGroups(state.analysis.rows, dnf, true, 0, []);
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
-        set.tests.forEach((t) => {
-          const color = IMPLICANT_PALETTE[t.implicantIndex % IMPLICANT_PALETTE.length];
-          const termText = termToString(dnf[t.implicantIndex] || []);
-          const litText = t.literal ? `${t.literal.negated ? "!" : ""}${t.literal.name}` : "";
-          const label = `{${termText}} \u7FFB\u8F49 ${litText}`;
-          nfpMarks.set(t.row.index, { color, label });
-          if (typeof t.pairedTruePointIndex === "number") {
-            ntpMarks.set(t.pairedTruePointIndex, { color, label });
+        set.tests.forEach((t2) => {
+          const color = IMPLICANT_PALETTE[t2.implicantIndex % IMPLICANT_PALETTE.length];
+          const termText = termToString(dnf[t2.implicantIndex] || []);
+          const litText = t2.literal ? `${t2.literal.negated ? "!" : ""}${t2.literal.name}` : "";
+          const label = t2("logic.flipLabel", { term: termText, lit: litText });
+          nfpMarks.set(t2.row.index, { color, label });
+          if (typeof t2.pairedTruePointIndex === "number") {
+            ntpMarks.set(t2.pairedTruePointIndex, { color, label });
           }
         });
-        const titleText = set.id === "mnfpc" ? "f \u7684 Karnaugh Map\uFF08MNFP\uFF1A\u6BCF\u500B implicant \xD7 literal \u9078\u53D6\u7684 NFPs\uFF09" : "f \u7684 Karnaugh Map\uFF08NFP \u8207\u5C0D\u61C9 UTP\uFF09";
+        const titleText = set.id === "mnfpc" ? t("logic.kmap.title.mnfp") : t("logic.kmap.title.nfp");
         return `<div class="logic-kmap-row">
                   ${renderKMap(
           state.analysis.rows,
@@ -3778,16 +4410,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
         const testRowSet = /* @__PURE__ */ new Set();
-        set.tests.forEach((t) => {
-          const color = IMPLICANT_PALETTE[t.implicantIndex % IMPLICANT_PALETTE.length];
-          const termText = termToString(dnf[t.implicantIndex] || []);
-          const litText = t.literal ? `${t.literal.negated ? "!" : ""}${t.literal.name}` : "";
-          const label = `{${termText}} \u7FFB\u8F49 ${litText}`;
-          testRowSet.add(t.row.index);
-          if (t.role === "utp") {
-            ntpMarks.set(t.row.index, { color, label });
+        set.tests.forEach((t2) => {
+          const color = IMPLICANT_PALETTE[t2.implicantIndex % IMPLICANT_PALETTE.length];
+          const termText = termToString(dnf[t2.implicantIndex] || []);
+          const litText = t2.literal ? `${t2.literal.negated ? "!" : ""}${t2.literal.name}` : "";
+          const label = t2("logic.flipLabel", { term: termText, lit: litText });
+          testRowSet.add(t2.row.index);
+          if (t2.role === "utp") {
+            ntpMarks.set(t2.row.index, { color, label });
           } else {
-            nfpMarks.set(t.row.index, { color, label });
+            nfpMarks.set(t2.row.index, { color, label });
           }
         });
         return `<div class="logic-kmap-row">
@@ -3795,7 +4427,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           state.analysis.rows,
           state.parsed.clauses,
           true,
-          "f \u7684 Karnaugh Map\uFF08\u2605 = \u9078\u53D6\u7684 test case\uFF1BUTP\u2194NFP \u6210\u5C0D\u6A19\u793A\uFF09",
+          t("logic.kmap.title.cutpnfp"),
           {
             implicantGroups: groups,
             nfpMarks,
@@ -3812,13 +4444,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       ${dnfMarkup}
       ${kmapMarkup}
       <p class="logic-summary-stats">
-        \u6E2C\u8A66\u5217\u6578\uFF1A<strong data-testid="logic-test-count">${totalCount}</strong>
+        ${t("logic.metric.total")}<strong data-testid="logic-test-count">${totalCount}</strong>
         <span class="logic-divider">\xB7</span>
-        \u5BE6\u969B\u9700\u8981\uFF08\u53BB\u91CD\uFF09\uFF1A<strong data-testid="logic-test-unique-count">${uniqueCount}</strong>
+        ${t("logic.metric.unique")}<strong data-testid="logic-test-unique-count">${uniqueCount}</strong>
         <span class="logic-divider">\xB7</span>
-        \u91CD\u8907\u6578\u91CF\uFF1A<strong data-testid="logic-test-duplicate-count">${duplicateCount}</strong>
+        ${t("logic.metric.duplicate")}<strong data-testid="logic-test-duplicate-count">${duplicateCount}</strong>
         <span class="logic-divider">\xB7</span>
-        \u5EFA\u8B70\u6E2C\u8A66\u9700\u6C42\uFF1A<strong>${set.requirementCount}</strong>
+        ${t("logic.metric.requirements")}<strong>${set.requirementCount}</strong>
       </p>
       <ol class="logic-test-list">${testList}</ol>
       ${unsatisfied}
@@ -3943,9 +4575,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           class="flow-play-btn${isPlaying ? " playing" : ""}"
           type="button"
           data-testid="flow-play-btn"
-          aria-label="${isPlaying ? "\u66AB\u505C\u52D5\u756B" : "\u64AD\u653E\u52D5\u756B"}"
+          aria-label="${isPlaying ? t("flow.pause") : t("flow.play")}"
         >
-          ${isPlaying ? "\u23F8 \u66AB\u505C" : "\u25B6 \u64AD\u653E"}
+          ${isPlaying ? `\u23F8 ${t("flow.pause")}` : `\u25B6 ${t("flow.play")}`}
         </button>
       </div>
       <div class="flow-track" data-testid="flow-track">
@@ -3957,14 +4589,14 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               data-step-index="${index}"
               role="button"
               tabindex="0"
-              aria-label="\u6B65\u9A5F ${index + 1}: ${step.label}"
+              aria-label="${t("flow.step", { n: index + 1, label: pickField(step, "label") })}"
             >
               <div class="flow-step-num">${index + 1}</div>
               <div class="flow-step-icon">${step.icon}</div>
-              <div class="flow-step-label">${step.label}</div>
-              <div class="flow-step-label-en">${step.labelEn}</div>
+              <div class="flow-step-label">${pickField(step, "label")}</div>
+              <div class="flow-step-label-en">${getLocale() === "en" ? step.label : step.labelEn}</div>
               ${hoveredStep === index || activeStep === index ? `
-                <div class="flow-step-tooltip" data-testid="flow-tooltip-${step.id}">${step.description}</div>
+                <div class="flow-step-tooltip" data-testid="flow-tooltip-${step.id}">${pickField(step, "description")}</div>
               ` : ""}
             </div>
             ${index < testingFlow.length - 1 ? `
@@ -3987,7 +4619,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           style="width: ${(activeStep + 1) / testingFlow.length * 100}%"
         ></div>
       </div>
-      <div class="flow-progress-label">\u9032\u5EA6\uFF1A${activeStep + 1} / ${testingFlow.length} \u2014 ${testingFlow[activeStep].label}</div>
+      <div class="flow-progress-label">${t("flow.progress", { current: activeStep + 1, total: testingFlow.length, label: pickField(testingFlow[activeStep], "label") })}</div>
     `;
       root2.querySelector('[data-testid="flow-play-btn"]').addEventListener("click", () => {
         isPlaying = !isPlaying;
@@ -4031,7 +4663,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     root2.dataset.testid = "testing-types";
     root2.innerHTML = `
     <div class="pyramid-section">
-      <h3 class="pyramid-title">\u6E2C\u8A66\u91D1\u5B57\u5854\uFF08\u7531\u5E95\u5C64\u81F3\u9802\u5C64\uFF09</h3>
+      <h3 class="pyramid-title">${t("types.pyramid.title")}</h3>
       <div class="pyramid" data-testid="pyramid">
         ${[...testingTypes].reverse().map((type, index) => `
           <div
@@ -4039,8 +4671,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             data-testid="pyramid-row-${type.id}"
             style="--row-color: ${type.color}; --row-width: ${type.width}%; animation-delay: ${index * 0.12}s"
           >
-            <span class="pyramid-row-label">${type.type}</span>
-            <span class="pyramid-row-en">${type.typeEn}</span>
+            <span class="pyramid-row-label">${pickField(type, "type")}</span>
+            <span class="pyramid-row-en">${getLocale() === "en" ? type.type : type.typeEn}</span>
           </div>
         `).join("")}
       </div>
@@ -4056,17 +4688,17 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <div class="type-card-body">
             <div class="type-header">
               <span class="type-phase">Phase ${index + 1}</span>
-              <h4 class="type-name">${type.type}</h4>
-              <span class="type-name-en">${type.typeEn}</span>
+              <h4 class="type-name">${pickField(type, "type")}</h4>
+              <span class="type-name-en">${getLocale() === "en" ? type.type : type.typeEn}</span>
             </div>
             <div class="type-detail">
               <div class="type-detail-row">
-                <span class="type-detail-label">\u76EE\u7684</span>
-                <span class="type-detail-value">${type.purpose}</span>
+                <span class="type-detail-label">${t("types.col.purpose")}</span>
+                <span class="type-detail-value">${pickField(type, "purpose")}</span>
               </div>
               <div class="type-detail-row">
-                <span class="type-detail-label">\u6642\u6A5F</span>
-                <span class="type-detail-value">${type.timing}</span>
+                <span class="type-detail-label">${t("types.col.timing")}</span>
+                <span class="type-detail-value">${pickField(type, "timing")}</span>
               </div>
             </div>
           </div>
@@ -4097,82 +4729,110 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     const client = createCloudIntegrationClient();
     const canUseCloudAuth = client.isConfigured && client.isSupportedOrigin;
     let user = null;
-    let status = canUseCloudAuth ? "\u8ACB\u5148\u4EE5 Google \u767B\u5165\u5F8C\uFF0C\u518D\u5132\u5B58\u8A2D\u5B9A\u6216\u4E0A\u50B3\u6A94\u6848\u3002" : client.isSupportedOrigin ? `Firebase \u8A2D\u5B9A\u4E0D\u5B8C\u6574\uFF1A${client.missingKeys.join(", ")}` : client.originWarning;
+    let status = canUseCloudAuth ? t("cloud.signInPrompt") : client.isSupportedOrigin ? t("cloud.firebaseMissing", { keys: client.missingKeys.join(", ") }) : client.originWarning;
     let settings = { ...DEFAULT_SETTINGS };
     let uploadedFiles = [];
     let selectedFile = null;
+    let driveFiles = [];
+    let driveFilesLoading = false;
     function render() {
+      var _a2, _b;
       root2.className = "cloud-storage";
       root2.dataset.testid = "cloud-storage-panel";
       root2.innerHTML = `
       <div class="cloud-card">
         <div class="cloud-header">
           <div>
-            <p class="cloud-kicker">Google + Firebase</p>
-            <h3>\u96F2\u7AEF\u8A2D\u5B9A\u8207\u6A94\u6848\u5132\u5B58</h3>
-            <p class="cloud-subtitle">Google \u767B\u5165\u5F8C\uFF1A\u8A2D\u5B9A\u5B58 Firebase\u3001\u6A94\u6848\u4E0A\u50B3\u5230 Google Drive\u3002</p>
-            ${!client.isSupportedOrigin ? '<p class="cloud-warning" data-testid="cloud-origin-warning">\u76EE\u524D\u70BA file:// \u6A21\u5F0F\u3002Google OAuth \u9700\u8981 http://localhost \u6216 https\u3002</p>' : ""}
+            <p class="cloud-kicker">${t("cloud.kicker")}</p>
+            <h3>${t("cloud.title")}</h3>
+            <p class="cloud-subtitle">${t("cloud.subtitle")}</p>
+            ${!client.isSupportedOrigin ? `<p class="cloud-warning" data-testid="cloud-origin-warning">${t("cloud.fileWarning")}</p>` : ""}
           </div>
           <div class="cloud-auth-actions">
-            <button type="button" class="cloud-btn" data-testid="cloud-signin-btn" ${!canUseCloudAuth ? "disabled" : ""}>Google \u767B\u5165</button>
-            <button type="button" class="cloud-btn cloud-btn--secondary" data-testid="cloud-signout-btn" ${!user ? "disabled" : ""}>\u767B\u51FA</button>
+            ${user ? `<span class="cloud-signed-in" data-testid="cloud-signed-in">${t("common.signedIn")}</span>` : `<button type="button" class="cloud-btn" data-testid="cloud-signin-btn" ${!canUseCloudAuth ? "disabled" : ""}>${t("common.googleSignIn")}</button>`}
+            <button type="button" class="cloud-btn cloud-btn--secondary" data-testid="cloud-signout-btn" ${!user ? "disabled" : ""}>${t("common.signOut")}</button>
           </div>
         </div>
 
         <div class="cloud-meta">
           <p data-testid="cloud-status">${status}</p>
-          <p data-testid="cloud-user">${user ? `\u76EE\u524D\u4F7F\u7528\u8005\uFF1A${user.email || user.uid}` : "\u5C1A\u672A\u767B\u5165"}</p>
+          <p data-testid="cloud-user">${user ? t("cloud.userPrefix", { name: user.email || user.uid }) : t("common.notSignedIn")}</p>
         </div>
 
         <div class="cloud-grid">
           <section class="cloud-section">
-            <h4>\u8A2D\u5B9A\uFF08Firebase Firestore\uFF09</h4>
+            <h4>${t("cloud.section.settings")}</h4>
             <label>
-              \u9810\u8A2D Coverage Criterion
+              ${t("cloud.preferredCriterion")}
               <select data-testid="cloud-criterion-select">
                 ${graphCoverageCriteria.map((criterion) => `
-                  <option value="${criterion.id}"${settings.preferredCriterion === criterion.id ? " selected" : ""}>${criterion.label}</option>
+                  <option value="${criterion.id}"${settings.preferredCriterion === criterion.id ? " selected" : ""}>${pickField(criterion, "label")}</option>
                 `).join("")}
               </select>
             </label>
 
             <label>
-              \u5099\u8A3B
+              ${t("cloud.notes")}
               <textarea data-testid="cloud-notes-input">${settings.notes || ""}</textarea>
             </label>
 
             <label>
-              \u984D\u5916\u8A2D\u5B9A JSON
+              ${t("cloud.extras")}
               <textarea data-testid="cloud-extras-input">${formatJson(settings.extras || {})}</textarea>
             </label>
 
             <div class="cloud-actions-row">
-              <button type="button" class="cloud-btn" data-testid="cloud-load-settings-btn" ${!user ? "disabled" : ""}>\u8B80\u53D6\u8A2D\u5B9A</button>
-              <button type="button" class="cloud-btn" data-testid="cloud-save-settings-btn" ${!user ? "disabled" : ""}>\u5132\u5B58\u8A2D\u5B9A</button>
+              <button type="button" class="cloud-btn" data-testid="cloud-load-settings-btn" ${!user ? "disabled" : ""}>${t("cloud.loadSettings")}</button>
+              <button type="button" class="cloud-btn" data-testid="cloud-save-settings-btn" ${!user ? "disabled" : ""}>${t("cloud.saveSettings")}</button>
             </div>
           </section>
 
           <section class="cloud-section">
-            <h4>\u6A94\u6848\uFF08Google Drive\uFF09</h4>
+            <h4>${t("cloud.section.files")}</h4>
             <label class="cloud-file-picker">
-              \u9078\u64C7\u8981\u4E0A\u50B3\u7684\u6A94\u6848
+              ${t("cloud.uploadHint")}
               <input type="file" data-testid="cloud-file-input" ${!user ? "disabled" : ""} />
             </label>
-            <p data-testid="cloud-file-name">${selectedFile ? `\u5F85\u4E0A\u50B3\uFF1A${selectedFile.name}` : "\u5C1A\u672A\u9078\u64C7\u6A94\u6848"}</p>
-            <button type="button" class="cloud-btn" data-testid="cloud-upload-btn" ${!selectedFile || !user ? "disabled" : ""}>\u4E0A\u50B3\u5230 Google Drive</button>
+            <p data-testid="cloud-file-name">${selectedFile ? t("cloud.pendingUpload", { name: selectedFile.name }) : t("cloud.noFileSelected")}</p>
+            <button type="button" class="cloud-btn" data-testid="cloud-upload-btn" ${!selectedFile || !user ? "disabled" : ""}>${t("cloud.upload")}</button>
 
             <ul class="cloud-upload-list" data-testid="cloud-upload-list">
-              ${uploadedFiles.map((item) => `<li><strong>${item.name}</strong>${item.webViewLink ? ` \xB7 <a href="${item.webViewLink}" target="_blank" rel="noreferrer">\u958B\u555F</a>` : ""}</li>`).join("") || "<li>\u5C1A\u7121\u4E0A\u50B3\u7D00\u9304</li>"}
+              ${uploadedFiles.map((item, idx) => `<li>
+                <div class="cloud-upload-row">
+                  <strong>${item.name}</strong>${item.webViewLink ? ` \xB7 <a href="${item.webViewLink}" target="_blank" rel="noreferrer">${t("cloud.openFile")}</a>` : ""}
+                </div>
+                <div class="cloud-upload-actions">
+                  <button type="button" class="cloud-btn cloud-btn--small" data-use-target="mutation" data-use-idx="${idx}">${t("cloud.useForMutation")}</button>
+                  <button type="button" class="cloud-btn cloud-btn--small" data-use-target="graph" data-use-idx="${idx}">${t("cloud.useForGraph")}</button>
+                </div>
+              </li>`).join("") || `<li>${t("cloud.noFiles")}</li>`}
+            </ul>
+
+            <div class="cloud-drive-list-header">
+              <h5>${t("cloud.driveFilesTitle")}</h5>
+              <button type="button" class="cloud-btn cloud-btn--small" data-testid="cloud-refresh-drive-btn" ${!user ? "disabled" : ""}>${driveFilesLoading ? t("cloud.refreshing") : t("cloud.refreshDriveFiles")}</button>
+            </div>
+            <ul class="cloud-drive-list" data-testid="cloud-drive-list">
+              ${driveFiles.length === 0 ? `<li class="cloud-drive-empty">${user ? driveFilesLoading ? t("cloud.refreshing") : t("cloud.noDriveFiles") : t("cloud.signInToList")}</li>` : driveFiles.map((f, idx) => `<li>
+                    <div class="cloud-upload-row">
+                      <strong>${f.name}</strong>${f.modifiedTime ? ` \xB7 <span class="cloud-drive-time">${new Date(f.modifiedTime).toLocaleString()}</span>` : ""}${f.webViewLink ? ` \xB7 <a href="${f.webViewLink}" target="_blank" rel="noreferrer">${t("cloud.openFile")}</a>` : ""}
+                    </div>
+                    <div class="cloud-upload-actions">
+                      <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="mutation" data-drive-idx="${idx}">${t("cloud.useForMutation")}</button>
+                      <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="graph" data-drive-idx="${idx}">${t("cloud.useForGraph")}</button>
+                    </div>
+                  </li>`).join("")}
             </ul>
           </section>
         </div>
       </div>
     `;
-      root2.querySelector('[data-testid="cloud-signin-btn"]').addEventListener("click", async () => {
+      (_a2 = root2.querySelector('[data-testid="cloud-signin-btn"]')) == null ? void 0 : _a2.addEventListener("click", async () => {
         try {
           const result = await client.signInWithGoogle();
           user = result.user;
-          status = result.hasDriveToken ? "Google \u767B\u5165\u6210\u529F\uFF0C\u5DF2\u53D6\u5F97 Drive \u4E0A\u50B3\u6B0A\u9650\u3002" : "Google \u767B\u5165\u6210\u529F\uFF0C\u4F46\u672A\u53D6\u5F97 Drive \u6B0A\u9650\uFF0C\u8ACB\u91CD\u65B0\u767B\u5165\u3002";
+          status = result.hasDriveToken ? t("cloud.signedInOk") : t("cloud.signedInNoDrive");
+          ;
           render();
         } catch (error) {
           status = error.message;
@@ -4184,7 +4844,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           await client.signOutGoogle();
           user = null;
           selectedFile = null;
-          status = "\u5DF2\u767B\u51FA\u3002";
+          status = t("cloud.signedOut");
+          ;
           render();
         } catch (error) {
           status = error.message;
@@ -4210,9 +4871,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               notes: loaded.notes || "",
               extras: loaded.extras || {}
             };
-            status = "\u5DF2\u5F9E Firebase \u8F09\u5165\u8A2D\u5B9A\u3002";
+            status = t("cloud.loadedOk");
           } else {
-            status = "Firebase \u5C1A\u7121\u5DF2\u5132\u5B58\u8A2D\u5B9A\u3002";
+            status = t("cloud.noSavedSettings");
           }
           render();
         } catch (error) {
@@ -4225,18 +4886,34 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           const extras = parseJson(root2.querySelector('[data-testid="cloud-extras-input"]').value);
           settings.extras = extras;
           await client.saveSettings(user.uid, settings);
-          status = "\u8A2D\u5B9A\u5DF2\u5132\u5B58\u5230 Firebase\u3002";
+          status = t("cloud.savedOk");
           render();
         } catch (error) {
-          status = error.message.includes("JSON") ? "\u984D\u5916\u8A2D\u5B9A JSON \u683C\u5F0F\u932F\u8AA4\u3002" : error.message;
+          status = error.message.includes("JSON") ? t("cloud.extrasJsonError") : error.message;
           render();
         }
       });
       root2.querySelector('[data-testid="cloud-upload-btn"]').addEventListener("click", async () => {
         try {
-          const uploaded = await client.uploadFileToDrive(selectedFile);
-          uploadedFiles = [uploaded, ...uploadedFiles].slice(0, 8);
-          status = `\u6A94\u6848 ${uploaded.name} \u5DF2\u4E0A\u50B3\u5230 Google Drive\u3002`;
+          const fileToUpload = selectedFile;
+          let content = null;
+          try {
+            if (typeof fileToUpload.text === "function") {
+              content = await fileToUpload.text();
+            } else if (typeof FileReader !== "undefined") {
+              content = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ""));
+                reader.onerror = () => reject(reader.error);
+                reader.readAsText(fileToUpload);
+              });
+            }
+          } catch {
+            content = null;
+          }
+          const uploaded = await client.uploadFileToDrive(fileToUpload);
+          uploadedFiles = [{ ...uploaded, content, fileName: fileToUpload.name, file: fileToUpload }, ...uploadedFiles].slice(0, 8);
+          status = t("cloud.uploadedOk", { name: uploaded.name });
           selectedFile = null;
           render();
         } catch (error) {
@@ -4244,11 +4921,94 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           render();
         }
       });
+      root2.querySelectorAll("[data-use-target]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          var _a3, _b2;
+          const idx = Number(btn.dataset.useIdx);
+          const target = btn.dataset.useTarget;
+          const item = uploadedFiles[idx];
+          if (!item) return;
+          let content = item.content;
+          if (content == null && item.file) {
+            try {
+              content = typeof item.file.text === "function" ? await item.file.text() : await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ""));
+                reader.onerror = () => reject(reader.error);
+                reader.readAsText(item.file);
+              });
+              item.content = content;
+            } catch (err) {
+              status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
+              render();
+              return;
+            }
+          }
+          if (content == null) {
+            status = t("cloud.noContent");
+            render();
+            return;
+          }
+          const sectionId = target === "mutation" ? "section-syntax" : "section-graph";
+          const targetSection = (_a3 = globalThis.document) == null ? void 0 : _a3.querySelector(`[data-testid="${sectionId}"]`);
+          targetSection == null ? void 0 : targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          (_b2 = globalThis.dispatchEvent) == null ? void 0 : _b2.call(globalThis, new CustomEvent("stvisual:load-program-source", {
+            detail: { target, name: item.fileName || item.name, content }
+          }));
+          status = target === "mutation" ? t("cloud.sentToMutation", { name: item.name }) : t("cloud.sentToGraph", { name: item.name });
+          render();
+        });
+      });
+      (_b = root2.querySelector('[data-testid="cloud-refresh-drive-btn"]')) == null ? void 0 : _b.addEventListener("click", async () => {
+        if (!user || typeof client.listDriveFiles !== "function") return;
+        driveFilesLoading = true;
+        status = t("cloud.refreshing");
+        render();
+        try {
+          driveFiles = await client.listDriveFiles();
+          status = t("cloud.driveListed", { count: driveFiles.length });
+        } catch (err) {
+          status = t("cloud.driveListError", { msg: (err == null ? void 0 : err.message) || err });
+        } finally {
+          driveFilesLoading = false;
+          render();
+        }
+      });
+      root2.querySelectorAll("[data-drive-target]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          var _a3, _b2;
+          const idx = Number(btn.dataset.driveIdx);
+          const target = btn.dataset.driveTarget;
+          const f = driveFiles[idx];
+          if (!f) return;
+          try {
+            status = t("cloud.downloading", { name: f.name });
+            render();
+            const content = await client.downloadDriveFile(f.id);
+            const sectionId = target === "mutation" ? "section-syntax" : "section-graph";
+            const targetSection = (_a3 = globalThis.document) == null ? void 0 : _a3.querySelector(`[data-testid="${sectionId}"]`);
+            targetSection == null ? void 0 : targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            (_b2 = globalThis.dispatchEvent) == null ? void 0 : _b2.call(globalThis, new CustomEvent("stvisual:load-program-source", {
+              detail: { target, name: f.name, content }
+            }));
+            status = target === "mutation" ? t("cloud.sentToMutation", { name: f.name }) : t("cloud.sentToGraph", { name: f.name });
+          } catch (err) {
+            status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
+          }
+          render();
+        });
+      });
     }
     client.subscribeAuthState(async (nextUser) => {
       user = nextUser;
       if (!user && canUseCloudAuth) {
-        status = "\u8ACB\u5148\u4EE5 Google \u767B\u5165\u5F8C\uFF0C\u518D\u5132\u5B58\u8A2D\u5B9A\u6216\u4E0A\u50B3\u6A94\u6848\u3002";
+        status = t("cloud.signInPrompt");
+        driveFiles = [];
+      } else if (user && typeof client.listDriveFiles === "function") {
+        try {
+          driveFiles = await client.listDriveFiles();
+        } catch {
+        }
       }
       render();
     });
@@ -4258,12 +5018,22 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
   // src/data/mutationData.js
   var mutationOperators = [
-    { id: "AOR", label: "Arithmetic Operator Replacement", desc: "\u66FF\u63DB + - * / % \u7B49\u7B97\u8853\u904B\u7B97\u5B50\u3002" },
-    { id: "ROR", label: "Relational Operator Replacement", desc: "\u66FF\u63DB < <= > >= == != === !==\u3002" },
-    { id: "LOR", label: "Logical Operator Replacement", desc: "\u66FF\u63DB && \u8207 ||\u3002" },
-    { id: "COR", label: "Conditional Operator Replacement", desc: "\u66FF\u63DB\u689D\u4EF6\u904B\u7B97\u5B50\uFF08\u8207 LOR \u76F8\u540C\u96C6\u5408\uFF09\u3002" },
-    { id: "UOI", label: "Unary Operator Insertion", desc: "\u5728\u8B58\u5225\u5B57\u524D\u63D2\u5165 ! \u6216 -\u3002" },
-    { id: "ABS", label: "Absolute Value Insertion", desc: "\u628A\u8B58\u5225\u5B57\u5305\u6210 Math.abs(x) \u6216 -(x)\u3002" }
+    { id: "AOR", label: "Arithmetic Operator Replacement", desc: "\u66FF\u63DB + - * / % \u7B49\u7B97\u8853\u904B\u7B97\u5B50\u3002", labelEn: "Arithmetic Operator Replacement", descEn: "Replace + - * / % arithmetic operators." },
+    { id: "ROR", label: "Relational Operator Replacement", desc: "\u66FF\u63DB < <= > >= == != === !==\u3002", labelEn: "Relational Operator Replacement", descEn: "Replace < <= > >= == != === !==." },
+    { id: "LOR", label: "Logical Operator Replacement", desc: "\u66FF\u63DB && \u8207 ||\u3002", labelEn: "Logical Operator Replacement", descEn: "Replace && and ||." },
+    { id: "COR", label: "Conditional Operator Replacement", desc: "\u66FF\u63DB\u689D\u4EF6\u904B\u7B97\u5B50\uFF08\u8207 LOR \u76F8\u540C\u96C6\u5408\uFF09\u3002", labelEn: "Conditional Operator Replacement", descEn: "Replace conditional operators (same set as LOR)." },
+    { id: "SOR", label: "Shift Operator Replacement", desc: "\u66FF\u63DB << >> >>> \u4F4D\u79FB\u904B\u7B97\u5B50\u3002", labelEn: "Shift Operator Replacement", descEn: "Replace << >> >>> shift operators." },
+    { id: "ASR", label: "Assignment Operator Replacement", desc: "\u66FF\u63DB += -= *= /= %= <<= >>= >>>= &= |= ^= \u8907\u5408\u6307\u6D3E\u3002", labelEn: "Assignment Operator Replacement", descEn: "Replace += -= *= /= %= <<= >>= >>>= &= |= ^= compound assignments." },
+    { id: "UOI", label: "Unary Operator Insertion", desc: "\u5728\u8B58\u5225\u5B57\u524D\u63D2\u5165 ! \u6216 -\u3002", labelEn: "Unary Operator Insertion", descEn: "Insert ! or - before identifiers." },
+    { id: "UOD", label: "Unary Operator Deletion", desc: "\u522A\u9664 expression \u524D\u7684\u4E00\u5143\u904B\u7B97\u5B50\uFF08!\u3001-\u3001+\u3001~\uFF09\u3002", labelEn: "Unary Operator Deletion", descEn: "Delete a leading unary operator (!, -, +, ~) before an expression." },
+    { id: "SVR", label: "Scalar Variable Replacement", desc: "\u628A\u8B58\u5225\u5B57\u66FF\u63DB\u70BA\u53E6\u4E00\u500B in-scope \u8B58\u5225\u5B57\u3002", labelEn: "Scalar Variable Replacement", descEn: "Replace an identifier with another in-scope identifier." },
+    { id: "BSR", label: "Bomb Statement Replacement", desc: "\u628A\u6574\u884C\u9673\u8FF0\u66FF\u63DB\u6210 throw\uFF08\u5FC5\u88AB\u4EFB\u4F55 test \u6BBA\u6B7B\uFF09\u3002", labelEn: "Bomb Statement Replacement", descEn: "Replace a whole statement with throw (always killed by any test that runs it)." },
+    { id: "ABS", label: "Absolute Value Insertion", desc: "\u628A\u8B58\u5225\u5B57\u5305\u6210 Math.abs(x) \u6216 -(x)\u3002", labelEn: "Absolute Value Insertion", descEn: "Wrap an identifier as Math.abs(x) or -(x)." },
+    // Object-Oriented mutation operators
+    { id: "JTD", label: "OO: this Deletion", desc: "\u522A\u9664 `this.` \u524D\u7DB4\uFF0C\u5E38\u7528\u4EE5\u66B4\u9732\u907A\u6F0F\u6210\u54E1\u5B58\u53D6\u7684\u6E2C\u8A66\u3002", labelEn: "OO: this Deletion", descEn: "Delete the `this.` prefix to expose tests that miss member access." },
+    { id: "ISD", label: "OO: super Call Deletion", desc: "\u628A `super(...)` \u6216 `super.method(...)` \u6574\u6BB5\u547C\u53EB\u66FF\u63DB\u70BA undefined\u3002", labelEn: "OO: super Call Deletion", descEn: "Replace `super(...)` or `super.method(...)` calls with undefined." },
+    { id: "IOD", label: "OO: Overriding Method Deletion", desc: "\u522A\u9664 class \u5167\u975E constructor \u7684\u6574\u500B\u65B9\u6CD5\u5B9A\u7FA9\uFF0C\u8FEB\u4F7F\u547C\u53EB fallback \u81F3\u7236\u985E\u5225\u3002", labelEn: "OO: Overriding Method Deletion", descEn: "Delete a non-constructor class method, falling back to the parent class." },
+    { id: "PRV", label: "OO: Reference Type Change", desc: "\u628A `new ClassA(...)` \u63DB\u6210\u540C\u6A94\u6848\u5167\u5176\u4ED6 class\uFF0C\u4F8B\u5982 `new ClassB(...)`\u3002", labelEn: "OO: Reference Type Change", descEn: "Replace `new ClassA(...)` with another in-file class, e.g. `new ClassB(...)`." }
   ];
   var programExamples = [
     {
@@ -4311,6 +5081,37 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         { id: "t4", args: [1, 2, 5], expected: "invalid" },
         { id: "t5", args: [0, 1, 1], expected: "invalid" }
       ]
+    },
+    {
+      id: "shapeHierarchy",
+      name: "shape(kind, size)",
+      params: ["kind", "size"],
+      body: [
+        "class Shape {",
+        "  constructor(n) { this.n = n; }",
+        "  area() { return 0; }",
+        '  describe() { return "shape:" + this.area(); }',
+        "}",
+        "class Square extends Shape {",
+        "  constructor(side) { super(side); this.side = side; }",
+        "  area() { return this.side * this.side; }",
+        "}",
+        "class Circle extends Shape {",
+        "  constructor(r) { super(r); this.r = r; }",
+        "  area() { return Math.round(this.r * this.r * 3); }",
+        "}",
+        'if (kind === "sq") return new Square(size).describe();',
+        'if (kind === "ci") return new Circle(size).describe();',
+        'return "unknown";'
+      ].join("\n"),
+      description: "OO \u7BC4\u4F8B\uFF1AShape / Square / Circle \u7E7C\u627F\u968E\u5C64\uFF0C\u53EF\u793A\u7BC4 JTD\u3001ISD\u3001IOD\u3001PRV\u3002",
+      tests: [
+        { id: "t1", args: ["sq", 3], expected: "shape:9" },
+        { id: "t2", args: ["sq", 5], expected: "shape:25" },
+        { id: "t3", args: ["ci", 2], expected: "shape:12" },
+        { id: "t4", args: ["ci", 4], expected: "shape:48" },
+        { id: "t5", args: ["xx", 1], expected: "unknown" }
+      ]
     }
   ];
 
@@ -4319,14 +5120,18 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     AOR: ["+", "-", "*", "/", "%"],
     ROR: ["<", "<=", ">", ">=", "==", "!=", "===", "!=="],
     LOR: ["&&", "||"],
-    COR: ["&&", "||"]
+    COR: ["&&", "||"],
     // 同 LOR，但與 ! 一同套用時為條件運算的補集
+    SOR: ["<<", ">>", ">>>"],
+    ASR: ["+=", "-=", "*=", "/=", "%=", "<<=", ">>=", ">>>=", "&=", "|=", "^="]
   };
   var SORTED = {
     AOR: [...OPERATORS.AOR].sort((a, b) => b.length - a.length),
     ROR: [...OPERATORS.ROR].sort((a, b) => b.length - a.length),
     LOR: [...OPERATORS.LOR].sort((a, b) => b.length - a.length),
-    COR: [...OPERATORS.COR].sort((a, b) => b.length - a.length)
+    COR: [...OPERATORS.COR].sort((a, b) => b.length - a.length),
+    SOR: [...OPERATORS.SOR].sort((a, b) => b.length - a.length),
+    ASR: [...OPERATORS.ASR].sort((a, b) => b.length - a.length)
   };
   var ID_REGEX = /[A-Za-z_$][A-Za-z0-9_$]*/y;
   function buildSkipMap(source) {
@@ -4404,6 +5209,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         if ((op === "||" || op === "&&") && after === "=") continue;
         if (op === "<" && (after === "<" || before === "<")) continue;
         if (op === ">" && (after === ">" || before === ">")) continue;
+        if ((op === "<<" || op === ">>" || op === ">>>") && after === "=") continue;
+        if (op === "*=" && before === "*") continue;
         hits.push({ start: i, end: i + op.length, text: op });
         i += op.length - 1;
         break;
@@ -4531,6 +5338,270 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     });
     return mutants;
   }
+  function generateUOD(source, skip, idCounter) {
+    const mutants = [];
+    const unary = /* @__PURE__ */ new Set(["!", "-", "+", "~"]);
+    for (let i = 0; i < source.length; i += 1) {
+      if (skip[i]) continue;
+      const ch = source[i];
+      if (!unary.has(ch)) continue;
+      const next = source[i + 1] || "";
+      if (next === "=" || next === ch) continue;
+      let j = i - 1;
+      while (j >= 0 && /\s/.test(source[j])) j -= 1;
+      const prev = j >= 0 ? source[j] : "";
+      const prevIsBoundary = j < 0 || "([{,;?:=&|<>!+-*/%~^".includes(prev) || /[A-Za-z]/.test(prev) === false && !/[0-9_$)\]]/.test(prev);
+      if (/[A-Za-z0-9_$)\]]/.test(prev)) continue;
+      if (!prevIsBoundary) continue;
+      let k = i + 1;
+      while (k < source.length && /\s/.test(source[k])) k += 1;
+      const after = source[k] || "";
+      if (!/[A-Za-z0-9_$(]/.test(after)) continue;
+      const mutated = applyReplacement(source, i, i + 1, "");
+      const { line, col } = lineColOf(source, i);
+      mutants.push({
+        id: `M${idCounter.value++}`,
+        operator: "UOD",
+        line,
+        col,
+        original: ch,
+        mutated: "(deleted)",
+        source: mutated,
+        status: "live",
+        killedBy: []
+      });
+    }
+    return mutants;
+  }
+  function generateSVR(source, skip, idCounter) {
+    const hits = findIdentifierOccurrences(source, skip);
+    const names = Array.from(new Set(hits.map((h) => h.text)));
+    if (names.length < 2) return [];
+    const mutants = [];
+    hits.forEach((hit) => {
+      names.forEach((repl) => {
+        if (repl === hit.text) return;
+        const mutated = applyReplacement(source, hit.start, hit.end, repl);
+        const { line, col } = lineColOf(source, hit.start);
+        mutants.push({
+          id: `M${idCounter.value++}`,
+          operator: "SVR",
+          line,
+          col,
+          original: hit.text,
+          mutated: repl,
+          source: mutated,
+          status: "live",
+          killedBy: []
+        });
+      });
+    });
+    return mutants;
+  }
+  function generateBSR(source, skip, idCounter) {
+    const mutants = [];
+    const lines = source.split("\n");
+    let offset = 0;
+    lines.forEach((line, idx) => {
+      const start = offset;
+      const end = offset + line.length;
+      offset = end + 1;
+      const trimmed = line.trim();
+      if (!trimmed) return;
+      if (trimmed === "{" || trimmed === "}" || trimmed === "};") return;
+      if (trimmed.startsWith("//")) return;
+      if (trimmed.startsWith("/*") || trimmed.endsWith("*/")) return;
+      if (trimmed.startsWith("function") || trimmed.startsWith("}")) return;
+      const indent = line.match(/^\s*/)[0];
+      const replacement = `${indent}throw new Error("BSR mutant");`;
+      const mutated = source.slice(0, start) + replacement + source.slice(end);
+      mutants.push({
+        id: `M${idCounter.value++}`,
+        operator: "BSR",
+        line: idx + 1,
+        col: indent.length + 1,
+        original: trimmed,
+        mutated: 'throw new Error("BSR mutant");',
+        source: mutated,
+        status: "live",
+        killedBy: []
+      });
+    });
+    return mutants;
+  }
+  function findCallEnd(source, openParenIdx) {
+    let depth = 0;
+    for (let i = openParenIdx; i < source.length; i += 1) {
+      const ch = source[i];
+      if (ch === "(") depth += 1;
+      else if (ch === ")") {
+        depth -= 1;
+        if (depth === 0) return i + 1;
+      }
+    }
+    return -1;
+  }
+  function findBlockEnd(source, openBraceIdx) {
+    let depth = 0;
+    for (let i = openBraceIdx; i < source.length; i += 1) {
+      const ch = source[i];
+      if (ch === "{") depth += 1;
+      else if (ch === "}") {
+        depth -= 1;
+        if (depth === 0) return i + 1;
+      }
+    }
+    return -1;
+  }
+  function generateJTD(source, skip, idCounter) {
+    const mutants = [];
+    const needle = "this.";
+    for (let i = 0; i + needle.length <= source.length; i += 1) {
+      if (skip[i]) continue;
+      if (source.slice(i, i + needle.length) !== needle) continue;
+      const before = source[i - 1] || "";
+      if (/[A-Za-z0-9_$]/.test(before)) continue;
+      const mutated = applyReplacement(source, i, i + needle.length, "");
+      const { line, col } = lineColOf(source, i);
+      mutants.push({
+        id: `M${idCounter.value++}`,
+        operator: "JTD",
+        line,
+        col,
+        original: "this.",
+        mutated: "(deleted)",
+        source: mutated,
+        status: "live",
+        killedBy: []
+      });
+      i += needle.length - 1;
+    }
+    return mutants;
+  }
+  function generateISD(source, skip, idCounter) {
+    const mutants = [];
+    for (let i = 0; i + 5 <= source.length; i += 1) {
+      if (skip[i]) continue;
+      if (source.slice(i, i + 5) !== "super") continue;
+      const before = source[i - 1] || "";
+      if (/[A-Za-z0-9_$]/.test(before)) continue;
+      let cursor = i + 5;
+      while (cursor < source.length && /\s/.test(source[cursor])) cursor += 1;
+      let callStart = -1;
+      if (source[cursor] === "(") {
+        callStart = cursor;
+      } else if (source[cursor] === ".") {
+        cursor += 1;
+        while (cursor < source.length && /[A-Za-z0-9_$]/.test(source[cursor])) cursor += 1;
+        while (cursor < source.length && /\s/.test(source[cursor])) cursor += 1;
+        if (source[cursor] !== "(") continue;
+        callStart = cursor;
+      } else {
+        continue;
+      }
+      const callEnd = findCallEnd(source, callStart);
+      if (callEnd < 0) continue;
+      const original = source.slice(i, callEnd);
+      const mutated = applyReplacement(source, i, callEnd, "undefined");
+      const { line, col } = lineColOf(source, i);
+      mutants.push({
+        id: `M${idCounter.value++}`,
+        operator: "ISD",
+        line,
+        col,
+        original,
+        mutated: "undefined",
+        source: mutated,
+        status: "live",
+        killedBy: []
+      });
+      i = callEnd - 1;
+    }
+    return mutants;
+  }
+  function findClassMethods(source) {
+    const methods = [];
+    const classRegex = /\bclass\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*(?:extends\s+[A-Za-z_$][A-Za-z0-9_$.]*\s*)?\{/g;
+    let m;
+    while (m = classRegex.exec(source)) {
+      const bodyStart = m.index + m[0].length - 1;
+      const bodyEnd = findBlockEnd(source, bodyStart);
+      if (bodyEnd < 0) continue;
+      const className = m[1];
+      const inner = source.slice(bodyStart + 1, bodyEnd - 1);
+      const methodRegex = /(^|\n)([ \t]*)(?:(?:static|async|get|set)\s+)*(#?[A-Za-z_$][A-Za-z0-9_$]*)\s*\([^)]*\)\s*\{/g;
+      let mm;
+      while (mm = methodRegex.exec(inner)) {
+        const headerStartInInner = mm.index + (mm[1] ? mm[1].length : 0);
+        const braceInInner = methodRegex.lastIndex - 1;
+        const braceAbs = bodyStart + 1 + braceInInner;
+        const blockEndAbs = findBlockEnd(source, braceAbs);
+        if (blockEndAbs < 0) continue;
+        methods.push({
+          className,
+          methodName: mm[3],
+          headerStart: bodyStart + 1 + headerStartInInner,
+          blockEnd: blockEndAbs
+        });
+      }
+    }
+    return methods;
+  }
+  function generateIOD(source, skip, idCounter) {
+    const methods = findClassMethods(source);
+    const mutants = [];
+    methods.forEach((m) => {
+      if (m.methodName === "constructor") return;
+      if (skip[m.headerStart]) return;
+      const mutated = applyReplacement(source, m.headerStart, m.blockEnd, "");
+      const { line, col } = lineColOf(source, m.headerStart);
+      mutants.push({
+        id: `M${idCounter.value++}`,
+        operator: "IOD",
+        line,
+        col,
+        original: `${m.className}.${m.methodName}(...)`,
+        mutated: "(deleted)",
+        source: mutated,
+        status: "live",
+        killedBy: []
+      });
+    });
+    return mutants;
+  }
+  function generatePRV(source, skip, idCounter) {
+    const classNames = [];
+    const classRegex = /\bclass\s+([A-Za-z_$][A-Za-z0-9_$]*)/g;
+    let cm;
+    while (cm = classRegex.exec(source)) classNames.push(cm[1]);
+    if (classNames.length < 2) return [];
+    const mutants = [];
+    const newRegex = /\bnew\s+([A-Za-z_$][A-Za-z0-9_$]*)/g;
+    let nm;
+    while (nm = newRegex.exec(source)) {
+      const idStart = nm.index + nm[0].length - nm[1].length;
+      if (skip[idStart]) continue;
+      const original = nm[1];
+      if (!classNames.includes(original)) continue;
+      classNames.forEach((repl) => {
+        if (repl === original) return;
+        const mutated = applyReplacement(source, idStart, idStart + original.length, repl);
+        const { line, col } = lineColOf(source, idStart);
+        mutants.push({
+          id: `M${idCounter.value++}`,
+          operator: "PRV",
+          line,
+          col,
+          original: `new ${original}`,
+          mutated: `new ${repl}`,
+          source: mutated,
+          status: "live",
+          killedBy: []
+        });
+      });
+    }
+    return mutants;
+  }
   function generateMutants(source, operators = ["AOR", "ROR", "LOR", "UOI"]) {
     const skip = buildSkipMap(source);
     const idCounter = { value: 1 };
@@ -4540,6 +5611,20 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         out.push(...generateUOI(source, skip, idCounter));
       } else if (op === "ABS") {
         out.push(...generateABS(source, skip, idCounter));
+      } else if (op === "UOD") {
+        out.push(...generateUOD(source, skip, idCounter));
+      } else if (op === "SVR") {
+        out.push(...generateSVR(source, skip, idCounter));
+      } else if (op === "BSR") {
+        out.push(...generateBSR(source, skip, idCounter));
+      } else if (op === "JTD") {
+        out.push(...generateJTD(source, skip, idCounter));
+      } else if (op === "ISD") {
+        out.push(...generateISD(source, skip, idCounter));
+      } else if (op === "IOD") {
+        out.push(...generateIOD(source, skip, idCounter));
+      } else if (op === "PRV") {
+        out.push(...generatePRV(source, skip, idCounter));
       } else {
         out.push(...generateForOperator(source, op, skip, idCounter));
       }
@@ -4574,30 +5659,30 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   }
   function runTestSuite(params, body, tests) {
     const fn = compileFunction(params, body);
-    return tests.map((t) => {
-      const outcome = runOnce(fn, t.args);
-      const expected = t.expected;
+    return tests.map((t2) => {
+      const outcome = runOnce(fn, t2.args);
+      const expected = t2.expected;
       const passed = outcome.ok && deepEqual(outcome.value, expected);
-      return { id: t.id, passed, outcome };
+      return { id: t2.id, passed, outcome };
     });
   }
   function evaluateMutants(params, body, tests, mutants) {
     const baseFn = compileFunction(params, body);
-    const baseOutcomes = tests.map((t) => runOnce(baseFn, t.args));
+    const baseOutcomes = tests.map((t2) => runOnce(baseFn, t2.args));
     return mutants.map((m) => {
       let mutantFn;
       try {
         mutantFn = compileFunction(params, m.source);
       } catch (err) {
-        return { ...m, status: "killed", killedBy: tests.map((t) => t.id), compileError: err == null ? void 0 : err.message };
+        return { ...m, status: "killed", killedBy: tests.map((t2) => t2.id), compileError: err == null ? void 0 : err.message };
       }
       const killedBy = [];
-      tests.forEach((t, i) => {
+      tests.forEach((t2, i) => {
         const base = baseOutcomes[i];
-        const mut = runOnce(mutantFn, t.args);
+        const mut = runOnce(mutantFn, t2.args);
         const sameOk = base.ok === mut.ok;
         const sameValue = sameOk && (base.ok ? deepEqual(base.value, mut.value) : true);
-        if (!sameOk || !sameValue) killedBy.push(t.id);
+        if (!sameOk || !sameValue) killedBy.push(t2.id);
       });
       return {
         ...m,
@@ -4618,12 +5703,12 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
   // src/components/SyntaxCoverageExplorer.js
   var DEFAULT_OPERATORS = ["AOR", "ROR", "LOR", "UOI"];
-  var STORAGE_KEY = "stvisual.syntaxTests.v1";
+  var STORAGE_KEY2 = "stvisual.syntaxTests.v1";
   var SAVE_DEBOUNCE_MS = 600;
   function loadLocalPrograms() {
-    var _a;
+    var _a2;
     try {
-      const raw = (_a = globalThis.localStorage) == null ? void 0 : _a.getItem(STORAGE_KEY);
+      const raw = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY2);
       if (!raw) return {};
       const parsed = JSON.parse(raw);
       return parsed && typeof parsed === "object" ? parsed : {};
@@ -4632,9 +5717,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
   }
   function saveLocalPrograms(programs) {
-    var _a;
+    var _a2;
     try {
-      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY, JSON.stringify(programs));
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY2, JSON.stringify(programs));
     } catch {
     }
   }
@@ -4642,10 +5727,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     return {
       params: ex.params.join(", "),
       body: ex.body,
-      tests: ex.tests.map((t) => ({
-        id: t.id,
-        argsText: t.args.map((a) => JSON.stringify(a)).join(", "),
-        expectedText: JSON.stringify(t.expected)
+      tests: ex.tests.map((t2) => ({
+        id: t2.id,
+        argsText: t2.args.map((a) => JSON.stringify(a)).join(", "),
+        expectedText: JSON.stringify(t2.expected)
       }))
     };
   }
@@ -4667,7 +5752,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     try {
       return JSON.parse(`[${trimmed}]`);
     } catch (err) {
-      throw new Error(`\u53C3\u6578\u89E3\u6790\u5931\u6557\uFF1A${err.message}`);
+      throw new Error(t("syntax.err.argsParse", { msg: err.message }));
     }
   }
   function parseExpected(text) {
@@ -4679,8 +5764,26 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       return trimmed;
     }
   }
+  function parseFunctionSource(text) {
+    const m = text.match(/function\s+\w*\s*\(([^)]*)\)\s*\{/);
+    if (!m) return null;
+    const params = m[1].trim();
+    const startIdx = m.index + m[0].length;
+    let depth = 1;
+    for (let i = startIdx; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === "{") depth++;
+      else if (ch === "}") {
+        depth--;
+        if (depth === 0) {
+          return { params, body: text.slice(startIdx, i).replace(/^\n+|\n+$/g, "") };
+        }
+      }
+    }
+    return null;
+  }
   function createSyntaxCoverageExplorer() {
-    var _a;
+    var _a2;
     const root2 = document.createElement("div");
     root2.className = "syntax-coverage";
     root2.dataset.testid = "syntax-coverage";
@@ -4692,7 +5795,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       params: initialSnapshot.params,
       body: initialSnapshot.body,
       operators: new Set(DEFAULT_OPERATORS),
-      tests: initialSnapshot.tests.map((t) => ({ ...t })),
+      tests: initialSnapshot.tests.map((t2) => ({ ...t2 })),
       programs: localPrograms,
       mutants: [],
       suiteResults: [],
@@ -4704,7 +5807,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       cloudUser: null,
       cloudStatus: "idle",
       // 'idle' | 'syncing' | 'synced' | 'error'
-      cloudMessage: ""
+      cloudMessage: "",
+      customExamples: []
     };
     let cloudClient = null;
     try {
@@ -4716,10 +5820,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       return {
         params: state.params,
         body: state.body,
-        tests: state.tests.map((t) => ({
-          id: t.id,
-          argsText: t.argsText,
-          expectedText: t.expectedText
+        tests: state.tests.map((t2) => ({
+          id: t2.id,
+          argsText: t2.argsText,
+          expectedText: t2.expectedText
         }))
       };
     }
@@ -4742,10 +5846,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           try {
             await cloudClient.saveSyntaxTests(state.cloudUser.uid, state.programs);
             state.cloudStatus = "synced";
-            state.cloudMessage = "\u5DF2\u540C\u6B65\u5230\u96F2\u7AEF";
+            state.cloudMessage = t("syntax.cloud.synced");
           } catch (err) {
             state.cloudStatus = "error";
-            state.cloudMessage = `\u96F2\u7AEF\u5132\u5B58\u5931\u6557\uFF1A${(err == null ? void 0 : err.message) || err}`;
+            state.cloudMessage = t("syntax.cloud.saveError", { msg: (err == null ? void 0 : err.message) || err });
           }
           updateCloudIndicator();
           resolve();
@@ -4777,22 +5881,22 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       if (!state.cloudUser) return "";
       switch (state.cloudStatus) {
         case "syncing":
-          return "\u2601 \u6B63\u5728\u540C\u6B65\u2026";
+          return t("syntax.cloud.syncing");
         case "synced":
-          return `\u2601 ${state.cloudMessage || "\u5DF2\u540C\u6B65\u5230\u96F2\u7AEF"}`;
+          return `\u2601 ${state.cloudMessage || t("syntax.cloud.synced")}`;
         case "error":
-          return `\u2601 ${state.cloudMessage || "\u540C\u6B65\u5931\u6557"}`;
+          return `\u2601 ${state.cloudMessage || t("syntax.cloud.failed")}`;
         default:
-          return `\u2601 \u5DF2\u9023\u7D50 ${state.cloudUser.email || state.cloudUser.uid}`;
+          return `\u2601 ${t("syntax.cloud.linked", { name: state.cloudUser.email || state.cloudUser.uid })}`;
       }
     }
     async function reloadFromCloud({ force = false } = {}) {
-      var _a2, _b;
+      var _a3, _b;
       if (!cloudClient || !state.cloudUser) return;
       if (typeof cloudClient.loadSyntaxTests !== "function") return;
       await flushPendingSave();
       state.cloudStatus = "syncing";
-      state.cloudMessage = force ? "\u91CD\u65B0\u4ECE\u96F2\u7AEF\u8B80\u53D6\u2026" : "";
+      state.cloudMessage = force ? t("syntax.cloud.reloading") : "";
       updateCloudIndicator();
       try {
         const remote = await cloudClient.loadSyntaxTests(state.cloudUser.uid);
@@ -4804,39 +5908,39 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
         state.programs = merged;
         saveLocalPrograms(state.programs);
-        const current = state.programs[state.exampleId];
-        if (current) {
-          state.params = (_a2 = current.params) != null ? _a2 : state.params;
-          state.body = (_b = current.body) != null ? _b : state.body;
-          state.tests = Array.isArray(current.tests) ? current.tests.map((t) => ({ ...t })) : state.tests;
+        const current2 = state.programs[state.exampleId];
+        if (current2) {
+          state.params = (_a3 = current2.params) != null ? _a3 : state.params;
+          state.body = (_b = current2.body) != null ? _b : state.body;
+          state.tests = Array.isArray(current2.tests) ? current2.tests.map((t2) => ({ ...t2 })) : state.tests;
           state.selectedMutantId = null;
         }
         state.cloudStatus = "synced";
-        state.cloudMessage = "\u5DF2\u5F9E\u96F2\u7AEF\u8F09\u5165";
+        state.cloudMessage = t("syntax.cloud.loaded");
         render();
         if (localOnly.length > 0) pushToCloud();
       } catch (err) {
         state.cloudStatus = "error";
-        state.cloudMessage = `\u96F2\u7AEF\u8B80\u53D6\u5931\u6557\uFF1A${(err == null ? void 0 : err.message) || err}`;
+        state.cloudMessage = t("syntax.cloud.loadError", { msg: (err == null ? void 0 : err.message) || err });
         updateCloudIndicator();
       }
     }
     function recompute() {
-      var _a2;
+      var _a3;
       state.error = null;
       let params;
       try {
         params = state.params.split(",").map((s) => s.trim()).filter(Boolean);
       } catch (err) {
-        state.error = `\u53C3\u6578\u89E3\u6790\u5931\u6557\uFF1A${err.message}`;
+        state.error = t("syntax.err.argsParse", { msg: err.message });
         return;
       }
       let parsedTests;
       try {
-        parsedTests = state.tests.map((t) => ({
-          id: t.id,
-          args: parseTestArgs(t.argsText),
-          expected: parseExpected(t.expectedText)
+        parsedTests = state.tests.map((t2) => ({
+          id: t2.id,
+          args: parseTestArgs(t2.argsText),
+          expected: parseExpected(t2.expectedText)
         }));
       } catch (err) {
         state.error = err.message;
@@ -4846,7 +5950,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       try {
         suiteResults = runTestSuite(params, state.body, parsedTests);
       } catch (err) {
-        state.error = `\u539F\u7A0B\u5F0F\u7DE8\u8B6F/\u57F7\u884C\u5931\u6557\uFF1A${err.message}`;
+        state.error = t("syntax.err.compile", { msg: err.message });
         return;
       }
       const operators = [...state.operators];
@@ -4864,32 +5968,33 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       state.mutants = finalMutants;
       state.score = computeMutationScore(finalMutants);
       if (!state.mutants.find((m) => m.id === state.selectedMutantId)) {
-        state.selectedMutantId = ((_a2 = finalMutants[0]) == null ? void 0 : _a2.id) || null;
+        state.selectedMutantId = ((_a3 = finalMutants[0]) == null ? void 0 : _a3.id) || null;
       }
     }
     function loadExample(id) {
-      const ex = programExamples.find((e) => e.id === id);
+      const ex = programExamples.find((e) => e.id === id) || state.customExamples.find((e) => e.id === id);
       if (!ex) return;
       state.exampleId = id;
       const snap = state.programs[id] || defaultProgramSnapshot(ex);
       state.params = snap.params;
       state.body = snap.body;
-      state.tests = snap.tests.map((t) => ({ ...t }));
+      state.tests = snap.tests.map((t2) => ({ ...t2 }));
       state.selectedMutantId = null;
     }
     function render() {
       recompute();
-      const exampleButtons = programExamples.map((ex) => `
+      const allExamples = [...programExamples, ...state.customExamples];
+      const exampleButtons = allExamples.map((ex) => `
       <button
         type="button"
         class="syntax-example-btn${state.exampleId === ex.id ? " active" : ""}"
         data-example="${ex.id}"
-        title="${escapeHtml3(ex.description)}"
+        title="${escapeHtml3(getLocale() === "en" ? ex.descriptionEn || ex.description : ex.description)}"
         data-testid="syntax-example-${ex.id}"
       >${escapeHtml3(ex.name)}</button>
     `).join("");
       const operatorButtons = mutationOperators.map((op) => `
-      <label class="syntax-op-btn${state.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(op.desc)}">
+      <label class="syntax-op-btn${state.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(getLocale() === "en" ? op.descEn || op.desc : op.desc)}">
         <input type="checkbox" data-operator="${op.id}" ${state.operators.has(op.id) ? "checked" : ""} />
         <span>${escapeHtml3(op.id)}</span>
       </label>
@@ -4911,7 +6016,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }
       const showMutantCol = !!selectedMutant;
       const killedByIds = selectedMutant ? new Set(selectedMutant.killedBy) : /* @__PURE__ */ new Set();
-      const testRows = state.tests.map((t, i) => {
+      const testRows = state.tests.map((tc, i) => {
         const result = state.suiteResults[i];
         const passClass = (result == null ? void 0 : result.passed) ? "pass" : result ? "fail" : "";
         const actual = (result == null ? void 0 : result.outcome.ok) ? formatValue(result.outcome.value) : `\u26A0 ${(result == null ? void 0 : result.outcome.error) || ""}`;
@@ -4920,19 +6025,19 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         if (showMutantCol) {
           const mr = mutantSuiteResults == null ? void 0 : mutantSuiteResults[i];
           const mutantActual = (mr == null ? void 0 : mr.outcome.ok) ? formatValue(mr.outcome.value) : `\u26A0 ${(mr == null ? void 0 : mr.outcome.error) || ""}`;
-          const isKilled = killedByIds.has(t.id);
+          const isKilled = killedByIds.has(tc.id);
           killClass = isKilled ? "killed-by" : "survived-by";
           mutantCell = `<td class="syntax-test-mutant ${killClass}"><code>${escapeHtml3(mutantActual)}</code>${isKilled ? '<span class="syntax-test-kill-badge">killed</span>' : ""}</td>`;
         }
         return `
-        <tr class="syntax-test-row ${passClass} ${killClass}" data-testid="syntax-test-row-${t.id}">
-          <td><code>${escapeHtml3(t.id)}</code></td>
-          <td><input type="text" class="syntax-test-input" data-test-args="${t.id}" value="${escapeHtml3(t.argsText)}" /></td>
-          <td><input type="text" class="syntax-test-input" data-test-expected="${t.id}" value="${escapeHtml3(t.expectedText)}" /></td>
+        <tr class="syntax-test-row ${passClass} ${killClass}" data-testid="syntax-test-row-${tc.id}">
+          <td><code>${escapeHtml3(tc.id)}</code></td>
+          <td><input type="text" class="syntax-test-input" data-test-args="${tc.id}" value="${escapeHtml3(tc.argsText)}" /></td>
+          <td><input type="text" class="syntax-test-input" data-test-expected="${tc.id}" value="${escapeHtml3(tc.expectedText)}" /></td>
           <td><code>${escapeHtml3(actual)}</code></td>
           ${mutantCell}
           <td>
-            <button type="button" class="syntax-test-remove" data-remove-test="${t.id}" aria-label="\u79FB\u9664">\xD7</button>
+            <button type="button" class="syntax-test-remove" data-remove-test="${tc.id}" aria-label="${t("syntax.removeTest")}">\xD7</button>
           </td>
         </tr>
       `;
@@ -4963,18 +6068,18 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const selectedDetail = selected ? `
       <div class="syntax-mutant-detail" data-testid="syntax-mutant-detail">
         <h4>${escapeHtml3(selected.id)} <span class="syntax-mutant-op">${escapeHtml3(selected.operator)}</span></h4>
-        <p class="syntax-mutant-meta">L${selected.line}:${selected.col} \xB7 \u72C0\u614B\uFF1A<strong>${escapeHtml3(selected.status)}</strong></p>
+        <p class="syntax-mutant-meta">L${selected.line}:${selected.col} \xB7 ${t("syntax.mutant.statusLabel")}<strong>${escapeHtml3(selected.status)}</strong></p>
         <pre class="syntax-mutant-source"><code>${escapeHtml3(selected.source)}</code></pre>
         <p class="syntax-mutant-killed">
-          ${selected.killedBy.length ? `\u88AB\u4EE5\u4E0B test killed\uFF1A${selected.killedBy.map((id) => `<code>${escapeHtml3(id)}</code>`).join(", ")}` : "\u6B64 mutant \u4ECD live\uFF1B\u53EF\u624B\u52D5\u6A19\u70BA equivalent\u3002"}
+          ${selected.killedBy.length ? t("syntax.mutant.killedByList", { ids: selected.killedBy.map((id) => `<code>${escapeHtml3(id)}</code>`).join(", ") }) : t("syntax.mutant.liveHint")}
         </p>
         <div class="syntax-mutant-actions">
           <button type="button" data-toggle-equivalent="${selected.id}">
-            ${selected.status === "equivalent" ? "\u53D6\u6D88\u6A19\u8A18\u70BA equivalent" : "\u6A19\u8A18\u70BA equivalent"}
+            ${selected.status === "equivalent" ? t("common.unmarkEquivalent") : t("common.markEquivalent")}
           </button>
         </div>
       </div>
-    ` : '<p class="syntax-mutant-empty">\u9EDE\u9078\u5DE6\u5074 mutant \u67E5\u770B\u7D30\u7BC0\u3002</p>';
+    ` : `<p class="syntax-mutant-empty">${t("syntax.mutant.empty")}</p>`;
       const scorePct = Math.round(state.score.score * 100);
       root2.innerHTML = `
       <div class="syntax-toolbar">
@@ -4988,29 +6093,29 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           data-status="${state.cloudStatus}"
         >${escapeHtml3(cloudIndicatorText())}</span>
         <span class="syntax-cloud-actions">
-          ${state.cloudUser ? '<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB \u5F9E\u96F2\u7AEF\u91CD\u65B0\u8F09\u5165</button>' : ""}
-          <button type="button" class="syntax-reset-btn" data-testid="syntax-reset-program">\u21BA \u9084\u539F\u6B64\u7BC4\u4F8B\u9810\u8A2D</button>
+          ${state.cloudUser ? `<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB ${t("syntax.cloud.reload")}</button>` : ""}
+          <button type="button" class="syntax-reset-btn" data-testid="syntax-reset-program">\u21BA ${t("syntax.reset")}</button>
         </span>
       </div>
 
       <div class="syntax-grid">
         <section class="syntax-program">
-          <label class="syntax-label">\u53C3\u6578\uFF08\u9017\u865F\u5206\u9694\uFF09</label>
+          <label class="syntax-label">${t("syntax.params")}</label>
           <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml3(state.params)}" />
-          <label class="syntax-label">\u51FD\u5F0F\u5167\u5BB9</label>
+          <label class="syntax-label">${t("syntax.body")}</label>
           <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml3(state.body)}</textarea>
         </section>
 
         <section class="syntax-tests">
           <header class="syntax-tests-header">
-            <h4>\u6E2C\u8A66\u6848\u4F8B</h4>
-            <button type="button" class="syntax-test-add" data-testid="syntax-test-add">\uFF0B \u65B0\u589E test</button>
+            <h4>${t("syntax.tests")}</h4>
+            <button type="button" class="syntax-test-add" data-testid="syntax-test-add">\uFF0B ${t("syntax.test.add")}</button>
           </header>
           <table class="syntax-test-table" data-testid="syntax-test-table">
             <thead>
               <tr>
                 <th>id</th>
-                <th>args\uFF08JSON \u5143\u7D20\uFF0C\u9017\u865F\u5206\u9694\uFF09</th>
+                <th>${t("syntax.col.args")}</th>
                 <th>expected\uFF08JSON\uFF09</th>
                 <th>actual</th>
                 ${mutantHeaderCol}
@@ -5031,7 +6136,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <p class="syntax-score-stats" data-testid="syntax-score-stats">
           Mutation Score\uFF1A<strong>${scorePct}%</strong>
           <span class="syntax-divider">\xB7</span>
-          \u7E3D\u6578 ${state.score.total}
+          ${t("syntax.totalLabel")} ${state.score.total}
           <span class="syntax-divider">\xB7</span>
           killed <strong>${state.score.killed}</strong>
           <span class="syntax-divider">\xB7</span>
@@ -5042,7 +6147,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       </section>
 
       <section class="syntax-mutant-section">
-        <div class="syntax-mutant-list" data-testid="syntax-mutant-list">${mutantList || '<p class="syntax-mutant-empty">\u7121 mutants\uFF08\u8ACB\u9078\u64C7\u81F3\u5C11\u4E00\u500B operator\uFF09\u3002</p>'}</div>
+        <div class="syntax-mutant-list" data-testid="syntax-mutant-list">${mutantList || `<p class="syntax-mutant-empty">${t("syntax.noMutants")}</p>`}</div>
         ${selectedDetail}
       </section>
     `;
@@ -5063,7 +6168,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           const snap = defaultProgramSnapshot(ex);
           state.params = snap.params;
           state.body = snap.body;
-          state.tests = snap.tests.map((t) => ({ ...t }));
+          state.tests = snap.tests.map((t2) => ({ ...t2 }));
           state.selectedMutantId = null;
           persistCurrent();
           render();
@@ -5110,14 +6215,14 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       root2.querySelectorAll("[data-test-args]").forEach((input) => {
         input.addEventListener("input", (e) => {
           const id = input.dataset.testArgs;
-          const t = state.tests.find((x) => x.id === id);
-          if (t) t.argsText = e.target.value;
+          const t2 = state.tests.find((x) => x.id === id);
+          if (t2) t2.argsText = e.target.value;
           persistCurrent();
         });
         input.addEventListener("change", (e) => {
           const id = input.dataset.testArgs;
-          const t = state.tests.find((x) => x.id === id);
-          if (t) t.argsText = e.target.value;
+          const t2 = state.tests.find((x) => x.id === id);
+          if (t2) t2.argsText = e.target.value;
           persistCurrent();
           render();
         });
@@ -5125,21 +6230,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       root2.querySelectorAll("[data-test-expected]").forEach((input) => {
         input.addEventListener("input", (e) => {
           const id = input.dataset.testExpected;
-          const t = state.tests.find((x) => x.id === id);
-          if (t) t.expectedText = e.target.value;
+          const t2 = state.tests.find((x) => x.id === id);
+          if (t2) t2.expectedText = e.target.value;
           persistCurrent();
         });
         input.addEventListener("change", (e) => {
           const id = input.dataset.testExpected;
-          const t = state.tests.find((x) => x.id === id);
-          if (t) t.expectedText = e.target.value;
+          const t2 = state.tests.find((x) => x.id === id);
+          if (t2) t2.expectedText = e.target.value;
           persistCurrent();
           render();
         });
       });
       root2.querySelectorAll("[data-remove-test]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state.tests = state.tests.filter((t) => t.id !== btn.dataset.removeTest);
+          state.tests = state.tests.filter((t2) => t2.id !== btn.dataset.removeTest);
           persistCurrent();
           render();
         });
@@ -5181,7 +6286,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         }
         await reloadFromCloud();
       });
-      if (typeof ((_a = globalThis.document) == null ? void 0 : _a.addEventListener) === "function") {
+      if (typeof ((_a2 = globalThis.document) == null ? void 0 : _a2.addEventListener) === "function") {
         globalThis.document.addEventListener("visibilitychange", () => {
           if (globalThis.document.visibilityState === "visible" && state.cloudUser) {
             reloadFromCloud();
@@ -5197,121 +6302,149 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
       }
     }
+    if (typeof globalThis.addEventListener === "function") {
+      globalThis.addEventListener("stvisual:load-program-source", (event) => {
+        var _a3;
+        if (!root2.isConnected) return;
+        const detail = event.detail || {};
+        if (detail.target !== "mutation") return;
+        const content = String((_a3 = detail.content) != null ? _a3 : "");
+        const parsed = parseFunctionSource(content);
+        const baseName = (detail.name || "uploaded").replace(/\.[^.]+$/, "") || "uploaded";
+        const id = `uploaded-${Date.now().toString(36)}`;
+        const params = parsed ? parsed.params : "";
+        const body = parsed ? parsed.body : content;
+        const newExample = {
+          id,
+          name: baseName,
+          nameEn: baseName,
+          description: `Uploaded from cloud: ${detail.name || baseName}`,
+          descriptionEn: `Uploaded from cloud: ${detail.name || baseName}`,
+          params: params ? params.split(",").map((s) => s.trim()).filter(Boolean) : [],
+          body,
+          tests: []
+        };
+        state.customExamples = [...state.customExamples, newExample];
+        state.programs[id] = { params, body, tests: [] };
+        state.exampleId = id;
+        state.params = params;
+        state.body = body;
+        state.tests = [];
+        state.selectedMutantId = null;
+        persistCurrent();
+        render();
+      });
+    }
     return root2;
   }
 
   // src/app.js
   var sectionsConfig = [
-    { id: "all", label: "\u5168\u89BD" },
-    { id: "methods", label: "\u6E2C\u8A66\u65B9\u6CD5" },
-    { id: "graph", label: "Graph Coverage" },
-    { id: "logic", label: "Logic Coverage" },
-    { id: "syntax", label: "Syntax-Based Testing" },
-    { id: "cloud", label: "\u96F2\u7AEF\u6574\u5408" },
-    { id: "flow", label: "\u6E2C\u8A66\u6D41\u7A0B" },
-    { id: "types", label: "\u6E2C\u8A66\u985E\u578B" }
+    { id: "all", key: "section.all" },
+    { id: "methods", key: "section.methods" },
+    { id: "graph", key: "section.graph" },
+    { id: "logic", key: "section.logic" },
+    { id: "syntax", key: "section.syntax" },
+    { id: "cloud", key: "section.cloud" },
+    { id: "flow", key: "section.flow" },
+    { id: "types", key: "section.types" }
   ];
   function renderApp(container) {
-    container.innerHTML = `
-    <div class="app">
-      <header class="app-header">
-        <h1>\u8EDF\u9AD4\u6E2C\u8A66\u65B9\u6CD5\u8996\u89BA\u5316</h1>
-        <p>Software Testing Methods Visualization</p>
-      </header>
+    function paint() {
+      container.innerHTML = `
+      <div class="app">
+        <header class="app-header">
+          <div class="app-header__text">
+            <h1>${t("app.title")}</h1>
+            <p>${t("app.subtitle")}</p>
+          </div>
+          <div class="app-lang" role="group" aria-label="${t("app.lang.label")}">
+            <label class="app-lang__label" for="app-lang-select">${t("app.lang.label")}</label>
+            <select id="app-lang-select" data-testid="app-lang-select">
+              <option value="en"${getLocale() === "en" ? " selected" : ""}>${t("app.lang.en")}</option>
+              <option value="zh"${getLocale() === "zh" ? " selected" : ""}>${t("app.lang.zh")}</option>
+            </select>
+          </div>
+        </header>
 
-      <nav class="app-nav" aria-label="\u5207\u63DB\u5340\u584A" data-testid="app-nav"></nav>
+        <nav class="app-nav" aria-label="${t("app.nav.aria")}" data-testid="app-nav"></nav>
 
-      <main class="app-main">
-        <section data-testid="section-methods">
-          <h2>\u6E2C\u8A66\u65B9\u6CD5\u5206\u985E</h2>
-          <div data-slot="methods"></div>
-        </section>
-        <section data-testid="section-graph">
-          <h2>Graph Coverage \u8996\u89BA\u5316</h2>
-          <div data-slot="graph"></div>
-        </section>
-        <section data-testid="section-logic">
-          <h2>Logic Coverage \u8996\u89BA\u5316</h2>
-          <div data-slot="logic"></div>
-        </section>
-        <section data-testid="section-syntax">
-          <h2>Syntax-Based Testing\uFF1AProgram Mutation</h2>
-          <div data-slot="syntax"></div>
-        </section>
-        <section data-testid="section-cloud">
-          <h2>Google \u96F2\u7AEF\u6574\u5408</h2>
-          <div data-slot="cloud"></div>
-        </section>
-        <section data-testid="section-flow">
-          <h2>\u6E2C\u8A66\u6D41\u7A0B</h2>
-          <div data-slot="flow"></div>
-        </section>
-        <section data-testid="section-types">
-          <h2>\u5E38\u898B\u6E2C\u8A66\u985E\u578B</h2>
-          <div data-slot="types"></div>
-        </section>
-      </main>
+        <main class="app-main">
+          <section data-testid="section-methods"><h2>${t("section.methods.title")}</h2><div data-slot="methods"></div></section>
+          <section data-testid="section-graph"><h2>${t("section.graph.title")}</h2><div data-slot="graph"></div></section>
+          <section data-testid="section-logic"><h2>${t("section.logic.title")}</h2><div data-slot="logic"></div></section>
+          <section data-testid="section-syntax"><h2>${t("section.syntax.title")}</h2><div data-slot="syntax"></div></section>
+          <section data-testid="section-cloud"><h2>${t("section.cloud.title")}</h2><div data-slot="cloud"></div></section>
+          <section data-testid="section-flow"><h2>${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
+          <section data-testid="section-types"><h2>${t("section.types.title")}</h2><div data-slot="types"></div></section>
+        </main>
 
-      <footer class="app-footer">
-        <p>\u6839\u64DA Plan.md \u5EFA\u7ACB \xB7 \u8EDF\u9AD4\u6E2C\u8A66\u65B9\u6CD5\u8996\u89BA\u5316\u7CFB\u7D71</p>
-      </footer>
-    </div>
-  `;
-    const nav = container.querySelector(".app-nav");
-    const main = container.querySelector(".app-main");
-    const sections = {
-      methods: main.querySelector('[data-testid="section-methods"]'),
-      graph: main.querySelector('[data-testid="section-graph"]'),
-      logic: main.querySelector('[data-testid="section-logic"]'),
-      syntax: main.querySelector('[data-testid="section-syntax"]'),
-      cloud: main.querySelector('[data-testid="section-cloud"]'),
-      flow: main.querySelector('[data-testid="section-flow"]'),
-      types: main.querySelector('[data-testid="section-types"]')
-    };
-    const components = {
-      methods: createTestingMethodTree(),
-      graph: createGraphCoverageExplorer(),
-      logic: createLogicCoverageExplorer(),
-      syntax: createSyntaxCoverageExplorer(),
-      cloud: createCloudStoragePanel(),
-      flow: createTestingFlow(),
-      types: createTestingTypesTable()
-    };
-    container.querySelector('[data-slot="methods"]').appendChild(components.methods);
-    container.querySelector('[data-slot="graph"]').appendChild(components.graph);
-    container.querySelector('[data-slot="logic"]').appendChild(components.logic);
-    container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
-    container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
-    container.querySelector('[data-slot="flow"]').appendChild(components.flow);
-    container.querySelector('[data-slot="types"]').appendChild(components.types);
-    let activeSection = "all";
-    function renderNav() {
-      nav.innerHTML = sectionsConfig.map((section) => `
-      <button
-        class="nav-btn${activeSection === section.id ? " active" : ""}"
-        data-testid="nav-btn-${section.id}"
-        data-section="${section.id}"
-        type="button"
-      >
-        ${section.label}
-      </button>
-    `).join("");
-      nav.querySelectorAll("[data-section]").forEach((button) => {
-        button.addEventListener("click", () => {
-          activeSection = button.dataset.section;
-          renderNav();
-          updateSectionVisibility();
+        <footer class="app-footer">
+          <p>${t("app.footer")}</p>
+        </footer>
+      </div>
+    `;
+      const nav = container.querySelector(".app-nav");
+      const main = container.querySelector(".app-main");
+      const sections = {
+        methods: main.querySelector('[data-testid="section-methods"]'),
+        graph: main.querySelector('[data-testid="section-graph"]'),
+        logic: main.querySelector('[data-testid="section-logic"]'),
+        syntax: main.querySelector('[data-testid="section-syntax"]'),
+        cloud: main.querySelector('[data-testid="section-cloud"]'),
+        flow: main.querySelector('[data-testid="section-flow"]'),
+        types: main.querySelector('[data-testid="section-types"]')
+      };
+      const components = {
+        methods: createTestingMethodTree(),
+        graph: createGraphCoverageExplorer(),
+        logic: createLogicCoverageExplorer(),
+        syntax: createSyntaxCoverageExplorer(),
+        cloud: createCloudStoragePanel(),
+        flow: createTestingFlow(),
+        types: createTestingTypesTable()
+      };
+      container.querySelector('[data-slot="methods"]').appendChild(components.methods);
+      container.querySelector('[data-slot="graph"]').appendChild(components.graph);
+      container.querySelector('[data-slot="logic"]').appendChild(components.logic);
+      container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
+      container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
+      container.querySelector('[data-slot="flow"]').appendChild(components.flow);
+      container.querySelector('[data-slot="types"]').appendChild(components.types);
+      let activeSection = "all";
+      function renderNav() {
+        nav.innerHTML = sectionsConfig.map((section) => `
+        <button
+          class="nav-btn${activeSection === section.id ? " active" : ""}"
+          data-testid="nav-btn-${section.id}"
+          data-section="${section.id}"
+          type="button"
+        >
+          ${t(section.key)}
+        </button>
+      `).join("");
+        nav.querySelectorAll("[data-section]").forEach((button) => {
+          button.addEventListener("click", () => {
+            activeSection = button.dataset.section;
+            renderNav();
+            updateSectionVisibility();
+          });
         });
+      }
+      function updateSectionVisibility() {
+        Object.entries(sections).forEach(([id, element]) => {
+          const visible = activeSection === "all" || activeSection === id;
+          element.style.display = visible ? "" : "none";
+        });
+      }
+      container.querySelector("#app-lang-select").addEventListener("change", (e) => {
+        setLocale(e.target.value);
       });
+      renderNav();
+      updateSectionVisibility();
     }
-    function updateSectionVisibility() {
-      Object.entries(sections).forEach(([id, element]) => {
-        const visible = activeSection === "all" || activeSection === id;
-        element.style.display = visible ? "" : "none";
-      });
-    }
-    renderNav();
-    updateSectionVisibility();
+    paint();
+    onLocaleChange(() => paint());
   }
 
   // src/main.js

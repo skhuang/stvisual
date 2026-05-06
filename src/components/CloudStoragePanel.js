@@ -1,5 +1,6 @@
 import { graphCoverageCriteria } from '../data/testingData.js';
 import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
+import { t, pickField } from '../i18n/index.js';
 
 const DEFAULT_SETTINGS = {
   preferredCriterion: 'node',
@@ -26,13 +27,15 @@ export function createCloudStoragePanel() {
 
   let user = null;
   let status = canUseCloudAuth
-    ? '請先以 Google 登入後，再儲存設定或上傳檔案。'
+    ? t('cloud.signInPrompt')
     : client.isSupportedOrigin
-      ? `Firebase 設定不完整：${client.missingKeys.join(', ')}`
+      ? t('cloud.firebaseMissing', { keys: client.missingKeys.join(', ') })
       : client.originWarning;
   let settings = { ...DEFAULT_SETTINGS };
   let uploadedFiles = [];
   let selectedFile = null;
+  let driveFiles = [];
+  let driveFilesLoading = false;
 
   function render() {
     root.className = 'cloud-storage';
@@ -41,74 +44,102 @@ export function createCloudStoragePanel() {
       <div class="cloud-card">
         <div class="cloud-header">
           <div>
-            <p class="cloud-kicker">Google + Firebase</p>
-            <h3>雲端設定與檔案儲存</h3>
-            <p class="cloud-subtitle">Google 登入後：設定存 Firebase、檔案上傳到 Google Drive。</p>
-            ${!client.isSupportedOrigin ? '<p class="cloud-warning" data-testid="cloud-origin-warning">目前為 file:// 模式。Google OAuth 需要 http://localhost 或 https。</p>' : ''}
+            <p class="cloud-kicker">${t('cloud.kicker')}</p>
+            <h3>${t('cloud.title')}</h3>
+            <p class="cloud-subtitle">${t('cloud.subtitle')}</p>
+            ${!client.isSupportedOrigin ? `<p class="cloud-warning" data-testid="cloud-origin-warning">${t('cloud.fileWarning')}</p>` : ''}
           </div>
           <div class="cloud-auth-actions">
-            <button type="button" class="cloud-btn" data-testid="cloud-signin-btn" ${!canUseCloudAuth ? 'disabled' : ''}>Google 登入</button>
-            <button type="button" class="cloud-btn cloud-btn--secondary" data-testid="cloud-signout-btn" ${!user ? 'disabled' : ''}>登出</button>
+            ${user
+              ? `<span class="cloud-signed-in" data-testid="cloud-signed-in">${t('common.signedIn')}</span>`
+              : `<button type="button" class="cloud-btn" data-testid="cloud-signin-btn" ${!canUseCloudAuth ? 'disabled' : ''}>${t('common.googleSignIn')}</button>`}
+            <button type="button" class="cloud-btn cloud-btn--secondary" data-testid="cloud-signout-btn" ${!user ? 'disabled' : ''}>${t('common.signOut')}</button>
           </div>
         </div>
 
         <div class="cloud-meta">
           <p data-testid="cloud-status">${status}</p>
-          <p data-testid="cloud-user">${user ? `目前使用者：${user.email || user.uid}` : '尚未登入'}</p>
+          <p data-testid="cloud-user">${user ? t('cloud.userPrefix', { name: user.email || user.uid }) : t('common.notSignedIn')}</p>
         </div>
 
         <div class="cloud-grid">
           <section class="cloud-section">
-            <h4>設定（Firebase Firestore）</h4>
+            <h4>${t('cloud.section.settings')}</h4>
             <label>
-              預設 Coverage Criterion
+              ${t('cloud.preferredCriterion')}
               <select data-testid="cloud-criterion-select">
                 ${graphCoverageCriteria.map((criterion) => `
-                  <option value="${criterion.id}"${settings.preferredCriterion === criterion.id ? ' selected' : ''}>${criterion.label}</option>
+                  <option value="${criterion.id}"${settings.preferredCriterion === criterion.id ? ' selected' : ''}>${pickField(criterion, 'label')}</option>
                 `).join('')}
               </select>
             </label>
 
             <label>
-              備註
+              ${t('cloud.notes')}
               <textarea data-testid="cloud-notes-input">${settings.notes || ''}</textarea>
             </label>
 
             <label>
-              額外設定 JSON
+              ${t('cloud.extras')}
               <textarea data-testid="cloud-extras-input">${formatJson(settings.extras || {})}</textarea>
             </label>
 
             <div class="cloud-actions-row">
-              <button type="button" class="cloud-btn" data-testid="cloud-load-settings-btn" ${!user ? 'disabled' : ''}>讀取設定</button>
-              <button type="button" class="cloud-btn" data-testid="cloud-save-settings-btn" ${!user ? 'disabled' : ''}>儲存設定</button>
+              <button type="button" class="cloud-btn" data-testid="cloud-load-settings-btn" ${!user ? 'disabled' : ''}>${t('cloud.loadSettings')}</button>
+              <button type="button" class="cloud-btn" data-testid="cloud-save-settings-btn" ${!user ? 'disabled' : ''}>${t('cloud.saveSettings')}</button>
             </div>
           </section>
 
           <section class="cloud-section">
-            <h4>檔案（Google Drive）</h4>
+            <h4>${t('cloud.section.files')}</h4>
             <label class="cloud-file-picker">
-              選擇要上傳的檔案
+              ${t('cloud.uploadHint')}
               <input type="file" data-testid="cloud-file-input" ${!user ? 'disabled' : ''} />
             </label>
-            <p data-testid="cloud-file-name">${selectedFile ? `待上傳：${selectedFile.name}` : '尚未選擇檔案'}</p>
-            <button type="button" class="cloud-btn" data-testid="cloud-upload-btn" ${!selectedFile || !user ? 'disabled' : ''}>上傳到 Google Drive</button>
+            <p data-testid="cloud-file-name">${selectedFile ? t('cloud.pendingUpload', { name: selectedFile.name }) : t('cloud.noFileSelected')}</p>
+            <button type="button" class="cloud-btn" data-testid="cloud-upload-btn" ${!selectedFile || !user ? 'disabled' : ''}>${t('cloud.upload')}</button>
 
             <ul class="cloud-upload-list" data-testid="cloud-upload-list">
-              ${uploadedFiles.map((item) => `<li><strong>${item.name}</strong>${item.webViewLink ? ` · <a href="${item.webViewLink}" target="_blank" rel="noreferrer">開啟</a>` : ''}</li>`).join('') || '<li>尚無上傳紀錄</li>'}
+              ${uploadedFiles.map((item, idx) => `<li>
+                <div class="cloud-upload-row">
+                  <strong>${item.name}</strong>${item.webViewLink ? ` · <a href="${item.webViewLink}" target="_blank" rel="noreferrer">${t('cloud.openFile')}</a>` : ''}
+                </div>
+                <div class="cloud-upload-actions">
+                  <button type="button" class="cloud-btn cloud-btn--small" data-use-target="mutation" data-use-idx="${idx}">${t('cloud.useForMutation')}</button>
+                  <button type="button" class="cloud-btn cloud-btn--small" data-use-target="graph" data-use-idx="${idx}">${t('cloud.useForGraph')}</button>
+                </div>
+              </li>`).join('') || `<li>${t('cloud.noFiles')}</li>`}
+            </ul>
+
+            <div class="cloud-drive-list-header">
+              <h5>${t('cloud.driveFilesTitle')}</h5>
+              <button type="button" class="cloud-btn cloud-btn--small" data-testid="cloud-refresh-drive-btn" ${!user ? 'disabled' : ''}>${driveFilesLoading ? t('cloud.refreshing') : t('cloud.refreshDriveFiles')}</button>
+            </div>
+            <ul class="cloud-drive-list" data-testid="cloud-drive-list">
+              ${driveFiles.length === 0
+                ? `<li class="cloud-drive-empty">${user ? (driveFilesLoading ? t('cloud.refreshing') : t('cloud.noDriveFiles')) : t('cloud.signInToList')}</li>`
+                : driveFiles.map((f, idx) => `<li>
+                    <div class="cloud-upload-row">
+                      <strong>${f.name}</strong>${f.modifiedTime ? ` · <span class="cloud-drive-time">${new Date(f.modifiedTime).toLocaleString()}</span>` : ''}${f.webViewLink ? ` · <a href="${f.webViewLink}" target="_blank" rel="noreferrer">${t('cloud.openFile')}</a>` : ''}
+                    </div>
+                    <div class="cloud-upload-actions">
+                      <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="mutation" data-drive-idx="${idx}">${t('cloud.useForMutation')}</button>
+                      <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="graph" data-drive-idx="${idx}">${t('cloud.useForGraph')}</button>
+                    </div>
+                  </li>`).join('')}
             </ul>
           </section>
         </div>
       </div>
     `;
 
-    root.querySelector('[data-testid="cloud-signin-btn"]').addEventListener('click', async () => {
+    root.querySelector('[data-testid="cloud-signin-btn"]')?.addEventListener('click', async () => {
       try {
         const result = await client.signInWithGoogle();
         user = result.user;
         status = result.hasDriveToken
-          ? 'Google 登入成功，已取得 Drive 上傳權限。'
-          : 'Google 登入成功，但未取得 Drive 權限，請重新登入。';
+          ? t('cloud.signedInOk')
+          : t('cloud.signedInNoDrive');;
         render();
       } catch (error) {
         status = error.message;
@@ -121,7 +152,7 @@ export function createCloudStoragePanel() {
         await client.signOutGoogle();
         user = null;
         selectedFile = null;
-        status = '已登出。';
+        status = t('cloud.signedOut');;
         render();
       } catch (error) {
         status = error.message;
@@ -151,9 +182,9 @@ export function createCloudStoragePanel() {
             notes: loaded.notes || '',
             extras: loaded.extras || {},
           };
-          status = '已從 Firebase 載入設定。';
+          status = t('cloud.loadedOk');
         } else {
-          status = 'Firebase 尚無已儲存設定。';
+          status = t('cloud.noSavedSettings');
         }
         render();
       } catch (error) {
@@ -168,19 +199,35 @@ export function createCloudStoragePanel() {
         settings.extras = extras;
 
         await client.saveSettings(user.uid, settings);
-        status = '設定已儲存到 Firebase。';
+        status = t('cloud.savedOk');
         render();
       } catch (error) {
-        status = error.message.includes('JSON') ? '額外設定 JSON 格式錯誤。' : error.message;
+        status = error.message.includes('JSON') ? t('cloud.extrasJsonError') : error.message;
         render();
       }
     });
 
     root.querySelector('[data-testid="cloud-upload-btn"]').addEventListener('click', async () => {
       try {
-        const uploaded = await client.uploadFileToDrive(selectedFile);
-        uploadedFiles = [uploaded, ...uploadedFiles].slice(0, 8);
-        status = `檔案 ${uploaded.name} 已上傳到 Google Drive。`;
+        const fileToUpload = selectedFile;
+        let content = null;
+        try {
+          if (typeof fileToUpload.text === 'function') {
+            content = await fileToUpload.text();
+          } else if (typeof FileReader !== 'undefined') {
+            content = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(String(reader.result || ''));
+              reader.onerror = () => reject(reader.error);
+              reader.readAsText(fileToUpload);
+            });
+          }
+        } catch {
+          content = null;
+        }
+        const uploaded = await client.uploadFileToDrive(fileToUpload);
+        uploadedFiles = [{ ...uploaded, content, fileName: fileToUpload.name, file: fileToUpload }, ...uploadedFiles].slice(0, 8);
+        status = t('cloud.uploadedOk', { name: uploaded.name });
         selectedFile = null;
         render();
       } catch (error) {
@@ -188,12 +235,103 @@ export function createCloudStoragePanel() {
         render();
       }
     });
+
+    root.querySelectorAll('[data-use-target]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const idx = Number(btn.dataset.useIdx);
+        const target = btn.dataset.useTarget;
+        const item = uploadedFiles[idx];
+        if (!item) return;
+        let content = item.content;
+        if (content == null && item.file) {
+          try {
+            content = typeof item.file.text === 'function'
+              ? await item.file.text()
+              : await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ''));
+                reader.onerror = () => reject(reader.error);
+                reader.readAsText(item.file);
+              });
+            item.content = content;
+          } catch (err) {
+            status = t('cloud.readError', { msg: err?.message || err });
+            render();
+            return;
+          }
+        }
+        if (content == null) {
+          status = t('cloud.noContent');
+          render();
+          return;
+        }
+        const sectionId = target === 'mutation' ? 'section-syntax' : 'section-graph';
+        const targetSection = globalThis.document?.querySelector(`[data-testid="${sectionId}"]`);
+        targetSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        globalThis.dispatchEvent?.(new CustomEvent('stvisual:load-program-source', {
+          detail: { target, name: item.fileName || item.name, content },
+        }));
+        status = target === 'mutation'
+          ? t('cloud.sentToMutation', { name: item.name })
+          : t('cloud.sentToGraph', { name: item.name });
+        render();
+      });
+    });
+
+    root.querySelector('[data-testid="cloud-refresh-drive-btn"]')?.addEventListener('click', async () => {
+      if (!user || typeof client.listDriveFiles !== 'function') return;
+      driveFilesLoading = true;
+      status = t('cloud.refreshing');
+      render();
+      try {
+        driveFiles = await client.listDriveFiles();
+        status = t('cloud.driveListed', { count: driveFiles.length });
+      } catch (err) {
+        status = t('cloud.driveListError', { msg: err?.message || err });
+      } finally {
+        driveFilesLoading = false;
+        render();
+      }
+    });
+
+    root.querySelectorAll('[data-drive-target]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const idx = Number(btn.dataset.driveIdx);
+        const target = btn.dataset.driveTarget;
+        const f = driveFiles[idx];
+        if (!f) return;
+        try {
+          status = t('cloud.downloading', { name: f.name });
+          render();
+          const content = await client.downloadDriveFile(f.id);
+          const sectionId = target === 'mutation' ? 'section-syntax' : 'section-graph';
+          const targetSection = globalThis.document?.querySelector(`[data-testid="${sectionId}"]`);
+          targetSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          globalThis.dispatchEvent?.(new CustomEvent('stvisual:load-program-source', {
+            detail: { target, name: f.name, content },
+          }));
+          status = target === 'mutation'
+            ? t('cloud.sentToMutation', { name: f.name })
+            : t('cloud.sentToGraph', { name: f.name });
+        } catch (err) {
+          status = t('cloud.readError', { msg: err?.message || err });
+        }
+        render();
+      });
+    });
   }
 
   client.subscribeAuthState(async (nextUser) => {
     user = nextUser;
     if (!user && canUseCloudAuth) {
-      status = '請先以 Google 登入後，再儲存設定或上傳檔案。';
+      status = t('cloud.signInPrompt');
+      driveFiles = [];
+    } else if (user && typeof client.listDriveFiles === 'function') {
+      try {
+        driveFiles = await client.listDriveFiles();
+      } catch {
+        // silent — user can refresh manually
+      }
     }
     render();
   });

@@ -8,6 +8,7 @@ import {
   termToString,
 } from '../utils/logicCoverage.js';
 import { buildKMap } from '../utils/karnaughMap.js';
+import { t, getLocale, pickField } from '../i18n/index.js';
 import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
 
 const RECENT_KEY = 'stvisual.logic.recentPredicates';
@@ -50,7 +51,7 @@ function termToHtml(term) {
   return term.map((lit) => `${lit.negated ? '!' : ''}${lit.name}`).join(' ∧ ');
 }
 
-// 教科書記號：相鄰代表 AND、+ 代表 OR、上方橫線代表 NOT。
+// Textbook notation: adjacency = AND, + = OR, overline = NOT.
 function literalToCompactHtml(lit) {
   const name = escapeHtml(lit.name);
   return lit.negated
@@ -93,7 +94,7 @@ function renderKMap(rows, clauses, target, title, options = {}) {
   const map = buildKMap(rows, clauses, target);
   if (map.unsupported) {
     return `<div class="logic-kmap"><h4 class="logic-kmap-title">${escapeHtml(title)}</h4>
-      <p class="logic-kmap-note">Karnaugh map 僅支援 1–4 個 clauses（目前為 ${map.n}）。</p></div>`;
+      <p class="logic-kmap-note">${t('logic.kmap.unsupported', { n: map.n })}</p></div>`;
   }
   const colHeaderLabel = map.colVars.length ? map.colVars.join('') : '';
   const rowHeaderLabel = map.rowVars.length ? map.rowVars.join('') : '';
@@ -210,7 +211,7 @@ export function createLogicCoverageExplorer() {
   function pushRecentToCloud(list) {
     if (!cloudClient || !state.cloudUser || typeof cloudClient.saveLogicRecent !== 'function') return;
     cloudClient.saveLogicRecent(state.cloudUser.uid, list).catch(() => {
-      // 忽略雲端錯誤，仍保留本地紀錄。
+      // Ignore cloud errors; keep local record.
     });
   }
 
@@ -244,7 +245,7 @@ export function createLogicCoverageExplorer() {
     try {
       state.parsed = parsePredicate(state.expression);
       if (state.parsed.clauses.length > 6) {
-        throw new Error('為了視覺化可讀性，子句數量請限制在 6 個以內。');
+        throw new Error(t('logic.err.tooManyClauses'));
       }
       state.analysis = buildAllCoverageSets(state.parsed);
       state.error = null;
@@ -284,7 +285,7 @@ export function createLogicCoverageExplorer() {
     const recentMarkup = state.recent.length
       ? `
         <div class="logic-recent" data-testid="logic-recent">
-          <span class="logic-recent-label">最近：</span>
+          <span class="logic-recent-label">${t('logic.recent')}</span>
           ${state.recent
             .map((expr) => `
               <span class="logic-recent-chip${state.expression === expr ? ' active' : ''}" data-testid="logic-recent-chip">
@@ -298,8 +299,8 @@ export function createLogicCoverageExplorer() {
                   type="button"
                   class="logic-recent-remove"
                   data-recent-remove="${escapeHtml(expr)}"
-                  aria-label="移除 ${escapeHtml(expr)}"
-                  title="移除"
+                  aria-label="${t('logic.remove')} ${escapeHtml(expr)}"
+                  title="${t('logic.remove')}"
                 >×</button>
               </span>
             `)
@@ -317,7 +318,7 @@ export function createLogicCoverageExplorer() {
           data-testid="logic-criterion-${c.id}"
         >
           <span class="logic-criterion-label">${escapeHtml(c.label)}</span>
-          <span class="logic-criterion-zh">${escapeHtml(c.labelZh)}</span>
+          <span class="logic-criterion-zh">${escapeHtml(getLocale() === 'en' ? (c.descriptionEn || c.description || '') : c.labelZh)}</span>
         </button>
       `)
       .join('');
@@ -337,14 +338,14 @@ export function createLogicCoverageExplorer() {
           autocomplete="off"
           data-testid="logic-expression-input"
         />
-        <p class="logic-input-hint">支援 <code>&amp;&amp;</code> / <code>||</code> / <code>!</code>，也接受教科書記號：相鄰即 AND（如 <code>ab</code>）、<code>+</code> 為 OR（如 <code>a+b</code>）。</p>
+        <p class="logic-input-hint">${t('logic.inputHint')}</p>
         <div class="logic-examples">${examplesMarkup}</div>
         ${recentMarkup}
       </div>
 
       ${state.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml(state.error)}</div>` : ''}
 
-      <div class="logic-criteria" role="tablist" aria-label="Logic Coverage 準則">
+      <div class="logic-criteria" role="tablist" aria-label="${t('logic.aria.criteria')}">
         ${criteriaMarkup}
       </div>
 
@@ -446,22 +447,22 @@ export function createLogicCoverageExplorer() {
             .join(', ')}</span>
           <span class="logic-test-pred ${t.row.predicate ? 'is-true' : 'is-false'}">P=${t.row.predicate ? 'T' : 'F'}</span>
           <span class="logic-test-label">${escapeHtml(t.label)}</span>
-          ${isDuplicate ? '<span class="logic-test-dup-tag" aria-label="重複">重複</span>' : ''}
+          ${isDuplicate ? `<span class="logic-test-dup-tag" aria-label="${t('logic.duplicate')}">${t('logic.duplicate')}</span>` : ''}
         </li>
       `)
       .join('');
 
     const unsatisfied = set.unsatisfied?.length
-      ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">無法找到下列需求對應列：${set.unsatisfied.join(', ')}</p>`
+      ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">${t('logic.unsatisfied', { items: set.unsatisfied.join(', ') })}</p>`
       : '';
 
     const dnfMarkup = ['ic', 'utpc', 'mutpc', 'nfpc', 'mnfpc', 'cutpnfp'].includes(set.id) && state.analysis.dnf
-      ? `<p class="logic-dnf" data-testid="logic-dnf">f 的最小 DNF：${dnfToHtml(state.analysis.dnf)}
-          <span class="logic-dnf-alt">（教科書記號：${dnfToCompactHtml(state.analysis.dnf)}）</span>
+      ? `<p class="logic-dnf" data-testid="logic-dnf">${t('logic.dnfPrefix')}${dnfToHtml(state.analysis.dnf)}
+          <span class="logic-dnf-alt">${t('logic.textbookOpen')}${dnfToCompactHtml(state.analysis.dnf)}${t('logic.textbookClose')}</span>
         </p>${
           set.id === 'ic' && state.analysis.negDnf
-            ? `<p class="logic-dnf" data-testid="logic-dnf-neg">¬f 的最小 DNF：${dnfToHtml(state.analysis.negDnf)}
-                <span class="logic-dnf-alt">（教科書記號：${dnfToCompactHtml(state.analysis.negDnf)}）</span>
+            ? `<p class="logic-dnf" data-testid="logic-dnf-neg">${t('logic.dnfNegPrefix')}${dnfToHtml(state.analysis.negDnf)}
+                <span class="logic-dnf-alt">${t('logic.textbookOpen')}${dnfToCompactHtml(state.analysis.negDnf)}${t('logic.textbookClose')}</span>
               </p>`
             : ''
         }`
@@ -493,14 +494,14 @@ export function createLogicCoverageExplorer() {
                   state.analysis.rows,
                   state.parsed.clauses,
                   true,
-                  'f 的 Karnaugh Map（★ = 選用 test case）',
+                  t('logic.kmap.title.fStar'),
                   { highlightedMinterms: posTestSet, implicantGroups: posGroups, highlightLabel: 'test' },
                 )}
                 ${renderKMap(
                   state.analysis.rows,
                   state.parsed.clauses,
                   false,
-                  '¬f 的 Karnaugh Map（★ = 選用 test case）',
+                  t('logic.kmap.title.fNegStar'),
                   { highlightedMinterms: negTestSet, implicantGroups: negGroups, highlightLabel: 'test' },
                 )}
               </div>`;
@@ -511,7 +512,7 @@ export function createLogicCoverageExplorer() {
                   state.analysis.rows,
                   state.parsed.clauses,
                   true,
-                  'f 的 Karnaugh Map（★ = 選取的 UTP）',
+                  t('logic.kmap.title.utp'),
                   { highlightedMinterms: new Set(set.tests.map((t) => t.row.index)) },
                 )}
               </div>`
@@ -524,7 +525,7 @@ export function createLogicCoverageExplorer() {
                     state.analysis.rows,
                     state.parsed.clauses,
                     true,
-                    'f 的 Karnaugh Map（★ = 選取的 MUTP）',
+                    t('logic.kmap.title.mutp'),
                     {
                       highlightedMinterms: new Set(set.tests.map((t) => t.row.index)),
                       implicantGroups: groups,
@@ -543,15 +544,15 @@ export function createLogicCoverageExplorer() {
                   const color = IMPLICANT_PALETTE[t.implicantIndex % IMPLICANT_PALETTE.length];
                   const termText = termToString(dnf[t.implicantIndex] || []);
                   const litText = t.literal ? `${t.literal.negated ? '!' : ''}${t.literal.name}` : '';
-                  const label = `{${termText}} 翻轉 ${litText}`;
+                  const label = t('logic.flipLabel', { term: termText, lit: litText });
                   nfpMarks.set(t.row.index, { color, label });
                   if (typeof t.pairedTruePointIndex === 'number') {
                     ntpMarks.set(t.pairedTruePointIndex, { color, label });
                   }
                 });
                 const titleText = set.id === 'mnfpc'
-                  ? 'f 的 Karnaugh Map（MNFP：每個 implicant × literal 選取的 NFPs）'
-                  : 'f 的 Karnaugh Map（NFP 與對應 UTP）';
+                  ? t('logic.kmap.title.mnfp')
+                  : t('logic.kmap.title.nfp');
                 return `<div class="logic-kmap-row">
                   ${renderKMap(
                     state.analysis.rows,
@@ -563,7 +564,7 @@ export function createLogicCoverageExplorer() {
                 </div>`;
               })()
               : (() => {
-                // CUTPNFP：每對都是 test case，雙向標示。
+                // CUTPNFP: each pair is a test case, marked bidirectionally.
                 const dnf = state.analysis.dnf || [];
                 const groups = buildImplicantGroups(state.analysis.rows, dnf, true, 0, []);
                 const nfpMarks = new Map();
@@ -573,7 +574,7 @@ export function createLogicCoverageExplorer() {
                   const color = IMPLICANT_PALETTE[t.implicantIndex % IMPLICANT_PALETTE.length];
                   const termText = termToString(dnf[t.implicantIndex] || []);
                   const litText = t.literal ? `${t.literal.negated ? '!' : ''}${t.literal.name}` : '';
-                  const label = `{${termText}} 翻轉 ${litText}`;
+                  const label = t('logic.flipLabel', { term: termText, lit: litText });
                   testRowSet.add(t.row.index);
                   if (t.role === 'utp') {
                     ntpMarks.set(t.row.index, { color, label });
@@ -586,7 +587,7 @@ export function createLogicCoverageExplorer() {
                     state.analysis.rows,
                     state.parsed.clauses,
                     true,
-                    'f 的 Karnaugh Map（★ = 選取的 test case；UTP↔NFP 成對標示）',
+                    t('logic.kmap.title.cutpnfp'),
                     {
                       implicantGroups: groups,
                       nfpMarks,
@@ -605,13 +606,13 @@ export function createLogicCoverageExplorer() {
       ${dnfMarkup}
       ${kmapMarkup}
       <p class="logic-summary-stats">
-        測試列數：<strong data-testid="logic-test-count">${totalCount}</strong>
+        ${t('logic.metric.total')}<strong data-testid="logic-test-count">${totalCount}</strong>
         <span class="logic-divider">·</span>
-        實際需要（去重）：<strong data-testid="logic-test-unique-count">${uniqueCount}</strong>
+        ${t('logic.metric.unique')}<strong data-testid="logic-test-unique-count">${uniqueCount}</strong>
         <span class="logic-divider">·</span>
-        重複數量：<strong data-testid="logic-test-duplicate-count">${duplicateCount}</strong>
+        ${t('logic.metric.duplicate')}<strong data-testid="logic-test-duplicate-count">${duplicateCount}</strong>
         <span class="logic-divider">·</span>
-        建議測試需求：<strong>${set.requirementCount}</strong>
+        ${t('logic.metric.requirements')}<strong>${set.requirementCount}</strong>
       </p>
       <ol class="logic-test-list">${testList}</ol>
       ${unsatisfied}
@@ -706,13 +707,13 @@ export function createLogicCoverageExplorer() {
           || next.some((v, i) => v !== state.recent[i]);
         state.recent = next;
         saveRecent(state.recent);
-        // 若本地原本有遠端缺少的條目，把合併結果寫回雲端。
+        // If local had entries missing in cloud, persist the merge.
         if (next.length !== remote.length || next.some((v, i) => v !== remote[i])) {
           pushRecentToCloud(state.recent);
         }
         if (changed) render();
       } catch {
-        // 忽略雲端讀取錯誤
+        // Ignore cloud read errors
       }
     });
   }

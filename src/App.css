@@ -20,6 +20,32 @@ body {
   position: relative;
   overflow: hidden;
 }
+.app-header__text {
+  position: relative;
+  z-index: 1;
+}
+.app-lang {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  font-size: 0.85rem;
+}
+.app-lang__label {
+  opacity: 0.85;
+}
+.app-lang select {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a252f;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
 .app-header::before {
   content: '';
   position: absolute;

@@ -1,4 +1,5 @@
 import { mutationOperators, programExamples } from '../data/mutationData.js';
+import { t, getLocale, pickField } from '../i18n/index.js';
 import {
   generateMutants,
   evaluateMutants,
@@ -58,13 +59,13 @@ function formatValue(v) {
 }
 
 function parseTestArgs(text) {
-  // 用 JSON.parse 包成陣列，允許使用者輸入 `1, 2, "x"`。
+  // Parse via JSON to allow inputs like `1, 2, "x"`.
   const trimmed = text.trim();
   if (!trimmed) return [];
   try {
     return JSON.parse(`[${trimmed}]`);
   } catch (err) {
-    throw new Error(`參數解析失敗：${err.message}`);
+    throw new Error(t('syntax.err.argsParse', { msg: err.message }));
   }
 }
 
@@ -74,8 +75,27 @@ function parseExpected(text) {
   try {
     return JSON.parse(trimmed);
   } catch {
-    return trimmed; // 視為字串字面值
+    return trimmed; // treat as string literal
   }
+}
+
+function parseFunctionSource(text) {
+  const m = text.match(/function\s+\w*\s*\(([^)]*)\)\s*\{/);
+  if (!m) return null;
+  const params = m[1].trim();
+  const startIdx = m.index + m[0].length;
+  let depth = 1;
+  for (let i = startIdx; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '{') depth++;
+    else if (ch === '}') {
+      depth--;
+      if (depth === 0) {
+        return { params, body: text.slice(startIdx, i).replace(/^\n+|\n+$/g, '') };
+      }
+    }
+  }
+  return null;
 }
 
 export function createSyntaxCoverageExplorer() {
@@ -104,6 +124,7 @@ export function createSyntaxCoverageExplorer() {
     cloudUser: null,
     cloudStatus: 'idle', // 'idle' | 'syncing' | 'synced' | 'error'
     cloudMessage: '',
+    customExamples: [],
   };
 
   let cloudClient = null;
@@ -145,10 +166,10 @@ export function createSyntaxCoverageExplorer() {
         try {
           await cloudClient.saveSyntaxTests(state.cloudUser.uid, state.programs);
           state.cloudStatus = 'synced';
-          state.cloudMessage = '已同步到雲端';
+          state.cloudMessage = t('syntax.cloud.synced');
         } catch (err) {
           state.cloudStatus = 'error';
-          state.cloudMessage = `雲端儲存失敗：${err?.message || err}`;
+          state.cloudMessage = t('syntax.cloud.saveError', { msg: err?.message || err });
         }
         updateCloudIndicator();
         resolve();
@@ -159,14 +180,14 @@ export function createSyntaxCoverageExplorer() {
 
   async function flushPendingSave() {
     if (!pendingSave) return;
-    // 提前觸發現在正在等待的 timer。
+    // Flush any pending timer immediately.
     if (saveTimer) {
       clearTimeout(saveTimer);
       saveTimer = null;
       try {
         await cloudClient.saveSyntaxTests(state.cloudUser.uid, state.programs);
       } catch {
-        /* ignore: 下一輪 reload 會重試 */
+        /* ignore: next reload will retry */
       }
     } else {
       await pendingSave;
@@ -184,26 +205,26 @@ export function createSyntaxCoverageExplorer() {
   function cloudIndicatorText() {
     if (!state.cloudUser) return '';
     switch (state.cloudStatus) {
-      case 'syncing': return '☁ 正在同步…';
-      case 'synced': return `☁ ${state.cloudMessage || '已同步到雲端'}`;
-      case 'error': return `☁ ${state.cloudMessage || '同步失敗'}`;
-      default: return `☁ 已連結 ${state.cloudUser.email || state.cloudUser.uid}`;
+      case 'syncing': return t('syntax.cloud.syncing');
+      case 'synced': return `☁ ${state.cloudMessage || t('syntax.cloud.synced')}`;
+      case 'error': return `☁ ${state.cloudMessage || t('syntax.cloud.failed')}`;
+      default: return `☁ ${t('syntax.cloud.linked', { name: state.cloudUser.email || state.cloudUser.uid })}`;
     }
   }
 
   async function reloadFromCloud({ force = false } = {}) {
     if (!cloudClient || !state.cloudUser) return;
     if (typeof cloudClient.loadSyntaxTests !== 'function') return;
-    // 先 flush 任何尚未寫出的本地編輯，避免被雲端舊資料覆蓋。
+    // Flush any pending local edits first so they aren't overwritten by stale cloud data.
     await flushPendingSave();
     state.cloudStatus = 'syncing';
-    state.cloudMessage = force ? '重新从雲端讀取…' : '';
+    state.cloudMessage = force ? t('syntax.cloud.reloading') : '';
     updateCloudIndicator();
     try {
       const remote = await cloudClient.loadSyntaxTests(state.cloudUser.uid);
       const remoteObj = remote && typeof remote === 'object' ? remote : {};
       const localOnly = Object.keys(state.programs).filter((k) => !(k in remoteObj));
-      // 雲端資料為主，仅保留本地獨有的範例。
+      // Cloud is canonical; keep only locally-unique examples.
       const merged = { ...remoteObj };
       localOnly.forEach((k) => { merged[k] = state.programs[k]; });
       state.programs = merged;
@@ -218,13 +239,13 @@ export function createSyntaxCoverageExplorer() {
         state.selectedMutantId = null;
       }
       state.cloudStatus = 'synced';
-      state.cloudMessage = '已從雲端載入';
+      state.cloudMessage = t('syntax.cloud.loaded');
       render();
-      // 只有本地有雲端缺少的範例才回寫，避免覆蓋他端更新。
+      // Write back only locally-unique examples to avoid clobbering remote edits.
       if (localOnly.length > 0) pushToCloud();
     } catch (err) {
       state.cloudStatus = 'error';
-      state.cloudMessage = `雲端讀取失敗：${err?.message || err}`;
+      state.cloudMessage = t('syntax.cloud.loadError', { msg: err?.message || err });
       updateCloudIndicator();
     }
   }
@@ -235,7 +256,7 @@ export function createSyntaxCoverageExplorer() {
     try {
       params = state.params.split(',').map((s) => s.trim()).filter(Boolean);
     } catch (err) {
-      state.error = `參數解析失敗：${err.message}`;
+      state.error = t('syntax.err.argsParse', { msg: err.message });
       return;
     }
 
@@ -255,7 +276,7 @@ export function createSyntaxCoverageExplorer() {
     try {
       suiteResults = runTestSuite(params, state.body, parsedTests);
     } catch (err) {
-      state.error = `原程式編譯/執行失敗：${err.message}`;
+      state.error = t('syntax.err.compile', { msg: err.message });
       return;
     }
 
@@ -263,7 +284,7 @@ export function createSyntaxCoverageExplorer() {
     const generated = generateMutants(state.body, operators);
     const evaluated = evaluateMutants(params, state.body, parsedTests, generated);
 
-    // 保留使用者標為 equivalent 的設定（依 id 對應；id 重生時不保留）。
+    // Preserve user-marked equivalent flags (matched by id).
     const prevEquivalent = new Set(
       state.mutants.filter((m) => m.status === 'equivalent').map((m) => m.id),
     );
@@ -282,7 +303,7 @@ export function createSyntaxCoverageExplorer() {
   }
 
   function loadExample(id) {
-    const ex = programExamples.find((e) => e.id === id);
+    const ex = programExamples.find((e) => e.id === id) || state.customExamples.find((e) => e.id === id);
     if (!ex) return;
     state.exampleId = id;
     const snap = state.programs[id] || defaultProgramSnapshot(ex);
@@ -295,18 +316,19 @@ export function createSyntaxCoverageExplorer() {
   function render() {
     recompute();
 
-    const exampleButtons = programExamples.map((ex) => `
+    const allExamples = [...programExamples, ...state.customExamples];
+    const exampleButtons = allExamples.map((ex) => `
       <button
         type="button"
         class="syntax-example-btn${state.exampleId === ex.id ? ' active' : ''}"
         data-example="${ex.id}"
-        title="${escapeHtml(ex.description)}"
+        title="${escapeHtml(getLocale() === 'en' ? (ex.descriptionEn || ex.description) : ex.description)}"
         data-testid="syntax-example-${ex.id}"
       >${escapeHtml(ex.name)}</button>
     `).join('');
 
     const operatorButtons = mutationOperators.map((op) => `
-      <label class="syntax-op-btn${state.operators.has(op.id) ? ' active' : ''}" title="${escapeHtml(op.desc)}">
+      <label class="syntax-op-btn${state.operators.has(op.id) ? ' active' : ''}" title="${escapeHtml(getLocale() === 'en' ? (op.descEn || op.desc) : op.desc)}">
         <input type="checkbox" data-operator="${op.id}" ${state.operators.has(op.id) ? 'checked' : ''} />
         <span>${escapeHtml(op.id)}</span>
       </label>
@@ -331,7 +353,7 @@ export function createSyntaxCoverageExplorer() {
     const showMutantCol = !!selectedMutant;
     const killedByIds = selectedMutant ? new Set(selectedMutant.killedBy) : new Set();
 
-    const testRows = state.tests.map((t, i) => {
+    const testRows = state.tests.map((tc, i) => {
       const result = state.suiteResults[i];
       const passClass = result?.passed ? 'pass' : (result ? 'fail' : '');
       const actual = result?.outcome.ok ? formatValue(result.outcome.value) : `⚠ ${result?.outcome.error || ''}`;
@@ -343,20 +365,20 @@ export function createSyntaxCoverageExplorer() {
         const mutantActual = mr?.outcome.ok
           ? formatValue(mr.outcome.value)
           : `⚠ ${mr?.outcome.error || ''}`;
-        const isKilled = killedByIds.has(t.id);
+        const isKilled = killedByIds.has(tc.id);
         killClass = isKilled ? 'killed-by' : 'survived-by';
         mutantCell = `<td class="syntax-test-mutant ${killClass}"><code>${escapeHtml(mutantActual)}</code>${isKilled ? '<span class="syntax-test-kill-badge">killed</span>' : ''}</td>`;
       }
 
       return `
-        <tr class="syntax-test-row ${passClass} ${killClass}" data-testid="syntax-test-row-${t.id}">
-          <td><code>${escapeHtml(t.id)}</code></td>
-          <td><input type="text" class="syntax-test-input" data-test-args="${t.id}" value="${escapeHtml(t.argsText)}" /></td>
-          <td><input type="text" class="syntax-test-input" data-test-expected="${t.id}" value="${escapeHtml(t.expectedText)}" /></td>
+        <tr class="syntax-test-row ${passClass} ${killClass}" data-testid="syntax-test-row-${tc.id}">
+          <td><code>${escapeHtml(tc.id)}</code></td>
+          <td><input type="text" class="syntax-test-input" data-test-args="${tc.id}" value="${escapeHtml(tc.argsText)}" /></td>
+          <td><input type="text" class="syntax-test-input" data-test-expected="${tc.id}" value="${escapeHtml(tc.expectedText)}" /></td>
           <td><code>${escapeHtml(actual)}</code></td>
           ${mutantCell}
           <td>
-            <button type="button" class="syntax-test-remove" data-remove-test="${t.id}" aria-label="移除">×</button>
+            <button type="button" class="syntax-test-remove" data-remove-test="${tc.id}" aria-label="${t('syntax.removeTest')}">×</button>
           </td>
         </tr>
       `;
@@ -366,7 +388,7 @@ export function createSyntaxCoverageExplorer() {
       ? `<th class="syntax-test-mutant-head">mutant actual${selectedMutant ? `<br><small>(${escapeHtml(selectedMutant.id)})</small>` : ''}</th>`
       : '';
 
-    // 群組顯示 mutants
+    // Group mutants for display
     const grouped = new Map();
     state.mutants.forEach((m) => {
       if (!grouped.has(m.operator)) grouped.set(m.operator, []);
@@ -394,20 +416,20 @@ export function createSyntaxCoverageExplorer() {
     const selectedDetail = selected ? `
       <div class="syntax-mutant-detail" data-testid="syntax-mutant-detail">
         <h4>${escapeHtml(selected.id)} <span class="syntax-mutant-op">${escapeHtml(selected.operator)}</span></h4>
-        <p class="syntax-mutant-meta">L${selected.line}:${selected.col} · 狀態：<strong>${escapeHtml(selected.status)}</strong></p>
+        <p class="syntax-mutant-meta">L${selected.line}:${selected.col} · ${t('syntax.mutant.statusLabel')}<strong>${escapeHtml(selected.status)}</strong></p>
         <pre class="syntax-mutant-source"><code>${escapeHtml(selected.source)}</code></pre>
         <p class="syntax-mutant-killed">
           ${selected.killedBy.length
-            ? `被以下 test killed：${selected.killedBy.map((id) => `<code>${escapeHtml(id)}</code>`).join(', ')}`
-            : '此 mutant 仍 live；可手動標為 equivalent。'}
+            ? t('syntax.mutant.killedByList', { ids: selected.killedBy.map((id) => `<code>${escapeHtml(id)}</code>`).join(', ') })
+            : t('syntax.mutant.liveHint')}
         </p>
         <div class="syntax-mutant-actions">
           <button type="button" data-toggle-equivalent="${selected.id}">
-            ${selected.status === 'equivalent' ? '取消標記為 equivalent' : '標記為 equivalent'}
+            ${selected.status === 'equivalent' ? t('common.unmarkEquivalent') : t('common.markEquivalent')}
           </button>
         </div>
       </div>
-    ` : '<p class="syntax-mutant-empty">點選左側 mutant 查看細節。</p>';
+    ` : `<p class="syntax-mutant-empty">${t('syntax.mutant.empty')}</p>`;
 
     const scorePct = Math.round(state.score.score * 100);
 
@@ -423,29 +445,29 @@ export function createSyntaxCoverageExplorer() {
           data-status="${state.cloudStatus}"
         >${escapeHtml(cloudIndicatorText())}</span>
         <span class="syntax-cloud-actions">
-          ${state.cloudUser ? '<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">↻ 從雲端重新載入</button>' : ''}
-          <button type="button" class="syntax-reset-btn" data-testid="syntax-reset-program">↺ 還原此範例預設</button>
+          ${state.cloudUser ? `<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">↻ ${t('syntax.cloud.reload')}</button>` : ''}
+          <button type="button" class="syntax-reset-btn" data-testid="syntax-reset-program">↺ ${t('syntax.reset')}</button>
         </span>
       </div>
 
       <div class="syntax-grid">
         <section class="syntax-program">
-          <label class="syntax-label">參數（逗號分隔）</label>
+          <label class="syntax-label">${t('syntax.params')}</label>
           <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml(state.params)}" />
-          <label class="syntax-label">函式內容</label>
+          <label class="syntax-label">${t('syntax.body')}</label>
           <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml(state.body)}</textarea>
         </section>
 
         <section class="syntax-tests">
           <header class="syntax-tests-header">
-            <h4>測試案例</h4>
-            <button type="button" class="syntax-test-add" data-testid="syntax-test-add">＋ 新增 test</button>
+            <h4>${t('syntax.tests')}</h4>
+            <button type="button" class="syntax-test-add" data-testid="syntax-test-add">＋ ${t('syntax.test.add')}</button>
           </header>
           <table class="syntax-test-table" data-testid="syntax-test-table">
             <thead>
               <tr>
                 <th>id</th>
-                <th>args（JSON 元素，逗號分隔）</th>
+                <th>${t('syntax.col.args')}</th>
                 <th>expected（JSON）</th>
                 <th>actual</th>
                 ${mutantHeaderCol}
@@ -466,7 +488,7 @@ export function createSyntaxCoverageExplorer() {
         <p class="syntax-score-stats" data-testid="syntax-score-stats">
           Mutation Score：<strong>${scorePct}%</strong>
           <span class="syntax-divider">·</span>
-          總數 ${state.score.total}
+          ${t('syntax.totalLabel')} ${state.score.total}
           <span class="syntax-divider">·</span>
           killed <strong>${state.score.killed}</strong>
           <span class="syntax-divider">·</span>
@@ -477,7 +499,7 @@ export function createSyntaxCoverageExplorer() {
       </section>
 
       <section class="syntax-mutant-section">
-        <div class="syntax-mutant-list" data-testid="syntax-mutant-list">${mutantList || '<p class="syntax-mutant-empty">無 mutants（請選擇至少一個 operator）。</p>'}</div>
+        <div class="syntax-mutant-list" data-testid="syntax-mutant-list">${mutantList || `<p class="syntax-mutant-empty">${t('syntax.noMutants')}</p>`}</div>
         ${selectedDetail}
       </section>
     `;
@@ -613,7 +635,7 @@ export function createSyntaxCoverageExplorer() {
       await reloadFromCloud();
     });
 
-    // 視窗切回前景時自動從雲端重新拽取，讓多裝置之間可以同步。
+    // Auto-pull from cloud on visibility change to keep devices in sync.
     if (typeof globalThis.document?.addEventListener === 'function') {
       globalThis.document.addEventListener('visibilitychange', () => {
         if (globalThis.document.visibilityState === 'visible' && state.cloudUser) {
@@ -622,11 +644,44 @@ export function createSyntaxCoverageExplorer() {
       });
     }
 
-    // 離開頁面前 flush 任何 pending save，避免遺失。
+    // Flush pending saves before unload to avoid loss.
     if (typeof globalThis.addEventListener === 'function') {
       globalThis.addEventListener('pagehide', () => { flushPendingSave(); });
       globalThis.addEventListener('beforeunload', () => { flushPendingSave(); });
     }
+  }
+
+  if (typeof globalThis.addEventListener === 'function') {
+    globalThis.addEventListener('stvisual:load-program-source', (event) => {
+      if (!root.isConnected) return;
+      const detail = event.detail || {};
+      if (detail.target !== 'mutation') return;
+      const content = String(detail.content ?? '');
+      const parsed = parseFunctionSource(content);
+      const baseName = (detail.name || 'uploaded').replace(/\.[^.]+$/, '') || 'uploaded';
+      const id = `uploaded-${Date.now().toString(36)}`;
+      const params = parsed ? parsed.params : '';
+      const body = parsed ? parsed.body : content;
+      const newExample = {
+        id,
+        name: baseName,
+        nameEn: baseName,
+        description: `Uploaded from cloud: ${detail.name || baseName}`,
+        descriptionEn: `Uploaded from cloud: ${detail.name || baseName}`,
+        params: params ? params.split(',').map((s) => s.trim()).filter(Boolean) : [],
+        body,
+        tests: [],
+      };
+      state.customExamples = [...state.customExamples, newExample];
+      state.programs[id] = { params, body, tests: [] };
+      state.exampleId = id;
+      state.params = params;
+      state.body = body;
+      state.tests = [];
+      state.selectedMutantId = null;
+      persistCurrent();
+      render();
+    });
   }
 
   return root;

@@ -1,4 +1,5 @@
 import { testingTypes } from '../data/testingData.js';
+import { t, getLocale, pickField } from '../i18n/index.js';
 
 export function createTestingTypesTable() {
   const root = document.createElement('div');
@@ -6,7 +7,7 @@ export function createTestingTypesTable() {
   root.dataset.testid = 'testing-types';
   root.innerHTML = `
     <div class="pyramid-section">
-      <h3 class="pyramid-title">測試金字塔（由底層至頂層）</h3>
+      <h3 class="pyramid-title">${t('types.pyramid.title')}</h3>
       <div class="pyramid" data-testid="pyramid">
         ${[...testingTypes].reverse().map((type, index) => `
           <div
@@ -14,8 +15,8 @@ export function createTestingTypesTable() {
             data-testid="pyramid-row-${type.id}"
             style="--row-color: ${type.color}; --row-width: ${type.width}%; animation-delay: ${index * 0.12}s"
           >
-            <span class="pyramid-row-label">${type.type}</span>
-            <span class="pyramid-row-en">${type.typeEn}</span>
+            <span class="pyramid-row-label">${pickField(type, 'type')}</span>
+            <span class="pyramid-row-en">${getLocale() === 'en' ? type.type : type.typeEn}</span>
           </div>
         `).join('')}
       </div>
@@ -31,17 +32,17 @@ export function createTestingTypesTable() {
           <div class="type-card-body">
             <div class="type-header">
               <span class="type-phase">Phase ${index + 1}</span>
-              <h4 class="type-name">${type.type}</h4>
-              <span class="type-name-en">${type.typeEn}</span>
+              <h4 class="type-name">${pickField(type, 'type')}</h4>
+              <span class="type-name-en">${getLocale() === 'en' ? type.type : type.typeEn}</span>
             </div>
             <div class="type-detail">
               <div class="type-detail-row">
-                <span class="type-detail-label">目的</span>
-                <span class="type-detail-value">${type.purpose}</span>
+                <span class="type-detail-label">${t('types.col.purpose')}</span>
+                <span class="type-detail-value">${pickField(type, 'purpose')}</span>
               </div>
               <div class="type-detail-row">
-                <span class="type-detail-label">時機</span>
-                <span class="type-detail-value">${type.timing}</span>
+                <span class="type-detail-label">${t('types.col.timing')}</span>
+                <span class="type-detail-value">${pickField(type, 'timing')}</span>
               </div>
             </div>
           </div>

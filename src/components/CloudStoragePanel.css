@@ -66,6 +66,20 @@
   background: #334155;
 }
 
+.cloud-signed-in {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: #dcfce7;
+  color: #166534;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid #86efac;
+}
+
 .cloud-meta {
   margin-top: 12px;
   display: grid;
@@ -138,4 +152,69 @@
   .cloud-grid {
     grid-template-columns: 1fr;
   }
+}
+.cloud-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cloud-upload-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.cloud-btn--small {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  border-radius: 999px;
+}
+
+.cloud-drive-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.cloud-drive-list-header h5 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.cloud-drive-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.cloud-drive-list > li {
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.cloud-drive-empty {
+  color: #64748b;
+  font-style: italic;
+  background: transparent !important;
+  border: 0 !important;
+  padding-left: 0 !important;
+}
+
+.cloud-drive-time {
+  color: #64748b;
+  font-size: 0.85rem;
 }
