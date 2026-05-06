@@ -4,7 +4,7 @@
 [![Deploy GitHub Pages](https://github.com/skhuang/stvisual/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/skhuang/stvisual/actions/workflows/deploy-pages.yml)
 [![Live Demo](https://img.shields.io/badge/demo-GitHub%20Pages-0a7ea4)](https://skhuang.github.io/stvisual/)
 
-An interactive visualization project for software testing concepts, including testing method taxonomy, testing flow, common testing types, graph coverage analysis, and logic (predicate / clause) coverage analysis.
+An interactive visualization project for software testing concepts, including testing method taxonomy, testing flow, common testing types, graph coverage analysis, logic (predicate / clause) coverage analysis, and syntax-based testing (program mutation).
 
 Live demo: <https://skhuang.github.io/stvisual/>
 
@@ -41,10 +41,18 @@ Live demo: <https://skhuang.github.io/stvisual/>
   - Combinatorial Coverage (CoC)
   - Active Clause Coverage variants: GACC / CACC / RACC
   - Inactive Clause Coverage variants: GICC / RICC
-  - Syntactic (DNF-based) criteria: IC / UTPC / NFPC / CUTPNFP
+  - Syntactic (DNF-based) criteria: IC / UTPC / MUTPC / NFPC / MNFPC / CUTPNFP
 - Renders the truth table, identifies major / minor clauses, and marks duplicate test rows
-- Computes a minimized DNF via Quine–McCluskey and renders Karnaugh maps for `f` and `¬f`
+- Computes a minimized DNF via Quine–McCluskey and renders Karnaugh maps for `f` and `¬f` (n = 1–4)
+- On K-maps, colors each prime implicant, marks UTP / NFP cells with framed badges, and pairs UTP↔NFP for CUTPNFP
+- Supports textbook predicate notation: adjacency for AND (e.g. `ab`) and `+` for OR (e.g. `a+b`)
 - Lets users enter custom predicates and persists recent ones as removable chips (synced to Firestore when signed in)
+- Provides syntax-based testing (program mutation) visualization:
+  - 6 mutation operators (AOR / ROR / LOR / COR / UOI / ABS) over JavaScript expressions
+  - Editable program body, parameters, and test set; built-in examples (`max`, `isLeapYear`, `triangle`)
+  - Mutation score progress bar, killed / live / equivalent badges, and per-operator mutant grouping
+  - When a mutant is selected, every test row shows the mutant's actual output; rows that killed the mutant are highlighted in red
+  - Test sets are persisted per example to `localStorage` and synced to Firestore when signed in
 
 ## Architecture
 
@@ -151,14 +159,27 @@ This project is useful for:
 
 The logic coverage section currently supports:
 
-- parsing arbitrary boolean predicates over named clauses (`&&`, `||`, `!`, parentheses)
+- parsing arbitrary boolean predicates over named clauses (`&&` / `||` / `!` / parentheses), with textbook notation (`ab` = AND, `a+b` = OR) accepted in the same input
 - enumerating the full truth table and the determining (active) rows per clause
 - generating test requirements and concrete row selections for PC / CC / CoC / GACC / CACC / RACC / GICC / RICC
-- DNF-based criteria (IC / UTPC / NFPC / CUTPNFP) with Quine–McCluskey minimization, including implicants of `¬f`
+- DNF-based criteria (IC / UTPC / MUTPC / NFPC / MNFPC / CUTPNFP) with Quine–McCluskey minimization, including implicants of `¬f`
 - minimizing the IC test set via greedy set cover and striking through duplicate rows
-- rendering Karnaugh maps for `f` and `¬f` (for n = 3, columns are `ab`, rows are `c`)
+- rendering Karnaugh maps for `f` and `¬f` (n = 1–4; for n = 3 columns are `ab`, rows are `c`; for n = 4 both rows and columns use Gray code)
+- per-implicant coloring with legend, UTP / NFP framed badges, and paired UTP↔NFP for CUTPNFP
 - a textbook-style DNF notation (adjacency = AND, `+` = OR, overline = NOT)
-- a curated list of built-in predicates plus user-supplied recent predicates
+- a curated list of built-in predicates plus user-supplied recent predicates (synced to Firestore when signed in)
+
+## Syntax-Based Testing Focus
+
+The syntax-based testing section currently supports:
+
+- Program Mutation visualization for short JavaScript functions
+- Six mutation operators: AOR (arithmetic), ROR (relational), LOR / COR (logical), UOI (unary insertion), ABS (absolute value)
+- Editable program body, parameters, and test set; built-in examples for `max`, `isLeapYear`, and `triangle`
+- Live mutant generation, evaluation, and a mutation score progress bar
+- Per-test mutant actual output: rows that killed the selected mutant are highlighted in red, rows that did not are dimmed
+- Manual `equivalent` marking and a one-click reset to the example default
+- Per-example persistence: `localStorage` for guests; Firestore sync for signed-in users with debounced writes, manual reload, and `pagehide` flush
 
 ## GitHub Pages Deployment
 
@@ -183,13 +204,17 @@ This command:
 │   ├── bootstrap.js
 │   ├── main.js
 │   ├── standalone.js
-│   ├── data/
-│   ├── utils/         # graphCoverage, programToGraph, logicCoverage, karnaughMap, cloudIntegration
-│   ├── components/    # TestingMethodTree, TestingFlow, TestingTypesTable,
-│   │                  # GraphCoverageExplorer, LogicCoverageExplorer, CloudStoragePanel
+│   ├── data/         # testingData, mutationData
+│   ├── utils/        # graphCoverage, programToGraph, logicCoverage, karnaughMap,
+│   │                 # mutation, cloudIntegration
+│   ├── components/   # TestingMethodTree, TestingFlow, TestingTypesTable,
+│   │                 # GraphCoverageExplorer, LogicCoverageExplorer,
+│   │                 # SyntaxCoverageExplorer, CloudStoragePanel
 │   └── tests/
 ├── e2e/
 ├── scripts/
+├── docs/
+│   └── Specification.zh-TW.md
 └── .github/workflows/
 ```
 
