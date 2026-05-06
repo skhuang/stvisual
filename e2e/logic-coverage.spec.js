@@ -34,7 +34,11 @@ test.describe('Logic Coverage Explorer', () => {
     const titles = await onCells.evaluateAll((nodes) =>
       nodes.map((n) => n.getAttribute('title')),
     );
-    expect(titles.sort()).toEqual(['m1', 'm3', 'm5', 'm6', 'm7']);
+    // 注意：title 後面可能附帶 implicant / UTP / NFP 等註記，僅比對 m{n} 前綴。
+    const mintermTags = titles
+      .map((t) => (t || '').split(/[｜（]/)[0].trim())
+      .sort();
+    expect(mintermTags).toEqual(['m1', 'm3', 'm5', 'm6', 'm7']);
   });
 
   test('switching to a 4-clause predicate yields a 4x4 K-map', async ({ page }) => {
