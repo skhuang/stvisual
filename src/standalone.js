@@ -490,8 +490,10 @@
       "cloud.openFile": "Open",
       "cloud.useForMutation": "Use for Mutation Test",
       "cloud.useForGraph": "Use for Graph Coverage",
+      "cloud.useForGrammar": "Use for Grammar Coverage",
       "cloud.sentToMutation": "Sent {name} to Mutation Test section.",
       "cloud.sentToGraph": "Sent {name} to Graph Coverage section.",
+      "cloud.sentToGrammar": "Sent {name} to Grammar Coverage section.",
       "cloud.readError": "Could not read file: {msg}",
       "cloud.noContent": "File content is unavailable. Please re-upload the file.",
       "cloud.driveFilesTitle": "Files in Google Drive",
@@ -648,6 +650,29 @@
       "syntax.cloud.notSignedIn": "Sign in with Google to sync test sets across devices.",
       "syntax.cloud.reload": "Reload from cloud",
       "syntax.parseError": "Parse error in args: {msg}",
+      "grammar.kicker": "Grammar-Based Testing",
+      "grammar.title": "Grammar Coverage Explorer",
+      "grammar.subtitle": "Edit a BNF grammar, sample derivations, and inspect Production / Terminal coverage and grammar mutants.",
+      "grammar.bnfEditor": "Grammar (BNF):",
+      "grammar.maxStrings": "Max strings",
+      "grammar.maxDepth": "Max depth",
+      "grammar.extraTests": "Extra test strings (one per line)",
+      "grammar.extraTestsHint": 'e.g. "0+1+1"',
+      "grammar.productions": "Productions",
+      "grammar.derivations": "Derived strings",
+      "grammar.noDerivations": "No derivations yet \u2014 adjust limits or grammar.",
+      "grammar.mutations": "Mutants",
+      "grammar.noMutants": "No mutants (select at least one operator).",
+      "grammar.killed": "killed",
+      "grammar.live": "live",
+      "grammar.killedBy": "Killed by:",
+      "grammar.liveHint": "No string distinguishes the mutant from the original within the current bounds.",
+      "grammar.selectMutantHint": "Select a mutant on the left to see details.",
+      "grammar.scoreLabel": "Mutation score",
+      "grammar.origAccepts": "orig: accept",
+      "grammar.origRejects": "orig: reject",
+      "grammar.mutAccepts": "mut: accept",
+      "grammar.mutRejects": "mut: reject",
       "syntax.cloud.failed": "Sync failed",
       "syntax.cloud.linked": "Linked: {name}",
       "syntax.cloud.reloading": "Reloading from cloud\u2026",
@@ -741,8 +766,10 @@
       "cloud.openFile": "\u958B\u555F",
       "cloud.useForMutation": "\u7528\u65BC Mutation Test",
       "cloud.useForGraph": "\u7528\u65BC Graph Coverage",
+      "cloud.useForGrammar": "\u7528\u65BC Grammar Coverage",
       "cloud.sentToMutation": "\u5DF2\u5C07 {name} \u50B3\u9001\u81F3 Mutation Test \u5340\u584A\u3002",
       "cloud.sentToGraph": "\u5DF2\u5C07 {name} \u50B3\u9001\u81F3 Graph Coverage \u5340\u584A\u3002",
+      "cloud.sentToGrammar": "\u5DF2\u5C07 {name} \u50B3\u9001\u81F3 Grammar Coverage \u5340\u584A\u3002",
       "cloud.readError": "\u7121\u6CD5\u8B80\u53D6\u6A94\u6848\uFF1A{msg}",
       "cloud.noContent": "\u6A94\u6848\u5167\u5BB9\u4E0D\u53EF\u7528\uFF0C\u8ACB\u91CD\u65B0\u4E0A\u50B3\u3002",
       "cloud.driveFilesTitle": "Google Drive \u6A94\u6848",
@@ -891,6 +918,29 @@
       "syntax.cloud.notSignedIn": "\u4EE5 Google \u767B\u5165\u5373\u53EF\u8DE8\u88DD\u7F6E\u540C\u6B65\u6E2C\u8A66\u96C6\u5408\u3002",
       "syntax.cloud.reload": "\u5F9E\u96F2\u7AEF\u91CD\u65B0\u8F09\u5165",
       "syntax.parseError": "\u53C3\u6578\u89E3\u6790\u932F\u8AA4\uFF1A{msg}",
+      "grammar.kicker": "\u57FA\u65BC\u6587\u6CD5\u7684\u6E2C\u8A66",
+      "grammar.title": "Grammar Coverage \u63A2\u7D22\u5668",
+      "grammar.subtitle": "\u7DE8\u8F2F BNF \u6587\u6CD5\u3001\u7522\u751F\u884D\u751F\u5B57\u4E32\uFF0C\u4E26\u89C0\u5BDF Production / Terminal \u8986\u84CB\u8207 Grammar Mutants\u3002",
+      "grammar.bnfEditor": "\u6587\u6CD5\uFF08BNF\uFF09\uFF1A",
+      "grammar.maxStrings": "\u6700\u5927\u5B57\u4E32\u6578",
+      "grammar.maxDepth": "\u6700\u5927\u63A8\u5C0E\u6DF1\u5EA6",
+      "grammar.extraTests": "\u984D\u5916\u6E2C\u8A66\u5B57\u4E32\uFF08\u6BCF\u884C\u4E00\u500B\uFF09",
+      "grammar.extraTestsHint": "\u4F8B\uFF1A0+1+1",
+      "grammar.productions": "\u7522\u751F\u898F\u5247",
+      "grammar.derivations": "\u884D\u751F\u5B57\u4E32",
+      "grammar.noDerivations": "\u5C1A\u7121\u884D\u751F\u7D50\u679C\uFF0C\u8ACB\u8ABF\u6574\u53C3\u6578\u6216\u6587\u6CD5\u3002",
+      "grammar.mutations": "Mutants",
+      "grammar.noMutants": "\u7121 mutants\uFF08\u8ACB\u9078\u64C7\u81F3\u5C11\u4E00\u500B operator\uFF09\u3002",
+      "grammar.killed": "\u5DF2 killed",
+      "grammar.live": "live",
+      "grammar.killedBy": "\u88AB\u4EE5\u4E0B\u5B57\u4E32 killed\uFF1A",
+      "grammar.liveHint": "\u5728\u76EE\u524D\u754C\u9650\u5167\u6C92\u6709\u5B57\u4E32\u80FD\u5340\u5206 mutant \u8207\u539F grammar\u3002",
+      "grammar.selectMutantHint": "\u9EDE\u9078\u5DE6\u5074 mutant \u67E5\u770B\u7D30\u7BC0\u3002",
+      "grammar.scoreLabel": "Mutation Score",
+      "grammar.origAccepts": "\u539F grammar\uFF1A\u63A5\u53D7",
+      "grammar.origRejects": "\u539F grammar\uFF1A\u62D2\u7D55",
+      "grammar.mutAccepts": "mutant\uFF1A\u63A5\u53D7",
+      "grammar.mutRejects": "mutant\uFF1A\u62D2\u7D55",
       "syntax.cloud.failed": "\u540C\u6B65\u5931\u6557",
       "syntax.cloud.linked": "\u5DF2\u9023\u7D50 {name}",
       "syntax.cloud.reloading": "\u91CD\u65B0\u5F9E\u96F2\u7AEF\u8B80\u53D6\u2026",
@@ -4804,6 +4854,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
                 <div class="cloud-upload-actions">
                   <button type="button" class="cloud-btn cloud-btn--small" data-use-target="mutation" data-use-idx="${idx}">${t("cloud.useForMutation")}</button>
                   <button type="button" class="cloud-btn cloud-btn--small" data-use-target="graph" data-use-idx="${idx}">${t("cloud.useForGraph")}</button>
+                  <button type="button" class="cloud-btn cloud-btn--small" data-use-target="grammar" data-use-idx="${idx}">${t("cloud.useForGrammar")}</button>
                 </div>
               </li>`).join("") || `<li>${t("cloud.noFiles")}</li>`}
             </ul>
@@ -4820,6 +4871,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
                     <div class="cloud-upload-actions">
                       <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="mutation" data-drive-idx="${idx}">${t("cloud.useForMutation")}</button>
                       <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="graph" data-drive-idx="${idx}">${t("cloud.useForGraph")}</button>
+                      <button type="button" class="cloud-btn cloud-btn--small" data-drive-target="grammar" data-drive-idx="${idx}">${t("cloud.useForGrammar")}</button>
                     </div>
                   </li>`).join("")}
             </ul>
@@ -4949,13 +5001,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             render();
             return;
           }
-          const sectionId = target === "mutation" ? "section-syntax" : "section-graph";
+          const sectionId = target === "graph" ? "section-graph" : "section-syntax";
           const targetSection = (_a3 = globalThis.document) == null ? void 0 : _a3.querySelector(`[data-testid="${sectionId}"]`);
           targetSection == null ? void 0 : targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
           (_b2 = globalThis.dispatchEvent) == null ? void 0 : _b2.call(globalThis, new CustomEvent("stvisual:load-program-source", {
             detail: { target, name: item.fileName || item.name, content }
           }));
-          status = target === "mutation" ? t("cloud.sentToMutation", { name: item.name }) : t("cloud.sentToGraph", { name: item.name });
+          status = target === "mutation" ? t("cloud.sentToMutation", { name: item.name }) : target === "grammar" ? t("cloud.sentToGrammar", { name: item.name }) : t("cloud.sentToGraph", { name: item.name });
           render();
         });
       });
@@ -4985,13 +5037,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             status = t("cloud.downloading", { name: f.name });
             render();
             const content = await client.downloadDriveFile(f.id);
-            const sectionId = target === "mutation" ? "section-syntax" : "section-graph";
+            const sectionId = target === "graph" ? "section-graph" : "section-syntax";
             const targetSection = (_a3 = globalThis.document) == null ? void 0 : _a3.querySelector(`[data-testid="${sectionId}"]`);
             targetSection == null ? void 0 : targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
             (_b2 = globalThis.dispatchEvent) == null ? void 0 : _b2.call(globalThis, new CustomEvent("stvisual:load-program-source", {
               detail: { target, name: f.name, content }
             }));
-            status = target === "mutation" ? t("cloud.sentToMutation", { name: f.name }) : t("cloud.sentToGraph", { name: f.name });
+            status = target === "mutation" ? t("cloud.sentToMutation", { name: f.name }) : target === "grammar" ? t("cloud.sentToGrammar", { name: f.name }) : t("cloud.sentToGraph", { name: f.name });
           } catch (err) {
             status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
           }
@@ -6338,6 +6390,665 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     return root2;
   }
 
+  // src/data/grammarData.js
+  var grammarExamples = [
+    {
+      id: "arith",
+      name: "\u7B97\u8853\u904B\u7B97\u5F0F / Arithmetic Expression",
+      nameEn: "Arithmetic Expression",
+      description: "\u7C21\u55AE\u6574\u6578\u52A0\u6E1B\u4E58\u7684\u4E2D\u7DB4\u904B\u7B97\u5F0F\uFF0C\u542B\u62EC\u865F\u3002",
+      descriptionEn: "Simple integer infix expression with +, *, and parentheses.",
+      text: [
+        '<E> ::= <E> "+" <T> | <T>',
+        '<T> ::= <T> "*" <F> | <F>',
+        '<F> ::= "(" <E> ")" | <D>',
+        '<D> ::= "0" | "1" | "2"'
+      ].join("\n")
+    },
+    {
+      id: "json-tiny",
+      name: "Mini JSON",
+      nameEn: "Mini JSON",
+      description: "\u6975\u7C21 JSON\uFF1A\u7269\u4EF6\u3001\u9663\u5217\u3001\u5B57\u4E32\u3001\u6578\u5B57\u3002",
+      descriptionEn: "Minimal JSON subset: object, array, string, number.",
+      text: [
+        "<V> ::= <O> | <A> | <S> | <N>",
+        '<O> ::= "{" "}" | "{" <P> "}"',
+        '<P> ::= <S> ":" <V> | <S> ":" <V> "," <P>',
+        '<A> ::= "[" "]" | "[" <V> "]" | "[" <V> "," <A> "]"',
+        '<S> ::= "\\"a\\"" | "\\"b\\""',
+        '<N> ::= "0" | "1"'
+      ].join("\n")
+    },
+    {
+      id: "palindrome",
+      name: "\u56DE\u6587 / Palindrome",
+      nameEn: "Palindrome",
+      description: "a/b \u5B57\u6BCD\u7D44\u6210\u7684\u5076\u6578/\u5947\u6578\u9577\u5EA6\u56DE\u6587\u3002",
+      descriptionEn: "Even/odd-length palindromes over {a,b}.",
+      text: [
+        '<P> ::= "a" | "b" | "a" <P> "a" | "b" <P> "b"'
+      ].join("\n")
+    }
+  ];
+
+  // src/utils/grammar.js
+  var NT_PATTERN = /<([^<>\s]+)>/y;
+  var TERMINAL_PATTERN = /"((?:[^"\\]|\\.)*)"/y;
+  function tokenizeRhs(text) {
+    const tokens = [];
+    let i = 0;
+    const len = text.length;
+    while (i < len) {
+      const ch = text[i];
+      if (ch === " " || ch === "	") {
+        i++;
+        continue;
+      }
+      if (ch === "<") {
+        NT_PATTERN.lastIndex = i;
+        const m = NT_PATTERN.exec(text);
+        if (!m) throw new Error(`Invalid non-terminal at position ${i}: "${text.slice(i, i + 12)}"`);
+        tokens.push({ kind: "NT", value: m[1] });
+        i = NT_PATTERN.lastIndex;
+        continue;
+      }
+      if (ch === '"') {
+        TERMINAL_PATTERN.lastIndex = i;
+        const m = TERMINAL_PATTERN.exec(text);
+        if (!m) throw new Error(`Unterminated terminal at position ${i}: "${text.slice(i, i + 12)}"`);
+        tokens.push({ kind: "T", value: m[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\") });
+        i = TERMINAL_PATTERN.lastIndex;
+        continue;
+      }
+      throw new Error(`Unexpected character "${ch}" at position ${i}`);
+    }
+    return tokens;
+  }
+  function parseGrammar(text) {
+    if (typeof text !== "string") throw new Error("Grammar must be a string.");
+    const lines = text.split(/\r?\n/);
+    const productions = [];
+    const nonTerminals = /* @__PURE__ */ new Set();
+    const terminals = /* @__PURE__ */ new Set();
+    let start = null;
+    let nextId = 0;
+    for (let lineNo = 0; lineNo < lines.length; lineNo++) {
+      const raw = lines[lineNo].trim();
+      if (!raw || raw.startsWith("#") || raw.startsWith("//")) continue;
+      const sepIdx = raw.indexOf("::=");
+      if (sepIdx === -1) {
+        throw new Error(`Line ${lineNo + 1}: missing "::=".`);
+      }
+      const lhsText = raw.slice(0, sepIdx).trim();
+      const rhsText = raw.slice(sepIdx + 3);
+      const lhsTokens = tokenizeRhs(lhsText);
+      if (lhsTokens.length !== 1 || lhsTokens[0].kind !== "NT") {
+        throw new Error(`Line ${lineNo + 1}: LHS must be a single non-terminal like "<S>".`);
+      }
+      const lhs = lhsTokens[0].value;
+      nonTerminals.add(lhs);
+      if (start === null) start = lhs;
+      const alternatives = splitAlternatives(rhsText);
+      for (const alt of alternatives) {
+        const rhs = tokenizeRhs(alt);
+        for (const sym of rhs) {
+          if (sym.kind === "NT") nonTerminals.add(sym.value);
+          else terminals.add(sym.value);
+        }
+        productions.push({ id: nextId++, lhs, rhs });
+      }
+    }
+    if (productions.length === 0) {
+      throw new Error("Grammar has no productions.");
+    }
+    return { start, productions, nonTerminals, terminals };
+  }
+  function splitAlternatives(rhsText) {
+    const parts = [];
+    let current2 = "";
+    let inString = false;
+    for (let i = 0; i < rhsText.length; i++) {
+      const ch = rhsText[i];
+      if (ch === '"') {
+        inString = !inString;
+        current2 += ch;
+        continue;
+      }
+      if (ch === "\\" && inString) {
+        current2 += ch + (rhsText[++i] || "");
+        continue;
+      }
+      if (ch === "|" && !inString) {
+        parts.push(current2);
+        current2 = "";
+        continue;
+      }
+      current2 += ch;
+    }
+    parts.push(current2);
+    return parts.map((p) => p.trim());
+  }
+  function generateDerivations(grammar, options = {}) {
+    var _a2, _b, _c;
+    const maxStrings = (_a2 = options.maxStrings) != null ? _a2 : 12;
+    const maxDepth = (_b = options.maxDepth) != null ? _b : 20;
+    const maxStringLen = (_c = options.maxStringLen) != null ? _c : 60;
+    const startSym = options.start || grammar.start;
+    const initial = {
+      sentential: [{ kind: "NT", value: startSym }],
+      productionsUsed: [],
+      depth: 0
+    };
+    const queue = [initial];
+    const results = [];
+    const seenStrings = /* @__PURE__ */ new Set();
+    let iterations = 0;
+    const iterationCap = 5e4;
+    while (queue.length > 0 && results.length < maxStrings && iterations < iterationCap) {
+      iterations++;
+      const node = queue.shift();
+      const firstNT = node.sentential.findIndex((s) => s.kind === "NT");
+      if (firstNT === -1) {
+        const stringValue = node.sentential.map((s) => s.value).join("");
+        if (!seenStrings.has(stringValue)) {
+          seenStrings.add(stringValue);
+          results.push({
+            string: stringValue,
+            productionsUsed: node.productionsUsed,
+            depth: node.depth
+          });
+        }
+        continue;
+      }
+      if (node.depth >= maxDepth) continue;
+      const sym = node.sentential[firstNT];
+      const matching = grammar.productions.filter((p) => p.lhs === sym.value);
+      for (const prod of matching) {
+        const next = [
+          ...node.sentential.slice(0, firstNT),
+          ...prod.rhs,
+          ...node.sentential.slice(firstNT + 1)
+        ];
+        const currentTermLen = next.filter((s) => s.kind === "T").reduce((sum, s) => sum + s.value.length, 0);
+        if (currentTermLen > maxStringLen) continue;
+        queue.push({
+          sentential: next,
+          productionsUsed: [...node.productionsUsed, prod.id],
+          depth: node.depth + 1
+        });
+      }
+    }
+    return results;
+  }
+  function computeCoverage(derivations, grammar) {
+    const allProductionIds = new Set(grammar.productions.map((p) => p.id));
+    const allTerminals = new Set(grammar.terminals);
+    const usedProductions = /* @__PURE__ */ new Set();
+    const usedTerminals = /* @__PURE__ */ new Set();
+    const productionLookup = new Map(grammar.productions.map((p) => [p.id, p]));
+    for (const d of derivations) {
+      for (const pid of d.productionsUsed) {
+        usedProductions.add(pid);
+        const prod = productionLookup.get(pid);
+        if (prod) {
+          for (const sym of prod.rhs) {
+            if (sym.kind === "T") usedTerminals.add(sym.value);
+          }
+        }
+      }
+    }
+    const denom = (s) => s.size === 0 ? 1 : s.size;
+    return {
+      pdc: {
+        covered: usedProductions,
+        all: allProductionIds,
+        ratio: usedProductions.size / denom(allProductionIds)
+      },
+      tsc: {
+        covered: usedTerminals,
+        all: allTerminals,
+        ratio: usedTerminals.size / denom(allTerminals)
+      }
+    };
+  }
+  var GRAMMAR_OPERATORS = ["TR", "PR", "SD", "DUP"];
+  function cloneGrammar(grammar) {
+    return {
+      start: grammar.start,
+      productions: grammar.productions.map((p) => ({
+        id: p.id,
+        lhs: p.lhs,
+        rhs: p.rhs.map((s) => ({ ...s }))
+      })),
+      nonTerminals: new Set(grammar.nonTerminals),
+      terminals: new Set(grammar.terminals)
+    };
+  }
+  function formatProduction(prod) {
+    const rhsText = prod.rhs.length === 0 ? '""' : prod.rhs.map((s) => s.kind === "NT" ? `<${s.value}>` : `"${s.value}"`).join(" ");
+    return `<${prod.lhs}> ::= ${rhsText}`;
+  }
+  function generateGrammarMutants(grammar, opIds = GRAMMAR_OPERATORS) {
+    const mutants = [];
+    const ops = new Set(opIds);
+    const terms = [...grammar.terminals];
+    if (ops.has("TR") && terms.length >= 2) {
+      grammar.productions.forEach((prod, pIdx) => {
+        prod.rhs.forEach((sym, sIdx) => {
+          if (sym.kind !== "T") return;
+          for (const replacement of terms) {
+            if (replacement === sym.value) continue;
+            const mutated = cloneGrammar(grammar);
+            mutated.productions[pIdx].rhs[sIdx] = { kind: "T", value: replacement };
+            mutants.push({
+              id: `TR:p${prod.id}:s${sIdx}:${replacement}`,
+              operator: "TR",
+              description: `Replace "${sym.value}" with "${replacement}" in ${formatProduction(prod)}`,
+              grammar: mutated
+            });
+          }
+        });
+      });
+    }
+    if (ops.has("PR")) {
+      const firstByLhs = /* @__PURE__ */ new Map();
+      grammar.productions.forEach((p) => {
+        if (!firstByLhs.has(p.lhs)) firstByLhs.set(p.lhs, p);
+      });
+      grammar.productions.forEach((prod, pIdx) => {
+        for (const [otherLhs, otherProd] of firstByLhs) {
+          if (otherLhs === prod.lhs) continue;
+          const mutated = cloneGrammar(grammar);
+          mutated.productions[pIdx].rhs = otherProd.rhs.map((s) => ({ ...s }));
+          mutants.push({
+            id: `PR:p${prod.id}:from-${otherLhs}`,
+            operator: "PR",
+            description: `Replace RHS of ${formatProduction(prod)} with RHS of <${otherLhs}>`,
+            grammar: mutated
+          });
+        }
+      });
+    }
+    if (ops.has("SD")) {
+      grammar.productions.forEach((prod, pIdx) => {
+        if (prod.rhs.length === 0) return;
+        prod.rhs.forEach((sym, sIdx) => {
+          const mutated = cloneGrammar(grammar);
+          mutated.productions[pIdx].rhs.splice(sIdx, 1);
+          mutants.push({
+            id: `SD:p${prod.id}:s${sIdx}`,
+            operator: "SD",
+            description: `Delete ${sym.kind === "NT" ? `<${sym.value}>` : `"${sym.value}"`} from ${formatProduction(prod)}`,
+            grammar: mutated
+          });
+        });
+      });
+    }
+    if (ops.has("DUP")) {
+      grammar.productions.forEach((prod, pIdx) => {
+        prod.rhs.forEach((sym, sIdx) => {
+          const mutated = cloneGrammar(grammar);
+          mutated.productions[pIdx].rhs.splice(sIdx, 0, { ...sym });
+          mutants.push({
+            id: `DUP:p${prod.id}:s${sIdx}`,
+            operator: "DUP",
+            description: `Duplicate ${sym.kind === "NT" ? `<${sym.value}>` : `"${sym.value}"`} in ${formatProduction(prod)}`,
+            grammar: mutated
+          });
+        });
+      });
+    }
+    return mutants;
+  }
+  function recognizes(grammar, input, options = {}) {
+    var _a2;
+    const maxDepth = (_a2 = options.maxDepth) != null ? _a2 : 40;
+    const memo = /* @__PURE__ */ new Map();
+    function tryNT(name, pos, depth) {
+      if (depth > maxDepth) return [];
+      const key = `${name}@${pos}@${depth}`;
+      if (memo.has(key)) return memo.get(key);
+      const matches = [];
+      for (const prod of grammar.productions) {
+        if (prod.lhs !== name) continue;
+        const ends = trySequence(prod.rhs, 0, pos, depth + 1);
+        for (const e of ends) matches.push(e);
+      }
+      const dedup = [...new Set(matches)];
+      memo.set(key, dedup);
+      return dedup;
+    }
+    function trySequence(seq, idx, pos, depth) {
+      if (idx === seq.length) return [pos];
+      const sym = seq[idx];
+      const ends = [];
+      if (sym.kind === "T") {
+        const v = sym.value;
+        if (input.slice(pos, pos + v.length) === v) {
+          const next = trySequence(seq, idx + 1, pos + v.length, depth);
+          for (const e of next) ends.push(e);
+        }
+      } else {
+        const matches = tryNT(sym.value, pos, depth);
+        for (const m of matches) {
+          const next = trySequence(seq, idx + 1, m, depth);
+          for (const e of next) ends.push(e);
+        }
+      }
+      return [...new Set(ends)];
+    }
+    return tryNT(grammar.start, 0, 0).includes(input.length);
+  }
+  function evaluateMutantsAgainstStrings(originalGrammar, mutants, strings, recOptions) {
+    const originalAccepts = strings.map((s) => recognizes(originalGrammar, s, recOptions));
+    return mutants.map((m) => {
+      const mutantAccepts = strings.map((s) => recognizes(m.grammar, s, recOptions));
+      const killers = [];
+      for (let i = 0; i < strings.length; i++) {
+        if (originalAccepts[i] !== mutantAccepts[i]) {
+          killers.push({ string: strings[i], origAccepts: originalAccepts[i], mutAccepts: mutantAccepts[i] });
+        }
+      }
+      return {
+        ...m,
+        killed: killers.length > 0,
+        killers
+      };
+    });
+  }
+
+  // src/components/GrammarCoverageExplorer.js
+  var STORAGE_KEY3 = "stvisual.grammarPrograms.v1";
+  var DEFAULT_OPS = ["TR", "SD"];
+  function escapeHtml4(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function loadLocalGrammars() {
+    var _a2;
+    try {
+      const raw = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY3);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+  function saveLocalGrammars(programs) {
+    var _a2;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY3, JSON.stringify(programs));
+    } catch {
+    }
+  }
+  function formatProductionHtml(prod, highlight) {
+    const rhs = prod.rhs.length === 0 ? '""' : prod.rhs.map((s) => s.kind === "NT" ? `<span class="grammar-nt">&lt;${escapeHtml4(s.value)}&gt;</span>` : `<span class="grammar-t">"${escapeHtml4(s.value)}"</span>`).join(" ");
+    const cls = highlight ? "grammar-prod covered" : "grammar-prod";
+    return `<div class="${cls}" data-prod-id="${prod.id}">
+    <span class="grammar-prod-id">p${prod.id}</span>
+    <span class="grammar-nt">&lt;${escapeHtml4(prod.lhs)}&gt;</span>
+    <span class="grammar-arrow">::=</span>
+    ${rhs}
+  </div>`;
+  }
+  function createGrammarCoverageExplorer() {
+    const root2 = document.createElement("div");
+    root2.className = "grammar-coverage";
+    root2.dataset.testid = "grammar-coverage";
+    const initial = grammarExamples[0];
+    const localPrograms = loadLocalGrammars();
+    const initialText = localPrograms[initial.id] || initial.text;
+    const state = {
+      exampleId: initial.id,
+      text: initialText,
+      programs: localPrograms,
+      customExamples: [],
+      operators: new Set(DEFAULT_OPS),
+      maxStrings: 8,
+      maxDepth: 12,
+      parseError: null,
+      grammar: null,
+      derivations: [],
+      coverage: null,
+      mutants: [],
+      selectedMutantId: null,
+      extraTests: ""
+      // user-added test strings, one per line
+    };
+    function persistCurrent() {
+      state.programs[state.exampleId] = state.text;
+      saveLocalGrammars(state.programs);
+    }
+    function recompute() {
+      var _a2;
+      state.parseError = null;
+      state.grammar = null;
+      state.derivations = [];
+      state.coverage = null;
+      state.mutants = [];
+      try {
+        const g = parseGrammar(state.text);
+        state.grammar = g;
+        state.derivations = generateDerivations(g, {
+          maxStrings: state.maxStrings,
+          maxDepth: state.maxDepth
+        });
+        state.coverage = computeCoverage(state.derivations, g);
+        const ops = [...state.operators];
+        if (ops.length > 0) {
+          const generated = generateGrammarMutants(g, ops);
+          const allTestStrings = [
+            ...state.derivations.map((d) => d.string),
+            ...state.extraTests.split("\n").map((s) => s).filter((_, idx, arr) => arr.indexOf(arr[idx]) === idx)
+          ];
+          state.mutants = evaluateMutantsAgainstStrings(g, generated, allTestStrings);
+        }
+        if (!state.mutants.find((m) => m.id === state.selectedMutantId)) {
+          state.selectedMutantId = ((_a2 = state.mutants[0]) == null ? void 0 : _a2.id) || null;
+        }
+      } catch (err) {
+        state.parseError = err.message || String(err);
+      }
+    }
+    function loadExample(id) {
+      const ex = grammarExamples.find((e) => e.id === id) || state.customExamples.find((e) => e.id === id);
+      if (!ex) return;
+      state.exampleId = id;
+      state.text = state.programs[id] || ex.text;
+      state.selectedMutantId = null;
+    }
+    function render() {
+      var _a2, _b, _c, _d, _e, _f, _g, _h;
+      recompute();
+      const allExamples = [...grammarExamples, ...state.customExamples];
+      const exampleButtons = allExamples.map((ex) => `
+      <button
+        type="button"
+        class="grammar-example-btn${state.exampleId === ex.id ? " active" : ""}"
+        data-grammar-example="${ex.id}"
+        title="${escapeHtml4(getLocale() === "en" ? ex.descriptionEn || ex.description : ex.description)}"
+      >${escapeHtml4(pickField(ex, "name"))}</button>
+    `).join("");
+      const operatorButtons = GRAMMAR_OPERATORS.map((op) => `
+      <label class="grammar-op-btn${state.operators.has(op) ? " active" : ""}">
+        <input type="checkbox" data-grammar-op="${op}" ${state.operators.has(op) ? "checked" : ""} />
+        <span>${op}</span>
+      </label>
+    `).join("");
+      const productionsHtml = state.grammar ? state.grammar.productions.map((p) => {
+        var _a3;
+        return formatProductionHtml(p, (_a3 = state.coverage) == null ? void 0 : _a3.pdc.covered.has(p.id));
+      }).join("") : "";
+      const derivationsHtml = state.derivations.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noDerivations"))}</p>` : `<ol class="grammar-derivations">
+          ${state.derivations.map((d) => `<li><code>${escapeHtml4(d.string === "" ? "\u2205" : d.string)}</code>
+            <span class="grammar-derivation-meta">depth ${d.depth} \xB7 p[${d.productionsUsed.join(", ")}]</span></li>`).join("")}
+         </ol>`;
+      const pdcRatio = state.coverage ? Math.round(state.coverage.pdc.ratio * 100) : 0;
+      const tscRatio = state.coverage ? Math.round(state.coverage.tsc.ratio * 100) : 0;
+      const terminalsHtml = state.grammar ? [...state.grammar.terminals].map((tm) => {
+        var _a3;
+        const covered = (_a3 = state.coverage) == null ? void 0 : _a3.tsc.covered.has(tm);
+        return `<span class="grammar-terminal-chip${covered ? " covered" : ""}">"${escapeHtml4(tm)}"</span>`;
+      }).join("") : "";
+      const mutantsHtml = state.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noMutants"))}</p>` : `<ul class="grammar-mutant-list">
+          ${state.mutants.map((m) => `<li>
+            <button type="button"
+              class="grammar-mutant-btn${state.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
+              data-grammar-mutant="${escapeHtml4(m.id)}">
+              <span class="grammar-mutant-op">${m.operator}</span>
+              <span class="grammar-mutant-status">${m.killed ? t("grammar.killed") : t("grammar.live")}</span>
+              <span class="grammar-mutant-desc">${escapeHtml4(m.description)}</span>
+            </button>
+          </li>`).join("")}
+         </ul>`;
+      const selectedMutant = state.mutants.find((m) => m.id === state.selectedMutantId) || null;
+      const selectedMutantDetailHtml = selectedMutant ? `<div class="grammar-mutant-detail">
+          <h5>${escapeHtml4(selectedMutant.id)}</h5>
+          <p>${escapeHtml4(selectedMutant.description)}</p>
+          ${selectedMutant.killed ? `<p class="grammar-mutant-killers"><strong>${escapeHtml4(t("grammar.killedBy"))}</strong></p>
+               <ul class="grammar-killer-list">${selectedMutant.killers.slice(0, 8).map((k) => `<li><code>${escapeHtml4(k.string === "" ? "\u2205" : k.string)}</code> \xB7 ${k.origAccepts ? t("grammar.origAccepts") : t("grammar.origRejects")} \xB7 ${k.mutAccepts ? t("grammar.mutAccepts") : t("grammar.mutRejects")}</li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml4(t("grammar.liveHint"))}</p>`}
+        </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.selectMutantHint"))}</p>`;
+      const score = state.mutants.length === 0 ? null : { killed: state.mutants.filter((m) => m.killed).length, total: state.mutants.length };
+      root2.innerHTML = `
+      <div class="grammar-card">
+        <header class="grammar-header">
+          <p class="grammar-kicker">${escapeHtml4(t("grammar.kicker"))}</p>
+          <h3>${escapeHtml4(t("grammar.title"))}</h3>
+          <p class="grammar-subtitle">${escapeHtml4(t("grammar.subtitle"))}</p>
+        </header>
+
+        <div class="grammar-example-row" data-testid="grammar-example-row">
+          ${exampleButtons}
+        </div>
+
+        <div class="grammar-editor-grid">
+          <div class="grammar-editor-col">
+            <label class="grammar-editor-label">
+              ${escapeHtml4(t("grammar.bnfEditor"))}
+              <textarea data-testid="grammar-text" rows="8" spellcheck="false">${escapeHtml4(state.text)}</textarea>
+            </label>
+            ${state.parseError ? `<p class="grammar-error" data-testid="grammar-parse-error">${escapeHtml4(state.parseError)}</p>` : ""}
+            <div class="grammar-controls-row">
+              <label>${escapeHtml4(t("grammar.maxStrings"))}
+                <input type="number" min="1" max="40" value="${state.maxStrings}" data-grammar-max-strings />
+              </label>
+              <label>${escapeHtml4(t("grammar.maxDepth"))}
+                <input type="number" min="1" max="40" value="${state.maxDepth}" data-grammar-max-depth />
+              </label>
+            </div>
+            <label class="grammar-editor-label">
+              ${escapeHtml4(t("grammar.extraTests"))}
+              <textarea data-testid="grammar-extra-tests" rows="3" spellcheck="false" placeholder="${escapeHtml4(t("grammar.extraTestsHint"))}">${escapeHtml4(state.extraTests)}</textarea>
+            </label>
+          </div>
+
+          <div class="grammar-editor-col">
+            <h4>${escapeHtml4(t("grammar.productions"))}</h4>
+            <div class="grammar-productions">${productionsHtml}</div>
+            <div class="grammar-coverage-summary">
+              <div class="grammar-metric">
+                <span class="grammar-metric-label">PDC</span>
+                <span class="grammar-metric-value" data-testid="grammar-pdc">${((_a2 = state.coverage) == null ? void 0 : _a2.pdc.covered.size) || 0} / ${((_b = state.coverage) == null ? void 0 : _b.pdc.all.size) || 0} (${pdcRatio}%)</span>
+              </div>
+              <div class="grammar-metric">
+                <span class="grammar-metric-label">TSC</span>
+                <span class="grammar-metric-value" data-testid="grammar-tsc">${((_c = state.coverage) == null ? void 0 : _c.tsc.covered.size) || 0} / ${((_d = state.coverage) == null ? void 0 : _d.tsc.all.size) || 0} (${tscRatio}%)</span>
+              </div>
+            </div>
+            <div class="grammar-terminals">${terminalsHtml}</div>
+          </div>
+        </div>
+
+        <div class="grammar-derivation-block">
+          <h4>${escapeHtml4(t("grammar.derivations"))}</h4>
+          ${derivationsHtml}
+        </div>
+
+        <div class="grammar-mutation-block">
+          <div class="grammar-mutation-header">
+            <h4>${escapeHtml4(t("grammar.mutations"))}</h4>
+            ${score ? `<span class="grammar-score" data-testid="grammar-mutation-score">${t("grammar.scoreLabel")}: ${score.killed} / ${score.total} (${Math.round(score.killed / score.total * 100)}%)</span>` : ""}
+          </div>
+          <div class="grammar-op-row">${operatorButtons}</div>
+          <div class="grammar-mutation-grid">
+            <div>${mutantsHtml}</div>
+            <div>${selectedMutantDetailHtml}</div>
+          </div>
+        </div>
+      </div>
+    `;
+      root2.querySelectorAll("[data-grammar-example]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          loadExample(btn.dataset.grammarExample);
+          render();
+        });
+      });
+      const ta = root2.querySelector('[data-testid="grammar-text"]');
+      ta == null ? void 0 : ta.addEventListener("input", (e) => {
+        state.text = e.target.value;
+        persistCurrent();
+      });
+      ta == null ? void 0 : ta.addEventListener("change", () => {
+        render();
+      });
+      (_e = root2.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
+        state.extraTests = e.target.value;
+      });
+      (_f = root2.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _f.addEventListener("change", () => render());
+      (_g = root2.querySelector("[data-grammar-max-strings]")) == null ? void 0 : _g.addEventListener("change", (e) => {
+        state.maxStrings = Math.max(1, Math.min(40, Number(e.target.value) || 1));
+        render();
+      });
+      (_h = root2.querySelector("[data-grammar-max-depth]")) == null ? void 0 : _h.addEventListener("change", (e) => {
+        state.maxDepth = Math.max(1, Math.min(40, Number(e.target.value) || 1));
+        render();
+      });
+      root2.querySelectorAll("[data-grammar-op]").forEach((cb) => {
+        cb.addEventListener("change", (e) => {
+          const op = e.target.dataset.grammarOp;
+          if (e.target.checked) state.operators.add(op);
+          else state.operators.delete(op);
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-grammar-mutant]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.selectedMutantId = btn.dataset.grammarMutant;
+          render();
+        });
+      });
+    }
+    render();
+    if (typeof globalThis.addEventListener === "function") {
+      globalThis.addEventListener("stvisual:load-program-source", (event) => {
+        var _a2;
+        if (!root2.isConnected) return;
+        const detail = event.detail || {};
+        if (detail.target !== "grammar") return;
+        const content = String((_a2 = detail.content) != null ? _a2 : "");
+        const baseName = (detail.name || "uploaded").replace(/\.[^.]+$/, "") || "uploaded";
+        const id = `uploaded-grammar-${Date.now().toString(36)}`;
+        const newExample = {
+          id,
+          name: baseName,
+          nameEn: baseName,
+          description: `Uploaded from cloud: ${detail.name || baseName}`,
+          descriptionEn: `Uploaded from cloud: ${detail.name || baseName}`,
+          text: content
+        };
+        state.customExamples = [...state.customExamples, newExample];
+        state.programs[id] = content;
+        state.exampleId = id;
+        state.text = content;
+        state.selectedMutantId = null;
+        persistCurrent();
+        render();
+      });
+    }
+    return root2;
+  }
+
   // src/app.js
   var sectionsConfig = [
     { id: "all", key: "section.all" },
@@ -6400,6 +7111,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         graph: createGraphCoverageExplorer(),
         logic: createLogicCoverageExplorer(),
         syntax: createSyntaxCoverageExplorer(),
+        grammar: createGrammarCoverageExplorer(),
         cloud: createCloudStoragePanel(),
         flow: createTestingFlow(),
         types: createTestingTypesTable()
@@ -6408,6 +7120,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       container.querySelector('[data-slot="graph"]').appendChild(components.graph);
       container.querySelector('[data-slot="logic"]').appendChild(components.logic);
       container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
+      container.querySelector('[data-slot="syntax"]').appendChild(components.grammar);
       container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);

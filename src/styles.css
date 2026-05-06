@@ -5,4 +5,5 @@
 @import url('./components/GraphCoverageExplorer.css');
 @import url('./components/LogicCoverageExplorer.css');
 @import url('./components/SyntaxCoverageExplorer.css');
+@import url('./components/GrammarCoverageExplorer.css');
 @import url('./components/CloudStoragePanel.css');

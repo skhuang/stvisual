@@ -581,3 +581,55 @@ Drive 列表只會顯示「本應用程式建立或使用者透過本應用程�
 
 - `npm run test:run` → 142/142 通過（含新增的 4 個 OO mutation 測試）。
 - `node scripts/build-standalone.mjs` → `Built standalone bundle at src/standalone.js`，供 `file://` 模式使用。
+
+---
+
+## 12. Grammar-Based Testing（2026-05-06，第二階段）
+
+第二階段擴充教學內容：在 Syntax-Based Testing 區塊下方加入 **Grammar Coverage Explorer**，提供 BNF 文法輸入、衍生字串、Production / Terminal 覆蓋與 Grammar Mutation 演示，呼應 Ammann/Offutt 教科書 §9 的 Grammar-Based Testing 章節。
+
+### 12.1 模組與檔案
+
+- [src/utils/grammar.js](../src/utils/grammar.js)
+  - `parseGrammar(text)`：BNF 解析器；非終端 `<X>`、終端 `"x"`、`|` 為 alternative、`#` / `//` 開頭為註解。
+  - `generateDerivations(grammar, { maxStrings, maxDepth, maxStringLen })`：左推導 BFS，支援字串/深度/長度上限；回傳 `[{ string, productionsUsed, depth }]`。
+  - `computeCoverage(derivations, grammar)`：回傳 `{ pdc, tsc }` 兩組 `{ covered, all, ratio }`。
+  - `recognizes(grammar, input)`：教學用遞迴下降辨識器（記憶化、深度上限），不是完整 CYK，但對課堂級文法夠用。
+  - `generateGrammarMutants(grammar, opIds)`：`TR` Terminal Replacement、`PR` Production Replacement、`SD` Symbol Deletion、`DUP` Symbol Duplication 四個 operator。
+  - `evaluateMutantsAgainstStrings(orig, mutants, strings)`：以「字串在 orig 與 mutant 中是否同樣被接受」決定是否被 killed。
+- [src/data/grammarData.js](../src/data/grammarData.js)：3 個內建文法 `arith`（算術運算式）、`json-tiny`（迷你 JSON）、`palindrome`（回文）。
+- [src/components/GrammarCoverageExplorer.js](../src/components/GrammarCoverageExplorer.js)：UI 元件，包含文法選擇按鈕列、BNF textarea、字串/深度上限、額外測試字串、產生規則高亮（covered 變綠）、Terminals 籌碼、衍生字串列表、PDC / TSC 指標、Operator 切換、Mutant 列表（killed/live 顏色）、Mutant 細節面板。
+- [src/components/GrammarCoverageExplorer.css](../src/components/GrammarCoverageExplorer.css)：對應樣式。
+- [src/tests/grammar.test.js](../src/tests/grammar.test.js)：7 個 Vitest 單元測試。
+
+### 12.2 mounting
+
+[src/app.js](../src/app.js) 把 `createGrammarCoverageExplorer()` 直接 append 進 `data-slot="syntax"`，與 `SyntaxCoverageExplorer` 同屬 Syntax-Based Testing section 但獨立卡片。語言切換時兩者會一起重繪（`paint()`）。
+
+### 12.3 從 Cloud Storage 載入文法
+
+延伸既有的跨元件事件協定：
+
+```text
+window.dispatchEvent(new CustomEvent('stvisual:load-program-source', {
+  detail: { target: 'mutation' | 'graph' | 'grammar', name, content }
+}));
+```
+
+CloudStoragePanel 為每個檔案（含上傳清單與 Drive 既有檔案）多加一顆 **Use for Grammar Coverage** 按鈕，按下即捲動到 Syntax 區塊並建立 `uploaded-grammar-<ts>` 的 custom example。
+
+### 12.4 i18n
+
+新增 dict keys：
+- 介面：`grammar.kicker / title / subtitle / bnfEditor / maxStrings / maxDepth / extraTests / extraTestsHint / productions / derivations / noDerivations / mutations / noMutants / killed / live / killedBy / liveHint / selectMutantHint / scoreLabel / origAccepts / origRejects / mutAccepts / mutRejects`
+- 雲端：`cloud.useForGrammar / cloud.sentToGrammar`
+
+### 12.5 部署
+
+`scripts/prepare-pages.mjs` 補上 `src/i18n/` 的 recursive 複製，避免 GitHub Pages 缺檔（與 §11 i18n 一同上線）。
+
+### 12.6 驗證
+
+- `npm run test:run` → **149/149**（在 §11 的 142 之上 +7 grammar tests）。
+- `npx playwright test` → **9/9**（e2e 已 pin locale=zh，不受新增功能影響）。
+- `node scripts/build-standalone.mjs` → 重新產出 `src/standalone.js`。

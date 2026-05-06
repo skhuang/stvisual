@@ -21,6 +21,7 @@ await cp(path.join(projectRoot, 'src', 'components'), path.join(outputDir, 'src'
 await cp(path.join(projectRoot, 'src', 'data'), path.join(outputDir, 'src', 'data'), { recursive: true });
 await cp(path.join(projectRoot, 'src', 'config'), path.join(outputDir, 'src', 'config'), { recursive: true });
 await cp(path.join(projectRoot, 'src', 'utils'), path.join(outputDir, 'src', 'utils'), { recursive: true });
+await cp(path.join(projectRoot, 'src', 'i18n'), path.join(outputDir, 'src', 'i18n'), { recursive: true });
 await writeFile(path.join(outputDir, '.nojekyll'), '');
 
 console.log(`Prepared GitHub Pages site at ${outputDir}`);
