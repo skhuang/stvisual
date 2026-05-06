@@ -7,10 +7,15 @@ import {
   generateGrammarMutants,
   evaluateMutantsAgainstStrings,
   GRAMMAR_OPERATORS,
+  STRING_MUTATION_OPERATORS,
+  generateStringMutants,
+  classifyStringMutants,
+  deriveAlphabet,
 } from '../utils/grammar.js';
 
 const STORAGE_KEY = 'stvisual.grammarPrograms.v1';
 const DEFAULT_OPS = ['TR', 'SD'];
+const DEFAULT_STRING_OPS = ['REP', 'DEL'];
 
 function escapeHtml(value = '') {
   return String(value)
@@ -79,6 +84,12 @@ export function createGrammarCoverageExplorer() {
     mutants: [],
     selectedMutantId: null,
     extraTests: '', // user-added test strings, one per line
+    // Phase 3: Mutation on Strings (BNF Mutation)
+    stringOperators: new Set(DEFAULT_STRING_OPS),
+    seedIndex: 0,
+    maxPerStringOp: 12,
+    stringMutants: [],
+    selectedStringMutantId: null,
   };
 
   function persistCurrent() {
@@ -111,6 +122,21 @@ export function createGrammarCoverageExplorer() {
       }
       if (!state.mutants.find((m) => m.id === state.selectedMutantId)) {
         state.selectedMutantId = state.mutants[0]?.id || null;
+      }
+      // Phase 3: derive string mutants from chosen seed.
+      state.stringMutants = [];
+      if (state.derivations.length > 0 && state.stringOperators.size > 0) {
+        const idx = Math.min(state.seedIndex, state.derivations.length - 1);
+        const seed = state.derivations[idx].string;
+        const alphabet = deriveAlphabet(g, state.derivations.map((d) => d.string));
+        const raw = generateStringMutants(seed, [...state.stringOperators], {
+          alphabet,
+          maxPerOp: state.maxPerStringOp,
+        });
+        state.stringMutants = classifyStringMutants(g, raw);
+      }
+      if (!state.stringMutants.find((m) => m.id === state.selectedStringMutantId)) {
+        state.selectedStringMutantId = state.stringMutants[0]?.id || null;
       }
     } catch (err) {
       state.parseError = err.message || String(err);
@@ -198,6 +224,56 @@ export function createGrammarCoverageExplorer() {
       ? null
       : { killed: state.mutants.filter((m) => m.killed).length, total: state.mutants.length };
 
+    // ---- Phase 3: Mutation on Strings ----
+    const seedOptionsHtml = state.derivations.map((d, idx) => `
+      <option value="${idx}" ${idx === Math.min(state.seedIndex, state.derivations.length - 1) ? 'selected' : ''}>
+        #${idx + 1}: ${escapeHtml(d.string === '' ? '∅' : d.string)}
+      </option>`).join('');
+    const stringOpButtons = STRING_MUTATION_OPERATORS.map((op) => `
+      <label class="grammar-op-btn${state.stringOperators.has(op) ? ' active' : ''}">
+        <input type="checkbox" data-grammar-string-op="${op}" ${state.stringOperators.has(op) ? 'checked' : ''} />
+        <span>${op}</span>
+      </label>
+    `).join('');
+    const stringMutantsHtml = state.stringMutants.length === 0
+      ? `<p class="grammar-empty">${escapeHtml(t('grammar.string.empty'))}</p>`
+      : `<table class="grammar-string-mutant-table" data-testid="grammar-string-mutant-table">
+          <thead><tr>
+            <th>Op</th>
+            <th>${escapeHtml(t('grammar.string.colMutated'))}</th>
+            <th>${escapeHtml(t('grammar.string.colKind'))}</th>
+          </tr></thead>
+          <tbody>
+            ${state.stringMutants.map((m) => `<tr
+                class="grammar-string-row ${m.kind === 'positive' ? 'positive' : 'negative'}${state.selectedStringMutantId === m.id ? ' active' : ''}"
+                data-grammar-string-mutant="${escapeHtml(m.id)}">
+                <td><span class="grammar-op-tag">${m.operator}</span></td>
+                <td><code>${escapeHtml(m.mutated === '' ? '∅' : m.mutated)}</code></td>
+                <td>${m.kind === 'positive'
+                  ? `<span class="grammar-string-kind positive">✓ ${escapeHtml(t('grammar.string.inLang'))}</span>`
+                  : `<span class="grammar-string-kind negative">✗ ${escapeHtml(t('grammar.string.outLang'))}</span>`}</td>
+              </tr>`).join('')}
+          </tbody>
+         </table>`;
+    const positives = state.stringMutants.filter((m) => m.kind === 'positive').length;
+    const negatives = state.stringMutants.length - positives;
+    const stringStats = state.stringMutants.length === 0
+      ? null
+      : `<span class="grammar-string-stats" data-testid="grammar-string-stats">
+          ${escapeHtml(t('grammar.string.statsPositive'))}: ${positives} · ${escapeHtml(t('grammar.string.statsNegative'))}: ${negatives}
+        </span>`;
+    const selectedStringMutant = state.stringMutants.find((m) => m.id === state.selectedStringMutantId) || null;
+    const selectedStringDetailHtml = selectedStringMutant
+      ? `<div class="grammar-string-detail">
+          <p><strong>${escapeHtml(selectedStringMutant.operator)}</strong> · ${escapeHtml(selectedStringMutant.description)}</p>
+          <p>${escapeHtml(t('grammar.string.original'))}: <code>${escapeHtml(selectedStringMutant.original === '' ? '∅' : selectedStringMutant.original)}</code></p>
+          <p>${escapeHtml(t('grammar.string.mutated'))}: <code>${escapeHtml(selectedStringMutant.mutated === '' ? '∅' : selectedStringMutant.mutated)}</code></p>
+          <p>${selectedStringMutant.flipped
+            ? `<span class="grammar-string-flip">⚡ ${escapeHtml(t('grammar.string.flipped'))}</span>`
+            : `<span class="grammar-string-same">${escapeHtml(t('grammar.string.sameLang'))}</span>`}</p>
+        </div>`
+      : `<p class="grammar-empty">${escapeHtml(t('grammar.string.selectHint'))}</p>`;
+
     root.innerHTML = `
       <div class="grammar-card">
         <header class="grammar-header">
@@ -264,6 +340,27 @@ export function createGrammarCoverageExplorer() {
             <div>${selectedMutantDetailHtml}</div>
           </div>
         </div>
+
+        <div class="grammar-string-block" data-testid="grammar-string-block">
+          <div class="grammar-mutation-header">
+            <h4>${escapeHtml(t('grammar.string.title'))}</h4>
+            ${stringStats || ''}
+          </div>
+          <p class="grammar-string-subtitle">${escapeHtml(t('grammar.string.subtitle'))}</p>
+          <div class="grammar-string-controls">
+            <label>${escapeHtml(t('grammar.string.seed'))}
+              <select data-grammar-seed-select ${state.derivations.length === 0 ? 'disabled' : ''}>${seedOptionsHtml}</select>
+            </label>
+            <label>${escapeHtml(t('grammar.string.maxPerOp'))}
+              <input type="number" min="1" max="50" value="${state.maxPerStringOp}" data-grammar-max-per-string-op />
+            </label>
+          </div>
+          <div class="grammar-op-row">${stringOpButtons}</div>
+          <div class="grammar-mutation-grid">
+            <div>${stringMutantsHtml}</div>
+            <div>${selectedStringDetailHtml}</div>
+          </div>
+        </div>
       </div>
     `;
 
@@ -300,6 +397,29 @@ export function createGrammarCoverageExplorer() {
     root.querySelectorAll('[data-grammar-mutant]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.selectedMutantId = btn.dataset.grammarMutant;
+        render();
+      });
+    });
+    root.querySelector('[data-grammar-seed-select]')?.addEventListener('change', (e) => {
+      state.seedIndex = Math.max(0, Number(e.target.value) || 0);
+      state.selectedStringMutantId = null;
+      render();
+    });
+    root.querySelector('[data-grammar-max-per-string-op]')?.addEventListener('change', (e) => {
+      state.maxPerStringOp = Math.max(1, Math.min(50, Number(e.target.value) || 1));
+      render();
+    });
+    root.querySelectorAll('[data-grammar-string-op]').forEach((cb) => {
+      cb.addEventListener('change', (e) => {
+        const op = e.target.dataset.grammarStringOp;
+        if (e.target.checked) state.stringOperators.add(op);
+        else state.stringOperators.delete(op);
+        render();
+      });
+    });
+    root.querySelectorAll('[data-grammar-string-mutant]').forEach((row) => {
+      row.addEventListener('click', () => {
+        state.selectedStringMutantId = row.dataset.grammarStringMutant;
         render();
       });
     });

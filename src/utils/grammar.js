@@ -375,3 +375,140 @@ export function evaluateMutantsAgainstStrings(originalGrammar, mutants, strings,
     };
   });
 }
+
+// ----- Phase 3: Mutation on Strings (BNF Mutation) ------------------------
+// Apply mutation operators to a seed string (typically a derivation produced
+// by `generateDerivations`). Each mutant is a candidate test input; combined
+// with `recognizes` it yields positive (in-language) and negative
+// (out-of-language) tests for the system under test.
+//
+// Operators (Ammann/Offutt §9.2):
+//   REP  Replace one character with another from the alphabet
+//   DEL  Delete one character
+//   DUP  Duplicate one character
+//   INS  Insert a character from the alphabet at a position
+//   SWP  Swap two adjacent (different) characters
+export const STRING_MUTATION_OPERATORS = ['REP', 'DEL', 'DUP', 'INS', 'SWP'];
+
+export function deriveAlphabet(grammar, seedStrings = []) {
+  const set = new Set();
+  if (grammar?.terminals) {
+    for (const t of grammar.terminals) {
+      // Decompose multi-character terminals into characters so the mutated
+      // strings stay within the surface alphabet of the language.
+      for (const ch of String(t)) set.add(ch);
+    }
+  }
+  for (const s of seedStrings) {
+    for (const ch of String(s)) set.add(ch);
+  }
+  return [...set];
+}
+
+export function generateStringMutants(seed, opIds = STRING_MUTATION_OPERATORS, options = {}) {
+  if (typeof seed !== 'string') throw new Error('Seed must be a string.');
+  const ops = new Set(opIds);
+  const alphabet = (options.alphabet && options.alphabet.length > 0)
+    ? [...new Set(options.alphabet)]
+    : [...new Set(seed.split(''))];
+  const maxPerOp = options.maxPerOp ?? 30;
+  const out = [];
+  const seen = new Set();
+
+  const push = (operator, mutated, description) => {
+    if (mutated === seed) return;
+    const key = `${operator}|${mutated}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push({
+      id: `${operator}:${out.length}`,
+      operator,
+      original: seed,
+      mutated,
+      description,
+    });
+  };
+
+  if (ops.has('REP')) {
+    let count = 0;
+    outer: for (let i = 0; i < seed.length; i++) {
+      for (const ch of alphabet) {
+        if (ch === seed[i]) continue;
+        push('REP', seed.slice(0, i) + ch + seed.slice(i + 1),
+          `Replace position ${i} '${seed[i]}' → '${ch}'`);
+        count++;
+        if (count >= maxPerOp) break outer;
+      }
+    }
+  }
+
+  if (ops.has('DEL')) {
+    let count = 0;
+    for (let i = 0; i < seed.length; i++) {
+      push('DEL', seed.slice(0, i) + seed.slice(i + 1),
+        `Delete position ${i} '${seed[i]}'`);
+      count++;
+      if (count >= maxPerOp) break;
+    }
+  }
+
+  if (ops.has('DUP')) {
+    let count = 0;
+    for (let i = 0; i < seed.length; i++) {
+      push('DUP', seed.slice(0, i + 1) + seed[i] + seed.slice(i + 1),
+        `Duplicate position ${i} '${seed[i]}'`);
+      count++;
+      if (count >= maxPerOp) break;
+    }
+  }
+
+  if (ops.has('INS')) {
+    let count = 0;
+    outer: for (let i = 0; i <= seed.length; i++) {
+      for (const ch of alphabet) {
+        push('INS', seed.slice(0, i) + ch + seed.slice(i),
+          `Insert '${ch}' at position ${i}`);
+        count++;
+        if (count >= maxPerOp) break outer;
+      }
+    }
+  }
+
+  if (ops.has('SWP')) {
+    let count = 0;
+    for (let i = 0; i < seed.length - 1; i++) {
+      if (seed[i] === seed[i + 1]) continue;
+      push('SWP', seed.slice(0, i) + seed[i + 1] + seed[i] + seed.slice(i + 2),
+        `Swap positions ${i}/${i + 1}`);
+      count++;
+      if (count >= maxPerOp) break;
+    }
+  }
+
+  return out;
+}
+
+// Classify each string mutant by language membership against the grammar.
+// Returns each mutant augmented with origAccepts / mutAccepts and a `kind`
+// of either 'positive' (in-language → exercises the parser's accept path)
+// or 'negative' (out-of-language → exercises error handling).
+export function classifyStringMutants(grammar, mutants, recOptions) {
+  const cache = new Map();
+  const accepts = (s) => {
+    if (cache.has(s)) return cache.get(s);
+    const v = recognizes(grammar, s, recOptions);
+    cache.set(s, v);
+    return v;
+  };
+  return mutants.map((m) => {
+    const origAccepts = accepts(m.original);
+    const mutAccepts = accepts(m.mutated);
+    return {
+      ...m,
+      origAccepts,
+      mutAccepts,
+      kind: mutAccepts ? 'positive' : 'negative',
+      flipped: origAccepts !== mutAccepts,
+    };
+  });
+}

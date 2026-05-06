@@ -673,6 +673,22 @@
       "grammar.origRejects": "orig: reject",
       "grammar.mutAccepts": "mut: accept",
       "grammar.mutRejects": "mut: reject",
+      "grammar.string.title": "Mutation on Strings (BNF Mutation)",
+      "grammar.string.subtitle": "Apply mutation operators to a derived string. In-language results stress the parser; out-of-language results test error handling.",
+      "grammar.string.seed": "Seed string",
+      "grammar.string.maxPerOp": "Max mutants / op",
+      "grammar.string.empty": "No string mutants \u2014 pick a seed and at least one operator.",
+      "grammar.string.colMutated": "Mutated string",
+      "grammar.string.colKind": "Result",
+      "grammar.string.inLang": "in language",
+      "grammar.string.outLang": "not in language",
+      "grammar.string.statsPositive": "Positive (in-language)",
+      "grammar.string.statsNegative": "Negative (out-of-language)",
+      "grammar.string.original": "Original",
+      "grammar.string.mutated": "Mutated",
+      "grammar.string.flipped": "Flips language membership vs. seed.",
+      "grammar.string.sameLang": "Same membership as seed.",
+      "grammar.string.selectHint": "Select a row to inspect.",
       "syntax.cloud.failed": "Sync failed",
       "syntax.cloud.linked": "Linked: {name}",
       "syntax.cloud.reloading": "Reloading from cloud\u2026",
@@ -941,6 +957,22 @@
       "grammar.origRejects": "\u539F grammar\uFF1A\u62D2\u7D55",
       "grammar.mutAccepts": "mutant\uFF1A\u63A5\u53D7",
       "grammar.mutRejects": "mutant\uFF1A\u62D2\u7D55",
+      "grammar.string.title": "\u5B57\u4E32\u7A81\u8B8A\uFF08Mutation on Strings\uFF09",
+      "grammar.string.subtitle": "\u5C0D\u884D\u751F\u5B57\u4E32\u5957\u7528\u7A81\u8B8A\u904B\u7B97\u5B50\uFF1B\u843D\u5728\u8A9E\u8A00\u5167\u7684\u5B57\u4E32\u53EF\u4F5C\u70BA\u6B63\u5411\u6E2C\u8A66\uFF0C\u843D\u5728\u8A9E\u8A00\u5916\u7684\u5B57\u4E32\u5247\u7528\u65BC\u932F\u8AA4\u8655\u7406\u6E2C\u8A66\u3002",
+      "grammar.string.seed": "\u7A2E\u5B50\u5B57\u4E32",
+      "grammar.string.maxPerOp": "\u6BCF\u904B\u7B97\u5B50\u6700\u591A mutants",
+      "grammar.string.empty": "\u5C1A\u7121\u5B57\u4E32 mutants\uFF1B\u8ACB\u9078\u64C7\u7A2E\u5B50\u4E26\u81F3\u5C11\u555F\u7528\u4E00\u500B\u904B\u7B97\u5B50\u3002",
+      "grammar.string.colMutated": "\u7A81\u8B8A\u5B57\u4E32",
+      "grammar.string.colKind": "\u5224\u5B9A",
+      "grammar.string.inLang": "\u5C6C\u65BC\u8A9E\u8A00",
+      "grammar.string.outLang": "\u4E0D\u5C6C\u65BC\u8A9E\u8A00",
+      "grammar.string.statsPositive": "\u6B63\u5411\uFF08in-language\uFF09",
+      "grammar.string.statsNegative": "\u53CD\u5411\uFF08out-of-language\uFF09",
+      "grammar.string.original": "\u539F\u5B57\u4E32",
+      "grammar.string.mutated": "\u7A81\u8B8A\u5F8C",
+      "grammar.string.flipped": "\u76F8\u5C0D\u7A2E\u5B50\u7FFB\u8F49\u4E86\u8A9E\u8A00\u6B78\u5C6C\u3002",
+      "grammar.string.sameLang": "\u8207\u7A2E\u5B50\u5728\u540C\u4E00\u5074\uFF08\u5C6C\u65BC / \u4E0D\u5C6C\u65BC\uFF09\u3002",
+      "grammar.string.selectHint": "\u9EDE\u9078\u4E00\u5217\u67E5\u770B\u7D30\u7BC0\u3002",
       "syntax.cloud.failed": "\u540C\u6B65\u5931\u6557",
       "syntax.cloud.linked": "\u5DF2\u9023\u7D50 {name}",
       "syntax.cloud.reloading": "\u91CD\u65B0\u5F9E\u96F2\u7AEF\u8B80\u53D6\u2026",
@@ -6757,10 +6789,133 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       };
     });
   }
+  var STRING_MUTATION_OPERATORS = ["REP", "DEL", "DUP", "INS", "SWP"];
+  function deriveAlphabet(grammar, seedStrings = []) {
+    const set = /* @__PURE__ */ new Set();
+    if (grammar == null ? void 0 : grammar.terminals) {
+      for (const t2 of grammar.terminals) {
+        for (const ch of String(t2)) set.add(ch);
+      }
+    }
+    for (const s of seedStrings) {
+      for (const ch of String(s)) set.add(ch);
+    }
+    return [...set];
+  }
+  function generateStringMutants(seed, opIds = STRING_MUTATION_OPERATORS, options = {}) {
+    var _a2;
+    if (typeof seed !== "string") throw new Error("Seed must be a string.");
+    const ops = new Set(opIds);
+    const alphabet = options.alphabet && options.alphabet.length > 0 ? [...new Set(options.alphabet)] : [...new Set(seed.split(""))];
+    const maxPerOp = (_a2 = options.maxPerOp) != null ? _a2 : 30;
+    const out = [];
+    const seen = /* @__PURE__ */ new Set();
+    const push = (operator, mutated, description) => {
+      if (mutated === seed) return;
+      const key = `${operator}|${mutated}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      out.push({
+        id: `${operator}:${out.length}`,
+        operator,
+        original: seed,
+        mutated,
+        description
+      });
+    };
+    if (ops.has("REP")) {
+      let count = 0;
+      outer: for (let i = 0; i < seed.length; i++) {
+        for (const ch of alphabet) {
+          if (ch === seed[i]) continue;
+          push(
+            "REP",
+            seed.slice(0, i) + ch + seed.slice(i + 1),
+            `Replace position ${i} '${seed[i]}' \u2192 '${ch}'`
+          );
+          count++;
+          if (count >= maxPerOp) break outer;
+        }
+      }
+    }
+    if (ops.has("DEL")) {
+      let count = 0;
+      for (let i = 0; i < seed.length; i++) {
+        push(
+          "DEL",
+          seed.slice(0, i) + seed.slice(i + 1),
+          `Delete position ${i} '${seed[i]}'`
+        );
+        count++;
+        if (count >= maxPerOp) break;
+      }
+    }
+    if (ops.has("DUP")) {
+      let count = 0;
+      for (let i = 0; i < seed.length; i++) {
+        push(
+          "DUP",
+          seed.slice(0, i + 1) + seed[i] + seed.slice(i + 1),
+          `Duplicate position ${i} '${seed[i]}'`
+        );
+        count++;
+        if (count >= maxPerOp) break;
+      }
+    }
+    if (ops.has("INS")) {
+      let count = 0;
+      outer: for (let i = 0; i <= seed.length; i++) {
+        for (const ch of alphabet) {
+          push(
+            "INS",
+            seed.slice(0, i) + ch + seed.slice(i),
+            `Insert '${ch}' at position ${i}`
+          );
+          count++;
+          if (count >= maxPerOp) break outer;
+        }
+      }
+    }
+    if (ops.has("SWP")) {
+      let count = 0;
+      for (let i = 0; i < seed.length - 1; i++) {
+        if (seed[i] === seed[i + 1]) continue;
+        push(
+          "SWP",
+          seed.slice(0, i) + seed[i + 1] + seed[i] + seed.slice(i + 2),
+          `Swap positions ${i}/${i + 1}`
+        );
+        count++;
+        if (count >= maxPerOp) break;
+      }
+    }
+    return out;
+  }
+  function classifyStringMutants(grammar, mutants, recOptions) {
+    const cache = /* @__PURE__ */ new Map();
+    const accepts = (s) => {
+      if (cache.has(s)) return cache.get(s);
+      const v = recognizes(grammar, s, recOptions);
+      cache.set(s, v);
+      return v;
+    };
+    return mutants.map((m) => {
+      const origAccepts = accepts(m.original);
+      const mutAccepts = accepts(m.mutated);
+      return {
+        ...m,
+        origAccepts,
+        mutAccepts,
+        kind: mutAccepts ? "positive" : "negative",
+        flipped: origAccepts !== mutAccepts
+      };
+    });
+  }
 
   // src/components/GrammarCoverageExplorer.js
   var STORAGE_KEY3 = "stvisual.grammarPrograms.v1";
   var DEFAULT_OPS = ["TR", "SD"];
+  var DEFAULT_STRING_OPS = ["REP", "DEL"];
   function escapeHtml4(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
@@ -6813,15 +6968,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       coverage: null,
       mutants: [],
       selectedMutantId: null,
-      extraTests: ""
+      extraTests: "",
       // user-added test strings, one per line
+      // Phase 3: Mutation on Strings (BNF Mutation)
+      stringOperators: new Set(DEFAULT_STRING_OPS),
+      seedIndex: 0,
+      maxPerStringOp: 12,
+      stringMutants: [],
+      selectedStringMutantId: null
     };
     function persistCurrent() {
       state.programs[state.exampleId] = state.text;
       saveLocalGrammars(state.programs);
     }
     function recompute() {
-      var _a2;
+      var _a2, _b;
       state.parseError = null;
       state.grammar = null;
       state.derivations = [];
@@ -6847,6 +7008,20 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         if (!state.mutants.find((m) => m.id === state.selectedMutantId)) {
           state.selectedMutantId = ((_a2 = state.mutants[0]) == null ? void 0 : _a2.id) || null;
         }
+        state.stringMutants = [];
+        if (state.derivations.length > 0 && state.stringOperators.size > 0) {
+          const idx = Math.min(state.seedIndex, state.derivations.length - 1);
+          const seed = state.derivations[idx].string;
+          const alphabet = deriveAlphabet(g, state.derivations.map((d) => d.string));
+          const raw = generateStringMutants(seed, [...state.stringOperators], {
+            alphabet,
+            maxPerOp: state.maxPerStringOp
+          });
+          state.stringMutants = classifyStringMutants(g, raw);
+        }
+        if (!state.stringMutants.find((m) => m.id === state.selectedStringMutantId)) {
+          state.selectedStringMutantId = ((_b = state.stringMutants[0]) == null ? void 0 : _b.id) || null;
+        }
       } catch (err) {
         state.parseError = err.message || String(err);
       }
@@ -6859,7 +7034,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       state.selectedMutantId = null;
     }
     function render() {
-      var _a2, _b, _c, _d, _e, _f, _g, _h;
+      var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j;
       recompute();
       const allExamples = [...grammarExamples, ...state.customExamples];
       const exampleButtons = allExamples.map((ex) => `
@@ -6910,6 +7085,44 @@ Content-Type: ${file.type || "application/octet-stream"}\r
                <ul class="grammar-killer-list">${selectedMutant.killers.slice(0, 8).map((k) => `<li><code>${escapeHtml4(k.string === "" ? "\u2205" : k.string)}</code> \xB7 ${k.origAccepts ? t("grammar.origAccepts") : t("grammar.origRejects")} \xB7 ${k.mutAccepts ? t("grammar.mutAccepts") : t("grammar.mutRejects")}</li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml4(t("grammar.liveHint"))}</p>`}
         </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.selectMutantHint"))}</p>`;
       const score = state.mutants.length === 0 ? null : { killed: state.mutants.filter((m) => m.killed).length, total: state.mutants.length };
+      const seedOptionsHtml = state.derivations.map((d, idx) => `
+      <option value="${idx}" ${idx === Math.min(state.seedIndex, state.derivations.length - 1) ? "selected" : ""}>
+        #${idx + 1}: ${escapeHtml4(d.string === "" ? "\u2205" : d.string)}
+      </option>`).join("");
+      const stringOpButtons = STRING_MUTATION_OPERATORS.map((op) => `
+      <label class="grammar-op-btn${state.stringOperators.has(op) ? " active" : ""}">
+        <input type="checkbox" data-grammar-string-op="${op}" ${state.stringOperators.has(op) ? "checked" : ""} />
+        <span>${op}</span>
+      </label>
+    `).join("");
+      const stringMutantsHtml = state.stringMutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.string.empty"))}</p>` : `<table class="grammar-string-mutant-table" data-testid="grammar-string-mutant-table">
+          <thead><tr>
+            <th>Op</th>
+            <th>${escapeHtml4(t("grammar.string.colMutated"))}</th>
+            <th>${escapeHtml4(t("grammar.string.colKind"))}</th>
+          </tr></thead>
+          <tbody>
+            ${state.stringMutants.map((m) => `<tr
+                class="grammar-string-row ${m.kind === "positive" ? "positive" : "negative"}${state.selectedStringMutantId === m.id ? " active" : ""}"
+                data-grammar-string-mutant="${escapeHtml4(m.id)}">
+                <td><span class="grammar-op-tag">${m.operator}</span></td>
+                <td><code>${escapeHtml4(m.mutated === "" ? "\u2205" : m.mutated)}</code></td>
+                <td>${m.kind === "positive" ? `<span class="grammar-string-kind positive">\u2713 ${escapeHtml4(t("grammar.string.inLang"))}</span>` : `<span class="grammar-string-kind negative">\u2717 ${escapeHtml4(t("grammar.string.outLang"))}</span>`}</td>
+              </tr>`).join("")}
+          </tbody>
+         </table>`;
+      const positives = state.stringMutants.filter((m) => m.kind === "positive").length;
+      const negatives = state.stringMutants.length - positives;
+      const stringStats = state.stringMutants.length === 0 ? null : `<span class="grammar-string-stats" data-testid="grammar-string-stats">
+          ${escapeHtml4(t("grammar.string.statsPositive"))}: ${positives} \xB7 ${escapeHtml4(t("grammar.string.statsNegative"))}: ${negatives}
+        </span>`;
+      const selectedStringMutant = state.stringMutants.find((m) => m.id === state.selectedStringMutantId) || null;
+      const selectedStringDetailHtml = selectedStringMutant ? `<div class="grammar-string-detail">
+          <p><strong>${escapeHtml4(selectedStringMutant.operator)}</strong> \xB7 ${escapeHtml4(selectedStringMutant.description)}</p>
+          <p>${escapeHtml4(t("grammar.string.original"))}: <code>${escapeHtml4(selectedStringMutant.original === "" ? "\u2205" : selectedStringMutant.original)}</code></p>
+          <p>${escapeHtml4(t("grammar.string.mutated"))}: <code>${escapeHtml4(selectedStringMutant.mutated === "" ? "\u2205" : selectedStringMutant.mutated)}</code></p>
+          <p>${selectedStringMutant.flipped ? `<span class="grammar-string-flip">\u26A1 ${escapeHtml4(t("grammar.string.flipped"))}</span>` : `<span class="grammar-string-same">${escapeHtml4(t("grammar.string.sameLang"))}</span>`}</p>
+        </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.string.selectHint"))}</p>`;
       root2.innerHTML = `
       <div class="grammar-card">
         <header class="grammar-header">
@@ -6976,6 +7189,27 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             <div>${selectedMutantDetailHtml}</div>
           </div>
         </div>
+
+        <div class="grammar-string-block" data-testid="grammar-string-block">
+          <div class="grammar-mutation-header">
+            <h4>${escapeHtml4(t("grammar.string.title"))}</h4>
+            ${stringStats || ""}
+          </div>
+          <p class="grammar-string-subtitle">${escapeHtml4(t("grammar.string.subtitle"))}</p>
+          <div class="grammar-string-controls">
+            <label>${escapeHtml4(t("grammar.string.seed"))}
+              <select data-grammar-seed-select ${state.derivations.length === 0 ? "disabled" : ""}>${seedOptionsHtml}</select>
+            </label>
+            <label>${escapeHtml4(t("grammar.string.maxPerOp"))}
+              <input type="number" min="1" max="50" value="${state.maxPerStringOp}" data-grammar-max-per-string-op />
+            </label>
+          </div>
+          <div class="grammar-op-row">${stringOpButtons}</div>
+          <div class="grammar-mutation-grid">
+            <div>${stringMutantsHtml}</div>
+            <div>${selectedStringDetailHtml}</div>
+          </div>
+        </div>
       </div>
     `;
       root2.querySelectorAll("[data-grammar-example]").forEach((btn) => {
@@ -7015,6 +7249,29 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       root2.querySelectorAll("[data-grammar-mutant]").forEach((btn) => {
         btn.addEventListener("click", () => {
           state.selectedMutantId = btn.dataset.grammarMutant;
+          render();
+        });
+      });
+      (_i = root2.querySelector("[data-grammar-seed-select]")) == null ? void 0 : _i.addEventListener("change", (e) => {
+        state.seedIndex = Math.max(0, Number(e.target.value) || 0);
+        state.selectedStringMutantId = null;
+        render();
+      });
+      (_j = root2.querySelector("[data-grammar-max-per-string-op]")) == null ? void 0 : _j.addEventListener("change", (e) => {
+        state.maxPerStringOp = Math.max(1, Math.min(50, Number(e.target.value) || 1));
+        render();
+      });
+      root2.querySelectorAll("[data-grammar-string-op]").forEach((cb) => {
+        cb.addEventListener("change", (e) => {
+          const op = e.target.dataset.grammarStringOp;
+          if (e.target.checked) state.stringOperators.add(op);
+          else state.stringOperators.delete(op);
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-grammar-string-mutant]").forEach((row) => {
+        row.addEventListener("click", () => {
+          state.selectedStringMutantId = row.dataset.grammarStringMutant;
           render();
         });
       });
