@@ -285,11 +285,11 @@ function createGraphCanvas(graph, requirement) {
     <div class="graph-canvas" data-testid="graph-canvas">
       <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t('graph.aria.canvas')}">
         <defs>
-          <marker id="arrow-default" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#9aa8b6"></path>
+          <marker id="arrow-default" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 z" fill="#9aa8b6"></path>
           </marker>
-          <marker id="arrow-active" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#ea580c"></path>
+          <marker id="arrow-active" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 z" fill="#ea580c"></path>
           </marker>
         </defs>
         ${graph.edges.map((edge) => {
@@ -382,8 +382,8 @@ function createDataFlowCanvas(graph) {
       <div class="graph-canvas graph-dfg-canvas" data-testid="graph-dfg-canvas">
         <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t('graph.dfg.aria')}">
           <defs>
-            <marker id="dfg-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-              <path d="M0,0 L12,6 L0,12 z" fill="#0ea5e9"></path>
+            <marker id="dfg-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 z" fill="#0ea5e9"></path>
             </marker>
           </defs>
           ${edgeMarkup}
