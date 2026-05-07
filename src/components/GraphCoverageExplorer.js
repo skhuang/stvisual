@@ -250,15 +250,40 @@ function resolveProgramGraph(program) {
   throw new Error(t('graph.err.noSource'));
 }
 
+function computeGraphBounds(graph, edgeList = graph.edges, padding = 60) {
+  const xs = [];
+  const ys = [];
+  for (const node of graph.nodes) {
+    xs.push(node.x - 32, node.x + 32);
+    ys.push(node.y - 32, node.y + 32);
+  }
+  for (const edge of edgeList) {
+    if (edge?.control) {
+      xs.push(edge.control.x);
+      ys.push(edge.control.y);
+    }
+  }
+  if (xs.length === 0) return { minX: 0, minY: 0, width: 920, height: 340 };
+  const minX = Math.min(...xs) - padding;
+  const minY = Math.min(...ys) - padding;
+  const maxX = Math.max(...xs) + padding;
+  const maxY = Math.max(...ys) + padding;
+  return {
+    minX,
+    minY,
+    width: Math.max(920, maxX - minX),
+    height: Math.max(340, maxY - minY),
+  };
+}
+
 function createGraphCanvas(graph, requirement) {
   const highlightedNodes = new Set(requirement?.nodes || []);
   const highlightedEdges = new Set(requirement?.edges || []);
-  const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
-  const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
+  const { minX, minY, width, height } = computeGraphBounds(graph);
 
   return `
     <div class="graph-canvas" data-testid="graph-canvas">
-      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t('graph.aria.canvas')}">
+      <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t('graph.aria.canvas')}">
         <defs>
           <marker id="arrow-default" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
             <path d="M0,0 L12,6 L0,12 z" fill="#9aa8b6"></path>
@@ -310,8 +335,7 @@ function createGraphCanvas(graph, requirement) {
 function createDataFlowCanvas(graph) {
   const dfg = buildDataFlowGraph(graph);
   const nodeById = new Map(graph.nodes.map((n) => [n.id, n]));
-  const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
-  const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
+  const { minX, minY, width, height } = computeGraphBounds(graph, dfg.edges);
 
   // Group edges between the same pair so labels stack instead of overlap.
   const grouped = new Map();
@@ -356,7 +380,7 @@ function createDataFlowCanvas(graph) {
         <p>${t('graph.dfg.help')}</p>
       </div>
       <div class="graph-canvas graph-dfg-canvas" data-testid="graph-dfg-canvas">
-        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t('graph.dfg.aria')}">
+        <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t('graph.dfg.aria')}">
           <defs>
             <marker id="dfg-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
               <path d="M0,0 L12,6 L0,12 z" fill="#0ea5e9"></path>
