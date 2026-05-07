@@ -2095,29 +2095,76 @@
   }
   function assignLayout(nodes, edges) {
     const depths = computeDepths(nodes, edges);
-    const grouped = /* @__PURE__ */ new Map();
+    const incoming = new Map(nodes.map((n) => [n.id, []]));
+    edges.forEach((e) => {
+      if (incoming.has(e.to)) incoming.get(e.to).push(e.from);
+    });
+    const layers = /* @__PURE__ */ new Map();
     nodes.forEach((node) => {
       var _a2;
-      const depth = (_a2 = depths.get(node.id)) != null ? _a2 : 1;
-      if (!grouped.has(depth)) {
-        grouped.set(depth, []);
-      }
-      grouped.get(depth).push(node);
+      const depth = (_a2 = depths.get(node.id)) != null ? _a2 : 0;
+      if (!layers.has(depth)) layers.set(depth, []);
+      layers.get(depth).push(node);
     });
-    Array.from(grouped.entries()).forEach(([depth, group]) => {
-      group.forEach((node, index) => {
-        node.x = 90 + depth * 150;
-        node.y = 90 + index * 96;
+    const NODE_SPACING_X = 170;
+    const LAYER_SPACING_Y = 130;
+    const MARGIN_X = 110;
+    const MARGIN_Y = 90;
+    const sortedDepths = [...layers.keys()].sort((a, b) => a - b);
+    const placed = /* @__PURE__ */ new Map();
+    for (const depth of sortedDepths) {
+      const layer = layers.get(depth);
+      layer.forEach((node) => {
+        node.y = MARGIN_Y + depth * LAYER_SPACING_Y;
       });
+      layer.forEach((node, idx) => {
+        const preds = (incoming.get(node.id) || []).filter((p) => placed.has(p));
+        if (preds.length > 0) {
+          const avg = preds.reduce((sum, p) => sum + placed.get(p), 0) / preds.length;
+          node.x = avg;
+        } else {
+          node.x = MARGIN_X + idx * NODE_SPACING_X;
+        }
+      });
+      layer.sort((a, b) => a.x - b.x);
+      for (let i = 1; i < layer.length; i++) {
+        const left = layer[i - 1];
+        const cur = layer[i];
+        const minX2 = left.x + NODE_SPACING_X;
+        if (cur.x < minX2) cur.x = minX2;
+      }
+      layer.forEach((node) => {
+        placed.set(node.id, node.x);
+      });
+    }
+    const minX = Math.min(...nodes.map((n) => n.x));
+    const shift = MARGIN_X - minX;
+    if (shift !== 0) nodes.forEach((n) => {
+      n.x = Math.round(n.x + shift);
+    });
+    else nodes.forEach((n) => {
+      n.x = Math.round(n.x);
     });
     const coordinates = new Map(nodes.map((node) => [node.id, node]));
     edges.forEach((edge) => {
       const fromNode = coordinates.get(edge.from);
       const toNode = coordinates.get(edge.to);
-      if (fromNode && toNode && toNode.x <= fromNode.x) {
+      if (!fromNode || !toNode) return;
+      if (toNode.y <= fromNode.y) {
+        const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80);
         edge.control = {
-          x: Math.round((fromNode.x + toNode.x) / 2),
-          y: Math.min(fromNode.y, toNode.y) - 72
+          x: Math.max(fromNode.x, toNode.x) + offset,
+          y: (fromNode.y + toNode.y) / 2
+        };
+      } else if (toNode.y - fromNode.y > LAYER_SPACING_Y * 1.5) {
+        edge.control = {
+          x: (fromNode.x + toNode.x) / 2 + 80,
+          y: (fromNode.y + toNode.y) / 2
+        };
+      } else if (Math.abs(toNode.x - fromNode.x) > NODE_SPACING_X * 1.2) {
+        edge.control = {
+          x: (fromNode.x + toNode.x) / 2,
+          y: fromNode.y + (toNode.y - fromNode.y) * 0.35
         };
       }
     });

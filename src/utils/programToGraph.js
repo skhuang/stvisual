@@ -633,32 +633,97 @@ function computeDepths(nodes, edges) {
 
 function assignLayout(nodes, edges) {
   const depths = computeDepths(nodes, edges);
-  const grouped = new Map();
+  const incoming = new Map(nodes.map((n) => [n.id, []]));
+  edges.forEach((e) => {
+    if (incoming.has(e.to)) incoming.get(e.to).push(e.from);
+  });
 
+  // Group nodes by depth (top-down: depth → y).
+  const layers = new Map();
   nodes.forEach((node) => {
-    const depth = depths.get(node.id) ?? 1;
-    if (!grouped.has(depth)) {
-      grouped.set(depth, []);
-    }
-    grouped.get(depth).push(node);
+    const depth = depths.get(node.id) ?? 0;
+    if (!layers.has(depth)) layers.set(depth, []);
+    layers.get(depth).push(node);
   });
 
-  Array.from(grouped.entries()).forEach(([depth, group]) => {
-    group.forEach((node, index) => {
-      node.x = 90 + depth * 150;
-      node.y = 90 + index * 96;
+  const NODE_SPACING_X = 170;   // horizontal gap between siblings
+  const LAYER_SPACING_Y = 130;  // vertical gap between layers
+  const MARGIN_X = 110;
+  const MARGIN_Y = 90;
+
+  // First pass: assign Y by depth, X by initial spread of root node, then
+  // for each subsequent layer center each node above the average of its
+  // already-placed predecessors. Resolve collisions by spacing siblings
+  // apart while keeping their relative order from buildSequence (i.e. the
+  // order they were inserted into `nodes`).
+  const sortedDepths = [...layers.keys()].sort((a, b) => a - b);
+  const placed = new Map(); // id → x
+
+  for (const depth of sortedDepths) {
+    const layer = layers.get(depth);
+    layer.forEach((node) => { node.y = MARGIN_Y + depth * LAYER_SPACING_Y; });
+
+    // Tentative x = average of already-placed predecessors, fallback to
+    // own index in the layer.
+    layer.forEach((node, idx) => {
+      const preds = (incoming.get(node.id) || []).filter((p) => placed.has(p));
+      if (preds.length > 0) {
+        const avg = preds.reduce((sum, p) => sum + placed.get(p), 0) / preds.length;
+        node.x = avg;
+      } else {
+        node.x = MARGIN_X + idx * NODE_SPACING_X;
+      }
     });
-  });
 
+    // Resolve collisions left-to-right: keep the layer ordered by
+    // tentative x, then push later nodes right whenever they would sit
+    // closer than NODE_SPACING_X to their left neighbour.
+    layer.sort((a, b) => a.x - b.x);
+    for (let i = 1; i < layer.length; i++) {
+      const left = layer[i - 1];
+      const cur = layer[i];
+      const minX = left.x + NODE_SPACING_X;
+      if (cur.x < minX) cur.x = minX;
+    }
+
+    layer.forEach((node) => { placed.set(node.id, node.x); });
+  }
+
+  // Normalise so that the leftmost node sits at MARGIN_X.
+  const minX = Math.min(...nodes.map((n) => n.x));
+  const shift = MARGIN_X - minX;
+  if (shift !== 0) nodes.forEach((n) => { n.x = Math.round(n.x + shift); });
+  else nodes.forEach((n) => { n.x = Math.round(n.x); });
+
+  // Curve back-edges (e.g. loop-back) up and around so they don't draw
+  // straight through the body. Forward edges that span more than one
+  // layer also get a gentle curve to the side of their column to avoid
+  // running through nodes between source and target.
   const coordinates = new Map(nodes.map((node) => [node.id, node]));
   edges.forEach((edge) => {
     const fromNode = coordinates.get(edge.from);
     const toNode = coordinates.get(edge.to);
+    if (!fromNode || !toNode) return;
 
-    if (fromNode && toNode && toNode.x <= fromNode.x) {
+    if (toNode.y <= fromNode.y) {
+      // Back-edge (loop). Route around the right side.
+      const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80);
       edge.control = {
-        x: Math.round((fromNode.x + toNode.x) / 2),
-        y: Math.min(fromNode.y, toNode.y) - 72,
+        x: Math.max(fromNode.x, toNode.x) + offset,
+        y: (fromNode.y + toNode.y) / 2,
+      };
+    } else if (toNode.y - fromNode.y > LAYER_SPACING_Y * 1.5) {
+      // Long forward edge (e.g. break/return → end). Bend slightly to
+      // the right so it doesn't slice through intervening nodes.
+      edge.control = {
+        x: (fromNode.x + toNode.x) / 2 + 80,
+        y: (fromNode.y + toNode.y) / 2,
+      };
+    } else if (Math.abs(toNode.x - fromNode.x) > NODE_SPACING_X * 1.2) {
+      // Diagonal sibling-to-sibling edge.
+      edge.control = {
+        x: (fromNode.x + toNode.x) / 2,
+        y: fromNode.y + (toNode.y - fromNode.y) * 0.35,
       };
     }
   });
