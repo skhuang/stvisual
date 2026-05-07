@@ -574,7 +574,7 @@ export function createGraphCoverageExplorer() {
       <div class="graph-coverage-layout">
         <div class="graph-main-panel">
           ${createGraphCanvas(graph, selectedRequirement)}
-          ${activeProgram.sourceCode ? createDataFlowCanvas(graph) : ''}
+          ${createDataFlowCanvas(graph)}
           <div class="graph-selected-summary" data-testid="selected-requirement-summary">
             <span class="summary-label">${t('graph.summary.current')}</span>
             <strong>${selectedRequirement?.label || t('common.none')}</strong>
