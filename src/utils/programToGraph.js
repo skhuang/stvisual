@@ -774,8 +774,36 @@ function assignLayout(nodes, edges) {
         ? Math.max(fromNode.x, toNode.x)
         : Math.min(fromNode.x, toNode.x);
       const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80) + meta.idx * 60;
+      let controlX = baseAnchor + meta.side * (offset + fan * FAN_STEP);
+
+      // Push the arc outside any node that sits inside the y-band of
+      // this back-edge so the curve doesn't cut through the node body.
+      // For a quadratic Bézier P(t) = (1-t)^2*A + 2(1-t)t*C + t^2*B the
+      // midpoint sits at (A.x + B.x)/4 + C.x/2; require this midpoint
+      // to clear every blocker (node radius ~32 + small buffer).
+      const NODE_CLEAR = 32 + 18;
+      const yLo = Math.min(fromNode.y, toNode.y);
+      const yHi = Math.max(fromNode.y, toNode.y);
+      const blockers = nodes.filter((n) => (
+        n.id !== edge.from
+        && n.id !== edge.to
+        && n.y >= yLo - 1
+        && n.y <= yHi + 1
+      ));
+      if (blockers.length) {
+        if (meta.side > 0) {
+          const limitX = Math.max(...blockers.map((n) => n.x + NODE_CLEAR));
+          const requiredCx = 2 * limitX - (fromNode.x + toNode.x) / 2;
+          if (controlX < requiredCx) controlX = requiredCx + 24;
+        } else {
+          const limitX = Math.min(...blockers.map((n) => n.x - NODE_CLEAR));
+          const requiredCx = 2 * limitX - (fromNode.x + toNode.x) / 2;
+          if (controlX > requiredCx) controlX = requiredCx - 24;
+        }
+      }
+
       edge.control = {
-        x: baseAnchor + meta.side * (offset + fan * FAN_STEP),
+        x: controlX,
         y: (fromNode.y + toNode.y) / 2,
       };
     } else if (toNode.y - fromNode.y > LAYER_SPACING_Y * 1.5) {
