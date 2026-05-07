@@ -284,11 +284,6 @@ export function createSpecMutationExplorer() {
     recompute();
 
     const currentExample = SPEC_EXAMPLES.find((ex) => state.text.trim() === ex.text) || null;
-    // Auto-switch top-level category when the current predicate matches an
-    // example from a different category (e.g. user clicked an SMV example).
-    if (currentExample && currentExample.category !== state.activeCategory) {
-      state.activeCategory = currentExample.category;
-    }
     const categoryButtons = SPEC_CATEGORIES.map((cat) => `
       <button type="button"
         class="spec-category-btn${state.activeCategory === cat.id ? ' active' : ''}"
@@ -421,6 +416,7 @@ export function createSpecMutationExplorer() {
         const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
         if (!ex) return;
         state.text = ex.text;
+        state.activeCategory = ex.category || state.activeCategory;
         state.selectedMutantId = null;
         render();
       });

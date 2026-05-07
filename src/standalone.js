@@ -7892,9 +7892,6 @@ INVARSPEC !moving | !door`
       var _a2, _b, _c;
       recompute();
       const currentExample = SPEC_EXAMPLES.find((ex) => state.text.trim() === ex.text) || null;
-      if (currentExample && currentExample.category !== state.activeCategory) {
-        state.activeCategory = currentExample.category;
-      }
       const categoryButtons = SPEC_CATEGORIES.map((cat) => `
       <button type="button"
         class="spec-category-btn${state.activeCategory === cat.id ? " active" : ""}"
@@ -8009,6 +8006,7 @@ INVARSPEC !moving | !door`
           const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
           if (!ex) return;
           state.text = ex.text;
+          state.activeCategory = ex.category || state.activeCategory;
           state.selectedMutantId = null;
           render();
         });
