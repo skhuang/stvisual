@@ -5870,6 +5870,70 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         { id: "t4", args: ["ci", 4], expected: "shape:48" },
         { id: "t5", args: ["xx", 1], expected: "unknown" }
       ]
+    },
+    {
+      id: "nextDate",
+      name: "nextDate(y, m, d)",
+      params: ["y", "m", "d"],
+      body: [
+        "function isLeap(y) {",
+        "  return (y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0);",
+        "}",
+        "function daysInMonth(y, m) {",
+        "  if (m === 2) return isLeap(y) ? 29 : 28;",
+        "  if (m === 4 || m === 6 || m === 9 || m === 11) return 30;",
+        "  return 31;",
+        "}",
+        'if (m < 1 || m > 12 || d < 1) return "invalid";',
+        'if (d > daysInMonth(y, m)) return "invalid";',
+        "if (d < daysInMonth(y, m)) return { y: y, m: m, d: d + 1 };",
+        "if (m === 12) return { y: y + 1, m: 1, d: 1 };",
+        "return { y: y, m: m + 1, d: 1 };"
+      ].join("\n"),
+      description: "\u56DE\u50B3\u4E0B\u4E00\u5929\uFF0C\u8655\u7406\u6708\u5E95\u8207\u5E74\u5E95\u8DE8\u5E74\u3002",
+      tests: [
+        { id: "t1", args: [2024, 1, 15], expected: { y: 2024, m: 1, d: 16 } },
+        { id: "t2", args: [2024, 1, 31], expected: { y: 2024, m: 2, d: 1 } },
+        { id: "t3", args: [2024, 2, 28], expected: { y: 2024, m: 2, d: 29 } },
+        { id: "t4", args: [2023, 2, 28], expected: { y: 2023, m: 3, d: 1 } },
+        { id: "t5", args: [2024, 12, 31], expected: { y: 2025, m: 1, d: 1 } },
+        { id: "t6", args: [2024, 13, 1], expected: "invalid" },
+        { id: "t7", args: [2024, 4, 31], expected: "invalid" }
+      ]
+    },
+    {
+      id: "nextWeek",
+      name: "nextWeek(y, m, d)",
+      params: ["y", "m", "d"],
+      body: [
+        "function isLeap(y) {",
+        "  return (y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0);",
+        "}",
+        "function daysInMonth(y, m) {",
+        "  if (m === 2) return isLeap(y) ? 29 : 28;",
+        "  if (m === 4 || m === 6 || m === 9 || m === 11) return 30;",
+        "  return 31;",
+        "}",
+        'if (m < 1 || m > 12 || d < 1 || d > daysInMonth(y, m)) return "invalid";',
+        "var nd = d + 7;",
+        "var nm = m;",
+        "var ny = y;",
+        "var limit = daysInMonth(ny, nm);",
+        "if (nd > limit) {",
+        "  nd = nd - limit;",
+        "  if (nm === 12) { nm = 1; ny = ny + 1; } else { nm = nm + 1; }",
+        "}",
+        "return { y: ny, m: nm, d: nd };"
+      ].join("\n"),
+      description: "\u628A\u65E5\u671F\u52A0 7 \u5929\uFF0C\u8DE8\u6708/\u8DE8\u5E74\u3002",
+      tests: [
+        { id: "t1", args: [2024, 1, 1], expected: { y: 2024, m: 1, d: 8 } },
+        { id: "t2", args: [2024, 1, 28], expected: { y: 2024, m: 2, d: 4 } },
+        { id: "t3", args: [2024, 2, 25], expected: { y: 2024, m: 3, d: 3 } },
+        { id: "t4", args: [2023, 2, 25], expected: { y: 2023, m: 3, d: 4 } },
+        { id: "t5", args: [2024, 12, 28], expected: { y: 2025, m: 1, d: 4 } },
+        { id: "t6", args: [2024, 0, 1], expected: "invalid" }
+      ]
     }
   ];
 
