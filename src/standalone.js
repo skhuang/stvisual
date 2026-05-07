@@ -663,6 +663,9 @@
       "grammar.extraTestsHint": 'e.g. "0+1+1"',
       "grammar.productions": "Productions",
       "grammar.derivations": "Derived strings",
+      "grammar.tab.derivations": "Derivations & Coverage",
+      "grammar.tab.mutation": "Grammar Mutation",
+      "grammar.tab.string": "String Mutation",
       "grammar.noDerivations": "No derivations yet \u2014 adjust limits or grammar.",
       "grammar.mutations": "Mutants",
       "grammar.noMutants": "No mutants (select at least one operator).",
@@ -975,6 +978,9 @@
       "grammar.extraTestsHint": "\u4F8B\uFF1A0+1+1",
       "grammar.productions": "\u7522\u751F\u898F\u5247",
       "grammar.derivations": "\u884D\u751F\u5B57\u4E32",
+      "grammar.tab.derivations": "\u8986\u84CB\u8207\u884D\u751F",
+      "grammar.tab.mutation": "\u6587\u6CD5 Mutation",
+      "grammar.tab.string": "\u5B57\u4E32 Mutation",
       "grammar.noDerivations": "\u5C1A\u7121\u884D\u751F\u7D50\u679C\uFF0C\u8ACB\u8ABF\u6574\u53C3\u6578\u6216\u6587\u6CD5\u3002",
       "grammar.mutations": "Mutants",
       "grammar.noMutants": "\u7121 mutants\uFF08\u8ACB\u9078\u64C7\u81F3\u5C11\u4E00\u500B operator\uFF09\u3002",
@@ -6970,8 +6976,31 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
   // src/components/GrammarCoverageExplorer.js
   var STORAGE_KEY3 = "stvisual.grammarPrograms.v1";
+  var TAB_STORAGE_KEY = "stvisual.grammarActiveTab.v1";
   var DEFAULT_OPS = ["TR", "SD"];
   var DEFAULT_STRING_OPS = ["REP", "DEL"];
+  var GRAMMAR_TABS = [
+    { id: "derivations", labelKey: "grammar.tab.derivations" },
+    { id: "mutation", labelKey: "grammar.tab.mutation" },
+    { id: "string", labelKey: "grammar.tab.string" }
+  ];
+  var DEFAULT_TAB = "derivations";
+  function loadActiveTab() {
+    var _a2;
+    try {
+      const v = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(TAB_STORAGE_KEY);
+      return GRAMMAR_TABS.find((t2) => t2.id === v) ? v : DEFAULT_TAB;
+    } catch {
+      return DEFAULT_TAB;
+    }
+  }
+  function saveActiveTab(id) {
+    var _a2;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(TAB_STORAGE_KEY, id);
+    } catch {
+    }
+  }
   function escapeHtml4(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
@@ -7031,7 +7060,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       seedIndex: 0,
       maxPerStringOp: 12,
       stringMutants: [],
-      selectedStringMutantId: null
+      selectedStringMutantId: null,
+      activeTab: loadActiveTab()
     };
     function persistCurrent() {
       state.programs[state.exampleId] = state.text;
@@ -7229,12 +7259,23 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </div>
         </div>
 
-        <div class="grammar-derivation-block">
+        <nav class="grammar-subtab-row" data-testid="grammar-subtab-row" role="tablist">
+          ${GRAMMAR_TABS.map((tab) => `
+            <button type="button"
+              class="grammar-subtab-btn${state.activeTab === tab.id ? " active" : ""}"
+              data-grammar-subtab="${tab.id}"
+              role="tab"
+              aria-selected="${state.activeTab === tab.id ? "true" : "false"}"
+            >${escapeHtml4(t(tab.labelKey))}</button>
+          `).join("")}
+        </nav>
+
+        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state.activeTab === "derivations" ? "" : "none"}">
           <h4>${escapeHtml4(t("grammar.derivations"))}</h4>
           ${derivationsHtml}
         </div>
 
-        <div class="grammar-mutation-block">
+        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state.activeTab === "mutation" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.mutations"))}</h4>
             ${score ? `<span class="grammar-score" data-testid="grammar-mutation-score">${t("grammar.scoreLabel")}: ${score.killed} / ${score.total} (${Math.round(score.killed / score.total * 100)}%)</span>` : ""}
@@ -7246,7 +7287,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </div>
         </div>
 
-        <div class="grammar-string-block" data-testid="grammar-string-block">
+        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state.activeTab === "string" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.string.title"))}</h4>
             ${stringStats || ""}
@@ -7271,6 +7312,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       root2.querySelectorAll("[data-grammar-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           loadExample(btn.dataset.grammarExample);
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-grammar-subtab]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.activeTab = btn.dataset.grammarSubtab;
+          saveActiveTab(state.activeTab);
           render();
         });
       });

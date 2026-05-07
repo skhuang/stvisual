@@ -56,6 +56,36 @@
   border-color: #6366f1;
 }
 
+.grammar-subtab-row {
+  display: flex;
+  gap: 4px;
+  margin: 14px 0 16px;
+  border-bottom: 2px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+.grammar-subtab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.grammar-subtab-btn:hover {
+  color: #6366f1;
+  background: #f1f5f9;
+}
+.grammar-subtab-btn.active {
+  color: #4338ca;
+  border-bottom-color: #6366f1;
+  background: #f8fafc;
+}
+
 .grammar-editor-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
