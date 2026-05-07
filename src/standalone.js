@@ -2167,6 +2167,33 @@
     });
     const coordinates = new Map(nodes.map((node) => [node.id, node]));
     const fanOutCounters = /* @__PURE__ */ new Map();
+    const allXs = nodes.map((n) => n.x);
+    const layoutMinX = Math.min(...allXs);
+    const layoutMaxX = Math.max(...allXs);
+    const layoutMidX = (layoutMinX + layoutMaxX) / 2;
+    const backEdges = edges.filter((e) => {
+      const a = coordinates.get(e.from);
+      const b = coordinates.get(e.to);
+      return a && b && b.y <= a.y;
+    });
+    const backEdgeOrder = /* @__PURE__ */ new Map();
+    const left = [];
+    const right = [];
+    backEdges.forEach((e) => {
+      const a = coordinates.get(e.from);
+      const b = coordinates.get(e.to);
+      if (Math.max(a.x, b.x) < layoutMidX) left.push(e);
+      else right.push(e);
+    });
+    const sortBySpan = (list) => list.slice().sort((p, q) => {
+      const ap = coordinates.get(p.from);
+      const aq = coordinates.get(q.from);
+      const bp = coordinates.get(p.to);
+      const bq = coordinates.get(q.to);
+      return Math.abs(ap.y - bp.y) - Math.abs(aq.y - bq.y);
+    });
+    sortBySpan(left).forEach((e, idx) => backEdgeOrder.set(e, { side: -1, idx }));
+    sortBySpan(right).forEach((e, idx) => backEdgeOrder.set(e, { side: 1, idx }));
     edges.forEach((edge) => {
       const fromNode = coordinates.get(edge.from);
       const toNode = coordinates.get(edge.to);
@@ -2178,9 +2205,11 @@
       const fan = sibCount > 1 ? fanIdx - (sibCount - 1) / 2 : 0;
       const FAN_STEP = 28;
       if (toNode.y <= fromNode.y) {
-        const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80);
+        const meta = backEdgeOrder.get(edge) || { side: 1, idx: 0 };
+        const baseAnchor = meta.side > 0 ? Math.max(fromNode.x, toNode.x) : Math.min(fromNode.x, toNode.x);
+        const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80) + meta.idx * 60;
         edge.control = {
-          x: Math.max(fromNode.x, toNode.x) + offset + fan * FAN_STEP,
+          x: baseAnchor + meta.side * (offset + fan * FAN_STEP),
           y: (fromNode.y + toNode.y) / 2
         };
       } else if (toNode.y - fromNode.y > LAYER_SPACING_Y * 1.5) {

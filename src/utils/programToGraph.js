@@ -714,6 +714,40 @@ function assignLayout(nodes, edges) {
   // arrows don't sit on top of each other.
   const coordinates = new Map(nodes.map((node) => [node.id, node]));
   const fanOutCounters = new Map();
+  const allXs = nodes.map((n) => n.x);
+  const layoutMinX = Math.min(...allXs);
+  const layoutMaxX = Math.max(...allXs);
+  const layoutMidX = (layoutMinX + layoutMaxX) / 2;
+
+  // Pre-collect back-edges so we can stagger them (left vs. right of the
+  // graph, multiple offsets) and avoid a single bundle of crossing arcs.
+  const backEdges = edges.filter((e) => {
+    const a = coordinates.get(e.from);
+    const b = coordinates.get(e.to);
+    return a && b && b.y <= a.y;
+  });
+  const backEdgeOrder = new Map();
+  // Group back-edges by side (left if both endpoints sit left of centre,
+  // otherwise right) and assign a per-side stagger index ordered by
+  // vertical span so the largest loop sits furthest from the body.
+  const left = [];
+  const right = [];
+  backEdges.forEach((e) => {
+    const a = coordinates.get(e.from);
+    const b = coordinates.get(e.to);
+    if (Math.max(a.x, b.x) < layoutMidX) left.push(e);
+    else right.push(e);
+  });
+  const sortBySpan = (list) => list.slice().sort((p, q) => {
+    const ap = coordinates.get(p.from);
+    const aq = coordinates.get(q.from);
+    const bp = coordinates.get(p.to);
+    const bq = coordinates.get(q.to);
+    return Math.abs(ap.y - bp.y) - Math.abs(aq.y - bq.y);
+  });
+  sortBySpan(left).forEach((e, idx) => backEdgeOrder.set(e, { side: -1, idx }));
+  sortBySpan(right).forEach((e, idx) => backEdgeOrder.set(e, { side: 1, idx }));
+
   edges.forEach((edge) => {
     const fromNode = coordinates.get(edge.from);
     const toNode = coordinates.get(edge.to);
@@ -728,10 +762,15 @@ function assignLayout(nodes, edges) {
     const FAN_STEP = 28;
 
     if (toNode.y <= fromNode.y) {
-      // Back-edge (loop). Route around the right side.
-      const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80);
+      // Back-edge (loop). Route to whichever side it sits on, and
+      // stagger by index so nested / sibling loops don't share an arc.
+      const meta = backEdgeOrder.get(edge) || { side: 1, idx: 0 };
+      const baseAnchor = meta.side > 0
+        ? Math.max(fromNode.x, toNode.x)
+        : Math.min(fromNode.x, toNode.x);
+      const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80) + meta.idx * 60;
       edge.control = {
-        x: Math.max(fromNode.x, toNode.x) + offset + fan * FAN_STEP,
+        x: baseAnchor + meta.side * (offset + fan * FAN_STEP),
         y: (fromNode.y + toNode.y) / 2,
       };
     } else if (toNode.y - fromNode.y > LAYER_SPACING_Y * 1.5) {
