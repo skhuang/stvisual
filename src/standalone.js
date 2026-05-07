@@ -4528,14 +4528,14 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const groups = buildImplicantGroups(state.analysis.rows, dnf, true, 0, []);
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
-        set.tests.forEach((t2) => {
-          const color = IMPLICANT_PALETTE[t2.implicantIndex % IMPLICANT_PALETTE.length];
-          const termText = termToString(dnf[t2.implicantIndex] || []);
-          const litText = t2.literal ? `${t2.literal.negated ? "!" : ""}${t2.literal.name}` : "";
-          const label = t2("logic.flipLabel", { term: termText, lit: litText });
-          nfpMarks.set(t2.row.index, { color, label });
-          if (typeof t2.pairedTruePointIndex === "number") {
-            ntpMarks.set(t2.pairedTruePointIndex, { color, label });
+        set.tests.forEach((test) => {
+          const color = IMPLICANT_PALETTE[test.implicantIndex % IMPLICANT_PALETTE.length];
+          const termText = termToString(dnf[test.implicantIndex] || []);
+          const litText = test.literal ? `${test.literal.negated ? "!" : ""}${test.literal.name}` : "";
+          const label = t("logic.flipLabel", { term: termText, lit: litText });
+          nfpMarks.set(test.row.index, { color, label });
+          if (typeof test.pairedTruePointIndex === "number") {
+            ntpMarks.set(test.pairedTruePointIndex, { color, label });
           }
         });
         const titleText = set.id === "mnfpc" ? t("logic.kmap.title.mnfp") : t("logic.kmap.title.nfp");
@@ -4554,16 +4554,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
         const testRowSet = /* @__PURE__ */ new Set();
-        set.tests.forEach((t2) => {
-          const color = IMPLICANT_PALETTE[t2.implicantIndex % IMPLICANT_PALETTE.length];
-          const termText = termToString(dnf[t2.implicantIndex] || []);
-          const litText = t2.literal ? `${t2.literal.negated ? "!" : ""}${t2.literal.name}` : "";
-          const label = t2("logic.flipLabel", { term: termText, lit: litText });
-          testRowSet.add(t2.row.index);
-          if (t2.role === "utp") {
-            ntpMarks.set(t2.row.index, { color, label });
+        set.tests.forEach((test) => {
+          const color = IMPLICANT_PALETTE[test.implicantIndex % IMPLICANT_PALETTE.length];
+          const termText = termToString(dnf[test.implicantIndex] || []);
+          const litText = test.literal ? `${test.literal.negated ? "!" : ""}${test.literal.name}` : "";
+          const label = t("logic.flipLabel", { term: termText, lit: litText });
+          testRowSet.add(test.row.index);
+          if (test.role === "utp") {
+            ntpMarks.set(test.row.index, { color, label });
           } else {
-            nfpMarks.set(t2.row.index, { color, label });
+            nfpMarks.set(test.row.index, { color, label });
           }
         });
         return `<div class="logic-kmap-row">

@@ -540,14 +540,14 @@ export function createLogicCoverageExplorer() {
                 const groups = buildImplicantGroups(state.analysis.rows, dnf, true, 0, []);
                 const nfpMarks = new Map();
                 const ntpMarks = new Map();
-                set.tests.forEach((t) => {
-                  const color = IMPLICANT_PALETTE[t.implicantIndex % IMPLICANT_PALETTE.length];
-                  const termText = termToString(dnf[t.implicantIndex] || []);
-                  const litText = t.literal ? `${t.literal.negated ? '!' : ''}${t.literal.name}` : '';
+                set.tests.forEach((test) => {
+                  const color = IMPLICANT_PALETTE[test.implicantIndex % IMPLICANT_PALETTE.length];
+                  const termText = termToString(dnf[test.implicantIndex] || []);
+                  const litText = test.literal ? `${test.literal.negated ? '!' : ''}${test.literal.name}` : '';
                   const label = t('logic.flipLabel', { term: termText, lit: litText });
-                  nfpMarks.set(t.row.index, { color, label });
-                  if (typeof t.pairedTruePointIndex === 'number') {
-                    ntpMarks.set(t.pairedTruePointIndex, { color, label });
+                  nfpMarks.set(test.row.index, { color, label });
+                  if (typeof test.pairedTruePointIndex === 'number') {
+                    ntpMarks.set(test.pairedTruePointIndex, { color, label });
                   }
                 });
                 const titleText = set.id === 'mnfpc'
@@ -570,16 +570,16 @@ export function createLogicCoverageExplorer() {
                 const nfpMarks = new Map();
                 const ntpMarks = new Map();
                 const testRowSet = new Set();
-                set.tests.forEach((t) => {
-                  const color = IMPLICANT_PALETTE[t.implicantIndex % IMPLICANT_PALETTE.length];
-                  const termText = termToString(dnf[t.implicantIndex] || []);
-                  const litText = t.literal ? `${t.literal.negated ? '!' : ''}${t.literal.name}` : '';
+                set.tests.forEach((test) => {
+                  const color = IMPLICANT_PALETTE[test.implicantIndex % IMPLICANT_PALETTE.length];
+                  const termText = termToString(dnf[test.implicantIndex] || []);
+                  const litText = test.literal ? `${test.literal.negated ? '!' : ''}${test.literal.name}` : '';
                   const label = t('logic.flipLabel', { term: termText, lit: litText });
-                  testRowSet.add(t.row.index);
-                  if (t.role === 'utp') {
-                    ntpMarks.set(t.row.index, { color, label });
+                  testRowSet.add(test.row.index);
+                  if (test.role === 'utp') {
+                    ntpMarks.set(test.row.index, { color, label });
                   } else {
-                    nfpMarks.set(t.row.index, { color, label });
+                    nfpMarks.set(test.row.index, { color, label });
                   }
                 });
                 return `<div class="logic-kmap-row">
