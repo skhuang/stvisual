@@ -69,6 +69,13 @@ describe('data flow coverage', () => {
     expect(plan.uncoveredRequirements.length).toBeLessThan(reqs.length);
   });
 
+  it('函式參數視為入口節點的 def', () => {
+    const reqs = getAllDefsRequirements(graph);
+    const variables = new Set(reqs.map((r) => r.variable));
+    // sum(n) — parameter `n` should appear as a definition
+    expect(variables.has('n')).toBe(true);
+  });
+
   it('沒有 sourceText 的 graph 回傳空 requirements', () => {
     const plain = {
       startNodeId: 'A',
