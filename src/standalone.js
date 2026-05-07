@@ -689,6 +689,23 @@
       "grammar.string.flipped": "Flips language membership vs. seed.",
       "grammar.string.sameLang": "Same membership as seed.",
       "grammar.string.selectHint": "Select a row to inspect.",
+      "spec.kicker": "Specification-Based Mutation",
+      "spec.title": "Specification Mutation Explorer",
+      "spec.subtitle": "Mutate a Boolean specification (precondition / invariant) and find assignments that distinguish the original from each mutant.",
+      "spec.predicateLabel": "Predicate (e.g. (a || b) && c)",
+      "spec.clauses": "Clauses",
+      "spec.canonical": "Canonical",
+      "spec.mutants": "Specification mutants",
+      "spec.noMutants": "No mutants \u2014 enable at least one operator.",
+      "spec.testNote": "Tests are the full truth table over the predicate clauses; a mutant is killed when its value differs from the original on any row.",
+      "spec.mutantText": "Mutant predicate",
+      "spec.equivalentHint": "No assignment in the truth table distinguishes this mutant from the original (likely equivalent).",
+      "spec.op.ENF": "ENF \u2014 negate entire predicate",
+      "spec.op.BCR": "BCR \u2014 replace clause with true / false",
+      "spec.op.CRR": "CRR \u2014 replace clause with another clause",
+      "spec.op.LRO": "LRO \u2014 swap && and ||",
+      "spec.op.UOI": "UOI \u2014 insert NOT around a clause",
+      "spec.op.MCR": "MCR \u2014 drop one operand of && or ||",
       "syntax.cloud.failed": "Sync failed",
       "syntax.cloud.linked": "Linked: {name}",
       "syntax.cloud.reloading": "Reloading from cloud\u2026",
@@ -973,6 +990,23 @@
       "grammar.string.flipped": "\u76F8\u5C0D\u7A2E\u5B50\u7FFB\u8F49\u4E86\u8A9E\u8A00\u6B78\u5C6C\u3002",
       "grammar.string.sameLang": "\u8207\u7A2E\u5B50\u5728\u540C\u4E00\u5074\uFF08\u5C6C\u65BC / \u4E0D\u5C6C\u65BC\uFF09\u3002",
       "grammar.string.selectHint": "\u9EDE\u9078\u4E00\u5217\u67E5\u770B\u7D30\u7BC0\u3002",
+      "spec.kicker": "\u898F\u683C\u7A81\u8B8A\u6E2C\u8A66",
+      "spec.title": "Specification Mutation \u63A2\u7D22\u5668",
+      "spec.subtitle": "\u5C0D\u4E00\u500B\u5E03\u6797\u898F\u683C\uFF08\u524D\u7F6E\u689D\u4EF6 / \u4E0D\u8B8A\u5F0F\uFF09\u5957\u7528\u7A81\u8B8A\u904B\u7B97\u5B50\uFF0C\u4E26\u5728\u771F\u503C\u8868\u4E2D\u627E\u51FA\u80FD\u5340\u5206\u539F predicate \u8207 mutant \u7684\u8CDC\u503C\u3002",
+      "spec.predicateLabel": "Predicate\uFF08\u4F8B\uFF1A(a || b) && c\uFF09",
+      "spec.clauses": "\u5B50\u53E5",
+      "spec.canonical": "\u6A19\u6E96\u5316",
+      "spec.mutants": "\u898F\u683C Mutants",
+      "spec.noMutants": "\u5C1A\u7121 mutants\uFF1B\u8ACB\u81F3\u5C11\u555F\u7528\u4E00\u500B\u904B\u7B97\u5B50\u3002",
+      "spec.testNote": "\u6E2C\u8A66\u96C6\u70BA\u8A72 predicate \u6240\u6709\u5B50\u53E5\u7684\u5B8C\u6574\u771F\u503C\u8868\uFF1Bmutant \u53EA\u8981\u5728\u67D0\u4E00\u5217\u4E0A\u8207\u539F predicate \u8A55\u4F30\u7D50\u679C\u4E0D\u540C\u5373\u8996\u70BA killed\u3002",
+      "spec.mutantText": "Mutant Predicate",
+      "spec.equivalentHint": "\u771F\u503C\u8868\u4E2D\u6C92\u6709\u4EFB\u4F55\u8CDC\u503C\u80FD\u5340\u5206\u9019\u500B mutant\uFF08\u5F88\u53EF\u80FD\u662F equivalent mutant\uFF09\u3002",
+      "spec.op.ENF": "ENF \u2014 \u5C0D\u6574\u500B predicate \u53D6\u53CD",
+      "spec.op.BCR": "BCR \u2014 \u5C07\u5B50\u53E5\u63DB\u6210 true / false",
+      "spec.op.CRR": "CRR \u2014 \u5C07\u5B50\u53E5\u63DB\u6210\u53E6\u4E00\u500B\u5B50\u53E5",
+      "spec.op.LRO": "LRO \u2014 \u4EA4\u63DB && \u8207 ||",
+      "spec.op.UOI": "UOI \u2014 \u5728\u5B50\u53E5\u5916\u63D2\u5165 NOT",
+      "spec.op.MCR": "MCR \u2014 \u522A\u9664 && \u6216 || \u7684\u4E00\u500B\u64CD\u4F5C\u5143",
       "syntax.cloud.failed": "\u540C\u6B65\u5931\u6557",
       "syntax.cloud.linked": "\u5DF2\u9023\u7D50 {name}",
       "syntax.cloud.reloading": "\u91CD\u65B0\u5F9E\u96F2\u7AEF\u8B80\u53D6\u2026",
@@ -7306,6 +7340,366 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     return root2;
   }
 
+  // src/utils/specMutation.js
+  var SPEC_MUTATION_OPERATORS = ["ENF", "BCR", "CRR", "LRO", "UOI", "MCR"];
+  var TRUE_NODE = { type: "const", value: true };
+  var FALSE_NODE = { type: "const", value: false };
+  function cloneAst(node) {
+    switch (node.type) {
+      case "clause":
+        return { type: "clause", name: node.name };
+      case "const":
+        return { type: "const", value: node.value };
+      case "not":
+        return { type: "not", operand: cloneAst(node.operand) };
+      case "and":
+      case "or":
+        return { type: node.type, left: cloneAst(node.left), right: cloneAst(node.right) };
+      default:
+        throw new Error(`Unknown AST node: ${node.type}`);
+    }
+  }
+  function evaluateAst2(node, values) {
+    switch (node.type) {
+      case "const":
+        return Boolean(node.value);
+      case "clause": {
+        if (!(node.name in values)) throw new Error(`Missing clause value: ${node.name}`);
+        return Boolean(values[node.name]);
+      }
+      case "not":
+        return !evaluateAst2(node.operand, values);
+      case "and":
+        return evaluateAst2(node.left, values) && evaluateAst2(node.right, values);
+      case "or":
+        return evaluateAst2(node.left, values) || evaluateAst2(node.right, values);
+      default:
+        throw new Error(`Unknown AST node: ${node.type}`);
+    }
+  }
+  function astToString(node) {
+    switch (node.type) {
+      case "const":
+        return node.value ? "true" : "false";
+      case "clause":
+        return node.name;
+      case "not": {
+        const inner = node.operand;
+        const innerStr = astToString(inner);
+        const needParen = inner.type === "and" || inner.type === "or";
+        return `!${needParen ? `(${innerStr})` : innerStr}`;
+      }
+      case "and":
+      case "or": {
+        const op = node.type === "and" ? "&&" : "||";
+        const wrap = (child) => {
+          const s = astToString(child);
+          if (child.type === "and" || child.type === "or") return `(${s})`;
+          return s;
+        };
+        return `${wrap(node.left)} ${op} ${wrap(node.right)}`;
+      }
+      default:
+        throw new Error(`Unknown AST node: ${node.type}`);
+    }
+  }
+  function* walkWithReplacers(root2) {
+    function* walk(node, replaceInParent) {
+      yield [node, replaceInParent];
+      if (node.type === "not") {
+        yield* walk(node.operand, (newOperand) => {
+          const replaced = { ...node, operand: newOperand };
+          return replaceInParent(replaced);
+        });
+      } else if (node.type === "and" || node.type === "or") {
+        yield* walk(node.left, (newLeft) => {
+          const replaced = { ...node, left: newLeft };
+          return replaceInParent(replaced);
+        });
+        yield* walk(node.right, (newRight) => {
+          const replaced = { ...node, right: newRight };
+          return replaceInParent(replaced);
+        });
+      }
+    }
+    function topReplace(newRoot) {
+      return cloneAst(newRoot);
+    }
+    yield* walk(root2, topReplace);
+  }
+  function generateSpecMutants(parsed, opIds = SPEC_MUTATION_OPERATORS) {
+    if (!(parsed == null ? void 0 : parsed.ast)) throw new Error("parsed.ast is required");
+    const ops = new Set(opIds);
+    const mutants = [];
+    const seenStrings = /* @__PURE__ */ new Set();
+    const originalStr = astToString(parsed.ast);
+    const push = (operator, ast, description) => {
+      const text = astToString(ast);
+      if (text === originalStr) return;
+      const key = `${operator}|${text}`;
+      if (seenStrings.has(key)) return;
+      seenStrings.add(key);
+      mutants.push({
+        id: `${operator}:${mutants.length}`,
+        operator,
+        description,
+        ast,
+        text
+      });
+    };
+    if (ops.has("ENF")) {
+      push("ENF", { type: "not", operand: cloneAst(parsed.ast) }, "Negate the entire predicate");
+    }
+    for (const [node, replace] of walkWithReplacers(parsed.ast)) {
+      if (ops.has("BCR") && node.type === "clause") {
+        push("BCR", replace(TRUE_NODE), `Replace clause '${node.name}' with true`);
+        push("BCR", replace(FALSE_NODE), `Replace clause '${node.name}' with false`);
+      }
+      if (ops.has("CRR") && node.type === "clause") {
+        for (const other of parsed.clauses) {
+          if (other === node.name) continue;
+          push("CRR", replace({ type: "clause", name: other }), `Replace clause '${node.name}' with '${other}'`);
+        }
+      }
+      if (ops.has("LRO") && (node.type === "and" || node.type === "or")) {
+        const swapped = node.type === "and" ? "or" : "and";
+        push("LRO", replace({ ...node, type: swapped }), `Replace ${node.type.toUpperCase()} with ${swapped.toUpperCase()}`);
+      }
+      if (ops.has("UOI") && node.type === "clause") {
+        push("UOI", replace({ type: "not", operand: { type: "clause", name: node.name } }), `Insert NOT around clause '${node.name}'`);
+      }
+      if (ops.has("MCR") && (node.type === "and" || node.type === "or")) {
+        push("MCR", replace(cloneAst(node.left)), `Drop right operand of ${node.type.toUpperCase()} (keep left)`);
+        push("MCR", replace(cloneAst(node.right)), `Drop left operand of ${node.type.toUpperCase()} (keep right)`);
+      }
+    }
+    return mutants;
+  }
+  function evaluateSpecMutants(parsed, mutants, tests) {
+    const originalValues = tests.map((t2) => evaluateAst2(parsed.ast, t2));
+    return mutants.map((m) => {
+      const killers = [];
+      for (let i = 0; i < tests.length; i++) {
+        let mutValue;
+        try {
+          mutValue = evaluateAst2(m.ast, tests[i]);
+        } catch {
+          continue;
+        }
+        if (mutValue !== originalValues[i]) {
+          killers.push({ test: tests[i], orig: originalValues[i], mut: mutValue });
+        }
+      }
+      return { ...m, killed: killers.length > 0, killers };
+    });
+  }
+  function buildAssignmentSpace(clauses) {
+    const total = 1 << clauses.length;
+    const out = [];
+    for (let mask = 0; mask < total; mask++) {
+      const values = {};
+      clauses.forEach((c, i) => {
+        values[c] = Boolean(mask >> clauses.length - 1 - i & 1);
+      });
+      out.push(values);
+    }
+    return out;
+  }
+
+  // src/components/SpecMutationExplorer.js
+  var STORAGE_KEY4 = "stvisual.specMutation.v1";
+  var DEFAULT_PREDICATE = "(a || b) && c";
+  var DEFAULT_OPS2 = ["ENF", "BCR", "LRO", "UOI"];
+  function escapeHtml5(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  var SPEC_EXAMPLES = [
+    { id: "guard", name: "Guard", nameEn: "Guard", text: "(a || b) && c" },
+    { id: "leap", name: "Leap year", nameEn: "Leap year", text: "(y && !c) || (y && c && q)" },
+    { id: "triangle", name: "Triangle ineq.", nameEn: "Triangle ineq.", text: "a && b && c" }
+  ];
+  function loadSaved() {
+    var _a2;
+    try {
+      const raw = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY4);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+  function persist(state) {
+    var _a2;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY4, JSON.stringify({
+        text: state.text,
+        operators: [...state.operators],
+        tests: state.tests
+      }));
+    } catch {
+    }
+  }
+  function formatAssignment(values) {
+    return Object.entries(values).map(([k, v]) => `${k}=${v ? "T" : "F"}`).join(", ");
+  }
+  function createSpecMutationExplorer() {
+    const root2 = document.createElement("div");
+    root2.className = "spec-mutation";
+    root2.dataset.testid = "spec-mutation";
+    const saved = loadSaved();
+    const state = {
+      text: (saved == null ? void 0 : saved.text) || DEFAULT_PREDICATE,
+      operators: new Set((saved == null ? void 0 : saved.operators) || DEFAULT_OPS2),
+      parseError: null,
+      parsed: null,
+      mutants: [],
+      selectedMutantId: null,
+      // tests: array of {id, values:{clause:bool}, manual:bool}
+      tests: Array.isArray(saved == null ? void 0 : saved.tests) ? saved.tests : null,
+      useFullTable: true
+      // when true tests = full truth table
+    };
+    function recompute() {
+      var _a2;
+      state.parseError = null;
+      state.parsed = null;
+      state.mutants = [];
+      try {
+        const parsed = parsePredicate(state.text);
+        state.parsed = parsed;
+        const ops = [...state.operators];
+        const generated = ops.length > 0 ? generateSpecMutants(parsed, ops) : [];
+        let tests;
+        if (state.useFullTable) {
+          tests = buildAssignmentSpace(parsed.clauses);
+        } else {
+          tests = (state.tests || []).map((t2) => {
+            var _a3;
+            const v = {};
+            for (const c of parsed.clauses) v[c] = !!((_a3 = t2.values) == null ? void 0 : _a3[c]);
+            return v;
+          });
+        }
+        state.mutants = evaluateSpecMutants(parsed, generated, tests);
+        if (!state.mutants.find((m) => m.id === state.selectedMutantId)) {
+          state.selectedMutantId = ((_a2 = state.mutants[0]) == null ? void 0 : _a2.id) || null;
+        }
+      } catch (err) {
+        state.parseError = err.message || String(err);
+      }
+      persist(state);
+    }
+    function render() {
+      var _a2, _b;
+      recompute();
+      const exampleButtons = SPEC_EXAMPLES.map((ex) => `
+      <button type="button" class="spec-example-btn${state.text.trim() === ex.text ? " active" : ""}"
+        data-spec-example="${ex.id}">${escapeHtml5(ex.name)}</button>
+    `).join("");
+      const operatorButtons = SPEC_MUTATION_OPERATORS.map((op) => `
+      <label class="grammar-op-btn${state.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
+        <input type="checkbox" data-spec-op="${op}" ${state.operators.has(op) ? "checked" : ""} />
+        <span>${op}</span>
+      </label>
+    `).join("");
+      const score = state.mutants.length === 0 ? null : { killed: state.mutants.filter((m) => m.killed).length, total: state.mutants.length };
+      const mutantsHtml = state.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml5(t("spec.noMutants"))}</p>` : `<ul class="grammar-mutant-list" data-testid="spec-mutant-list">
+          ${state.mutants.map((m) => `<li>
+            <button type="button"
+              class="grammar-mutant-btn${state.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
+              data-spec-mutant="${escapeHtml5(m.id)}">
+              <span class="grammar-mutant-op">${m.operator}</span>
+              <span class="grammar-mutant-status">${m.killed ? t("grammar.killed") : t("grammar.live")}</span>
+              <span class="grammar-mutant-desc">
+                <code>${escapeHtml5(m.text)}</code>
+                <small>${escapeHtml5(m.description)}</small>
+              </span>
+            </button>
+          </li>`).join("")}
+         </ul>`;
+      const selected = state.mutants.find((m) => m.id === state.selectedMutantId) || null;
+      const selectedDetailHtml = selected ? `<div class="spec-mutant-detail">
+          <h5>${escapeHtml5(selected.id)}</h5>
+          <p>${escapeHtml5(selected.description)}</p>
+          <p><strong>${escapeHtml5(t("spec.mutantText"))}:</strong> <code>${escapeHtml5(selected.text)}</code></p>
+          ${selected.killed ? `<p><strong>${escapeHtml5(t("grammar.killedBy"))}</strong></p>
+               <ul class="grammar-killer-list">${selected.killers.slice(0, 8).map((k) => `<li>
+                 <code>${escapeHtml5(formatAssignment(k.test))}</code>
+                 \xB7 orig=${k.orig ? "T" : "F"} \xB7 mut=${k.mut ? "T" : "F"}
+               </li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml5(t("spec.equivalentHint"))}</p>`}
+        </div>` : `<p class="grammar-empty">${escapeHtml5(t("grammar.selectMutantHint"))}</p>`;
+      root2.innerHTML = `
+      <div class="grammar-card spec-card">
+        <header class="grammar-header">
+          <p class="grammar-kicker">${escapeHtml5(t("spec.kicker"))}</p>
+          <h3>${escapeHtml5(t("spec.title"))}</h3>
+          <p class="grammar-subtitle">${escapeHtml5(t("spec.subtitle"))}</p>
+        </header>
+
+        <div class="grammar-example-row">${exampleButtons}</div>
+
+        <div class="spec-editor-row">
+          <label class="grammar-editor-label">
+            ${escapeHtml5(t("spec.predicateLabel"))}
+            <input type="text" data-testid="spec-text" value="${escapeHtml5(state.text)}" spellcheck="false" />
+          </label>
+          ${state.parseError ? `<p class="grammar-error" data-testid="spec-parse-error">${escapeHtml5(state.parseError)}</p>` : ""}
+          ${state.parsed ? `<p class="spec-clauses">
+            <strong>${escapeHtml5(t("spec.clauses"))}:</strong> ${state.parsed.clauses.map((c) => `<code>${escapeHtml5(c)}</code>`).join(", ") || "\u2014"}
+            \xB7 <strong>${escapeHtml5(t("spec.canonical"))}:</strong> <code>${escapeHtml5(astToString(state.parsed.ast))}</code>
+          </p>` : ""}
+        </div>
+
+        <div class="grammar-mutation-block">
+          <div class="grammar-mutation-header">
+            <h4>${escapeHtml5(t("spec.mutants"))}</h4>
+            ${score ? `<span class="grammar-score" data-testid="spec-mutation-score">${escapeHtml5(t("grammar.scoreLabel"))}: ${score.killed} / ${score.total} (${Math.round(score.killed / score.total * 100)}%)</span>` : ""}
+          </div>
+          <p class="spec-test-note">${escapeHtml5(t("spec.testNote"))}</p>
+          <div class="grammar-op-row">${operatorButtons}</div>
+          <div class="grammar-mutation-grid">
+            <div>${mutantsHtml}</div>
+            <div>${selectedDetailHtml}</div>
+          </div>
+        </div>
+      </div>
+    `;
+      root2.querySelectorAll("[data-spec-example]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
+          if (!ex) return;
+          state.text = ex.text;
+          state.selectedMutantId = null;
+          render();
+        });
+      });
+      (_a2 = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _a2.addEventListener("input", (e) => {
+        state.text = e.target.value;
+      });
+      (_b = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("change", () => {
+        state.selectedMutantId = null;
+        render();
+      });
+      root2.querySelectorAll("[data-spec-op]").forEach((cb) => {
+        cb.addEventListener("change", (e) => {
+          const op = e.target.dataset.specOp;
+          if (e.target.checked) state.operators.add(op);
+          else state.operators.delete(op);
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-spec-mutant]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.selectedMutantId = btn.dataset.specMutant;
+          render();
+        });
+      });
+    }
+    render();
+    return root2;
+  }
+
   // src/app.js
   var sectionsConfig = [
     { id: "all", key: "section.all" },
@@ -7369,6 +7763,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         logic: createLogicCoverageExplorer(),
         syntax: createSyntaxCoverageExplorer(),
         grammar: createGrammarCoverageExplorer(),
+        specMutation: createSpecMutationExplorer(),
         cloud: createCloudStoragePanel(),
         flow: createTestingFlow(),
         types: createTestingTypesTable()
@@ -7378,6 +7773,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       container.querySelector('[data-slot="logic"]').appendChild(components.logic);
       container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
       container.querySelector('[data-slot="syntax"]').appendChild(components.grammar);
+      container.querySelector('[data-slot="syntax"]').appendChild(components.specMutation);
       container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);
