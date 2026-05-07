@@ -249,7 +249,12 @@ function parseJavascriptStatements(state, stopWhen = ['}']) {
     }
 
     if ((line.text.startsWith('function ') || line.text.startsWith('export function ')) && line.text.endsWith('{')) {
+      // Emit the header as a node so the parameter list is preserved for
+      // data-flow analysis (parameters count as definitions on entry).
       consumeLine(state);
+      statements.push(createAstNode('statement', line, {
+        text: line.text.replace(/\{$/, '').trim(),
+      }));
       statements.push(...parseJavascriptStatements(state));
       continue;
     }

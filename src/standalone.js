@@ -1780,6 +1780,9 @@
       }
       if ((line.text.startsWith("function ") || line.text.startsWith("export function ")) && line.text.endsWith("{")) {
         consumeLine(state);
+        statements.push(createAstNode("statement", line, {
+          text: line.text.replace(/\{$/, "").trim()
+        }));
         statements.push(...parseJavascriptStatements(state));
         continue;
       }

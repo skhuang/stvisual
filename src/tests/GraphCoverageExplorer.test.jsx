@@ -122,7 +122,7 @@ describe('GraphCoverageExplorer', () => {
     select.value = 'calendar-days';
     select.dispatchEvent(new Event('change', { bubbles: true }));
 
-    document.querySelectorAll('[data-requirement-id]')[1].click();
+    document.querySelectorAll('[data-requirement-id]')[2].click();
 
     expect(document.querySelector('[data-testid="program-source-line-2"]')).toBeInTheDocument();
     expect(document.querySelector('[data-testid="detail-source-mapping"]')).toHaveTextContent('L2');
@@ -195,7 +195,7 @@ describe('GraphCoverageExplorer', () => {
     uploadInput.dispatchEvent(new Event('change', { bubbles: true }));
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    document.querySelectorAll('[data-requirement-id]')[1].click();
+    document.querySelectorAll('[data-requirement-id]')[2].click();
 
     expect(document.querySelector('[data-testid="program-source-name"]')).toHaveTextContent('triangle');
     expect(document.querySelector('[data-testid="graph-source-status"]')).toHaveTextContent('已根據 triangle.js 自動產生簡化 CFG。');
