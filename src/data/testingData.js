@@ -70,6 +70,9 @@ export const graphCoverageCriteria = [
   { id: 'prime-path',    label: 'Prime Path Coverage',    labelZh: 'Prime Path 覆蓋', description: '所有 prime path 都必須被測試需求涵蓋，包含迴圈。', descriptionEn: 'All prime paths (including loops) must be covered.' },
   { id: 'edge-pair',     label: 'Edge-Pair Coverage',     labelZh: '邊對覆蓋',     description: '每一組相鄰的兩條邊都要至少被一條測試路徑覆蓋。', descriptionEn: 'Every pair of adjacent edges must be covered by some test path.' },
   { id: 'complete-path', label: 'Complete Path Coverage', labelZh: '完整路徑覆蓋', description: '以有限深度列舉 start 到 end 的完整可行路徑集合。', descriptionEn: 'Enumerate all complete feasible paths from start to end up to a finite depth.' },
+  { id: 'all-defs',      label: 'All-Defs Coverage',      labelZh: '所有定義覆蓋',     description: '對於每個 (節點, 變數) 的定義，至少有一條從該定義到某個使用的 def-clear 路徑被覆蓋。', descriptionEn: 'For every (node, variable) definition, cover at least one definition-clear path from the def to some use of that variable.' },
+  { id: 'all-uses',      label: 'All-Uses Coverage',      labelZh: '所有使用覆蓋',     description: '對於每對 (定義, 使用, 變數)，至少有一條 def-clear 路徑被測試路徑覆蓋。', descriptionEn: 'For every (def, use, variable) pair, cover at least one definition-clear path from the def to that use.' },
+  { id: 'all-du-paths',  label: 'All-DU-Paths Coverage',  labelZh: '所有 DU 路徑覆蓋', description: '對於每對 (定義, 使用, 變數)，所有 def-clear 簡單路徑都必須被測試路徑覆蓋。', descriptionEn: 'For every (def, use, variable) pair, every definition-clear simple path from the def to that use must be covered.' },
 ];
 
 export const graphCoverageCodeLanguages = [

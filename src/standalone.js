@@ -68,7 +68,10 @@
     { id: "edge", label: "Edge Coverage", labelZh: "\u908A\u8986\u84CB", description: "\u6BCF\u689D\u6709\u5411\u908A\u81F3\u5C11\u88AB\u4E00\u500B\u6E2C\u8A66\u8DEF\u5F91\u7D93\u904E\u4E00\u6B21\u3002", descriptionEn: "Every directed edge is traversed by at least one test path." },
     { id: "prime-path", label: "Prime Path Coverage", labelZh: "Prime Path \u8986\u84CB", description: "\u6240\u6709 prime path \u90FD\u5FC5\u9808\u88AB\u6E2C\u8A66\u9700\u6C42\u6DB5\u84CB\uFF0C\u5305\u542B\u8FF4\u5708\u3002", descriptionEn: "All prime paths (including loops) must be covered." },
     { id: "edge-pair", label: "Edge-Pair Coverage", labelZh: "\u908A\u5C0D\u8986\u84CB", description: "\u6BCF\u4E00\u7D44\u76F8\u9130\u7684\u5169\u689D\u908A\u90FD\u8981\u81F3\u5C11\u88AB\u4E00\u689D\u6E2C\u8A66\u8DEF\u5F91\u8986\u84CB\u3002", descriptionEn: "Every pair of adjacent edges must be covered by some test path." },
-    { id: "complete-path", label: "Complete Path Coverage", labelZh: "\u5B8C\u6574\u8DEF\u5F91\u8986\u84CB", description: "\u4EE5\u6709\u9650\u6DF1\u5EA6\u5217\u8209 start \u5230 end \u7684\u5B8C\u6574\u53EF\u884C\u8DEF\u5F91\u96C6\u5408\u3002", descriptionEn: "Enumerate all complete feasible paths from start to end up to a finite depth." }
+    { id: "complete-path", label: "Complete Path Coverage", labelZh: "\u5B8C\u6574\u8DEF\u5F91\u8986\u84CB", description: "\u4EE5\u6709\u9650\u6DF1\u5EA6\u5217\u8209 start \u5230 end \u7684\u5B8C\u6574\u53EF\u884C\u8DEF\u5F91\u96C6\u5408\u3002", descriptionEn: "Enumerate all complete feasible paths from start to end up to a finite depth." },
+    { id: "all-defs", label: "All-Defs Coverage", labelZh: "\u6240\u6709\u5B9A\u7FA9\u8986\u84CB", description: "\u5C0D\u65BC\u6BCF\u500B (\u7BC0\u9EDE, \u8B8A\u6578) \u7684\u5B9A\u7FA9\uFF0C\u81F3\u5C11\u6709\u4E00\u689D\u5F9E\u8A72\u5B9A\u7FA9\u5230\u67D0\u500B\u4F7F\u7528\u7684 def-clear \u8DEF\u5F91\u88AB\u8986\u84CB\u3002", descriptionEn: "For every (node, variable) definition, cover at least one definition-clear path from the def to some use of that variable." },
+    { id: "all-uses", label: "All-Uses Coverage", labelZh: "\u6240\u6709\u4F7F\u7528\u8986\u84CB", description: "\u5C0D\u65BC\u6BCF\u5C0D (\u5B9A\u7FA9, \u4F7F\u7528, \u8B8A\u6578)\uFF0C\u81F3\u5C11\u6709\u4E00\u689D def-clear \u8DEF\u5F91\u88AB\u6E2C\u8A66\u8DEF\u5F91\u8986\u84CB\u3002", descriptionEn: "For every (def, use, variable) pair, cover at least one definition-clear path from the def to that use." },
+    { id: "all-du-paths", label: "All-DU-Paths Coverage", labelZh: "\u6240\u6709 DU \u8DEF\u5F91\u8986\u84CB", description: "\u5C0D\u65BC\u6BCF\u5C0D (\u5B9A\u7FA9, \u4F7F\u7528, \u8B8A\u6578)\uFF0C\u6240\u6709 def-clear \u7C21\u55AE\u8DEF\u5F91\u90FD\u5FC5\u9808\u88AB\u6E2C\u8A66\u8DEF\u5F91\u8986\u84CB\u3002", descriptionEn: "For every (def, use, variable) pair, every definition-clear simple path from the def to that use must be covered." }
   ];
   var graphCoverageCodeLanguages = [
     { id: "javascript", label: "JavaScript" },
@@ -1220,6 +1223,161 @@
     return root2;
   }
 
+  // src/utils/dataFlow.js
+  var KEYWORDS = /* @__PURE__ */ new Set([
+    "if",
+    "else",
+    "while",
+    "for",
+    "do",
+    "switch",
+    "case",
+    "default",
+    "break",
+    "continue",
+    "return",
+    "function",
+    "let",
+    "const",
+    "var",
+    "true",
+    "false",
+    "null",
+    "undefined",
+    "new",
+    "in",
+    "of",
+    "typeof",
+    "instanceof",
+    "void",
+    "this",
+    "try",
+    "catch",
+    "throw",
+    "finally",
+    "class",
+    "extends",
+    "import",
+    "from",
+    "export",
+    "yield",
+    "async",
+    "await",
+    "and",
+    "or",
+    "not",
+    "then",
+    "end",
+    "do"
+  ]);
+  var IDENT_RE = /[A-Za-z_][A-Za-z0-9_]*/g;
+  function tokensIn(text) {
+    const found = [];
+    for (const m of text.matchAll(IDENT_RE)) {
+      if (!KEYWORDS.has(m[0])) found.push(m[0]);
+    }
+    return found;
+  }
+  function stripStringsAndComments(text) {
+    return String(text).replace(/\/\*[\s\S]*?\*\//g, " ").replace(/\/\/.*$/g, " ").replace(/"(?:[^"\\]|\\.)*"/g, ' ""').replace(/'(?:[^'\\]|\\.)*'/g, " ''").replace(/`(?:[^`\\]|\\.)*`/g, " ``");
+  }
+  function extractDefUse(node) {
+    const defs = /* @__PURE__ */ new Set();
+    const uses = /* @__PURE__ */ new Set();
+    if (!node) return { defs, uses };
+    const raw = node.sourceText || node.label || "";
+    const text = stripStringsAndComments(raw);
+    const fn = text.match(/function\s+[A-Za-z_][\w]*\s*\(([^)]*)\)/) || text.match(/\(([^)]*)\)\s*=>/);
+    if (fn) {
+      for (const p of fn[1].split(",").map((s) => s.trim()).filter(Boolean)) {
+        const name = p.replace(/=.*$/, "").trim();
+        if (name && !KEYWORDS.has(name)) defs.add(name);
+      }
+      for (const u of tokensIn(text.replace(/function\s+[A-Za-z_][\w]*/, ""))) uses.add(u);
+      for (const d of defs) uses.delete(d);
+      return { defs, uses };
+    }
+    const forMatch = text.match(/for\s*\(([^;]*);([^;]*);([^)]*)\)/);
+    if (forMatch) {
+      const [, init, cond, upd] = forMatch;
+      collectAssignment(init, defs, uses);
+      for (const u of tokensIn(cond)) uses.add(u);
+      collectAssignment(upd, defs, uses);
+      return { defs, uses };
+    }
+    const matched = collectAssignment(text, defs, uses);
+    if (!matched) {
+      for (const u of tokensIn(text)) uses.add(u);
+    }
+    return { defs, uses };
+  }
+  function collectAssignment(text, defs, uses) {
+    if (!text) return false;
+    const incDec = text.match(/^[\s(]*([A-Za-z_][\w]*)\s*(\+\+|--)/);
+    if (incDec) {
+      defs.add(incDec[1]);
+      uses.add(incDec[1]);
+      return true;
+    }
+    const compound = text.match(
+      /^[\s(]*([A-Za-z_][\w]*)\s*(?:\+|-|\*|\/|%|&|\||\^|<<|>>|>>>)=(.*)$/
+    );
+    if (compound) {
+      const [, name, rhs] = compound;
+      if (!KEYWORDS.has(name)) {
+        defs.add(name);
+        uses.add(name);
+      }
+      for (const u of tokensIn(rhs)) uses.add(u);
+      return true;
+    }
+    const assign = text.match(
+      /^[\s(]*(?:let\s+|const\s+|var\s+)?([A-Za-z_][\w]*)\s*=(?!=)(.*)$/
+    );
+    if (assign) {
+      const [, name, rhs] = assign;
+      if (!KEYWORDS.has(name)) defs.add(name);
+      for (const u of tokensIn(rhs)) uses.add(u);
+      if (!KEYWORDS.has(name)) uses.delete(name);
+      return true;
+    }
+    return false;
+  }
+  function buildDataFlowGraph(cfg) {
+    var _a2;
+    const out = { nodes: (cfg == null ? void 0 : cfg.nodes) || [], edges: [], defUseByNode: /* @__PURE__ */ new Map() };
+    if (!((_a2 = cfg == null ? void 0 : cfg.nodes) == null ? void 0 : _a2.length)) return out;
+    const preds = new Map(cfg.nodes.map((n) => [n.id, []]));
+    for (const e of cfg.edges || []) {
+      if (preds.has(e.to)) preds.get(e.to).push(e.from);
+    }
+    for (const n of cfg.nodes) out.defUseByNode.set(n.id, extractDefUse(n));
+    const seenEdges = /* @__PURE__ */ new Set();
+    for (const useNode of cfg.nodes) {
+      const { uses } = out.defUseByNode.get(useNode.id);
+      for (const v of uses) {
+        const visited = /* @__PURE__ */ new Set([useNode.id]);
+        const stack = [...preds.get(useNode.id)];
+        while (stack.length) {
+          const cur = stack.pop();
+          if (visited.has(cur)) continue;
+          visited.add(cur);
+          const du = out.defUseByNode.get(cur);
+          if (du && du.defs.has(v)) {
+            const id = `du-${cur}-${useNode.id}-${v}`;
+            if (!seenEdges.has(id)) {
+              seenEdges.add(id);
+              out.edges.push({ id, from: cur, to: useNode.id, variable: v });
+            }
+            continue;
+          }
+          for (const p of preds.get(cur) || []) stack.push(p);
+        }
+      }
+    }
+    return out;
+  }
+
   // src/utils/graphCoverage.js
   function buildAdjacency(graph) {
     const adjacency = /* @__PURE__ */ new Map();
@@ -1310,7 +1468,165 @@
     if (requirement.type === "prime-path" || requirement.type === "complete-path") {
       return containsNodePath(record.path, requirement.nodes);
     }
+    if (requirement.type === "all-defs" || requirement.type === "all-uses" || requirement.type === "all-du-paths") {
+      return containsNodePath(record.path, requirement.path || requirement.nodes);
+    }
     return false;
+  }
+  function buildDefUseMap(graph) {
+    const map = /* @__PURE__ */ new Map();
+    graph.nodes.forEach((node) => {
+      map.set(node.id, extractDefUse(node));
+    });
+    return map;
+  }
+  function enumerateDefClearPaths(graph, defNodeId, useNodeId, variable, defUseMap, maxDepth) {
+    const adjacency = buildAdjacency(graph);
+    const limit = maxDepth != null ? maxDepth : Math.max(8, graph.nodes.length * 2);
+    const results = [];
+    function walk(currentId, path, visited) {
+      if (path.length > limit) return;
+      if (currentId === useNodeId && path.length >= 2) {
+        results.push([...path]);
+        return;
+      }
+      const out = adjacency.get(currentId) || [];
+      for (const edge of out) {
+        const next = edge.to;
+        if (visited.has(next)) continue;
+        if (next !== useNodeId) {
+          const du = defUseMap.get(next);
+          if (du && du.defs.has(variable)) continue;
+        }
+        visited.add(next);
+        path.push(next);
+        walk(next, path, visited);
+        path.pop();
+        visited.delete(next);
+      }
+    }
+    walk(defNodeId, [defNodeId], /* @__PURE__ */ new Set([defNodeId]));
+    return results;
+  }
+  function shortestDefClearPath(graph, defNodeId, useNodeId, variable, defUseMap) {
+    const adjacency = buildAdjacency(graph);
+    const queue = [[defNodeId]];
+    const seenStates = /* @__PURE__ */ new Set([defNodeId]);
+    while (queue.length) {
+      const path = queue.shift();
+      const head = path[path.length - 1];
+      if (head === useNodeId && path.length >= 2) return path;
+      const out = adjacency.get(head) || [];
+      for (const edge of out) {
+        const next = edge.to;
+        if (path.includes(next)) continue;
+        if (next !== useNodeId) {
+          const du = defUseMap.get(next);
+          if (du && du.defs.has(variable)) continue;
+        }
+        const stateKey = `${path.join(">")}>${next}`;
+        if (seenStates.has(stateKey)) continue;
+        seenStates.add(stateKey);
+        queue.push([...path, next]);
+      }
+    }
+    return null;
+  }
+  function collectDefUsePairs(graph, defUseMap) {
+    const pairs = [];
+    graph.nodes.forEach((defNode) => {
+      var _a2;
+      const defs = (_a2 = defUseMap.get(defNode.id)) == null ? void 0 : _a2.defs;
+      if (!defs || defs.size === 0) return;
+      defs.forEach((variable) => {
+        graph.nodes.forEach((useNode) => {
+          var _a3;
+          const uses = (_a3 = defUseMap.get(useNode.id)) == null ? void 0 : _a3.uses;
+          if (!uses || !uses.has(variable)) return;
+          const sample = shortestDefClearPath(graph, defNode.id, useNode.id, variable, defUseMap);
+          if (sample) {
+            pairs.push({ defNodeId: defNode.id, useNodeId: useNode.id, variable, samplePath: sample });
+          }
+        });
+      });
+    });
+    return pairs;
+  }
+  function nodeLabelOf(graph, nodeId) {
+    var _a2;
+    return ((_a2 = graph.nodes.find((n) => n.id === nodeId)) == null ? void 0 : _a2.label) || nodeId;
+  }
+  function getAllDefsRequirements(graph) {
+    const normalizedGraph = normalizeGraph(graph);
+    const defUseMap = buildDefUseMap(normalizedGraph);
+    const pairs = collectDefUsePairs(normalizedGraph, defUseMap);
+    const byDef = /* @__PURE__ */ new Map();
+    pairs.forEach((p) => {
+      const key = `${p.defNodeId}|${p.variable}`;
+      const existing = byDef.get(key);
+      if (!existing || p.samplePath.length < existing.samplePath.length) {
+        byDef.set(key, p);
+      }
+    });
+    return Array.from(byDef.values()).map((p, index) => ({
+      id: `all-defs-${index + 1}-${p.defNodeId}-${p.variable}`,
+      type: "all-defs",
+      label: `Def ${nodeLabelOf(normalizedGraph, p.defNodeId)} (${p.variable}) -> use ${nodeLabelOf(normalizedGraph, p.useNodeId)}`,
+      displayText: `${p.variable}@${p.defNodeId} -> ${p.useNodeId} : ${p.samplePath.join(" -> ")}`,
+      nodes: [...new Set(p.samplePath)],
+      edges: edgeIdsFromPath(normalizedGraph, p.samplePath),
+      path: p.samplePath,
+      variable: p.variable,
+      defNodeId: p.defNodeId,
+      useNodeId: p.useNodeId
+    }));
+  }
+  function getAllUsesRequirements(graph) {
+    const normalizedGraph = normalizeGraph(graph);
+    const defUseMap = buildDefUseMap(normalizedGraph);
+    const pairs = collectDefUsePairs(normalizedGraph, defUseMap);
+    return pairs.map((p, index) => ({
+      id: `all-uses-${index + 1}-${p.defNodeId}-${p.useNodeId}-${p.variable}`,
+      type: "all-uses",
+      label: `Use ${nodeLabelOf(normalizedGraph, p.useNodeId)} of ${p.variable} from ${nodeLabelOf(normalizedGraph, p.defNodeId)}`,
+      displayText: `${p.variable}: ${p.defNodeId} -> ${p.useNodeId} : ${p.samplePath.join(" -> ")}`,
+      nodes: [...new Set(p.samplePath)],
+      edges: edgeIdsFromPath(normalizedGraph, p.samplePath),
+      path: p.samplePath,
+      variable: p.variable,
+      defNodeId: p.defNodeId,
+      useNodeId: p.useNodeId
+    }));
+  }
+  function getAllDuPathsRequirements(graph) {
+    const normalizedGraph = normalizeGraph(graph);
+    const defUseMap = buildDefUseMap(normalizedGraph);
+    const pairs = collectDefUsePairs(normalizedGraph, defUseMap);
+    const requirements = [];
+    pairs.forEach((p) => {
+      const allPaths = enumerateDefClearPaths(
+        normalizedGraph,
+        p.defNodeId,
+        p.useNodeId,
+        p.variable,
+        defUseMap
+      );
+      allPaths.forEach((path, idx) => {
+        requirements.push({
+          id: `all-du-paths-${requirements.length + 1}-${p.defNodeId}-${p.useNodeId}-${p.variable}-${idx + 1}`,
+          type: "all-du-paths",
+          label: `DU-Path ${p.variable}: ${path.join(" -> ")}`,
+          displayText: `${p.variable}: ${path.join(" -> ")}`,
+          nodes: [...new Set(path)],
+          edges: edgeIdsFromPath(normalizedGraph, path),
+          path,
+          variable: p.variable,
+          defNodeId: p.defNodeId,
+          useNodeId: p.useNodeId
+        });
+      });
+    });
+    return requirements;
   }
   function greedySetCover(pathRecords, requirements) {
     const uncovered = new Set(requirements.map((item) => item.id));
@@ -1582,6 +1898,15 @@
     }
     if (criterion === "complete-path") {
       return getCompletePathRequirements(graph);
+    }
+    if (criterion === "all-defs") {
+      return getAllDefsRequirements(graph);
+    }
+    if (criterion === "all-uses") {
+      return getAllUsesRequirements(graph);
+    }
+    if (criterion === "all-du-paths") {
+      return getAllDuPathsRequirements(graph);
     }
     return [];
   }
@@ -2265,161 +2590,6 @@
       nodes: builder.nodes,
       edges: builder.edges
     };
-  }
-
-  // src/utils/dataFlow.js
-  var KEYWORDS = /* @__PURE__ */ new Set([
-    "if",
-    "else",
-    "while",
-    "for",
-    "do",
-    "switch",
-    "case",
-    "default",
-    "break",
-    "continue",
-    "return",
-    "function",
-    "let",
-    "const",
-    "var",
-    "true",
-    "false",
-    "null",
-    "undefined",
-    "new",
-    "in",
-    "of",
-    "typeof",
-    "instanceof",
-    "void",
-    "this",
-    "try",
-    "catch",
-    "throw",
-    "finally",
-    "class",
-    "extends",
-    "import",
-    "from",
-    "export",
-    "yield",
-    "async",
-    "await",
-    "and",
-    "or",
-    "not",
-    "then",
-    "end",
-    "do"
-  ]);
-  var IDENT_RE = /[A-Za-z_][A-Za-z0-9_]*/g;
-  function tokensIn(text) {
-    const found = [];
-    for (const m of text.matchAll(IDENT_RE)) {
-      if (!KEYWORDS.has(m[0])) found.push(m[0]);
-    }
-    return found;
-  }
-  function stripStringsAndComments(text) {
-    return String(text).replace(/\/\*[\s\S]*?\*\//g, " ").replace(/\/\/.*$/g, " ").replace(/"(?:[^"\\]|\\.)*"/g, ' ""').replace(/'(?:[^'\\]|\\.)*'/g, " ''").replace(/`(?:[^`\\]|\\.)*`/g, " ``");
-  }
-  function extractDefUse(node) {
-    const defs = /* @__PURE__ */ new Set();
-    const uses = /* @__PURE__ */ new Set();
-    if (!node) return { defs, uses };
-    const raw = node.sourceText || node.label || "";
-    const text = stripStringsAndComments(raw);
-    const fn = text.match(/function\s+[A-Za-z_][\w]*\s*\(([^)]*)\)/) || text.match(/\(([^)]*)\)\s*=>/);
-    if (fn) {
-      for (const p of fn[1].split(",").map((s) => s.trim()).filter(Boolean)) {
-        const name = p.replace(/=.*$/, "").trim();
-        if (name && !KEYWORDS.has(name)) defs.add(name);
-      }
-      for (const u of tokensIn(text.replace(/function\s+[A-Za-z_][\w]*/, ""))) uses.add(u);
-      for (const d of defs) uses.delete(d);
-      return { defs, uses };
-    }
-    const forMatch = text.match(/for\s*\(([^;]*);([^;]*);([^)]*)\)/);
-    if (forMatch) {
-      const [, init, cond, upd] = forMatch;
-      collectAssignment(init, defs, uses);
-      for (const u of tokensIn(cond)) uses.add(u);
-      collectAssignment(upd, defs, uses);
-      return { defs, uses };
-    }
-    const matched = collectAssignment(text, defs, uses);
-    if (!matched) {
-      for (const u of tokensIn(text)) uses.add(u);
-    }
-    return { defs, uses };
-  }
-  function collectAssignment(text, defs, uses) {
-    if (!text) return false;
-    const incDec = text.match(/^[\s(]*([A-Za-z_][\w]*)\s*(\+\+|--)/);
-    if (incDec) {
-      defs.add(incDec[1]);
-      uses.add(incDec[1]);
-      return true;
-    }
-    const compound = text.match(
-      /^[\s(]*([A-Za-z_][\w]*)\s*(?:\+|-|\*|\/|%|&|\||\^|<<|>>|>>>)=(.*)$/
-    );
-    if (compound) {
-      const [, name, rhs] = compound;
-      if (!KEYWORDS.has(name)) {
-        defs.add(name);
-        uses.add(name);
-      }
-      for (const u of tokensIn(rhs)) uses.add(u);
-      return true;
-    }
-    const assign = text.match(
-      /^[\s(]*(?:let\s+|const\s+|var\s+)?([A-Za-z_][\w]*)\s*=(?!=)(.*)$/
-    );
-    if (assign) {
-      const [, name, rhs] = assign;
-      if (!KEYWORDS.has(name)) defs.add(name);
-      for (const u of tokensIn(rhs)) uses.add(u);
-      if (!KEYWORDS.has(name)) uses.delete(name);
-      return true;
-    }
-    return false;
-  }
-  function buildDataFlowGraph(cfg) {
-    var _a2;
-    const out = { nodes: (cfg == null ? void 0 : cfg.nodes) || [], edges: [], defUseByNode: /* @__PURE__ */ new Map() };
-    if (!((_a2 = cfg == null ? void 0 : cfg.nodes) == null ? void 0 : _a2.length)) return out;
-    const preds = new Map(cfg.nodes.map((n) => [n.id, []]));
-    for (const e of cfg.edges || []) {
-      if (preds.has(e.to)) preds.get(e.to).push(e.from);
-    }
-    for (const n of cfg.nodes) out.defUseByNode.set(n.id, extractDefUse(n));
-    const seenEdges = /* @__PURE__ */ new Set();
-    for (const useNode of cfg.nodes) {
-      const { uses } = out.defUseByNode.get(useNode.id);
-      for (const v of uses) {
-        const visited = /* @__PURE__ */ new Set([useNode.id]);
-        const stack = [...preds.get(useNode.id)];
-        while (stack.length) {
-          const cur = stack.pop();
-          if (visited.has(cur)) continue;
-          visited.add(cur);
-          const du = out.defUseByNode.get(cur);
-          if (du && du.defs.has(v)) {
-            const id = `du-${cur}-${useNode.id}-${v}`;
-            if (!seenEdges.has(id)) {
-              seenEdges.add(id);
-              out.edges.push({ id, from: cur, to: useNode.id, variable: v });
-            }
-            continue;
-          }
-          for (const p of preds.get(cur) || []) stack.push(p);
-        }
-      }
-    }
-    return out;
   }
 
   // src/components/GraphCoverageExplorer.js

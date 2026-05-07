@@ -156,9 +156,18 @@ describe('testingTypes', () => {
 });
 
 describe('graphCoverage data', () => {
-  it('包含五種 coverage criteria', () => {
-    expect(graphCoverageCriteria).toHaveLength(5);
-    expect(graphCoverageCriteria.map((item) => item.id)).toEqual(['node', 'edge', 'prime-path', 'edge-pair', 'complete-path']);
+  it('包含八種 coverage criteria', () => {
+    expect(graphCoverageCriteria).toHaveLength(8);
+    expect(graphCoverageCriteria.map((item) => item.id)).toEqual([
+      'node',
+      'edge',
+      'prime-path',
+      'edge-pair',
+      'complete-path',
+      'all-defs',
+      'all-uses',
+      'all-du-paths',
+    ]);
   });
 
   it('包含程式碼語言選項', () => {

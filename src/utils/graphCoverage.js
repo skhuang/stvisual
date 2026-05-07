@@ -1,3 +1,5 @@
+import { extractDefUse } from './dataFlow.js';
+
 function buildAdjacency(graph) {
   const adjacency = new Map();
 
@@ -114,7 +116,193 @@ function requirementCoveredByRecord(requirement, record) {
     return containsNodePath(record.path, requirement.nodes);
   }
 
+  if (
+    requirement.type === 'all-defs'
+    || requirement.type === 'all-uses'
+    || requirement.type === 'all-du-paths'
+  ) {
+    return containsNodePath(record.path, requirement.path || requirement.nodes);
+  }
+
   return false;
+}
+
+// ---------- Data flow coverage helpers ----------
+
+function buildDefUseMap(graph) {
+  const map = new Map();
+  graph.nodes.forEach((node) => {
+    map.set(node.id, extractDefUse(node));
+  });
+  return map;
+}
+
+// Enumerate every simple, definition-clear path n -> m for variable v in the CFG.
+// "Definition-clear" means no interior node redefines v. Path length is capped
+// to keep the enumeration bounded for All-DU-Paths.
+function enumerateDefClearPaths(graph, defNodeId, useNodeId, variable, defUseMap, maxDepth) {
+  const adjacency = buildAdjacency(graph);
+  const limit = maxDepth ?? Math.max(8, graph.nodes.length * 2);
+  const results = [];
+
+  function walk(currentId, path, visited) {
+    if (path.length > limit) return;
+    if (currentId === useNodeId && path.length >= 2) {
+      results.push([...path]);
+      return;
+    }
+    const out = adjacency.get(currentId) || [];
+    for (const edge of out) {
+      const next = edge.to;
+      if (visited.has(next)) continue;
+      // Forbid redefinition of `variable` at any interior node (next !== useNodeId
+      // is "interior" relative to the def→use walk we're building).
+      if (next !== useNodeId) {
+        const du = defUseMap.get(next);
+        if (du && du.defs.has(variable)) continue;
+      }
+      visited.add(next);
+      path.push(next);
+      walk(next, path, visited);
+      path.pop();
+      visited.delete(next);
+    }
+  }
+
+  walk(defNodeId, [defNodeId], new Set([defNodeId]));
+  return results;
+}
+
+function shortestDefClearPath(graph, defNodeId, useNodeId, variable, defUseMap) {
+  // BFS — first time we pop useNodeId we've found a shortest def-clear walk.
+  const adjacency = buildAdjacency(graph);
+  const queue = [[defNodeId]];
+  const seenStates = new Set([defNodeId]);
+  while (queue.length) {
+    const path = queue.shift();
+    const head = path[path.length - 1];
+    if (head === useNodeId && path.length >= 2) return path;
+    const out = adjacency.get(head) || [];
+    for (const edge of out) {
+      const next = edge.to;
+      if (path.includes(next)) continue;
+      if (next !== useNodeId) {
+        const du = defUseMap.get(next);
+        if (du && du.defs.has(variable)) continue;
+      }
+      const stateKey = `${path.join('>')}>${next}`;
+      if (seenStates.has(stateKey)) continue;
+      seenStates.add(stateKey);
+      queue.push([...path, next]);
+    }
+  }
+  return null;
+}
+
+function collectDefUsePairs(graph, defUseMap) {
+  // A pair (defNode, useNode, variable) is admissible iff at least one
+  // def-clear simple path connects them.
+  const pairs = [];
+  graph.nodes.forEach((defNode) => {
+    const defs = defUseMap.get(defNode.id)?.defs;
+    if (!defs || defs.size === 0) return;
+    defs.forEach((variable) => {
+      graph.nodes.forEach((useNode) => {
+        const uses = defUseMap.get(useNode.id)?.uses;
+        if (!uses || !uses.has(variable)) return;
+        const sample = shortestDefClearPath(graph, defNode.id, useNode.id, variable, defUseMap);
+        if (sample) {
+          pairs.push({ defNodeId: defNode.id, useNodeId: useNode.id, variable, samplePath: sample });
+        }
+      });
+    });
+  });
+  return pairs;
+}
+
+function nodeLabelOf(graph, nodeId) {
+  return graph.nodes.find((n) => n.id === nodeId)?.label || nodeId;
+}
+
+export function getAllDefsRequirements(graph) {
+  const normalizedGraph = normalizeGraph(graph);
+  const defUseMap = buildDefUseMap(normalizedGraph);
+  const pairs = collectDefUsePairs(normalizedGraph, defUseMap);
+
+  // For each (defNode, variable) keep ONE representative def→use path
+  // (shortest among the admissible uses).
+  const byDef = new Map();
+  pairs.forEach((p) => {
+    const key = `${p.defNodeId}|${p.variable}`;
+    const existing = byDef.get(key);
+    if (!existing || p.samplePath.length < existing.samplePath.length) {
+      byDef.set(key, p);
+    }
+  });
+
+  return Array.from(byDef.values()).map((p, index) => ({
+    id: `all-defs-${index + 1}-${p.defNodeId}-${p.variable}`,
+    type: 'all-defs',
+    label: `Def ${nodeLabelOf(normalizedGraph, p.defNodeId)} (${p.variable}) -> use ${nodeLabelOf(normalizedGraph, p.useNodeId)}`,
+    displayText: `${p.variable}@${p.defNodeId} -> ${p.useNodeId} : ${p.samplePath.join(' -> ')}`,
+    nodes: [...new Set(p.samplePath)],
+    edges: edgeIdsFromPath(normalizedGraph, p.samplePath),
+    path: p.samplePath,
+    variable: p.variable,
+    defNodeId: p.defNodeId,
+    useNodeId: p.useNodeId,
+  }));
+}
+
+export function getAllUsesRequirements(graph) {
+  const normalizedGraph = normalizeGraph(graph);
+  const defUseMap = buildDefUseMap(normalizedGraph);
+  const pairs = collectDefUsePairs(normalizedGraph, defUseMap);
+
+  return pairs.map((p, index) => ({
+    id: `all-uses-${index + 1}-${p.defNodeId}-${p.useNodeId}-${p.variable}`,
+    type: 'all-uses',
+    label: `Use ${nodeLabelOf(normalizedGraph, p.useNodeId)} of ${p.variable} from ${nodeLabelOf(normalizedGraph, p.defNodeId)}`,
+    displayText: `${p.variable}: ${p.defNodeId} -> ${p.useNodeId} : ${p.samplePath.join(' -> ')}`,
+    nodes: [...new Set(p.samplePath)],
+    edges: edgeIdsFromPath(normalizedGraph, p.samplePath),
+    path: p.samplePath,
+    variable: p.variable,
+    defNodeId: p.defNodeId,
+    useNodeId: p.useNodeId,
+  }));
+}
+
+export function getAllDuPathsRequirements(graph) {
+  const normalizedGraph = normalizeGraph(graph);
+  const defUseMap = buildDefUseMap(normalizedGraph);
+  const pairs = collectDefUsePairs(normalizedGraph, defUseMap);
+
+  const requirements = [];
+  pairs.forEach((p) => {
+    const allPaths = enumerateDefClearPaths(
+      normalizedGraph,
+      p.defNodeId,
+      p.useNodeId,
+      p.variable,
+      defUseMap,
+    );
+    allPaths.forEach((path, idx) => {
+      requirements.push({
+        id: `all-du-paths-${requirements.length + 1}-${p.defNodeId}-${p.useNodeId}-${p.variable}-${idx + 1}`,
+        type: 'all-du-paths',
+        label: `DU-Path ${p.variable}: ${path.join(' -> ')}`,
+        displayText: `${p.variable}: ${path.join(' -> ')}`,
+        nodes: [...new Set(path)],
+        edges: edgeIdsFromPath(normalizedGraph, path),
+        path,
+        variable: p.variable,
+        defNodeId: p.defNodeId,
+        useNodeId: p.useNodeId,
+      });
+    });
+  });
+  return requirements;
 }
 
 function greedySetCover(pathRecords, requirements) {
@@ -452,6 +640,18 @@ export function getCoverageRequirements(graph, criterion) {
 
   if (criterion === 'complete-path') {
     return getCompletePathRequirements(graph);
+  }
+
+  if (criterion === 'all-defs') {
+    return getAllDefsRequirements(graph);
+  }
+
+  if (criterion === 'all-uses') {
+    return getAllUsesRequirements(graph);
+  }
+
+  if (criterion === 'all-du-paths') {
+    return getAllDuPathsRequirements(graph);
   }
 
   return [];
