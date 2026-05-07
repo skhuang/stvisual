@@ -2095,32 +2095,147 @@
   }
   function assignLayout(nodes, edges) {
     const depths = computeDepths(nodes, edges);
-    const grouped = /* @__PURE__ */ new Map();
+    const incoming = new Map(nodes.map((n) => [n.id, []]));
+    const outgoing = new Map(nodes.map((n) => [n.id, []]));
+    edges.forEach((e) => {
+      if (incoming.has(e.to)) incoming.get(e.to).push(e.from);
+      if (outgoing.has(e.from)) outgoing.get(e.from).push(e.to);
+    });
+    const layers = /* @__PURE__ */ new Map();
     nodes.forEach((node) => {
       var _a2;
-      const depth = (_a2 = depths.get(node.id)) != null ? _a2 : 1;
-      if (!grouped.has(depth)) {
-        grouped.set(depth, []);
-      }
-      grouped.get(depth).push(node);
+      const depth = (_a2 = depths.get(node.id)) != null ? _a2 : 0;
+      if (!layers.has(depth)) layers.set(depth, []);
+      layers.get(depth).push(node);
     });
-    Array.from(grouped.entries()).forEach(([depth, group]) => {
-      group.forEach((node, index) => {
-        node.x = 90 + depth * 150;
-        node.y = 90 + index * 96;
+    const NODE_SPACING_X = 170;
+    const LAYER_SPACING_Y = 130;
+    const MARGIN_X = 110;
+    const MARGIN_Y = 90;
+    const sortedDepths = [...layers.keys()].sort((a, b) => a - b);
+    const placed = /* @__PURE__ */ new Map();
+    for (const depth of sortedDepths) {
+      const layer = layers.get(depth);
+      layer.forEach((node) => {
+        node.y = MARGIN_Y + depth * LAYER_SPACING_Y;
       });
+      layer.forEach((node, idx) => {
+        const preds = (incoming.get(node.id) || []).filter((p) => placed.has(p));
+        if (preds.length > 0) {
+          const avg = preds.reduce((sum, p) => sum + placed.get(p), 0) / preds.length;
+          node.x = avg;
+        } else {
+          node.x = MARGIN_X + idx * NODE_SPACING_X;
+        }
+      });
+      spreadLayer(layer, NODE_SPACING_X);
+      layer.forEach((node) => {
+        placed.set(node.id, node.x);
+      });
+    }
+    const SWEEPS = 4;
+    for (let s = 0; s < SWEEPS; s++) {
+      for (const depth of sortedDepths) {
+        const layer = layers.get(depth);
+        layer.forEach((node) => {
+          const preds = (incoming.get(node.id) || []).map((p) => placed.get(p)).filter((v) => v !== void 0);
+          if (preds.length > 0) node.x = preds.reduce((a, b) => a + b, 0) / preds.length;
+        });
+        layer.sort((a, b) => a.x - b.x);
+        spreadLayer(layer, NODE_SPACING_X);
+        layer.forEach((node) => {
+          placed.set(node.id, node.x);
+        });
+      }
+      for (let i = sortedDepths.length - 1; i >= 0; i--) {
+        const layer = layers.get(sortedDepths[i]);
+        layer.forEach((node) => {
+          const succ = (outgoing.get(node.id) || []).map((q) => placed.get(q)).filter((v) => v !== void 0);
+          if (succ.length > 0) node.x = succ.reduce((a, b) => a + b, 0) / succ.length;
+        });
+        layer.sort((a, b) => a.x - b.x);
+        spreadLayer(layer, NODE_SPACING_X);
+        layer.forEach((node) => {
+          placed.set(node.id, node.x);
+        });
+      }
+    }
+    const minX = Math.min(...nodes.map((n) => n.x));
+    const shift = MARGIN_X - minX;
+    nodes.forEach((n) => {
+      n.x = Math.round(n.x + shift);
     });
     const coordinates = new Map(nodes.map((node) => [node.id, node]));
+    const fanOutCounters = /* @__PURE__ */ new Map();
+    const allXs = nodes.map((n) => n.x);
+    const layoutMinX = Math.min(...allXs);
+    const layoutMaxX = Math.max(...allXs);
+    const layoutMidX = (layoutMinX + layoutMaxX) / 2;
+    const backEdges = edges.filter((e) => {
+      const a = coordinates.get(e.from);
+      const b = coordinates.get(e.to);
+      return a && b && b.y <= a.y;
+    });
+    const backEdgeOrder = /* @__PURE__ */ new Map();
+    const left = [];
+    const right = [];
+    backEdges.forEach((e) => {
+      const a = coordinates.get(e.from);
+      const b = coordinates.get(e.to);
+      if (Math.max(a.x, b.x) < layoutMidX) left.push(e);
+      else right.push(e);
+    });
+    const sortBySpan = (list) => list.slice().sort((p, q) => {
+      const ap = coordinates.get(p.from);
+      const aq = coordinates.get(q.from);
+      const bp = coordinates.get(p.to);
+      const bq = coordinates.get(q.to);
+      return Math.abs(ap.y - bp.y) - Math.abs(aq.y - bq.y);
+    });
+    sortBySpan(left).forEach((e, idx) => backEdgeOrder.set(e, { side: -1, idx }));
+    sortBySpan(right).forEach((e, idx) => backEdgeOrder.set(e, { side: 1, idx }));
     edges.forEach((edge) => {
       const fromNode = coordinates.get(edge.from);
       const toNode = coordinates.get(edge.to);
-      if (fromNode && toNode && toNode.x <= fromNode.x) {
+      if (!fromNode || !toNode) return;
+      const sibs = outgoing.get(edge.from) || [];
+      const sibCount = sibs.length;
+      const fanIdx = fanOutCounters.get(edge.from) || 0;
+      fanOutCounters.set(edge.from, fanIdx + 1);
+      const fan = sibCount > 1 ? fanIdx - (sibCount - 1) / 2 : 0;
+      const FAN_STEP = 28;
+      if (toNode.y <= fromNode.y) {
+        const meta = backEdgeOrder.get(edge) || { side: 1, idx: 0 };
+        const baseAnchor = meta.side > 0 ? Math.max(fromNode.x, toNode.x) : Math.min(fromNode.x, toNode.x);
+        const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80) + meta.idx * 60;
         edge.control = {
-          x: Math.round((fromNode.x + toNode.x) / 2),
-          y: Math.min(fromNode.y, toNode.y) - 72
+          x: baseAnchor + meta.side * (offset + fan * FAN_STEP),
+          y: (fromNode.y + toNode.y) / 2
+        };
+      } else if (toNode.y - fromNode.y > LAYER_SPACING_Y * 1.5) {
+        edge.control = {
+          x: (fromNode.x + toNode.x) / 2 + 80 + fan * FAN_STEP,
+          y: (fromNode.y + toNode.y) / 2
+        };
+      } else if (sibCount > 1 || Math.abs(toNode.x - fromNode.x) > NODE_SPACING_X * 1.2) {
+        const midX = (fromNode.x + toNode.x) / 2;
+        const midY = fromNode.y + (toNode.y - fromNode.y) * 0.35;
+        edge.control = {
+          x: midX + fan * FAN_STEP,
+          y: midY
         };
       }
     });
+  }
+  function spreadLayer(layer, spacing) {
+    for (let i = 1; i < layer.length; i++) {
+      const minX = layer[i - 1].x + spacing;
+      if (layer[i].x < minX) layer[i].x = minX;
+    }
+    for (let i = layer.length - 2; i >= 0; i--) {
+      const maxX = layer[i + 1].x - spacing;
+      if (layer[i].x > maxX) layer[i].x = maxX;
+    }
   }
   function generateControlFlowGraphFromProgram({ sourceCode, language, title }) {
     const statements = parseStructuredProgram(sourceCode, language);
@@ -2492,43 +2607,82 @@
     }
     throw new Error(t("graph.err.noSource"));
   }
+  function trimToCircle(from, to, radius) {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const len = Math.hypot(dx, dy) || 1;
+    return {
+      x: to.x - dx / len * radius,
+      y: to.y - dy / len * radius
+    };
+  }
+  function computeGraphBounds(graph, edgeList = graph.edges, padding = 60) {
+    const xs = [];
+    const ys = [];
+    for (const node of graph.nodes) {
+      xs.push(node.x - 32, node.x + 32);
+      ys.push(node.y - 32, node.y + 32);
+    }
+    for (const edge of edgeList) {
+      if (edge == null ? void 0 : edge.control) {
+        xs.push(edge.control.x);
+        ys.push(edge.control.y);
+      }
+    }
+    if (xs.length === 0) return { minX: 0, minY: 0, width: 920, height: 340 };
+    const minX = Math.min(...xs) - padding;
+    const minY = Math.min(...ys) - padding;
+    const maxX = Math.max(...xs) + padding;
+    const maxY = Math.max(...ys) + padding;
+    return {
+      minX,
+      minY,
+      width: Math.max(920, maxX - minX),
+      height: Math.max(340, maxY - minY)
+    };
+  }
   function createGraphCanvas(graph, requirement) {
     const highlightedNodes = new Set((requirement == null ? void 0 : requirement.nodes) || []);
     const highlightedEdges = new Set((requirement == null ? void 0 : requirement.edges) || []);
-    const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
-    const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
+    const { minX, minY, width, height } = computeGraphBounds(graph);
     return `
     <div class="graph-canvas" data-testid="graph-canvas">
-      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t("graph.aria.canvas")}">
+      <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t("graph.aria.canvas")}">
         <defs>
-          <marker id="arrow-default" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#9aa8b6"></path>
+          <marker id="arrow-default" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 z" fill="#9aa8b6"></path>
           </marker>
-          <marker id="arrow-active" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#ea580c"></path>
+          <marker id="arrow-active" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 z" fill="#ea580c"></path>
           </marker>
         </defs>
         ${graph.edges.map((edge) => {
       const fromNode = graph.nodes.find((node) => node.id === edge.from);
       const toNode = graph.nodes.find((node) => node.id === edge.to);
       const active = highlightedEdges.has(edge.id);
+      const NODE_R = 28;
+      const ARROW_GAP = 4;
       if (edge.control) {
+        const end2 = trimToCircle(edge.control, toNode, NODE_R + ARROW_GAP);
+        const start2 = trimToCircle(edge.control, fromNode, NODE_R);
         return `
               <path
                 class="graph-edge${active ? " graph-edge--active" : ""}"
-                d="M ${fromNode.x} ${fromNode.y} Q ${edge.control.x} ${edge.control.y} ${toNode.x} ${toNode.y}"
+                d="M ${start2.x} ${start2.y} Q ${edge.control.x} ${edge.control.y} ${end2.x} ${end2.y}"
                 marker-end="url(#${active ? "arrow-active" : "arrow-default"})"
                 data-testid="graph-edge-${edge.id}"
               ></path>
             `;
       }
+      const end = trimToCircle(fromNode, toNode, NODE_R + ARROW_GAP);
+      const start = trimToCircle(toNode, fromNode, NODE_R);
       return `
             <line
               class="graph-edge${active ? " graph-edge--active" : ""}"
-              x1="${fromNode.x}"
-              y1="${fromNode.y}"
-              x2="${toNode.x}"
-              y2="${toNode.y}"
+              x1="${start.x}"
+              y1="${start.y}"
+              x2="${end.x}"
+              y2="${end.y}"
               marker-end="url(#${active ? "arrow-active" : "arrow-default"})"
               data-testid="graph-edge-${edge.id}"
             ></line>
@@ -2548,8 +2702,7 @@
   function createDataFlowCanvas(graph) {
     const dfg = buildDataFlowGraph(graph);
     const nodeById = new Map(graph.nodes.map((n) => [n.id, n]));
-    const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
-    const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
+    const { minX, minY, width, height } = computeGraphBounds(graph, dfg.edges);
     const grouped = /* @__PURE__ */ new Map();
     for (const e of dfg.edges) {
       const key = `${e.from}->${e.to}`;
@@ -2569,9 +2722,13 @@
       const cx = (a.x + b.x) / 2 + -dy / len * offset * sign;
       const cy = (a.y + b.y) / 2 + dx / len * offset * sign;
       const labels = group.map((e) => e.variable).join(", ");
+      const DFG_R = 24;
+      const ARROW_GAP = 4;
+      const start = trimToCircle({ x: cx, y: cy }, a, DFG_R);
+      const end = trimToCircle({ x: cx, y: cy }, b, DFG_R + ARROW_GAP);
       return `
       <g class="graph-dfg-edge" data-testid="dfg-edge-${escapeHtml(key)}">
-        <path d="M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}"
+        <path d="M ${start.x} ${start.y} Q ${cx} ${cy} ${end.x} ${end.y}"
               marker-end="url(#dfg-arrow)"></path>
         <text x="${cx}" y="${cy}" text-anchor="middle">${escapeHtml(labels)}</text>
       </g>
@@ -2585,10 +2742,10 @@
         <p>${t("graph.dfg.help")}</p>
       </div>
       <div class="graph-canvas graph-dfg-canvas" data-testid="graph-dfg-canvas">
-        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t("graph.dfg.aria")}">
+        <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t("graph.dfg.aria")}">
           <defs>
-            <marker id="dfg-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-              <path d="M0,0 L12,6 L0,12 z" fill="#0ea5e9"></path>
+            <marker id="dfg-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 z" fill="#0ea5e9"></path>
             </marker>
           </defs>
           ${edgeMarkup}

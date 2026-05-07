@@ -250,46 +250,88 @@ function resolveProgramGraph(program) {
   throw new Error(t('graph.err.noSource'));
 }
 
+function trimToCircle(from, to, radius) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.hypot(dx, dy) || 1;
+  return {
+    x: to.x - (dx / len) * radius,
+    y: to.y - (dy / len) * radius,
+  };
+}
+
+function computeGraphBounds(graph, edgeList = graph.edges, padding = 60) {
+  const xs = [];
+  const ys = [];
+  for (const node of graph.nodes) {
+    xs.push(node.x - 32, node.x + 32);
+    ys.push(node.y - 32, node.y + 32);
+  }
+  for (const edge of edgeList) {
+    if (edge?.control) {
+      xs.push(edge.control.x);
+      ys.push(edge.control.y);
+    }
+  }
+  if (xs.length === 0) return { minX: 0, minY: 0, width: 920, height: 340 };
+  const minX = Math.min(...xs) - padding;
+  const minY = Math.min(...ys) - padding;
+  const maxX = Math.max(...xs) + padding;
+  const maxY = Math.max(...ys) + padding;
+  return {
+    minX,
+    minY,
+    width: Math.max(920, maxX - minX),
+    height: Math.max(340, maxY - minY),
+  };
+}
+
 function createGraphCanvas(graph, requirement) {
   const highlightedNodes = new Set(requirement?.nodes || []);
   const highlightedEdges = new Set(requirement?.edges || []);
-  const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
-  const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
+  const { minX, minY, width, height } = computeGraphBounds(graph);
 
   return `
     <div class="graph-canvas" data-testid="graph-canvas">
-      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t('graph.aria.canvas')}">
+      <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t('graph.aria.canvas')}">
         <defs>
-          <marker id="arrow-default" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#9aa8b6"></path>
+          <marker id="arrow-default" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 z" fill="#9aa8b6"></path>
           </marker>
-          <marker id="arrow-active" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#ea580c"></path>
+          <marker id="arrow-active" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 z" fill="#ea580c"></path>
           </marker>
         </defs>
         ${graph.edges.map((edge) => {
           const fromNode = graph.nodes.find((node) => node.id === edge.from);
           const toNode = graph.nodes.find((node) => node.id === edge.to);
           const active = highlightedEdges.has(edge.id);
+          const NODE_R = 28;
+          const ARROW_GAP = 4; // small visual gap so arrow tip sits at circle edge
 
           if (edge.control) {
+            // Trim end along the tangent (control → end) of the quadratic curve.
+            const end = trimToCircle(edge.control, toNode, NODE_R + ARROW_GAP);
+            const start = trimToCircle(edge.control, fromNode, NODE_R);
             return `
               <path
                 class="graph-edge${active ? ' graph-edge--active' : ''}"
-                d="M ${fromNode.x} ${fromNode.y} Q ${edge.control.x} ${edge.control.y} ${toNode.x} ${toNode.y}"
+                d="M ${start.x} ${start.y} Q ${edge.control.x} ${edge.control.y} ${end.x} ${end.y}"
                 marker-end="url(#${active ? 'arrow-active' : 'arrow-default'})"
                 data-testid="graph-edge-${edge.id}"
               ></path>
             `;
           }
 
+          const end = trimToCircle(fromNode, toNode, NODE_R + ARROW_GAP);
+          const start = trimToCircle(toNode, fromNode, NODE_R);
           return `
             <line
               class="graph-edge${active ? ' graph-edge--active' : ''}"
-              x1="${fromNode.x}"
-              y1="${fromNode.y}"
-              x2="${toNode.x}"
-              y2="${toNode.y}"
+              x1="${start.x}"
+              y1="${start.y}"
+              x2="${end.x}"
+              y2="${end.y}"
               marker-end="url(#${active ? 'arrow-active' : 'arrow-default'})"
               data-testid="graph-edge-${edge.id}"
             ></line>
@@ -310,8 +352,7 @@ function createGraphCanvas(graph, requirement) {
 function createDataFlowCanvas(graph) {
   const dfg = buildDataFlowGraph(graph);
   const nodeById = new Map(graph.nodes.map((n) => [n.id, n]));
-  const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
-  const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
+  const { minX, minY, width, height } = computeGraphBounds(graph, dfg.edges);
 
   // Group edges between the same pair so labels stack instead of overlap.
   const grouped = new Map();
@@ -336,9 +377,13 @@ function createDataFlowCanvas(graph) {
     const cx = (a.x + b.x) / 2 + (-dy / len) * offset * sign;
     const cy = (a.y + b.y) / 2 + (dx / len) * offset * sign;
     const labels = group.map((e) => e.variable).join(', ');
+    const DFG_R = 24;
+    const ARROW_GAP = 4;
+    const start = trimToCircle({ x: cx, y: cy }, a, DFG_R);
+    const end = trimToCircle({ x: cx, y: cy }, b, DFG_R + ARROW_GAP);
     return `
       <g class="graph-dfg-edge" data-testid="dfg-edge-${escapeHtml(key)}">
-        <path d="M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}"
+        <path d="M ${start.x} ${start.y} Q ${cx} ${cy} ${end.x} ${end.y}"
               marker-end="url(#dfg-arrow)"></path>
         <text x="${cx}" y="${cy}" text-anchor="middle">${escapeHtml(labels)}</text>
       </g>
@@ -356,10 +401,10 @@ function createDataFlowCanvas(graph) {
         <p>${t('graph.dfg.help')}</p>
       </div>
       <div class="graph-canvas graph-dfg-canvas" data-testid="graph-dfg-canvas">
-        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t('graph.dfg.aria')}">
+        <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t('graph.dfg.aria')}">
           <defs>
-            <marker id="dfg-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-              <path d="M0,0 L12,6 L0,12 z" fill="#0ea5e9"></path>
+            <marker id="dfg-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 z" fill="#0ea5e9"></path>
             </marker>
           </defs>
           ${edgeMarkup}

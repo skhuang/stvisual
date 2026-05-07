@@ -633,35 +633,178 @@ function computeDepths(nodes, edges) {
 
 function assignLayout(nodes, edges) {
   const depths = computeDepths(nodes, edges);
-  const grouped = new Map();
+  const incoming = new Map(nodes.map((n) => [n.id, []]));
+  const outgoing = new Map(nodes.map((n) => [n.id, []]));
+  edges.forEach((e) => {
+    if (incoming.has(e.to)) incoming.get(e.to).push(e.from);
+    if (outgoing.has(e.from)) outgoing.get(e.from).push(e.to);
+  });
 
+  // Group nodes by depth (top-down: depth → y).
+  const layers = new Map();
   nodes.forEach((node) => {
-    const depth = depths.get(node.id) ?? 1;
-    if (!grouped.has(depth)) {
-      grouped.set(depth, []);
-    }
-    grouped.get(depth).push(node);
+    const depth = depths.get(node.id) ?? 0;
+    if (!layers.has(depth)) layers.set(depth, []);
+    layers.get(depth).push(node);
   });
 
-  Array.from(grouped.entries()).forEach(([depth, group]) => {
-    group.forEach((node, index) => {
-      node.x = 90 + depth * 150;
-      node.y = 90 + index * 96;
+  const NODE_SPACING_X = 170;   // horizontal gap between siblings
+  const LAYER_SPACING_Y = 130;  // vertical gap between layers
+  const MARGIN_X = 110;
+  const MARGIN_Y = 90;
+
+  const sortedDepths = [...layers.keys()].sort((a, b) => a - b);
+  const placed = new Map(); // id → x
+
+  // Initial top-down placement: parent average + collision push.
+  for (const depth of sortedDepths) {
+    const layer = layers.get(depth);
+    layer.forEach((node) => { node.y = MARGIN_Y + depth * LAYER_SPACING_Y; });
+
+    layer.forEach((node, idx) => {
+      const preds = (incoming.get(node.id) || []).filter((p) => placed.has(p));
+      if (preds.length > 0) {
+        const avg = preds.reduce((sum, p) => sum + placed.get(p), 0) / preds.length;
+        node.x = avg;
+      } else {
+        node.x = MARGIN_X + idx * NODE_SPACING_X;
+      }
     });
-  });
 
+    spreadLayer(layer, NODE_SPACING_X);
+    layer.forEach((node) => { placed.set(node.id, node.x); });
+  }
+
+  // A few sweeps of barycenter relaxation (Sugiyama-style) to reduce
+  // edge crossings: alternately re-centre each node above its
+  // predecessors (down sweep) and below its successors (up sweep).
+  const SWEEPS = 4;
+  for (let s = 0; s < SWEEPS; s++) {
+    // Down sweep: re-centre using already-relaxed predecessors.
+    for (const depth of sortedDepths) {
+      const layer = layers.get(depth);
+      layer.forEach((node) => {
+        const preds = (incoming.get(node.id) || []).map((p) => placed.get(p)).filter((v) => v !== undefined);
+        if (preds.length > 0) node.x = preds.reduce((a, b) => a + b, 0) / preds.length;
+      });
+      layer.sort((a, b) => a.x - b.x);
+      spreadLayer(layer, NODE_SPACING_X);
+      layer.forEach((node) => { placed.set(node.id, node.x); });
+    }
+    // Up sweep: re-centre using successors.
+    for (let i = sortedDepths.length - 1; i >= 0; i--) {
+      const layer = layers.get(sortedDepths[i]);
+      layer.forEach((node) => {
+        const succ = (outgoing.get(node.id) || []).map((q) => placed.get(q)).filter((v) => v !== undefined);
+        if (succ.length > 0) node.x = succ.reduce((a, b) => a + b, 0) / succ.length;
+      });
+      layer.sort((a, b) => a.x - b.x);
+      spreadLayer(layer, NODE_SPACING_X);
+      layer.forEach((node) => { placed.set(node.id, node.x); });
+    }
+  }
+
+  // Normalise so that the leftmost node sits at MARGIN_X.
+  const minX = Math.min(...nodes.map((n) => n.x));
+  const shift = MARGIN_X - minX;
+  nodes.forEach((n) => { n.x = Math.round(n.x + shift); });
+
+  // Edge routing: curve back-edges, long forward edges, diagonals; fan
+  // out multiple edges sharing the same source so their labels and
+  // arrows don't sit on top of each other.
   const coordinates = new Map(nodes.map((node) => [node.id, node]));
+  const fanOutCounters = new Map();
+  const allXs = nodes.map((n) => n.x);
+  const layoutMinX = Math.min(...allXs);
+  const layoutMaxX = Math.max(...allXs);
+  const layoutMidX = (layoutMinX + layoutMaxX) / 2;
+
+  // Pre-collect back-edges so we can stagger them (left vs. right of the
+  // graph, multiple offsets) and avoid a single bundle of crossing arcs.
+  const backEdges = edges.filter((e) => {
+    const a = coordinates.get(e.from);
+    const b = coordinates.get(e.to);
+    return a && b && b.y <= a.y;
+  });
+  const backEdgeOrder = new Map();
+  // Group back-edges by side (left if both endpoints sit left of centre,
+  // otherwise right) and assign a per-side stagger index ordered by
+  // vertical span so the largest loop sits furthest from the body.
+  const left = [];
+  const right = [];
+  backEdges.forEach((e) => {
+    const a = coordinates.get(e.from);
+    const b = coordinates.get(e.to);
+    if (Math.max(a.x, b.x) < layoutMidX) left.push(e);
+    else right.push(e);
+  });
+  const sortBySpan = (list) => list.slice().sort((p, q) => {
+    const ap = coordinates.get(p.from);
+    const aq = coordinates.get(q.from);
+    const bp = coordinates.get(p.to);
+    const bq = coordinates.get(q.to);
+    return Math.abs(ap.y - bp.y) - Math.abs(aq.y - bq.y);
+  });
+  sortBySpan(left).forEach((e, idx) => backEdgeOrder.set(e, { side: -1, idx }));
+  sortBySpan(right).forEach((e, idx) => backEdgeOrder.set(e, { side: 1, idx }));
+
   edges.forEach((edge) => {
     const fromNode = coordinates.get(edge.from);
     const toNode = coordinates.get(edge.to);
+    if (!fromNode || !toNode) return;
 
-    if (fromNode && toNode && toNode.x <= fromNode.x) {
+    const sibs = outgoing.get(edge.from) || [];
+    const sibCount = sibs.length;
+    const fanIdx = fanOutCounters.get(edge.from) || 0;
+    fanOutCounters.set(edge.from, fanIdx + 1);
+    // Symmetric fan: -((n-1)/2) … +((n-1)/2)
+    const fan = sibCount > 1 ? (fanIdx - (sibCount - 1) / 2) : 0;
+    const FAN_STEP = 28;
+
+    if (toNode.y <= fromNode.y) {
+      // Back-edge (loop). Route to whichever side it sits on, and
+      // stagger by index so nested / sibling loops don't share an arc.
+      const meta = backEdgeOrder.get(edge) || { side: 1, idx: 0 };
+      const baseAnchor = meta.side > 0
+        ? Math.max(fromNode.x, toNode.x)
+        : Math.min(fromNode.x, toNode.x);
+      const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80) + meta.idx * 60;
       edge.control = {
-        x: Math.round((fromNode.x + toNode.x) / 2),
-        y: Math.min(fromNode.y, toNode.y) - 72,
+        x: baseAnchor + meta.side * (offset + fan * FAN_STEP),
+        y: (fromNode.y + toNode.y) / 2,
+      };
+    } else if (toNode.y - fromNode.y > LAYER_SPACING_Y * 1.5) {
+      // Long forward edge (e.g. break/return → end). Bend to the side.
+      edge.control = {
+        x: (fromNode.x + toNode.x) / 2 + 80 + fan * FAN_STEP,
+        y: (fromNode.y + toNode.y) / 2,
+      };
+    } else if (sibCount > 1 || Math.abs(toNode.x - fromNode.x) > NODE_SPACING_X * 1.2) {
+      // Branch from a decision node OR a diagonal sibling-to-sibling
+      // edge. Curve via a midpoint that fans out so the two/three
+      // branches separate visibly.
+      const midX = (fromNode.x + toNode.x) / 2;
+      const midY = fromNode.y + (toNode.y - fromNode.y) * 0.35;
+      edge.control = {
+        x: midX + fan * FAN_STEP,
+        y: midY,
       };
     }
   });
+}
+
+function spreadLayer(layer, spacing) {
+  // Push siblings rightward to enforce minimum spacing.
+  for (let i = 1; i < layer.length; i++) {
+    const minX = layer[i - 1].x + spacing;
+    if (layer[i].x < minX) layer[i].x = minX;
+  }
+  // Pull siblings leftward as long as they keep spacing — keeps the
+  // layer tight after a barycenter relaxation step.
+  for (let i = layer.length - 2; i >= 0; i--) {
+    const maxX = layer[i + 1].x - spacing;
+    if (layer[i].x > maxX) layer[i].x = maxX;
+  }
 }
 
 export function generateControlFlowGraphFromProgram({ sourceCode, language, title }) {
