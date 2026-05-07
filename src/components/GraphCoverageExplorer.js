@@ -250,6 +250,16 @@ function resolveProgramGraph(program) {
   throw new Error(t('graph.err.noSource'));
 }
 
+function trimToCircle(from, to, radius) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.hypot(dx, dy) || 1;
+  return {
+    x: to.x - (dx / len) * radius,
+    y: to.y - (dy / len) * radius,
+  };
+}
+
 function computeGraphBounds(graph, edgeList = graph.edges, padding = 60) {
   const xs = [];
   const ys = [];
@@ -296,25 +306,32 @@ function createGraphCanvas(graph, requirement) {
           const fromNode = graph.nodes.find((node) => node.id === edge.from);
           const toNode = graph.nodes.find((node) => node.id === edge.to);
           const active = highlightedEdges.has(edge.id);
+          const NODE_R = 28;
+          const ARROW_GAP = 4; // small visual gap so arrow tip sits at circle edge
 
           if (edge.control) {
+            // Trim end along the tangent (control → end) of the quadratic curve.
+            const end = trimToCircle(edge.control, toNode, NODE_R + ARROW_GAP);
+            const start = trimToCircle(edge.control, fromNode, NODE_R);
             return `
               <path
                 class="graph-edge${active ? ' graph-edge--active' : ''}"
-                d="M ${fromNode.x} ${fromNode.y} Q ${edge.control.x} ${edge.control.y} ${toNode.x} ${toNode.y}"
+                d="M ${start.x} ${start.y} Q ${edge.control.x} ${edge.control.y} ${end.x} ${end.y}"
                 marker-end="url(#${active ? 'arrow-active' : 'arrow-default'})"
                 data-testid="graph-edge-${edge.id}"
               ></path>
             `;
           }
 
+          const end = trimToCircle(fromNode, toNode, NODE_R + ARROW_GAP);
+          const start = trimToCircle(toNode, fromNode, NODE_R);
           return `
             <line
               class="graph-edge${active ? ' graph-edge--active' : ''}"
-              x1="${fromNode.x}"
-              y1="${fromNode.y}"
-              x2="${toNode.x}"
-              y2="${toNode.y}"
+              x1="${start.x}"
+              y1="${start.y}"
+              x2="${end.x}"
+              y2="${end.y}"
               marker-end="url(#${active ? 'arrow-active' : 'arrow-default'})"
               data-testid="graph-edge-${edge.id}"
             ></line>
@@ -360,9 +377,13 @@ function createDataFlowCanvas(graph) {
     const cx = (a.x + b.x) / 2 + (-dy / len) * offset * sign;
     const cy = (a.y + b.y) / 2 + (dx / len) * offset * sign;
     const labels = group.map((e) => e.variable).join(', ');
+    const DFG_R = 24;
+    const ARROW_GAP = 4;
+    const start = trimToCircle({ x: cx, y: cy }, a, DFG_R);
+    const end = trimToCircle({ x: cx, y: cy }, b, DFG_R + ARROW_GAP);
     return `
       <g class="graph-dfg-edge" data-testid="dfg-edge-${escapeHtml(key)}">
-        <path d="M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}"
+        <path d="M ${start.x} ${start.y} Q ${cx} ${cy} ${end.x} ${end.y}"
               marker-end="url(#dfg-arrow)"></path>
         <text x="${cx}" y="${cy}" text-anchor="middle">${escapeHtml(labels)}</text>
       </g>
