@@ -4421,13 +4421,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const totalCount = annotated.length;
       const duplicateCount = annotated.filter((item) => item.isDuplicate).length;
       const uniqueCount = totalCount - duplicateCount;
-      const testList = annotated.map(({ test: t2, isDuplicate }) => `
-        <li class="logic-test-item${isDuplicate ? " duplicate" : ""}" data-testid="logic-test-${escapeHtml2(t2.id)}">
-          <span class="logic-test-row">#${t2.row.index}</span>
-          <span class="logic-test-values">${state.analysis.clauses.map((c) => `${c}=${t2.row.values[c] ? "T" : "F"}`).join(", ")}</span>
-          <span class="logic-test-pred ${t2.row.predicate ? "is-true" : "is-false"}">P=${t2.row.predicate ? "T" : "F"}</span>
-          <span class="logic-test-label">${escapeHtml2(t2.label)}</span>
-          ${isDuplicate ? `<span class="logic-test-dup-tag" aria-label="${t2("logic.duplicate")}">${t2("logic.duplicate")}</span>` : ""}
+      const testList = annotated.map(({ test, isDuplicate }) => `
+        <li class="logic-test-item${isDuplicate ? " duplicate" : ""}" data-testid="logic-test-${escapeHtml2(test.id)}">
+          <span class="logic-test-row">#${test.row.index}</span>
+          <span class="logic-test-values">${state.analysis.clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ")}</span>
+          <span class="logic-test-pred ${test.row.predicate ? "is-true" : "is-false"}">P=${test.row.predicate ? "T" : "F"}</span>
+          <span class="logic-test-label">${escapeHtml2(test.label)}</span>
+          ${isDuplicate ? `<span class="logic-test-dup-tag" aria-label="${t("logic.duplicate")}">${t("logic.duplicate")}</span>` : ""}
         </li>
       `).join("");
       const unsatisfied = ((_a2 = set.unsatisfied) == null ? void 0 : _a2.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">${t("logic.unsatisfied", { items: set.unsatisfied.join(", ") })}</p>` : "";
