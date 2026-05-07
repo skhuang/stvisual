@@ -196,6 +196,8 @@ describe('graphCoverage data', () => {
       'commission-problem',
       'next-date-leap-year',
       'calendar-days',
+      'quadrilateral-problem',
+      'next-week',
     ]);
     graphCoverageProgramExamples.forEach((item) => {
       expect(item.language).toBeTruthy();

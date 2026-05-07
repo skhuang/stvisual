@@ -290,6 +290,65 @@ export const graphCoverageProgramExamples = [
   }
 }`,
   },
+  {
+    id: 'quadrilateral-problem',
+    name: 'The Quadrilateral Program',
+    language: 'javascript',
+    description: 'Classify a quadrilateral from four side lengths and two diagonals into square, rectangle, rhombus, parallelogram, trapezoid, or general.',
+    sourceCode: `function classifyQuadrilateral(a, b, c, d, p, q) {
+  if (a <= 0 || b <= 0 || c <= 0 || d <= 0) {
+    return 'invalid';
+  }
+
+  if (a === b && b === c && c === d) {
+    if (p === q) {
+      return 'square';
+    }
+    return 'rhombus';
+  }
+
+  if (a === c && b === d) {
+    if (p === q) {
+      return 'rectangle';
+    }
+    return 'parallelogram';
+  }
+
+  if (a === c || b === d) {
+    return 'trapezoid';
+  }
+
+  return 'general';
+}`,
+  },
+  {
+    id: 'next-week',
+    name: 'Next Week',
+    language: 'javascript',
+    description: 'Advance a date by seven days, handling month-end and year rollover.',
+    sourceCode: `function nextWeek(year, month, day) {
+  if (!isValidDate(year, month, day)) {
+    return 'invalid';
+  }
+
+  let newDay = day + 7;
+  let newMonth = month;
+  let newYear = year;
+  const limit = daysInMonth(newYear, newMonth);
+
+  if (newDay > limit) {
+    newDay = newDay - limit;
+    if (newMonth === 12) {
+      newMonth = 1;
+      newYear = newYear + 1;
+    } else {
+      newMonth = newMonth + 1;
+    }
+  }
+
+  return { year: newYear, month: newMonth, day: newDay };
+}`,
+  },
 ];
 
 export const logicCoverageCriteria = [
