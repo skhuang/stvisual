@@ -319,6 +319,60 @@
   height: auto;
 }
 
+/* Data-flow graph view */
+.graph-dfg-card {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+.graph-dfg-header { margin-bottom: 8px; }
+.graph-dfg-header h4 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  color: #0f172a;
+}
+.graph-dfg-header p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #475569;
+}
+.graph-dfg-canvas {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(14, 165, 233, 0.1), transparent 30%),
+    linear-gradient(180deg, #f0f9ff 0%, #fdfdfd 100%);
+}
+.graph-dfg-edge path {
+  stroke: #0ea5e9;
+  stroke-width: 2.4;
+  stroke-dasharray: 6 4;
+  fill: none;
+}
+.graph-dfg-edge text {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 12px;
+  fill: #0369a1;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 3;
+}
+.graph-dfg-node circle {
+  fill: #ffffff;
+  stroke: #0ea5e9;
+  stroke-width: 2;
+}
+.graph-dfg-node text {
+  font-size: 12px;
+  fill: #0f172a;
+}
+.graph-dfg-empty {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-style: italic;
+}
+
 .graph-edge {
   stroke: #9aa8b6;
   stroke-width: 4;

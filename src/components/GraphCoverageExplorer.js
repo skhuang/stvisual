@@ -6,6 +6,7 @@ import {
 } from '../data/testingData.js';
 import { buildTestPathSetForRequirements, getCoverageRequirements } from '../utils/graphCoverage.js';
 import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
+import { buildDataFlowGraph } from '../utils/dataFlow.js';
 import { t, getLocale, pickField } from '../i18n/index.js';
 
 function cloneGraph(graph) {
@@ -306,6 +307,75 @@ function createGraphCanvas(graph, requirement) {
   `;
 }
 
+function createDataFlowCanvas(graph) {
+  const dfg = buildDataFlowGraph(graph);
+  const nodeById = new Map(graph.nodes.map((n) => [n.id, n]));
+  const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
+  const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
+
+  // Group edges between the same pair so labels stack instead of overlap.
+  const grouped = new Map();
+  for (const e of dfg.edges) {
+    const key = `${e.from}->${e.to}`;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(e);
+  }
+
+  const edgeMarkup = [...grouped.entries()].map(([key, group]) => {
+    const sample = group[0];
+    const a = nodeById.get(sample.from);
+    const b = nodeById.get(sample.to);
+    if (!a || !b) return '';
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const len = Math.hypot(dx, dy) || 1;
+    // Curve up-and-over for forward, down for back-edges so the DFG view
+    // doesn't overlap the CFG straight lines.
+    const sign = a.y <= b.y ? -1 : 1;
+    const offset = 28 + group.length * 6;
+    const cx = (a.x + b.x) / 2 + (-dy / len) * offset * sign;
+    const cy = (a.y + b.y) / 2 + (dx / len) * offset * sign;
+    const labels = group.map((e) => e.variable).join(', ');
+    return `
+      <g class="graph-dfg-edge" data-testid="dfg-edge-${escapeHtml(key)}">
+        <path d="M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}"
+              marker-end="url(#dfg-arrow)"></path>
+        <text x="${cx}" y="${cy}" text-anchor="middle">${escapeHtml(labels)}</text>
+      </g>
+    `;
+  }).join('');
+
+  const empty = dfg.edges.length === 0
+    ? `<p class="graph-dfg-empty" data-testid="graph-dfg-empty">${t('graph.dfg.empty')}</p>`
+    : '';
+
+  return `
+    <div class="graph-dfg-card" data-testid="graph-dfg-card">
+      <div class="graph-dfg-header">
+        <h4>${t('graph.dfg.title')}</h4>
+        <p>${t('graph.dfg.help')}</p>
+      </div>
+      <div class="graph-canvas graph-dfg-canvas" data-testid="graph-dfg-canvas">
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t('graph.dfg.aria')}">
+          <defs>
+            <marker id="dfg-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+              <path d="M0,0 L12,6 L0,12 z" fill="#0ea5e9"></path>
+            </marker>
+          </defs>
+          ${edgeMarkup}
+          ${graph.nodes.map((node) => `
+            <g class="graph-node graph-dfg-node" data-testid="dfg-node-${node.id}">
+              <circle cx="${node.x}" cy="${node.y}" r="24"></circle>
+              <text x="${node.x}" y="${node.y + 5}" text-anchor="middle">${node.label}</text>
+            </g>
+          `).join('')}
+        </svg>
+      </div>
+      ${empty}
+    </div>
+  `;
+}
+
 export function createGraphCoverageExplorer() {
   const root = document.createElement('div');
   const defaultGraph = cloneGraph(graphCoverageGraph);
@@ -504,6 +574,7 @@ export function createGraphCoverageExplorer() {
       <div class="graph-coverage-layout">
         <div class="graph-main-panel">
           ${createGraphCanvas(graph, selectedRequirement)}
+          ${activeProgram.sourceCode ? createDataFlowCanvas(graph) : ''}
           <div class="graph-selected-summary" data-testid="selected-requirement-summary">
             <span class="summary-label">${t('graph.summary.current')}</span>
             <strong>${selectedRequirement?.label || t('common.none')}</strong>

@@ -545,6 +545,10 @@
       "common.none": "(none)",
       // Graph coverage
       "graph.aria.canvas": "Graph coverage CFG",
+      "graph.dfg.title": "Data Flow Graph (def \u2192 use)",
+      "graph.dfg.help": "Definition-clear edges derived from each statement\u2019s assignments. Edges are labelled with the variable carried.",
+      "graph.dfg.empty": "No definition\u2192use pair detected from the current source.",
+      "graph.dfg.aria": "Data flow graph",
       "graph.aria.switcher": "Switch coverage criteria",
       "graph.customTitle": "Custom Control Flow Graph",
       "graph.source.empty": "This source only provides a graph; no source code snippet attached.",
@@ -862,6 +866,10 @@
       "graph.parseError": "\u89E3\u6790\u932F\u8AA4\uFF1A{msg}",
       "common.none": "\u7121",
       "graph.aria.canvas": "Graph coverage \u63A7\u5236\u6D41\u7A0B\u5716",
+      "graph.dfg.title": "\u8CC7\u6599\u6D41\u7A0B\u5716\uFF08def \u2192 use\uFF09",
+      "graph.dfg.help": "\u4F9D\u6BCF\u500B\u53E5\u7684\u8CE6\u503C\u63A8\u5C0E\u5B9A\u7FA9\u8207\u4F7F\u7528\uFF0C\u6CBF CFG \u8D70\u5230\u672A\u88AB\u4E2D\u9593 def \u8986\u5BEB\u7684 use\u3002\u908A\u4E0A\u6A19\u793A\u8B8A\u6578\u540D\u3002",
+      "graph.dfg.empty": "\u5F9E\u76EE\u524D\u539F\u59CB\u7A0B\u5F0F\u672A\u5075\u6E2C\u5230 def\u2192use \u95DC\u4FC2\u3002",
+      "graph.dfg.aria": "\u8CC7\u6599\u6D41\u7A0B\u5716",
       "graph.aria.switcher": "coverage criteria \u5207\u63DB",
       "graph.customTitle": "\u81EA\u8A02\u63A7\u5236\u6D41\u7A0B\u5716",
       "graph.source.empty": "\u9019\u500B\u4F86\u6E90\u76EE\u524D\u53EA\u63D0\u4F9B graph\uFF0C\u6C92\u6709\u9644\u5E36\u7A0B\u5F0F\u78BC\u7247\u6BB5\u3002",
@@ -2141,6 +2149,161 @@
     };
   }
 
+  // src/utils/dataFlow.js
+  var KEYWORDS = /* @__PURE__ */ new Set([
+    "if",
+    "else",
+    "while",
+    "for",
+    "do",
+    "switch",
+    "case",
+    "default",
+    "break",
+    "continue",
+    "return",
+    "function",
+    "let",
+    "const",
+    "var",
+    "true",
+    "false",
+    "null",
+    "undefined",
+    "new",
+    "in",
+    "of",
+    "typeof",
+    "instanceof",
+    "void",
+    "this",
+    "try",
+    "catch",
+    "throw",
+    "finally",
+    "class",
+    "extends",
+    "import",
+    "from",
+    "export",
+    "yield",
+    "async",
+    "await",
+    "and",
+    "or",
+    "not",
+    "then",
+    "end",
+    "do"
+  ]);
+  var IDENT_RE = /[A-Za-z_][A-Za-z0-9_]*/g;
+  function tokensIn(text) {
+    const found = [];
+    for (const m of text.matchAll(IDENT_RE)) {
+      if (!KEYWORDS.has(m[0])) found.push(m[0]);
+    }
+    return found;
+  }
+  function stripStringsAndComments(text) {
+    return String(text).replace(/\/\*[\s\S]*?\*\//g, " ").replace(/\/\/.*$/g, " ").replace(/"(?:[^"\\]|\\.)*"/g, ' ""').replace(/'(?:[^'\\]|\\.)*'/g, " ''").replace(/`(?:[^`\\]|\\.)*`/g, " ``");
+  }
+  function extractDefUse(node) {
+    const defs = /* @__PURE__ */ new Set();
+    const uses = /* @__PURE__ */ new Set();
+    if (!node) return { defs, uses };
+    const raw = node.sourceText || node.label || "";
+    const text = stripStringsAndComments(raw);
+    const fn = text.match(/function\s+[A-Za-z_][\w]*\s*\(([^)]*)\)/) || text.match(/\(([^)]*)\)\s*=>/);
+    if (fn) {
+      for (const p of fn[1].split(",").map((s) => s.trim()).filter(Boolean)) {
+        const name = p.replace(/=.*$/, "").trim();
+        if (name && !KEYWORDS.has(name)) defs.add(name);
+      }
+      for (const u of tokensIn(text.replace(/function\s+[A-Za-z_][\w]*/, ""))) uses.add(u);
+      for (const d of defs) uses.delete(d);
+      return { defs, uses };
+    }
+    const forMatch = text.match(/for\s*\(([^;]*);([^;]*);([^)]*)\)/);
+    if (forMatch) {
+      const [, init, cond, upd] = forMatch;
+      collectAssignment(init, defs, uses);
+      for (const u of tokensIn(cond)) uses.add(u);
+      collectAssignment(upd, defs, uses);
+      return { defs, uses };
+    }
+    const matched = collectAssignment(text, defs, uses);
+    if (!matched) {
+      for (const u of tokensIn(text)) uses.add(u);
+    }
+    return { defs, uses };
+  }
+  function collectAssignment(text, defs, uses) {
+    if (!text) return false;
+    const incDec = text.match(/^[\s(]*([A-Za-z_][\w]*)\s*(\+\+|--)/);
+    if (incDec) {
+      defs.add(incDec[1]);
+      uses.add(incDec[1]);
+      return true;
+    }
+    const compound = text.match(
+      /^[\s(]*([A-Za-z_][\w]*)\s*(?:\+|-|\*|\/|%|&|\||\^|<<|>>|>>>)=(.*)$/
+    );
+    if (compound) {
+      const [, name, rhs] = compound;
+      if (!KEYWORDS.has(name)) {
+        defs.add(name);
+        uses.add(name);
+      }
+      for (const u of tokensIn(rhs)) uses.add(u);
+      return true;
+    }
+    const assign = text.match(
+      /^[\s(]*(?:let\s+|const\s+|var\s+)?([A-Za-z_][\w]*)\s*=(?!=)(.*)$/
+    );
+    if (assign) {
+      const [, name, rhs] = assign;
+      if (!KEYWORDS.has(name)) defs.add(name);
+      for (const u of tokensIn(rhs)) uses.add(u);
+      if (!KEYWORDS.has(name)) uses.delete(name);
+      return true;
+    }
+    return false;
+  }
+  function buildDataFlowGraph(cfg) {
+    var _a2;
+    const out = { nodes: (cfg == null ? void 0 : cfg.nodes) || [], edges: [], defUseByNode: /* @__PURE__ */ new Map() };
+    if (!((_a2 = cfg == null ? void 0 : cfg.nodes) == null ? void 0 : _a2.length)) return out;
+    const preds = new Map(cfg.nodes.map((n) => [n.id, []]));
+    for (const e of cfg.edges || []) {
+      if (preds.has(e.to)) preds.get(e.to).push(e.from);
+    }
+    for (const n of cfg.nodes) out.defUseByNode.set(n.id, extractDefUse(n));
+    const seenEdges = /* @__PURE__ */ new Set();
+    for (const useNode of cfg.nodes) {
+      const { uses } = out.defUseByNode.get(useNode.id);
+      for (const v of uses) {
+        const visited = /* @__PURE__ */ new Set([useNode.id]);
+        const stack = [...preds.get(useNode.id)];
+        while (stack.length) {
+          const cur = stack.pop();
+          if (visited.has(cur)) continue;
+          visited.add(cur);
+          const du = out.defUseByNode.get(cur);
+          if (du && du.defs.has(v)) {
+            const id = `du-${cur}-${useNode.id}-${v}`;
+            if (!seenEdges.has(id)) {
+              seenEdges.add(id);
+              out.edges.push({ id, from: cur, to: useNode.id, variable: v });
+            }
+            continue;
+          }
+          for (const p of preds.get(cur) || []) stack.push(p);
+        }
+      }
+    }
+    return out;
+  }
+
   // src/components/GraphCoverageExplorer.js
   function cloneGraph(graph) {
     return {
@@ -2382,6 +2545,65 @@
     </div>
   `;
   }
+  function createDataFlowCanvas(graph) {
+    const dfg = buildDataFlowGraph(graph);
+    const nodeById = new Map(graph.nodes.map((n) => [n.id, n]));
+    const width = Math.max(920, ...graph.nodes.map((node) => node.x + 120));
+    const height = Math.max(340, ...graph.nodes.map((node) => node.y + 90));
+    const grouped = /* @__PURE__ */ new Map();
+    for (const e of dfg.edges) {
+      const key = `${e.from}->${e.to}`;
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key).push(e);
+    }
+    const edgeMarkup = [...grouped.entries()].map(([key, group]) => {
+      const sample = group[0];
+      const a = nodeById.get(sample.from);
+      const b = nodeById.get(sample.to);
+      if (!a || !b) return "";
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const sign = a.y <= b.y ? -1 : 1;
+      const offset = 28 + group.length * 6;
+      const cx = (a.x + b.x) / 2 + -dy / len * offset * sign;
+      const cy = (a.y + b.y) / 2 + dx / len * offset * sign;
+      const labels = group.map((e) => e.variable).join(", ");
+      return `
+      <g class="graph-dfg-edge" data-testid="dfg-edge-${escapeHtml(key)}">
+        <path d="M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}"
+              marker-end="url(#dfg-arrow)"></path>
+        <text x="${cx}" y="${cy}" text-anchor="middle">${escapeHtml(labels)}</text>
+      </g>
+    `;
+    }).join("");
+    const empty = dfg.edges.length === 0 ? `<p class="graph-dfg-empty" data-testid="graph-dfg-empty">${t("graph.dfg.empty")}</p>` : "";
+    return `
+    <div class="graph-dfg-card" data-testid="graph-dfg-card">
+      <div class="graph-dfg-header">
+        <h4>${t("graph.dfg.title")}</h4>
+        <p>${t("graph.dfg.help")}</p>
+      </div>
+      <div class="graph-canvas graph-dfg-canvas" data-testid="graph-dfg-canvas">
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t("graph.dfg.aria")}">
+          <defs>
+            <marker id="dfg-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+              <path d="M0,0 L12,6 L0,12 z" fill="#0ea5e9"></path>
+            </marker>
+          </defs>
+          ${edgeMarkup}
+          ${graph.nodes.map((node) => `
+            <g class="graph-node graph-dfg-node" data-testid="dfg-node-${node.id}">
+              <circle cx="${node.x}" cy="${node.y}" r="24"></circle>
+              <text x="${node.x}" y="${node.y + 5}" text-anchor="middle">${node.label}</text>
+            </g>
+          `).join("")}
+        </svg>
+      </div>
+      ${empty}
+    </div>
+  `;
+  }
   function createGraphCoverageExplorer() {
     const root2 = document.createElement("div");
     const defaultGraph = cloneGraph(graphCoverageGraph);
@@ -2571,6 +2793,7 @@
       <div class="graph-coverage-layout">
         <div class="graph-main-panel">
           ${createGraphCanvas(graph, selectedRequirement)}
+          ${activeProgram.sourceCode ? createDataFlowCanvas(graph) : ""}
           <div class="graph-selected-summary" data-testid="selected-requirement-summary">
             <span class="summary-label">${t("graph.summary.current")}</span>
             <strong>${(selectedRequirement == null ? void 0 : selectedRequirement.label) || t("common.none")}</strong>

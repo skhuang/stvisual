@@ -144,6 +144,10 @@ export const messages = {
 
     // Graph coverage
     'graph.aria.canvas': 'Graph coverage CFG',
+    'graph.dfg.title': 'Data Flow Graph (def → use)',
+    'graph.dfg.help': 'Definition-clear edges derived from each statement’s assignments. Edges are labelled with the variable carried.',
+    'graph.dfg.empty': 'No definition→use pair detected from the current source.',
+    'graph.dfg.aria': 'Data flow graph',
     'graph.aria.switcher': 'Switch coverage criteria',
     'graph.customTitle': 'Custom Control Flow Graph',
     'graph.source.empty': 'This source only provides a graph; no source code snippet attached.',
@@ -476,6 +480,10 @@ export const messages = {
     'common.none': '無',
 
     'graph.aria.canvas': 'Graph coverage 控制流程圖',
+    'graph.dfg.title': '資料流程圖（def → use）',
+    'graph.dfg.help': '依每個句的賦值推導定義與使用，沿 CFG 走到未被中間 def 覆寫的 use。邊上標示變數名。',
+    'graph.dfg.empty': '從目前原始程式未偵測到 def→use 關係。',
+    'graph.dfg.aria': '資料流程圖',
     'graph.aria.switcher': 'coverage criteria 切換',
     'graph.customTitle': '自訂控制流程圖',
     'graph.source.empty': '這個來源目前只提供 graph，沒有附帶程式碼片段。',
