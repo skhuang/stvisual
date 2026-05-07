@@ -314,6 +314,9 @@ export const messages = {
     'spec.fsm.pickMutant': 'Pick a mutant to compare',
     'spec.fsm.legend': 'Two-state monitor: SAFE = predicate holds, VIOLATION = predicate fails. Orange transitions are routed differently by the mutant (killer assignments).',
     'spec.smv.viewSource': 'NuSMV source',
+    'spec.cat.basic': 'Basic predicates',
+    'spec.cat.smv': 'SMV / model checking',
+    'spec.cat.aria': 'Specification example category',
 
     'syntax.cloud.failed': 'Sync failed',
     'syntax.cloud.linked': 'Linked: {name}',
@@ -635,6 +638,9 @@ export const messages = {
     'spec.fsm.pickMutant': '選擇 mutant 進行比對',
     'spec.fsm.legend': '兩狀態監控：SAFE = predicate 為真，VIOLATION = predicate 為假。橘色邊代表 mutant 將該賜值導向不同狀態（即 killer assignments）。',
     'spec.smv.viewSource': 'NuSMV 原始程式',
+    'spec.cat.basic': '基本 predicate',
+    'spec.cat.smv': 'SMV / 模型檢查',
+    'spec.cat.aria': '規格範例分類',
 
     'syntax.cloud.failed': '同步失敗',
     'syntax.cloud.linked': '已連結 {name}',

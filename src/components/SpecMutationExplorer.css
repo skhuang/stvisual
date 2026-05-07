@@ -11,6 +11,38 @@
   padding: 22px;
 }
 
+.spec-category-row {
+  display: flex;
+  gap: 4px;
+  margin: 14px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.spec-category-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -7px;
+}
+
+.spec-category-btn:hover {
+  color: #6366f1;
+  background: #f8fafc;
+}
+
+.spec-category-btn.active {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+  background: #f8fafc;
+}
+
 .spec-example-btn {
   border: 1px solid rgba(148, 163, 184, 0.4);
   background: #f8fafc;

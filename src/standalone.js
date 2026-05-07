@@ -711,6 +711,9 @@
       "spec.fsm.pickMutant": "Pick a mutant to compare",
       "spec.fsm.legend": "Two-state monitor: SAFE = predicate holds, VIOLATION = predicate fails. Orange transitions are routed differently by the mutant (killer assignments).",
       "spec.smv.viewSource": "NuSMV source",
+      "spec.cat.basic": "Basic predicates",
+      "spec.cat.smv": "SMV / model checking",
+      "spec.cat.aria": "Specification example category",
       "syntax.cloud.failed": "Sync failed",
       "syntax.cloud.linked": "Linked: {name}",
       "syntax.cloud.reloading": "Reloading from cloud\u2026",
@@ -1017,6 +1020,9 @@
       "spec.fsm.pickMutant": "\u9078\u64C7 mutant \u9032\u884C\u6BD4\u5C0D",
       "spec.fsm.legend": "\u5169\u72C0\u614B\u76E3\u63A7\uFF1ASAFE = predicate \u70BA\u771F\uFF0CVIOLATION = predicate \u70BA\u5047\u3002\u6A58\u8272\u908A\u4EE3\u8868 mutant \u5C07\u8A72\u8CDC\u503C\u5C0E\u5411\u4E0D\u540C\u72C0\u614B\uFF08\u5373 killer assignments\uFF09\u3002",
       "spec.smv.viewSource": "NuSMV \u539F\u59CB\u7A0B\u5F0F",
+      "spec.cat.basic": "\u57FA\u672C predicate",
+      "spec.cat.smv": "SMV / \u6A21\u578B\u6AA2\u67E5",
+      "spec.cat.aria": "\u898F\u683C\u7BC4\u4F8B\u5206\u985E",
       "syntax.cloud.failed": "\u540C\u6B65\u5931\u6557",
       "syntax.cloud.linked": "\u5DF2\u9023\u7D50 {name}",
       "syntax.cloud.reloading": "\u91CD\u65B0\u5F9E\u96F2\u7AEF\u8B80\u53D6\u2026",
@@ -7628,6 +7634,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   var STORAGE_KEY4 = "stvisual.specMutation.v1";
   var DEFAULT_PREDICATE = "(a || b) && c";
   var DEFAULT_OPS2 = ["ENF", "BCR", "LRO", "UOI"];
+  var SPEC_CATEGORIES = [
+    { id: "basic", labelKey: "spec.cat.basic" },
+    { id: "smv", labelKey: "spec.cat.smv" }
+  ];
+  var DEFAULT_CATEGORY = "basic";
   function escapeHtml5(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
@@ -7635,25 +7646,29 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     {
       id: "guard",
       name: "Guard",
+      category: "basic",
       text: "(a || b) && c",
       description: "Generic Boolean guard for an action."
     },
     {
       id: "leap",
       name: "Leap year",
+      category: "basic",
       text: "(y && !c) || (y && c && q)",
       description: "Leap-year predicate: divisible by 4 (y) and (not by 100 (c) or by 400 (q))."
     },
     {
       id: "triangle",
       name: "Triangle ineq.",
+      category: "basic",
       text: "a && b && c",
       description: "All three triangle-inequality clauses must hold."
     },
     // --- SMV / model-checking style invariants (Ammann/Offutt §9.5) ---
     {
       id: "smv-mutex",
-      name: "SMV: Mutual exclusion",
+      name: "Mutual exclusion",
+      category: "smv",
       text: "!(c1 && c2)",
       description: "Two-process mutual exclusion invariant: never both critical.",
       smv: `MODULE proc(other_critical, turn, id)
@@ -7684,7 +7699,8 @@ INVARSPEC !(c1 & c2)`
     },
     {
       id: "smv-cruise",
-      name: "SMV: Cruise control",
+      name: "Cruise control",
+      category: "smv",
       text: "!cruise || (ignition && running && !brake)",
       description: "Cruise control safety: cruise active implies ignition on, engine running, brake released.",
       smv: `MODULE main
@@ -7719,7 +7735,8 @@ INVARSPEC !cruise | (ignition & running & !brake)`
     },
     {
       id: "smv-sis",
-      name: "SMV: Safety injection",
+      name: "Safety injection",
+      category: "smv",
       text: "(si && pressure && !override) || (!si && (!pressure || override))",
       description: "Safety Injection System (Parnas/Heimdahl): SI on iff pressure low and not overridden.",
       smv: `MODULE main
@@ -7742,7 +7759,8 @@ INVARSPEC (si & pressure & !override) | (!si & (!pressure | override))`
     },
     {
       id: "smv-train",
-      name: "SMV: Train-gate",
+      name: "Train-gate",
+      category: "smv",
       text: "!train || (gate && signal)",
       description: "Train-Gate-Controller invariant: when a train is at the crossing, gate is down and signal is red.",
       smv: `MODULE main
@@ -7767,7 +7785,8 @@ INVARSPEC !train | (gate & signal)`
     },
     {
       id: "smv-elevator",
-      name: "SMV: Elevator door",
+      name: "Elevator door",
+      category: "smv",
       text: "!moving || !door",
       description: "Elevator safety invariant: cabin must not move while a door is open.",
       smv: `MODULE main
@@ -7812,6 +7831,7 @@ INVARSPEC !moving | !door`
       (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY4, JSON.stringify({
         text: state.text,
         operators: [...state.operators],
+        activeCategory: state.activeCategory,
         tests: state.tests
       }));
     } catch {
@@ -7828,6 +7848,7 @@ INVARSPEC !moving | !door`
     const state = {
       text: (saved == null ? void 0 : saved.text) || DEFAULT_PREDICATE,
       operators: new Set((saved == null ? void 0 : saved.operators) || DEFAULT_OPS2),
+      activeCategory: (saved == null ? void 0 : saved.activeCategory) || DEFAULT_CATEGORY,
       parseError: null,
       parsed: null,
       mutants: [],
@@ -7871,7 +7892,16 @@ INVARSPEC !moving | !door`
       var _a2, _b, _c;
       recompute();
       const currentExample = SPEC_EXAMPLES.find((ex) => state.text.trim() === ex.text) || null;
-      const exampleButtons = SPEC_EXAMPLES.map((ex) => `
+      if (currentExample && currentExample.category !== state.activeCategory) {
+        state.activeCategory = currentExample.category;
+      }
+      const categoryButtons = SPEC_CATEGORIES.map((cat) => `
+      <button type="button"
+        class="spec-category-btn${state.activeCategory === cat.id ? " active" : ""}"
+        data-spec-category="${cat.id}">${escapeHtml5(t(cat.labelKey))}</button>
+    `).join("");
+      const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state.activeCategory);
+      const exampleButtons = visibleExamples.map((ex) => `
       <button type="button" class="spec-example-btn${state.text.trim() === ex.text ? " active" : ""}"
         data-spec-example="${ex.id}" title="${escapeHtml5(ex.description || "")}">${escapeHtml5(ex.name)}</button>
     `).join("");
@@ -7933,7 +7963,8 @@ INVARSPEC !moving | !door`
           <p class="grammar-subtitle">${escapeHtml5(t("spec.subtitle"))}</p>
         </header>
 
-        <div class="grammar-example-row">${exampleButtons}</div>
+        <nav class="spec-category-row" data-testid="spec-category-row" role="tablist" aria-label="${escapeHtml5(t("spec.cat.aria"))}">${categoryButtons}</nav>
+        <div class="grammar-example-row" data-testid="spec-example-row">${exampleButtons}</div>
         ${(currentExample == null ? void 0 : currentExample.description) ? `<p class="spec-example-caption" data-testid="spec-example-caption">${escapeHtml5(currentExample.description)}</p>` : ""}
         ${(currentExample == null ? void 0 : currentExample.smv) ? `<details class="spec-smv-source" data-testid="spec-smv-source" open>
           <summary>${escapeHtml5(t("spec.smv.viewSource"))}</summary>
@@ -7967,6 +7998,12 @@ INVARSPEC !moving | !door`
         </div>
       </div>
     `;
+      root2.querySelectorAll("[data-spec-category]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.activeCategory = btn.dataset.specCategory;
+          render();
+        });
+      });
       root2.querySelectorAll("[data-spec-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
