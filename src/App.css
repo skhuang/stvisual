@@ -129,6 +129,42 @@ body {
   border-radius: 2px;
 }
 
+/* Syntax-Based Testing tab strip */
+.syntax-tab-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+.syntax-tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  border-radius: 6px 6px 0 0;
+}
+.syntax-tab-btn:hover {
+  color: #3498db;
+  background: #f1f5f9;
+}
+.syntax-tab-btn.active {
+  color: #2c3e50;
+  border-bottom-color: #3498db;
+  background: #f8fafc;
+}
+.syntax-tab-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
 /* Footer */
 .app-footer {
   text-align: center;

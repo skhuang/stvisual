@@ -14,8 +14,25 @@ import {
 } from '../utils/grammar.js';
 
 const STORAGE_KEY = 'stvisual.grammarPrograms.v1';
+const TAB_STORAGE_KEY = 'stvisual.grammarActiveTab.v1';
 const DEFAULT_OPS = ['TR', 'SD'];
 const DEFAULT_STRING_OPS = ['REP', 'DEL'];
+const GRAMMAR_TABS = [
+  { id: 'derivations', labelKey: 'grammar.tab.derivations' },
+  { id: 'mutation',    labelKey: 'grammar.tab.mutation' },
+  { id: 'string',      labelKey: 'grammar.tab.string' },
+];
+const DEFAULT_TAB = 'derivations';
+
+function loadActiveTab() {
+  try {
+    const v = globalThis.localStorage?.getItem(TAB_STORAGE_KEY);
+    return GRAMMAR_TABS.find((t) => t.id === v) ? v : DEFAULT_TAB;
+  } catch { return DEFAULT_TAB; }
+}
+function saveActiveTab(id) {
+  try { globalThis.localStorage?.setItem(TAB_STORAGE_KEY, id); } catch {}
+}
 
 function escapeHtml(value = '') {
   return String(value)
@@ -90,6 +107,7 @@ export function createGrammarCoverageExplorer() {
     maxPerStringOp: 12,
     stringMutants: [],
     selectedStringMutantId: null,
+    activeTab: loadActiveTab(),
   };
 
   function persistCurrent() {
@@ -324,12 +342,23 @@ export function createGrammarCoverageExplorer() {
           </div>
         </div>
 
-        <div class="grammar-derivation-block">
+        <nav class="grammar-subtab-row" data-testid="grammar-subtab-row" role="tablist">
+          ${GRAMMAR_TABS.map((tab) => `
+            <button type="button"
+              class="grammar-subtab-btn${state.activeTab === tab.id ? ' active' : ''}"
+              data-grammar-subtab="${tab.id}"
+              role="tab"
+              aria-selected="${state.activeTab === tab.id ? 'true' : 'false'}"
+            >${escapeHtml(t(tab.labelKey))}</button>
+          `).join('')}
+        </nav>
+
+        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state.activeTab === 'derivations' ? '' : 'none'}">
           <h4>${escapeHtml(t('grammar.derivations'))}</h4>
           ${derivationsHtml}
         </div>
 
-        <div class="grammar-mutation-block">
+        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state.activeTab === 'mutation' ? '' : 'none'}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml(t('grammar.mutations'))}</h4>
             ${score ? `<span class="grammar-score" data-testid="grammar-mutation-score">${t('grammar.scoreLabel')}: ${score.killed} / ${score.total} (${Math.round(score.killed / score.total * 100)}%)</span>` : ''}
@@ -341,7 +370,7 @@ export function createGrammarCoverageExplorer() {
           </div>
         </div>
 
-        <div class="grammar-string-block" data-testid="grammar-string-block">
+        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state.activeTab === 'string' ? '' : 'none'}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml(t('grammar.string.title'))}</h4>
             ${stringStats || ''}
@@ -368,6 +397,13 @@ export function createGrammarCoverageExplorer() {
     root.querySelectorAll('[data-grammar-example]').forEach((btn) => {
       btn.addEventListener('click', () => {
         loadExample(btn.dataset.grammarExample);
+        render();
+      });
+    });
+    root.querySelectorAll('[data-grammar-subtab]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.activeTab = btn.dataset.grammarSubtab;
+        saveActiveTab(state.activeTab);
         render();
       });
     });

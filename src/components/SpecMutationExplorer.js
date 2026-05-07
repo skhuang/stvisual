@@ -7,10 +7,17 @@ import {
   astToString,
   SPEC_MUTATION_OPERATORS,
 } from '../utils/specMutation.js';
+import { renderMonitorSvg, flippedKeysFromKillers } from '../utils/specFsm.js';
 
 const STORAGE_KEY = 'stvisual.specMutation.v1';
 const DEFAULT_PREDICATE = '(a || b) && c';
 const DEFAULT_OPS = ['ENF', 'BCR', 'LRO', 'UOI'];
+
+const SPEC_CATEGORIES = [
+  { id: 'basic', labelKey: 'spec.cat.basic' },
+  { id: 'smv',   labelKey: 'spec.cat.smv' },
+];
+const DEFAULT_CATEGORY = 'basic';
 
 function escapeHtml(value = '') {
   return String(value)
@@ -22,9 +29,176 @@ function escapeHtml(value = '') {
 }
 
 const SPEC_EXAMPLES = [
-  { id: 'guard', name: 'Guard', nameEn: 'Guard', text: '(a || b) && c' },
-  { id: 'leap', name: 'Leap year', nameEn: 'Leap year', text: '(y && !c) || (y && c && q)' },
-  { id: 'triangle', name: 'Triangle ineq.', nameEn: 'Triangle ineq.', text: 'a && b && c' },
+  {
+    id: 'guard',
+    name: 'Guard',
+    category: 'basic',
+    text: '(a || b) && c',
+    description: 'Generic Boolean guard for an action.',
+  },
+  {
+    id: 'leap',
+    name: 'Leap year',
+    category: 'basic',
+    text: '(y && !c) || (y && c && q)',
+    description: 'Leap-year predicate: divisible by 4 (y) and (not by 100 (c) or by 400 (q)).',
+  },
+  {
+    id: 'triangle',
+    name: 'Triangle ineq.',
+    category: 'basic',
+    text: 'a && b && c',
+    description: 'All three triangle-inequality clauses must hold.',
+  },
+  // --- SMV / model-checking style invariants (Ammann/Offutt §9.5) ---
+  {
+    id: 'smv-mutex',
+    name: 'Mutual exclusion',
+    category: 'smv',
+    text: '!(c1 && c2)',
+    description: 'Two-process mutual exclusion invariant: never both critical.',
+    smv: `MODULE proc(other_critical, turn, id)
+VAR
+  state : { idle, trying, critical };
+ASSIGN
+  init(state) := idle;
+  next(state) :=
+    case
+      state = idle                                : { idle, trying };
+      state = trying & !other_critical & turn=id : critical;
+      state = trying                              : trying;
+      state = critical                            : { critical, idle };
+      TRUE                                        : state;
+    esac;
+
+MODULE main
+VAR
+  turn : { 1, 2 };
+  p1   : proc(p2.state = critical, turn, 1);
+  p2   : proc(p1.state = critical, turn, 2);
+DEFINE
+  c1 := p1.state = critical;
+  c2 := p2.state = critical;
+
+-- Safety: never both processes in the critical section
+INVARSPEC !(c1 & c2)`,
+  },
+  {
+    id: 'smv-cruise',
+    name: 'Cruise control',
+    category: 'smv',
+    text: '!cruise || (ignition && running && !brake)',
+    description: 'Cruise control safety: cruise active implies ignition on, engine running, brake released.',
+    smv: `MODULE main
+VAR
+  ignition : boolean;
+  running  : boolean;
+  brake    : boolean;
+  cruise   : boolean;
+ASSIGN
+  init(ignition) := FALSE;
+  init(running)  := FALSE;
+  init(brake)    := FALSE;
+  init(cruise)   := FALSE;
+
+  -- Driver may toggle ignition / brake non-deterministically.
+  next(ignition) := { TRUE, FALSE };
+  next(brake)    := { TRUE, FALSE };
+  -- Engine runs only while ignition is on.
+  next(running)  := ignition;
+  -- Cruise can only be engaged when ignition is on, engine is running and
+  -- the brake is released; pressing brake disengages cruise.
+  next(cruise) :=
+    case
+      brake          : FALSE;
+      !ignition      : FALSE;
+      !running       : FALSE;
+      TRUE           : { TRUE, FALSE };
+    esac;
+
+-- Safety: cruise active implies ignition on, engine running, brake released
+INVARSPEC !cruise | (ignition & running & !brake)`,
+  },
+  {
+    id: 'smv-sis',
+    name: 'Safety injection',
+    category: 'smv',
+    text: '(si && pressure && !override) || (!si && (!pressure || override))',
+    description: 'Safety Injection System (Parnas/Heimdahl): SI on iff pressure low and not overridden.',
+    smv: `MODULE main
+VAR
+  pressure : boolean;   -- TRUE when reactor pressure is BELOW threshold
+  override : boolean;   -- operator override switch
+  si       : boolean;   -- safety injection actuator
+ASSIGN
+  init(pressure) := FALSE;
+  init(override) := FALSE;
+  init(si)       := FALSE;
+
+  next(pressure) := { TRUE, FALSE };
+  next(override) := { TRUE, FALSE };
+  -- SI must turn on iff pressure is below threshold AND not overridden.
+  next(si) := pressure & !override;
+
+-- Functional spec: SI on  <-> (pressure low AND not overridden)
+INVARSPEC (si & pressure & !override) | (!si & (!pressure | override))`,
+  },
+  {
+    id: 'smv-train',
+    name: 'Train-gate',
+    category: 'smv',
+    text: '!train || (gate && signal)',
+    description: 'Train-Gate-Controller invariant: when a train is at the crossing, gate is down and signal is red.',
+    smv: `MODULE main
+VAR
+  train  : boolean;   -- train present at crossing
+  gate   : boolean;   -- gate down
+  signal : boolean;   -- signal red (stop)
+ASSIGN
+  init(train)  := FALSE;
+  init(gate)   := FALSE;
+  init(signal) := FALSE;
+
+  -- Train arrives / departs non-deterministically.
+  next(train) := { TRUE, FALSE };
+  -- Controller lowers gate and turns red signal whenever a train is present
+  -- (and may keep them set briefly after the train leaves).
+  next(gate)   := train | gate & next(train);
+  next(signal) := train | signal & next(train);
+
+-- Safety: train present  ->  gate down AND signal red
+INVARSPEC !train | (gate & signal)`,
+  },
+  {
+    id: 'smv-elevator',
+    name: 'Elevator door',
+    category: 'smv',
+    text: '!moving || !door',
+    description: 'Elevator safety invariant: cabin must not move while a door is open.',
+    smv: `MODULE main
+VAR
+  door   : boolean;   -- TRUE  = door open
+  moving : boolean;   -- TRUE  = cabin moving
+ASSIGN
+  init(door)   := TRUE;
+  init(moving) := FALSE;
+
+  -- Door may open/close while the cabin is stopped.
+  next(door) :=
+    case
+      moving : door;            -- cannot change door state mid-travel
+      TRUE   : { TRUE, FALSE };
+    esac;
+  -- Cabin may start moving only when the door is closed.
+  next(moving) :=
+    case
+      door   : FALSE;
+      TRUE   : { TRUE, FALSE };
+    esac;
+
+-- Safety: never moving while a door is open
+INVARSPEC !moving | !door`,
+  },
 ];
 
 function loadSaved() {
@@ -43,6 +217,7 @@ function persist(state) {
     globalThis.localStorage?.setItem(STORAGE_KEY, JSON.stringify({
       text: state.text,
       operators: [...state.operators],
+      activeCategory: state.activeCategory,
       tests: state.tests,
     }));
   } catch {
@@ -65,6 +240,7 @@ export function createSpecMutationExplorer() {
   const state = {
     text: saved?.text || DEFAULT_PREDICATE,
     operators: new Set(saved?.operators || DEFAULT_OPS),
+    activeCategory: saved?.activeCategory || DEFAULT_CATEGORY,
     parseError: null,
     parsed: null,
     mutants: [],
@@ -107,9 +283,16 @@ export function createSpecMutationExplorer() {
   function render() {
     recompute();
 
-    const exampleButtons = SPEC_EXAMPLES.map((ex) => `
+    const currentExample = SPEC_EXAMPLES.find((ex) => state.text.trim() === ex.text) || null;
+    const categoryButtons = SPEC_CATEGORIES.map((cat) => `
+      <button type="button"
+        class="spec-category-btn${state.activeCategory === cat.id ? ' active' : ''}"
+        data-spec-category="${cat.id}">${escapeHtml(t(cat.labelKey))}</button>
+    `).join('');
+    const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state.activeCategory);
+    const exampleButtons = visibleExamples.map((ex) => `
       <button type="button" class="spec-example-btn${state.text.trim() === ex.text ? ' active' : ''}"
-        data-spec-example="${ex.id}">${escapeHtml(ex.name)}</button>
+        data-spec-example="${ex.id}" title="${escapeHtml(ex.description || '')}">${escapeHtml(ex.name)}</button>
     `).join('');
 
     const operatorButtons = SPEC_MUTATION_OPERATORS.map((op) => `
@@ -141,6 +324,28 @@ export function createSpecMutationExplorer() {
          </ul>`;
 
     const selected = state.mutants.find((m) => m.id === state.selectedMutantId) || null;
+    const flippedSet = selected
+      ? flippedKeysFromKillers(selected.killers, state.parsed?.clauses || [])
+      : null;
+    const fsmHtml = state.parsed
+      ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
+          ${renderMonitorSvg({
+            ast: state.parsed.ast,
+            clauses: state.parsed.clauses,
+            title: t('spec.fsm.original'),
+            flippedSet: null,
+            testId: 'spec-fsm-original',
+          })}
+          ${renderMonitorSvg({
+            ast: selected ? selected.ast : state.parsed.ast,
+            clauses: state.parsed.clauses,
+            title: selected ? `${t('spec.fsm.mutant')}: ${selected.id}` : t('spec.fsm.pickMutant'),
+            flippedSet,
+            testId: 'spec-fsm-mutant',
+          })}
+         </div>
+         <p class="spec-fsm-legend">${escapeHtml(t('spec.fsm.legend'))}</p>`
+      : '';
     const selectedDetailHtml = selected
       ? `<div class="spec-mutant-detail">
           <h5>${escapeHtml(selected.id)}</h5>
@@ -164,7 +369,13 @@ export function createSpecMutationExplorer() {
           <p class="grammar-subtitle">${escapeHtml(t('spec.subtitle'))}</p>
         </header>
 
-        <div class="grammar-example-row">${exampleButtons}</div>
+        <nav class="spec-category-row" data-testid="spec-category-row" role="tablist" aria-label="${escapeHtml(t('spec.cat.aria'))}">${categoryButtons}</nav>
+        <div class="grammar-example-row" data-testid="spec-example-row">${exampleButtons}</div>
+        ${currentExample?.description ? `<p class="spec-example-caption" data-testid="spec-example-caption">${escapeHtml(currentExample.description)}</p>` : ''}
+        ${currentExample?.smv ? `<details class="spec-smv-source" data-testid="spec-smv-source" open>
+          <summary>${escapeHtml(t('spec.smv.viewSource'))}</summary>
+          <pre><code>${escapeHtml(currentExample.smv)}</code></pre>
+        </details>` : ''}
 
         <div class="spec-editor-row">
           <label class="grammar-editor-label">
@@ -189,15 +400,23 @@ export function createSpecMutationExplorer() {
             <div>${mutantsHtml}</div>
             <div>${selectedDetailHtml}</div>
           </div>
+          ${fsmHtml}
         </div>
       </div>
     `;
 
+    root.querySelectorAll('[data-spec-category]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.activeCategory = btn.dataset.specCategory;
+        render();
+      });
+    });
     root.querySelectorAll('[data-spec-example]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
         if (!ex) return;
         state.text = ex.text;
+        state.activeCategory = ex.category || state.activeCategory;
         state.selectedMutantId = null;
         render();
       });

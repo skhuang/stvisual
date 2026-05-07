@@ -432,6 +432,9 @@
       "section.graph.title": "Graph Coverage Visualization",
       "section.logic.title": "Logic Coverage Visualization",
       "section.syntax.title": "Syntax-Based Testing: Program Mutation",
+      "syntaxTab.mutation": "Program Mutation",
+      "syntaxTab.grammar": "Grammar Coverage",
+      "syntaxTab.spec": "Specification Mutation",
       "section.cloud.title": "Google Cloud Integration",
       "section.flow.title": "Testing Flow",
       "section.types.title": "Common Testing Types",
@@ -660,6 +663,9 @@
       "grammar.extraTestsHint": 'e.g. "0+1+1"',
       "grammar.productions": "Productions",
       "grammar.derivations": "Derived strings",
+      "grammar.tab.derivations": "Derivations & Coverage",
+      "grammar.tab.mutation": "Grammar Mutation",
+      "grammar.tab.string": "String Mutation",
       "grammar.noDerivations": "No derivations yet \u2014 adjust limits or grammar.",
       "grammar.mutations": "Mutants",
       "grammar.noMutants": "No mutants (select at least one operator).",
@@ -706,6 +712,14 @@
       "spec.op.LRO": "LRO \u2014 swap && and ||",
       "spec.op.UOI": "UOI \u2014 insert NOT around a clause",
       "spec.op.MCR": "MCR \u2014 drop one operand of && or ||",
+      "spec.fsm.original": "Original predicate (safety monitor)",
+      "spec.fsm.mutant": "Mutant",
+      "spec.fsm.pickMutant": "Pick a mutant to compare",
+      "spec.fsm.legend": "Two-state monitor: SAFE = predicate holds, VIOLATION = predicate fails. Orange transitions are routed differently by the mutant (killer assignments).",
+      "spec.smv.viewSource": "NuSMV source",
+      "spec.cat.basic": "Basic predicates",
+      "spec.cat.smv": "SMV / model checking",
+      "spec.cat.aria": "Specification example category",
       "syntax.cloud.failed": "Sync failed",
       "syntax.cloud.linked": "Linked: {name}",
       "syntax.cloud.reloading": "Reloading from cloud\u2026",
@@ -743,6 +757,9 @@
       "section.graph.title": "Graph Coverage \u8996\u89BA\u5316",
       "section.logic.title": "Logic Coverage \u8996\u89BA\u5316",
       "section.syntax.title": "Syntax-Based Testing\uFF1AProgram Mutation",
+      "syntaxTab.mutation": "\u7A0B\u5F0F Mutation",
+      "syntaxTab.grammar": "Grammar Coverage",
+      "syntaxTab.spec": "\u898F\u683C Mutation",
       "section.cloud.title": "Google \u96F2\u7AEF\u6574\u5408",
       "section.flow.title": "\u6E2C\u8A66\u6D41\u7A0B",
       "section.types.title": "\u5E38\u898B\u6E2C\u8A66\u985E\u578B",
@@ -961,6 +978,9 @@
       "grammar.extraTestsHint": "\u4F8B\uFF1A0+1+1",
       "grammar.productions": "\u7522\u751F\u898F\u5247",
       "grammar.derivations": "\u884D\u751F\u5B57\u4E32",
+      "grammar.tab.derivations": "\u8986\u84CB\u8207\u884D\u751F",
+      "grammar.tab.mutation": "\u6587\u6CD5 Mutation",
+      "grammar.tab.string": "\u5B57\u4E32 Mutation",
       "grammar.noDerivations": "\u5C1A\u7121\u884D\u751F\u7D50\u679C\uFF0C\u8ACB\u8ABF\u6574\u53C3\u6578\u6216\u6587\u6CD5\u3002",
       "grammar.mutations": "Mutants",
       "grammar.noMutants": "\u7121 mutants\uFF08\u8ACB\u9078\u64C7\u81F3\u5C11\u4E00\u500B operator\uFF09\u3002",
@@ -1007,6 +1027,14 @@
       "spec.op.LRO": "LRO \u2014 \u4EA4\u63DB && \u8207 ||",
       "spec.op.UOI": "UOI \u2014 \u5728\u5B50\u53E5\u5916\u63D2\u5165 NOT",
       "spec.op.MCR": "MCR \u2014 \u522A\u9664 && \u6216 || \u7684\u4E00\u500B\u64CD\u4F5C\u5143",
+      "spec.fsm.original": "\u539F predicate\uFF08\u5B89\u5168\u76E3\u63A7\u72C0\u614B\u6A5F\uFF09",
+      "spec.fsm.mutant": "Mutant",
+      "spec.fsm.pickMutant": "\u9078\u64C7 mutant \u9032\u884C\u6BD4\u5C0D",
+      "spec.fsm.legend": "\u5169\u72C0\u614B\u76E3\u63A7\uFF1ASAFE = predicate \u70BA\u771F\uFF0CVIOLATION = predicate \u70BA\u5047\u3002\u6A58\u8272\u908A\u4EE3\u8868 mutant \u5C07\u8A72\u8CDC\u503C\u5C0E\u5411\u4E0D\u540C\u72C0\u614B\uFF08\u5373 killer assignments\uFF09\u3002",
+      "spec.smv.viewSource": "NuSMV \u539F\u59CB\u7A0B\u5F0F",
+      "spec.cat.basic": "\u57FA\u672C predicate",
+      "spec.cat.smv": "SMV / \u6A21\u578B\u6AA2\u67E5",
+      "spec.cat.aria": "\u898F\u683C\u7BC4\u4F8B\u5206\u985E",
       "syntax.cloud.failed": "\u540C\u6B65\u5931\u6557",
       "syntax.cloud.linked": "\u5DF2\u9023\u7D50 {name}",
       "syntax.cloud.reloading": "\u91CD\u65B0\u5F9E\u96F2\u7AEF\u8B80\u53D6\u2026",
@@ -6948,8 +6976,31 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
   // src/components/GrammarCoverageExplorer.js
   var STORAGE_KEY3 = "stvisual.grammarPrograms.v1";
+  var TAB_STORAGE_KEY = "stvisual.grammarActiveTab.v1";
   var DEFAULT_OPS = ["TR", "SD"];
   var DEFAULT_STRING_OPS = ["REP", "DEL"];
+  var GRAMMAR_TABS = [
+    { id: "derivations", labelKey: "grammar.tab.derivations" },
+    { id: "mutation", labelKey: "grammar.tab.mutation" },
+    { id: "string", labelKey: "grammar.tab.string" }
+  ];
+  var DEFAULT_TAB = "derivations";
+  function loadActiveTab() {
+    var _a2;
+    try {
+      const v = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(TAB_STORAGE_KEY);
+      return GRAMMAR_TABS.find((t2) => t2.id === v) ? v : DEFAULT_TAB;
+    } catch {
+      return DEFAULT_TAB;
+    }
+  }
+  function saveActiveTab(id) {
+    var _a2;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(TAB_STORAGE_KEY, id);
+    } catch {
+    }
+  }
   function escapeHtml4(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
@@ -7009,7 +7060,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       seedIndex: 0,
       maxPerStringOp: 12,
       stringMutants: [],
-      selectedStringMutantId: null
+      selectedStringMutantId: null,
+      activeTab: loadActiveTab()
     };
     function persistCurrent() {
       state.programs[state.exampleId] = state.text;
@@ -7207,12 +7259,23 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </div>
         </div>
 
-        <div class="grammar-derivation-block">
+        <nav class="grammar-subtab-row" data-testid="grammar-subtab-row" role="tablist">
+          ${GRAMMAR_TABS.map((tab) => `
+            <button type="button"
+              class="grammar-subtab-btn${state.activeTab === tab.id ? " active" : ""}"
+              data-grammar-subtab="${tab.id}"
+              role="tab"
+              aria-selected="${state.activeTab === tab.id ? "true" : "false"}"
+            >${escapeHtml4(t(tab.labelKey))}</button>
+          `).join("")}
+        </nav>
+
+        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state.activeTab === "derivations" ? "" : "none"}">
           <h4>${escapeHtml4(t("grammar.derivations"))}</h4>
           ${derivationsHtml}
         </div>
 
-        <div class="grammar-mutation-block">
+        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state.activeTab === "mutation" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.mutations"))}</h4>
             ${score ? `<span class="grammar-score" data-testid="grammar-mutation-score">${t("grammar.scoreLabel")}: ${score.killed} / ${score.total} (${Math.round(score.killed / score.total * 100)}%)</span>` : ""}
@@ -7224,7 +7287,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </div>
         </div>
 
-        <div class="grammar-string-block" data-testid="grammar-string-block">
+        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state.activeTab === "string" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.string.title"))}</h4>
             ${stringStats || ""}
@@ -7249,6 +7312,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       root2.querySelectorAll("[data-grammar-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           loadExample(btn.dataset.grammarExample);
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-grammar-subtab]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.activeTab = btn.dataset.grammarSubtab;
+          saveActiveTab(state.activeTab);
           render();
         });
       });
@@ -7506,17 +7576,297 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     return out;
   }
 
+  // src/utils/specFsm.js
+  var STATE_RADIUS = 34;
+  var SVG_W = 280;
+  var SVG_H = 200;
+  var SAFE_X = 70;
+  var VIO_X = SVG_W - 70;
+  var Y = SVG_H / 2;
+  function escapeXml(s = "") {
+    return String(s).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function shortAssignment(values, clauses) {
+    return clauses.map((c) => `${c}=${values[c] ? "T" : "F"}`).join(" ");
+  }
+  function buildMonitor(ast, clauses) {
+    const assignments = buildAssignmentSpace(clauses);
+    const trueSet = [];
+    const falseSet = [];
+    for (const a of assignments) {
+      if (evaluateAst2(ast, a)) trueSet.push(a);
+      else falseSet.push(a);
+    }
+    return { assignments, trueSet, falseSet };
+  }
+  function transitionLabel(assignments, clauses, max = 3) {
+    if (assignments.length === 0) return "\u2205";
+    const sample = assignments.slice(0, max).map((a) => shortAssignment(a, clauses));
+    const more = assignments.length - max;
+    return more > 0 ? `${sample.join(" ; ")} (+${more})` : sample.join(" ; ");
+  }
+  function renderMonitorSvg({
+    ast,
+    clauses,
+    title,
+    flippedSet = null,
+    // Set<string> of assignment keys (e.g. "a=T b=F")
+    emptyLabel = "\u2205",
+    testId = "spec-fsm"
+  } = {}) {
+    if (!ast || !clauses || clauses.length === 0) {
+      return `<div class="spec-fsm-empty">${escapeXml(emptyLabel)}</div>`;
+    }
+    const tooBig = clauses.length > 4;
+    const monitor = buildMonitor(ast, clauses);
+    const mark = (a) => {
+      if (!flippedSet) return false;
+      return flippedSet.has(shortAssignment(a, clauses));
+    };
+    const safeToVio = monitor.falseSet;
+    const safeToSafe = monitor.trueSet;
+    const vioToSafe = monitor.trueSet;
+    const vioToVio = monitor.falseSet;
+    const anyKiller = (xs) => flippedSet ? xs.some((a) => mark(a)) : false;
+    const labelForward = tooBig ? `${safeToVio.length} / ${monitor.assignments.length} assignments` : transitionLabel(safeToVio, clauses);
+    const labelRecover = tooBig ? `${vioToSafe.length} / ${monitor.assignments.length} assignments` : transitionLabel(vioToSafe, clauses);
+    const labelSafeLoop = tooBig ? `${safeToSafe.length}` : transitionLabel(safeToSafe, clauses);
+    const labelVioLoop = tooBig ? `${vioToVio.length}` : transitionLabel(vioToVio, clauses);
+    const fwdKiller = anyKiller(safeToVio);
+    const recKiller = anyKiller(vioToSafe);
+    const safeLoopKiller = anyKiller(safeToSafe);
+    const vioLoopKiller = anyKiller(vioToVio);
+    const cls = (killer) => `spec-fsm-edge${killer ? " killer" : ""}`;
+    const topArc = `M ${SAFE_X + STATE_RADIUS},${Y - 6} Q ${SVG_W / 2},${Y - 80} ${VIO_X - STATE_RADIUS},${Y - 6}`;
+    const bottomArc = `M ${VIO_X - STATE_RADIUS},${Y + 6} Q ${SVG_W / 2},${Y + 80} ${SAFE_X + STATE_RADIUS},${Y + 6}`;
+    const safeLoop = `M ${SAFE_X - 14},${Y - STATE_RADIUS + 4} q -22,-30 0,-44 q 22,14 0,44`;
+    const vioLoop = `M ${VIO_X - 14},${Y - STATE_RADIUS + 4} q -22,-30 0,-44 q 22,14 0,44`;
+    return `
+    <figure class="spec-fsm" data-testid="${escapeXml(testId)}">
+      ${title ? `<figcaption class="spec-fsm-title">${escapeXml(title)}</figcaption>` : ""}
+      <svg viewBox="0 0 ${SVG_W} ${SVG_H}" role="img" aria-label="${escapeXml(title || "monitor")}">
+        <defs>
+          <marker id="arrow-${escapeXml(testId)}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+          </marker>
+        </defs>
+
+        <!-- self loops -->
+        <path d="${safeLoop}" class="${cls(safeLoopKiller)}" fill="none" marker-end="url(#arrow-${escapeXml(testId)})" />
+        <path d="${vioLoop}" class="${cls(vioLoopKiller)}" fill="none" marker-end="url(#arrow-${escapeXml(testId)})" />
+        <text x="${SAFE_X - 14}" y="${Y - STATE_RADIUS - 32}" class="spec-fsm-edge-label">P=T (${labelSafeLoop})</text>
+        <text x="${VIO_X - 14}" y="${Y - STATE_RADIUS - 32}" class="spec-fsm-edge-label">P=F (${labelVioLoop})</text>
+
+        <!-- safe -> violation (top arc) -->
+        <path d="${topArc}" class="${cls(fwdKiller)}" fill="none" marker-end="url(#arrow-${escapeXml(testId)})" />
+        <text x="${SVG_W / 2}" y="${Y - 60}" text-anchor="middle" class="spec-fsm-edge-label">P=F \xB7 ${escapeXml(labelForward)}</text>
+
+        <!-- violation -> safe (bottom arc) -->
+        <path d="${bottomArc}" class="${cls(recKiller)}" fill="none" marker-end="url(#arrow-${escapeXml(testId)})" />
+        <text x="${SVG_W / 2}" y="${Y + 70}" text-anchor="middle" class="spec-fsm-edge-label">P=T \xB7 ${escapeXml(labelRecover)}</text>
+
+        <!-- states -->
+        <g class="spec-fsm-state safe">
+          <circle cx="${SAFE_X}" cy="${Y}" r="${STATE_RADIUS}" />
+          <text x="${SAFE_X}" y="${Y - 2}" text-anchor="middle">SAFE</text>
+          <text x="${SAFE_X}" y="${Y + 14}" text-anchor="middle" class="spec-fsm-state-sub">P=T</text>
+        </g>
+        <g class="spec-fsm-state violation">
+          <circle cx="${VIO_X}" cy="${Y}" r="${STATE_RADIUS}" />
+          <text x="${VIO_X}" y="${Y - 2}" text-anchor="middle">VIOLATION</text>
+          <text x="${VIO_X}" y="${Y + 14}" text-anchor="middle" class="spec-fsm-state-sub">P=F</text>
+        </g>
+      </svg>
+    </figure>
+  `;
+  }
+  function flippedKeysFromKillers(killers, clauses) {
+    return new Set(killers.map((k) => shortAssignment(k.test, clauses)));
+  }
+
   // src/components/SpecMutationExplorer.js
   var STORAGE_KEY4 = "stvisual.specMutation.v1";
   var DEFAULT_PREDICATE = "(a || b) && c";
   var DEFAULT_OPS2 = ["ENF", "BCR", "LRO", "UOI"];
+  var SPEC_CATEGORIES = [
+    { id: "basic", labelKey: "spec.cat.basic" },
+    { id: "smv", labelKey: "spec.cat.smv" }
+  ];
+  var DEFAULT_CATEGORY = "basic";
   function escapeHtml5(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
   var SPEC_EXAMPLES = [
-    { id: "guard", name: "Guard", nameEn: "Guard", text: "(a || b) && c" },
-    { id: "leap", name: "Leap year", nameEn: "Leap year", text: "(y && !c) || (y && c && q)" },
-    { id: "triangle", name: "Triangle ineq.", nameEn: "Triangle ineq.", text: "a && b && c" }
+    {
+      id: "guard",
+      name: "Guard",
+      category: "basic",
+      text: "(a || b) && c",
+      description: "Generic Boolean guard for an action."
+    },
+    {
+      id: "leap",
+      name: "Leap year",
+      category: "basic",
+      text: "(y && !c) || (y && c && q)",
+      description: "Leap-year predicate: divisible by 4 (y) and (not by 100 (c) or by 400 (q))."
+    },
+    {
+      id: "triangle",
+      name: "Triangle ineq.",
+      category: "basic",
+      text: "a && b && c",
+      description: "All three triangle-inequality clauses must hold."
+    },
+    // --- SMV / model-checking style invariants (Ammann/Offutt §9.5) ---
+    {
+      id: "smv-mutex",
+      name: "Mutual exclusion",
+      category: "smv",
+      text: "!(c1 && c2)",
+      description: "Two-process mutual exclusion invariant: never both critical.",
+      smv: `MODULE proc(other_critical, turn, id)
+VAR
+  state : { idle, trying, critical };
+ASSIGN
+  init(state) := idle;
+  next(state) :=
+    case
+      state = idle                                : { idle, trying };
+      state = trying & !other_critical & turn=id : critical;
+      state = trying                              : trying;
+      state = critical                            : { critical, idle };
+      TRUE                                        : state;
+    esac;
+
+MODULE main
+VAR
+  turn : { 1, 2 };
+  p1   : proc(p2.state = critical, turn, 1);
+  p2   : proc(p1.state = critical, turn, 2);
+DEFINE
+  c1 := p1.state = critical;
+  c2 := p2.state = critical;
+
+-- Safety: never both processes in the critical section
+INVARSPEC !(c1 & c2)`
+    },
+    {
+      id: "smv-cruise",
+      name: "Cruise control",
+      category: "smv",
+      text: "!cruise || (ignition && running && !brake)",
+      description: "Cruise control safety: cruise active implies ignition on, engine running, brake released.",
+      smv: `MODULE main
+VAR
+  ignition : boolean;
+  running  : boolean;
+  brake    : boolean;
+  cruise   : boolean;
+ASSIGN
+  init(ignition) := FALSE;
+  init(running)  := FALSE;
+  init(brake)    := FALSE;
+  init(cruise)   := FALSE;
+
+  -- Driver may toggle ignition / brake non-deterministically.
+  next(ignition) := { TRUE, FALSE };
+  next(brake)    := { TRUE, FALSE };
+  -- Engine runs only while ignition is on.
+  next(running)  := ignition;
+  -- Cruise can only be engaged when ignition is on, engine is running and
+  -- the brake is released; pressing brake disengages cruise.
+  next(cruise) :=
+    case
+      brake          : FALSE;
+      !ignition      : FALSE;
+      !running       : FALSE;
+      TRUE           : { TRUE, FALSE };
+    esac;
+
+-- Safety: cruise active implies ignition on, engine running, brake released
+INVARSPEC !cruise | (ignition & running & !brake)`
+    },
+    {
+      id: "smv-sis",
+      name: "Safety injection",
+      category: "smv",
+      text: "(si && pressure && !override) || (!si && (!pressure || override))",
+      description: "Safety Injection System (Parnas/Heimdahl): SI on iff pressure low and not overridden.",
+      smv: `MODULE main
+VAR
+  pressure : boolean;   -- TRUE when reactor pressure is BELOW threshold
+  override : boolean;   -- operator override switch
+  si       : boolean;   -- safety injection actuator
+ASSIGN
+  init(pressure) := FALSE;
+  init(override) := FALSE;
+  init(si)       := FALSE;
+
+  next(pressure) := { TRUE, FALSE };
+  next(override) := { TRUE, FALSE };
+  -- SI must turn on iff pressure is below threshold AND not overridden.
+  next(si) := pressure & !override;
+
+-- Functional spec: SI on  <-> (pressure low AND not overridden)
+INVARSPEC (si & pressure & !override) | (!si & (!pressure | override))`
+    },
+    {
+      id: "smv-train",
+      name: "Train-gate",
+      category: "smv",
+      text: "!train || (gate && signal)",
+      description: "Train-Gate-Controller invariant: when a train is at the crossing, gate is down and signal is red.",
+      smv: `MODULE main
+VAR
+  train  : boolean;   -- train present at crossing
+  gate   : boolean;   -- gate down
+  signal : boolean;   -- signal red (stop)
+ASSIGN
+  init(train)  := FALSE;
+  init(gate)   := FALSE;
+  init(signal) := FALSE;
+
+  -- Train arrives / departs non-deterministically.
+  next(train) := { TRUE, FALSE };
+  -- Controller lowers gate and turns red signal whenever a train is present
+  -- (and may keep them set briefly after the train leaves).
+  next(gate)   := train | gate & next(train);
+  next(signal) := train | signal & next(train);
+
+-- Safety: train present  ->  gate down AND signal red
+INVARSPEC !train | (gate & signal)`
+    },
+    {
+      id: "smv-elevator",
+      name: "Elevator door",
+      category: "smv",
+      text: "!moving || !door",
+      description: "Elevator safety invariant: cabin must not move while a door is open.",
+      smv: `MODULE main
+VAR
+  door   : boolean;   -- TRUE  = door open
+  moving : boolean;   -- TRUE  = cabin moving
+ASSIGN
+  init(door)   := TRUE;
+  init(moving) := FALSE;
+
+  -- Door may open/close while the cabin is stopped.
+  next(door) :=
+    case
+      moving : door;            -- cannot change door state mid-travel
+      TRUE   : { TRUE, FALSE };
+    esac;
+  -- Cabin may start moving only when the door is closed.
+  next(moving) :=
+    case
+      door   : FALSE;
+      TRUE   : { TRUE, FALSE };
+    esac;
+
+-- Safety: never moving while a door is open
+INVARSPEC !moving | !door`
+    }
   ];
   function loadSaved() {
     var _a2;
@@ -7535,6 +7885,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY4, JSON.stringify({
         text: state.text,
         operators: [...state.operators],
+        activeCategory: state.activeCategory,
         tests: state.tests
       }));
     } catch {
@@ -7551,6 +7902,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     const state = {
       text: (saved == null ? void 0 : saved.text) || DEFAULT_PREDICATE,
       operators: new Set((saved == null ? void 0 : saved.operators) || DEFAULT_OPS2),
+      activeCategory: (saved == null ? void 0 : saved.activeCategory) || DEFAULT_CATEGORY,
       parseError: null,
       parsed: null,
       mutants: [],
@@ -7591,11 +7943,18 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       persist(state);
     }
     function render() {
-      var _a2, _b;
+      var _a2, _b, _c;
       recompute();
-      const exampleButtons = SPEC_EXAMPLES.map((ex) => `
+      const currentExample = SPEC_EXAMPLES.find((ex) => state.text.trim() === ex.text) || null;
+      const categoryButtons = SPEC_CATEGORIES.map((cat) => `
+      <button type="button"
+        class="spec-category-btn${state.activeCategory === cat.id ? " active" : ""}"
+        data-spec-category="${cat.id}">${escapeHtml5(t(cat.labelKey))}</button>
+    `).join("");
+      const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state.activeCategory);
+      const exampleButtons = visibleExamples.map((ex) => `
       <button type="button" class="spec-example-btn${state.text.trim() === ex.text ? " active" : ""}"
-        data-spec-example="${ex.id}">${escapeHtml5(ex.name)}</button>
+        data-spec-example="${ex.id}" title="${escapeHtml5(ex.description || "")}">${escapeHtml5(ex.name)}</button>
     `).join("");
       const operatorButtons = SPEC_MUTATION_OPERATORS.map((op) => `
       <label class="grammar-op-btn${state.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
@@ -7619,6 +7978,24 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </li>`).join("")}
          </ul>`;
       const selected = state.mutants.find((m) => m.id === state.selectedMutantId) || null;
+      const flippedSet = selected ? flippedKeysFromKillers(selected.killers, ((_a2 = state.parsed) == null ? void 0 : _a2.clauses) || []) : null;
+      const fsmHtml = state.parsed ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
+          ${renderMonitorSvg({
+        ast: state.parsed.ast,
+        clauses: state.parsed.clauses,
+        title: t("spec.fsm.original"),
+        flippedSet: null,
+        testId: "spec-fsm-original"
+      })}
+          ${renderMonitorSvg({
+        ast: selected ? selected.ast : state.parsed.ast,
+        clauses: state.parsed.clauses,
+        title: selected ? `${t("spec.fsm.mutant")}: ${selected.id}` : t("spec.fsm.pickMutant"),
+        flippedSet,
+        testId: "spec-fsm-mutant"
+      })}
+         </div>
+         <p class="spec-fsm-legend">${escapeHtml5(t("spec.fsm.legend"))}</p>` : "";
       const selectedDetailHtml = selected ? `<div class="spec-mutant-detail">
           <h5>${escapeHtml5(selected.id)}</h5>
           <p>${escapeHtml5(selected.description)}</p>
@@ -7637,7 +8014,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <p class="grammar-subtitle">${escapeHtml5(t("spec.subtitle"))}</p>
         </header>
 
-        <div class="grammar-example-row">${exampleButtons}</div>
+        <nav class="spec-category-row" data-testid="spec-category-row" role="tablist" aria-label="${escapeHtml5(t("spec.cat.aria"))}">${categoryButtons}</nav>
+        <div class="grammar-example-row" data-testid="spec-example-row">${exampleButtons}</div>
+        ${(currentExample == null ? void 0 : currentExample.description) ? `<p class="spec-example-caption" data-testid="spec-example-caption">${escapeHtml5(currentExample.description)}</p>` : ""}
+        ${(currentExample == null ? void 0 : currentExample.smv) ? `<details class="spec-smv-source" data-testid="spec-smv-source" open>
+          <summary>${escapeHtml5(t("spec.smv.viewSource"))}</summary>
+          <pre><code>${escapeHtml5(currentExample.smv)}</code></pre>
+        </details>` : ""}
 
         <div class="spec-editor-row">
           <label class="grammar-editor-label">
@@ -7662,22 +8045,30 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             <div>${mutantsHtml}</div>
             <div>${selectedDetailHtml}</div>
           </div>
+          ${fsmHtml}
         </div>
       </div>
     `;
+      root2.querySelectorAll("[data-spec-category]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.activeCategory = btn.dataset.specCategory;
+          render();
+        });
+      });
       root2.querySelectorAll("[data-spec-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
           if (!ex) return;
           state.text = ex.text;
+          state.activeCategory = ex.category || state.activeCategory;
           state.selectedMutantId = null;
           render();
         });
       });
-      (_a2 = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _a2.addEventListener("input", (e) => {
+      (_b = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("input", (e) => {
         state.text = e.target.value;
       });
-      (_b = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("change", () => {
+      (_c = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _c.addEventListener("change", () => {
         state.selectedMutantId = null;
         render();
       });
@@ -7771,9 +8162,66 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       container.querySelector('[data-slot="methods"]').appendChild(components.methods);
       container.querySelector('[data-slot="graph"]').appendChild(components.graph);
       container.querySelector('[data-slot="logic"]').appendChild(components.logic);
-      container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
-      container.querySelector('[data-slot="syntax"]').appendChild(components.grammar);
-      container.querySelector('[data-slot="syntax"]').appendChild(components.specMutation);
+      const syntaxTabs = [
+        { id: "mutation", key: "syntaxTab.mutation", component: components.syntax },
+        { id: "grammar", key: "syntaxTab.grammar", component: components.grammar },
+        { id: "spec", key: "syntaxTab.spec", component: components.specMutation }
+      ];
+      const syntaxSlot = container.querySelector('[data-slot="syntax"]');
+      const syntaxTabBar = document.createElement("nav");
+      syntaxTabBar.className = "syntax-tab-row";
+      syntaxTabBar.dataset.testid = "syntax-tab-row";
+      syntaxTabBar.setAttribute("role", "tablist");
+      syntaxSlot.appendChild(syntaxTabBar);
+      const syntaxPanels = document.createElement("div");
+      syntaxPanels.className = "syntax-tab-panels";
+      syntaxSlot.appendChild(syntaxPanels);
+      for (const tab of syntaxTabs) {
+        const panel = document.createElement("div");
+        panel.className = "syntax-tab-panel";
+        panel.dataset.syntaxPanel = tab.id;
+        panel.appendChild(tab.component);
+        syntaxPanels.appendChild(panel);
+      }
+      const SYNTAX_TAB_KEY = "stvisual.syntaxActiveTab";
+      let activeSyntaxTab = (() => {
+        var _a2;
+        try {
+          const v = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(SYNTAX_TAB_KEY);
+          return syntaxTabs.find((t2) => t2.id === v) ? v : "mutation";
+        } catch {
+          return "mutation";
+        }
+      })();
+      function renderSyntaxTabs() {
+        syntaxTabBar.innerHTML = syntaxTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeSyntaxTab === tab.id ? " active" : ""}"
+          data-syntax-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeSyntaxTab === tab.id ? "true" : "false"}"
+        >${t(tab.key)}</button>
+      `).join("");
+        syntaxTabBar.querySelectorAll("[data-syntax-tab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            var _a2;
+            activeSyntaxTab = btn.dataset.syntaxTab;
+            try {
+              (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(SYNTAX_TAB_KEY, activeSyntaxTab);
+            } catch {
+            }
+            renderSyntaxTabs();
+            updateSyntaxPanels();
+          });
+        });
+      }
+      function updateSyntaxPanels() {
+        syntaxPanels.querySelectorAll("[data-syntax-panel]").forEach((panel) => {
+          panel.style.display = panel.dataset.syntaxPanel === activeSyntaxTab ? "" : "none";
+        });
+      }
+      renderSyntaxTabs();
+      updateSyntaxPanels();
       container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);

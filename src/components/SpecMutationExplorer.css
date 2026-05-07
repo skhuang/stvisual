@@ -11,6 +11,38 @@
   padding: 22px;
 }
 
+.spec-category-row {
+  display: flex;
+  gap: 4px;
+  margin: 14px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.spec-category-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -7px;
+}
+
+.spec-category-btn:hover {
+  color: #6366f1;
+  background: #f8fafc;
+}
+
+.spec-category-btn.active {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+  background: #f8fafc;
+}
+
 .spec-example-btn {
   border: 1px solid rgba(148, 163, 184, 0.4);
   background: #f8fafc;
@@ -24,6 +56,50 @@
   background: #6366f1;
   color: #fff;
   border-color: #6366f1;
+}
+
+.spec-example-caption {
+  margin: -4px 0 12px;
+  font-size: 0.85rem;
+  color: #475569;
+  background: #eef2ff;
+  border-left: 3px solid #6366f1;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+.spec-smv-source {
+  margin: 0 0 14px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e2e8f0;
+  overflow: hidden;
+}
+
+.spec-smv-source summary {
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #1e293b;
+  color: #f1f5f9;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  user-select: none;
+}
+
+.spec-smv-source summary:hover {
+  background: #334155;
+}
+
+.spec-smv-source pre {
+  margin: 0;
+  padding: 12px 14px;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  overflow-x: auto;
+  white-space: pre;
 }
 
 .spec-editor-row {
@@ -80,4 +156,93 @@
   color: #64748b;
   font-size: 0.78rem;
   margin-top: 2px;
+}
+
+/* Safety-monitor FSM rendered next to the selected mutant. */
+.spec-fsm-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.spec-fsm {
+  margin: 0;
+  padding: 8px;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 12px;
+}
+
+.spec-fsm-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.spec-fsm svg {
+  width: 100%;
+  height: auto;
+  color: #475569;
+}
+
+.spec-fsm-state circle {
+  fill: #e0e7ff;
+  stroke: #6366f1;
+  stroke-width: 2;
+}
+
+.spec-fsm-state.violation circle {
+  fill: #fee2e2;
+  stroke: #dc2626;
+}
+
+.spec-fsm-state text {
+  font-size: 11px;
+  font-weight: 600;
+  fill: #1e293b;
+}
+
+.spec-fsm-state-sub {
+  font-size: 9px !important;
+  font-weight: 400 !important;
+  fill: #64748b !important;
+}
+
+.spec-fsm-edge {
+  stroke: #94a3b8;
+  stroke-width: 1.4;
+  color: #94a3b8;
+}
+
+.spec-fsm-edge.killer {
+  stroke: #f59e0b;
+  stroke-width: 2.2;
+  color: #f59e0b;
+}
+
+.spec-fsm-edge-label {
+  font-size: 9px;
+  fill: #475569;
+  font-family: ui-monospace, monospace;
+}
+
+.spec-fsm-legend {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.spec-fsm-empty {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-align: center;
+  padding: 12px;
+}
+
+@media (max-width: 720px) {
+  .spec-fsm-grid {
+    grid-template-columns: 1fr;
+  }
 }

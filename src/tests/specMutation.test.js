@@ -70,4 +70,32 @@ describe('specMutation', () => {
     expect(texts.has('true')).toBe(true);
     expect(texts.has('false')).toBe(true);
   });
+
+  // SMV-flavored invariants (Ammann/Offutt §9.5).
+  describe('SMV-style specifications', () => {
+    const SMV_CASES = [
+      { name: 'mutex',    text: '!(c1 && c2)' },
+      { name: 'cruise',   text: '!cruise || (ignition && running && !brake)' },
+      { name: 'sis',      text: '(si && pressure && !override) || (!si && (!pressure || override))' },
+      { name: 'train',    text: '!train || (gate && signal)' },
+      { name: 'elevator', text: '!moving || !door' },
+    ];
+
+    for (const c of SMV_CASES) {
+      it(`${c.name}: full truth table kills the majority of mutants`, () => {
+        const parsed = parsePredicate(c.text);
+        const mutants = generateSpecMutants(parsed, SPEC_MUTATION_OPERATORS);
+        expect(mutants.length).toBeGreaterThan(0);
+        const tests = buildAssignmentSpace(parsed.clauses);
+        const evaluated = evaluateSpecMutants(parsed, mutants, tests);
+        // ENF must always be killed (negation under any non-tautology / non-contradiction).
+        const enf = evaluated.find((m) => m.operator === 'ENF');
+        expect(enf?.killed).toBe(true);
+        // The truth table should distinguish at least 40% of all mutants — wider
+        // predicates have many CRR/MCR mutants that happen to be equivalent.
+        const killed = evaluated.filter((m) => m.killed).length;
+        expect(killed / evaluated.length).toBeGreaterThan(0.4);
+      });
+    }
+  });
 });
