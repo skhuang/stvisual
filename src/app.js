@@ -6,6 +6,7 @@ import { createTestingTypesTable } from './components/TestingTypesTable.js';
 import { createCloudStoragePanel } from './components/CloudStoragePanel.js';
 import { createSyntaxCoverageExplorer } from './components/SyntaxCoverageExplorer.js';
 import { createGrammarCoverageExplorer } from './components/GrammarCoverageExplorer.js';
+import { createSpecMutationExplorer } from './components/SpecMutationExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const sectionsConfig = [
@@ -73,6 +74,7 @@ export function renderApp(container) {
       logic: createLogicCoverageExplorer(),
       syntax: createSyntaxCoverageExplorer(),
       grammar: createGrammarCoverageExplorer(),
+      specMutation: createSpecMutationExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       types: createTestingTypesTable(),
@@ -83,6 +85,7 @@ export function renderApp(container) {
     container.querySelector('[data-slot="logic"]').appendChild(components.logic);
     container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
     container.querySelector('[data-slot="syntax"]').appendChild(components.grammar);
+    container.querySelector('[data-slot="syntax"]').appendChild(components.specMutation);
     container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
     container.querySelector('[data-slot="flow"]').appendChild(components.flow);
     container.querySelector('[data-slot="types"]').appendChild(components.types);
