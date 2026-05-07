@@ -706,6 +706,10 @@
       "spec.op.LRO": "LRO \u2014 swap && and ||",
       "spec.op.UOI": "UOI \u2014 insert NOT around a clause",
       "spec.op.MCR": "MCR \u2014 drop one operand of && or ||",
+      "spec.fsm.original": "Original predicate (safety monitor)",
+      "spec.fsm.mutant": "Mutant",
+      "spec.fsm.pickMutant": "Pick a mutant to compare",
+      "spec.fsm.legend": "Two-state monitor: SAFE = predicate holds, VIOLATION = predicate fails. Orange transitions are routed differently by the mutant (killer assignments).",
       "syntax.cloud.failed": "Sync failed",
       "syntax.cloud.linked": "Linked: {name}",
       "syntax.cloud.reloading": "Reloading from cloud\u2026",
@@ -1007,6 +1011,10 @@
       "spec.op.LRO": "LRO \u2014 \u4EA4\u63DB && \u8207 ||",
       "spec.op.UOI": "UOI \u2014 \u5728\u5B50\u53E5\u5916\u63D2\u5165 NOT",
       "spec.op.MCR": "MCR \u2014 \u522A\u9664 && \u6216 || \u7684\u4E00\u500B\u64CD\u4F5C\u5143",
+      "spec.fsm.original": "\u539F predicate\uFF08\u5B89\u5168\u76E3\u63A7\u72C0\u614B\u6A5F\uFF09",
+      "spec.fsm.mutant": "Mutant",
+      "spec.fsm.pickMutant": "\u9078\u64C7 mutant \u9032\u884C\u6BD4\u5C0D",
+      "spec.fsm.legend": "\u5169\u72C0\u614B\u76E3\u63A7\uFF1ASAFE = predicate \u70BA\u771F\uFF0CVIOLATION = predicate \u70BA\u5047\u3002\u6A58\u8272\u908A\u4EE3\u8868 mutant \u5C07\u8A72\u8CDC\u503C\u5C0E\u5411\u4E0D\u540C\u72C0\u614B\uFF08\u5373 killer assignments\uFF09\u3002",
       "syntax.cloud.failed": "\u540C\u6B65\u5931\u6557",
       "syntax.cloud.linked": "\u5DF2\u9023\u7D50 {name}",
       "syntax.cloud.reloading": "\u91CD\u65B0\u5F9E\u96F2\u7AEF\u8B80\u53D6\u2026",
@@ -7506,6 +7514,114 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     return out;
   }
 
+  // src/utils/specFsm.js
+  var STATE_RADIUS = 34;
+  var SVG_W = 280;
+  var SVG_H = 200;
+  var SAFE_X = 70;
+  var VIO_X = SVG_W - 70;
+  var Y = SVG_H / 2;
+  function escapeXml(s = "") {
+    return String(s).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function shortAssignment(values, clauses) {
+    return clauses.map((c) => `${c}=${values[c] ? "T" : "F"}`).join(" ");
+  }
+  function buildMonitor(ast, clauses) {
+    const assignments = buildAssignmentSpace(clauses);
+    const trueSet = [];
+    const falseSet = [];
+    for (const a of assignments) {
+      if (evaluateAst2(ast, a)) trueSet.push(a);
+      else falseSet.push(a);
+    }
+    return { assignments, trueSet, falseSet };
+  }
+  function transitionLabel(assignments, clauses, max = 3) {
+    if (assignments.length === 0) return "\u2205";
+    const sample = assignments.slice(0, max).map((a) => shortAssignment(a, clauses));
+    const more = assignments.length - max;
+    return more > 0 ? `${sample.join(" ; ")} (+${more})` : sample.join(" ; ");
+  }
+  function renderMonitorSvg({
+    ast,
+    clauses,
+    title,
+    flippedSet = null,
+    // Set<string> of assignment keys (e.g. "a=T b=F")
+    emptyLabel = "\u2205",
+    testId = "spec-fsm"
+  } = {}) {
+    if (!ast || !clauses || clauses.length === 0) {
+      return `<div class="spec-fsm-empty">${escapeXml(emptyLabel)}</div>`;
+    }
+    const tooBig = clauses.length > 4;
+    const monitor = buildMonitor(ast, clauses);
+    const mark = (a) => {
+      if (!flippedSet) return false;
+      return flippedSet.has(shortAssignment(a, clauses));
+    };
+    const safeToVio = monitor.falseSet;
+    const safeToSafe = monitor.trueSet;
+    const vioToSafe = monitor.trueSet;
+    const vioToVio = monitor.falseSet;
+    const anyKiller = (xs) => flippedSet ? xs.some((a) => mark(a)) : false;
+    const labelForward = tooBig ? `${safeToVio.length} / ${monitor.assignments.length} assignments` : transitionLabel(safeToVio, clauses);
+    const labelRecover = tooBig ? `${vioToSafe.length} / ${monitor.assignments.length} assignments` : transitionLabel(vioToSafe, clauses);
+    const labelSafeLoop = tooBig ? `${safeToSafe.length}` : transitionLabel(safeToSafe, clauses);
+    const labelVioLoop = tooBig ? `${vioToVio.length}` : transitionLabel(vioToVio, clauses);
+    const fwdKiller = anyKiller(safeToVio);
+    const recKiller = anyKiller(vioToSafe);
+    const safeLoopKiller = anyKiller(safeToSafe);
+    const vioLoopKiller = anyKiller(vioToVio);
+    const cls = (killer) => `spec-fsm-edge${killer ? " killer" : ""}`;
+    const topArc = `M ${SAFE_X + STATE_RADIUS},${Y - 6} Q ${SVG_W / 2},${Y - 80} ${VIO_X - STATE_RADIUS},${Y - 6}`;
+    const bottomArc = `M ${VIO_X - STATE_RADIUS},${Y + 6} Q ${SVG_W / 2},${Y + 80} ${SAFE_X + STATE_RADIUS},${Y + 6}`;
+    const safeLoop = `M ${SAFE_X - 14},${Y - STATE_RADIUS + 4} q -22,-30 0,-44 q 22,14 0,44`;
+    const vioLoop = `M ${VIO_X - 14},${Y - STATE_RADIUS + 4} q -22,-30 0,-44 q 22,14 0,44`;
+    return `
+    <figure class="spec-fsm" data-testid="${escapeXml(testId)}">
+      ${title ? `<figcaption class="spec-fsm-title">${escapeXml(title)}</figcaption>` : ""}
+      <svg viewBox="0 0 ${SVG_W} ${SVG_H}" role="img" aria-label="${escapeXml(title || "monitor")}">
+        <defs>
+          <marker id="arrow-${escapeXml(testId)}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+          </marker>
+        </defs>
+
+        <!-- self loops -->
+        <path d="${safeLoop}" class="${cls(safeLoopKiller)}" fill="none" marker-end="url(#arrow-${escapeXml(testId)})" />
+        <path d="${vioLoop}" class="${cls(vioLoopKiller)}" fill="none" marker-end="url(#arrow-${escapeXml(testId)})" />
+        <text x="${SAFE_X - 14}" y="${Y - STATE_RADIUS - 32}" class="spec-fsm-edge-label">P=T (${labelSafeLoop})</text>
+        <text x="${VIO_X - 14}" y="${Y - STATE_RADIUS - 32}" class="spec-fsm-edge-label">P=F (${labelVioLoop})</text>
+
+        <!-- safe -> violation (top arc) -->
+        <path d="${topArc}" class="${cls(fwdKiller)}" fill="none" marker-end="url(#arrow-${escapeXml(testId)})" />
+        <text x="${SVG_W / 2}" y="${Y - 60}" text-anchor="middle" class="spec-fsm-edge-label">P=F \xB7 ${escapeXml(labelForward)}</text>
+
+        <!-- violation -> safe (bottom arc) -->
+        <path d="${bottomArc}" class="${cls(recKiller)}" fill="none" marker-end="url(#arrow-${escapeXml(testId)})" />
+        <text x="${SVG_W / 2}" y="${Y + 70}" text-anchor="middle" class="spec-fsm-edge-label">P=T \xB7 ${escapeXml(labelRecover)}</text>
+
+        <!-- states -->
+        <g class="spec-fsm-state safe">
+          <circle cx="${SAFE_X}" cy="${Y}" r="${STATE_RADIUS}" />
+          <text x="${SAFE_X}" y="${Y - 2}" text-anchor="middle">SAFE</text>
+          <text x="${SAFE_X}" y="${Y + 14}" text-anchor="middle" class="spec-fsm-state-sub">P=T</text>
+        </g>
+        <g class="spec-fsm-state violation">
+          <circle cx="${VIO_X}" cy="${Y}" r="${STATE_RADIUS}" />
+          <text x="${VIO_X}" y="${Y - 2}" text-anchor="middle">VIOLATION</text>
+          <text x="${VIO_X}" y="${Y + 14}" text-anchor="middle" class="spec-fsm-state-sub">P=F</text>
+        </g>
+      </svg>
+    </figure>
+  `;
+  }
+  function flippedKeysFromKillers(killers, clauses) {
+    return new Set(killers.map((k) => shortAssignment(k.test, clauses)));
+  }
+
   // src/components/SpecMutationExplorer.js
   var STORAGE_KEY4 = "stvisual.specMutation.v1";
   var DEFAULT_PREDICATE = "(a || b) && c";
@@ -7637,7 +7753,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       persist(state);
     }
     function render() {
-      var _a2, _b;
+      var _a2, _b, _c;
       recompute();
       const currentExample = SPEC_EXAMPLES.find((ex) => state.text.trim() === ex.text) || null;
       const exampleButtons = SPEC_EXAMPLES.map((ex) => `
@@ -7666,6 +7782,24 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </li>`).join("")}
          </ul>`;
       const selected = state.mutants.find((m) => m.id === state.selectedMutantId) || null;
+      const flippedSet = selected ? flippedKeysFromKillers(selected.killers, ((_a2 = state.parsed) == null ? void 0 : _a2.clauses) || []) : null;
+      const fsmHtml = state.parsed ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
+          ${renderMonitorSvg({
+        ast: state.parsed.ast,
+        clauses: state.parsed.clauses,
+        title: t("spec.fsm.original"),
+        flippedSet: null,
+        testId: "spec-fsm-original"
+      })}
+          ${renderMonitorSvg({
+        ast: selected ? selected.ast : state.parsed.ast,
+        clauses: state.parsed.clauses,
+        title: selected ? `${t("spec.fsm.mutant")}: ${selected.id}` : t("spec.fsm.pickMutant"),
+        flippedSet,
+        testId: "spec-fsm-mutant"
+      })}
+         </div>
+         <p class="spec-fsm-legend">${escapeHtml5(t("spec.fsm.legend"))}</p>` : "";
       const selectedDetailHtml = selected ? `<div class="spec-mutant-detail">
           <h5>${escapeHtml5(selected.id)}</h5>
           <p>${escapeHtml5(selected.description)}</p>
@@ -7710,6 +7844,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             <div>${mutantsHtml}</div>
             <div>${selectedDetailHtml}</div>
           </div>
+          ${fsmHtml}
         </div>
       </div>
     `;
@@ -7722,10 +7857,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           render();
         });
       });
-      (_a2 = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _a2.addEventListener("input", (e) => {
+      (_b = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("input", (e) => {
         state.text = e.target.value;
       });
-      (_b = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("change", () => {
+      (_c = root2.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _c.addEventListener("change", () => {
         state.selectedMutantId = null;
         render();
       });

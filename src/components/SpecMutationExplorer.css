@@ -91,3 +91,92 @@
   font-size: 0.78rem;
   margin-top: 2px;
 }
+
+/* Safety-monitor FSM rendered next to the selected mutant. */
+.spec-fsm-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.spec-fsm {
+  margin: 0;
+  padding: 8px;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 12px;
+}
+
+.spec-fsm-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.spec-fsm svg {
+  width: 100%;
+  height: auto;
+  color: #475569;
+}
+
+.spec-fsm-state circle {
+  fill: #e0e7ff;
+  stroke: #6366f1;
+  stroke-width: 2;
+}
+
+.spec-fsm-state.violation circle {
+  fill: #fee2e2;
+  stroke: #dc2626;
+}
+
+.spec-fsm-state text {
+  font-size: 11px;
+  font-weight: 600;
+  fill: #1e293b;
+}
+
+.spec-fsm-state-sub {
+  font-size: 9px !important;
+  font-weight: 400 !important;
+  fill: #64748b !important;
+}
+
+.spec-fsm-edge {
+  stroke: #94a3b8;
+  stroke-width: 1.4;
+  color: #94a3b8;
+}
+
+.spec-fsm-edge.killer {
+  stroke: #f59e0b;
+  stroke-width: 2.2;
+  color: #f59e0b;
+}
+
+.spec-fsm-edge-label {
+  font-size: 9px;
+  fill: #475569;
+  font-family: ui-monospace, monospace;
+}
+
+.spec-fsm-legend {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.spec-fsm-empty {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-align: center;
+  padding: 12px;
+}
+
+@media (max-width: 720px) {
+  .spec-fsm-grid {
+    grid-template-columns: 1fr;
+  }
+}

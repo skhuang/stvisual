@@ -7,6 +7,7 @@ import {
   astToString,
   SPEC_MUTATION_OPERATORS,
 } from '../utils/specMutation.js';
+import { renderMonitorSvg, flippedKeysFromKillers } from '../utils/specFsm.js';
 
 const STORAGE_KEY = 'stvisual.specMutation.v1';
 const DEFAULT_PREDICATE = '(a || b) && c';
@@ -188,6 +189,28 @@ export function createSpecMutationExplorer() {
          </ul>`;
 
     const selected = state.mutants.find((m) => m.id === state.selectedMutantId) || null;
+    const flippedSet = selected
+      ? flippedKeysFromKillers(selected.killers, state.parsed?.clauses || [])
+      : null;
+    const fsmHtml = state.parsed
+      ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
+          ${renderMonitorSvg({
+            ast: state.parsed.ast,
+            clauses: state.parsed.clauses,
+            title: t('spec.fsm.original'),
+            flippedSet: null,
+            testId: 'spec-fsm-original',
+          })}
+          ${renderMonitorSvg({
+            ast: selected ? selected.ast : state.parsed.ast,
+            clauses: state.parsed.clauses,
+            title: selected ? `${t('spec.fsm.mutant')}: ${selected.id}` : t('spec.fsm.pickMutant'),
+            flippedSet,
+            testId: 'spec-fsm-mutant',
+          })}
+         </div>
+         <p class="spec-fsm-legend">${escapeHtml(t('spec.fsm.legend'))}</p>`
+      : '';
     const selectedDetailHtml = selected
       ? `<div class="spec-mutant-detail">
           <h5>${escapeHtml(selected.id)}</h5>
@@ -237,6 +260,7 @@ export function createSpecMutationExplorer() {
             <div>${mutantsHtml}</div>
             <div>${selectedDetailHtml}</div>
           </div>
+          ${fsmHtml}
         </div>
       </div>
     `;

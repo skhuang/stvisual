@@ -309,6 +309,10 @@ export const messages = {
     'spec.op.LRO': 'LRO — swap && and ||',
     'spec.op.UOI': 'UOI — insert NOT around a clause',
     'spec.op.MCR': 'MCR — drop one operand of && or ||',
+    'spec.fsm.original': 'Original predicate (safety monitor)',
+    'spec.fsm.mutant': 'Mutant',
+    'spec.fsm.pickMutant': 'Pick a mutant to compare',
+    'spec.fsm.legend': 'Two-state monitor: SAFE = predicate holds, VIOLATION = predicate fails. Orange transitions are routed differently by the mutant (killer assignments).',
 
     'syntax.cloud.failed': 'Sync failed',
     'syntax.cloud.linked': 'Linked: {name}',
@@ -625,6 +629,10 @@ export const messages = {
     'spec.op.LRO': 'LRO — 交換 && 與 ||',
     'spec.op.UOI': 'UOI — 在子句外插入 NOT',
     'spec.op.MCR': 'MCR — 刪除 && 或 || 的一個操作元',
+    'spec.fsm.original': '原 predicate（安全監控狀態機）',
+    'spec.fsm.mutant': 'Mutant',
+    'spec.fsm.pickMutant': '選擇 mutant 進行比對',
+    'spec.fsm.legend': '兩狀態監控：SAFE = predicate 為真，VIOLATION = predicate 為假。橘色邊代表 mutant 將該賜值導向不同狀態（即 killer assignments）。',
 
     'syntax.cloud.failed': '同步失敗',
     'syntax.cloud.linked': '已連結 {name}',
