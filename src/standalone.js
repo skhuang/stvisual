@@ -2096,8 +2096,10 @@
   function assignLayout(nodes, edges) {
     const depths = computeDepths(nodes, edges);
     const incoming = new Map(nodes.map((n) => [n.id, []]));
+    const outgoing = new Map(nodes.map((n) => [n.id, []]));
     edges.forEach((e) => {
       if (incoming.has(e.to)) incoming.get(e.to).push(e.from);
+      if (outgoing.has(e.from)) outgoing.get(e.from).push(e.to);
     });
     const layers = /* @__PURE__ */ new Map();
     nodes.forEach((node) => {
@@ -2126,48 +2128,85 @@
           node.x = MARGIN_X + idx * NODE_SPACING_X;
         }
       });
-      layer.sort((a, b) => a.x - b.x);
-      for (let i = 1; i < layer.length; i++) {
-        const left = layer[i - 1];
-        const cur = layer[i];
-        const minX2 = left.x + NODE_SPACING_X;
-        if (cur.x < minX2) cur.x = minX2;
-      }
+      spreadLayer(layer, NODE_SPACING_X);
       layer.forEach((node) => {
         placed.set(node.id, node.x);
       });
     }
+    const SWEEPS = 4;
+    for (let s = 0; s < SWEEPS; s++) {
+      for (const depth of sortedDepths) {
+        const layer = layers.get(depth);
+        layer.forEach((node) => {
+          const preds = (incoming.get(node.id) || []).map((p) => placed.get(p)).filter((v) => v !== void 0);
+          if (preds.length > 0) node.x = preds.reduce((a, b) => a + b, 0) / preds.length;
+        });
+        layer.sort((a, b) => a.x - b.x);
+        spreadLayer(layer, NODE_SPACING_X);
+        layer.forEach((node) => {
+          placed.set(node.id, node.x);
+        });
+      }
+      for (let i = sortedDepths.length - 1; i >= 0; i--) {
+        const layer = layers.get(sortedDepths[i]);
+        layer.forEach((node) => {
+          const succ = (outgoing.get(node.id) || []).map((q) => placed.get(q)).filter((v) => v !== void 0);
+          if (succ.length > 0) node.x = succ.reduce((a, b) => a + b, 0) / succ.length;
+        });
+        layer.sort((a, b) => a.x - b.x);
+        spreadLayer(layer, NODE_SPACING_X);
+        layer.forEach((node) => {
+          placed.set(node.id, node.x);
+        });
+      }
+    }
     const minX = Math.min(...nodes.map((n) => n.x));
     const shift = MARGIN_X - minX;
-    if (shift !== 0) nodes.forEach((n) => {
+    nodes.forEach((n) => {
       n.x = Math.round(n.x + shift);
     });
-    else nodes.forEach((n) => {
-      n.x = Math.round(n.x);
-    });
     const coordinates = new Map(nodes.map((node) => [node.id, node]));
+    const fanOutCounters = /* @__PURE__ */ new Map();
     edges.forEach((edge) => {
       const fromNode = coordinates.get(edge.from);
       const toNode = coordinates.get(edge.to);
       if (!fromNode || !toNode) return;
+      const sibs = outgoing.get(edge.from) || [];
+      const sibCount = sibs.length;
+      const fanIdx = fanOutCounters.get(edge.from) || 0;
+      fanOutCounters.set(edge.from, fanIdx + 1);
+      const fan = sibCount > 1 ? fanIdx - (sibCount - 1) / 2 : 0;
+      const FAN_STEP = 28;
       if (toNode.y <= fromNode.y) {
         const offset = Math.max(120, Math.abs(toNode.y - fromNode.y) / 2 + 80);
         edge.control = {
-          x: Math.max(fromNode.x, toNode.x) + offset,
+          x: Math.max(fromNode.x, toNode.x) + offset + fan * FAN_STEP,
           y: (fromNode.y + toNode.y) / 2
         };
       } else if (toNode.y - fromNode.y > LAYER_SPACING_Y * 1.5) {
         edge.control = {
-          x: (fromNode.x + toNode.x) / 2 + 80,
+          x: (fromNode.x + toNode.x) / 2 + 80 + fan * FAN_STEP,
           y: (fromNode.y + toNode.y) / 2
         };
-      } else if (Math.abs(toNode.x - fromNode.x) > NODE_SPACING_X * 1.2) {
+      } else if (sibCount > 1 || Math.abs(toNode.x - fromNode.x) > NODE_SPACING_X * 1.2) {
+        const midX = (fromNode.x + toNode.x) / 2;
+        const midY = fromNode.y + (toNode.y - fromNode.y) * 0.35;
         edge.control = {
-          x: (fromNode.x + toNode.x) / 2,
-          y: fromNode.y + (toNode.y - fromNode.y) * 0.35
+          x: midX + fan * FAN_STEP,
+          y: midY
         };
       }
     });
+  }
+  function spreadLayer(layer, spacing) {
+    for (let i = 1; i < layer.length; i++) {
+      const minX = layer[i - 1].x + spacing;
+      if (layer[i].x < minX) layer[i].x = minX;
+    }
+    for (let i = layer.length - 2; i >= 0; i--) {
+      const maxX = layer[i + 1].x - spacing;
+      if (layer[i].x > maxX) layer[i].x = maxX;
+    }
   }
   function generateControlFlowGraphFromProgram({ sourceCode, language, title }) {
     const statements = parseStructuredProgram(sourceCode, language);
