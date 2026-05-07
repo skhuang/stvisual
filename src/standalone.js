@@ -432,6 +432,9 @@
       "section.graph.title": "Graph Coverage Visualization",
       "section.logic.title": "Logic Coverage Visualization",
       "section.syntax.title": "Syntax-Based Testing: Program Mutation",
+      "syntaxTab.mutation": "Program Mutation",
+      "syntaxTab.grammar": "Grammar Coverage",
+      "syntaxTab.spec": "Specification Mutation",
       "section.cloud.title": "Google Cloud Integration",
       "section.flow.title": "Testing Flow",
       "section.types.title": "Common Testing Types",
@@ -751,6 +754,9 @@
       "section.graph.title": "Graph Coverage \u8996\u89BA\u5316",
       "section.logic.title": "Logic Coverage \u8996\u89BA\u5316",
       "section.syntax.title": "Syntax-Based Testing\uFF1AProgram Mutation",
+      "syntaxTab.mutation": "\u7A0B\u5F0F Mutation",
+      "syntaxTab.grammar": "Grammar Coverage",
+      "syntaxTab.spec": "\u898F\u683C Mutation",
       "section.cloud.title": "Google \u96F2\u7AEF\u6574\u5408",
       "section.flow.title": "\u6E2C\u8A66\u6D41\u7A0B",
       "section.types.title": "\u5E38\u898B\u6E2C\u8A66\u985E\u578B",
@@ -8108,9 +8114,66 @@ INVARSPEC !moving | !door`
       container.querySelector('[data-slot="methods"]').appendChild(components.methods);
       container.querySelector('[data-slot="graph"]').appendChild(components.graph);
       container.querySelector('[data-slot="logic"]').appendChild(components.logic);
-      container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
-      container.querySelector('[data-slot="syntax"]').appendChild(components.grammar);
-      container.querySelector('[data-slot="syntax"]').appendChild(components.specMutation);
+      const syntaxTabs = [
+        { id: "mutation", key: "syntaxTab.mutation", component: components.syntax },
+        { id: "grammar", key: "syntaxTab.grammar", component: components.grammar },
+        { id: "spec", key: "syntaxTab.spec", component: components.specMutation }
+      ];
+      const syntaxSlot = container.querySelector('[data-slot="syntax"]');
+      const syntaxTabBar = document.createElement("nav");
+      syntaxTabBar.className = "syntax-tab-row";
+      syntaxTabBar.dataset.testid = "syntax-tab-row";
+      syntaxTabBar.setAttribute("role", "tablist");
+      syntaxSlot.appendChild(syntaxTabBar);
+      const syntaxPanels = document.createElement("div");
+      syntaxPanels.className = "syntax-tab-panels";
+      syntaxSlot.appendChild(syntaxPanels);
+      for (const tab of syntaxTabs) {
+        const panel = document.createElement("div");
+        panel.className = "syntax-tab-panel";
+        panel.dataset.syntaxPanel = tab.id;
+        panel.appendChild(tab.component);
+        syntaxPanels.appendChild(panel);
+      }
+      const SYNTAX_TAB_KEY = "stvisual.syntaxActiveTab";
+      let activeSyntaxTab = (() => {
+        var _a2;
+        try {
+          const v = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(SYNTAX_TAB_KEY);
+          return syntaxTabs.find((t2) => t2.id === v) ? v : "mutation";
+        } catch {
+          return "mutation";
+        }
+      })();
+      function renderSyntaxTabs() {
+        syntaxTabBar.innerHTML = syntaxTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeSyntaxTab === tab.id ? " active" : ""}"
+          data-syntax-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeSyntaxTab === tab.id ? "true" : "false"}"
+        >${t(tab.key)}</button>
+      `).join("");
+        syntaxTabBar.querySelectorAll("[data-syntax-tab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            var _a2;
+            activeSyntaxTab = btn.dataset.syntaxTab;
+            try {
+              (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(SYNTAX_TAB_KEY, activeSyntaxTab);
+            } catch {
+            }
+            renderSyntaxTabs();
+            updateSyntaxPanels();
+          });
+        });
+      }
+      function updateSyntaxPanels() {
+        syntaxPanels.querySelectorAll("[data-syntax-panel]").forEach((panel) => {
+          panel.style.display = panel.dataset.syntaxPanel === activeSyntaxTab ? "" : "none";
+        });
+      }
+      renderSyntaxTabs();
+      updateSyntaxPanels();
       container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);

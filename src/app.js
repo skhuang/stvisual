@@ -83,9 +83,62 @@ export function renderApp(container) {
     container.querySelector('[data-slot="methods"]').appendChild(components.methods);
     container.querySelector('[data-slot="graph"]').appendChild(components.graph);
     container.querySelector('[data-slot="logic"]').appendChild(components.logic);
-    container.querySelector('[data-slot="syntax"]').appendChild(components.syntax);
-    container.querySelector('[data-slot="syntax"]').appendChild(components.grammar);
-    container.querySelector('[data-slot="syntax"]').appendChild(components.specMutation);
+
+    // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
+    const syntaxTabs = [
+      { id: 'mutation', key: 'syntaxTab.mutation', component: components.syntax },
+      { id: 'grammar',  key: 'syntaxTab.grammar',  component: components.grammar },
+      { id: 'spec',     key: 'syntaxTab.spec',     component: components.specMutation },
+    ];
+    const syntaxSlot = container.querySelector('[data-slot="syntax"]');
+    const syntaxTabBar = document.createElement('nav');
+    syntaxTabBar.className = 'syntax-tab-row';
+    syntaxTabBar.dataset.testid = 'syntax-tab-row';
+    syntaxTabBar.setAttribute('role', 'tablist');
+    syntaxSlot.appendChild(syntaxTabBar);
+    const syntaxPanels = document.createElement('div');
+    syntaxPanels.className = 'syntax-tab-panels';
+    syntaxSlot.appendChild(syntaxPanels);
+    for (const tab of syntaxTabs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.syntaxPanel = tab.id;
+      panel.appendChild(tab.component);
+      syntaxPanels.appendChild(panel);
+    }
+    const SYNTAX_TAB_KEY = 'stvisual.syntaxActiveTab';
+    let activeSyntaxTab = (() => {
+      try {
+        const v = globalThis.localStorage?.getItem(SYNTAX_TAB_KEY);
+        return syntaxTabs.find((t) => t.id === v) ? v : 'mutation';
+      } catch { return 'mutation'; }
+    })();
+    function renderSyntaxTabs() {
+      syntaxTabBar.innerHTML = syntaxTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeSyntaxTab === tab.id ? ' active' : ''}"
+          data-syntax-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeSyntaxTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      syntaxTabBar.querySelectorAll('[data-syntax-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeSyntaxTab = btn.dataset.syntaxTab;
+          try { globalThis.localStorage?.setItem(SYNTAX_TAB_KEY, activeSyntaxTab); } catch {}
+          renderSyntaxTabs();
+          updateSyntaxPanels();
+        });
+      });
+    }
+    function updateSyntaxPanels() {
+      syntaxPanels.querySelectorAll('[data-syntax-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.syntaxPanel === activeSyntaxTab ? '' : 'none';
+      });
+    }
+    renderSyntaxTabs();
+    updateSyntaxPanels();
+
     container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
     container.querySelector('[data-slot="flow"]').appendChild(components.flow);
     container.querySelector('[data-slot="types"]').appendChild(components.types);
