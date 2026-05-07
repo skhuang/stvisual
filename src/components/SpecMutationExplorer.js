@@ -22,9 +22,55 @@ function escapeHtml(value = '') {
 }
 
 const SPEC_EXAMPLES = [
-  { id: 'guard', name: 'Guard', nameEn: 'Guard', text: '(a || b) && c' },
-  { id: 'leap', name: 'Leap year', nameEn: 'Leap year', text: '(y && !c) || (y && c && q)' },
-  { id: 'triangle', name: 'Triangle ineq.', nameEn: 'Triangle ineq.', text: 'a && b && c' },
+  {
+    id: 'guard',
+    name: 'Guard',
+    text: '(a || b) && c',
+    description: 'Generic Boolean guard for an action.',
+  },
+  {
+    id: 'leap',
+    name: 'Leap year',
+    text: '(y && !c) || (y && c && q)',
+    description: 'Leap-year predicate: divisible by 4 (y) and (not by 100 (c) or by 400 (q)).',
+  },
+  {
+    id: 'triangle',
+    name: 'Triangle ineq.',
+    text: 'a && b && c',
+    description: 'All three triangle-inequality clauses must hold.',
+  },
+  // --- SMV / model-checking style invariants (Ammann/Offutt §9.5) ---
+  {
+    id: 'smv-mutex',
+    name: 'SMV: Mutual exclusion',
+    text: '!(c1 && c2)',
+    description: 'Two-process mutual exclusion invariant: never both critical.',
+  },
+  {
+    id: 'smv-cruise',
+    name: 'SMV: Cruise control',
+    text: '!cruise || (ignition && running && !brake)',
+    description: 'Cruise control safety: cruise active implies ignition on, engine running, brake released.',
+  },
+  {
+    id: 'smv-sis',
+    name: 'SMV: Safety injection',
+    text: '(si && pressure && !override) || (!si && (!pressure || override))',
+    description: 'Safety Injection System (Parnas/Heimdahl): SI on iff pressure low and not overridden.',
+  },
+  {
+    id: 'smv-train',
+    name: 'SMV: Train-gate',
+    text: '!train || (gate && signal)',
+    description: 'Train-Gate-Controller invariant: when a train is at the crossing, gate is down and signal is red.',
+  },
+  {
+    id: 'smv-elevator',
+    name: 'SMV: Elevator door',
+    text: '!moving || !door',
+    description: 'Elevator safety invariant: cabin must not move while a door is open.',
+  },
 ];
 
 function loadSaved() {
@@ -107,9 +153,10 @@ export function createSpecMutationExplorer() {
   function render() {
     recompute();
 
+    const currentExample = SPEC_EXAMPLES.find((ex) => state.text.trim() === ex.text) || null;
     const exampleButtons = SPEC_EXAMPLES.map((ex) => `
       <button type="button" class="spec-example-btn${state.text.trim() === ex.text ? ' active' : ''}"
-        data-spec-example="${ex.id}">${escapeHtml(ex.name)}</button>
+        data-spec-example="${ex.id}" title="${escapeHtml(ex.description || '')}">${escapeHtml(ex.name)}</button>
     `).join('');
 
     const operatorButtons = SPEC_MUTATION_OPERATORS.map((op) => `
@@ -165,6 +212,7 @@ export function createSpecMutationExplorer() {
         </header>
 
         <div class="grammar-example-row">${exampleButtons}</div>
+        ${currentExample?.description ? `<p class="spec-example-caption" data-testid="spec-example-caption">${escapeHtml(currentExample.description)}</p>` : ''}
 
         <div class="spec-editor-row">
           <label class="grammar-editor-label">

@@ -26,6 +26,16 @@
   border-color: #6366f1;
 }
 
+.spec-example-caption {
+  margin: -4px 0 12px;
+  font-size: 0.85rem;
+  color: #475569;
+  background: #eef2ff;
+  border-left: 3px solid #6366f1;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
 .spec-editor-row {
   display: flex;
   flex-direction: column;

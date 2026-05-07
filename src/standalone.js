@@ -7514,9 +7514,55 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
   var SPEC_EXAMPLES = [
-    { id: "guard", name: "Guard", nameEn: "Guard", text: "(a || b) && c" },
-    { id: "leap", name: "Leap year", nameEn: "Leap year", text: "(y && !c) || (y && c && q)" },
-    { id: "triangle", name: "Triangle ineq.", nameEn: "Triangle ineq.", text: "a && b && c" }
+    {
+      id: "guard",
+      name: "Guard",
+      text: "(a || b) && c",
+      description: "Generic Boolean guard for an action."
+    },
+    {
+      id: "leap",
+      name: "Leap year",
+      text: "(y && !c) || (y && c && q)",
+      description: "Leap-year predicate: divisible by 4 (y) and (not by 100 (c) or by 400 (q))."
+    },
+    {
+      id: "triangle",
+      name: "Triangle ineq.",
+      text: "a && b && c",
+      description: "All three triangle-inequality clauses must hold."
+    },
+    // --- SMV / model-checking style invariants (Ammann/Offutt §9.5) ---
+    {
+      id: "smv-mutex",
+      name: "SMV: Mutual exclusion",
+      text: "!(c1 && c2)",
+      description: "Two-process mutual exclusion invariant: never both critical."
+    },
+    {
+      id: "smv-cruise",
+      name: "SMV: Cruise control",
+      text: "!cruise || (ignition && running && !brake)",
+      description: "Cruise control safety: cruise active implies ignition on, engine running, brake released."
+    },
+    {
+      id: "smv-sis",
+      name: "SMV: Safety injection",
+      text: "(si && pressure && !override) || (!si && (!pressure || override))",
+      description: "Safety Injection System (Parnas/Heimdahl): SI on iff pressure low and not overridden."
+    },
+    {
+      id: "smv-train",
+      name: "SMV: Train-gate",
+      text: "!train || (gate && signal)",
+      description: "Train-Gate-Controller invariant: when a train is at the crossing, gate is down and signal is red."
+    },
+    {
+      id: "smv-elevator",
+      name: "SMV: Elevator door",
+      text: "!moving || !door",
+      description: "Elevator safety invariant: cabin must not move while a door is open."
+    }
   ];
   function loadSaved() {
     var _a2;
@@ -7593,9 +7639,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     function render() {
       var _a2, _b;
       recompute();
+      const currentExample = SPEC_EXAMPLES.find((ex) => state.text.trim() === ex.text) || null;
       const exampleButtons = SPEC_EXAMPLES.map((ex) => `
       <button type="button" class="spec-example-btn${state.text.trim() === ex.text ? " active" : ""}"
-        data-spec-example="${ex.id}">${escapeHtml5(ex.name)}</button>
+        data-spec-example="${ex.id}" title="${escapeHtml5(ex.description || "")}">${escapeHtml5(ex.name)}</button>
     `).join("");
       const operatorButtons = SPEC_MUTATION_OPERATORS.map((op) => `
       <label class="grammar-op-btn${state.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
@@ -7638,6 +7685,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </header>
 
         <div class="grammar-example-row">${exampleButtons}</div>
+        ${(currentExample == null ? void 0 : currentExample.description) ? `<p class="spec-example-caption" data-testid="spec-example-caption">${escapeHtml5(currentExample.description)}</p>` : ""}
 
         <div class="spec-editor-row">
           <label class="grammar-editor-label">
