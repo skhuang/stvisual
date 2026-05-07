@@ -710,6 +710,7 @@
       "spec.fsm.mutant": "Mutant",
       "spec.fsm.pickMutant": "Pick a mutant to compare",
       "spec.fsm.legend": "Two-state monitor: SAFE = predicate holds, VIOLATION = predicate fails. Orange transitions are routed differently by the mutant (killer assignments).",
+      "spec.smv.viewSource": "NuSMV source",
       "syntax.cloud.failed": "Sync failed",
       "syntax.cloud.linked": "Linked: {name}",
       "syntax.cloud.reloading": "Reloading from cloud\u2026",
@@ -1015,6 +1016,7 @@
       "spec.fsm.mutant": "Mutant",
       "spec.fsm.pickMutant": "\u9078\u64C7 mutant \u9032\u884C\u6BD4\u5C0D",
       "spec.fsm.legend": "\u5169\u72C0\u614B\u76E3\u63A7\uFF1ASAFE = predicate \u70BA\u771F\uFF0CVIOLATION = predicate \u70BA\u5047\u3002\u6A58\u8272\u908A\u4EE3\u8868 mutant \u5C07\u8A72\u8CDC\u503C\u5C0E\u5411\u4E0D\u540C\u72C0\u614B\uFF08\u5373 killer assignments\uFF09\u3002",
+      "spec.smv.viewSource": "NuSMV \u539F\u59CB\u7A0B\u5F0F",
       "syntax.cloud.failed": "\u540C\u6B65\u5931\u6557",
       "syntax.cloud.linked": "\u5DF2\u9023\u7D50 {name}",
       "syntax.cloud.reloading": "\u91CD\u65B0\u5F9E\u96F2\u7AEF\u8B80\u53D6\u2026",
@@ -7653,31 +7655,144 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       id: "smv-mutex",
       name: "SMV: Mutual exclusion",
       text: "!(c1 && c2)",
-      description: "Two-process mutual exclusion invariant: never both critical."
+      description: "Two-process mutual exclusion invariant: never both critical.",
+      smv: `MODULE proc(other_critical, turn, id)
+VAR
+  state : { idle, trying, critical };
+ASSIGN
+  init(state) := idle;
+  next(state) :=
+    case
+      state = idle                                : { idle, trying };
+      state = trying & !other_critical & turn=id : critical;
+      state = trying                              : trying;
+      state = critical                            : { critical, idle };
+      TRUE                                        : state;
+    esac;
+
+MODULE main
+VAR
+  turn : { 1, 2 };
+  p1   : proc(p2.state = critical, turn, 1);
+  p2   : proc(p1.state = critical, turn, 2);
+DEFINE
+  c1 := p1.state = critical;
+  c2 := p2.state = critical;
+
+-- Safety: never both processes in the critical section
+INVARSPEC !(c1 & c2)`
     },
     {
       id: "smv-cruise",
       name: "SMV: Cruise control",
       text: "!cruise || (ignition && running && !brake)",
-      description: "Cruise control safety: cruise active implies ignition on, engine running, brake released."
+      description: "Cruise control safety: cruise active implies ignition on, engine running, brake released.",
+      smv: `MODULE main
+VAR
+  ignition : boolean;
+  running  : boolean;
+  brake    : boolean;
+  cruise   : boolean;
+ASSIGN
+  init(ignition) := FALSE;
+  init(running)  := FALSE;
+  init(brake)    := FALSE;
+  init(cruise)   := FALSE;
+
+  -- Driver may toggle ignition / brake non-deterministically.
+  next(ignition) := { TRUE, FALSE };
+  next(brake)    := { TRUE, FALSE };
+  -- Engine runs only while ignition is on.
+  next(running)  := ignition;
+  -- Cruise can only be engaged when ignition is on, engine is running and
+  -- the brake is released; pressing brake disengages cruise.
+  next(cruise) :=
+    case
+      brake          : FALSE;
+      !ignition      : FALSE;
+      !running       : FALSE;
+      TRUE           : { TRUE, FALSE };
+    esac;
+
+-- Safety: cruise active implies ignition on, engine running, brake released
+INVARSPEC !cruise | (ignition & running & !brake)`
     },
     {
       id: "smv-sis",
       name: "SMV: Safety injection",
       text: "(si && pressure && !override) || (!si && (!pressure || override))",
-      description: "Safety Injection System (Parnas/Heimdahl): SI on iff pressure low and not overridden."
+      description: "Safety Injection System (Parnas/Heimdahl): SI on iff pressure low and not overridden.",
+      smv: `MODULE main
+VAR
+  pressure : boolean;   -- TRUE when reactor pressure is BELOW threshold
+  override : boolean;   -- operator override switch
+  si       : boolean;   -- safety injection actuator
+ASSIGN
+  init(pressure) := FALSE;
+  init(override) := FALSE;
+  init(si)       := FALSE;
+
+  next(pressure) := { TRUE, FALSE };
+  next(override) := { TRUE, FALSE };
+  -- SI must turn on iff pressure is below threshold AND not overridden.
+  next(si) := pressure & !override;
+
+-- Functional spec: SI on  <-> (pressure low AND not overridden)
+INVARSPEC (si & pressure & !override) | (!si & (!pressure | override))`
     },
     {
       id: "smv-train",
       name: "SMV: Train-gate",
       text: "!train || (gate && signal)",
-      description: "Train-Gate-Controller invariant: when a train is at the crossing, gate is down and signal is red."
+      description: "Train-Gate-Controller invariant: when a train is at the crossing, gate is down and signal is red.",
+      smv: `MODULE main
+VAR
+  train  : boolean;   -- train present at crossing
+  gate   : boolean;   -- gate down
+  signal : boolean;   -- signal red (stop)
+ASSIGN
+  init(train)  := FALSE;
+  init(gate)   := FALSE;
+  init(signal) := FALSE;
+
+  -- Train arrives / departs non-deterministically.
+  next(train) := { TRUE, FALSE };
+  -- Controller lowers gate and turns red signal whenever a train is present
+  -- (and may keep them set briefly after the train leaves).
+  next(gate)   := train | gate & next(train);
+  next(signal) := train | signal & next(train);
+
+-- Safety: train present  ->  gate down AND signal red
+INVARSPEC !train | (gate & signal)`
     },
     {
       id: "smv-elevator",
       name: "SMV: Elevator door",
       text: "!moving || !door",
-      description: "Elevator safety invariant: cabin must not move while a door is open."
+      description: "Elevator safety invariant: cabin must not move while a door is open.",
+      smv: `MODULE main
+VAR
+  door   : boolean;   -- TRUE  = door open
+  moving : boolean;   -- TRUE  = cabin moving
+ASSIGN
+  init(door)   := TRUE;
+  init(moving) := FALSE;
+
+  -- Door may open/close while the cabin is stopped.
+  next(door) :=
+    case
+      moving : door;            -- cannot change door state mid-travel
+      TRUE   : { TRUE, FALSE };
+    esac;
+  -- Cabin may start moving only when the door is closed.
+  next(moving) :=
+    case
+      door   : FALSE;
+      TRUE   : { TRUE, FALSE };
+    esac;
+
+-- Safety: never moving while a door is open
+INVARSPEC !moving | !door`
     }
   ];
   function loadSaved() {
@@ -7820,6 +7935,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
         <div class="grammar-example-row">${exampleButtons}</div>
         ${(currentExample == null ? void 0 : currentExample.description) ? `<p class="spec-example-caption" data-testid="spec-example-caption">${escapeHtml5(currentExample.description)}</p>` : ""}
+        ${(currentExample == null ? void 0 : currentExample.smv) ? `<details class="spec-smv-source" data-testid="spec-smv-source" open>
+          <summary>${escapeHtml5(t("spec.smv.viewSource"))}</summary>
+          <pre><code>${escapeHtml5(currentExample.smv)}</code></pre>
+        </details>` : ""}
 
         <div class="spec-editor-row">
           <label class="grammar-editor-label">

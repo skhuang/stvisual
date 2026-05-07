@@ -36,6 +36,40 @@
   border-radius: 4px;
 }
 
+.spec-smv-source {
+  margin: 0 0 14px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e2e8f0;
+  overflow: hidden;
+}
+
+.spec-smv-source summary {
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #1e293b;
+  color: #f1f5f9;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  user-select: none;
+}
+
+.spec-smv-source summary:hover {
+  background: #334155;
+}
+
+.spec-smv-source pre {
+  margin: 0;
+  padding: 12px 14px;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  overflow-x: auto;
+  white-space: pre;
+}
+
 .spec-editor-row {
   display: flex;
   flex-direction: column;
