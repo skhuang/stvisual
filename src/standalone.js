@@ -8559,6 +8559,79 @@ ASSIGN
 
 -- Safety: never moving while a door is open
 INVARSPEC !moving | !door`
+    },
+    {
+      id: "smv-garage",
+      name: "Garage door",
+      category: "smv",
+      text: "(!u || !t) && (!d || !o)",
+      description: "Garage-door controller: drive up only when not at top sensor; drive down only when no obstruction.",
+      smv: `MODULE main
+VAR
+  u : boolean;   -- motor driving up
+  d : boolean;   -- motor driving down
+  t : boolean;   -- top end-stop sensor
+  o : boolean;   -- IR obstruction beam broken
+ASSIGN
+  init(u) := FALSE;
+  init(d) := FALSE;
+  init(t) := FALSE;
+  init(o) := FALSE;
+
+  -- End-stop and obstruction change non-deterministically.
+  next(t) := { TRUE, FALSE };
+  next(o) := { TRUE, FALSE };
+
+  -- Controller: never drive both directions; cut UP when at top;
+  -- cut DOWN when an obstruction is detected.
+  next(u) :=
+    case
+      next(t)        : FALSE;
+      d              : FALSE;
+      TRUE           : { TRUE, FALSE };
+    esac;
+  next(d) :=
+    case
+      next(o)        : FALSE;
+      u              : FALSE;
+      TRUE           : { TRUE, FALSE };
+    esac;
+
+-- Safety: motor up implies not at top, motor down implies no obstruction
+INVARSPEC (!u | !t) & (!d | !o)`
+    },
+    {
+      id: "smv-wiper",
+      name: "Windshield wiper",
+      category: "smv",
+      text: "!w || (i && (l || h))",
+      description: "Windshield-wiper controller: wipers operate only when ignition is on and the lever is in a non-off position.",
+      smv: `MODULE main
+VAR
+  i : boolean;   -- ignition on
+  l : boolean;   -- lever in LOW position
+  h : boolean;   -- lever in HIGH position
+  w : boolean;   -- wiper motor running
+ASSIGN
+  init(i) := FALSE;
+  init(l) := FALSE;
+  init(h) := FALSE;
+  init(w) := FALSE;
+
+  -- Driver may toggle ignition; lever positions are mutually exclusive.
+  next(i) := { TRUE, FALSE };
+  next(l) :=
+    case
+      next(h) : FALSE;
+      TRUE    : { TRUE, FALSE };
+    esac;
+  next(h) := { TRUE, FALSE };
+
+  -- Wipers run iff ignition is on AND lever selects LOW or HIGH.
+  next(w) := next(i) & (next(l) | next(h));
+
+-- Safety: wipers on implies ignition on and lever not in OFF position
+INVARSPEC !w | (i & (l | h))`
     }
   ];
   function loadSaved() {
