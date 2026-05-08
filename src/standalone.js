@@ -33,7 +33,8 @@
         { id: "ppc", name: "Prime Path Coverage", nameEn: "Prime Path Coverage", description: "\u6700\u5C0F\u5316\u4E14\u5B8C\u6574\u7684\u8DEF\u5F91\u8986\u84CB\u96C6\u5408", descriptionEn: "Minimal yet complete prime-path coverage set." },
         { id: "cc", name: "\u689D\u4EF6\u8986\u84CB", nameEn: "Condition Coverage", description: "\u78BA\u4FDD\u6BCF\u500B\u5E03\u6797\u689D\u4EF6\u7684\u771F\u5047\u90FD\u88AB\u6E2C\u8A66", descriptionEn: "Ensure each Boolean condition is tested for true and false." },
         { id: "mc", name: "\u591A\u91CD\u689D\u4EF6\u8986\u84CB", nameEn: "Multiple Conditions", description: "\u6E2C\u8A66\u6240\u6709\u689D\u4EF6\u7D44\u5408\u7684\u771F\u5047\u60C5\u6CC1", descriptionEn: "Test all true/false combinations of conditions." },
-        { id: "symbex", name: "\u7B26\u865F\u57F7\u884C", nameEn: "Symbolic Execution", description: "\u4EE5\u7B26\u865F\u503C\u4EE3\u5165\u7A0B\u5F0F\u8B8A\u6578\uFF0C\u6CBF\u8DEF\u5F91\u6536\u96C6 path condition \u4E26\u6C42\u89E3\u53EF\u9054\u8F38\u5165", descriptionEn: "Substitute symbolic values for program inputs, collect a path condition along each path, and solve for concrete witnesses." }
+        { id: "symbex", name: "\u7B26\u865F\u57F7\u884C", nameEn: "Symbolic Execution", description: "\u4EE5\u7B26\u865F\u503C\u4EE3\u5165\u7A0B\u5F0F\u8B8A\u6578\uFF0C\u6CBF\u8DEF\u5F91\u6536\u96C6 path condition \u4E26\u6C42\u89E3\u53EF\u9054\u8F38\u5165", descriptionEn: "Substitute symbolic values for program inputs, collect a path condition along each path, and solve for concrete witnesses." },
+        { id: "concolic", name: "\u5177\u9AD4\u7B26\u865F\u57F7\u884C", nameEn: "Concolic Execution", description: "\u7D50\u5408\u5177\u9AD4\u57F7\u884C\u8207\u7B26\u865F\u57F7\u884C (DART/CUTE)\uFF1A\u6BCF\u6B21\u5177\u9AD4\u8DD1\u4E00\u689D\u8DEF\u5F91\uFF0C\u518D\u7FFB\u8F49\u5206\u652F\u689D\u4EF6\u6C42\u89E3\u65B0\u8F38\u5165\u4EE5\u6DB5\u84CB\u66F4\u591A\u8DEF\u5F91", descriptionEn: "Concrete + symbolic (DART/CUTE): runs the program concretely, then negates branch conditions to derive new inputs that cover additional paths." }
       ]
     },
     {
@@ -529,6 +530,72 @@
 `
     }
   ];
+  var concolicExecutionExamples = [
+    {
+      id: "triangle",
+      name: "Triangle classifier",
+      nameEn: "Triangle classifier",
+      description: "\u5F9E (1,1,1) \u7B49\u908A\u4E09\u89D2\u5F62\u7A2E\u5B50\u51FA\u767C\uFF0C\u6BCF\u6B21\u7FFB\u8F49\u6700\u5F8C\u4E00\u500B\u672A\u63A2\u7D22\u7684\u5206\u652F\uFF0C\u81EA\u52D5\u7522\u751F\u65B0\u8F38\u5165\u3002",
+      descriptionEn: "Seeded with the equilateral triangle (1,1,1); each step flips the last unexplored branch to derive a new input.",
+      seed: "a=1, b=1, c=1",
+      sourceCode: `function classify(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) return 0;
+  if (a + b <= c || a + c <= b || b + c <= a) return 0;
+  if (a == b && b == c) return 3;
+  if (a == b || b == c || a == c) return 2;
+  return 1;
+}
+`
+    },
+    {
+      id: "abs",
+      name: "Absolute value",
+      nameEn: "Absolute value",
+      description: "\u6700\u5C0F\u7BC4\u4F8B\uFF1A\u5F9E x=0 \u51FA\u767C\uFF0Cconcolic \u8D70\u5B8C\u4E00\u689D\u8DEF\u5F91\u5F8C\u7FFB\u8F49\u689D\u4EF6\u5F97\u5230 x<0 \u7684\u5C0D\u5076\u8F38\u5165\u3002",
+      descriptionEn: "Minimal example: starting from x=0, concolic flips the branch to discover the x<0 dual input.",
+      seed: "x=0",
+      sourceCode: `function abs(x) {
+  if (x < 0) return -x;
+  return x;
+}
+`
+    },
+    {
+      id: "max3",
+      name: "Max of three",
+      nameEn: "Max of three",
+      description: "\u793A\u7BC4\u96D9\u5206\u652F\u7D50\u69CB\uFF1A\u6BCF\u689D\u8DEF\u5F91\u5C0D\u61C9 (b>a, c>m) \u5169\u500B\u5206\u652F\u7684\u771F\u5047\u7D44\u5408\u3002",
+      descriptionEn: "Demonstrates a two-branch structure: each path corresponds to a (b>a, c>m) truth combination.",
+      seed: "a=0, b=0, c=0",
+      sourceCode: `function max3(a, b, c) {
+  let m = a;
+  if (b > m) m = b;
+  if (c > m) m = c;
+  return m;
+}
+`
+    },
+    {
+      id: "middle",
+      name: "Middle value",
+      nameEn: "Middle value",
+      description: "\u7D93\u5178 DART \u6E2C\u8A66\u5C0D\u8C61\uFF08Khurshid et al.\uFF09\uFF1A\u56DE\u50B3\u4E09\u6578\u7684\u4E2D\u4F4D\u6578\u3002",
+      descriptionEn: "A classic DART benchmark (Khurshid et al.): returns the median of three integers.",
+      seed: "a=0, b=0, c=0",
+      sourceCode: `function middle(a, b, c) {
+  let m = c;
+  if (b < c) {
+    if (a < b) m = b;
+    else if (a < c) m = a;
+  } else {
+    if (a > b) m = b;
+    else if (a > c) m = a;
+  }
+  return m;
+}
+`
+    }
+  ];
 
   // src/i18n/dict.js
   var messages = {
@@ -575,6 +642,24 @@
       "symbex.empty": "No paths to display.",
       "symbex.pc.empty": "Path condition: (always reachable)",
       "symbex.hint": "Supports a small JS subset: function with int/bool params, let/=, if/else, bounded while, return, +-*/% comparisons, &&/||/!. Witnesses are searched over a small integer domain.",
+      "section.concolic": "Concolic Execution",
+      "section.concolic.title": "Concolic Execution Explorer",
+      "concolic.source": "Program source",
+      "concolic.seed": "Seed input",
+      "concolic.maxIterations": "Max iterations",
+      "concolic.summary.iterations": "Iterations: ",
+      "concolic.summary.uniquePaths": "Unique paths: ",
+      "concolic.summary.uniqueInputs": "Unique inputs: ",
+      "concolic.summary.truncated": "truncated (max iterations reached)",
+      "concolic.return": "Return",
+      "concolic.nextInput": "Next input",
+      "concolic.exhausted": "no further branch to negate",
+      "concolic.negated": "negate",
+      "concolic.pathKey": "Path signature (taken=T, not-taken=F)",
+      "concolic.empty": "No iterations to display.",
+      "concolic.noBranches": "No branches encountered (straight-line program).",
+      "concolic.runtimeError": "Runtime error:",
+      "concolic.hint": "Concolic execution = concrete + symbolic. Each iteration runs the program concretely, then negates the last unexplored branch and asks the solver for a new input. Same JS subset as Symbolic Execution.",
       // Common
       "common.run": "Run",
       "common.reset": "Reset",
@@ -919,6 +1004,24 @@
       "symbex.empty": "\u7121\u8DEF\u5F91\u53EF\u986F\u793A\u3002",
       "symbex.pc.empty": "Path condition\uFF1A\uFF08\u6C38\u9060\u53EF\u9054\uFF09",
       "symbex.hint": "\u652F\u63F4\u5C0F\u578B JS \u5B50\u96C6\uFF1Afunction \u5B63\u544A\u3001let/=\u3001if/else\u3001\u6709\u754C while\u3001return\u3001\u7B97\u8853\u8207\u6BD4\u8F03\u904B\u7B97\u3001&&/||/!\u3002\u898B\u8B49\u4EE5\u5C0F\u578B\u6574\u6578\u57DF\u7A6E\u8209\u6C42\u89E3\u3002",
+      "section.concolic": "\u5177\u9AD4\u7B26\u865F\u57F7\u884C",
+      "section.concolic.title": "Concolic Execution Explorer",
+      "concolic.source": "\u7A0B\u5F0F\u539F\u59CB\u78BC",
+      "concolic.seed": "\u521D\u59CB\u8F38\u5165",
+      "concolic.maxIterations": "\u6700\u5927\u8FED\u4EE3\u6B21\u6578",
+      "concolic.summary.iterations": "\u8FED\u4EE3\u6B21\u6578\uFF1A",
+      "concolic.summary.uniquePaths": "\u552F\u4E00\u8DEF\u5F91\uFF1A",
+      "concolic.summary.uniqueInputs": "\u552F\u4E00\u8F38\u5165\uFF1A",
+      "concolic.summary.truncated": "\u5DF2\u622A\u65B7\uFF08\u9054\u8FED\u4EE3\u4E0A\u9650\uFF09",
+      "concolic.return": "\u56DE\u50B3\u503C",
+      "concolic.nextInput": "\u4E0B\u4E00\u500B\u8F38\u5165",
+      "concolic.exhausted": "\u5DF2\u7121\u53EF\u7FFB\u8F49\u7684\u672A\u63A2\u7D22\u5206\u652F",
+      "concolic.negated": "\u7FFB\u8F49",
+      "concolic.pathKey": "\u8DEF\u5F91\u7C3D\u540D\uFF08\u9078\u4E2D=T\u3001\u672A\u9078=F\uFF09",
+      "concolic.empty": "\u7121\u8FED\u4EE3\u53EF\u986F\u793A\u3002",
+      "concolic.noBranches": "\u672A\u906D\u9047\u5206\u652F\uFF08\u76F4\u7DDA\u7A0B\u5F0F\uFF09\u3002",
+      "concolic.runtimeError": "\u57F7\u884C\u6642\u932F\u8AA4\uFF1A",
+      "concolic.hint": "Concolic execution = concrete + symbolic\u3002\u6BCF\u500B\u8FED\u4EE3\u5148\u5177\u9AD4\u8DD1\u4E00\u689D\u8DEF\u5F91\uFF0C\u518D\u7FFB\u8F49\u6700\u5F8C\u4E00\u500B\u672A\u63A2\u7D22\u5206\u652F\u4E26\u8ACB\u6C42\u89E3\u5668\u7522\u751F\u65B0\u8F38\u5165\u3002\u8A9E\u6CD5\u5B50\u96C6\u540C Symbolic Execution\u3002",
       "common.run": "\u57F7\u884C",
       "common.reset": "\u91CD\u8A2D",
       "common.save": "\u5132\u5B58",
@@ -9738,6 +9841,421 @@ INVARSPEC !w | (i & (l | h))`
     return root2;
   }
 
+  // src/utils/concolicExecution.js
+  var DEFAULT_OPTIONS2 = {
+    maxIterations: 16,
+    searchDomain: { min: -5, max: 12 }
+  };
+  function runConcolicOnce(fn, concreteInputs) {
+    const concreteEnv = {};
+    const symbolicEnv = {};
+    for (const p of fn.params) {
+      concreteEnv[p] = concreteInputs[p];
+      symbolicEnv[p] = { kind: "var", name: p };
+    }
+    const branches = [];
+    let returnValue = null;
+    let returnExpression = null;
+    const HALT = Symbol("HALT");
+    function execStatements(stmts) {
+      for (const s of stmts) {
+        const r = execOne(s);
+        if (r === HALT) return HALT;
+      }
+      return null;
+    }
+    function execOne(stmt) {
+      if (stmt.kind === "block") return execStatements(stmt.statements);
+      if (stmt.kind === "let" || stmt.kind === "assign") {
+        concreteEnv[stmt.target] = evalExpr(stmt.value, concreteEnv);
+        symbolicEnv[stmt.target] = substitute(stmt.value, symbolicEnv);
+        return null;
+      }
+      if (stmt.kind === "return") {
+        if (stmt.argument) {
+          returnValue = evalExpr(stmt.argument, concreteEnv);
+          returnExpression = exprToString(substitute(stmt.argument, symbolicEnv));
+        } else {
+          returnValue = null;
+          returnExpression = null;
+        }
+        return HALT;
+      }
+      if (stmt.kind === "if") {
+        const concrete = evalExpr(stmt.test, concreteEnv);
+        const symbolic = substitute(stmt.test, symbolicEnv);
+        branches.push({
+          condition: exprToString(symbolic),
+          symbolic,
+          taken: Boolean(concrete)
+        });
+        if (concrete) return execOne(stmt.consequent);
+        if (stmt.alternate) return execOne(stmt.alternate);
+        return null;
+      }
+      if (stmt.kind === "while") {
+        let safety = 256;
+        while (safety > 0) {
+          safety -= 1;
+          const concrete = evalExpr(stmt.test, concreteEnv);
+          const symbolic = substitute(stmt.test, symbolicEnv);
+          branches.push({
+            condition: exprToString(symbolic),
+            symbolic,
+            taken: Boolean(concrete),
+            loop: true
+          });
+          if (!concrete) return null;
+          const r = execOne(stmt.body);
+          if (r === HALT) return HALT;
+        }
+        throw new Error("Loop iteration limit exceeded (256).");
+      }
+      return null;
+    }
+    execStatements(fn.body.statements);
+    return { branches, returnValue, returnExpression };
+  }
+  function pathKey(branches) {
+    return branches.map((b) => b.taken ? "T" : "F").join("");
+  }
+  function inputKey(inputs, params) {
+    return params.map((p) => `${p}=${inputs[p]}`).join(",");
+  }
+  function concolicExecute(programSource, options = {}) {
+    var _a2;
+    const opts = { ...DEFAULT_OPTIONS2, ...options };
+    const fn = parse(programSource);
+    const params = fn.params.slice();
+    const seed = {};
+    for (const p of params) {
+      seed[p] = ((_a2 = options.initialInputs) == null ? void 0 : _a2[p]) != null ? options.initialInputs[p] : 0;
+    }
+    const worklist = [seed];
+    const seenInputs = /* @__PURE__ */ new Set([inputKey(seed, params)]);
+    const seenPaths = /* @__PURE__ */ new Set();
+    const iterations = [];
+    let truncated = false;
+    while (worklist.length > 0) {
+      if (iterations.length >= opts.maxIterations) {
+        truncated = true;
+        break;
+      }
+      const inputs = worklist.shift();
+      let trace;
+      try {
+        trace = runConcolicOnce(fn, inputs);
+      } catch (err) {
+        iterations.push({
+          id: `iter-${iterations.length}`,
+          inputs,
+          branches: [],
+          pathCondition: [],
+          pathKey: "",
+          returnValue: null,
+          returnExpression: null,
+          runtimeError: err.message || String(err),
+          nextInput: null,
+          negatedAt: null
+        });
+        continue;
+      }
+      const branches = trace.branches;
+      const pkey = pathKey(branches);
+      seenPaths.add(pkey);
+      let nextInput = null;
+      let negatedAt = null;
+      let negatedNewKey = null;
+      for (let i = branches.length - 1; i >= 0; i -= 1) {
+        const constraint = [];
+        for (let j = 0; j < i; j += 1) {
+          const b = branches[j];
+          constraint.push(b.taken ? b.symbolic : negate(b.symbolic));
+        }
+        const flipped = branches[i];
+        constraint.push(flipped.taken ? negate(flipped.symbolic) : flipped.symbolic);
+        const candidatePathKey = `${pkey.slice(0, i)}${flipped.taken ? "F" : "T"}`;
+        if (seenPaths.has(candidatePathKey)) continue;
+        const witness = findWitness(constraint, params, opts.searchDomain);
+        if (!witness) continue;
+        const wkey = inputKey(witness, params);
+        if (seenInputs.has(wkey)) continue;
+        seenInputs.add(wkey);
+        nextInput = witness;
+        negatedAt = i;
+        negatedNewKey = candidatePathKey;
+        break;
+      }
+      iterations.push({
+        id: `iter-${iterations.length}`,
+        inputs: { ...inputs },
+        branches: branches.map((b, idx) => ({
+          index: idx,
+          condition: b.condition,
+          taken: b.taken,
+          loop: Boolean(b.loop),
+          negated: idx === negatedAt
+        })),
+        pathCondition: branches.map((b) => b.taken ? b.condition : `!(${b.condition})`),
+        pathKey: pkey,
+        returnValue: trace.returnValue,
+        returnExpression: trace.returnExpression,
+        runtimeError: null,
+        nextInput,
+        negatedAt,
+        negatedNewKey
+      });
+      if (nextInput) worklist.push(nextInput);
+    }
+    return {
+      function: { name: fn.name, params },
+      iterations,
+      truncated,
+      uniquePathCount: seenPaths.size,
+      uniqueInputCount: seenInputs.size
+    };
+  }
+
+  // src/components/ConcolicExecutionExplorer.js
+  var STORAGE_KEY6 = "stvisual.concolic.v1";
+  function escapeHtml7(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function loadSaved3() {
+    var _a2;
+    try {
+      const raw = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY6);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+  function persist3(state) {
+    var _a2;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY6, JSON.stringify({
+        sourceCode: state.sourceCode,
+        exampleId: state.exampleId,
+        seedText: state.seedText,
+        maxIterations: state.maxIterations
+      }));
+    } catch {
+    }
+  }
+  function parseSeed(text) {
+    const out = {};
+    if (!text) return out;
+    for (const part of text.split(/[,;\n]/)) {
+      const trimmed = part.trim();
+      if (!trimmed) continue;
+      const m = /^([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*(-?\d+|true|false)$/.exec(trimmed);
+      if (!m) throw new Error(`Cannot parse seed: ${trimmed}`);
+      const value = m[2] === "true" ? true : m[2] === "false" ? false : Number(m[2]);
+      out[m[1]] = value;
+    }
+    return out;
+  }
+  function createConcolicExecutionExplorer() {
+    const root2 = document.createElement("div");
+    root2.className = "concolic-explorer";
+    root2.dataset.testid = "concolic-explorer";
+    const saved = loadSaved3();
+    const defaultExample = concolicExecutionExamples[0];
+    const state = {
+      exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
+      sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
+      seedText: (saved == null ? void 0 : saved.seedText) || defaultExample.seed || "",
+      maxIterations: typeof (saved == null ? void 0 : saved.maxIterations) === "number" ? saved.maxIterations : 16,
+      result: null,
+      error: null
+    };
+    function recompute() {
+      state.result = null;
+      state.error = null;
+      try {
+        const initialInputs = parseSeed(state.seedText);
+        state.result = concolicExecute(state.sourceCode, {
+          initialInputs,
+          maxIterations: state.maxIterations
+        });
+      } catch (err) {
+        state.error = err.message || String(err);
+      }
+      persist3(state);
+    }
+    function render() {
+      recompute();
+      const exampleButtons = concolicExecutionExamples.map((ex) => `
+      <button type="button"
+        class="concolic-example-btn${state.exampleId === ex.id ? " active" : ""}"
+        data-concolic-example="${ex.id}"
+        data-testid="concolic-example-${ex.id}"
+        title="${escapeHtml7(pickField(ex, "description") || "")}">
+        ${escapeHtml7(pickField(ex, "name") || ex.name)}
+      </button>
+    `).join("");
+      const body = state.error ? `<div class="concolic-error" data-testid="concolic-error">${escapeHtml7(state.error)}</div>` : renderIterations(state.result);
+      const summary = state.result ? `${t("concolic.summary.iterations")}<strong data-testid="concolic-iter-count">${state.result.iterations.length}</strong>
+         <span class="concolic-divider">\xB7</span>
+         ${t("concolic.summary.uniquePaths")}<strong data-testid="concolic-path-count">${state.result.uniquePathCount}</strong>
+         <span class="concolic-divider">\xB7</span>
+         ${t("concolic.summary.uniqueInputs")}<strong>${state.result.uniqueInputCount}</strong>
+         ${state.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
+      root2.innerHTML = `
+      <div class="concolic-toolbar">
+        <div class="concolic-examples" data-testid="concolic-examples">${exampleButtons}</div>
+        <div class="concolic-controls">
+          <label class="concolic-control">
+            <span>${t("concolic.seed")}</span>
+            <input type="text" value="${escapeHtml7(state.seedText)}"
+              data-testid="concolic-seed"
+              placeholder="a=1, b=1, c=1" />
+          </label>
+          <label class="concolic-control">
+            <span>${t("concolic.maxIterations")}</span>
+            <input type="number" min="1" max="64" step="1"
+              value="${state.maxIterations}"
+              data-testid="concolic-max-iter" />
+          </label>
+        </div>
+      </div>
+
+      <div class="concolic-body">
+        <div class="concolic-editor-pane">
+          <label class="concolic-editor-label" for="concolic-source">${t("concolic.source")}</label>
+          <textarea id="concolic-source"
+            class="concolic-editor"
+            data-testid="concolic-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml7(state.sourceCode)}</textarea>
+        </div>
+        <div class="concolic-results-pane">
+          <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
+          ${body}
+        </div>
+      </div>
+
+      <p class="concolic-hint">${t("concolic.hint")}</p>
+    `;
+      bindEvents();
+    }
+    function renderIterations(result) {
+      if (!result || !result.iterations.length) {
+        return `<p class="concolic-empty">${t("concolic.empty")}</p>`;
+      }
+      const items = result.iterations.map((it) => {
+        const inputCode = formatAssignment2(it.inputs);
+        const branchesMarkup = it.branches.length ? `<ol class="concolic-branches">${it.branches.map((b) => {
+          const cls = ["concolic-branch"];
+          if (b.taken) cls.push("taken");
+          else cls.push("not-taken");
+          if (b.negated) cls.push("negated");
+          const arrow = b.taken ? "\u2713" : "\u2717";
+          const negTag = b.negated ? `<span class="concolic-neg-tag">${t("concolic.negated")}</span>` : "";
+          return `<li class="${cls.join(" ")}">
+              <span class="concolic-branch-arrow">${arrow}</span>
+              <code>${escapeHtml7(b.condition)}</code>
+              ${negTag}
+            </li>`;
+        }).join("")}</ol>` : `<p class="concolic-empty-branches">${t("concolic.noBranches")}</p>`;
+        const ret = it.runtimeError ? `<p class="concolic-runtime-error"><strong>${t("concolic.runtimeError")}</strong> ${escapeHtml7(it.runtimeError)}</p>` : `<dl class="concolic-meta">
+            <dt>${t("concolic.return")}</dt>
+            <dd><code>${escapeHtml7(formatReturn(it.returnExpression, it.returnValue))}</code></dd>
+            ${it.nextInput ? `
+              <dt>${t("concolic.nextInput")}</dt>
+              <dd><code>${escapeHtml7(formatAssignment2(it.nextInput))}</code></dd>
+            ` : `
+              <dt>${t("concolic.nextInput")}</dt>
+              <dd><em>${t("concolic.exhausted")}</em></dd>
+            `}
+          </dl>`;
+        return `
+        <li class="concolic-iter" data-testid="concolic-${it.id}">
+          <header class="concolic-iter-header">
+            <span class="concolic-iter-id">${escapeHtml7(it.id)}</span>
+            <span class="concolic-iter-input"><code>${escapeHtml7(inputCode)}</code></span>
+            <span class="concolic-iter-pathkey" title="${t("concolic.pathKey")}">
+              ${escapeHtml7(it.pathKey || "\u03B5")}
+            </span>
+          </header>
+          ${branchesMarkup}
+          ${ret}
+        </li>
+      `;
+      }).join("");
+      return `<ol class="concolic-iters" data-testid="concolic-iters">${items}</ol>`;
+    }
+    function formatAssignment2(env) {
+      if (!env) return "";
+      return Object.entries(env).map(([k, v]) => `${k}=${v}`).join(", ");
+    }
+    function formatReturn(expr, concrete) {
+      if (expr == null && concrete == null) return "\u2205";
+      if (expr == null) return String(concrete);
+      if (concrete == null) return expr;
+      return `${expr}  \u2192  ${concrete}`;
+    }
+    function bindEvents() {
+      root2.querySelectorAll("[data-concolic-example]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.concolicExample;
+          const ex = concolicExecutionExamples.find((x) => x.id === id);
+          if (!ex) return;
+          state.exampleId = ex.id;
+          state.sourceCode = ex.sourceCode;
+          state.seedText = ex.seed || "";
+          render();
+        });
+      });
+      const editor = root2.querySelector('[data-testid="concolic-source"]');
+      if (editor) {
+        let timer = null;
+        editor.addEventListener("input", () => {
+          state.sourceCode = editor.value;
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => renderPreservingFocus("concolic-source"), 220);
+        });
+      }
+      const seed = root2.querySelector('[data-testid="concolic-seed"]');
+      if (seed) {
+        let timer = null;
+        seed.addEventListener("input", () => {
+          state.seedText = seed.value;
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => renderPreservingFocus("concolic-seed"), 220);
+        });
+      }
+      const iter = root2.querySelector('[data-testid="concolic-max-iter"]');
+      if (iter) {
+        iter.addEventListener("change", () => {
+          const n = Number(iter.value);
+          if (Number.isFinite(n) && n >= 1 && n <= 128) {
+            state.maxIterations = n;
+            render();
+          }
+        });
+      }
+    }
+    function renderPreservingFocus(testid) {
+      const previously = root2.querySelector(`[data-testid="${testid}"]`);
+      const start = previously == null ? void 0 : previously.selectionStart;
+      const end = previously == null ? void 0 : previously.selectionEnd;
+      render();
+      const next = root2.querySelector(`[data-testid="${testid}"]`);
+      if (next) {
+        next.focus();
+        if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
+          next.setSelectionRange(start, end);
+        }
+      }
+    }
+    render();
+    return root2;
+  }
+
   // src/app.js
   var sectionsConfig = [
     { id: "all", key: "section.all" },
@@ -9746,6 +10264,7 @@ INVARSPEC !w | (i & (l | h))`
     { id: "logic", key: "section.logic" },
     { id: "syntax", key: "section.syntax" },
     { id: "symbex", key: "section.symbex" },
+    { id: "concolic", key: "section.concolic" },
     { id: "cloud", key: "section.cloud" },
     { id: "flow", key: "section.flow" },
     { id: "types", key: "section.types" }
@@ -9776,6 +10295,7 @@ INVARSPEC !w | (i & (l | h))`
           <section data-testid="section-logic"><h2>${t("section.logic.title")}</h2><div data-slot="logic"></div></section>
           <section data-testid="section-syntax"><h2>${t("section.syntax.title")}</h2><div data-slot="syntax"></div></section>
           <section data-testid="section-symbex"><h2>${t("section.symbex.title")}</h2><div data-slot="symbex"></div></section>
+          <section data-testid="section-concolic"><h2>${t("section.concolic.title")}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-cloud"><h2>${t("section.cloud.title")}</h2><div data-slot="cloud"></div></section>
           <section data-testid="section-flow"><h2>${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types"><h2>${t("section.types.title")}</h2><div data-slot="types"></div></section>
@@ -9794,6 +10314,7 @@ INVARSPEC !w | (i & (l | h))`
         logic: main.querySelector('[data-testid="section-logic"]'),
         syntax: main.querySelector('[data-testid="section-syntax"]'),
         symbex: main.querySelector('[data-testid="section-symbex"]'),
+        concolic: main.querySelector('[data-testid="section-concolic"]'),
         cloud: main.querySelector('[data-testid="section-cloud"]'),
         flow: main.querySelector('[data-testid="section-flow"]'),
         types: main.querySelector('[data-testid="section-types"]')
@@ -9806,6 +10327,7 @@ INVARSPEC !w | (i & (l | h))`
         grammar: createGrammarCoverageExplorer(),
         specMutation: createSpecMutationExplorer(),
         symbex: createSymbolicExecutionExplorer(),
+        concolic: createConcolicExecutionExplorer(),
         cloud: createCloudStoragePanel(),
         flow: createTestingFlow(),
         types: createTestingTypesTable()
@@ -9875,6 +10397,7 @@ INVARSPEC !w | (i & (l | h))`
       updateSyntaxPanels();
       container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
       container.querySelector('[data-slot="symbex"]').appendChild(components.symbex);
+      container.querySelector('[data-slot="concolic"]').appendChild(components.concolic);
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);
       let activeSection = "all";

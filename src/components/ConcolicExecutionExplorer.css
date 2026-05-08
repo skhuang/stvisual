@@ -1,0 +1,173 @@
+.concolic-explorer { display: flex; flex-direction: column; gap: 1rem; }
+
+.concolic-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.concolic-examples { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.concolic-example-btn {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #cdd5df;
+  background: #fff;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+.concolic-example-btn.active { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+.concolic-example-btn:hover { background: #eef2f7; }
+.concolic-example-btn.active:hover { background: #7c3aed; opacity: 0.9; }
+
+.concolic-controls { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+.concolic-control { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; }
+.concolic-control input[type="text"] {
+  width: 12rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #cdd5df;
+  border-radius: 4px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+}
+.concolic-control input[type="number"] {
+  width: 4rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #cdd5df;
+  border-radius: 4px;
+}
+
+.concolic-body {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
+  gap: 1rem;
+}
+@media (max-width: 900px) { .concolic-body { grid-template-columns: 1fr; } }
+
+.concolic-editor-pane,
+.concolic-results-pane { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.concolic-editor-label { font-weight: 600; font-size: 0.9rem; }
+.concolic-editor {
+  width: 100%;
+  min-height: 18rem;
+  padding: 0.6rem;
+  border: 1px solid #cdd5df;
+  border-radius: 6px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  resize: vertical;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.concolic-summary { font-size: 0.95rem; color: #475569; }
+.concolic-summary strong { margin-left: 0.25rem; color: #0f172a; }
+.concolic-divider { margin: 0 0.4rem; color: #cbd5e1; }
+.concolic-truncated { color: #b45309; font-weight: 600; }
+
+.concolic-iters {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 32rem;
+  overflow-y: auto;
+}
+
+.concolic-iter {
+  border: 1px solid #cdd5df;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  background: #f8fafc;
+}
+
+.concolic-iter-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+.concolic-iter-id { color: #7c3aed; font-family: 'SF Mono', monospace; font-size: 0.85rem; font-weight: 600; }
+.concolic-iter-input code { background: #e2e8f0; padding: 0.05rem 0.35rem; border-radius: 4px; }
+.concolic-iter-pathkey {
+  margin-left: auto;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.75rem;
+  color: #475569;
+  background: #e2e8f0;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+}
+
+.concolic-branches {
+  list-style: none;
+  margin: 0 0 0.4rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+}
+.concolic-branch {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.concolic-branch.taken .concolic-branch-arrow { color: #047857; font-weight: 700; }
+.concolic-branch.not-taken .concolic-branch-arrow { color: #b91c1c; font-weight: 700; }
+.concolic-branch.negated {
+  background: #fef3c7;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+.concolic-neg-tag {
+  margin-left: auto;
+  font-size: 0.7rem;
+  background: #b45309;
+  color: #fff;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+}
+
+.concolic-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 0.6rem;
+  row-gap: 0.2rem;
+  margin: 0;
+  font-size: 0.85rem;
+}
+.concolic-meta dt { font-weight: 600; color: #475569; }
+.concolic-meta dd { margin: 0; }
+.concolic-meta code { background: #e2e8f0; padding: 0.05rem 0.3rem; border-radius: 4px; }
+
+.concolic-empty,
+.concolic-empty-branches {
+  color: #64748b;
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.concolic-runtime-error { color: #991b1b; font-size: 0.85rem; }
+
+.concolic-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.concolic-hint {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}

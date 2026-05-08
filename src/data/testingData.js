@@ -32,6 +32,7 @@ export const testingMethods = [
       { id: 'cc',  name: '條件覆蓋', nameEn: 'Condition Coverage', description: '確保每個布林條件的真假都被測試', descriptionEn: 'Ensure each Boolean condition is tested for true and false.' },
       { id: 'mc',  name: '多重條件覆蓋', nameEn: 'Multiple Conditions', description: '測試所有條件組合的真假情況', descriptionEn: 'Test all true/false combinations of conditions.' },
       { id: 'symbex', name: '符號執行', nameEn: 'Symbolic Execution', description: '以符號值代入程式變數，沿路徑收集 path condition 並求解可達輸入', descriptionEn: 'Substitute symbolic values for program inputs, collect a path condition along each path, and solve for concrete witnesses.' },
+      { id: 'concolic', name: '具體符號執行', nameEn: 'Concolic Execution', description: '結合具體執行與符號執行 (DART/CUTE)：每次具體跑一條路徑，再翻轉分支條件求解新輸入以涵蓋更多路徑', descriptionEn: 'Concrete + symbolic (DART/CUTE): runs the program concretely, then negates branch conditions to derive new inputs that cover additional paths.' },
     ],
   },
   {
@@ -536,4 +537,72 @@ export const symbolicExecutionExamples = [
 `,
   },
 ];
+
+export const concolicExecutionExamples = [
+  {
+    id: 'triangle',
+    name: 'Triangle classifier',
+    nameEn: 'Triangle classifier',
+    description: '從 (1,1,1) 等邊三角形種子出發，每次翻轉最後一個未探索的分支，自動產生新輸入。',
+    descriptionEn: 'Seeded with the equilateral triangle (1,1,1); each step flips the last unexplored branch to derive a new input.',
+    seed: 'a=1, b=1, c=1',
+    sourceCode: `function classify(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) return 0;
+  if (a + b <= c || a + c <= b || b + c <= a) return 0;
+  if (a == b && b == c) return 3;
+  if (a == b || b == c || a == c) return 2;
+  return 1;
+}
+`,
+  },
+  {
+    id: 'abs',
+    name: 'Absolute value',
+    nameEn: 'Absolute value',
+    description: '最小範例：從 x=0 出發，concolic 走完一條路徑後翻轉條件得到 x<0 的對偶輸入。',
+    descriptionEn: 'Minimal example: starting from x=0, concolic flips the branch to discover the x<0 dual input.',
+    seed: 'x=0',
+    sourceCode: `function abs(x) {
+  if (x < 0) return -x;
+  return x;
+}
+`,
+  },
+  {
+    id: 'max3',
+    name: 'Max of three',
+    nameEn: 'Max of three',
+    description: '示範雙分支結構：每條路徑對應 (b>a, c>m) 兩個分支的真假組合。',
+    descriptionEn: 'Demonstrates a two-branch structure: each path corresponds to a (b>a, c>m) truth combination.',
+    seed: 'a=0, b=0, c=0',
+    sourceCode: `function max3(a, b, c) {
+  let m = a;
+  if (b > m) m = b;
+  if (c > m) m = c;
+  return m;
+}
+`,
+  },
+  {
+    id: 'middle',
+    name: 'Middle value',
+    nameEn: 'Middle value',
+    description: '經典 DART 測試對象（Khurshid et al.）：回傳三數的中位數。',
+    descriptionEn: 'A classic DART benchmark (Khurshid et al.): returns the median of three integers.',
+    seed: 'a=0, b=0, c=0',
+    sourceCode: `function middle(a, b, c) {
+  let m = c;
+  if (b < c) {
+    if (a < b) m = b;
+    else if (a < c) m = a;
+  } else {
+    if (a > b) m = b;
+    else if (a > c) m = a;
+  }
+  return m;
+}
+`,
+  },
+];
+
 

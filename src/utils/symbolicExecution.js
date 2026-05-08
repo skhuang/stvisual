@@ -567,4 +567,4 @@ function findWitness(pc, params, domain) {
   return recurse(0) ? { ...result } : null;
 }
 
-export { parse as parseProgram };
+export { parse as parseProgram, evalExpr, substitute, negate, findWitness };
