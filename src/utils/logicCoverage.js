@@ -13,6 +13,12 @@
 //   - CACC (Correlated Active Clause Coverage)
 //   - RACC (Restricted Active Clause Coverage)
 
+import { getLocale } from '../i18n/index.js';
+
+// Tiny locale helper for messages and dynamic labels emitted from this module.
+// English first because the module's identifiers / API are English by default.
+const L = (en, zh) => (getLocale() === 'en' ? en : zh);
+
 // Tokens：
 //   `(` `)` `&&` `||` `!`  以及識別字（單一英文字母可選跟數字，如 a、b、c1、x2）。
 //   為了支援教科書記號，額外接受：
@@ -31,7 +37,7 @@ function tokenize(expression) {
     if (!match) {
       const remainder = expression.slice(start).trim();
       if (!remainder) break;
-      throw new Error(`不支援的字元：「${remainder[0]}」於位置 ${start + 1}`);
+      throw new Error(L(`Unsupported character "${remainder[0]}" at position ${start + 1}`, `不支援的字元：「${remainder[0]}」於位置 ${start + 1}`));
     }
     const [, lparen, rparen, andOp, orOp, plusOp, notOp, ident] = match;
     if (lparen) tokens.push({ type: 'lparen' });
@@ -44,7 +50,7 @@ function tokenize(expression) {
   }
 
   if (lastIndex < expression.length && expression.slice(lastIndex).trim()) {
-    throw new Error(`無法解析剩餘字串：「${expression.slice(lastIndex).trim()}」`);
+    throw new Error(L(`Could not parse trailing input "${expression.slice(lastIndex).trim()}"`, `無法解析剩餘字串：「${expression.slice(lastIndex).trim()}」`));
   }
 
   return tokens;
@@ -60,7 +66,7 @@ function parseExpression(tokens) {
   function consume(type) {
     const token = tokens[pos];
     if (!token || token.type !== type) {
-      throw new Error(`語法錯誤：預期 ${type}，實際 ${token ? token.type : 'EOF'}`);
+      throw new Error(L(`Syntax error: expected ${type}, got ${token ? token.type : 'EOF'}`, `語法錯誤：預期 ${type}，實際 ${token ? token.type : 'EOF'}`));
     }
     pos += 1;
     return token;
@@ -103,7 +109,7 @@ function parseExpression(tokens) {
 
   function parseAtom() {
     const token = peek();
-    if (!token) throw new Error('語法錯誤：未預期的結尾。');
+    if (!token) throw new Error(L('Syntax error: unexpected end of input.', '語法錯誤：未預期的結尾。'));
     if (token.type === 'lparen') {
       consume('lparen');
       const node = parseOr();
@@ -114,12 +120,12 @@ function parseExpression(tokens) {
       consume('ident');
       return { type: 'clause', name: token.value };
     }
-    throw new Error(`語法錯誤：未預期的 ${token.type}`);
+    throw new Error(L(`Syntax error: unexpected ${token.type}`, `語法錯誤：未預期的 ${token.type}`));
   }
 
   const ast = parseOr();
   if (pos !== tokens.length) {
-    throw new Error('語法錯誤：剩餘 token 未解析。');
+    throw new Error(L('Syntax error: trailing tokens were not parsed.', '語法錯誤：剩餘 token 未解析。'));
   }
   return ast;
 }
@@ -128,7 +134,7 @@ function evaluateAst(ast, values) {
   switch (ast.type) {
     case 'clause': {
       if (!(ast.name in values)) {
-        throw new Error(`缺少子句值：${ast.name}`);
+        throw new Error(L(`Missing clause value: ${ast.name}`, `缺少子句值：${ast.name}`));
       }
       return Boolean(values[ast.name]);
     }
@@ -139,7 +145,7 @@ function evaluateAst(ast, values) {
     case 'or':
       return evaluateAst(ast.left, values) || evaluateAst(ast.right, values);
     default:
-      throw new Error(`未知 AST 節點：${ast.type}`);
+      throw new Error(L(`Unknown AST node: ${ast.type}`, `未知 AST 節點：${ast.type}`));
   }
 }
 
@@ -158,11 +164,11 @@ function collectClauses(ast, accumulator = []) {
 export function parsePredicate(expression) {
   const trimmed = String(expression || '').trim();
   if (!trimmed) {
-    throw new Error('Predicate 不能為空。');
+    throw new Error(L('Predicate must not be empty.', 'Predicate 不能為空。'));
   }
   const tokens = tokenize(trimmed);
   if (!tokens.length) {
-    throw new Error('Predicate 不含任何 token。');
+    throw new Error(L('Predicate did not yield any token.', 'Predicate 不含任何 token。'));
   }
   const ast = parseExpression(tokens);
   const clauses = collectClauses(ast);
@@ -207,7 +213,7 @@ export function buildPredicateCoverageSet(rows) {
   return {
     id: 'pc',
     name: 'Predicate Coverage',
-    description: '讓整個 predicate 至少評估為 true 與 false 各一次。',
+    description: L('Make the predicate evaluate to true and false at least once each.', '讓整個 predicate 至少評估為 true 與 false 各一次。'),
     tests,
     requirementCount: 2,
   };
@@ -232,7 +238,7 @@ export function buildClauseCoverageSet(rows, clauses) {
   return {
     id: 'cc',
     name: 'Clause Coverage',
-    description: '每個子句都必須各取 true 與 false 一次。',
+    description: L('Each clause must take both true and false at least once.', '每個子句都必須各取 true 與 false 一次。'),
     tests,
     requirementCount: clauses.length * 2,
   };
@@ -242,7 +248,7 @@ export function buildCombinatorialCoverageSet(rows) {
   return {
     id: 'coc',
     name: 'Combinatorial Coverage',
-    description: '列舉所有子句真假組合（共 2^n 列）。',
+    description: L('Enumerate all clause T/F combinations (2^n rows).', '列舉所有子句真假組合（共 2^n 列）。'),
     tests: rows.map((row) => ({ id: rowKey(row), row, label: `Row ${row.index}` })),
     requirementCount: rows.length,
   };
@@ -305,7 +311,7 @@ function buildActiveClauseSet(id, name, description, rows, clauses, mode) {
       tests.push({
         id: testId,
         row,
-        label: `${clause}=${row.values[clause] ? 'T' : 'F'} (主導 ${clause})`,
+        label: `${clause}=${row.values[clause] ? 'T' : 'F'} ${L(`(major ${clause})`, `(主導 ${clause})`)}`,
         majorClause: clause,
       });
     });
@@ -325,7 +331,7 @@ export function buildGACCSet(rows, clauses) {
   return buildActiveClauseSet(
     'gacc',
     'General Active Clause Coverage',
-    '對每個主子句，找一對列使其決定 predicate 的值，次子句可任意。',
+    L('For each major clause, find a row pair such that the major clause determines the predicate while minor clauses are unconstrained.', '對每個主子句，找一對列使其決定 predicate 的值，次子句可任意。'),
     rows,
     clauses,
     'gacc',
@@ -336,7 +342,7 @@ export function buildCACCSet(rows, clauses) {
   return buildActiveClauseSet(
     'cacc',
     'Correlated Active Clause Coverage',
-    '主子句決定 predicate 結果，且兩列產生不同的 predicate 值。',
+    L('The major clause determines the predicate, and the two rows produce different predicate values.', '主子句決定 predicate 結果，且兩列產生不同的 predicate 值。'),
     rows,
     clauses,
     'cacc',
@@ -347,7 +353,7 @@ export function buildRACCSet(rows, clauses) {
   return buildActiveClauseSet(
     'racc',
     'Restricted Active Clause Coverage',
-    '主子句決定 predicate 結果，且兩列的次子句值完全相同。',
+    L('The major clause determines the predicate, and the two rows have identical minor-clause values.', '主子句決定 predicate 結果，且兩列的次子句值完全相同。'),
     rows,
     clauses,
     'racc',
@@ -375,7 +381,7 @@ function buildInactiveClauseSet(id, name, description, rows, clauses, mode) {
       tests.push({
         id: testId,
         row,
-        label: `${clause}=${row.values[clause] ? 'T' : 'F'}, P=${row.predicate ? 'T' : 'F'} (非主導 ${clause})`,
+        label: `${clause}=${row.values[clause] ? 'T' : 'F'}, P=${row.predicate ? 'T' : 'F'} ${L(`(minor ${clause})`, `(非主導 ${clause})`)}`,
         majorClause: clause,
       });
     }
@@ -433,7 +439,7 @@ export function buildGICCSet(rows, clauses) {
   return buildInactiveClauseSet(
     'gicc',
     'General Inactive Clause Coverage',
-    '對每個主子句，於不決定 predicate 的列中，覆蓋 (c=T/F)×(P=T/F) 共 4 種組合。',
+    L('For each major clause, in rows where it does not determine the predicate, cover all (c=T/F) × (P=T/F) combinations.', '對每個主子句，於不決定 predicate 的列中，覆蓋 (c=T/F)×(P=T/F) 共 4 種組合。'),
     rows,
     clauses,
     'gicc',
@@ -444,7 +450,7 @@ export function buildRICCSet(rows, clauses) {
   return buildInactiveClauseSet(
     'ricc',
     'Restricted Inactive Clause Coverage',
-    '同 GICC，但成對列（同 P 值）需所有次子句完全相同，僅主子句翻轉。',
+    L('Same as GICC, but paired rows (same P) must agree on every minor clause; only the major clause flips.', '同 GICC，但成對列（同 P 值）需所有次子句完全相同，僅主子句翻轉。'),
     rows,
     clauses,
     'ricc',
@@ -540,7 +546,7 @@ function dnfFromAst(ast) {
     case 'or':
       return dedupeTerms([...dnfFromAst(ast.left), ...dnfFromAst(ast.right)]);
     default:
-      throw new Error(`未知 AST 節點：${ast.type}`);
+      throw new Error(L(`Unknown AST node: ${ast.type}`, `未知 AST 節點：${ast.type}`));
   }
 }
 
@@ -563,7 +569,7 @@ function dnfNegate(ast) {
       return dedupeTerms(terms);
     }
     default:
-      throw new Error(`未知 AST 節點：${ast.type}`);
+      throw new Error(L(`Unknown AST node: ${ast.type}`, `未知 AST 節點：${ast.type}`));
   }
 }
 
@@ -755,7 +761,7 @@ export function buildImplicantCoverageSet(rows, dnf, negDnf = []) {
   return {
     id: 'ic',
     name: 'Implicant Coverage',
-    description: '對 f 與 ¬f 的最小 DNF 中每個 prime implicant，至少找到一個使其為真的 row（已最小化測試列數）。',
+    description: L('For every prime implicant in the minimal DNF of f and ¬f, find at least one row that satisfies it (test rows are minimised).', '對 f 與 ¬f 的最小 DNF 中每個 prime implicant，至少找到一個使其為真的 row（已最小化測試列數）。'),
     tests,
     requirementCount: dnf.length + negDnf.length,
     unsatisfied,
@@ -789,7 +795,7 @@ export function buildUTPCSet(rows, dnf) {
   return {
     id: 'utpc',
     name: 'Unique True Point Coverage',
-    description: '對每個 implicant，列出所有只滿足該 implicant 的 unique true point（任選其一即可滿足準則）。',
+    description: L('For each implicant, list every unique true point that only satisfies that implicant (any one of them satisfies the criterion).', '對每個 implicant，列出所有只滿足該 implicant 的 unique true point（任選其一即可滿足準則）。'),
     tests,
     requirementCount: dnf.length,
     unsatisfied,
@@ -813,8 +819,8 @@ export function buildMUTPCSet(rows, clauses, dnf) {
     const utps = uniqueTruePointsForTerm(rows, term, dnf, index);
     if (!utps.length) {
       minorClauses.forEach((c) => {
-        unsatisfied.push(`MUTP {${termLabel(term)}} 缺 ${c}=T`);
-        unsatisfied.push(`MUTP {${termLabel(term)}} 缺 ${c}=F`);
+        unsatisfied.push(L(`MUTP {${termLabel(term)}} missing ${c}=T`, `MUTP {${termLabel(term)}} 缺 ${c}=T`));
+        unsatisfied.push(L(`MUTP {${termLabel(term)}} missing ${c}=F`, `MUTP {${termLabel(term)}} 缺 ${c}=F`));
       });
       return;
     }
@@ -867,7 +873,7 @@ export function buildMUTPCSet(rows, clauses, dnf) {
 
     if (remaining.size) {
       remaining.forEach((r) => {
-        unsatisfied.push(`MUTP {${termLabel(term)}} 缺 ${r}`);
+        unsatisfied.push(L(`MUTP {${termLabel(term)}} missing ${r}`, `MUTP {${termLabel(term)}} 缺 ${r}`));
       });
     }
 
@@ -880,7 +886,7 @@ export function buildMUTPCSet(rows, clauses, dnf) {
       tests.push({
         id: key,
         row,
-        label: `MUTP {${termLabel(term)}}（${covered}）`,
+        label: `MUTP {${termLabel(term)}} (${covered})`,
         implicantIndex: index,
       });
     });
@@ -890,7 +896,7 @@ export function buildMUTPCSet(rows, clauses, dnf) {
     id: 'mutpc',
     name: 'Multiple Unique True Point Coverage',
     description:
-      '對每個 implicant，挑選一組 UTPs，使每個次子句（不在 implicant 中的 clause）都至少出現一次 T 與一次 F。',
+      L('For each implicant, pick a set of UTPs so that every minor clause (clauses not in the implicant) takes both T and F at least once.', '對每個 implicant，挑選一組 UTPs，使每個次子句（不在 implicant 中的 clause）都至少出現一次 T 與一次 F。'),
     tests,
     requirementCount,
     unsatisfied,
@@ -938,7 +944,7 @@ export function buildNFPCSet(rows, dnf) {
       tests.push({
         id: key,
         row,
-        label: `NFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`,
+        label: L(`NFP {${termLabel(term)}} flip ${literalKey(literal)}`, `NFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`),
         implicantIndex: index,
         literal,
         pairedTruePointIndex: pairedTruePoint ? pairedTruePoint.index : null,
@@ -949,7 +955,7 @@ export function buildNFPCSet(rows, dnf) {
   return {
     id: 'nfpc',
     name: 'Near False Point Coverage',
-    description: '對每個 implicant 的每個 literal，找一個翻轉該 literal 後使 implicant 為假且 P 為假的 row。',
+    description: L('For every literal in every implicant, find a row that flips that literal so the implicant becomes false and P is false.', '對每個 implicant 的每個 literal，找一個翻轉該 literal 後使 implicant 為假且 P 為假的 row。'),
     tests,
     requirementCount,
     unsatisfied,
@@ -974,11 +980,11 @@ export function buildMNFPCSet(rows, clauses, dnf) {
       const nfps = nearFalsePointsFor(rows, term, literalIndex);
       if (!nfps.length) {
         if (!minorClauses.length) {
-          unsatisfied.push(`MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`);
+          unsatisfied.push(L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)}`, `MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`));
         } else {
           minorClauses.forEach((c) => {
-            unsatisfied.push(`MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)} 缺 ${c}=T`);
-            unsatisfied.push(`MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)} 缺 ${c}=F`);
+            unsatisfied.push(L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)} missing ${c}=T`, `MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)} 缺 ${c}=T`));
+            unsatisfied.push(L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)} missing ${c}=F`, `MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)} 缺 ${c}=F`));
           });
         }
         return;
@@ -992,7 +998,7 @@ export function buildMNFPCSet(rows, clauses, dnf) {
           tests.push({
             id: key,
             row,
-            label: `MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`,
+            label: L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)}`, `MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`),
             implicantIndex: index,
             literal,
           });
@@ -1031,7 +1037,7 @@ export function buildMNFPCSet(rows, clauses, dnf) {
 
       if (remaining.size) {
         remaining.forEach((r) => {
-          unsatisfied.push(`MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)} 缺 ${r}`);
+          unsatisfied.push(L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)} missing ${r}`, `MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)} 缺 ${r}`));
         });
       }
 
@@ -1044,7 +1050,7 @@ export function buildMNFPCSet(rows, clauses, dnf) {
         tests.push({
           id: key,
           row,
-          label: `MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}（${covered}）`,
+          label: L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)} (${covered})`, `MNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}（${covered}）`),
           implicantIndex: index,
           literal,
         });
@@ -1056,7 +1062,7 @@ export function buildMNFPCSet(rows, clauses, dnf) {
     id: 'mnfpc',
     name: 'Multiple Near False Point Coverage',
     description:
-      '對每個 implicant 的每個 literal，挑一組 NFPs，使每個次子句都至少出現一次 T 與一次 F。',
+      L('For every literal in every implicant, pick a set of NFPs so that every minor clause takes both T and F at least once.', '對每個 implicant 的每個 literal，挑一組 NFPs，使每個次子句都至少出現一次 T 與一次 F。'),
     tests,
     requirementCount,
     unsatisfied,
@@ -1088,7 +1094,7 @@ export function buildCUTPNFPSet(rows, dnf) {
         }
       }
       if (!pair) {
-        unsatisfied.push(`CUTPNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`);
+        unsatisfied.push(L(`CUTPNFP {${termLabel(term)}} flip ${literalKey(literal)}`, `CUTPNFP {${termLabel(term)}} 翻轉 ${literalKey(literal)}`));
         return;
       }
       pair.forEach((row, role) => {
@@ -1098,7 +1104,7 @@ export function buildCUTPNFPSet(rows, dnf) {
         tests.push({
           id: key,
           row,
-          label: `${role === 0 ? 'UTP' : 'NFP'} pair {${termLabel(term)}} 翻轉 ${literalKey(literal)}`,
+          label: L(`${role === 0 ? 'UTP' : 'NFP'} pair {${termLabel(term)}} flip ${literalKey(literal)}`, `${role === 0 ? 'UTP' : 'NFP'} pair {${termLabel(term)}} 翻轉 ${literalKey(literal)}`),
           implicantIndex: index,
           literal,
           role: role === 0 ? 'utp' : 'nfp',
@@ -1111,7 +1117,7 @@ export function buildCUTPNFPSet(rows, dnf) {
   return {
     id: 'cutpnfp',
     name: 'Corresponding UTP + NFP Pair Coverage',
-    description: '為每個 implicant 的每個 literal，挑一對僅在該 literal 不同的 UTP 與 NFP。',
+    description: L('For every literal in every implicant, pick a UTP/NFP pair that differs only in that literal.', '為每個 implicant 的每個 literal，挑一對僅在該 literal 不同的 UTP 與 NFP。'),
     tests,
     requirementCount,
     unsatisfied,

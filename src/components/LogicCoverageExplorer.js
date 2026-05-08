@@ -275,7 +275,7 @@ export function createLogicCoverageExplorer() {
           class="logic-example-btn${state.expression === p.expression ? ' active' : ''}"
           data-expression="${escapeHtml(p.expression)}"
           data-testid="logic-example-${p.id}"
-          title="${escapeHtml(p.description)}"
+          title="${escapeHtml(pickField(p, 'description') || '')}"
         >
           ${escapeHtml(p.name)}
         </button>
@@ -317,8 +317,8 @@ export function createLogicCoverageExplorer() {
           data-criterion="${c.id}"
           data-testid="logic-criterion-${c.id}"
         >
-          <span class="logic-criterion-label">${escapeHtml(c.label)}</span>
-          <span class="logic-criterion-zh">${escapeHtml(getLocale() === 'en' ? (c.descriptionEn || c.description || '') : c.labelZh)}</span>
+          <span class="logic-criterion-label">${escapeHtml(pickField(c, 'label') || c.label)}</span>
+          <span class="logic-criterion-zh">${escapeHtml(getLocale() === 'en' ? (c.descriptionEn || c.description || '') : (c.labelZh || ''))}</span>
         </button>
       `)
       .join('');
@@ -602,7 +602,7 @@ export function createLogicCoverageExplorer() {
 
     return `
       <h3 class="logic-summary-title">${escapeHtml(set.name)}</h3>
-      <p class="logic-summary-desc">${escapeHtml(set.description)}</p>
+      <p class="logic-summary-desc">${escapeHtml(set.description || '')}</p>
       ${dnfMarkup}
       ${kmapMarkup}
       <p class="logic-summary-stats">

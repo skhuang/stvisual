@@ -3406,6 +3406,7 @@
   }
 
   // src/utils/logicCoverage.js
+  var L = (en, zh) => getLocale() === "en" ? en : zh;
   var TOKEN_REGEX = /\s*(?:(\()|(\))|(&&)|(\|\|)|(\+)|(!)|([A-Za-z][0-9]*))/y;
   function tokenize(expression) {
     const tokens = [];
@@ -3417,7 +3418,7 @@
       if (!match) {
         const remainder = expression.slice(start).trim();
         if (!remainder) break;
-        throw new Error(`\u4E0D\u652F\u63F4\u7684\u5B57\u5143\uFF1A\u300C${remainder[0]}\u300D\u65BC\u4F4D\u7F6E ${start + 1}`);
+        throw new Error(L(`Unsupported character "${remainder[0]}" at position ${start + 1}`, `\u4E0D\u652F\u63F4\u7684\u5B57\u5143\uFF1A\u300C${remainder[0]}\u300D\u65BC\u4F4D\u7F6E ${start + 1}`));
       }
       const [, lparen, rparen, andOp, orOp, plusOp, notOp, ident] = match;
       if (lparen) tokens.push({ type: "lparen" });
@@ -3429,7 +3430,7 @@
       lastIndex = TOKEN_REGEX.lastIndex;
     }
     if (lastIndex < expression.length && expression.slice(lastIndex).trim()) {
-      throw new Error(`\u7121\u6CD5\u89E3\u6790\u5269\u9918\u5B57\u4E32\uFF1A\u300C${expression.slice(lastIndex).trim()}\u300D`);
+      throw new Error(L(`Could not parse trailing input "${expression.slice(lastIndex).trim()}"`, `\u7121\u6CD5\u89E3\u6790\u5269\u9918\u5B57\u4E32\uFF1A\u300C${expression.slice(lastIndex).trim()}\u300D`));
     }
     return tokens;
   }
@@ -3441,7 +3442,7 @@
     function consume(type) {
       const token = tokens[pos];
       if (!token || token.type !== type) {
-        throw new Error(`\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u9810\u671F ${type}\uFF0C\u5BE6\u969B ${token ? token.type : "EOF"}`);
+        throw new Error(L(`Syntax error: expected ${type}, got ${token ? token.type : "EOF"}`, `\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u9810\u671F ${type}\uFF0C\u5BE6\u969B ${token ? token.type : "EOF"}`));
       }
       pos += 1;
       return token;
@@ -3481,7 +3482,7 @@
     }
     function parseAtom() {
       const token = peek();
-      if (!token) throw new Error("\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u672A\u9810\u671F\u7684\u7D50\u5C3E\u3002");
+      if (!token) throw new Error(L("Syntax error: unexpected end of input.", "\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u672A\u9810\u671F\u7684\u7D50\u5C3E\u3002"));
       if (token.type === "lparen") {
         consume("lparen");
         const node = parseOr();
@@ -3492,11 +3493,11 @@
         consume("ident");
         return { type: "clause", name: token.value };
       }
-      throw new Error(`\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u672A\u9810\u671F\u7684 ${token.type}`);
+      throw new Error(L(`Syntax error: unexpected ${token.type}`, `\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u672A\u9810\u671F\u7684 ${token.type}`));
     }
     const ast = parseOr();
     if (pos !== tokens.length) {
-      throw new Error("\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u5269\u9918 token \u672A\u89E3\u6790\u3002");
+      throw new Error(L("Syntax error: trailing tokens were not parsed.", "\u8A9E\u6CD5\u932F\u8AA4\uFF1A\u5269\u9918 token \u672A\u89E3\u6790\u3002"));
     }
     return ast;
   }
@@ -3504,7 +3505,7 @@
     switch (ast.type) {
       case "clause": {
         if (!(ast.name in values)) {
-          throw new Error(`\u7F3A\u5C11\u5B50\u53E5\u503C\uFF1A${ast.name}`);
+          throw new Error(L(`Missing clause value: ${ast.name}`, `\u7F3A\u5C11\u5B50\u53E5\u503C\uFF1A${ast.name}`));
         }
         return Boolean(values[ast.name]);
       }
@@ -3515,7 +3516,7 @@
       case "or":
         return evaluateAst(ast.left, values) || evaluateAst(ast.right, values);
       default:
-        throw new Error(`\u672A\u77E5 AST \u7BC0\u9EDE\uFF1A${ast.type}`);
+        throw new Error(L(`Unknown AST node: ${ast.type}`, `\u672A\u77E5 AST \u7BC0\u9EDE\uFF1A${ast.type}`));
     }
   }
   function collectClauses(ast, accumulator = []) {
@@ -3532,11 +3533,11 @@
   function parsePredicate(expression) {
     const trimmed = String(expression || "").trim();
     if (!trimmed) {
-      throw new Error("Predicate \u4E0D\u80FD\u70BA\u7A7A\u3002");
+      throw new Error(L("Predicate must not be empty.", "Predicate \u4E0D\u80FD\u70BA\u7A7A\u3002"));
     }
     const tokens = tokenize(trimmed);
     if (!tokens.length) {
-      throw new Error("Predicate \u4E0D\u542B\u4EFB\u4F55 token\u3002");
+      throw new Error(L("Predicate did not yield any token.", "Predicate \u4E0D\u542B\u4EFB\u4F55 token\u3002"));
     }
     const ast = parseExpression(tokens);
     const clauses = collectClauses(ast);
@@ -3574,7 +3575,7 @@
     return {
       id: "pc",
       name: "Predicate Coverage",
-      description: "\u8B93\u6574\u500B predicate \u81F3\u5C11\u8A55\u4F30\u70BA true \u8207 false \u5404\u4E00\u6B21\u3002",
+      description: L("Make the predicate evaluate to true and false at least once each.", "\u8B93\u6574\u500B predicate \u81F3\u5C11\u8A55\u4F30\u70BA true \u8207 false \u5404\u4E00\u6B21\u3002"),
       tests,
       requirementCount: 2
     };
@@ -3596,7 +3597,7 @@
     return {
       id: "cc",
       name: "Clause Coverage",
-      description: "\u6BCF\u500B\u5B50\u53E5\u90FD\u5FC5\u9808\u5404\u53D6 true \u8207 false \u4E00\u6B21\u3002",
+      description: L("Each clause must take both true and false at least once.", "\u6BCF\u500B\u5B50\u53E5\u90FD\u5FC5\u9808\u5404\u53D6 true \u8207 false \u4E00\u6B21\u3002"),
       tests,
       requirementCount: clauses.length * 2
     };
@@ -3605,7 +3606,7 @@
     return {
       id: "coc",
       name: "Combinatorial Coverage",
-      description: "\u5217\u8209\u6240\u6709\u5B50\u53E5\u771F\u5047\u7D44\u5408\uFF08\u5171 2^n \u5217\uFF09\u3002",
+      description: L("Enumerate all clause T/F combinations (2^n rows).", "\u5217\u8209\u6240\u6709\u5B50\u53E5\u771F\u5047\u7D44\u5408\uFF08\u5171 2^n \u5217\uFF09\u3002"),
       tests: rows.map((row) => ({ id: rowKey(row), row, label: `Row ${row.index}` })),
       requirementCount: rows.length
     };
@@ -3661,7 +3662,7 @@
         tests.push({
           id: testId,
           row,
-          label: `${clause}=${row.values[clause] ? "T" : "F"} (\u4E3B\u5C0E ${clause})`,
+          label: `${clause}=${row.values[clause] ? "T" : "F"} ${L(`(major ${clause})`, `(\u4E3B\u5C0E ${clause})`)}`,
           majorClause: clause
         });
       });
@@ -3679,7 +3680,7 @@
     return buildActiveClauseSet(
       "gacc",
       "General Active Clause Coverage",
-      "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\uFF0C\u627E\u4E00\u5C0D\u5217\u4F7F\u5176\u6C7A\u5B9A predicate \u7684\u503C\uFF0C\u6B21\u5B50\u53E5\u53EF\u4EFB\u610F\u3002",
+      L("For each major clause, find a row pair such that the major clause determines the predicate while minor clauses are unconstrained.", "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\uFF0C\u627E\u4E00\u5C0D\u5217\u4F7F\u5176\u6C7A\u5B9A predicate \u7684\u503C\uFF0C\u6B21\u5B50\u53E5\u53EF\u4EFB\u610F\u3002"),
       rows,
       clauses,
       "gacc"
@@ -3689,7 +3690,7 @@
     return buildActiveClauseSet(
       "cacc",
       "Correlated Active Clause Coverage",
-      "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate \u7D50\u679C\uFF0C\u4E14\u5169\u5217\u7522\u751F\u4E0D\u540C\u7684 predicate \u503C\u3002",
+      L("The major clause determines the predicate, and the two rows produce different predicate values.", "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate \u7D50\u679C\uFF0C\u4E14\u5169\u5217\u7522\u751F\u4E0D\u540C\u7684 predicate \u503C\u3002"),
       rows,
       clauses,
       "cacc"
@@ -3699,7 +3700,7 @@
     return buildActiveClauseSet(
       "racc",
       "Restricted Active Clause Coverage",
-      "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate \u7D50\u679C\uFF0C\u4E14\u5169\u5217\u7684\u6B21\u5B50\u53E5\u503C\u5B8C\u5168\u76F8\u540C\u3002",
+      L("The major clause determines the predicate, and the two rows have identical minor-clause values.", "\u4E3B\u5B50\u53E5\u6C7A\u5B9A predicate \u7D50\u679C\uFF0C\u4E14\u5169\u5217\u7684\u6B21\u5B50\u53E5\u503C\u5B8C\u5168\u76F8\u540C\u3002"),
       rows,
       clauses,
       "racc"
@@ -3724,7 +3725,7 @@
         tests.push({
           id: testId,
           row,
-          label: `${clause}=${row.values[clause] ? "T" : "F"}, P=${row.predicate ? "T" : "F"} (\u975E\u4E3B\u5C0E ${clause})`,
+          label: `${clause}=${row.values[clause] ? "T" : "F"}, P=${row.predicate ? "T" : "F"} ${L(`(minor ${clause})`, `(\u975E\u4E3B\u5C0E ${clause})`)}`,
           majorClause: clause
         });
       }
@@ -3778,7 +3779,7 @@
     return buildInactiveClauseSet(
       "gicc",
       "General Inactive Clause Coverage",
-      "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\uFF0C\u65BC\u4E0D\u6C7A\u5B9A predicate \u7684\u5217\u4E2D\uFF0C\u8986\u84CB (c=T/F)\xD7(P=T/F) \u5171 4 \u7A2E\u7D44\u5408\u3002",
+      L("For each major clause, in rows where it does not determine the predicate, cover all (c=T/F) \xD7 (P=T/F) combinations.", "\u5C0D\u6BCF\u500B\u4E3B\u5B50\u53E5\uFF0C\u65BC\u4E0D\u6C7A\u5B9A predicate \u7684\u5217\u4E2D\uFF0C\u8986\u84CB (c=T/F)\xD7(P=T/F) \u5171 4 \u7A2E\u7D44\u5408\u3002"),
       rows,
       clauses,
       "gicc"
@@ -3788,7 +3789,7 @@
     return buildInactiveClauseSet(
       "ricc",
       "Restricted Inactive Clause Coverage",
-      "\u540C GICC\uFF0C\u4F46\u6210\u5C0D\u5217\uFF08\u540C P \u503C\uFF09\u9700\u6240\u6709\u6B21\u5B50\u53E5\u5B8C\u5168\u76F8\u540C\uFF0C\u50C5\u4E3B\u5B50\u53E5\u7FFB\u8F49\u3002",
+      L("Same as GICC, but paired rows (same P) must agree on every minor clause; only the major clause flips.", "\u540C GICC\uFF0C\u4F46\u6210\u5C0D\u5217\uFF08\u540C P \u503C\uFF09\u9700\u6240\u6709\u6B21\u5B50\u53E5\u5B8C\u5168\u76F8\u540C\uFF0C\u50C5\u4E3B\u5B50\u53E5\u7FFB\u8F49\u3002"),
       rows,
       clauses,
       "ricc"
@@ -4004,7 +4005,7 @@
     return {
       id: "ic",
       name: "Implicant Coverage",
-      description: "\u5C0D f \u8207 \xACf \u7684\u6700\u5C0F DNF \u4E2D\u6BCF\u500B prime implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B\u4F7F\u5176\u70BA\u771F\u7684 row\uFF08\u5DF2\u6700\u5C0F\u5316\u6E2C\u8A66\u5217\u6578\uFF09\u3002",
+      description: L("For every prime implicant in the minimal DNF of f and \xACf, find at least one row that satisfies it (test rows are minimised).", "\u5C0D f \u8207 \xACf \u7684\u6700\u5C0F DNF \u4E2D\u6BCF\u500B prime implicant\uFF0C\u81F3\u5C11\u627E\u5230\u4E00\u500B\u4F7F\u5176\u70BA\u771F\u7684 row\uFF08\u5DF2\u6700\u5C0F\u5316\u6E2C\u8A66\u5217\u6578\uFF09\u3002"),
       tests,
       requirementCount: dnf.length + negDnf.length,
       unsatisfied
@@ -4035,7 +4036,7 @@
     return {
       id: "utpc",
       name: "Unique True Point Coverage",
-      description: "\u5C0D\u6BCF\u500B implicant\uFF0C\u5217\u51FA\u6240\u6709\u53EA\u6EFF\u8DB3\u8A72 implicant \u7684 unique true point\uFF08\u4EFB\u9078\u5176\u4E00\u5373\u53EF\u6EFF\u8DB3\u6E96\u5247\uFF09\u3002",
+      description: L("For each implicant, list every unique true point that only satisfies that implicant (any one of them satisfies the criterion).", "\u5C0D\u6BCF\u500B implicant\uFF0C\u5217\u51FA\u6240\u6709\u53EA\u6EFF\u8DB3\u8A72 implicant \u7684 unique true point\uFF08\u4EFB\u9078\u5176\u4E00\u5373\u53EF\u6EFF\u8DB3\u6E96\u5247\uFF09\u3002"),
       tests,
       requirementCount: dnf.length,
       unsatisfied
@@ -4053,8 +4054,8 @@
       const utps = uniqueTruePointsForTerm(rows, term, dnf, index);
       if (!utps.length) {
         minorClauses.forEach((c) => {
-          unsatisfied.push(`MUTP {${termLabel(term)}} \u7F3A ${c}=T`);
-          unsatisfied.push(`MUTP {${termLabel(term)}} \u7F3A ${c}=F`);
+          unsatisfied.push(L(`MUTP {${termLabel(term)}} missing ${c}=T`, `MUTP {${termLabel(term)}} \u7F3A ${c}=T`));
+          unsatisfied.push(L(`MUTP {${termLabel(term)}} missing ${c}=F`, `MUTP {${termLabel(term)}} \u7F3A ${c}=F`));
         });
         return;
       }
@@ -4105,7 +4106,7 @@
       }
       if (remaining.size) {
         remaining.forEach((r) => {
-          unsatisfied.push(`MUTP {${termLabel(term)}} \u7F3A ${r}`);
+          unsatisfied.push(L(`MUTP {${termLabel(term)}} missing ${r}`, `MUTP {${termLabel(term)}} \u7F3A ${r}`));
         });
       }
       chosen.forEach((i) => {
@@ -4117,7 +4118,7 @@
         tests.push({
           id: key,
           row,
-          label: `MUTP {${termLabel(term)}}\uFF08${covered}\uFF09`,
+          label: `MUTP {${termLabel(term)}} (${covered})`,
           implicantIndex: index
         });
       });
@@ -4125,7 +4126,7 @@
     return {
       id: "mutpc",
       name: "Multiple Unique True Point Coverage",
-      description: "\u5C0D\u6BCF\u500B implicant\uFF0C\u6311\u9078\u4E00\u7D44 UTPs\uFF0C\u4F7F\u6BCF\u500B\u6B21\u5B50\u53E5\uFF08\u4E0D\u5728 implicant \u4E2D\u7684 clause\uFF09\u90FD\u81F3\u5C11\u51FA\u73FE\u4E00\u6B21 T \u8207\u4E00\u6B21 F\u3002",
+      description: L("For each implicant, pick a set of UTPs so that every minor clause (clauses not in the implicant) takes both T and F at least once.", "\u5C0D\u6BCF\u500B implicant\uFF0C\u6311\u9078\u4E00\u7D44 UTPs\uFF0C\u4F7F\u6BCF\u500B\u6B21\u5B50\u53E5\uFF08\u4E0D\u5728 implicant \u4E2D\u7684 clause\uFF09\u90FD\u81F3\u5C11\u51FA\u73FE\u4E00\u6B21 T \u8207\u4E00\u6B21 F\u3002"),
       tests,
       requirementCount,
       unsatisfied
@@ -4168,7 +4169,7 @@
         tests.push({
           id: key,
           row,
-          label: `NFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`,
+          label: L(`NFP {${termLabel(term)}} flip ${literalKey(literal)}`, `NFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`),
           implicantIndex: index,
           literal,
           pairedTruePointIndex: pairedTruePoint ? pairedTruePoint.index : null
@@ -4178,7 +4179,7 @@
     return {
       id: "nfpc",
       name: "Near False Point Coverage",
-      description: "\u5C0D\u6BCF\u500B implicant \u7684\u6BCF\u500B literal\uFF0C\u627E\u4E00\u500B\u7FFB\u8F49\u8A72 literal \u5F8C\u4F7F implicant \u70BA\u5047\u4E14 P \u70BA\u5047\u7684 row\u3002",
+      description: L("For every literal in every implicant, find a row that flips that literal so the implicant becomes false and P is false.", "\u5C0D\u6BCF\u500B implicant \u7684\u6BCF\u500B literal\uFF0C\u627E\u4E00\u500B\u7FFB\u8F49\u8A72 literal \u5F8C\u4F7F implicant \u70BA\u5047\u4E14 P \u70BA\u5047\u7684 row\u3002"),
       tests,
       requirementCount,
       unsatisfied
@@ -4197,11 +4198,11 @@
         const nfps = nearFalsePointsFor(rows, term, literalIndex);
         if (!nfps.length) {
           if (!minorClauses.length) {
-            unsatisfied.push(`MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`);
+            unsatisfied.push(L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)}`, `MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`));
           } else {
             minorClauses.forEach((c) => {
-              unsatisfied.push(`MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)} \u7F3A ${c}=T`);
-              unsatisfied.push(`MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)} \u7F3A ${c}=F`);
+              unsatisfied.push(L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)} missing ${c}=T`, `MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)} \u7F3A ${c}=T`));
+              unsatisfied.push(L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)} missing ${c}=F`, `MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)} \u7F3A ${c}=F`));
             });
           }
           return;
@@ -4214,7 +4215,7 @@
             tests.push({
               id: key,
               row,
-              label: `MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`,
+              label: L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)}`, `MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`),
               implicantIndex: index,
               literal
             });
@@ -4254,7 +4255,7 @@
         }
         if (remaining.size) {
           remaining.forEach((r) => {
-            unsatisfied.push(`MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)} \u7F3A ${r}`);
+            unsatisfied.push(L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)} missing ${r}`, `MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)} \u7F3A ${r}`));
           });
         }
         chosen.forEach((i) => {
@@ -4266,7 +4267,7 @@
           tests.push({
             id: key,
             row,
-            label: `MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}\uFF08${covered}\uFF09`,
+            label: L(`MNFP {${termLabel(term)}} flip ${literalKey(literal)} (${covered})`, `MNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}\uFF08${covered}\uFF09`),
             implicantIndex: index,
             literal
           });
@@ -4276,7 +4277,7 @@
     return {
       id: "mnfpc",
       name: "Multiple Near False Point Coverage",
-      description: "\u5C0D\u6BCF\u500B implicant \u7684\u6BCF\u500B literal\uFF0C\u6311\u4E00\u7D44 NFPs\uFF0C\u4F7F\u6BCF\u500B\u6B21\u5B50\u53E5\u90FD\u81F3\u5C11\u51FA\u73FE\u4E00\u6B21 T \u8207\u4E00\u6B21 F\u3002",
+      description: L("For every literal in every implicant, pick a set of NFPs so that every minor clause takes both T and F at least once.", "\u5C0D\u6BCF\u500B implicant \u7684\u6BCF\u500B literal\uFF0C\u6311\u4E00\u7D44 NFPs\uFF0C\u4F7F\u6BCF\u500B\u6B21\u5B50\u53E5\u90FD\u81F3\u5C11\u51FA\u73FE\u4E00\u6B21 T \u8207\u4E00\u6B21 F\u3002"),
       tests,
       requirementCount,
       unsatisfied
@@ -4306,7 +4307,7 @@
           }
         }
         if (!pair) {
-          unsatisfied.push(`CUTPNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`);
+          unsatisfied.push(L(`CUTPNFP {${termLabel(term)}} flip ${literalKey(literal)}`, `CUTPNFP {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`));
           return;
         }
         pair.forEach((row, role) => {
@@ -4316,7 +4317,7 @@
           tests.push({
             id: key,
             row,
-            label: `${role === 0 ? "UTP" : "NFP"} pair {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`,
+            label: L(`${role === 0 ? "UTP" : "NFP"} pair {${termLabel(term)}} flip ${literalKey(literal)}`, `${role === 0 ? "UTP" : "NFP"} pair {${termLabel(term)}} \u7FFB\u8F49 ${literalKey(literal)}`),
             implicantIndex: index,
             literal,
             role: role === 0 ? "utp" : "nfp",
@@ -4328,7 +4329,7 @@
     return {
       id: "cutpnfp",
       name: "Corresponding UTP + NFP Pair Coverage",
-      description: "\u70BA\u6BCF\u500B implicant \u7684\u6BCF\u500B literal\uFF0C\u6311\u4E00\u5C0D\u50C5\u5728\u8A72 literal \u4E0D\u540C\u7684 UTP \u8207 NFP\u3002",
+      description: L("For every literal in every implicant, pick a UTP/NFP pair that differs only in that literal.", "\u70BA\u6BCF\u500B implicant \u7684\u6BCF\u500B literal\uFF0C\u6311\u4E00\u5C0D\u50C5\u5728\u8A72 literal \u4E0D\u540C\u7684 UTP \u8207 NFP\u3002"),
       tests,
       requirementCount,
       unsatisfied
@@ -4939,7 +4940,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           class="logic-example-btn${state.expression === p.expression ? " active" : ""}"
           data-expression="${escapeHtml2(p.expression)}"
           data-testid="logic-example-${p.id}"
-          title="${escapeHtml2(p.description)}"
+          title="${escapeHtml2(pickField(p, "description") || "")}"
         >
           ${escapeHtml2(p.name)}
         </button>
@@ -4973,8 +4974,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           data-criterion="${c.id}"
           data-testid="logic-criterion-${c.id}"
         >
-          <span class="logic-criterion-label">${escapeHtml2(c.label)}</span>
-          <span class="logic-criterion-zh">${escapeHtml2(getLocale() === "en" ? c.descriptionEn || c.description || "" : c.labelZh)}</span>
+          <span class="logic-criterion-label">${escapeHtml2(pickField(c, "label") || c.label)}</span>
+          <span class="logic-criterion-zh">${escapeHtml2(getLocale() === "en" ? c.descriptionEn || c.description || "" : c.labelZh || "")}</span>
         </button>
       `).join("");
       const truthTableMarkup = renderTruthTable();
@@ -5212,7 +5213,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       })() : "";
       return `
       <h3 class="logic-summary-title">${escapeHtml2(set.name)}</h3>
-      <p class="logic-summary-desc">${escapeHtml2(set.description)}</p>
+      <p class="logic-summary-desc">${escapeHtml2(set.description || "")}</p>
       ${dnfMarkup}
       ${kmapMarkup}
       <p class="logic-summary-stats">
