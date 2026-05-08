@@ -32,7 +32,8 @@
         { id: "pc", name: "\u8DEF\u5F91\u8986\u84CB", nameEn: "Path Coverage", description: "\u78BA\u4FDD\u6BCF\u689D\u7368\u7ACB\u8DEF\u5F91\u90FD\u88AB\u57F7\u884C", descriptionEn: "Ensure each independent path is executed." },
         { id: "ppc", name: "Prime Path Coverage", nameEn: "Prime Path Coverage", description: "\u6700\u5C0F\u5316\u4E14\u5B8C\u6574\u7684\u8DEF\u5F91\u8986\u84CB\u96C6\u5408", descriptionEn: "Minimal yet complete prime-path coverage set." },
         { id: "cc", name: "\u689D\u4EF6\u8986\u84CB", nameEn: "Condition Coverage", description: "\u78BA\u4FDD\u6BCF\u500B\u5E03\u6797\u689D\u4EF6\u7684\u771F\u5047\u90FD\u88AB\u6E2C\u8A66", descriptionEn: "Ensure each Boolean condition is tested for true and false." },
-        { id: "mc", name: "\u591A\u91CD\u689D\u4EF6\u8986\u84CB", nameEn: "Multiple Conditions", description: "\u6E2C\u8A66\u6240\u6709\u689D\u4EF6\u7D44\u5408\u7684\u771F\u5047\u60C5\u6CC1", descriptionEn: "Test all true/false combinations of conditions." }
+        { id: "mc", name: "\u591A\u91CD\u689D\u4EF6\u8986\u84CB", nameEn: "Multiple Conditions", description: "\u6E2C\u8A66\u6240\u6709\u689D\u4EF6\u7D44\u5408\u7684\u771F\u5047\u60C5\u6CC1", descriptionEn: "Test all true/false combinations of conditions." },
+        { id: "symbex", name: "\u7B26\u865F\u57F7\u884C", nameEn: "Symbolic Execution", description: "\u4EE5\u7B26\u865F\u503C\u4EE3\u5165\u7A0B\u5F0F\u8B8A\u6578\uFF0C\u6CBF\u8DEF\u5F91\u6536\u96C6 path condition \u4E26\u6C42\u89E3\u53EF\u9054\u8F38\u5165", descriptionEn: "Substitute symbolic values for program inputs, collect a path condition along each path, and solve for concrete witnesses." }
       ]
     },
     {
@@ -469,6 +470,65 @@
       descriptionEn: "A four-clause product predicate, common in range checks."
     }
   ];
+  var symbolicExecutionExamples = [
+    {
+      id: "triangle",
+      name: "Triangle classifier",
+      nameEn: "Triangle classifier",
+      description: "\u7D93\u5178\u4E09\u89D2\u5F62\u5206\u985E\uFF1A\u56DE\u50B3 0 (\u975E\u4E09\u89D2\u5F62)\u30011 (\u4E00\u822C)\u30012 (\u7B49\u8170)\u30013 (\u7B49\u908A)\u3002",
+      descriptionEn: "Classic triangle classifier: returns 0 (none), 1 (scalene), 2 (isosceles), 3 (equilateral).",
+      sourceCode: `function classify(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) return 0;
+  if (a + b <= c || a + c <= b || b + c <= a) return 0;
+  if (a == b && b == c) return 3;
+  if (a == b || b == c || a == c) return 2;
+  return 1;
+}
+`
+    },
+    {
+      id: "max3",
+      name: "Max of three",
+      nameEn: "Max of three",
+      description: "\u56DE\u50B3 a, b, c \u4E09\u8005\u6700\u5927\u503C\uFF1B\u7D93\u5178\u5206\u652F\u7D50\u69CB\u793A\u7BC4\u3002",
+      descriptionEn: "Return the maximum of three integers \u2014 a canonical branching example.",
+      sourceCode: `function max3(a, b, c) {
+  let m = a;
+  if (b > m) m = b;
+  if (c > m) m = c;
+  return m;
+}
+`
+    },
+    {
+      id: "abs",
+      name: "Absolute value",
+      nameEn: "Absolute value",
+      description: "\u53EA\u6709\u5169\u689D\u8DEF\u5F91\u7684\u6700\u5C0F\u7BC4\u4F8B\uFF1Ax >= 0 \u8207 x < 0\u3002",
+      descriptionEn: "A minimal two-path example: x >= 0 versus x < 0.",
+      sourceCode: `function abs(x) {
+  if (x < 0) return -x;
+  return x;
+}
+`
+    },
+    {
+      id: "gcd",
+      name: "GCD (bounded)",
+      nameEn: "GCD (bounded)",
+      description: "\u6B50\u5E7E\u91CC\u5F97\u6F14\u7B97\u6CD5\uFF0C\u542B while \u8FF4\u5708\uFF1B\u4EE5\u6700\u5927\u5C55\u958B\u6B21\u6578\u6A21\u64EC\u6709\u754C\u8DEF\u5F91\u5217\u8209\u3002",
+      descriptionEn: "Euclidean algorithm with a while loop \u2014 bounded unrolling enumerates the first paths.",
+      sourceCode: `function gcd(a, b) {
+  while (b != 0) {
+    let t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
+}
+`
+    }
+  ];
 
   // src/i18n/dict.js
   var messages = {
@@ -500,6 +560,21 @@
       "section.cloud.title": "Google Cloud Integration",
       "section.flow.title": "Testing Flow",
       "section.types.title": "Common Testing Types",
+      "section.symbex": "Symbolic Execution",
+      "section.symbex.title": "Symbolic Execution Explorer",
+      "symbex.source": "Program source",
+      "symbex.maxUnroll": "Loop unroll limit",
+      "symbex.summary.paths": "Paths: ",
+      "symbex.summary.feasible": "Feasible: ",
+      "symbex.summary.truncated": "truncated (max-paths reached)",
+      "symbex.feasible": "feasible",
+      "symbex.infeasible": "No witness found within the search domain.",
+      "symbex.infeasible.short": "infeasible",
+      "symbex.witness": "Witness",
+      "symbex.return": "Return",
+      "symbex.empty": "No paths to display.",
+      "symbex.pc.empty": "Path condition: (always reachable)",
+      "symbex.hint": "Supports a small JS subset: function with int/bool params, let/=, if/else, bounded while, return, +-*/% comparisons, &&/||/!. Witnesses are searched over a small integer domain.",
       // Common
       "common.run": "Run",
       "common.reset": "Reset",
@@ -829,6 +904,21 @@
       "section.cloud.title": "Google \u96F2\u7AEF\u6574\u5408",
       "section.flow.title": "\u6E2C\u8A66\u6D41\u7A0B",
       "section.types.title": "\u5E38\u898B\u6E2C\u8A66\u985E\u578B",
+      "section.symbex": "\u7B26\u865F\u57F7\u884C",
+      "section.symbex.title": "Symbolic Execution Explorer",
+      "symbex.source": "\u7A0B\u5F0F\u539F\u59CB\u78BC",
+      "symbex.maxUnroll": "\u8FF4\u5708\u5C55\u958B\u4E0A\u9650",
+      "symbex.summary.paths": "\u8DEF\u5F91\u6578\uFF1A",
+      "symbex.summary.feasible": "\u53EF\u6EFF\u8DB3\u8DEF\u5F91\uFF1A",
+      "symbex.summary.truncated": "\u5DF2\u622A\u65B7\uFF08\u9054\u8DEF\u5F91\u4E0A\u9650\uFF09",
+      "symbex.feasible": "\u53EF\u6EFF\u8DB3",
+      "symbex.infeasible": "\u5728\u641C\u5C0B\u7BC4\u570D\u5167\u672A\u627E\u5230\u898B\u8B49\u3002",
+      "symbex.infeasible.short": "\u4E0D\u53EF\u6EFF\u8DB3",
+      "symbex.witness": "\u898B\u8B49\u8F38\u5165",
+      "symbex.return": "\u56DE\u50B3\u503C",
+      "symbex.empty": "\u7121\u8DEF\u5F91\u53EF\u986F\u793A\u3002",
+      "symbex.pc.empty": "Path condition\uFF1A\uFF08\u6C38\u9060\u53EF\u9054\uFF09",
+      "symbex.hint": "\u652F\u63F4\u5C0F\u578B JS \u5B50\u96C6\uFF1Afunction \u5B63\u544A\u3001let/=\u3001if/else\u3001\u6709\u754C while\u3001return\u3001\u7B97\u8853\u8207\u6BD4\u8F03\u904B\u7B97\u3001&&/||/!\u3002\u898B\u8B49\u4EE5\u5C0F\u578B\u6574\u6578\u57DF\u7A6E\u8209\u6C42\u89E3\u3002",
       "common.run": "\u57F7\u884C",
       "common.reset": "\u91CD\u8A2D",
       "common.save": "\u5132\u5B58",
@@ -8857,6 +8947,797 @@ INVARSPEC !w | (i & (l | h))`
     return root2;
   }
 
+  // src/utils/symbolicExecution.js
+  var L2 = (en, zh) => getLocale() === "en" ? en : zh;
+  var KEYWORDS2 = /* @__PURE__ */ new Set([
+    "function",
+    "let",
+    "var",
+    "const",
+    "if",
+    "else",
+    "while",
+    "return",
+    "true",
+    "false"
+  ]);
+  var PUNCT2 = ["==", "!=", "<=", ">=", "&&", "||"];
+  var PUNCT1 = "(){};,+-*/%<>!=";
+  function tokenize2(source) {
+    const tokens = [];
+    let i = 0;
+    let line = 1;
+    let col = 1;
+    const advance = (n = 1) => {
+      for (let k = 0; k < n; k += 1) {
+        if (source[i] === "\n") {
+          line += 1;
+          col = 1;
+        } else {
+          col += 1;
+        }
+        i += 1;
+      }
+    };
+    while (i < source.length) {
+      const ch = source[i];
+      if (ch === " " || ch === "	" || ch === "\r" || ch === "\n") {
+        advance();
+        continue;
+      }
+      if (ch === "/" && source[i + 1] === "/") {
+        while (i < source.length && source[i] !== "\n") advance();
+        continue;
+      }
+      if (ch === "/" && source[i + 1] === "*") {
+        advance(2);
+        while (i < source.length && !(source[i] === "*" && source[i + 1] === "/")) advance();
+        if (i < source.length) advance(2);
+        continue;
+      }
+      if (/[0-9]/.test(ch)) {
+        let j = i;
+        while (j < source.length && /[0-9]/.test(source[j])) j += 1;
+        tokens.push({ type: "num", value: Number(source.slice(i, j)), line, col });
+        advance(j - i);
+        continue;
+      }
+      if (/[A-Za-z_$]/.test(ch)) {
+        let j = i;
+        while (j < source.length && /[A-Za-z0-9_$]/.test(source[j])) j += 1;
+        const word = source.slice(i, j);
+        if (KEYWORDS2.has(word)) {
+          tokens.push({ type: word, line, col });
+        } else {
+          tokens.push({ type: "ident", value: word, line, col });
+        }
+        advance(j - i);
+        continue;
+      }
+      const two = source.slice(i, i + 2);
+      if (PUNCT2.includes(two)) {
+        tokens.push({ type: two, line, col });
+        advance(2);
+        continue;
+      }
+      if (PUNCT1.includes(ch)) {
+        tokens.push({ type: ch, line, col });
+        advance(1);
+        continue;
+      }
+      throw new Error(L2(
+        `Unexpected character "${ch}" at line ${line}, column ${col}`,
+        `\u975E\u9810\u671F\u5B57\u5143\u300C${ch}\u300D\u65BC\u7B2C ${line} \u884C\u7B2C ${col} \u6B04`
+      ));
+    }
+    tokens.push({ type: "EOF", line, col });
+    return tokens;
+  }
+  function parse(source) {
+    const tokens = tokenize2(source);
+    let pos = 0;
+    const peek = (n = 0) => tokens[pos + n];
+    const eat = (type) => {
+      const t2 = tokens[pos];
+      if (t2.type !== type) {
+        throw new Error(L2(
+          `Expected "${type}" but got "${t2.type}" at line ${t2.line}`,
+          `\u9810\u671F\u300C${type}\u300D\u4F46\u53D6\u5F97\u300C${t2.type}\u300D\u65BC\u7B2C ${t2.line} \u884C`
+        ));
+      }
+      pos += 1;
+      return t2;
+    };
+    function parseFunction() {
+      eat("function");
+      const name = eat("ident").value;
+      eat("(");
+      const params = [];
+      if (peek().type !== ")") {
+        params.push(eat("ident").value);
+        while (peek().type === ",") {
+          eat(",");
+          params.push(eat("ident").value);
+        }
+      }
+      eat(")");
+      const body = parseBlock();
+      return { kind: "function", name, params, body };
+    }
+    function parseBlock() {
+      eat("{");
+      const statements = [];
+      while (peek().type !== "}" && peek().type !== "EOF") {
+        statements.push(parseStatement());
+      }
+      eat("}");
+      return { kind: "block", statements };
+    }
+    function parseStatement() {
+      const t2 = peek();
+      if (t2.type === "{") return parseBlock();
+      if (t2.type === "if") return parseIf();
+      if (t2.type === "while") return parseWhile();
+      if (t2.type === "return") return parseReturn();
+      if (t2.type === "let" || t2.type === "var" || t2.type === "const") return parseDeclaration();
+      if (t2.type === "ident") return parseAssignment();
+      throw new Error(L2(
+        `Unexpected token "${t2.type}" at line ${t2.line}`,
+        `\u975E\u9810\u671F token\u300C${t2.type}\u300D\u65BC\u7B2C ${t2.line} \u884C`
+      ));
+    }
+    function parseDeclaration() {
+      eat(peek().type);
+      const target = eat("ident").value;
+      eat("=");
+      const value = parseExpression2();
+      eatSemicolon();
+      return { kind: "let", target, value };
+    }
+    function parseAssignment() {
+      const target = eat("ident").value;
+      eat("=");
+      const value = parseExpression2();
+      eatSemicolon();
+      return { kind: "assign", target, value };
+    }
+    function eatSemicolon() {
+      if (peek().type === ";") eat(";");
+    }
+    function parseIf() {
+      eat("if");
+      eat("(");
+      const test = parseExpression2();
+      eat(")");
+      const consequent = parseBranchBody();
+      let alternate = null;
+      if (peek().type === "else") {
+        eat("else");
+        alternate = peek().type === "if" ? parseIf() : parseBranchBody();
+      }
+      return { kind: "if", test, consequent, alternate };
+    }
+    function parseWhile() {
+      eat("while");
+      eat("(");
+      const test = parseExpression2();
+      eat(")");
+      const body = parseBranchBody();
+      return { kind: "while", test, body };
+    }
+    function parseReturn() {
+      eat("return");
+      let argument = null;
+      if (peek().type !== ";" && peek().type !== "}") argument = parseExpression2();
+      eatSemicolon();
+      return { kind: "return", argument };
+    }
+    function parseBranchBody() {
+      if (peek().type === "{") return parseBlock();
+      return { kind: "block", statements: [parseStatement()] };
+    }
+    function parseExpression2() {
+      return parseOr();
+    }
+    function parseOr() {
+      let n = parseAnd();
+      while (peek().type === "||") {
+        eat("||");
+        n = { kind: "binary", op: "||", left: n, right: parseAnd() };
+      }
+      return n;
+    }
+    function parseAnd() {
+      let n = parseEquality();
+      while (peek().type === "&&") {
+        eat("&&");
+        n = { kind: "binary", op: "&&", left: n, right: parseEquality() };
+      }
+      return n;
+    }
+    function parseEquality() {
+      let n = parseRel();
+      while (peek().type === "==" || peek().type === "!=") {
+        const op = peek().type;
+        eat(op);
+        n = { kind: "binary", op, left: n, right: parseRel() };
+      }
+      return n;
+    }
+    function parseRel() {
+      let n = parseAdd();
+      while (["<", "<=", ">", ">="].includes(peek().type)) {
+        const op = peek().type;
+        eat(op);
+        n = { kind: "binary", op, left: n, right: parseAdd() };
+      }
+      return n;
+    }
+    function parseAdd() {
+      let n = parseMul();
+      while (peek().type === "+" || peek().type === "-") {
+        const op = peek().type;
+        eat(op);
+        n = { kind: "binary", op, left: n, right: parseMul() };
+      }
+      return n;
+    }
+    function parseMul() {
+      let n = parseUnary();
+      while (["*", "/", "%"].includes(peek().type)) {
+        const op = peek().type;
+        eat(op);
+        n = { kind: "binary", op, left: n, right: parseUnary() };
+      }
+      return n;
+    }
+    function parseUnary() {
+      if (peek().type === "!" || peek().type === "-") {
+        const op = peek().type;
+        eat(op);
+        return { kind: "unary", op, operand: parseUnary() };
+      }
+      return parseAtom();
+    }
+    function parseAtom() {
+      const t2 = peek();
+      if (t2.type === "num") {
+        eat("num");
+        return { kind: "num", value: t2.value };
+      }
+      if (t2.type === "true") {
+        eat("true");
+        return { kind: "bool", value: true };
+      }
+      if (t2.type === "false") {
+        eat("false");
+        return { kind: "bool", value: false };
+      }
+      if (t2.type === "ident") {
+        eat("ident");
+        return { kind: "var", name: t2.value };
+      }
+      if (t2.type === "(") {
+        eat("(");
+        const e = parseExpression2();
+        eat(")");
+        return e;
+      }
+      throw new Error(L2(
+        `Unexpected token "${t2.type}" in expression at line ${t2.line}`,
+        `\u904B\u7B97\u5F0F\u4E2D\u975E\u9810\u671F token\u300C${t2.type}\u300D\u65BC\u7B2C ${t2.line} \u884C`
+      ));
+    }
+    const fn = parseFunction();
+    if (peek().type !== "EOF") {
+      throw new Error(L2("Trailing input after function definition.", "\u51FD\u5F0F\u5B9A\u7FA9\u5F8C\u4ECD\u6709\u672A\u89E3\u6790\u5167\u5BB9\u3002"));
+    }
+    return fn;
+  }
+  var PRECEDENCE = {
+    "||": 1,
+    "&&": 2,
+    "==": 3,
+    "!=": 3,
+    "<": 4,
+    "<=": 4,
+    ">": 4,
+    ">=": 4,
+    "+": 5,
+    "-": 5,
+    "*": 6,
+    "/": 6,
+    "%": 6
+  };
+  function exprToString(node, parentPrec = 0) {
+    if (!node) return "";
+    if (node.kind === "num") return String(node.value);
+    if (node.kind === "bool") return node.value ? "true" : "false";
+    if (node.kind === "var") return node.name;
+    if (node.kind === "unary") {
+      const inner = exprToString(node.operand, 7);
+      const text = `${node.op}${inner}`;
+      return parentPrec > 7 ? `(${text})` : text;
+    }
+    if (node.kind === "binary") {
+      const prec = PRECEDENCE[node.op] || 0;
+      const text = `${exprToString(node.left, prec)} ${node.op} ${exprToString(node.right, prec + 1)}`;
+      return parentPrec > prec ? `(${text})` : text;
+    }
+    return "?";
+  }
+  function evalExpr(node, env) {
+    if (node.kind === "num") return node.value;
+    if (node.kind === "bool") return node.value;
+    if (node.kind === "var") {
+      if (!(node.name in env)) {
+        throw new Error(L2(`Unbound variable: ${node.name}`, `\u672A\u5B9A\u7FA9\u8B8A\u6578\uFF1A${node.name}`));
+      }
+      return env[node.name];
+    }
+    if (node.kind === "unary") {
+      const v = evalExpr(node.operand, env);
+      if (node.op === "!") return !v;
+      if (node.op === "-") return -v;
+    }
+    if (node.kind === "binary") {
+      const L_ = evalExpr(node.left, env);
+      const R_ = evalExpr(node.right, env);
+      switch (node.op) {
+        case "+":
+          return L_ + R_;
+        case "-":
+          return L_ - R_;
+        case "*":
+          return L_ * R_;
+        case "/":
+          return R_ === 0 ? NaN : Math.trunc(L_ / R_);
+        case "%":
+          return R_ === 0 ? NaN : L_ % R_;
+        case "==":
+          return L_ === R_;
+        case "!=":
+          return L_ !== R_;
+        case "<":
+          return L_ < R_;
+        case "<=":
+          return L_ <= R_;
+        case ">":
+          return L_ > R_;
+        case ">=":
+          return L_ >= R_;
+        case "&&":
+          return Boolean(L_) && Boolean(R_);
+        case "||":
+          return Boolean(L_) || Boolean(R_);
+        default:
+          throw new Error(`Unknown op ${node.op}`);
+      }
+    }
+    throw new Error(`Unknown node ${node.kind}`);
+  }
+  function substitute(node, env) {
+    if (node.kind === "num" || node.kind === "bool") return node;
+    if (node.kind === "var") return env[node.name] ? cloneExpr(env[node.name]) : node;
+    if (node.kind === "unary") return { kind: "unary", op: node.op, operand: substitute(node.operand, env) };
+    if (node.kind === "binary") {
+      return { kind: "binary", op: node.op, left: substitute(node.left, env), right: substitute(node.right, env) };
+    }
+    return node;
+  }
+  function cloneExpr(node) {
+    if (!node) return node;
+    if (node.kind === "num" || node.kind === "bool") return { ...node };
+    if (node.kind === "var") return { ...node };
+    if (node.kind === "unary") return { kind: "unary", op: node.op, operand: cloneExpr(node.operand) };
+    if (node.kind === "binary") {
+      return { kind: "binary", op: node.op, left: cloneExpr(node.left), right: cloneExpr(node.right) };
+    }
+    return node;
+  }
+  function negate(expr) {
+    if (expr.kind === "unary" && expr.op === "!") return expr.operand;
+    return { kind: "unary", op: "!", operand: expr };
+  }
+  var DEFAULT_OPTIONS = {
+    maxLoopUnroll: 3,
+    // expand each `while` at most this many times per path
+    maxPaths: 64,
+    // total path cap
+    searchDomain: { min: -5, max: 12 }
+    // brute-force solver domain
+  };
+  function symbolicExecute(programSource, options = {}) {
+    const opts = { ...DEFAULT_OPTIONS, ...options };
+    const fn = parse(programSource);
+    const params = fn.params.slice();
+    const initialEnv = {};
+    for (const p of params) initialEnv[p] = { kind: "var", name: p };
+    const paths = [];
+    let pathIdSeq = 0;
+    let truncated = false;
+    function walk(stmts, idx, env, pc, branches) {
+      if (paths.length >= opts.maxPaths) {
+        truncated = true;
+        return;
+      }
+      if (idx >= stmts.length) {
+        record(env, pc, branches, null);
+        return;
+      }
+      const s = stmts[idx];
+      if (s.kind === "block") {
+        walk([...s.statements, ...stmts.slice(idx + 1)], 0, env, pc, branches);
+        return;
+      }
+      if (s.kind === "let" || s.kind === "assign") {
+        const next = { ...env, [s.target]: substitute(s.value, env) };
+        walk(stmts, idx + 1, next, pc, branches);
+        return;
+      }
+      if (s.kind === "return") {
+        const ret = s.argument ? substitute(s.argument, env) : { kind: "bool", value: true };
+        record(env, pc, branches, ret);
+        return;
+      }
+      if (s.kind === "if") {
+        const cond = substitute(s.test, env);
+        walk(
+          [s.consequent, ...stmts.slice(idx + 1)],
+          0,
+          env,
+          [...pc, cond],
+          [...branches, { line: describeBranch(s.test), taken: true }]
+        );
+        const altBlock = s.alternate || { kind: "block", statements: [] };
+        walk(
+          [altBlock, ...stmts.slice(idx + 1)],
+          0,
+          env,
+          [...pc, negate(cond)],
+          [...branches, { line: describeBranch(s.test), taken: false }]
+        );
+        return;
+      }
+      if (s.kind === "while") {
+        let unroll = function(unrollCount, envCur, pcCur, branchesCur) {
+          if (paths.length >= opts.maxPaths) {
+            truncated = true;
+            return;
+          }
+          const cond = substitute(s.test, envCur);
+          if (unrollCount >= opts.maxLoopUnroll) {
+            walk(
+              stmts,
+              idx + 1,
+              envCur,
+              [...pcCur, negate(cond)],
+              [...branchesCur, { line: describeBranch(s.test), taken: false, loop: true }]
+            );
+            return;
+          }
+          walk(
+            stmts,
+            idx + 1,
+            envCur,
+            [...pcCur, negate(cond)],
+            [...branchesCur, { line: describeBranch(s.test), taken: false, loop: true }]
+          );
+          symbolicExecBlock(
+            s.body,
+            envCur,
+            [...pcCur, cond],
+            [...branchesCur, { line: describeBranch(s.test), taken: true, loop: true }],
+            (env2, pc2, br2) => unroll(unrollCount + 1, env2, pc2, br2)
+          );
+        };
+        unroll(0, env, pc, branches);
+        return;
+      }
+      walk(stmts, idx + 1, env, pc, branches);
+    }
+    function symbolicExecBlock(block, env, pc, branches, cont) {
+      function step(stmts, idx, env_, pc_, br_) {
+        if (paths.length >= opts.maxPaths) {
+          truncated = true;
+          return;
+        }
+        if (idx >= stmts.length) {
+          cont(env_, pc_, br_);
+          return;
+        }
+        const s = stmts[idx];
+        if (s.kind === "block") {
+          step([...s.statements, ...stmts.slice(idx + 1)], 0, env_, pc_, br_);
+          return;
+        }
+        if (s.kind === "let" || s.kind === "assign") {
+          step(stmts, idx + 1, { ...env_, [s.target]: substitute(s.value, env_) }, pc_, br_);
+          return;
+        }
+        if (s.kind === "return") {
+          const ret = s.argument ? substitute(s.argument, env_) : { kind: "bool", value: true };
+          record(env_, pc_, br_, ret);
+          return;
+        }
+        if (s.kind === "if") {
+          const cond = substitute(s.test, env_);
+          step(
+            [s.consequent, ...stmts.slice(idx + 1)],
+            0,
+            env_,
+            [...pc_, cond],
+            [...br_, { line: describeBranch(s.test), taken: true }]
+          );
+          const altBlock = s.alternate || { kind: "block", statements: [] };
+          step(
+            [altBlock, ...stmts.slice(idx + 1)],
+            0,
+            env_,
+            [...pc_, negate(cond)],
+            [...br_, { line: describeBranch(s.test), taken: false }]
+          );
+          return;
+        }
+        if (s.kind === "while") {
+          walk([s, ...stmts.slice(idx + 1)], 0, env_, pc_, br_);
+          return;
+        }
+        step(stmts, idx + 1, env_, pc_, br_);
+      }
+      step([block], 0, env, pc, branches);
+    }
+    function describeBranch(node) {
+      return exprToString(node);
+    }
+    function record(env, pc, branches, returnExpr) {
+      const id = `path-${pathIdSeq}`;
+      pathIdSeq += 1;
+      const witness = findWitness(pc, params, opts.searchDomain);
+      let concreteReturn = null;
+      let concreteEnv = null;
+      if (witness) {
+        try {
+          concreteEnv = { ...witness };
+          const finalEnv = {};
+          for (const k of Object.keys(env)) {
+            if (params.includes(k)) finalEnv[k] = witness[k];
+            else finalEnv[k] = evalExpr(env[k], witness);
+          }
+          for (const p of params) if (!(p in finalEnv)) finalEnv[p] = witness[p];
+          concreteEnv = finalEnv;
+          concreteReturn = returnExpr ? evalExpr(returnExpr, witness) : null;
+        } catch {
+          concreteReturn = null;
+        }
+      }
+      paths.push({
+        id,
+        branches,
+        pathCondition: pc.map((c) => exprToString(c)),
+        returnExpression: returnExpr ? exprToString(returnExpr) : null,
+        feasible: Boolean(witness),
+        witness: witness || null,
+        concreteEnv,
+        concreteReturn
+      });
+    }
+    walk(fn.body.statements, 0, initialEnv, [], []);
+    return { function: { name: fn.name, params }, paths, truncated };
+  }
+  function findWitness(pc, params, domain) {
+    if (!pc.length) {
+      const w = {};
+      for (const p of params) w[p] = 0;
+      return w;
+    }
+    const values = [];
+    for (let v = domain.min; v <= domain.max; v += 1) values.push(v);
+    const result = {};
+    function recurse(i) {
+      if (i === params.length) {
+        try {
+          for (const c of pc) {
+            if (!evalExpr(c, result)) return false;
+          }
+          return true;
+        } catch {
+          return false;
+        }
+      }
+      for (const v of values) {
+        result[params[i]] = v;
+        if (recurse(i + 1)) return true;
+      }
+      return false;
+    }
+    return recurse(0) ? { ...result } : null;
+  }
+
+  // src/components/SymbolicExecutionExplorer.js
+  var STORAGE_KEY5 = "stvisual.symbex.v1";
+  function escapeHtml6(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function loadSaved2() {
+    var _a2;
+    try {
+      const raw = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY5);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+  function persist2(state) {
+    var _a2;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY5, JSON.stringify({
+        sourceCode: state.sourceCode,
+        exampleId: state.exampleId,
+        maxLoopUnroll: state.maxLoopUnroll
+      }));
+    } catch {
+    }
+  }
+  function createSymbolicExecutionExplorer() {
+    const root2 = document.createElement("div");
+    root2.className = "symbex-explorer";
+    root2.dataset.testid = "symbex-explorer";
+    const saved = loadSaved2();
+    const defaultExample = symbolicExecutionExamples[0];
+    const state = {
+      exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
+      sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
+      maxLoopUnroll: typeof (saved == null ? void 0 : saved.maxLoopUnroll) === "number" ? saved.maxLoopUnroll : 3,
+      result: null,
+      error: null
+    };
+    function recompute() {
+      state.result = null;
+      state.error = null;
+      try {
+        state.result = symbolicExecute(state.sourceCode, { maxLoopUnroll: state.maxLoopUnroll });
+      } catch (err) {
+        state.error = err.message || String(err);
+      }
+      persist2(state);
+    }
+    function render() {
+      recompute();
+      const exampleButtons = symbolicExecutionExamples.map((ex) => `
+      <button type="button"
+        class="symbex-example-btn${state.exampleId === ex.id ? " active" : ""}"
+        data-symbex-example="${ex.id}"
+        data-testid="symbex-example-${ex.id}"
+        title="${escapeHtml6(pickField(ex, "description") || "")}">
+        ${escapeHtml6(pickField(ex, "name") || ex.name)}
+      </button>
+    `).join("");
+      const pathsMarkup = state.error ? `<div class="symbex-error" data-testid="symbex-error">${escapeHtml6(state.error)}</div>` : renderPaths(state.result);
+      const summary = state.result ? `${t("symbex.summary.paths")}<strong data-testid="symbex-path-count">${state.result.paths.length}</strong>
+         <span class="symbex-divider">\xB7</span>
+         ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state.result.paths.filter((p) => p.feasible).length}</strong>
+         ${state.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
+      root2.innerHTML = `
+      <div class="symbex-toolbar">
+        <div class="symbex-examples" data-testid="symbex-examples">${exampleButtons}</div>
+        <div class="symbex-controls">
+          <label class="symbex-control">
+            <span>${t("symbex.maxUnroll")}</span>
+            <input type="number" min="0" max="6" step="1"
+              value="${state.maxLoopUnroll}"
+              data-testid="symbex-max-unroll" />
+          </label>
+        </div>
+      </div>
+
+      <div class="symbex-body">
+        <div class="symbex-editor-pane">
+          <label class="symbex-editor-label" for="symbex-source">${t("symbex.source")}</label>
+          <textarea id="symbex-source"
+            class="symbex-editor"
+            data-testid="symbex-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml6(state.sourceCode)}</textarea>
+        </div>
+
+        <div class="symbex-results-pane">
+          <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
+          ${pathsMarkup}
+        </div>
+      </div>
+
+      <p class="symbex-hint">${t("symbex.hint")}</p>
+    `;
+      bindEvents();
+    }
+    function renderPaths(result) {
+      if (!result || !result.paths.length) {
+        return `<p class="symbex-empty">${t("symbex.empty")}</p>`;
+      }
+      const items = result.paths.map((p) => {
+        const pcMarkup = p.pathCondition.length ? `<ol class="symbex-pc">${p.pathCondition.map((c) => `<li><code>${escapeHtml6(c)}</code></li>`).join("")}</ol>` : `<p class="symbex-pc-empty">${t("symbex.pc.empty")}</p>`;
+        const witness = p.feasible ? `<dl class="symbex-witness">
+             <dt>${t("symbex.witness")}</dt>
+             <dd><code>${escapeHtml6(formatAssignment2(p.witness))}</code></dd>
+             <dt>${t("symbex.return")}</dt>
+             <dd><code>${escapeHtml6(formatReturn(p.returnExpression, p.concreteReturn))}</code></dd>
+           </dl>` : `<p class="symbex-infeasible">${t("symbex.infeasible")}</p>`;
+        return `
+        <li class="symbex-path${p.feasible ? "" : " infeasible"}" data-testid="symbex-${p.id}">
+          <header class="symbex-path-header">
+            <span class="symbex-path-id">${escapeHtml6(p.id)}</span>
+            <span class="symbex-path-status">${p.feasible ? t("symbex.feasible") : t("symbex.infeasible.short")}</span>
+          </header>
+          ${pcMarkup}
+          ${witness}
+        </li>
+      `;
+      }).join("");
+      return `<ol class="symbex-paths" data-testid="symbex-paths">${items}</ol>`;
+    }
+    function formatAssignment2(env) {
+      if (!env) return "";
+      return Object.entries(env).map(([k, v]) => `${k}=${v}`).join(", ");
+    }
+    function formatReturn(expr, concrete) {
+      if (expr == null) return "\u2205";
+      if (concrete === null || concrete === void 0) return expr;
+      return `${expr}  \u2192  ${concrete}`;
+    }
+    function bindEvents() {
+      root2.querySelectorAll("[data-symbex-example]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.symbexExample;
+          const ex = symbolicExecutionExamples.find((x) => x.id === id);
+          if (!ex) return;
+          state.exampleId = ex.id;
+          state.sourceCode = ex.sourceCode;
+          render();
+        });
+      });
+      const editor = root2.querySelector('[data-testid="symbex-source"]');
+      if (editor) {
+        let timer = null;
+        editor.addEventListener("input", () => {
+          state.sourceCode = editor.value;
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => {
+            renderPreservingFocus("symbex-source");
+          }, 220);
+        });
+      }
+      const unroll = root2.querySelector('[data-testid="symbex-max-unroll"]');
+      if (unroll) {
+        unroll.addEventListener("change", () => {
+          const n = Number(unroll.value);
+          if (Number.isFinite(n) && n >= 0 && n <= 12) {
+            state.maxLoopUnroll = n;
+            render();
+          }
+        });
+      }
+    }
+    function renderPreservingFocus(testid) {
+      const previously = root2.querySelector(`[data-testid="${testid}"]`);
+      const start = previously == null ? void 0 : previously.selectionStart;
+      const end = previously == null ? void 0 : previously.selectionEnd;
+      render();
+      const next = root2.querySelector(`[data-testid="${testid}"]`);
+      if (next) {
+        next.focus();
+        if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
+          next.setSelectionRange(start, end);
+        }
+      }
+    }
+    render();
+    return root2;
+  }
+
   // src/app.js
   var sectionsConfig = [
     { id: "all", key: "section.all" },
@@ -8864,6 +9745,7 @@ INVARSPEC !w | (i & (l | h))`
     { id: "graph", key: "section.graph" },
     { id: "logic", key: "section.logic" },
     { id: "syntax", key: "section.syntax" },
+    { id: "symbex", key: "section.symbex" },
     { id: "cloud", key: "section.cloud" },
     { id: "flow", key: "section.flow" },
     { id: "types", key: "section.types" }
@@ -8893,6 +9775,7 @@ INVARSPEC !w | (i & (l | h))`
           <section data-testid="section-graph"><h2>${t("section.graph.title")}</h2><div data-slot="graph"></div></section>
           <section data-testid="section-logic"><h2>${t("section.logic.title")}</h2><div data-slot="logic"></div></section>
           <section data-testid="section-syntax"><h2>${t("section.syntax.title")}</h2><div data-slot="syntax"></div></section>
+          <section data-testid="section-symbex"><h2>${t("section.symbex.title")}</h2><div data-slot="symbex"></div></section>
           <section data-testid="section-cloud"><h2>${t("section.cloud.title")}</h2><div data-slot="cloud"></div></section>
           <section data-testid="section-flow"><h2>${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types"><h2>${t("section.types.title")}</h2><div data-slot="types"></div></section>
@@ -8910,6 +9793,7 @@ INVARSPEC !w | (i & (l | h))`
         graph: main.querySelector('[data-testid="section-graph"]'),
         logic: main.querySelector('[data-testid="section-logic"]'),
         syntax: main.querySelector('[data-testid="section-syntax"]'),
+        symbex: main.querySelector('[data-testid="section-symbex"]'),
         cloud: main.querySelector('[data-testid="section-cloud"]'),
         flow: main.querySelector('[data-testid="section-flow"]'),
         types: main.querySelector('[data-testid="section-types"]')
@@ -8921,6 +9805,7 @@ INVARSPEC !w | (i & (l | h))`
         syntax: createSyntaxCoverageExplorer(),
         grammar: createGrammarCoverageExplorer(),
         specMutation: createSpecMutationExplorer(),
+        symbex: createSymbolicExecutionExplorer(),
         cloud: createCloudStoragePanel(),
         flow: createTestingFlow(),
         types: createTestingTypesTable()
@@ -8989,6 +9874,7 @@ INVARSPEC !w | (i & (l | h))`
       renderSyntaxTabs();
       updateSyntaxPanels();
       container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
+      container.querySelector('[data-slot="symbex"]').appendChild(components.symbex);
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);
       let activeSection = "all";

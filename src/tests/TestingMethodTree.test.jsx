@@ -46,11 +46,11 @@ describe('TestingMethodTree', () => {
     expect(list.querySelectorAll('li')).toHaveLength(4);
   });
 
-  it('展開白盒測試後顯示 8 個技術', () => {
+  it('展開白盒測試後顯示 9 個技術', () => {
     renderTestingMethodTree();
     document.querySelector('[data-testid="method-card-btn-whitebox"]').click();
     const list = document.querySelector('[data-testid="technique-list-whitebox"]');
-    expect(list.querySelectorAll('li')).toHaveLength(8);
+    expect(list.querySelectorAll('li')).toHaveLength(9);
   });
 
   it('展開白盒測試後可看到 Prime Path Coverage', () => {

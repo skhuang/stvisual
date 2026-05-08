@@ -31,6 +31,7 @@ export const testingMethods = [
       { id: 'ppc', name: 'Prime Path Coverage', nameEn: 'Prime Path Coverage', description: '最小化且完整的路徑覆蓋集合', descriptionEn: 'Minimal yet complete prime-path coverage set.' },
       { id: 'cc',  name: '條件覆蓋', nameEn: 'Condition Coverage', description: '確保每個布林條件的真假都被測試', descriptionEn: 'Ensure each Boolean condition is tested for true and false.' },
       { id: 'mc',  name: '多重條件覆蓋', nameEn: 'Multiple Conditions', description: '測試所有條件組合的真假情況', descriptionEn: 'Test all true/false combinations of conditions.' },
+      { id: 'symbex', name: '符號執行', nameEn: 'Symbolic Execution', description: '以符號值代入程式變數，沿路徑收集 path condition 並求解可達輸入', descriptionEn: 'Substitute symbolic values for program inputs, collect a path condition along each path, and solve for concrete witnesses.' },
     ],
   },
   {
@@ -475,3 +476,64 @@ export const logicCoveragePredicates = [
     descriptionEn: 'A four-clause product predicate, common in range checks.',
   },
 ];
+
+export const symbolicExecutionExamples = [
+  {
+    id: 'triangle',
+    name: 'Triangle classifier',
+    nameEn: 'Triangle classifier',
+    description: '經典三角形分類：回傳 0 (非三角形)、1 (一般)、2 (等腰)、3 (等邊)。',
+    descriptionEn: 'Classic triangle classifier: returns 0 (none), 1 (scalene), 2 (isosceles), 3 (equilateral).',
+    sourceCode: `function classify(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) return 0;
+  if (a + b <= c || a + c <= b || b + c <= a) return 0;
+  if (a == b && b == c) return 3;
+  if (a == b || b == c || a == c) return 2;
+  return 1;
+}
+`,
+  },
+  {
+    id: 'max3',
+    name: 'Max of three',
+    nameEn: 'Max of three',
+    description: '回傳 a, b, c 三者最大值；經典分支結構示範。',
+    descriptionEn: 'Return the maximum of three integers — a canonical branching example.',
+    sourceCode: `function max3(a, b, c) {
+  let m = a;
+  if (b > m) m = b;
+  if (c > m) m = c;
+  return m;
+}
+`,
+  },
+  {
+    id: 'abs',
+    name: 'Absolute value',
+    nameEn: 'Absolute value',
+    description: '只有兩條路徑的最小範例：x >= 0 與 x < 0。',
+    descriptionEn: 'A minimal two-path example: x >= 0 versus x < 0.',
+    sourceCode: `function abs(x) {
+  if (x < 0) return -x;
+  return x;
+}
+`,
+  },
+  {
+    id: 'gcd',
+    name: 'GCD (bounded)',
+    nameEn: 'GCD (bounded)',
+    description: '歐幾里得演算法，含 while 迴圈；以最大展開次數模擬有界路徑列舉。',
+    descriptionEn: 'Euclidean algorithm with a while loop — bounded unrolling enumerates the first paths.',
+    sourceCode: `function gcd(a, b) {
+  while (b != 0) {
+    let t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
+}
+`,
+  },
+];
+

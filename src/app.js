@@ -7,6 +7,7 @@ import { createCloudStoragePanel } from './components/CloudStoragePanel.js';
 import { createSyntaxCoverageExplorer } from './components/SyntaxCoverageExplorer.js';
 import { createGrammarCoverageExplorer } from './components/GrammarCoverageExplorer.js';
 import { createSpecMutationExplorer } from './components/SpecMutationExplorer.js';
+import { createSymbolicExecutionExplorer } from './components/SymbolicExecutionExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const sectionsConfig = [
@@ -15,6 +16,7 @@ const sectionsConfig = [
   { id: 'graph', key: 'section.graph' },
   { id: 'logic', key: 'section.logic' },
   { id: 'syntax', key: 'section.syntax' },
+  { id: 'symbex', key: 'section.symbex' },
   { id: 'cloud', key: 'section.cloud' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -45,6 +47,7 @@ export function renderApp(container) {
           <section data-testid="section-graph"><h2>${t('section.graph.title')}</h2><div data-slot="graph"></div></section>
           <section data-testid="section-logic"><h2>${t('section.logic.title')}</h2><div data-slot="logic"></div></section>
           <section data-testid="section-syntax"><h2>${t('section.syntax.title')}</h2><div data-slot="syntax"></div></section>
+          <section data-testid="section-symbex"><h2>${t('section.symbex.title')}</h2><div data-slot="symbex"></div></section>
           <section data-testid="section-cloud"><h2>${t('section.cloud.title')}</h2><div data-slot="cloud"></div></section>
           <section data-testid="section-flow"><h2>${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types"><h2>${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -63,6 +66,7 @@ export function renderApp(container) {
       graph: main.querySelector('[data-testid="section-graph"]'),
       logic: main.querySelector('[data-testid="section-logic"]'),
       syntax: main.querySelector('[data-testid="section-syntax"]'),
+      symbex: main.querySelector('[data-testid="section-symbex"]'),
       cloud: main.querySelector('[data-testid="section-cloud"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -75,6 +79,7 @@ export function renderApp(container) {
       syntax: createSyntaxCoverageExplorer(),
       grammar: createGrammarCoverageExplorer(),
       specMutation: createSpecMutationExplorer(),
+      symbex: createSymbolicExecutionExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       types: createTestingTypesTable(),
@@ -140,6 +145,7 @@ export function renderApp(container) {
     updateSyntaxPanels();
 
     container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
+    container.querySelector('[data-slot="symbex"]').appendChild(components.symbex);
     container.querySelector('[data-slot="flow"]').appendChild(components.flow);
     container.querySelector('[data-slot="types"]').appendChild(components.types);
 

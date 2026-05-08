@@ -7,4 +7,5 @@
 @import url('./components/SyntaxCoverageExplorer.css');
 @import url('./components/GrammarCoverageExplorer.css');
 @import url('./components/SpecMutationExplorer.css');
+@import url('./components/SymbolicExecutionExplorer.css');
 @import url('./components/CloudStoragePanel.css');

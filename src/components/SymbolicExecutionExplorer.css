@@ -1,0 +1,152 @@
+.symbex-explorer { display: flex; flex-direction: column; gap: 1rem; }
+
+.symbex-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.symbex-examples { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.symbex-example-btn {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #cdd5df;
+  background: #fff;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+.symbex-example-btn.active { background: #1f6feb; color: #fff; border-color: #1f6feb; }
+.symbex-example-btn:hover { background: #eef2f7; }
+.symbex-example-btn.active:hover { background: #1f6feb; opacity: 0.9; }
+
+.symbex-controls { display: flex; gap: 0.75rem; align-items: center; }
+.symbex-control { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; }
+.symbex-control input[type="number"] {
+  width: 4rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #cdd5df;
+  border-radius: 4px;
+}
+
+.symbex-body {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .symbex-body { grid-template-columns: 1fr; }
+}
+
+.symbex-editor-pane,
+.symbex-results-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.symbex-editor-label { font-weight: 600; font-size: 0.9rem; }
+.symbex-editor {
+  width: 100%;
+  min-height: 18rem;
+  padding: 0.6rem;
+  border: 1px solid #cdd5df;
+  border-radius: 6px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  resize: vertical;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.symbex-summary { font-size: 0.95rem; color: #475569; }
+.symbex-summary strong { margin-left: 0.25rem; color: #0f172a; }
+.symbex-divider { margin: 0 0.4rem; color: #cbd5e1; }
+.symbex-truncated { color: #b45309; font-weight: 600; }
+
+.symbex-paths {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 28rem;
+  overflow-y: auto;
+}
+
+.symbex-path {
+  border: 1px solid #cdd5df;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  background: #f8fafc;
+}
+
+.symbex-path.infeasible {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.symbex-path-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.symbex-path-id { color: #1f6feb; font-family: 'SF Mono', monospace; font-size: 0.85rem; }
+.symbex-path-status {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #d1fae5;
+  color: #065f46;
+}
+.symbex-path.infeasible .symbex-path-status { background: #fee2e2; color: #991b1b; }
+
+.symbex-pc {
+  margin: 0 0 0.4rem 0;
+  padding-left: 1.25rem;
+  font-size: 0.85rem;
+}
+.symbex-pc li { margin: 0.1rem 0; }
+.symbex-pc-empty { font-style: italic; color: #64748b; font-size: 0.85rem; }
+
+.symbex-witness {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 0.6rem;
+  row-gap: 0.2rem;
+  margin: 0;
+  font-size: 0.85rem;
+}
+.symbex-witness dt { font-weight: 600; color: #475569; }
+.symbex-witness dd { margin: 0; }
+.symbex-witness code { background: #e2e8f0; padding: 0.05rem 0.3rem; border-radius: 4px; }
+
+.symbex-infeasible {
+  font-size: 0.85rem;
+  color: #991b1b;
+  margin: 0;
+}
+
+.symbex-empty { color: #64748b; font-style: italic; }
+.symbex-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.symbex-hint {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
