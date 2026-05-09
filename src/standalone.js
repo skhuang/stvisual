@@ -3438,7 +3438,7 @@
       <div class="graph-coverage-header">
         <div>
           <p class="graph-coverage-kicker">White Box Testing</p>
-          <h3>${graph.title}</h3>
+          <h3>${pickField(graph, "title")}</h3>
           <p class="graph-coverage-desc">${t("graph.headerDesc")}</p>
         </div>
         <div class="graph-coverage-stats">
@@ -3471,7 +3471,7 @@
           <div class="graph-selected-summary" data-testid="selected-requirement-summary">
             <span class="summary-label">${t("graph.summary.current")}</span>
             <strong>${(selectedRequirement == null ? void 0 : selectedRequirement.label) || t("common.none")}</strong>
-            <p>${(selectedCriterion == null ? void 0 : selectedCriterion.description) || ""}</p>
+            <p>${selectedCriterion ? pickField(selectedCriterion, "description") : ""}</p>
           </div>
 
           <div class="graph-test-path-card" data-testid="graph-test-path-card">
@@ -4706,16 +4706,16 @@
   // src/config/cloudConfig.js
   var cloudConfig = {
     firebase: {
-      apiKey: "AIzaSyB9QlOS2IodbRQWxGGe_a8cEviSZURyo3k",
-      authDomain: "stvisual-a88cd.firebaseapp.com",
-      projectId: "stvisual-a88cd",
-      storageBucket: "stvisual-a88cd.firebasestorage.app",
-      messagingSenderId: "1030102454109",
-      appId: "1:1030102454109:web:cb50e6da22b4b5dda2a2b4",
-      measurementId: "G-RBRGPW34JQ"
+      apiKey: "__FIREBASE_API_KEY__",
+      authDomain: "__FIREBASE_AUTH_DOMAIN__",
+      projectId: "__FIREBASE_PROJECT_ID__",
+      storageBucket: "__FIREBASE_STORAGE_BUCKET__",
+      messagingSenderId: "__FIREBASE_MESSAGING_SENDER_ID__",
+      appId: "__FIREBASE_APP_ID__",
+      measurementId: "__FIREBASE_MEASUREMENT_ID__"
     },
     drive: {
-      uploadFolderId: "1B5hCB2Scte4Sds0d03mYNu-iGZS0JKbJ"
+      uploadFolderId: "__DRIVE_UPLOAD_FOLDER_ID__"
     }
   };
   function getResolvedCloudConfig() {

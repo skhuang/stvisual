@@ -590,7 +590,7 @@ export function createGraphCoverageExplorer() {
       <div class="graph-coverage-header">
         <div>
           <p class="graph-coverage-kicker">White Box Testing</p>
-          <h3>${graph.title}</h3>
+          <h3>${pickField(graph, 'title')}</h3>
           <p class="graph-coverage-desc">${t('graph.headerDesc')}</p>
         </div>
         <div class="graph-coverage-stats">
@@ -623,7 +623,7 @@ export function createGraphCoverageExplorer() {
           <div class="graph-selected-summary" data-testid="selected-requirement-summary">
             <span class="summary-label">${t('graph.summary.current')}</span>
             <strong>${selectedRequirement?.label || t('common.none')}</strong>
-            <p>${selectedCriterion?.description || ''}</p>
+            <p>${selectedCriterion ? pickField(selectedCriterion, 'description') : ''}</p>
           </div>
 
           <div class="graph-test-path-card" data-testid="graph-test-path-card">
