@@ -1,6 +1,8 @@
 import { t, getLocale, pickField } from '../i18n/index.js';
 import { concolicExecute } from '../utils/concolicExecution.js';
 import { concolicExecutionExamples } from '../data/testingData.js';
+import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
+import { mapBranchesToCfg, renderCfgSvg } from '../utils/pathToCfg.js';
 
 const STORAGE_KEY = 'stvisual.concolic.v1';
 
@@ -65,12 +67,17 @@ export function createConcolicExecutionExplorer() {
     seedText: saved?.seedText || defaultExample.seed || '',
     maxIterations: typeof saved?.maxIterations === 'number' ? saved.maxIterations : 16,
     result: null,
+    cfg: null,
+    cfgError: null,
+    selectedIterId: null,
     error: null,
   };
 
   function recompute() {
     state.result = null;
     state.error = null;
+    state.cfg = null;
+    state.cfgError = null;
     try {
       const initialInputs = parseSeed(state.seedText);
       state.result = concolicExecute(state.sourceCode, {
@@ -79,6 +86,23 @@ export function createConcolicExecutionExplorer() {
       });
     } catch (err) {
       state.error = err.message || String(err);
+    }
+    try {
+      state.cfg = generateControlFlowGraphFromProgram({
+        sourceCode: state.sourceCode,
+        language: 'javascript',
+        title: 'Concolic Execution CFG',
+      });
+    } catch (err) {
+      state.cfgError = err.message || String(err);
+    }
+    if (state.result?.iterations?.length) {
+      const stillExists = state.result.iterations.some((it) => it.id === state.selectedIterId);
+      if (!stillExists) {
+        state.selectedIterId = state.result.iterations[0].id;
+      }
+    } else {
+      state.selectedIterId = null;
     }
     persist(state);
   }
@@ -146,10 +170,38 @@ export function createConcolicExecutionExplorer() {
         </div>
       </div>
 
+      ${renderCfgPane()}
+
       <p class="concolic-hint">${t('concolic.hint')}</p>
     `;
 
     bindEvents();
+  }
+
+  function renderCfgPane() {
+    if (state.cfgError) {
+      return `<div class="concolic-cfg" data-testid="concolic-cfg">
+        <p class="concolic-cfg-error">${escapeHtml(state.cfgError)}</p>
+      </div>`;
+    }
+    if (!state.cfg) return '';
+    const selected = state.result?.iterations?.find((it) => it.id === state.selectedIterId);
+    const mapping = selected ? mapBranchesToCfg(state.cfg, selected.branches) : { nodes: [], edges: [] };
+    const svg = renderCfgSvg(state.cfg, mapping, {
+      idPrefix: 'concolic-cfg',
+      ariaLabel: 'Concolic execution CFG',
+    });
+    return `
+      <div class="concolic-cfg" data-testid="concolic-cfg">
+        <div class="concolic-cfg-header">
+          <h3>${t('concolic.cfg.title')}</h3>
+          <span class="concolic-cfg-selected" data-testid="concolic-cfg-selected">${
+            selected ? escapeHtml(selected.id) : t('concolic.cfg.none')
+          }</span>
+        </div>
+        <div class="concolic-cfg-canvas graph-canvas">${svg}</div>
+      </div>
+    `;
   }
 
   function renderIterations(result) {
@@ -188,7 +240,11 @@ export function createConcolicExecutionExplorer() {
             `}
           </dl>`;
       return `
-        <li class="concolic-iter" data-testid="concolic-${it.id}">
+        <li class="concolic-iter${state.selectedIterId === it.id ? ' selected' : ''}"
+          data-testid="concolic-${it.id}"
+          data-concolic-iter="${it.id}"
+          tabindex="0"
+          role="button">
           <header class="concolic-iter-header">
             <span class="concolic-iter-id">${escapeHtml(it.id)}</span>
             <span class="concolic-iter-input"><code>${escapeHtml(inputCode)}</code></span>
@@ -225,7 +281,22 @@ export function createConcolicExecutionExplorer() {
         state.exampleId = ex.id;
         state.sourceCode = ex.sourceCode;
         state.seedText = ex.seed || '';
+        state.selectedIterId = null;
         render();
+      });
+    });
+
+    root.querySelectorAll('[data-concolic-iter]').forEach((el) => {
+      const select = () => {
+        state.selectedIterId = el.dataset.concolicIter;
+        render();
+      };
+      el.addEventListener('click', select);
+      el.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          select();
+        }
       });
     });
 

@@ -486,10 +486,18 @@ export const symbolicExecutionExamples = [
     description: '經典三角形分類：回傳 0 (非三角形)、1 (一般)、2 (等腰)、3 (等邊)。',
     descriptionEn: 'Classic triangle classifier: returns 0 (none), 1 (scalene), 2 (isosceles), 3 (equilateral).',
     sourceCode: `function classify(a, b, c) {
-  if (a <= 0 || b <= 0 || c <= 0) return 0;
-  if (a + b <= c || a + c <= b || b + c <= a) return 0;
-  if (a == b && b == c) return 3;
-  if (a == b || b == c || a == c) return 2;
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 0;
+  }
+  if (a + b <= c || a + c <= b || b + c <= a) {
+    return 0;
+  }
+  if (a == b && b == c) {
+    return 3;
+  }
+  if (a == b || b == c || a == c) {
+    return 2;
+  }
   return 1;
 }
 `,
@@ -502,8 +510,12 @@ export const symbolicExecutionExamples = [
     descriptionEn: 'Return the maximum of three integers — a canonical branching example.',
     sourceCode: `function max3(a, b, c) {
   let m = a;
-  if (b > m) m = b;
-  if (c > m) m = c;
+  if (b > m) {
+    m = b;
+  }
+  if (c > m) {
+    m = c;
+  }
   return m;
 }
 `,
@@ -515,7 +527,9 @@ export const symbolicExecutionExamples = [
     description: '只有兩條路徑的最小範例：x >= 0 與 x < 0。',
     descriptionEn: 'A minimal two-path example: x >= 0 versus x < 0.',
     sourceCode: `function abs(x) {
-  if (x < 0) return -x;
+  if (x < 0) {
+    return -x;
+  }
   return x;
 }
 `,
@@ -547,10 +561,18 @@ export const concolicExecutionExamples = [
     descriptionEn: 'Seeded with the equilateral triangle (1,1,1); each step flips the last unexplored branch to derive a new input.',
     seed: 'a=1, b=1, c=1',
     sourceCode: `function classify(a, b, c) {
-  if (a <= 0 || b <= 0 || c <= 0) return 0;
-  if (a + b <= c || a + c <= b || b + c <= a) return 0;
-  if (a == b && b == c) return 3;
-  if (a == b || b == c || a == c) return 2;
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 0;
+  }
+  if (a + b <= c || a + c <= b || b + c <= a) {
+    return 0;
+  }
+  if (a == b && b == c) {
+    return 3;
+  }
+  if (a == b || b == c || a == c) {
+    return 2;
+  }
   return 1;
 }
 `,
@@ -563,7 +585,9 @@ export const concolicExecutionExamples = [
     descriptionEn: 'Minimal example: starting from x=0, concolic flips the branch to discover the x<0 dual input.',
     seed: 'x=0',
     sourceCode: `function abs(x) {
-  if (x < 0) return -x;
+  if (x < 0) {
+    return -x;
+  }
   return x;
 }
 `,
@@ -577,8 +601,12 @@ export const concolicExecutionExamples = [
     seed: 'a=0, b=0, c=0',
     sourceCode: `function max3(a, b, c) {
   let m = a;
-  if (b > m) m = b;
-  if (c > m) m = c;
+  if (b > m) {
+    m = b;
+  }
+  if (c > m) {
+    m = c;
+  }
   return m;
 }
 `,
@@ -593,11 +621,17 @@ export const concolicExecutionExamples = [
     sourceCode: `function middle(a, b, c) {
   let m = c;
   if (b < c) {
-    if (a < b) m = b;
-    else if (a < c) m = a;
+    if (a < b) {
+      m = b;
+    } else if (a < c) {
+      m = a;
+    }
   } else {
-    if (a > b) m = b;
-    else if (a > c) m = a;
+    if (a > b) {
+      m = b;
+    } else if (a > c) {
+      m = a;
+    }
   }
   return m;
 }

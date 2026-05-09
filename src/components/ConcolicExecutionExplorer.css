@@ -171,3 +171,14 @@
   color: #64748b;
   margin: 0;
 }
+
+.concolic-iter { cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+.concolic-iter:hover { background: #eef2f7; }
+.concolic-iter.selected { border-color: #7c3aed; box-shadow: 0 0 0 2px rgba(124,58,237,0.18); }
+.concolic-cfg { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+.concolic-cfg-header { display: flex; align-items: baseline; gap: 0.6rem; }
+.concolic-cfg-header h3 { margin: 0; font-size: 1rem; }
+.concolic-cfg-selected { font-family: 'SF Mono', monospace; color: #7c3aed; font-size: 0.85rem; }
+.concolic-cfg-canvas { width: 100%; max-height: 28rem; overflow: auto; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; }
+.concolic-cfg-canvas svg { width: 100%; height: auto; }
+.concolic-cfg-error { color: #b45309; font-size: 0.85rem; }

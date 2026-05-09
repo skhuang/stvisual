@@ -45,6 +45,8 @@ export const messages = {
     'symbex.empty': 'No paths to display.',
     'symbex.pc.empty': 'Path condition: (always reachable)',
     'symbex.hint': 'Supports a small JS subset: function with int/bool params, let/=, if/else, bounded while, return, +-*/% comparisons, &&/||/!. Witnesses are searched over a small integer domain.',
+    'symbex.cfg.title': 'Selected path on the CFG',
+    'symbex.cfg.none': '(no path selected)',
     'section.concolic': 'Concolic Execution',
     'section.concolic.title': 'Concolic Execution Explorer',
     'concolic.source': 'Program source',
@@ -63,6 +65,8 @@ export const messages = {
     'concolic.noBranches': 'No branches encountered (straight-line program).',
     'concolic.runtimeError': 'Runtime error:',
     'concolic.hint': 'Concolic execution = concrete + symbolic. Each iteration runs the program concretely, then negates the last unexplored branch and asks the solver for a new input. Same JS subset as Symbolic Execution.',
+    'concolic.cfg.title': 'Selected iteration on the CFG',
+    'concolic.cfg.none': '(no iteration selected)',
 
     // Common
     'common.run': 'Run',
@@ -422,6 +426,8 @@ export const messages = {
     'symbex.empty': '無路徑可顯示。',
     'symbex.pc.empty': 'Path condition：（永遠可達）',
     'symbex.hint': '支援小型 JS 子集：function 季告、let/=、if/else、有界 while、return、算術與比較運算、&&/||/!。見證以小型整數域穮舉求解。',
+    'symbex.cfg.title': '在 CFG 上高亮選中路徑',
+    'symbex.cfg.none': '（尚未選取路徑）',
     'section.concolic': '具體符號執行',
     'section.concolic.title': 'Concolic Execution Explorer',
     'concolic.source': '程式原始碼',
@@ -440,6 +446,8 @@ export const messages = {
     'concolic.noBranches': '未遭遇分支（直線程式）。',
     'concolic.runtimeError': '執行時錯誤：',
     'concolic.hint': 'Concolic execution = concrete + symbolic。每個迭代先具體跑一條路徑，再翻轉最後一個未探索分支並請求解器產生新輸入。語法子集同 Symbolic Execution。',
+    'concolic.cfg.title': '在 CFG 上高亮選中的迭代',
+    'concolic.cfg.none': '（尚未選取迭代）',
 
     'common.run': '執行',
     'common.reset': '重設',

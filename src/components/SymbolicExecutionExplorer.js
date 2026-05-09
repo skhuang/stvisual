@@ -1,6 +1,8 @@
 import { t, getLocale, pickField } from '../i18n/index.js';
 import { symbolicExecute } from '../utils/symbolicExecution.js';
 import { symbolicExecutionExamples } from '../data/testingData.js';
+import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
+import { mapBranchesToCfg, renderCfgSvg } from '../utils/pathToCfg.js';
 
 const STORAGE_KEY = 'stvisual.symbex.v1';
 
@@ -48,16 +50,39 @@ export function createSymbolicExecutionExplorer() {
     sourceCode: saved?.sourceCode || defaultExample.sourceCode,
     maxLoopUnroll: typeof saved?.maxLoopUnroll === 'number' ? saved.maxLoopUnroll : 3,
     result: null,
+    cfg: null,
+    cfgError: null,
+    selectedPathId: null,
     error: null,
   };
 
   function recompute() {
     state.result = null;
     state.error = null;
+    state.cfg = null;
+    state.cfgError = null;
     try {
       state.result = symbolicExecute(state.sourceCode, { maxLoopUnroll: state.maxLoopUnroll });
     } catch (err) {
       state.error = err.message || String(err);
+    }
+    try {
+      state.cfg = generateControlFlowGraphFromProgram({
+        sourceCode: state.sourceCode,
+        language: 'javascript',
+        title: 'Symbolic Execution CFG',
+      });
+    } catch (err) {
+      state.cfgError = err.message || String(err);
+    }
+    if (state.result?.paths?.length) {
+      const stillExists = state.result.paths.some((p) => p.id === state.selectedPathId);
+      if (!stillExists) {
+        const firstFeasible = state.result.paths.find((p) => p.feasible) || state.result.paths[0];
+        state.selectedPathId = firstFeasible.id;
+      }
+    } else {
+      state.selectedPathId = null;
     }
     persist(state);
   }
@@ -120,10 +145,38 @@ export function createSymbolicExecutionExplorer() {
         </div>
       </div>
 
+      ${renderCfgPane()}
+
       <p class="symbex-hint">${t('symbex.hint')}</p>
     `;
 
     bindEvents();
+  }
+
+  function renderCfgPane() {
+    if (state.cfgError) {
+      return `<div class="symbex-cfg" data-testid="symbex-cfg">
+        <p class="symbex-cfg-error">${escapeHtml(state.cfgError)}</p>
+      </div>`;
+    }
+    if (!state.cfg) return '';
+    const selected = state.result?.paths?.find((p) => p.id === state.selectedPathId);
+    const mapping = selected ? mapBranchesToCfg(state.cfg, selected.branches) : { nodes: [], edges: [] };
+    const svg = renderCfgSvg(state.cfg, mapping, {
+      idPrefix: 'symbex-cfg',
+      ariaLabel: 'Symbolic execution CFG',
+    });
+    return `
+      <div class="symbex-cfg" data-testid="symbex-cfg">
+        <div class="symbex-cfg-header">
+          <h3>${t('symbex.cfg.title')}</h3>
+          <span class="symbex-cfg-selected" data-testid="symbex-cfg-selected">${
+            selected ? escapeHtml(selected.id) : t('symbex.cfg.none')
+          }</span>
+        </div>
+        <div class="symbex-cfg-canvas graph-canvas">${svg}</div>
+      </div>
+    `;
   }
 
   function renderPaths(result) {
@@ -143,7 +196,11 @@ export function createSymbolicExecutionExplorer() {
            </dl>`
         : `<p class="symbex-infeasible">${t('symbex.infeasible')}</p>`;
       return `
-        <li class="symbex-path${p.feasible ? '' : ' infeasible'}" data-testid="symbex-${p.id}">
+        <li class="symbex-path${p.feasible ? '' : ' infeasible'}${state.selectedPathId === p.id ? ' selected' : ''}"
+          data-testid="symbex-${p.id}"
+          data-symbex-path="${p.id}"
+          tabindex="0"
+          role="button">
           <header class="symbex-path-header">
             <span class="symbex-path-id">${escapeHtml(p.id)}</span>
             <span class="symbex-path-status">${
@@ -177,7 +234,22 @@ export function createSymbolicExecutionExplorer() {
         if (!ex) return;
         state.exampleId = ex.id;
         state.sourceCode = ex.sourceCode;
+        state.selectedPathId = null;
         render();
+      });
+    });
+
+    root.querySelectorAll('[data-symbex-path]').forEach((el) => {
+      const select = () => {
+        state.selectedPathId = el.dataset.symbexPath;
+        render();
+      };
+      el.addEventListener('click', select);
+      el.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          select();
+        }
       });
     });
 

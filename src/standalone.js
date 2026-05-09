@@ -479,10 +479,18 @@
       description: "\u7D93\u5178\u4E09\u89D2\u5F62\u5206\u985E\uFF1A\u56DE\u50B3 0 (\u975E\u4E09\u89D2\u5F62)\u30011 (\u4E00\u822C)\u30012 (\u7B49\u8170)\u30013 (\u7B49\u908A)\u3002",
       descriptionEn: "Classic triangle classifier: returns 0 (none), 1 (scalene), 2 (isosceles), 3 (equilateral).",
       sourceCode: `function classify(a, b, c) {
-  if (a <= 0 || b <= 0 || c <= 0) return 0;
-  if (a + b <= c || a + c <= b || b + c <= a) return 0;
-  if (a == b && b == c) return 3;
-  if (a == b || b == c || a == c) return 2;
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 0;
+  }
+  if (a + b <= c || a + c <= b || b + c <= a) {
+    return 0;
+  }
+  if (a == b && b == c) {
+    return 3;
+  }
+  if (a == b || b == c || a == c) {
+    return 2;
+  }
   return 1;
 }
 `
@@ -495,8 +503,12 @@
       descriptionEn: "Return the maximum of three integers \u2014 a canonical branching example.",
       sourceCode: `function max3(a, b, c) {
   let m = a;
-  if (b > m) m = b;
-  if (c > m) m = c;
+  if (b > m) {
+    m = b;
+  }
+  if (c > m) {
+    m = c;
+  }
   return m;
 }
 `
@@ -508,7 +520,9 @@
       description: "\u53EA\u6709\u5169\u689D\u8DEF\u5F91\u7684\u6700\u5C0F\u7BC4\u4F8B\uFF1Ax >= 0 \u8207 x < 0\u3002",
       descriptionEn: "A minimal two-path example: x >= 0 versus x < 0.",
       sourceCode: `function abs(x) {
-  if (x < 0) return -x;
+  if (x < 0) {
+    return -x;
+  }
   return x;
 }
 `
@@ -539,10 +553,18 @@
       descriptionEn: "Seeded with the equilateral triangle (1,1,1); each step flips the last unexplored branch to derive a new input.",
       seed: "a=1, b=1, c=1",
       sourceCode: `function classify(a, b, c) {
-  if (a <= 0 || b <= 0 || c <= 0) return 0;
-  if (a + b <= c || a + c <= b || b + c <= a) return 0;
-  if (a == b && b == c) return 3;
-  if (a == b || b == c || a == c) return 2;
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 0;
+  }
+  if (a + b <= c || a + c <= b || b + c <= a) {
+    return 0;
+  }
+  if (a == b && b == c) {
+    return 3;
+  }
+  if (a == b || b == c || a == c) {
+    return 2;
+  }
   return 1;
 }
 `
@@ -555,7 +577,9 @@
       descriptionEn: "Minimal example: starting from x=0, concolic flips the branch to discover the x<0 dual input.",
       seed: "x=0",
       sourceCode: `function abs(x) {
-  if (x < 0) return -x;
+  if (x < 0) {
+    return -x;
+  }
   return x;
 }
 `
@@ -569,8 +593,12 @@
       seed: "a=0, b=0, c=0",
       sourceCode: `function max3(a, b, c) {
   let m = a;
-  if (b > m) m = b;
-  if (c > m) m = c;
+  if (b > m) {
+    m = b;
+  }
+  if (c > m) {
+    m = c;
+  }
   return m;
 }
 `
@@ -585,11 +613,17 @@
       sourceCode: `function middle(a, b, c) {
   let m = c;
   if (b < c) {
-    if (a < b) m = b;
-    else if (a < c) m = a;
+    if (a < b) {
+      m = b;
+    } else if (a < c) {
+      m = a;
+    }
   } else {
-    if (a > b) m = b;
-    else if (a > c) m = a;
+    if (a > b) {
+      m = b;
+    } else if (a > c) {
+      m = a;
+    }
   }
   return m;
 }
@@ -642,6 +676,8 @@
       "symbex.empty": "No paths to display.",
       "symbex.pc.empty": "Path condition: (always reachable)",
       "symbex.hint": "Supports a small JS subset: function with int/bool params, let/=, if/else, bounded while, return, +-*/% comparisons, &&/||/!. Witnesses are searched over a small integer domain.",
+      "symbex.cfg.title": "Selected path on the CFG",
+      "symbex.cfg.none": "(no path selected)",
       "section.concolic": "Concolic Execution",
       "section.concolic.title": "Concolic Execution Explorer",
       "concolic.source": "Program source",
@@ -660,6 +696,8 @@
       "concolic.noBranches": "No branches encountered (straight-line program).",
       "concolic.runtimeError": "Runtime error:",
       "concolic.hint": "Concolic execution = concrete + symbolic. Each iteration runs the program concretely, then negates the last unexplored branch and asks the solver for a new input. Same JS subset as Symbolic Execution.",
+      "concolic.cfg.title": "Selected iteration on the CFG",
+      "concolic.cfg.none": "(no iteration selected)",
       // Common
       "common.run": "Run",
       "common.reset": "Reset",
@@ -1004,6 +1042,8 @@
       "symbex.empty": "\u7121\u8DEF\u5F91\u53EF\u986F\u793A\u3002",
       "symbex.pc.empty": "Path condition\uFF1A\uFF08\u6C38\u9060\u53EF\u9054\uFF09",
       "symbex.hint": "\u652F\u63F4\u5C0F\u578B JS \u5B50\u96C6\uFF1Afunction \u5B63\u544A\u3001let/=\u3001if/else\u3001\u6709\u754C while\u3001return\u3001\u7B97\u8853\u8207\u6BD4\u8F03\u904B\u7B97\u3001&&/||/!\u3002\u898B\u8B49\u4EE5\u5C0F\u578B\u6574\u6578\u57DF\u7A6E\u8209\u6C42\u89E3\u3002",
+      "symbex.cfg.title": "\u5728 CFG \u4E0A\u9AD8\u4EAE\u9078\u4E2D\u8DEF\u5F91",
+      "symbex.cfg.none": "\uFF08\u5C1A\u672A\u9078\u53D6\u8DEF\u5F91\uFF09",
       "section.concolic": "\u5177\u9AD4\u7B26\u865F\u57F7\u884C",
       "section.concolic.title": "Concolic Execution Explorer",
       "concolic.source": "\u7A0B\u5F0F\u539F\u59CB\u78BC",
@@ -1022,6 +1062,8 @@
       "concolic.noBranches": "\u672A\u906D\u9047\u5206\u652F\uFF08\u76F4\u7DDA\u7A0B\u5F0F\uFF09\u3002",
       "concolic.runtimeError": "\u57F7\u884C\u6642\u932F\u8AA4\uFF1A",
       "concolic.hint": "Concolic execution = concrete + symbolic\u3002\u6BCF\u500B\u8FED\u4EE3\u5148\u5177\u9AD4\u8DD1\u4E00\u689D\u8DEF\u5F91\uFF0C\u518D\u7FFB\u8F49\u6700\u5F8C\u4E00\u500B\u672A\u63A2\u7D22\u5206\u652F\u4E26\u8ACB\u6C42\u89E3\u5668\u7522\u751F\u65B0\u8F38\u5165\u3002\u8A9E\u6CD5\u5B50\u96C6\u540C Symbolic Execution\u3002",
+      "concolic.cfg.title": "\u5728 CFG \u4E0A\u9AD8\u4EAE\u9078\u4E2D\u7684\u8FED\u4EE3",
+      "concolic.cfg.none": "\uFF08\u5C1A\u672A\u9078\u53D6\u8FED\u4EE3\uFF09",
       "common.run": "\u57F7\u884C",
       "common.reset": "\u91CD\u8A2D",
       "common.save": "\u5132\u5B58",
@@ -9657,6 +9699,170 @@ INVARSPEC !w | (i & (l | h))`
     return recurse(0) ? { ...result } : null;
   }
 
+  // src/utils/pathToCfg.js
+  function nodeOrder(id) {
+    if (id === "S") return -1;
+    if (id === "T") return Number.POSITIVE_INFINITY;
+    const m = /^N(\d+)$/.exec(id);
+    return m ? Number(m[1]) : 0;
+  }
+  function buildCfgIndex(cfg) {
+    var _a2, _b;
+    const nodeById = /* @__PURE__ */ new Map();
+    for (const n of cfg.nodes) nodeById.set(n.id, n);
+    const outgoing = /* @__PURE__ */ new Map();
+    const incoming = /* @__PURE__ */ new Map();
+    for (const n of cfg.nodes) {
+      outgoing.set(n.id, []);
+      incoming.set(n.id, []);
+    }
+    for (const e of cfg.edges) {
+      (_a2 = outgoing.get(e.from)) == null ? void 0 : _a2.push(e);
+      (_b = incoming.get(e.to)) == null ? void 0 : _b.push(e);
+    }
+    const loopHeads = /* @__PURE__ */ new Set();
+    for (const n of cfg.nodes) {
+      if (n.kind !== "decision") continue;
+      const order = nodeOrder(n.id);
+      for (const e of incoming.get(n.id) || []) {
+        if (nodeOrder(e.from) > order) {
+          loopHeads.add(n.id);
+          break;
+        }
+      }
+    }
+    return { nodeById, outgoing, loopHeads };
+  }
+  function mapBranchesToCfg(cfg, branches = []) {
+    if (!cfg) return { nodes: [], edges: [], decisions: [], unresolved: 0 };
+    const { nodeById, outgoing, loopHeads } = buildCfgIndex(cfg);
+    const visitedNodes = [];
+    const visitedEdges = [];
+    const decisions = [];
+    const seenNodes = /* @__PURE__ */ new Set();
+    const seenEdges = /* @__PURE__ */ new Set();
+    let current2 = cfg.startNodeId || "S";
+    let branchIdx = 0;
+    let unresolved = 0;
+    const HARD_CAP = 4096;
+    for (let step = 0; step < HARD_CAP; step += 1) {
+      const node = nodeById.get(current2);
+      if (!node) break;
+      if (!seenNodes.has(current2)) {
+        seenNodes.add(current2);
+        visitedNodes.push(current2);
+      }
+      if (current2 === (cfg.endNodeId || "T")) break;
+      const outs = outgoing.get(current2) || [];
+      if (outs.length === 0) break;
+      let chosen;
+      if (node.kind === "decision" && outs.length >= 2) {
+        const isLoop = loopHeads.has(current2);
+        const branch = branches[branchIdx];
+        if (!branch) {
+          unresolved += 1;
+          chosen = isLoop ? outs[0] : outs[0];
+        } else {
+          branchIdx += 1;
+          const taken = Boolean(branch.taken);
+          const idx = isLoop ? taken ? 1 : 0 : taken ? 0 : 1;
+          chosen = outs[Math.min(idx, outs.length - 1)];
+          decisions.push({ nodeId: current2, edgeId: chosen.id, taken, loop: isLoop });
+        }
+      } else {
+        chosen = outs[0];
+      }
+      if (!chosen) break;
+      if (!seenEdges.has(chosen.id)) {
+        seenEdges.add(chosen.id);
+        visitedEdges.push(chosen.id);
+      }
+      current2 = chosen.to;
+    }
+    return {
+      nodes: visitedNodes,
+      edges: visitedEdges,
+      decisions,
+      unresolved,
+      truncated: branchIdx < branches.length
+    };
+  }
+  function escapeXml2(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function trimToCircle2(from, to, radius) {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const len = Math.hypot(dx, dy) || 1;
+    return { x: to.x - dx / len * radius, y: to.y - dy / len * radius };
+  }
+  function computeBounds(cfg, padding = 60) {
+    var _a2, _b, _c, _d;
+    const xs = [], ys = [];
+    for (const n of cfg.nodes) {
+      xs.push(((_a2 = n.x) != null ? _a2 : 0) - 32, ((_b = n.x) != null ? _b : 0) + 32);
+      ys.push(((_c = n.y) != null ? _c : 0) - 32, ((_d = n.y) != null ? _d : 0) + 32);
+    }
+    for (const e of cfg.edges) {
+      if (e.control) {
+        xs.push(e.control.x);
+        ys.push(e.control.y);
+      }
+    }
+    if (!xs.length) return { minX: 0, minY: 0, width: 600, height: 320 };
+    const minX = Math.min(...xs) - padding;
+    const minY = Math.min(...ys) - padding;
+    const maxX = Math.max(...xs) + padding;
+    const maxY = Math.max(...ys) + padding;
+    return { minX, minY, width: Math.max(560, maxX - minX), height: Math.max(280, maxY - minY) };
+  }
+  function renderCfgSvg(cfg, highlight = {}, options = {}) {
+    if (!cfg) return "";
+    const idPrefix = options.idPrefix || "cfg";
+    const ariaLabel = options.ariaLabel || "Control flow graph";
+    const activeNodes = new Set(highlight.nodes || []);
+    const activeEdges = new Set(highlight.edges || []);
+    const { minX, minY, width, height } = computeBounds(cfg);
+    const NODE_R = 28;
+    const ARROW_GAP = 4;
+    const edges = cfg.edges.map((edge) => {
+      const fromNode = cfg.nodes.find((n) => n.id === edge.from);
+      const toNode = cfg.nodes.find((n) => n.id === edge.to);
+      if (!fromNode || !toNode) return "";
+      const active = activeEdges.has(edge.id);
+      const cls = `graph-edge${active ? " graph-edge--active" : ""}`;
+      const marker = active ? `arrow-active-${idPrefix}` : `arrow-default-${idPrefix}`;
+      if (edge.control) {
+        const end2 = trimToCircle2(edge.control, toNode, NODE_R + ARROW_GAP);
+        const start2 = trimToCircle2(edge.control, fromNode, NODE_R);
+        return `<path class="${cls}" d="M ${start2.x} ${start2.y} Q ${edge.control.x} ${edge.control.y} ${end2.x} ${end2.y}" marker-end="url(#${marker})" data-testid="${idPrefix}-edge-${edge.id}"></path>`;
+      }
+      const end = trimToCircle2(fromNode, toNode, NODE_R + ARROW_GAP);
+      const start = trimToCircle2(toNode, fromNode, NODE_R);
+      return `<line class="${cls}" x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" marker-end="url(#${marker})" data-testid="${idPrefix}-edge-${edge.id}"></line>`;
+    }).join("");
+    const nodes = cfg.nodes.map((node) => {
+      const active = activeNodes.has(node.id);
+      const cls = `graph-node${active ? " graph-node--active" : ""}`;
+      const title = node.sourceLine ? `<title>Line ${node.sourceLine}: ${escapeXml2(node.sourceText || node.label)}</title>` : "";
+      return `<g class="${cls}" data-testid="${idPrefix}-node-${node.id}">${title}<circle cx="${node.x}" cy="${node.y}" r="${NODE_R}"></circle><text x="${node.x}" y="${node.y + 5}" text-anchor="middle">${escapeXml2(node.label)}</text></g>`;
+    }).join("");
+    return `
+    <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${escapeXml2(ariaLabel)}">
+      <defs>
+        <marker id="arrow-default-${idPrefix}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 z" fill="#9aa8b6"></path>
+        </marker>
+        <marker id="arrow-active-${idPrefix}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 z" fill="#ea580c"></path>
+        </marker>
+      </defs>
+      ${edges}
+      ${nodes}
+    </svg>
+  `;
+  }
+
   // src/components/SymbolicExecutionExplorer.js
   var STORAGE_KEY5 = "stvisual.symbex.v1";
   function escapeHtml6(value = "") {
@@ -9695,15 +9901,39 @@ INVARSPEC !w | (i & (l | h))`
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       maxLoopUnroll: typeof (saved == null ? void 0 : saved.maxLoopUnroll) === "number" ? saved.maxLoopUnroll : 3,
       result: null,
+      cfg: null,
+      cfgError: null,
+      selectedPathId: null,
       error: null
     };
     function recompute() {
+      var _a2, _b;
       state.result = null;
       state.error = null;
+      state.cfg = null;
+      state.cfgError = null;
       try {
         state.result = symbolicExecute(state.sourceCode, { maxLoopUnroll: state.maxLoopUnroll });
       } catch (err) {
         state.error = err.message || String(err);
+      }
+      try {
+        state.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state.sourceCode,
+          language: "javascript",
+          title: "Symbolic Execution CFG"
+        });
+      } catch (err) {
+        state.cfgError = err.message || String(err);
+      }
+      if ((_b = (_a2 = state.result) == null ? void 0 : _a2.paths) == null ? void 0 : _b.length) {
+        const stillExists = state.result.paths.some((p) => p.id === state.selectedPathId);
+        if (!stillExists) {
+          const firstFeasible = state.result.paths.find((p) => p.feasible) || state.result.paths[0];
+          state.selectedPathId = firstFeasible.id;
+        }
+      } else {
+        state.selectedPathId = null;
       }
       persist2(state);
     }
@@ -9753,9 +9983,35 @@ INVARSPEC !w | (i & (l | h))`
         </div>
       </div>
 
+      ${renderCfgPane()}
+
       <p class="symbex-hint">${t("symbex.hint")}</p>
     `;
       bindEvents();
+    }
+    function renderCfgPane() {
+      var _a2, _b;
+      if (state.cfgError) {
+        return `<div class="symbex-cfg" data-testid="symbex-cfg">
+        <p class="symbex-cfg-error">${escapeHtml6(state.cfgError)}</p>
+      </div>`;
+      }
+      if (!state.cfg) return "";
+      const selected = (_b = (_a2 = state.result) == null ? void 0 : _a2.paths) == null ? void 0 : _b.find((p) => p.id === state.selectedPathId);
+      const mapping = selected ? mapBranchesToCfg(state.cfg, selected.branches) : { nodes: [], edges: [] };
+      const svg = renderCfgSvg(state.cfg, mapping, {
+        idPrefix: "symbex-cfg",
+        ariaLabel: "Symbolic execution CFG"
+      });
+      return `
+      <div class="symbex-cfg" data-testid="symbex-cfg">
+        <div class="symbex-cfg-header">
+          <h3>${t("symbex.cfg.title")}</h3>
+          <span class="symbex-cfg-selected" data-testid="symbex-cfg-selected">${selected ? escapeHtml6(selected.id) : t("symbex.cfg.none")}</span>
+        </div>
+        <div class="symbex-cfg-canvas graph-canvas">${svg}</div>
+      </div>
+    `;
     }
     function renderPaths(result) {
       if (!result || !result.paths.length) {
@@ -9770,7 +10026,11 @@ INVARSPEC !w | (i & (l | h))`
              <dd><code>${escapeHtml6(formatReturn(p.returnExpression, p.concreteReturn))}</code></dd>
            </dl>` : `<p class="symbex-infeasible">${t("symbex.infeasible")}</p>`;
         return `
-        <li class="symbex-path${p.feasible ? "" : " infeasible"}" data-testid="symbex-${p.id}">
+        <li class="symbex-path${p.feasible ? "" : " infeasible"}${state.selectedPathId === p.id ? " selected" : ""}"
+          data-testid="symbex-${p.id}"
+          data-symbex-path="${p.id}"
+          tabindex="0"
+          role="button">
           <header class="symbex-path-header">
             <span class="symbex-path-id">${escapeHtml6(p.id)}</span>
             <span class="symbex-path-status">${p.feasible ? t("symbex.feasible") : t("symbex.infeasible.short")}</span>
@@ -9799,7 +10059,21 @@ INVARSPEC !w | (i & (l | h))`
           if (!ex) return;
           state.exampleId = ex.id;
           state.sourceCode = ex.sourceCode;
+          state.selectedPathId = null;
           render();
+        });
+      });
+      root2.querySelectorAll("[data-symbex-path]").forEach((el) => {
+        const select = () => {
+          state.selectedPathId = el.dataset.symbexPath;
+          render();
+        };
+        el.addEventListener("click", select);
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            select();
+          }
         });
       });
       const editor = root2.querySelector('[data-testid="symbex-source"]');
@@ -10069,11 +10343,17 @@ INVARSPEC !w | (i & (l | h))`
       seedText: (saved == null ? void 0 : saved.seedText) || defaultExample.seed || "",
       maxIterations: typeof (saved == null ? void 0 : saved.maxIterations) === "number" ? saved.maxIterations : 16,
       result: null,
+      cfg: null,
+      cfgError: null,
+      selectedIterId: null,
       error: null
     };
     function recompute() {
+      var _a2, _b;
       state.result = null;
       state.error = null;
+      state.cfg = null;
+      state.cfgError = null;
       try {
         const initialInputs = parseSeed(state.seedText);
         state.result = concolicExecute(state.sourceCode, {
@@ -10082,6 +10362,23 @@ INVARSPEC !w | (i & (l | h))`
         });
       } catch (err) {
         state.error = err.message || String(err);
+      }
+      try {
+        state.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state.sourceCode,
+          language: "javascript",
+          title: "Concolic Execution CFG"
+        });
+      } catch (err) {
+        state.cfgError = err.message || String(err);
+      }
+      if ((_b = (_a2 = state.result) == null ? void 0 : _a2.iterations) == null ? void 0 : _b.length) {
+        const stillExists = state.result.iterations.some((it) => it.id === state.selectedIterId);
+        if (!stillExists) {
+          state.selectedIterId = state.result.iterations[0].id;
+        }
+      } else {
+        state.selectedIterId = null;
       }
       persist3(state);
     }
@@ -10138,9 +10435,35 @@ INVARSPEC !w | (i & (l | h))`
         </div>
       </div>
 
+      ${renderCfgPane()}
+
       <p class="concolic-hint">${t("concolic.hint")}</p>
     `;
       bindEvents();
+    }
+    function renderCfgPane() {
+      var _a2, _b;
+      if (state.cfgError) {
+        return `<div class="concolic-cfg" data-testid="concolic-cfg">
+        <p class="concolic-cfg-error">${escapeHtml7(state.cfgError)}</p>
+      </div>`;
+      }
+      if (!state.cfg) return "";
+      const selected = (_b = (_a2 = state.result) == null ? void 0 : _a2.iterations) == null ? void 0 : _b.find((it) => it.id === state.selectedIterId);
+      const mapping = selected ? mapBranchesToCfg(state.cfg, selected.branches) : { nodes: [], edges: [] };
+      const svg = renderCfgSvg(state.cfg, mapping, {
+        idPrefix: "concolic-cfg",
+        ariaLabel: "Concolic execution CFG"
+      });
+      return `
+      <div class="concolic-cfg" data-testid="concolic-cfg">
+        <div class="concolic-cfg-header">
+          <h3>${t("concolic.cfg.title")}</h3>
+          <span class="concolic-cfg-selected" data-testid="concolic-cfg-selected">${selected ? escapeHtml7(selected.id) : t("concolic.cfg.none")}</span>
+        </div>
+        <div class="concolic-cfg-canvas graph-canvas">${svg}</div>
+      </div>
+    `;
     }
     function renderIterations(result) {
       if (!result || !result.iterations.length) {
@@ -10173,7 +10496,11 @@ INVARSPEC !w | (i & (l | h))`
             `}
           </dl>`;
         return `
-        <li class="concolic-iter" data-testid="concolic-${it.id}">
+        <li class="concolic-iter${state.selectedIterId === it.id ? " selected" : ""}"
+          data-testid="concolic-${it.id}"
+          data-concolic-iter="${it.id}"
+          tabindex="0"
+          role="button">
           <header class="concolic-iter-header">
             <span class="concolic-iter-id">${escapeHtml7(it.id)}</span>
             <span class="concolic-iter-input"><code>${escapeHtml7(inputCode)}</code></span>
@@ -10207,7 +10534,21 @@ INVARSPEC !w | (i & (l | h))`
           state.exampleId = ex.id;
           state.sourceCode = ex.sourceCode;
           state.seedText = ex.seed || "";
+          state.selectedIterId = null;
           render();
+        });
+      });
+      root2.querySelectorAll("[data-concolic-iter]").forEach((el) => {
+        const select = () => {
+          state.selectedIterId = el.dataset.concolicIter;
+          render();
+        };
+        el.addEventListener("click", select);
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            select();
+          }
         });
       });
       const editor = root2.querySelector('[data-testid="concolic-source"]');
