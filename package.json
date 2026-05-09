@@ -4,6 +4,9 @@
   "description": "軟體測試方法視覺化",
   "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "serve": "python3 -m http.server 4173",
     "inject-env": "node scripts/inject-env.mjs",
     "build:standalone": "node scripts/build-standalone.mjs",
@@ -19,6 +22,8 @@
     "@testing-library/jest-dom": "^6.4.0",
     "esbuild": "^0.25.3",
     "jsdom": "^24.1.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.11",
     "vitest": "^1.6.0"
   },
   "dependencies": {

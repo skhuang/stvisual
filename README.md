@@ -161,6 +161,35 @@ Create a `.env` file (see `.env.example`) and run:
 npm run inject-env
 ```
 
+#### Development server
+
+Start the dev server with Vite (includes HMR for fast iteration):
+
+```bash
+npm run dev
+```
+
+Opens http://localhost:4173 by default.
+
+#### Alternative: Legacy HTTP server
+
+For minimal setup without build step:
+
+```bash
+npm run serve
+```
+
+Serves via Python's http.server on http://localhost:4173.
+
+#### TypeScript for new features
+
+New modules should be written in **TypeScript (`.ts`)** for type safety.
+
+- **Existing `.js` files**: Leave as-is; no need to migrate
+- **New files**: Create as `.ts` in `src/`; Vite will automatically compile them
+- **Dev mode**: Changes to `.ts` files hot-reload instantly
+- **Build**: `npm run build` (or legacy `npm run pages:prepare` for GitHub Pages)
+
 ### CI / GitHub Pages
 
 Add the 8 secrets (`FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, etc.) under
