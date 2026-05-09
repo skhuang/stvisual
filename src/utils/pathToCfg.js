@@ -144,9 +144,13 @@ export function renderCfgSvg(cfg, highlight = {}, options = {}) {
   if (!cfg) return '';
   const idPrefix = options.idPrefix || 'cfg';
   const ariaLabel = options.ariaLabel || 'Control flow graph';
+  const zoom = Number.isFinite(options.zoom) && options.zoom > 0 ? options.zoom : 1;
   const activeNodes = new Set(highlight.nodes || []);
   const activeEdges = new Set(highlight.edges || []);
   const { minX, minY, width, height } = computeBounds(cfg);
+  // At zoom=1 the svg fills 100% of its container width (browser scales it
+  // down to fit). At zoom=2 the svg renders at 200% so the container scrolls.
+  const widthStyle = `width:${Math.round(zoom * 100)}%;height:auto;`;
   const NODE_R = 28;
   const ARROW_GAP = 4;
 
@@ -177,7 +181,7 @@ export function renderCfgSvg(cfg, highlight = {}, options = {}) {
   }).join('');
 
   return `
-    <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${escapeXml(ariaLabel)}">
+    <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${escapeXml(ariaLabel)}" style="${widthStyle}">
       <defs>
         <marker id="arrow-default-${idPrefix}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
           <path d="M0,0 L7,3.5 L0,7 z" fill="#9aa8b6"></path>

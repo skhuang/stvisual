@@ -32,6 +32,7 @@ function persist(state) {
       sourceCode: state.sourceCode,
       exampleId: state.exampleId,
       maxLoopUnroll: state.maxLoopUnroll,
+      cfgZoom: state.cfgZoom,
     }));
   } catch {
     // ignore
@@ -49,6 +50,7 @@ export function createSymbolicExecutionExplorer() {
     exampleId: saved?.exampleId || defaultExample.id,
     sourceCode: saved?.sourceCode || defaultExample.sourceCode,
     maxLoopUnroll: typeof saved?.maxLoopUnroll === 'number' ? saved.maxLoopUnroll : 3,
+    cfgZoom: typeof saved?.cfgZoom === 'number' ? saved.cfgZoom : 1,
     result: null,
     cfg: null,
     cfgError: null,
@@ -165,7 +167,9 @@ export function createSymbolicExecutionExplorer() {
     const svg = renderCfgSvg(state.cfg, mapping, {
       idPrefix: 'symbex-cfg',
       ariaLabel: 'Symbolic execution CFG',
+      zoom: state.cfgZoom,
     });
+    const zoomPct = Math.round(state.cfgZoom * 100);
     return `
       <div class="symbex-cfg" data-testid="symbex-cfg">
         <div class="symbex-cfg-header">
@@ -173,6 +177,11 @@ export function createSymbolicExecutionExplorer() {
           <span class="symbex-cfg-selected" data-testid="symbex-cfg-selected">${
             selected ? escapeHtml(selected.id) : t('symbex.cfg.none')
           }</span>
+          <div class="symbex-cfg-zoom" role="group" aria-label="${t('symbex.cfg.zoom')}">
+            <button type="button" data-symbex-zoom="out" data-testid="symbex-cfg-zoom-out" title="${t('symbex.cfg.zoomOut')}">−</button>
+            <button type="button" data-symbex-zoom="reset" data-testid="symbex-cfg-zoom-reset" title="${t('symbex.cfg.zoomReset')}">${zoomPct}%</button>
+            <button type="button" data-symbex-zoom="in" data-testid="symbex-cfg-zoom-in" title="${t('symbex.cfg.zoomIn')}">+</button>
+          </div>
         </div>
         <div class="symbex-cfg-canvas graph-canvas">${svg}</div>
       </div>
@@ -275,6 +284,16 @@ export function createSymbolicExecutionExplorer() {
         }
       });
     }
+
+    root.querySelectorAll('[data-symbex-zoom]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.symbexZoom;
+        if (action === 'in') state.cfgZoom = Math.min(4, +(state.cfgZoom + 0.25).toFixed(2));
+        else if (action === 'out') state.cfgZoom = Math.max(0.25, +(state.cfgZoom - 0.25).toFixed(2));
+        else state.cfgZoom = 1;
+        render();
+      });
+    });
   }
 
   function renderPreservingFocus(testid) {

@@ -678,6 +678,10 @@
       "symbex.hint": "Supports a small JS subset: function with int/bool params, let/=, if/else, bounded while, return, +-*/% comparisons, &&/||/!. Witnesses are searched over a small integer domain.",
       "symbex.cfg.title": "Selected path on the CFG",
       "symbex.cfg.none": "(no path selected)",
+      "symbex.cfg.zoom": "Zoom",
+      "symbex.cfg.zoomIn": "Zoom in",
+      "symbex.cfg.zoomOut": "Zoom out",
+      "symbex.cfg.zoomReset": "Reset zoom",
       "section.concolic": "Concolic Execution",
       "section.concolic.title": "Concolic Execution Explorer",
       "concolic.source": "Program source",
@@ -698,6 +702,10 @@
       "concolic.hint": "Concolic execution = concrete + symbolic. Each iteration runs the program concretely, then negates the last unexplored branch and asks the solver for a new input. Same JS subset as Symbolic Execution.",
       "concolic.cfg.title": "Selected iteration on the CFG",
       "concolic.cfg.none": "(no iteration selected)",
+      "concolic.cfg.zoom": "Zoom",
+      "concolic.cfg.zoomIn": "Zoom in",
+      "concolic.cfg.zoomOut": "Zoom out",
+      "concolic.cfg.zoomReset": "Reset zoom",
       // Common
       "common.run": "Run",
       "common.reset": "Reset",
@@ -1044,6 +1052,10 @@
       "symbex.hint": "\u652F\u63F4\u5C0F\u578B JS \u5B50\u96C6\uFF1Afunction \u5B63\u544A\u3001let/=\u3001if/else\u3001\u6709\u754C while\u3001return\u3001\u7B97\u8853\u8207\u6BD4\u8F03\u904B\u7B97\u3001&&/||/!\u3002\u898B\u8B49\u4EE5\u5C0F\u578B\u6574\u6578\u57DF\u7A6E\u8209\u6C42\u89E3\u3002",
       "symbex.cfg.title": "\u5728 CFG \u4E0A\u9AD8\u4EAE\u9078\u4E2D\u8DEF\u5F91",
       "symbex.cfg.none": "\uFF08\u5C1A\u672A\u9078\u53D6\u8DEF\u5F91\uFF09",
+      "symbex.cfg.zoom": "\u7E2E\u653E",
+      "symbex.cfg.zoomIn": "\u653E\u5927",
+      "symbex.cfg.zoomOut": "\u7E2E\u5C0F",
+      "symbex.cfg.zoomReset": "\u91CD\u8A2D\u7E2E\u653E",
       "section.concolic": "\u5177\u9AD4\u7B26\u865F\u57F7\u884C",
       "section.concolic.title": "Concolic Execution Explorer",
       "concolic.source": "\u7A0B\u5F0F\u539F\u59CB\u78BC",
@@ -1064,6 +1076,10 @@
       "concolic.hint": "Concolic execution = concrete + symbolic\u3002\u6BCF\u500B\u8FED\u4EE3\u5148\u5177\u9AD4\u8DD1\u4E00\u689D\u8DEF\u5F91\uFF0C\u518D\u7FFB\u8F49\u6700\u5F8C\u4E00\u500B\u672A\u63A2\u7D22\u5206\u652F\u4E26\u8ACB\u6C42\u89E3\u5668\u7522\u751F\u65B0\u8F38\u5165\u3002\u8A9E\u6CD5\u5B50\u96C6\u540C Symbolic Execution\u3002",
       "concolic.cfg.title": "\u5728 CFG \u4E0A\u9AD8\u4EAE\u9078\u4E2D\u7684\u8FED\u4EE3",
       "concolic.cfg.none": "\uFF08\u5C1A\u672A\u9078\u53D6\u8FED\u4EE3\uFF09",
+      "concolic.cfg.zoom": "\u7E2E\u653E",
+      "concolic.cfg.zoomIn": "\u653E\u5927",
+      "concolic.cfg.zoomOut": "\u7E2E\u5C0F",
+      "concolic.cfg.zoomReset": "\u91CD\u8A2D\u7E2E\u653E",
       "common.run": "\u57F7\u884C",
       "common.reset": "\u91CD\u8A2D",
       "common.save": "\u5132\u5B58",
@@ -9820,9 +9836,11 @@ INVARSPEC !w | (i & (l | h))`
     if (!cfg) return "";
     const idPrefix = options.idPrefix || "cfg";
     const ariaLabel = options.ariaLabel || "Control flow graph";
+    const zoom = Number.isFinite(options.zoom) && options.zoom > 0 ? options.zoom : 1;
     const activeNodes = new Set(highlight.nodes || []);
     const activeEdges = new Set(highlight.edges || []);
     const { minX, minY, width, height } = computeBounds(cfg);
+    const widthStyle = `width:${Math.round(zoom * 100)}%;height:auto;`;
     const NODE_R = 28;
     const ARROW_GAP = 4;
     const edges = cfg.edges.map((edge) => {
@@ -9848,7 +9866,7 @@ INVARSPEC !w | (i & (l | h))`
       return `<g class="${cls}" data-testid="${idPrefix}-node-${node.id}">${title}<circle cx="${node.x}" cy="${node.y}" r="${NODE_R}"></circle><text x="${node.x}" y="${node.y + 5}" text-anchor="middle">${escapeXml2(node.label)}</text></g>`;
     }).join("");
     return `
-    <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${escapeXml2(ariaLabel)}">
+    <svg viewBox="${minX} ${minY} ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${escapeXml2(ariaLabel)}" style="${widthStyle}">
       <defs>
         <marker id="arrow-default-${idPrefix}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
           <path d="M0,0 L7,3.5 L0,7 z" fill="#9aa8b6"></path>
@@ -9885,7 +9903,8 @@ INVARSPEC !w | (i & (l | h))`
       (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY5, JSON.stringify({
         sourceCode: state.sourceCode,
         exampleId: state.exampleId,
-        maxLoopUnroll: state.maxLoopUnroll
+        maxLoopUnroll: state.maxLoopUnroll,
+        cfgZoom: state.cfgZoom
       }));
     } catch {
     }
@@ -9900,6 +9919,7 @@ INVARSPEC !w | (i & (l | h))`
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       maxLoopUnroll: typeof (saved == null ? void 0 : saved.maxLoopUnroll) === "number" ? saved.maxLoopUnroll : 3,
+      cfgZoom: typeof (saved == null ? void 0 : saved.cfgZoom) === "number" ? saved.cfgZoom : 1,
       result: null,
       cfg: null,
       cfgError: null,
@@ -10001,13 +10021,20 @@ INVARSPEC !w | (i & (l | h))`
       const mapping = selected ? mapBranchesToCfg(state.cfg, selected.branches) : { nodes: [], edges: [] };
       const svg = renderCfgSvg(state.cfg, mapping, {
         idPrefix: "symbex-cfg",
-        ariaLabel: "Symbolic execution CFG"
+        ariaLabel: "Symbolic execution CFG",
+        zoom: state.cfgZoom
       });
+      const zoomPct = Math.round(state.cfgZoom * 100);
       return `
       <div class="symbex-cfg" data-testid="symbex-cfg">
         <div class="symbex-cfg-header">
           <h3>${t("symbex.cfg.title")}</h3>
           <span class="symbex-cfg-selected" data-testid="symbex-cfg-selected">${selected ? escapeHtml6(selected.id) : t("symbex.cfg.none")}</span>
+          <div class="symbex-cfg-zoom" role="group" aria-label="${t("symbex.cfg.zoom")}">
+            <button type="button" data-symbex-zoom="out" data-testid="symbex-cfg-zoom-out" title="${t("symbex.cfg.zoomOut")}">\u2212</button>
+            <button type="button" data-symbex-zoom="reset" data-testid="symbex-cfg-zoom-reset" title="${t("symbex.cfg.zoomReset")}">${zoomPct}%</button>
+            <button type="button" data-symbex-zoom="in" data-testid="symbex-cfg-zoom-in" title="${t("symbex.cfg.zoomIn")}">+</button>
+          </div>
         </div>
         <div class="symbex-cfg-canvas graph-canvas">${svg}</div>
       </div>
@@ -10097,6 +10124,15 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       }
+      root2.querySelectorAll("[data-symbex-zoom]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const action = btn.dataset.symbexZoom;
+          if (action === "in") state.cfgZoom = Math.min(4, +(state.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state.cfgZoom = Math.max(0.25, +(state.cfgZoom - 0.25).toFixed(2));
+          else state.cfgZoom = 1;
+          render();
+        });
+      });
     }
     function renderPreservingFocus(testid) {
       const previously = root2.querySelector(`[data-testid="${testid}"]`);
@@ -10313,7 +10349,8 @@ INVARSPEC !w | (i & (l | h))`
         sourceCode: state.sourceCode,
         exampleId: state.exampleId,
         seedText: state.seedText,
-        maxIterations: state.maxIterations
+        maxIterations: state.maxIterations,
+        cfgZoom: state.cfgZoom
       }));
     } catch {
     }
@@ -10342,6 +10379,7 @@ INVARSPEC !w | (i & (l | h))`
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       seedText: (saved == null ? void 0 : saved.seedText) || defaultExample.seed || "",
       maxIterations: typeof (saved == null ? void 0 : saved.maxIterations) === "number" ? saved.maxIterations : 16,
+      cfgZoom: typeof (saved == null ? void 0 : saved.cfgZoom) === "number" ? saved.cfgZoom : 1,
       result: null,
       cfg: null,
       cfgError: null,
@@ -10453,13 +10491,20 @@ INVARSPEC !w | (i & (l | h))`
       const mapping = selected ? mapBranchesToCfg(state.cfg, selected.branches) : { nodes: [], edges: [] };
       const svg = renderCfgSvg(state.cfg, mapping, {
         idPrefix: "concolic-cfg",
-        ariaLabel: "Concolic execution CFG"
+        ariaLabel: "Concolic execution CFG",
+        zoom: state.cfgZoom
       });
+      const zoomPct = Math.round(state.cfgZoom * 100);
       return `
       <div class="concolic-cfg" data-testid="concolic-cfg">
         <div class="concolic-cfg-header">
           <h3>${t("concolic.cfg.title")}</h3>
           <span class="concolic-cfg-selected" data-testid="concolic-cfg-selected">${selected ? escapeHtml7(selected.id) : t("concolic.cfg.none")}</span>
+          <div class="concolic-cfg-zoom" role="group" aria-label="${t("concolic.cfg.zoom")}">
+            <button type="button" data-concolic-zoom="out" data-testid="concolic-cfg-zoom-out" title="${t("concolic.cfg.zoomOut")}">\u2212</button>
+            <button type="button" data-concolic-zoom="reset" data-testid="concolic-cfg-zoom-reset" title="${t("concolic.cfg.zoomReset")}">${zoomPct}%</button>
+            <button type="button" data-concolic-zoom="in" data-testid="concolic-cfg-zoom-in" title="${t("concolic.cfg.zoomIn")}">+</button>
+          </div>
         </div>
         <div class="concolic-cfg-canvas graph-canvas">${svg}</div>
       </div>
@@ -10579,6 +10624,15 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       }
+      root2.querySelectorAll("[data-concolic-zoom]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const action = btn.dataset.concolicZoom;
+          if (action === "in") state.cfgZoom = Math.min(4, +(state.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state.cfgZoom = Math.max(0.25, +(state.cfgZoom - 0.25).toFixed(2));
+          else state.cfgZoom = 1;
+          render();
+        });
+      });
     }
     function renderPreservingFocus(testid) {
       const previously = root2.querySelector(`[data-testid="${testid}"]`);

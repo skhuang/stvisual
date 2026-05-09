@@ -33,6 +33,7 @@ function persist(state) {
       exampleId: state.exampleId,
       seedText: state.seedText,
       maxIterations: state.maxIterations,
+      cfgZoom: state.cfgZoom,
     }));
   } catch {
     // ignore
@@ -66,6 +67,7 @@ export function createConcolicExecutionExplorer() {
     sourceCode: saved?.sourceCode || defaultExample.sourceCode,
     seedText: saved?.seedText || defaultExample.seed || '',
     maxIterations: typeof saved?.maxIterations === 'number' ? saved.maxIterations : 16,
+    cfgZoom: typeof saved?.cfgZoom === 'number' ? saved.cfgZoom : 1,
     result: null,
     cfg: null,
     cfgError: null,
@@ -190,7 +192,9 @@ export function createConcolicExecutionExplorer() {
     const svg = renderCfgSvg(state.cfg, mapping, {
       idPrefix: 'concolic-cfg',
       ariaLabel: 'Concolic execution CFG',
+      zoom: state.cfgZoom,
     });
+    const zoomPct = Math.round(state.cfgZoom * 100);
     return `
       <div class="concolic-cfg" data-testid="concolic-cfg">
         <div class="concolic-cfg-header">
@@ -198,6 +202,11 @@ export function createConcolicExecutionExplorer() {
           <span class="concolic-cfg-selected" data-testid="concolic-cfg-selected">${
             selected ? escapeHtml(selected.id) : t('concolic.cfg.none')
           }</span>
+          <div class="concolic-cfg-zoom" role="group" aria-label="${t('concolic.cfg.zoom')}">
+            <button type="button" data-concolic-zoom="out" data-testid="concolic-cfg-zoom-out" title="${t('concolic.cfg.zoomOut')}">−</button>
+            <button type="button" data-concolic-zoom="reset" data-testid="concolic-cfg-zoom-reset" title="${t('concolic.cfg.zoomReset')}">${zoomPct}%</button>
+            <button type="button" data-concolic-zoom="in" data-testid="concolic-cfg-zoom-in" title="${t('concolic.cfg.zoomIn')}">+</button>
+          </div>
         </div>
         <div class="concolic-cfg-canvas graph-canvas">${svg}</div>
       </div>
@@ -330,6 +339,16 @@ export function createConcolicExecutionExplorer() {
         }
       });
     }
+
+    root.querySelectorAll('[data-concolic-zoom]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.concolicZoom;
+        if (action === 'in') state.cfgZoom = Math.min(4, +(state.cfgZoom + 0.25).toFixed(2));
+        else if (action === 'out') state.cfgZoom = Math.max(0.25, +(state.cfgZoom - 0.25).toFixed(2));
+        else state.cfgZoom = 1;
+        render();
+      });
+    });
   }
 
   function renderPreservingFocus(testid) {
