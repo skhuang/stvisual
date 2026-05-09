@@ -5,3 +5,4 @@ site/
 coverage/
 playwright-report/
 test-results/
+.env

@@ -1,15 +1,15 @@
 export const cloudConfig = {
   firebase: {
-    apiKey: "AIzaSyB9QlOS2IodbRQWxGGe_a8cEviSZURyo3k",
-    authDomain: "stvisual-a88cd.firebaseapp.com",
-    projectId: "stvisual-a88cd",
-    storageBucket: "stvisual-a88cd.firebasestorage.app",
-    messagingSenderId: "1030102454109",
-    appId: "1:1030102454109:web:cb50e6da22b4b5dda2a2b4",
-    measurementId: "G-RBRGPW34JQ",
+    apiKey: "__FIREBASE_API_KEY__",
+    authDomain: "__FIREBASE_AUTH_DOMAIN__",
+    projectId: "__FIREBASE_PROJECT_ID__",
+    storageBucket: "__FIREBASE_STORAGE_BUCKET__",
+    messagingSenderId: "__FIREBASE_MESSAGING_SENDER_ID__",
+    appId: "__FIREBASE_APP_ID__",
+    measurementId: "__FIREBASE_MEASUREMENT_ID__",
   },
   drive: {
-    uploadFolderId: '1B5hCB2Scte4Sds0d03mYNu-iGZS0JKbJ',
+    uploadFolderId: '__DRIVE_UPLOAD_FOLDER_ID__',
   },
 };
 
