@@ -818,6 +818,7 @@
       "graph.parseError": "Parse error: {msg}",
       // Common (extra)
       "common.none": "(none)",
+      "common.chooseFile": "Choose File",
       // Graph coverage
       "graph.aria.canvas": "Graph coverage CFG",
       "graph.dfg.title": "Data Flow Graph (def \u2192 use)",
@@ -1194,6 +1195,7 @@
       "graph.noTests": "\u6B64\u6E96\u5247\u4E0D\u9700\u6E2C\u8A66\u8F38\u5165\u3002",
       "graph.parseError": "\u89E3\u6790\u932F\u8AA4\uFF1A{msg}",
       "common.none": "\u7121",
+      "common.chooseFile": "\u9078\u64C7\u6A94\u6848",
       "graph.aria.canvas": "Graph coverage \u63A7\u5236\u6D41\u7A0B\u5716",
       "graph.dfg.title": "\u8CC7\u6599\u6D41\u7A0B\u5716\uFF08def \u2192 use\uFF09",
       "graph.dfg.help": "\u4F9D\u6BCF\u500B\u53E5\u7684\u8CE6\u503C\u63A8\u5C0E\u5B9A\u7FA9\u8207\u4F7F\u7528\uFF0C\u6CBF CFG \u8D70\u5230\u672A\u88AB\u4E2D\u9593 def \u8986\u5BEB\u7684 use\u3002\u908A\u4E0A\u6A19\u793A\u8B8A\u6578\u540D\u3002",
@@ -3372,10 +3374,11 @@
               <option value="uploaded-spec"${selectedProgramId === "uploaded-spec" ? " selected" : ""}>Uploaded Graph Spec</option>
             </select>
           </label>
-          <label class="graph-upload-field">
-            Upload JSON Graph Spec
-            <input type="file" accept="application/json,.json" data-testid="graph-upload-input" />
-          </label>
+          <div class="graph-upload-field">
+            <span>Upload JSON Graph Spec</span>
+            <button type="button" class="graph-upload-btn" data-testid="graph-upload-btn">${t("common.chooseFile")}</button>
+            <input type="file" accept="application/json,.json" data-testid="graph-upload-input" class="sr-only" />
+          </div>
           <label>
             Code Language
             <select data-testid="program-language-select">
@@ -3384,10 +3387,11 @@
               `).join("")}
             </select>
           </label>
-          <label class="graph-upload-field">
-            Upload Source Code
-            <input type="file" accept=".js,.txt,.code,.pseudo" data-testid="code-upload-input" />
-          </label>
+          <div class="graph-upload-field">
+            <span>Upload Source Code</span>
+            <button type="button" class="graph-upload-btn" data-testid="code-upload-btn">${t("common.chooseFile")}</button>
+            <input type="file" accept=".js,.txt,.code,.pseudo" data-testid="code-upload-input" class="sr-only" />
+          </div>
         </div>
         <div class="graph-source-copy">
           <div>
@@ -3580,6 +3584,12 @@
       });
       root2.querySelector('[data-testid="program-language-select"]').addEventListener("change", (event) => {
         selectedCodeLanguage = event.target.value;
+      });
+      root2.querySelector('[data-testid="graph-upload-btn"]').addEventListener("click", () => {
+        root2.querySelector('[data-testid="graph-upload-input"]').click();
+      });
+      root2.querySelector('[data-testid="code-upload-btn"]').addEventListener("click", () => {
+        root2.querySelector('[data-testid="code-upload-input"]').click();
       });
       root2.querySelector('[data-testid="graph-upload-input"]').addEventListener("change", async (event) => {
         const [file] = event.target.files || [];
@@ -5831,10 +5841,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
           <section class="cloud-section">
             <h4>${t("cloud.section.files")}</h4>
-            <label class="cloud-file-picker">
-              ${t("cloud.uploadHint")}
-              <input type="file" data-testid="cloud-file-input" ${!user ? "disabled" : ""} />
-            </label>
+            <div class="cloud-file-picker">
+              <span>${t("cloud.uploadHint")}</span>
+              <button type="button" class="cloud-file-btn" data-testid="cloud-file-btn" ${!user ? "disabled" : ""}>${t("common.chooseFile")}</button>
+              <input type="file" data-testid="cloud-file-input" class="sr-only" ${!user ? "disabled" : ""} />
+            </div>
             <p data-testid="cloud-file-name">${selectedFile ? t("cloud.pendingUpload", { name: selectedFile.name }) : t("cloud.noFileSelected")}</p>
             <button type="button" class="cloud-btn" data-testid="cloud-upload-btn" ${!selectedFile || !user ? "disabled" : ""}>${t("cloud.upload")}</button>
 
@@ -5901,6 +5912,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       });
       root2.querySelector('[data-testid="cloud-notes-input"]').addEventListener("input", (event) => {
         settings.notes = event.target.value;
+      });
+      root2.querySelector('[data-testid="cloud-file-btn"]').addEventListener("click", () => {
+        root2.querySelector('[data-testid="cloud-file-input"]').click();
       });
       root2.querySelector('[data-testid="cloud-file-input"]').addEventListener("change", (event) => {
         [selectedFile] = event.target.files || [];

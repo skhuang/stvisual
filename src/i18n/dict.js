@@ -193,6 +193,7 @@ export const messages = {
     'graph.parseError': 'Parse error: {msg}',
     // Common (extra)
     'common.none': '(none)',
+    'common.chooseFile': 'Choose File',
 
     // Graph coverage
     'graph.aria.canvas': 'Graph coverage CFG',
@@ -584,6 +585,7 @@ export const messages = {
     'graph.noTests': '此準則不需測試輸入。',
     'graph.parseError': '解析錯誤：{msg}',
     'common.none': '無',
+    'common.chooseFile': '選擇檔案',
 
     'graph.aria.canvas': 'Graph coverage 控制流程圖',
     'graph.dfg.title': '資料流程圖（def → use）',

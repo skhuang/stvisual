@@ -29,6 +29,33 @@
   color: #64748b;
 }
 
+.graph-upload-field .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.graph-upload-btn {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #334155;
+  text-align: left;
+}
+
+.graph-upload-btn:hover {
+  background: #f1f5f9;
+}
+
 .graph-source-toolbar select,
 .graph-upload-field input,
 .graph-editor-meta input {

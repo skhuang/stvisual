@@ -92,10 +92,11 @@ export function createCloudStoragePanel() {
 
           <section class="cloud-section">
             <h4>${t('cloud.section.files')}</h4>
-            <label class="cloud-file-picker">
-              ${t('cloud.uploadHint')}
-              <input type="file" data-testid="cloud-file-input" ${!user ? 'disabled' : ''} />
-            </label>
+            <div class="cloud-file-picker">
+              <span>${t('cloud.uploadHint')}</span>
+              <button type="button" class="cloud-file-btn" data-testid="cloud-file-btn" ${!user ? 'disabled' : ''}>${t('common.chooseFile')}</button>
+              <input type="file" data-testid="cloud-file-input" class="sr-only" ${!user ? 'disabled' : ''} />
+            </div>
             <p data-testid="cloud-file-name">${selectedFile ? t('cloud.pendingUpload', { name: selectedFile.name }) : t('cloud.noFileSelected')}</p>
             <button type="button" class="cloud-btn" data-testid="cloud-upload-btn" ${!selectedFile || !user ? 'disabled' : ''}>${t('cloud.upload')}</button>
 
@@ -168,6 +169,10 @@ export function createCloudStoragePanel() {
 
     root.querySelector('[data-testid="cloud-notes-input"]').addEventListener('input', (event) => {
       settings.notes = event.target.value;
+    });
+
+    root.querySelector('[data-testid="cloud-file-btn"]').addEventListener('click', () => {
+      root.querySelector('[data-testid="cloud-file-input"]').click();
     });
 
     root.querySelector('[data-testid="cloud-file-input"]').addEventListener('change', (event) => {

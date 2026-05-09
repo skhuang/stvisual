@@ -524,10 +524,11 @@ export function createGraphCoverageExplorer() {
               <option value="uploaded-spec"${selectedProgramId === 'uploaded-spec' ? ' selected' : ''}>Uploaded Graph Spec</option>
             </select>
           </label>
-          <label class="graph-upload-field">
-            Upload JSON Graph Spec
-            <input type="file" accept="application/json,.json" data-testid="graph-upload-input" />
-          </label>
+          <div class="graph-upload-field">
+            <span>Upload JSON Graph Spec</span>
+            <button type="button" class="graph-upload-btn" data-testid="graph-upload-btn">${t('common.chooseFile')}</button>
+            <input type="file" accept="application/json,.json" data-testid="graph-upload-input" class="sr-only" />
+          </div>
           <label>
             Code Language
             <select data-testid="program-language-select">
@@ -536,10 +537,11 @@ export function createGraphCoverageExplorer() {
               `).join('')}
             </select>
           </label>
-          <label class="graph-upload-field">
-            Upload Source Code
-            <input type="file" accept=".js,.txt,.code,.pseudo" data-testid="code-upload-input" />
-          </label>
+          <div class="graph-upload-field">
+            <span>Upload Source Code</span>
+            <button type="button" class="graph-upload-btn" data-testid="code-upload-btn">${t('common.chooseFile')}</button>
+            <input type="file" accept=".js,.txt,.code,.pseudo" data-testid="code-upload-input" class="sr-only" />
+          </div>
         </div>
         <div class="graph-source-copy">
           <div>
@@ -743,6 +745,14 @@ export function createGraphCoverageExplorer() {
 
     root.querySelector('[data-testid="program-language-select"]').addEventListener('change', (event) => {
       selectedCodeLanguage = event.target.value;
+    });
+
+    root.querySelector('[data-testid="graph-upload-btn"]').addEventListener('click', () => {
+      root.querySelector('[data-testid="graph-upload-input"]').click();
+    });
+
+    root.querySelector('[data-testid="code-upload-btn"]').addEventListener('click', () => {
+      root.querySelector('[data-testid="code-upload-input"]').click();
     });
 
     root.querySelector('[data-testid="graph-upload-input"]').addEventListener('change', async (event) => {

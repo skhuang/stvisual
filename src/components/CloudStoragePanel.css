@@ -115,13 +115,45 @@
 }
 
 .cloud-section select,
-.cloud-section textarea,
-.cloud-section input[type='file'] {
+.cloud-section textarea {
   width: 100%;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   padding: 8px 10px;
   font-family: inherit;
+}
+
+.cloud-section .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.cloud-file-btn {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #334155;
+  text-align: left;
+  font-family: inherit;
+}
+
+.cloud-file-btn:hover {
+  background: #f1f5f9;
+}
+
+.cloud-file-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .cloud-section textarea {
