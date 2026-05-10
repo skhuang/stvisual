@@ -1,4 +1,36 @@
 .concolic-explorer { display: flex; flex-direction: column; gap: 1rem; }
+.concolic-split-body {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.1fr) minmax(340px, 1.5fr);
+  gap: 1.2rem;
+  min-height: 64rem;
+}
+@media (max-width: 900px) {
+  .concolic-split-body { grid-template-columns: 1fr; }
+  .concolic-cfg-pane { min-height: 36rem; }
+}
+.concolic-cfg-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 48rem;
+}
+.concolic-right-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+.concolic-results-pane {
+  flex: 1 1 0;
+  min-height: 24rem;
+  max-height: 44rem;
+  overflow-y: auto;
+}
+.concolic-editor-pane {
+  flex: 1 1 0;
+  min-height: 20rem;
+}
 
 .concolic-toolbar {
   display: flex;
@@ -42,6 +74,7 @@
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
   gap: 1rem;
+  min-height: 64rem;
 }
 @media (max-width: 900px) { .concolic-body { grid-template-columns: 1fr; } }
 
@@ -175,11 +208,26 @@
 .concolic-iter { cursor: pointer; transition: background 0.15s, border-color 0.15s; }
 .concolic-iter:hover { background: #eef2f7; }
 .concolic-iter.selected { border-color: #7c3aed; box-shadow: 0 0 0 2px rgba(124,58,237,0.18); }
-.concolic-cfg { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+.concolic-cfg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
 .concolic-cfg-header { display: flex; align-items: baseline; gap: 0.6rem; }
 .concolic-cfg-header h3 { margin: 0; font-size: 1rem; }
 .concolic-cfg-selected { font-family: 'SF Mono', monospace; color: #7c3aed; font-size: 0.85rem; }
-.concolic-cfg-canvas { width: 100%; max-height: 28rem; overflow: auto; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; }
+.concolic-cfg-canvas {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+}
 .concolic-cfg-canvas svg { width: 100%; height: auto; }
 .concolic-cfg-error { color: #b45309; font-size: 0.85rem; }
 

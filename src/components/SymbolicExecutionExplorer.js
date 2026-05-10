@@ -117,6 +117,7 @@ export function createSymbolicExecutionExplorer() {
            : ''}`
       : '';
 
+
     root.innerHTML = `
       <div class="symbex-toolbar">
         <div class="symbex-examples" data-testid="symbex-examples">${exampleButtons}</div>
@@ -130,24 +131,26 @@ export function createSymbolicExecutionExplorer() {
         </div>
       </div>
 
-      <div class="symbex-body">
-        <div class="symbex-editor-pane">
-          <label class="symbex-editor-label" for="symbex-source">${t('symbex.source')}</label>
-          <textarea id="symbex-source"
-            class="symbex-editor"
-            data-testid="symbex-source"
-            spellcheck="false"
-            autocomplete="off"
-            rows="14">${escapeHtml(state.sourceCode)}</textarea>
+      <div class="symbex-split-body">
+        <div class="symbex-cfg-pane">
+          ${renderCfgPane()}
         </div>
-
-        <div class="symbex-results-pane">
-          <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
-          ${pathsMarkup}
+        <div class="symbex-right-pane">
+          <div class="symbex-results-pane">
+            <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
+            ${pathsMarkup}
+          </div>
+          <div class="symbex-editor-pane">
+            <label class="symbex-editor-label" for="symbex-source">${t('symbex.source')}</label>
+            <textarea id="symbex-source"
+              class="symbex-editor"
+              data-testid="symbex-source"
+              spellcheck="false"
+              autocomplete="off"
+              rows="14">${escapeHtml(state.sourceCode)}</textarea>
+          </div>
         </div>
       </div>
-
-      ${renderCfgPane()}
 
       <p class="symbex-hint">${t('symbex.hint')}</p>
     `;

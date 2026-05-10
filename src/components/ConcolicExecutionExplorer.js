@@ -156,23 +156,26 @@ export function createConcolicExecutionExplorer() {
         </div>
       </div>
 
-      <div class="concolic-body">
-        <div class="concolic-editor-pane">
-          <label class="concolic-editor-label" for="concolic-source">${t('concolic.source')}</label>
-          <textarea id="concolic-source"
-            class="concolic-editor"
-            data-testid="concolic-source"
-            spellcheck="false"
-            autocomplete="off"
-            rows="14">${escapeHtml(state.sourceCode)}</textarea>
+      <div class="concolic-split-body">
+        <div class="concolic-cfg-pane">
+          ${renderCfgPane()}
         </div>
-        <div class="concolic-results-pane">
-          <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
-          ${body}
+        <div class="concolic-right-pane">
+          <div class="concolic-results-pane">
+            <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
+            ${body}
+          </div>
+          <div class="concolic-editor-pane">
+            <label class="concolic-editor-label" for="concolic-source">${t('concolic.source')}</label>
+            <textarea id="concolic-source"
+              class="concolic-editor"
+              data-testid="concolic-source"
+              spellcheck="false"
+              autocomplete="off"
+              rows="14">${escapeHtml(state.sourceCode)}</textarea>
+          </div>
         </div>
       </div>
-
-      ${renderCfgPane()}
 
       <p class="concolic-hint">${t('concolic.hint')}</p>
     `;

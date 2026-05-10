@@ -1,4 +1,38 @@
+
 .symbex-explorer { display: flex; flex-direction: column; gap: 1rem; }
+
+.symbex-split-body {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.1fr) minmax(340px, 1.5fr);
+  gap: 1.2rem;
+  min-height: 64rem;
+}
+@media (max-width: 900px) {
+  .symbex-split-body { grid-template-columns: 1fr; }
+  .symbex-cfg-pane { min-height: 36rem; }
+}
+.symbex-cfg-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 48rem;
+}
+.symbex-right-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+.symbex-results-pane {
+  flex: 1 1 0;
+  min-height: 24rem;
+  max-height: 44rem;
+  overflow-y: auto;
+}
+.symbex-editor-pane {
+  flex: 1 1 0;
+  min-height: 20rem;
+}
 
 .symbex-toolbar {
   display: flex;
@@ -18,6 +52,10 @@
   cursor: pointer;
   font-size: 0.875rem;
 }
+
+.symbex-editor-pane,
+.symbex-results-pane { gap: 0.5rem; }
+
 .symbex-example-btn.active { background: #1f6feb; color: #fff; border-color: #1f6feb; }
 .symbex-example-btn:hover { background: #eef2f7; }
 .symbex-example-btn.active:hover { background: #1f6feb; opacity: 0.9; }
@@ -35,6 +73,7 @@
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
   gap: 1rem;
+  min-height: 64rem;
 }
 
 @media (max-width: 900px) {
@@ -154,11 +193,26 @@
 .symbex-path { cursor: pointer; transition: background 0.15s, border-color 0.15s; }
 .symbex-path:hover { background: #f1f5f9; }
 .symbex-path.selected { border-color: #7c3aed; box-shadow: 0 0 0 2px rgba(124,58,237,0.18); }
-.symbex-cfg { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+.symbex-cfg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
 .symbex-cfg-header { display: flex; align-items: baseline; gap: 0.6rem; }
 .symbex-cfg-header h3 { margin: 0; font-size: 1rem; }
 .symbex-cfg-selected { font-family: 'SF Mono', monospace; color: #7c3aed; font-size: 0.85rem; }
-.symbex-cfg-canvas { width: 100%; max-height: 28rem; overflow: auto; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; }
+.symbex-cfg-canvas {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+}
 .symbex-cfg-canvas svg { width: 100%; height: auto; }
 .symbex-cfg-error { color: #b45309; font-size: 0.85rem; }
 
