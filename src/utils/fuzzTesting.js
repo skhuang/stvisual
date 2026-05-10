@@ -6,42 +6,6 @@
  * for CFG coverage analysis.
  */
 
-export interface FuzzInput {
-  [key: string]: number | boolean;
-}
-
-export interface FuzzBranch {
-  taken: boolean;
-}
-
-export interface FuzzTestCase {
-  id: string;
-  input: FuzzInput;
-  output: unknown;
-  error: string | null;
-  crashed: boolean;
-  duration: number;
-  branches: FuzzBranch[];
-}
-
-export interface FuzzTestResult {
-  totalTests: number;
-  passedTests: number;
-  failedTests: number;
-  crashes: number;
-  testCases: FuzzTestCase[];
-  uniqueErrors: Map<string, number>;
-  averageDuration: number;
-  truncated: boolean;
-}
-
-interface ParsedFunction {
-  paramNames: string[];
-  body: string;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  func: Function;
-}
-
 const MAX_TEST_CASES = 200;
 const MAX_INT_VALUE = 100;
 const MAX_LOOP_ITERATIONS = 10000;
@@ -51,8 +15,8 @@ const MAX_LOOP_ITERATIONS = 10000;
  * Each condition evaluation pushes `{ taken: boolean }` into a `__b__` array.
  * While loops get an iteration guard to prevent infinite loops.
  */
-function instrumentBranches(body: string): string {
-  const result: string[] = [];
+function instrumentBranches(body) {
+  const result = [];
   let pos = 0;
   let loopId = 0;
   const re = /\b(if|while)\s*\(/g;
@@ -96,7 +60,7 @@ function instrumentBranches(body: string): string {
  * Parse function source code to extract parameters and body.
  * Creates an instrumented version that records branch decisions.
  */
-function parseFunctionSignature(sourceCode: string): ParsedFunction {
+function parseFunctionSignature(sourceCode) {
   const match = sourceCode.match(/function\s+\w*\s*\(([^)]*)\)\s*\{([\s\S]*)\}/);
   if (!match) {
     throw new Error('Invalid function signature. Expected: function name(params) { ... }');
@@ -121,7 +85,7 @@ function parseFunctionSignature(sourceCode: string): ParsedFunction {
  * Generate random value for a parameter.
  * Only integers and booleans — strings cause NaN-based infinite loops.
  */
-function generateRandomValue(_index: number): number | boolean {
+function generateRandomValue(_index) {
   if (Math.random() < 0.7) {
     return Math.floor(Math.random() * (2 * MAX_INT_VALUE + 1)) - MAX_INT_VALUE;
   }
@@ -131,12 +95,9 @@ function generateRandomValue(_index: number): number | boolean {
 /**
  * Execute fuzz testing on the given source code.
  */
-export function fuzzTest(
-  sourceCode: string,
-  maxTests: number = MAX_TEST_CASES
-): FuzzTestResult {
-  const testCases: FuzzTestCase[] = [];
-  const uniqueErrors = new Map<string, number>();
+export function fuzzTest(sourceCode, maxTests = MAX_TEST_CASES) {
+  const testCases = [];
+  const uniqueErrors = new Map();
   let passedTests = 0;
   let failedTests = 0;
   let crashes = 0;
@@ -146,8 +107,8 @@ export function fuzzTest(
     const parsed = parseFunctionSignature(sourceCode);
 
     for (let i = 0; i < maxTests; i++) {
-      const input: FuzzInput = {};
-      const args: (number | boolean)[] = [];
+      const input = {};
+      const args = [];
 
       for (let j = 0; j < parsed.paramNames.length; j++) {
         const value = generateRandomValue(j);
@@ -155,10 +116,10 @@ export function fuzzTest(
         args.push(value);
       }
 
-      let output: unknown = null;
-      let error: string | null = null;
+      let output = null;
+      let error = null;
       let crashed = false;
-      const branches: FuzzBranch[] = [];
+      const branches = [];
       const startTime = performance.now();
 
       try {
@@ -207,7 +168,7 @@ export function fuzzTest(
 /**
  * Format a test case input for display.
  */
-export function formatInput(input: FuzzInput): string {
+export function formatInput(input) {
   return Object.entries(input)
     .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
     .join(', ');
@@ -216,7 +177,7 @@ export function formatInput(input: FuzzInput): string {
 /**
  * Format output for display.
  */
-export function formatOutput(output: unknown): string {
+export function formatOutput(output) {
   if (output === null || output === undefined) {
     return 'undefined';
   }

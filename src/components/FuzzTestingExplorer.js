@@ -1,12 +1,12 @@
 import { t, pickField } from '../i18n/index.js';
-import { fuzzTest, formatInput, formatOutput, type FuzzTestResult, type FuzzTestCase as FuzzTC } from '../utils/fuzzTesting.js';
+import { fuzzTest, formatInput, formatOutput } from '../utils/fuzzTesting.js';
 import { fuzzTestingExamples } from '../data/testingData.js';
 import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
 import { mapBranchesToCfg, renderCfgSvg } from '../utils/pathToCfg.js';
 
 const STORAGE_KEY = 'stvisual.fuzz.v1';
 
-function escapeHtml(value: string = ''): string {
+function escapeHtml(value = '') {
   return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -15,7 +15,7 @@ function escapeHtml(value: string = ''): string {
     .replaceAll("'", '&#39;');
 }
 
-function loadSaved(): Record<string, unknown> | null {
+function loadSaved() {
   try {
     const raw = globalThis.localStorage?.getItem(STORAGE_KEY);
     if (!raw) return null;
@@ -26,7 +26,7 @@ function loadSaved(): Record<string, unknown> | null {
   }
 }
 
-function persist(state: Record<string, unknown>): void {
+function persist(state) {
   try {
     globalThis.localStorage?.setItem(
       STORAGE_KEY,
@@ -42,30 +42,30 @@ function persist(state: Record<string, unknown>): void {
   }
 }
 
-export function createFuzzTestingExplorer(): HTMLElement {
+export function createFuzzTestingExplorer() {
   const root = document.createElement('div');
   root.className = 'fuzz-explorer';
   root.dataset.testid = 'fuzz-explorer';
 
   const saved = loadSaved();
   const defaultExample = fuzzTestingExamples[0];
-  const state: Record<string, unknown> = {
-    exampleId: (saved?.exampleId as string) || defaultExample.id,
-    sourceCode: (saved?.sourceCode as string) || defaultExample.sourceCode,
-    testCount: typeof saved?.testCount === 'number' ? (saved.testCount as number) : 50,
-    cfgZoom: typeof saved?.cfgZoom === 'number' ? (saved.cfgZoom as number) : 1,
-    result: null as FuzzTestResult | null,
+  const state = {
+    exampleId: saved?.exampleId || defaultExample.id,
+    sourceCode: saved?.sourceCode || defaultExample.sourceCode,
+    testCount: typeof saved?.testCount === 'number' ? saved.testCount : 50,
+    cfgZoom: typeof saved?.cfgZoom === 'number' ? saved.cfgZoom : 1,
+    result: null,
     cfg: null,
-    cfgError: null as string | null,
-    error: null as string | null,
-    selectedCaseId: null as string | null,
-    coveredNodes: [] as string[],
-    coveredEdges: [] as string[],
+    cfgError: null,
+    error: null,
+    selectedCaseId: null,
+    coveredNodes: [],
+    coveredEdges: [],
     totalNodes: 0,
     totalEdges: 0,
   };
 
-  function recompute(): void {
+  function recompute() {
     state.result = null;
     state.cfg = null;
     state.cfgError = null;
@@ -75,28 +75,28 @@ export function createFuzzTestingExplorer(): HTMLElement {
     state.totalNodes = 0;
     state.totalEdges = 0;
     try {
-      state.result = fuzzTest(state.sourceCode as string, state.testCount as number);
-    } catch (err: unknown) {
+      state.result = fuzzTest(state.sourceCode, state.testCount);
+    } catch (err) {
       state.error = err instanceof Error ? err.message : String(err);
     }
     try {
       state.cfg = generateControlFlowGraphFromProgram({
-        sourceCode: state.sourceCode as string,
+        sourceCode: state.sourceCode,
         language: 'javascript',
         title: 'Fuzz Testing CFG',
       });
-    } catch (err: unknown) {
+    } catch (err) {
       state.cfgError = err instanceof Error ? err.message : String(err);
     }
 
     // Compute aggregate coverage across all test cases
-    const cfg = state.cfg as { nodes: { id: string }[]; edges: { id: string }[] } | null;
-    const result = state.result as FuzzTestResult | null;
+    const cfg = state.cfg;
+    const result = state.result;
     if (cfg && result) {
       state.totalNodes = cfg.nodes.length;
       state.totalEdges = cfg.edges.length;
-      const allNodes = new Set<string>();
-      const allEdges = new Set<string>();
+      const allNodes = new Set();
+      const allEdges = new Set();
       for (const tc of result.testCases) {
         const mapping = mapBranchesToCfg(cfg, tc.branches);
         for (const n of mapping.nodes) allNodes.add(n);
@@ -108,7 +108,7 @@ export function createFuzzTestingExplorer(): HTMLElement {
 
     // Reset selection if result changed
     if (result?.testCases?.length) {
-      const stillExists = result.testCases.some((tc: FuzzTC) => tc.id === state.selectedCaseId);
+      const stillExists = result.testCases.some((tc) => tc.id === state.selectedCaseId);
       if (!stillExists) state.selectedCaseId = null;
     } else {
       state.selectedCaseId = null;
@@ -116,7 +116,7 @@ export function createFuzzTestingExplorer(): HTMLElement {
     persist(state);
   }
 
-  function render(): void {
+  function render() {
     recompute();
 
     const exampleButtons = fuzzTestingExamples
@@ -126,22 +126,22 @@ export function createFuzzTestingExplorer(): HTMLElement {
         class="fuzz-example-btn${state.exampleId === ex.id ? ' active' : ''}"
         data-fuzz-example="${ex.id}"
         data-testid="fuzz-example-${ex.id}"
-        title="${escapeHtml(pickField(ex, 'description') as string)}">
-        ${escapeHtml(pickField(ex, 'name') as string)}
+        title="${escapeHtml(pickField(ex, 'description'))}">
+        ${escapeHtml(pickField(ex, 'name'))}
       </button>
     `
       )
       .join('');
 
-    const result = state.result as FuzzTestResult | null;
-    const error = state.error as string | null;
+    const result = state.result;
+    const error = state.error;
 
     const crashCount = result?.crashes || 0;
-    const nodeCov = (state.totalNodes as number) > 0
-      ? Math.round(((state.coveredNodes as string[]).length / (state.totalNodes as number)) * 100)
+    const nodeCov = state.totalNodes > 0
+      ? Math.round((state.coveredNodes.length / state.totalNodes) * 100)
       : 0;
-    const edgeCov = (state.totalEdges as number) > 0
-      ? Math.round(((state.coveredEdges as string[]).length / (state.totalEdges as number)) * 100)
+    const edgeCov = state.totalEdges > 0
+      ? Math.round((state.coveredEdges.length / state.totalEdges) * 100)
       : 0;
     const coverageMarkup = result && state.cfg
       ? `<span class="fuzz-divider">·</span>
@@ -198,7 +198,7 @@ export function createFuzzTestingExplorer(): HTMLElement {
               data-testid="fuzz-source"
               spellcheck="false"
               autocomplete="off"
-              rows="14">${escapeHtml(state.sourceCode as string)}</textarea>
+              rows="14">${escapeHtml(state.sourceCode)}</textarea>
           </div>
         </div>
       </div>
@@ -209,30 +209,25 @@ export function createFuzzTestingExplorer(): HTMLElement {
     bindEvents();
   }
 
-  function renderCfgPane(): string {
+  function renderCfgPane() {
     if (state.cfgError) {
       return `<div class="fuzz-cfg" data-testid="fuzz-cfg">
-        <p class="fuzz-cfg-error">${escapeHtml(state.cfgError as string)}</p>
+        <p class="fuzz-cfg-error">${escapeHtml(state.cfgError)}</p>
       </div>`;
     }
     if (!state.cfg) {
       return `<div class="fuzz-cfg" data-testid="fuzz-cfg"></div>`;
     }
-    const cfg = state.cfg as {
-      nodes: { id: string }[];
-      edges: { id: string }[];
-      startNodeId?: string;
-      endNodeId?: string;
-    };
+    const cfg = state.cfg;
 
     // Determine highlight: selected test case path OR aggregate coverage
-    const result = state.result as FuzzTestResult | null;
+    const result = state.result;
     const selectedCase = state.selectedCaseId
-      ? result?.testCases.find((tc: FuzzTC) => tc.id === state.selectedCaseId)
+      ? result?.testCases.find((tc) => tc.id === state.selectedCaseId)
       : null;
 
-    let highlight: { nodes: string[]; edges: string[] };
-    let cfgSubtitle: string;
+    let highlight;
+    let cfgSubtitle;
 
     if (selectedCase) {
       const mapping = mapBranchesToCfg(cfg, selectedCase.branches);
@@ -240,14 +235,14 @@ export function createFuzzTestingExplorer(): HTMLElement {
       cfgSubtitle = `<span class="fuzz-cfg-selected" data-testid="fuzz-cfg-selected">${escapeHtml(selectedCase.id)}</span>`;
     } else {
       highlight = {
-        nodes: state.coveredNodes as string[],
-        edges: state.coveredEdges as string[],
+        nodes: state.coveredNodes,
+        edges: state.coveredEdges,
       };
       const nodeCov = cfg.nodes.length > 0
-        ? Math.round(((state.coveredNodes as string[]).length / cfg.nodes.length) * 100)
+        ? Math.round((state.coveredNodes.length / cfg.nodes.length) * 100)
         : 0;
       const edgeCov = cfg.edges.length > 0
-        ? Math.round(((state.coveredEdges as string[]).length / cfg.edges.length) * 100)
+        ? Math.round((state.coveredEdges.length / cfg.edges.length) * 100)
         : 0;
       cfgSubtitle = result
         ? `<span class="fuzz-cfg-metric">N ${nodeCov}%  E ${edgeCov}%</span>`
@@ -257,9 +252,9 @@ export function createFuzzTestingExplorer(): HTMLElement {
     const svg = renderCfgSvg(cfg, highlight, {
       idPrefix: 'fuzz-cfg',
       ariaLabel: 'Fuzz testing CFG',
-      zoom: state.cfgZoom as number,
+      zoom: state.cfgZoom,
     });
-    const zoomPct = Math.round((state.cfgZoom as number) * 100);
+    const zoomPct = Math.round(state.cfgZoom * 100);
     return `
       <div class="fuzz-cfg" data-testid="fuzz-cfg">
         <div class="fuzz-cfg-header">
@@ -276,7 +271,7 @@ export function createFuzzTestingExplorer(): HTMLElement {
     `;
   }
 
-  function renderTestCases(result: FuzzTestResult | null): string {
+  function renderTestCases(result) {
     if (!result || !result.testCases.length) {
       return `<p class="fuzz-empty">${t('fuzz.empty')}</p>`;
     }
@@ -317,10 +312,10 @@ export function createFuzzTestingExplorer(): HTMLElement {
     return `<ol class="fuzz-cases" data-testid="fuzz-cases">${items}</ol>`;
   }
 
-  function bindEvents(): void {
+  function bindEvents() {
     root.querySelectorAll('[data-fuzz-example]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const id = (btn as HTMLElement).dataset.fuzzExample;
+        const id = btn.dataset.fuzzExample;
         const ex = fuzzTestingExamples.find((x) => x.id === id);
         if (!ex) return;
         state.exampleId = ex.id;
@@ -333,22 +328,22 @@ export function createFuzzTestingExplorer(): HTMLElement {
     // Clickable test cases → select and highlight path on CFG
     root.querySelectorAll('[data-fuzz-case]').forEach((el) => {
       const selectCase = () => {
-        const id = (el as HTMLElement).dataset.fuzzCase;
+        const id = el.dataset.fuzzCase;
         state.selectedCaseId = state.selectedCaseId === id ? null : id; // toggle
         renderLight();
       };
       el.addEventListener('click', selectCase);
       el.addEventListener('keydown', (event) => {
-        if ((event as KeyboardEvent).key === 'Enter' || (event as KeyboardEvent).key === ' ') {
-          (event as KeyboardEvent).preventDefault();
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
           selectCase();
         }
       });
     });
 
-    const editor = root.querySelector('[data-testid="fuzz-source"]') as HTMLTextAreaElement | null;
+    const editor = root.querySelector('[data-testid="fuzz-source"]');
     if (editor) {
-      let timer: number | null = null;
+      let timer = null;
       editor.addEventListener('input', () => {
         state.sourceCode = editor.value;
         if (timer) {
@@ -360,7 +355,7 @@ export function createFuzzTestingExplorer(): HTMLElement {
       });
     }
 
-    const countInput = root.querySelector('[data-testid="fuzz-test-count-input"]') as HTMLInputElement | null;
+    const countInput = root.querySelector('[data-testid="fuzz-test-count-input"]');
     if (countInput) {
       countInput.addEventListener('change', () => {
         const n = Number(countInput.value);
@@ -371,7 +366,7 @@ export function createFuzzTestingExplorer(): HTMLElement {
       });
     }
 
-    const runBtn = root.querySelector('[data-testid="fuzz-run-btn"]') as HTMLButtonElement | null;
+    const runBtn = root.querySelector('[data-testid="fuzz-run-btn"]');
     if (runBtn) {
       runBtn.addEventListener('click', () => {
         render();
@@ -380,8 +375,8 @@ export function createFuzzTestingExplorer(): HTMLElement {
 
     root.querySelectorAll('[data-fuzz-zoom]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const action = (btn as HTMLElement).dataset.fuzzZoom;
-        const zoom = state.cfgZoom as number;
+        const action = btn.dataset.fuzzZoom;
+        const zoom = state.cfgZoom;
         if (action === 'in') state.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
         else if (action === 'out') state.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
         else state.cfgZoom = 1;
@@ -390,12 +385,12 @@ export function createFuzzTestingExplorer(): HTMLElement {
     });
   }
 
-  function renderPreservingFocus(testid: string): void {
-    const previously = root.querySelector(`[data-testid="${testid}"]`) as HTMLTextAreaElement | null;
+  function renderPreservingFocus(testid) {
+    const previously = root.querySelector(`[data-testid="${testid}"]`);
     const start = previously?.selectionStart;
     const end = previously?.selectionEnd;
     render();
-    const next = root.querySelector(`[data-testid="${testid}"]`) as HTMLTextAreaElement | null;
+    const next = root.querySelector(`[data-testid="${testid}"]`);
     if (next) {
       next.focus();
       if (typeof start === 'number' && typeof end === 'number') {
@@ -405,7 +400,7 @@ export function createFuzzTestingExplorer(): HTMLElement {
   }
 
   /** Light re-render: updates CFG highlight and test case selection without recomputing fuzz results. */
-  function renderLight(): void {
+  function renderLight() {
     // Update CFG pane
     const cfgPaneEl = root.querySelector('.fuzz-cfg-pane');
     if (cfgPaneEl) {
@@ -414,7 +409,7 @@ export function createFuzzTestingExplorer(): HTMLElement {
 
     // Update selected class on test case items
     root.querySelectorAll('[data-fuzz-case]').forEach((el) => {
-      const id = (el as HTMLElement).dataset.fuzzCase;
+      const id = el.dataset.fuzzCase;
       if (id === state.selectedCaseId) {
         el.classList.add('selected');
       } else {
@@ -425,8 +420,8 @@ export function createFuzzTestingExplorer(): HTMLElement {
     // Re-bind zoom events (CFG was replaced)
     root.querySelectorAll('[data-fuzz-zoom]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const action = (btn as HTMLElement).dataset.fuzzZoom;
-        const zoom = state.cfgZoom as number;
+        const action = btn.dataset.fuzzZoom;
+        const zoom = state.cfgZoom;
         if (action === 'in') state.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
         else if (action === 'out') state.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
         else state.cfgZoom = 1;
