@@ -9,4 +9,5 @@
 @import url('./components/SpecMutationExplorer.css');
 @import url('./components/SymbolicExecutionExplorer.css');
 @import url('./components/ConcolicExecutionExplorer.css');
+@import url('./components/FuzzTestingExplorer.css');
 @import url('./components/CloudStoragePanel.css');

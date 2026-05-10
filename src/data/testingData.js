@@ -618,25 +618,110 @@ export const concolicExecutionExamples = [
     description: '經典 DART 測試對象（Khurshid et al.）：回傳三數的中位數。',
     descriptionEn: 'A classic DART benchmark (Khurshid et al.): returns the median of three integers.',
     seed: 'a=0, b=0, c=0',
-    sourceCode: `function middle(a, b, c) {
-  let m = c;
-  if (b < c) {
-    if (a < b) {
-      m = b;
-    } else if (a < c) {
-      m = a;
-    }
-  } else {
-    if (a > b) {
-      m = b;
-    } else if (a > c) {
-      m = a;
-    }
-  }
-  return m;
-}
-`,
   },
 ];
 
+export const fuzzTestingExamples = [
+  {
+    id: 'triangle-classifier',
+    name: 'Triangle Classifier',
+    description: '三角形分類：根據三邊邊長判斷是否為等邊、等腰或不等邊三角形。',
+    descriptionEn: 'Triangle classification: determine equilateral, isosceles, or scalene from three sides.',
+    sourceCode: `function classify(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 0;
+  }
+  if (a + b <= c || a + c <= b || b + c <= a) {
+    return 0;
+  }
+  if (a == b && b == c) {
+    return 3;
+  }
+  if (a == b || b == c || a == c) {
+    return 2;
+  }
+  return 1;
+}`,
+  },
+  {
+    id: 'gcd-function',
+    name: 'Greatest Common Divisor',
+    description: '計算最大公因數，包含多個邊界情況。',
+    descriptionEn: 'Compute GCD with multiple boundary conditions.',
+    sourceCode: `function gcd(a, b) {
+  if (a <= 0 || b <= 0) {
+    return -1;
+  }
+  while (a != b) {
+    if (a > b) {
+      a = a - b;
+    } else {
+      b = b - a;
+    }
+  }
+  return a;
+}`,
+  },
+  {
+    id: 'absolute-value',
+    name: 'Absolute Value',
+    description: '簡單的絕對值計算，測試正數、負數和零。',
+    descriptionEn: 'Simple absolute value with positive, negative, and zero cases.',
+    sourceCode: `function abs(x) {
+  if (x < 0) {
+    return -x;
+  }
+  return x;
+}`,
+  },
+  {
+    id: 'quadratic-formula',
+    name: 'Quadratic Formula Solver',
+    description: '求解二次方程式的根，處理判別式邊界情況。',
+    descriptionEn: 'Solve quadratic equations, handle discriminant edge cases.',
+    sourceCode: `function quadraticRoots(a, b, c) {
+  if (a == 0) {
+    return "not a quadratic";
+  }
+  const discriminant = b * b - 4 * a * c;
+  if (discriminant < 0) {
+    return "complex roots";
+  }
+  if (discriminant == 0) {
+    return -b / (2 * a);
+  }
+  const root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+  const root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+  return { root1, root2 };
+}`,
+  },
+  {
+    id: 'array-sum',
+    name: 'Array Sum with Validation',
+    description: '計算陣列總和，驗證陣列不為空。',
+    descriptionEn: 'Compute array sum with empty-array validation.',
+    sourceCode: `function arraySum(arr) {
+  if (!arr || arr.length === 0) {
+    return -1;
+  }
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum += arr[i];
+  }
+  return sum;
+}`,
+  },
+  {
+    id: 'max-value',
+    name: 'Maximum of Two Values',
+    description: '找出兩個數中的較大值。',
+    descriptionEn: 'Find the maximum of two values.',
+    sourceCode: `function max(a, b) {
+  if (a > b) {
+    return a;
+  }
+  return b;
+}`,
+  },
+];
 

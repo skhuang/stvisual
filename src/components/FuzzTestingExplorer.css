@@ -1,0 +1,360 @@
+.fuzz-explorer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fuzz-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.fuzz-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fuzz-example-btn {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #cdd5df;
+  background: #fff;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+.fuzz-example-btn.active {
+  background: #8b5cf6;
+  color: #fff;
+  border-color: #8b5cf6;
+}
+.fuzz-example-btn:hover {
+  background: #eef2f7;
+}
+.fuzz-example-btn.active:hover {
+  background: #8b5cf6;
+  opacity: 0.9;
+}
+
+.fuzz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+.fuzz-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+}
+.fuzz-control input[type='number'] {
+  width: 4rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #cdd5df;
+  border-radius: 4px;
+}
+
+.fuzz-run-btn {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #8b5cf6;
+  background: #8b5cf6;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.fuzz-run-btn:hover {
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
+
+.fuzz-split-body {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.1fr) minmax(340px, 1.5fr);
+  gap: 1.2rem;
+  min-height: 36rem;
+}
+@media (max-width: 900px) {
+  .fuzz-split-body {
+    grid-template-columns: 1fr;
+  }
+  .fuzz-cfg-pane {
+    min-height: 36rem;
+  }
+}
+
+.fuzz-cfg-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 36rem;
+}
+
+.fuzz-right-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.fuzz-results-pane {
+  flex: 1 1 0;
+  min-height: 24rem;
+  max-height: 44rem;
+  overflow-y: auto;
+}
+
+.fuzz-editor-pane {
+  flex: 1 1 0;
+  min-height: 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fuzz-source-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.fuzz-source {
+  width: 100%;
+  min-height: 18rem;
+  padding: 0.6rem;
+  border: 1px solid #cdd5df;
+  border-radius: 6px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  resize: vertical;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.fuzz-summary {
+  font-size: 0.95rem;
+  color: #475569;
+  margin: 0;
+}
+.fuzz-summary strong {
+  margin-left: 0.25rem;
+  color: #0f172a;
+}
+.fuzz-summary .highlight-crash {
+  color: #dc2626;
+  font-weight: 700;
+}
+.fuzz-divider {
+  margin: 0 0.4rem;
+  color: #cbd5e1;
+}
+.fuzz-truncated {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.fuzz-cases {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 28rem;
+  overflow-y: auto;
+}
+
+.fuzz-case {
+  border: 1px solid #cdd5df;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.fuzz-case:hover {
+  background: #f1f5f9;
+}
+.fuzz-case.selected {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.18);
+}
+.fuzz-case.crash {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+.fuzz-case.crash:hover {
+  background: #fde8e8;
+}
+.fuzz-case.pass {
+  background: #f0fdf4;
+  border-color: #dcfce7;
+}
+.fuzz-case.pass:hover {
+  background: #e6fbe9;
+}
+
+.fuzz-case-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+.fuzz-case-id {
+  color: #8b5cf6;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.fuzz-case-status {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #d1fae5;
+  color: #065f46;
+}
+.fuzz-case.crash .fuzz-case-status {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.fuzz-case-duration {
+  margin-left: auto;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.fuzz-case-input,
+.fuzz-case-output,
+.fuzz-case-error {
+  font-size: 0.85rem;
+  margin: 0.2rem 0;
+}
+.fuzz-case-input strong,
+.fuzz-case-output strong,
+.fuzz-case-error strong {
+  color: #475569;
+  font-weight: 600;
+}
+.fuzz-case-input code,
+.fuzz-case-output code,
+.fuzz-case-error code {
+  background: #e2e8f0;
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+  word-break: break-all;
+}
+.fuzz-case.crash .fuzz-case-error code {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.fuzz-empty {
+  color: #64748b;
+  font-style: italic;
+  margin: 0;
+}
+.fuzz-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.fuzz-hint {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.fuzz-cfg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.fuzz-cfg-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.fuzz-cfg-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.fuzz-cfg-metric {
+  font-family: 'SF Mono', monospace;
+  color: #7c3aed;
+  font-size: 0.85rem;
+}
+
+.fuzz-cfg-canvas {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.fuzz-cfg-canvas svg {
+  width: 100%;
+  height: auto;
+}
+
+.fuzz-cfg-error {
+  color: #b45309;
+  font-size: 0.85rem;
+}
+
+.fuzz-cfg-zoom {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.fuzz-cfg-zoom button {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid #cdd5df;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.8rem;
+  min-width: 2.4rem;
+}
+
+.fuzz-cfg-zoom button:hover {
+  background: #eef2f7;
+}
+
+.fuzz-cfg-selected {
+  font-family: 'SF Mono', monospace;
+  color: #7c3aed;
+  font-size: 0.85rem;
+}
+
+.fuzz-coverage-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #6d28d9;
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
+}

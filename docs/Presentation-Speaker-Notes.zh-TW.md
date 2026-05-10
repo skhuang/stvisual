@@ -1,7 +1,7 @@
 # stvisual 投影片逐頁講者備忘欄（中文版）
 
 日期：2026-04-12
-建議總長：3“4 分鐘（加入 Logic Coverage 段落時建議拉長為 4 分鐘）
+建議總長：3"4 分鐘（加入 Logic Coverage + Symbolic/Concolic + Fuzz Testing 段落時建議拉長為 5～6 分鐘）
 
 ## Slide 1 - 標題頁（15 秒）
 ### 畫面重點
@@ -11,7 +11,7 @@
 ### 講者備忘
 - 關鍵句：
   - 「這是一個把軟體測試理論轉成互動流程的視覺化平台。」
-  - 「今天會同時說 Graph Coverage、程式碼自動 CFG，以及 Logic Coverage。」
+  - 「今天會同時說 Graph Coverage、程式碼自動 CFG、Logic Coverage、Symbolic/Concolic Execution，以及 Fuzz Testing。」
 - 語氣建議：先講價值，不先講技術細節。
 
 ## Slide 2 - 問題背景（25 秒）
@@ -82,6 +82,48 @@
   - 輸入一條自訂 predicate，讓它進 recent chips
   - 切一輪準則讓聽眾看到選取列變化
 
+## Slide 5c - Symbolic / Concolic Execution Explorer（40 秒）
+### 畫面重點
+- 左右分欄：左側 CFG、右側結果 + 程式碼編輯器
+- 內建範例程式（Triangle、Absolute Value 等）
+- 符號執行路徑列表與約束條件
+- Concolic 模式：具體＋符號混合執行
+- 路徑條件 → CFG 節點／邊高亮
+
+### 講者備忘
+- 講法順序：
+  - 先選一個內建範例，展示 CFG 自動產生
+  - 切到 Symbolic 結果，說明路徑約束如何產生
+  - 再切到 Concolic 模式，帶出具體值與符號值並行的差異
+  - 點選一條路徑，讓聽眾看到 CFG 上對應節點高亮
+- 關鍵句：
+  - 「符號執行把測試需求的產生自動化——不再手動猜測輸入，而是讓求解器找到能走到特定路徑的值。」
+- 建議示範動作：
+  - 點一條路徑，指向 CFG 上高亮的節點與邊
+  - 修改程式碼，讓 CFG 與路徑即時更新
+
+## Slide 5d - Fuzz Testing Explorer（40 秒）
+### 畫面重點
+- 左右分欄：左側 CFG（含覆蓋率 badge）、右側測試案例列表 + 程式碼編輯器
+- 內建範例程式（Triangle、GCD、Absolute Value 等 6 組）
+- 隨機輸入產生 + 結果統計（pass / crash / 平均時間）
+- 測試案例點擊 → CFG 單一路徑高亮（toggle 切換）
+- 聚合覆蓋率：N%（節點）/ E%（邊）即時顯示
+
+### 講者備忘
+- 講法順序：
+  - 先選 Triangle Classifier 範例，展示 CFG + 覆蓋率 badge
+  - 說明 N 100% / E 100% 代表所有節點與邊都被至少一條測試走過
+  - 點選某一條測試案例，展示單一路徑在 CFG 上的高亮變化
+  - 再點一次取消選取，回到聚合覆蓋視圖
+  - 切換到 GCD 範例，帶出 while 迴圈的迭代保護機制
+- 關鍵句：
+  - 「Fuzz testing 是用大量隨機輸入暴力搜尋缺陷——這裡我們把每條路徑映射回 CFG，讓覆蓋率不只是數字，而是看得見的路徑。」
+- 建議示範動作：
+  - 點選 fuzz-0，指向 CFG 上高亮的節點與邊
+  - 再點一次 fuzz-0 取消，回到 N%/E% 聚合覆蓋
+  - 修改程式碼或測試次數，觀察覆蓋率即時變化
+
 ## Slide 6 - 技術與品質保證（25 秒）
 ### 畫面重點
 - 靜態架構（HTML + JS）
@@ -122,4 +164,6 @@
 - 三個關鍵詞反覆強調：可操作、可解釋、可驗證。
 - 展示時一定做「requirement 切換 -> 行號跟著變」。
 - 如果含 Logic Coverage：記得切一輪準則讓聽眾看到真值表與 K-map 變化。
+- Symbolic/Concolic：展示路徑點選 → CFG 高亮。
+- Fuzz Testing：點選測試案例切換 CFG 路徑高亮，秀 N%/E% 覆蓋率 badge。
 - 時間不夠就縮短技術細節，保留問題、解法、成果、下一步四段。
