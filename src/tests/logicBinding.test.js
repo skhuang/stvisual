@@ -4,6 +4,7 @@ import {
   solveBinding,
   formatWitnessStr,
   validateBindingExpr,
+  buildConstraintStr,
 } from '../utils/logicBinding.js';
 
 describe('extractVarsFromBindings', () => {
@@ -30,13 +31,14 @@ describe('extractVarsFromBindings', () => {
 });
 
 describe('solveBinding', () => {
-  it('finds a witness for a satisfiable row', () => {
+  it('finds the smallest satisfying witness', () => {
+    // x > 0: smallest positive integer is 1, not 10 or -10.
     const result = solveBinding({
       clauseValues: { a: true },
       bindings: { a: 'x > 0' },
     });
     expect(result.error).toBeUndefined();
-    expect(result.witness.x).toBeGreaterThan(0);
+    expect(result.witness.x).toBe(1);
   });
 
   it('returns infeasible for a contradictory row', () => {
@@ -49,13 +51,13 @@ describe('solveBinding', () => {
   });
 
   it('correctly negates clause expressions for false values', () => {
-    // a=F means !(x > 0), i.e. x <= 0
+    // a=F means !(x > 0), i.e. x <= 0; smallest abs value satisfying is 0.
     const result = solveBinding({
       clauseValues: { a: false },
       bindings: { a: 'x > 0' },
     });
     expect(result.error).toBeUndefined();
-    expect(result.witness.x).toBeLessThanOrEqual(0);
+    expect(result.witness.x).toBe(0);
   });
 
   it('handles two-variable expressions', () => {
@@ -68,16 +70,17 @@ describe('solveBinding', () => {
     expect(result.witness.x).toBeGreaterThan(result.witness.y);
   });
 
-  it('solves a three-clause CACC-style row', () => {
+  it('solves a three-clause CACC-style row with minimal values', () => {
     // a=T, b=F, c=T  →  x>0 && !(y<10) && z===0
+    // smallest: x=1, y=10, z=0
     const result = solveBinding({
       clauseValues: { a: true, b: false, c: true },
       bindings: { a: 'x > 0', b: 'y < 10', c: 'z === 0' },
     });
     expect(result.error).toBeUndefined();
     const { x, y, z } = result.witness;
-    expect(x).toBeGreaterThan(0);
-    expect(y).toBeGreaterThanOrEqual(10);
+    expect(x).toBe(1);
+    expect(y).toBe(10);
     expect(z).toBe(0);
   });
 
@@ -111,6 +114,32 @@ describe('solveBinding', () => {
 describe('formatWitnessStr', () => {
   it('produces readable key=value pairs', () => {
     expect(formatWitnessStr({ x: 1, y: -3 })).toBe('x=1, y=-3');
+  });
+});
+
+describe('buildConstraintStr', () => {
+  it('wraps true clauses without negation', () => {
+    expect(buildConstraintStr({ a: true }, { a: 'x > 0' })).toBe('(x > 0)');
+  });
+
+  it('negates false clauses', () => {
+    expect(buildConstraintStr({ a: false }, { a: 'x > 0' })).toBe('!(x > 0)');
+  });
+
+  it('joins multiple clauses with &&', () => {
+    const str = buildConstraintStr(
+      { a: true, b: false, c: true },
+      { a: 'x > 0', b: 'y < 10', c: 'z === 0' },
+    );
+    expect(str).toBe('(x > 0) && !(y < 10) && (z === 0)');
+  });
+
+  it('skips clauses with no binding expression', () => {
+    const str = buildConstraintStr(
+      { a: true, b: false },
+      { a: 'x > 0', b: '' },
+    );
+    expect(str).toBe('(x > 0)');
   });
 });
 

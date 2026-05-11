@@ -10,7 +10,7 @@ import {
 import { buildKMap } from '../utils/karnaughMap.js';
 import { t, getLocale, pickField } from '../i18n/index.js';
 import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
-import { solveBinding, formatWitnessStr, extractVarsFromBindings } from '../utils/logicBinding.js';
+import { solveBinding, formatWitnessStr, extractVarsFromBindings, buildConstraintStr } from '../utils/logicBinding.js';
 
 const RECENT_KEY = 'stvisual.logic.recentPredicates';
 const RECENT_LIMIT = 8;
@@ -198,7 +198,8 @@ export function createLogicCoverageExplorer() {
     error: null,
     parsed: null,
     analysis: null,
-    bindings: {},  // clauseName → JS expression string
+    bindings: {},           // clauseName → JS expression string
+    bindingRange: [-10, 10], // [min, max] for brute-force search
     recent: loadRecent(),
     cloudUser: null,
   };
@@ -657,9 +658,11 @@ export function createLogicCoverageExplorer() {
       for (const c of clauses) {
         if (state.bindings[c]?.trim()) boundClauseValues[c] = test.row.values[c];
       }
+      const constraintStr = buildConstraintStr(boundClauseValues, state.bindings);
       const result = solveBinding({
         clauseValues: boundClauseValues,
         bindings: state.bindings,
+        searchRange: state.bindingRange,
       });
       const witnessCell = result.witness
         ? `<code class="logic-binding-witness" data-testid="logic-binding-witness-${test.row.index}">${escapeHtml(formatWitnessStr(result.witness))}</code>`
@@ -668,6 +671,7 @@ export function createLogicCoverageExplorer() {
         <tr data-testid="logic-binding-row-${test.row.index}">
           <td class="logic-binding-td-index">#${test.row.index}</td>
           <td class="logic-binding-td-vals">${escapeHtml(valStr)}</td>
+          <td class="logic-binding-td-constraint"><code>${escapeHtml(constraintStr)}</code></td>
           <td class="logic-binding-td-witness">${witnessCell}</td>
         </tr>
       `;
@@ -681,6 +685,7 @@ export function createLogicCoverageExplorer() {
           <tr>
             <th>${t('logic.binding.col.row')}</th>
             <th>${t('logic.binding.col.vals')}</th>
+            <th>${t('logic.binding.col.constraint')}</th>
             <th>${t('logic.binding.col.witness')}</th>
           </tr>
         </thead>
@@ -716,6 +721,14 @@ export function createLogicCoverageExplorer() {
         <p class="logic-binding-desc">${t('logic.binding.hint')}</p>
         <div class="logic-binding-inputs" data-testid="logic-binding-inputs">
           ${inputRows}
+        </div>
+        <div class="logic-binding-range-row">
+          <span class="logic-binding-range-label">${t('logic.binding.range')}</span>
+          <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-min"
+            data-binding-range="min" value="${state.bindingRange[0]}" min="-1000" max="0" step="1" />
+          <span class="logic-binding-range-sep">${t('logic.binding.rangeTo')}</span>
+          <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-max"
+            data-binding-range="max" value="${state.bindingRange[1]}" min="0" max="1000" step="1" />
         </div>
         <div class="logic-binding-results" data-testid="logic-binding-results">
           ${buildBindingResultsHTML()}
@@ -788,6 +801,20 @@ export function createLogicCoverageExplorer() {
         state.bindings[clause] = input.value;
         if (bindingTimer) clearTimeout(bindingTimer);
         bindingTimer = setTimeout(() => refreshBindingResults(), 200);
+      });
+    });
+
+    // Search range inputs.
+    root.querySelectorAll('[data-binding-range]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const v = parseInt(input.value, 10);
+        if (Number.isNaN(v)) return;
+        if (input.dataset.bindingRange === 'min') {
+          state.bindingRange = [Math.min(v, state.bindingRange[1] - 1), state.bindingRange[1]];
+        } else {
+          state.bindingRange = [state.bindingRange[0], Math.max(v, state.bindingRange[0] + 1)];
+        }
+        refreshBindingResults();
       });
     });
   }

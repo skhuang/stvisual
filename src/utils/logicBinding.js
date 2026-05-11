@@ -55,14 +55,24 @@ function buildChecker(clauseValues, bindings, varNames) {
   }
 }
 
-// Cartesian product over integer range.
+// Yields integers in [min, max] ordered by ascending absolute value:
+// 0, 1, -1, 2, -2, … so witnesses prefer small, readable numbers.
+function* smallAbsFirst(min, max) {
+  const limit = Math.max(Math.abs(min), Math.abs(max));
+  for (let d = 0; d <= limit; d++) {
+    if (d >= min && d <= max) yield d;
+    if (d > 0 && -d >= min && -d <= max) yield -d;
+  }
+}
+
+// Cartesian product over integer range, smallest-abs-value first.
 function* cartesian(vars, range) {
   function* gen(depth, current) {
     if (depth === vars.length) {
       yield [...current];
       return;
     }
-    for (let v = range[0]; v <= range[1]; v++) {
+    for (const v of smallAbsFirst(range[0], range[1])) {
       current.push(v);
       yield* gen(depth + 1, current);
       current.pop();
@@ -107,6 +117,20 @@ export function solveBinding({ clauseValues, bindings, searchRange = [-10, 10] }
 // Pretty-print a witness as "x=1, y=11, z=0".
 export function formatWitnessStr(witness) {
   return Object.entries(witness).map(([k, v]) => `${k}=${v}`).join(', ');
+}
+
+// Build a human-readable constraint string for one test row.
+// clauseValues: { a: true, b: false, c: true }
+// bindings:     { a: 'x > 0', b: 'y < 10', c: 'z === 0' }
+// → '(x > 0) && !(y < 10) && (z === 0)'
+export function buildConstraintStr(clauseValues, bindings) {
+  const parts = [];
+  for (const [clause, val] of Object.entries(clauseValues)) {
+    const expr = bindings[clause]?.trim();
+    if (!expr) continue;
+    parts.push(val ? `(${expr})` : `!(${expr})`);
+  }
+  return parts.join(' && ') || '—';
 }
 
 // Validate a single binding expression for a given clause.

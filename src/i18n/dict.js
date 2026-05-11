@@ -340,15 +340,18 @@ export const messages = {
 
     // Clause Binding
     'logic.binding.title': 'Clause Binding → Concrete Inputs',
-    'logic.binding.hint': 'Map each clause to a JS expression using program variables (e.g. x > 0, x + y > z). The solver searches integers in [−10, 10].',
+    'logic.binding.hint': 'Map each clause to a JS expression using program variables (e.g. x > 0, x + y > z). The solver searches integers in the range below.',
     'logic.binding.placeholder': 'e.g. x > 0',
     'logic.binding.clause': 'Clause',
     'logic.binding.vars': 'Variables detected:',
     'logic.binding.noBinding': 'Enter at least one binding expression above to see concrete witnesses.',
     'logic.binding.infeasible': 'infeasible',
+    'logic.binding.range': 'Search range:',
+    'logic.binding.rangeTo': 'to',
     'logic.binding.col.row': 'Test row',
     'logic.binding.col.vals': 'Clause values',
-    'logic.binding.col.witness': 'Concrete witness',
+    'logic.binding.col.constraint': 'Constraint',
+    'logic.binding.col.witness': 'Witness',
 
     // Syntax / mutation
     'syntax.title': 'Syntax-Based Testing: Program Mutation',
@@ -796,15 +799,18 @@ export const messages = {
 
     // Clause Binding（ZH）
     'logic.binding.title': 'Clause Binding → 具體輸入',
-    'logic.binding.hint': '把每個 clause 對應到程式裡的 JS 運算式（例如 x > 0, x + y > z）。求解器在整數範圍 [−10, 10] 內暴力搜尋。',
+    'logic.binding.hint': '把每個 clause 對應到程式裡的 JS 運算式（例如 x > 0, x + y > z）。求解器在下方設定的整數範圍內暴力搜尋。',
     'logic.binding.placeholder': '例：x > 0',
     'logic.binding.clause': 'Clause',
     'logic.binding.vars': '偵測到的變數：',
     'logic.binding.noBinding': '請至少輸入一個 binding 運算式，以查看具體的 witness。',
     'logic.binding.infeasible': '不可行',
+    'logic.binding.range': '搜索範圍：',
+    'logic.binding.rangeTo': '到',
     'logic.binding.col.row': '測試列',
     'logic.binding.col.vals': 'Clause 值',
-    'logic.binding.col.witness': '具體 witness',
+    'logic.binding.col.constraint': '求解條件',
+    'logic.binding.col.witness': 'Witness',
 
     'syntax.title': 'Syntax-Based Testing：Program Mutation',
     'syntax.subtitle': '挑選程式、選擇 mutation operators 與 test set，系統會產生 mutants 並計分。',
