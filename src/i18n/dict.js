@@ -352,6 +352,8 @@ export const messages = {
     'logic.binding.col.vals': 'Clause values',
     'logic.binding.col.constraint': 'Constraint',
     'logic.binding.col.witness': 'Witness',
+    'logic.binding.restore': 'Restore defaults',
+    'logic.binding.params': 'Suggested variables:',
 
     // Syntax / mutation
     'syntax.title': 'Syntax-Based Testing: Program Mutation',
@@ -811,6 +813,8 @@ export const messages = {
     'logic.binding.col.vals': 'Clause 值',
     'logic.binding.col.constraint': '求解條件',
     'logic.binding.col.witness': 'Witness',
+    'logic.binding.restore': '還原預設 binding',
+    'logic.binding.params': '建議變數名稱：',
 
     'syntax.title': 'Syntax-Based Testing：Program Mutation',
     'syntax.subtitle': '挑選程式、選擇 mutation operators 與 test set，系統會產生 mutants 並計分。',
