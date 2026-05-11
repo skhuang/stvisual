@@ -99,7 +99,7 @@ function containsEdgePath(pathEdges, targetEdges) {
   return false;
 }
 
-function requirementCoveredByRecord(requirement, record) {
+export function requirementCoveredByRecord(requirement, record) {
   if (requirement.type === 'node') {
     return record.path.includes(requirement.nodes[0]);
   }

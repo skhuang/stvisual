@@ -1,3 +1,4 @@
+"use strict";
 (() => {
   // src/data/testingData.js
   var testingMethods = [
@@ -611,23 +612,130 @@
       descriptionEn: "A classic DART benchmark (Khurshid et al.): returns the median of three integers.",
       seed: "a=0, b=0, c=0",
       sourceCode: `function middle(a, b, c) {
-  let m = c;
-  if (b < c) {
-    if (a < b) {
-      m = b;
-    } else if (a < c) {
-      m = a;
+  let m = b;
+  if (a < b) {
+    if (b > c) {
+      if (a < c) {
+        m = c;
+      } else {
+        m = a;
+      }
     }
   } else {
-    if (a > b) {
-      m = b;
-    } else if (a > c) {
-      m = a;
+    if (b < c) {
+      if (a < c) {
+        m = a;
+      } else {
+        m = c;
+      }
     }
   }
   return m;
 }
 `
+    }
+  ];
+  var fuzzTestingExamples = [
+    {
+      id: "triangle-classifier",
+      name: "Triangle Classifier",
+      description: "\u4E09\u89D2\u5F62\u5206\u985E\uFF1A\u6839\u64DA\u4E09\u908A\u908A\u9577\u5224\u65B7\u662F\u5426\u70BA\u7B49\u908A\u3001\u7B49\u8170\u6216\u4E0D\u7B49\u908A\u4E09\u89D2\u5F62\u3002",
+      descriptionEn: "Triangle classification: determine equilateral, isosceles, or scalene from three sides.",
+      sourceCode: `function classify(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return 0;
+  }
+  if (a + b <= c || a + c <= b || b + c <= a) {
+    return 0;
+  }
+  if (a == b && b == c) {
+    return 3;
+  }
+  if (a == b || b == c || a == c) {
+    return 2;
+  }
+  return 1;
+}`
+    },
+    {
+      id: "gcd-function",
+      name: "Greatest Common Divisor",
+      description: "\u8A08\u7B97\u6700\u5927\u516C\u56E0\u6578\uFF0C\u5305\u542B\u591A\u500B\u908A\u754C\u60C5\u6CC1\u3002",
+      descriptionEn: "Compute GCD with multiple boundary conditions.",
+      sourceCode: `function gcd(a, b) {
+  if (a <= 0 || b <= 0) {
+    return -1;
+  }
+  while (a != b) {
+    if (a > b) {
+      a = a - b;
+    } else {
+      b = b - a;
+    }
+  }
+  return a;
+}`
+    },
+    {
+      id: "absolute-value",
+      name: "Absolute Value",
+      description: "\u7C21\u55AE\u7684\u7D55\u5C0D\u503C\u8A08\u7B97\uFF0C\u6E2C\u8A66\u6B63\u6578\u3001\u8CA0\u6578\u548C\u96F6\u3002",
+      descriptionEn: "Simple absolute value with positive, negative, and zero cases.",
+      sourceCode: `function abs(x) {
+  if (x < 0) {
+    return -x;
+  }
+  return x;
+}`
+    },
+    {
+      id: "quadratic-formula",
+      name: "Quadratic Formula Solver",
+      description: "\u6C42\u89E3\u4E8C\u6B21\u65B9\u7A0B\u5F0F\u7684\u6839\uFF0C\u8655\u7406\u5224\u5225\u5F0F\u908A\u754C\u60C5\u6CC1\u3002",
+      descriptionEn: "Solve quadratic equations, handle discriminant edge cases.",
+      sourceCode: `function quadraticRoots(a, b, c) {
+  if (a == 0) {
+    return "not a quadratic";
+  }
+  const discriminant = b * b - 4 * a * c;
+  if (discriminant < 0) {
+    return "complex roots";
+  }
+  if (discriminant == 0) {
+    return -b / (2 * a);
+  }
+  const root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+  const root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+  return { root1, root2 };
+}`
+    },
+    {
+      id: "array-sum",
+      name: "Array Sum with Validation",
+      description: "\u8A08\u7B97\u9663\u5217\u7E3D\u548C\uFF0C\u9A57\u8B49\u9663\u5217\u4E0D\u70BA\u7A7A\u3002",
+      descriptionEn: "Compute array sum with empty-array validation.",
+      sourceCode: `function arraySum(arr) {
+  if (!arr || arr.length === 0) {
+    return -1;
+  }
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum += arr[i];
+  }
+  return sum;
+}`
+    },
+    {
+      id: "max-value",
+      name: "Maximum of Two Values",
+      description: "\u627E\u51FA\u5169\u500B\u6578\u4E2D\u7684\u8F03\u5927\u503C\u3002",
+      descriptionEn: "Find the maximum of two values.",
+      sourceCode: `function max(a, b) {
+  if (a > b) {
+    return a;
+  }
+  return b;
+}`
     }
   ];
 
@@ -706,7 +814,60 @@
       "concolic.cfg.zoomIn": "Zoom in",
       "concolic.cfg.zoomOut": "Zoom out",
       "concolic.cfg.zoomReset": "Reset zoom",
-      // Common
+      // Fuzz Testing
+      "section.fuzz": "Fuzz Testing",
+      "section.fuzz.title": "Fuzz Testing Explorer",
+      "fuzz.source": "Program source",
+      "fuzz.testCount": "Test count",
+      "fuzz.run": "Run Fuzzing",
+      "fuzz.summary.tests": "Tests: ",
+      "fuzz.summary.passed": "Passed: ",
+      "fuzz.summary.crashes": "Crashes: ",
+      "fuzz.summary.truncated": "truncated (max test count reached)",
+      "fuzz.pass": "pass",
+      "fuzz.crash": "crash",
+      "fuzz.input": "Input",
+      "fuzz.output": "Output",
+      "fuzz.error": "Error",
+      "fuzz.empty": "No test cases yet.",
+      "fuzz.hint": "Fuzz testing generates random inputs and executes the program, detecting crashes and anomalies. Supports: function with int/bool/string params, int/bool/string operations, if/else, while loops. Monitor output for runtime errors.",
+      "fuzz.cfg.title": "Control Flow Graph",
+      "fuzz.cfg.zoom": "Zoom",
+      "fuzz.cfg.zoomIn": "Zoom in",
+      "fuzz.cfg.zoomOut": "Zoom out",
+      "fuzz.cfg.zoomReset": "Reset zoom",
+      // Test Generation from Coverage (12.1)
+      "section.testgen": "Test Generation",
+      "section.testgen.title": "Test Generation from Coverage",
+      "testgen.source": "Program source",
+      "testgen.criterion": "Coverage criterion",
+      "testgen.summary.requirements": "Requirements: ",
+      "testgen.summary.feasible": "Feasible: ",
+      "testgen.summary.selected": "Selected tests: ",
+      "testgen.summary.truncated": "symbex truncated (max paths reached)",
+      "testgen.requirements.title": "Requirements \u2192 witnesses",
+      "testgen.requirements.feasible": "feasible",
+      "testgen.requirements.infeasible": "no witness",
+      "testgen.requirements.noWitness": "(no witness in current search domain)",
+      "testgen.tests.title": "Minimal concrete test set",
+      "testgen.tests.empty": "No test paths could be witnessed.",
+      "testgen.tests.covers": "Covers:",
+      "testgen.empty": "No requirements for this criterion on the current source.",
+      "testgen.cfg.title": "CFG \xB7 selected requirement / test",
+      "testgen.cfg.none": "(nothing selected)",
+      "testgen.cfg.zoom": "Zoom",
+      "testgen.cfg.zoomIn": "Zoom in",
+      "testgen.cfg.zoomOut": "Zoom out",
+      "testgen.cfg.zoomReset": "Reset zoom",
+      "testgen.hint": "Pick a Graph-Coverage criterion; the engine runs symbolic execution, matches every requirement against the discovered feasible paths, and emits a minimal set of concrete inputs via greedy set cover. Loops / non-integer inputs are limited \u2014 see Lectures #3, #4, #10.",
+      "graph.coverage.node": "Node Coverage",
+      "graph.coverage.edge": "Edge Coverage",
+      "graph.coverage.edge-pair": "Edge-Pair Coverage",
+      "graph.coverage.prime-path": "Prime Path Coverage",
+      "graph.coverage.complete-path": "Complete Path Coverage",
+      "graph.coverage.all-defs": "All-Defs Coverage",
+      "graph.coverage.all-uses": "All-Uses Coverage",
+      "graph.coverage.all-du-paths": "All-DU-Paths Coverage",
       "common.run": "Run",
       "common.reset": "Reset",
       "common.save": "Save",
@@ -1090,7 +1251,60 @@
       "concolic.cfg.zoomIn": "\u653E\u5927",
       "concolic.cfg.zoomOut": "\u7E2E\u5C0F",
       "concolic.cfg.zoomReset": "\u91CD\u8A2D\u7E2E\u653E",
-      "common.run": "\u57F7\u884C",
+      // Fuzz Testing
+      "section.fuzz": "\u6A21\u7CCA\u6E2C\u8A66",
+      "section.fuzz.title": "\u6A21\u7CCA\u6E2C\u8A66\u63A2\u7D22\u5DE5\u5177",
+      "fuzz.source": "\u7A0B\u5F0F\u78BC",
+      "fuzz.testCount": "\u6E2C\u8A66\u6578",
+      "fuzz.run": "\u57F7\u884C\u6A21\u7CCA\u6E2C\u8A66",
+      "fuzz.summary.tests": "\u6E2C\u8A66\u6578\uFF1A",
+      "fuzz.summary.passed": "\u901A\u904E\uFF1A",
+      "fuzz.summary.crashes": "\u5D29\u6F70\uFF1A",
+      "fuzz.summary.truncated": "\u5DF2\u622A\u65B7\uFF08\u9054\u6E2C\u8A66\u4E0A\u9650\uFF09",
+      "fuzz.pass": "\u901A\u904E",
+      "fuzz.crash": "\u5D29\u6F70",
+      "fuzz.input": "\u8F38\u5165",
+      "fuzz.output": "\u8F38\u51FA",
+      "fuzz.error": "\u932F\u8AA4",
+      "fuzz.empty": "\u5C1A\u7121\u6E2C\u8A66\u7D50\u679C\u3002",
+      "fuzz.hint": "\u6A21\u7CCA\u6E2C\u8A66\u7522\u751F\u96A8\u6A5F\u8F38\u5165\u4E26\u57F7\u884C\u7A0B\u5F0F\uFF0C\u5075\u6E2C\u5D29\u6F70\u8207\u7570\u5E38\u3002\u652F\u63F4\uFF1A\u6574\u6578/\u5E03\u6797/\u5B57\u7B26\u4E32\u53C3\u6578\u7684\u51FD\u5F0F\u3001\u7B97\u8853/\u6BD4\u8F03/\u908F\u8F2F\u904B\u7B97\u3001\u689D\u4EF6/\u8FF4\u5708\u3002\u76E3\u6E2C\u57F7\u884C\u6642\u932F\u8AA4\u3002",
+      "fuzz.cfg.title": "\u63A7\u5236\u6D41\u7A0B\u5716",
+      "fuzz.cfg.zoom": "\u7E2E\u653E",
+      "fuzz.cfg.zoomIn": "\u653E\u5927",
+      "fuzz.cfg.zoomOut": "\u7E2E\u5C0F",
+      "fuzz.cfg.zoomReset": "\u91CD\u8A2D\u7E2E\u653E",
+      // Test Generation from Coverage (12.1)
+      "section.testgen": "\u6E2C\u8A66\u751F\u6210",
+      "section.testgen.title": "\u7531\u8986\u84CB\u6E96\u5247\u751F\u6210\u6E2C\u8A66",
+      "testgen.source": "\u7A0B\u5F0F\u78BC",
+      "testgen.criterion": "\u8986\u84CB\u6E96\u5247",
+      "testgen.summary.requirements": "\u9700\u6C42\uFF1A",
+      "testgen.summary.feasible": "\u53EF\u6EFF\u8DB3\uFF1A",
+      "testgen.summary.selected": "\u6311\u9078\u6E2C\u8A66\uFF1A",
+      "testgen.summary.truncated": "\u7B26\u865F\u57F7\u884C\u5DF2\u622A\u65B7\uFF08\u9054\u8DEF\u5F91\u4E0A\u9650\uFF09",
+      "testgen.requirements.title": "\u9700\u6C42 \u2192 \u898B\u8B49\u8F38\u5165",
+      "testgen.requirements.feasible": "\u53EF\u6EFF\u8DB3",
+      "testgen.requirements.infeasible": "\u7121\u898B\u8B49",
+      "testgen.requirements.noWitness": "\uFF08\u76EE\u524D\u641C\u5C0B\u57DF\u5167\u7121\u89E3\uFF09",
+      "testgen.tests.title": "\u6700\u5C0F\u5177\u9AD4\u6E2C\u8A66\u96C6",
+      "testgen.tests.empty": "\u6240\u6709\u6E2C\u8A66\u8DEF\u5F91\u90FD\u7121\u6CD5\u627E\u5230\u898B\u8B49\u8F38\u5165\u3002",
+      "testgen.tests.covers": "\u8986\u84CB\uFF1A",
+      "testgen.empty": "\u76EE\u524D\u539F\u59CB\u78BC\u5728\u6B64\u6E96\u5247\u4E0B\u6C92\u6709\u9700\u6C42\u3002",
+      "testgen.cfg.title": "CFG \xB7 \u5DF2\u9078\u9700\u6C42 / \u6E2C\u8A66",
+      "testgen.cfg.none": "\uFF08\u5C1A\u672A\u9078\u53D6\uFF09",
+      "testgen.cfg.zoom": "\u7E2E\u653E",
+      "testgen.cfg.zoomIn": "\u653E\u5927",
+      "testgen.cfg.zoomOut": "\u7E2E\u5C0F",
+      "testgen.cfg.zoomReset": "\u91CD\u8A2D\u7E2E\u653E",
+      "testgen.hint": "\u9078\u4E00\u689D Graph Coverage \u6E96\u5247\uFF1B\u5F15\u64CE\u8DD1\u7B26\u865F\u57F7\u884C\u3001\u628A\u6BCF\u689D\u9700\u6C42\u5C0D\u61C9\u5230\u53EF\u6EFF\u8DB3\u8DEF\u5F91\uFF0C\u518D\u4EE5 greedy set cover \u7522\u51FA\u6700\u5C0F\u5177\u9AD4\u8F38\u5165\u96C6\u5408\u3002\u8FF4\u5708\u8207\u975E\u6574\u6578\u8F38\u5165\u6709\u9650\u5236 \u2014 \u8ACB\u53C3\u8003\u7B2C 3\u30014\u300110 \u8B1B\u3002",
+      "graph.coverage.node": "\u7BC0\u9EDE\u8986\u84CB",
+      "graph.coverage.edge": "\u908A\u8986\u84CB",
+      "graph.coverage.edge-pair": "\u908A\u5C0D\u8986\u84CB",
+      "graph.coverage.prime-path": "Prime Path \u8986\u84CB",
+      "graph.coverage.complete-path": "\u5B8C\u6574\u8DEF\u5F91\u8986\u84CB",
+      "graph.coverage.all-defs": "\u6240\u6709\u5B9A\u7FA9\u8986\u84CB",
+      "graph.coverage.all-uses": "\u6240\u6709\u4F7F\u7528\u8986\u84CB",
+      "graph.coverage.all-du-paths": "\u6240\u6709 DU \u8DEF\u5F91\u8986\u84CB",
       "common.reset": "\u91CD\u8A2D",
       "common.save": "\u5132\u5B58",
       "common.delete": "\u522A\u9664",
@@ -9599,7 +9813,7 @@ INVARSPEC !w | (i & (l | h))`
         return;
       }
       if (s.kind === "while") {
-        let unroll = function(unrollCount, envCur, pcCur, branchesCur) {
+        let unroll2 = function(unrollCount, envCur, pcCur, branchesCur) {
           if (paths.length >= opts.maxPaths) {
             truncated = true;
             return;
@@ -9627,10 +9841,11 @@ INVARSPEC !w | (i & (l | h))`
             envCur,
             [...pcCur, cond],
             [...branchesCur, { line: describeBranch(s.test), taken: true, loop: true }],
-            (env2, pc2, br2) => unroll(unrollCount + 1, env2, pc2, br2)
+            (env2, pc2, br2) => unroll2(unrollCount + 1, env2, pc2, br2)
           );
         };
-        unroll(0, env, pc, branches);
+        var unroll = unroll2;
+        unroll2(0, env, pc, branches);
         return;
       }
       walk(stmts, idx + 1, env, pc, branches);
@@ -10024,24 +10239,26 @@ INVARSPEC !w | (i & (l | h))`
         </div>
       </div>
 
-      <div class="symbex-body">
-        <div class="symbex-editor-pane">
-          <label class="symbex-editor-label" for="symbex-source">${t("symbex.source")}</label>
-          <textarea id="symbex-source"
-            class="symbex-editor"
-            data-testid="symbex-source"
-            spellcheck="false"
-            autocomplete="off"
-            rows="14">${escapeHtml6(state.sourceCode)}</textarea>
+      <div class="symbex-split-body">
+        <div class="symbex-cfg-pane">
+          ${renderCfgPane()}
         </div>
-
-        <div class="symbex-results-pane">
-          <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
-          ${pathsMarkup}
+        <div class="symbex-right-pane">
+          <div class="symbex-results-pane">
+            <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
+            ${pathsMarkup}
+          </div>
+          <div class="symbex-editor-pane">
+            <label class="symbex-editor-label" for="symbex-source">${t("symbex.source")}</label>
+            <textarea id="symbex-source"
+              class="symbex-editor"
+              data-testid="symbex-source"
+              spellcheck="false"
+              autocomplete="off"
+              rows="14">${escapeHtml6(state.sourceCode)}</textarea>
+          </div>
         </div>
       </div>
-
-      ${renderCfgPane()}
 
       <p class="symbex-hint">${t("symbex.hint")}</p>
     `;
@@ -10495,23 +10712,26 @@ INVARSPEC !w | (i & (l | h))`
         </div>
       </div>
 
-      <div class="concolic-body">
-        <div class="concolic-editor-pane">
-          <label class="concolic-editor-label" for="concolic-source">${t("concolic.source")}</label>
-          <textarea id="concolic-source"
-            class="concolic-editor"
-            data-testid="concolic-source"
-            spellcheck="false"
-            autocomplete="off"
-            rows="14">${escapeHtml7(state.sourceCode)}</textarea>
+      <div class="concolic-split-body">
+        <div class="concolic-cfg-pane">
+          ${renderCfgPane()}
         </div>
-        <div class="concolic-results-pane">
-          <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
-          ${body}
+        <div class="concolic-right-pane">
+          <div class="concolic-results-pane">
+            <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
+            ${body}
+          </div>
+          <div class="concolic-editor-pane">
+            <label class="concolic-editor-label" for="concolic-source">${t("concolic.source")}</label>
+            <textarea id="concolic-source"
+              class="concolic-editor"
+              data-testid="concolic-source"
+              spellcheck="false"
+              autocomplete="off"
+              rows="14">${escapeHtml7(state.sourceCode)}</textarea>
+          </div>
         </div>
       </div>
-
-      ${renderCfgPane()}
 
       <p class="concolic-hint">${t("concolic.hint")}</p>
     `;
@@ -10689,6 +10909,1047 @@ INVARSPEC !w | (i & (l | h))`
     return root2;
   }
 
+  // src/utils/fuzzTesting.js
+  var MAX_TEST_CASES = 200;
+  var MAX_INT_VALUE = 100;
+  var MAX_LOOP_ITERATIONS = 1e4;
+  function instrumentBranches(body) {
+    const result = [];
+    let pos = 0;
+    let loopId = 0;
+    const re = /\b(if|while)\s*\(/g;
+    let match;
+    while ((match = re.exec(body)) !== null) {
+      result.push(body.slice(pos, match.index));
+      const keyword = match[1];
+      const condStart = match.index + match[0].length;
+      let depth = 1;
+      let i = condStart;
+      while (i < body.length && depth > 0) {
+        if (body[i] === "(") depth++;
+        else if (body[i] === ")") depth--;
+        if (depth > 0) i++;
+      }
+      const cond = body.slice(condStart, i);
+      if (keyword === "while") {
+        const guard = `__lc${loopId}__`;
+        result.push(
+          `var ${guard}=0; while ((++${guard}<=${MAX_LOOP_ITERATIONS})&&(__b__.push({taken: !!(${cond})}), __b__[__b__.length-1].taken))`
+        );
+        loopId++;
+      } else {
+        result.push(
+          `${keyword} ((__b__.push({taken: !!(${cond})}), __b__[__b__.length-1].taken))`
+        );
+      }
+      pos = i + 1;
+      re.lastIndex = pos;
+    }
+    result.push(body.slice(pos));
+    return result.join("");
+  }
+  function parseFunctionSignature(sourceCode) {
+    const match = sourceCode.match(/function\s+\w*\s*\(([^)]*)\)\s*\{([\s\S]*)\}/);
+    if (!match) {
+      throw new Error("Invalid function signature. Expected: function name(params) { ... }");
+    }
+    const paramStr = match[1].trim();
+    const paramNames = paramStr ? paramStr.split(/\s*,\s*/).map((p) => p.trim()) : [];
+    const body = match[2];
+    const instrumented = instrumentBranches(body);
+    try {
+      const func = new Function("__b__", ...paramNames, instrumented);
+      return { paramNames, body, func };
+    } catch (err) {
+      throw new Error(`Failed to parse function: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+  function generateRandomValue(_index) {
+    if (Math.random() < 0.7) {
+      return Math.floor(Math.random() * (2 * MAX_INT_VALUE + 1)) - MAX_INT_VALUE;
+    }
+    return Math.random() < 0.5;
+  }
+  function fuzzTest(sourceCode, maxTests = MAX_TEST_CASES) {
+    var _a2;
+    const testCases = [];
+    const uniqueErrors = /* @__PURE__ */ new Map();
+    let passedTests = 0;
+    let failedTests = 0;
+    let crashes = 0;
+    let totalDuration = 0;
+    try {
+      const parsed = parseFunctionSignature(sourceCode);
+      for (let i = 0; i < maxTests; i++) {
+        const input = {};
+        const args = [];
+        for (let j = 0; j < parsed.paramNames.length; j++) {
+          const value = generateRandomValue(j);
+          input[parsed.paramNames[j]] = value;
+          args.push(value);
+        }
+        let output = null;
+        let error = null;
+        let crashed = false;
+        const branches = [];
+        const startTime = performance.now();
+        try {
+          output = parsed.func(branches, ...args);
+        } catch (err) {
+          crashed = true;
+          crashes++;
+          error = err instanceof Error ? err.message : String(err);
+          uniqueErrors.set(error, ((_a2 = uniqueErrors.get(error)) != null ? _a2 : 0) + 1);
+          failedTests++;
+        }
+        const duration = performance.now() - startTime;
+        totalDuration += duration;
+        if (!crashed) {
+          passedTests++;
+        }
+        testCases.push({
+          id: `fuzz-${i}`,
+          input,
+          output,
+          error,
+          crashed,
+          duration,
+          branches
+        });
+      }
+    } catch (err) {
+      throw new Error(`Fuzz testing setup failed: ${err instanceof Error ? err.message : String(err)}`);
+    }
+    return {
+      totalTests: testCases.length,
+      passedTests,
+      failedTests,
+      crashes,
+      testCases,
+      uniqueErrors,
+      averageDuration: testCases.length > 0 ? totalDuration / testCases.length : 0,
+      truncated: testCases.length >= maxTests
+    };
+  }
+  function formatInput(input) {
+    return Object.entries(input).map(([key, value]) => `${key}=${JSON.stringify(value)}`).join(", ");
+  }
+  function formatOutput(output) {
+    if (output === null || output === void 0) {
+      return "undefined";
+    }
+    if (typeof output === "object") {
+      try {
+        return JSON.stringify(output);
+      } catch {
+        return String(output);
+      }
+    }
+    return String(output);
+  }
+
+  // src/components/FuzzTestingExplorer.js
+  var STORAGE_KEY7 = "stvisual.fuzz.v1";
+  function escapeHtml8(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function loadSaved4() {
+    var _a2;
+    try {
+      const raw = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY7);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+  function persist4(state) {
+    var _a2;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(
+        STORAGE_KEY7,
+        JSON.stringify({
+          sourceCode: state.sourceCode,
+          exampleId: state.exampleId,
+          testCount: state.testCount,
+          cfgZoom: state.cfgZoom
+        })
+      );
+    } catch {
+    }
+  }
+  function createFuzzTestingExplorer() {
+    const root2 = document.createElement("div");
+    root2.className = "fuzz-explorer";
+    root2.dataset.testid = "fuzz-explorer";
+    const saved = loadSaved4();
+    const defaultExample = fuzzTestingExamples[0];
+    const state = {
+      exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
+      sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
+      testCount: typeof (saved == null ? void 0 : saved.testCount) === "number" ? saved.testCount : 50,
+      cfgZoom: typeof (saved == null ? void 0 : saved.cfgZoom) === "number" ? saved.cfgZoom : 1,
+      result: null,
+      cfg: null,
+      cfgError: null,
+      error: null,
+      selectedCaseId: null,
+      coveredNodes: [],
+      coveredEdges: [],
+      totalNodes: 0,
+      totalEdges: 0
+    };
+    function recompute() {
+      var _a2;
+      state.result = null;
+      state.cfg = null;
+      state.cfgError = null;
+      state.error = null;
+      state.coveredNodes = [];
+      state.coveredEdges = [];
+      state.totalNodes = 0;
+      state.totalEdges = 0;
+      try {
+        state.result = fuzzTest(state.sourceCode, state.testCount);
+      } catch (err) {
+        state.error = err instanceof Error ? err.message : String(err);
+      }
+      try {
+        state.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state.sourceCode,
+          language: "javascript",
+          title: "Fuzz Testing CFG"
+        });
+      } catch (err) {
+        state.cfgError = err instanceof Error ? err.message : String(err);
+      }
+      const cfg = state.cfg;
+      const result = state.result;
+      if (cfg && result) {
+        state.totalNodes = cfg.nodes.length;
+        state.totalEdges = cfg.edges.length;
+        const allNodes = /* @__PURE__ */ new Set();
+        const allEdges = /* @__PURE__ */ new Set();
+        for (const tc of result.testCases) {
+          const mapping = mapBranchesToCfg(cfg, tc.branches);
+          for (const n of mapping.nodes) allNodes.add(n);
+          for (const e of mapping.edges) allEdges.add(e);
+        }
+        state.coveredNodes = [...allNodes];
+        state.coveredEdges = [...allEdges];
+      }
+      if ((_a2 = result == null ? void 0 : result.testCases) == null ? void 0 : _a2.length) {
+        const stillExists = result.testCases.some((tc) => tc.id === state.selectedCaseId);
+        if (!stillExists) state.selectedCaseId = null;
+      } else {
+        state.selectedCaseId = null;
+      }
+      persist4(state);
+    }
+    function render() {
+      recompute();
+      const exampleButtons = fuzzTestingExamples.map(
+        (ex) => `
+      <button type="button"
+        class="fuzz-example-btn${state.exampleId === ex.id ? " active" : ""}"
+        data-fuzz-example="${ex.id}"
+        data-testid="fuzz-example-${ex.id}"
+        title="${escapeHtml8(pickField(ex, "description"))}">
+        ${escapeHtml8(pickField(ex, "name"))}
+      </button>
+    `
+      ).join("");
+      const result = state.result;
+      const error = state.error;
+      const crashCount = (result == null ? void 0 : result.crashes) || 0;
+      const nodeCov = state.totalNodes > 0 ? Math.round(state.coveredNodes.length / state.totalNodes * 100) : 0;
+      const edgeCov = state.totalEdges > 0 ? Math.round(state.coveredEdges.length / state.totalEdges * 100) : 0;
+      const coverageMarkup = result && state.cfg ? `<span class="fuzz-divider">\xB7</span>
+         <span class="fuzz-coverage-badge" data-testid="fuzz-node-cov" title="Node coverage">N ${nodeCov}%</span>
+         <span class="fuzz-coverage-badge" data-testid="fuzz-edge-cov" title="Edge coverage">E ${edgeCov}%</span>` : "";
+      const summary = result ? `${t("fuzz.summary.tests")}<strong data-testid="fuzz-test-count">${result.totalTests}</strong>
+         <span class="fuzz-divider">\xB7</span>
+         ${t("fuzz.summary.passed")}<strong data-testid="fuzz-passed-count">${result.passedTests}</strong>
+         <span class="fuzz-divider">\xB7</span>
+         ${t("fuzz.summary.crashes")}<strong data-testid="fuzz-crash-count" class="${crashCount > 0 ? "highlight-crash" : ""}">${crashCount}</strong>
+         ${coverageMarkup}
+         ${result.truncated ? `<span class="fuzz-divider">\xB7</span><span class="fuzz-truncated">${t("fuzz.summary.truncated")}</span>` : ""}` : "";
+      const testCasesMarkup = error ? `<div class="fuzz-error" data-testid="fuzz-error">${escapeHtml8(error)}</div>` : renderTestCases(result);
+      root2.innerHTML = `
+      <div class="fuzz-toolbar">
+        <div class="fuzz-examples" data-testid="fuzz-examples">${exampleButtons}</div>
+        <div class="fuzz-controls">
+          <label class="fuzz-control">
+            <span>${t("fuzz.testCount")}</span>
+            <input type="number" min="10" max="500" step="10"
+              value="${state.testCount}"
+              data-testid="fuzz-test-count-input" />
+          </label>
+          <button type="button" 
+            class="fuzz-run-btn"
+            data-testid="fuzz-run-btn"
+            data-fuzz-run="true">
+            ${t("fuzz.run")}
+          </button>
+        </div>
+      </div>
+
+      <div class="fuzz-split-body">
+        <div class="fuzz-cfg-pane">
+          ${renderCfgPane()}
+        </div>
+
+        <div class="fuzz-right-pane">
+          <div class="fuzz-results-pane">
+            <p class="fuzz-summary" data-testid="fuzz-summary">${summary}</p>
+            ${testCasesMarkup}
+          </div>
+          <div class="fuzz-editor-pane">
+            <label class="fuzz-source-label" for="fuzz-source">${t("fuzz.source")}</label>
+            <textarea id="fuzz-source"
+              class="fuzz-source"
+              data-testid="fuzz-source"
+              spellcheck="false"
+              autocomplete="off"
+              rows="14">${escapeHtml8(state.sourceCode)}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <p class="fuzz-hint">${t("fuzz.hint")}</p>
+    `;
+      bindEvents();
+    }
+    function renderCfgPane() {
+      if (state.cfgError) {
+        return `<div class="fuzz-cfg" data-testid="fuzz-cfg">
+        <p class="fuzz-cfg-error">${escapeHtml8(state.cfgError)}</p>
+      </div>`;
+      }
+      if (!state.cfg) {
+        return `<div class="fuzz-cfg" data-testid="fuzz-cfg"></div>`;
+      }
+      const cfg = state.cfg;
+      const result = state.result;
+      const selectedCase = state.selectedCaseId ? result == null ? void 0 : result.testCases.find((tc) => tc.id === state.selectedCaseId) : null;
+      let highlight;
+      let cfgSubtitle;
+      if (selectedCase) {
+        const mapping = mapBranchesToCfg(cfg, selectedCase.branches);
+        highlight = { nodes: mapping.nodes, edges: mapping.edges };
+        cfgSubtitle = `<span class="fuzz-cfg-selected" data-testid="fuzz-cfg-selected">${escapeHtml8(selectedCase.id)}</span>`;
+      } else {
+        highlight = {
+          nodes: state.coveredNodes,
+          edges: state.coveredEdges
+        };
+        const nodeCov = cfg.nodes.length > 0 ? Math.round(state.coveredNodes.length / cfg.nodes.length * 100) : 0;
+        const edgeCov = cfg.edges.length > 0 ? Math.round(state.coveredEdges.length / cfg.edges.length * 100) : 0;
+        cfgSubtitle = result ? `<span class="fuzz-cfg-metric">N ${nodeCov}%  E ${edgeCov}%</span>` : "";
+      }
+      const svg = renderCfgSvg(cfg, highlight, {
+        idPrefix: "fuzz-cfg",
+        ariaLabel: "Fuzz testing CFG",
+        zoom: state.cfgZoom
+      });
+      const zoomPct = Math.round(state.cfgZoom * 100);
+      return `
+      <div class="fuzz-cfg" data-testid="fuzz-cfg">
+        <div class="fuzz-cfg-header">
+          <h3>${t("fuzz.cfg.title")}</h3>
+          ${cfgSubtitle}
+          <div class="fuzz-cfg-zoom" role="group" aria-label="${t("fuzz.cfg.zoom")}">
+            <button type="button" data-fuzz-zoom="out" data-testid="fuzz-cfg-zoom-out" title="${t("fuzz.cfg.zoomOut")}">\u2212</button>
+            <button type="button" data-fuzz-zoom="reset" data-testid="fuzz-cfg-zoom-reset" title="${t("fuzz.cfg.zoomReset")}">${zoomPct}%</button>
+            <button type="button" data-fuzz-zoom="in" data-testid="fuzz-cfg-zoom-in" title="${t("fuzz.cfg.zoomIn")}">+</button>
+          </div>
+        </div>
+        <div class="fuzz-cfg-canvas graph-canvas">${svg}</div>
+      </div>
+    `;
+    }
+    function renderTestCases(result) {
+      if (!result || !result.testCases.length) {
+        return `<p class="fuzz-empty">${t("fuzz.empty")}</p>`;
+      }
+      const items = result.testCases.slice(0, 50).map((tc) => {
+        const statusClass = tc.crashed ? "crash" : "pass";
+        const isSelected = state.selectedCaseId === tc.id;
+        const statusLabel = tc.crashed ? t("fuzz.crash") : t("fuzz.pass");
+        return `
+        <li class="fuzz-case ${statusClass}${isSelected ? " selected" : ""}"
+          data-testid="fuzz-case-${tc.id}"
+          data-fuzz-case="${tc.id}"
+          tabindex="0"
+          role="button">
+          <header class="fuzz-case-header">
+            <span class="fuzz-case-id">${escapeHtml8(tc.id)}</span>
+            <span class="fuzz-case-status">${statusLabel}</span>
+            <span class="fuzz-case-duration">${tc.duration.toFixed(2)}ms</span>
+          </header>
+          <div class="fuzz-case-input">
+            <strong>${t("fuzz.input")}:</strong> <code>${escapeHtml8(formatInput(tc.input))}</code>
+          </div>
+          ${tc.crashed ? `<div class="fuzz-case-error">
+                  <strong>${t("fuzz.error")}:</strong> <code>${escapeHtml8(tc.error || "")}</code>
+                </div>` : `<div class="fuzz-case-output">
+                  <strong>${t("fuzz.output")}:</strong> <code>${escapeHtml8(formatOutput(tc.output))}</code>
+                </div>`}
+        </li>
+      `;
+      }).join("");
+      return `<ol class="fuzz-cases" data-testid="fuzz-cases">${items}</ol>`;
+    }
+    function bindEvents() {
+      root2.querySelectorAll("[data-fuzz-example]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.fuzzExample;
+          const ex = fuzzTestingExamples.find((x) => x.id === id);
+          if (!ex) return;
+          state.exampleId = ex.id;
+          state.sourceCode = ex.sourceCode;
+          state.selectedCaseId = null;
+          render();
+        });
+      });
+      root2.querySelectorAll("[data-fuzz-case]").forEach((el) => {
+        const selectCase = () => {
+          const id = el.dataset.fuzzCase;
+          state.selectedCaseId = state.selectedCaseId === id ? null : id;
+          renderLight();
+        };
+        el.addEventListener("click", selectCase);
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            selectCase();
+          }
+        });
+      });
+      const editor = root2.querySelector('[data-testid="fuzz-source"]');
+      if (editor) {
+        let timer = null;
+        editor.addEventListener("input", () => {
+          state.sourceCode = editor.value;
+          if (timer) {
+            globalThis.clearTimeout(timer);
+          }
+          timer = globalThis.setTimeout(() => {
+            renderPreservingFocus("fuzz-source");
+          }, 220);
+        });
+      }
+      const countInput = root2.querySelector('[data-testid="fuzz-test-count-input"]');
+      if (countInput) {
+        countInput.addEventListener("change", () => {
+          const n = Number(countInput.value);
+          if (Number.isFinite(n) && n >= 10 && n <= 500) {
+            state.testCount = n;
+            render();
+          }
+        });
+      }
+      const runBtn = root2.querySelector('[data-testid="fuzz-run-btn"]');
+      if (runBtn) {
+        runBtn.addEventListener("click", () => {
+          render();
+        });
+      }
+      root2.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const action = btn.dataset.fuzzZoom;
+          const zoom = state.cfgZoom;
+          if (action === "in") state.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
+          else if (action === "out") state.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
+          else state.cfgZoom = 1;
+          render();
+        });
+      });
+    }
+    function renderPreservingFocus(testid) {
+      const previously = root2.querySelector(`[data-testid="${testid}"]`);
+      const start = previously == null ? void 0 : previously.selectionStart;
+      const end = previously == null ? void 0 : previously.selectionEnd;
+      render();
+      const next = root2.querySelector(`[data-testid="${testid}"]`);
+      if (next) {
+        next.focus();
+        if (typeof start === "number" && typeof end === "number") {
+          next.setSelectionRange(start, end);
+        }
+      }
+    }
+    function renderLight() {
+      const cfgPaneEl = root2.querySelector(".fuzz-cfg-pane");
+      if (cfgPaneEl) {
+        cfgPaneEl.innerHTML = renderCfgPane();
+      }
+      root2.querySelectorAll("[data-fuzz-case]").forEach((el) => {
+        const id = el.dataset.fuzzCase;
+        if (id === state.selectedCaseId) {
+          el.classList.add("selected");
+        } else {
+          el.classList.remove("selected");
+        }
+      });
+      root2.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const action = btn.dataset.fuzzZoom;
+          const zoom = state.cfgZoom;
+          if (action === "in") state.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
+          else if (action === "out") state.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
+          else state.cfgZoom = 1;
+          renderLight();
+        });
+      });
+    }
+    render();
+    return root2;
+  }
+
+  // src/utils/testGeneration.js
+  var SUPPORTED_CRITERIA = /* @__PURE__ */ new Set([
+    "node",
+    "edge",
+    "edge-pair",
+    "prime-path",
+    "complete-path",
+    "all-defs",
+    "all-uses",
+    "all-du-paths"
+  ]);
+  function generateTestsFromCoverage({ sourceCode, criterion, symbexOptions = {} }) {
+    if (!sourceCode || typeof sourceCode !== "string") {
+      return errorResult(criterion, "sourceCode is required");
+    }
+    if (!SUPPORTED_CRITERIA.has(criterion)) {
+      return errorResult(criterion, `Unsupported criterion: ${criterion}`);
+    }
+    let cfg;
+    try {
+      cfg = generateControlFlowGraphFromProgram({
+        sourceCode,
+        language: "javascript",
+        title: "Test Generation CFG"
+      });
+    } catch (err) {
+      return errorResult(criterion, `CFG build failed: ${err instanceof Error ? err.message : String(err)}`);
+    }
+    let symbex;
+    try {
+      symbex = symbolicExecute(sourceCode, symbexOptions);
+    } catch (err) {
+      return errorResult(criterion, `Symbolic execution failed: ${err instanceof Error ? err.message : String(err)}`, { cfg });
+    }
+    let requirements;
+    try {
+      requirements = getCoverageRequirements(cfg, criterion);
+    } catch (err) {
+      return errorResult(criterion, `Requirement generation failed: ${err instanceof Error ? err.message : String(err)}`, { cfg });
+    }
+    const witnessedPaths = symbex.paths.map((p) => {
+      const mapping = mapBranchesToCfg(cfg, p.branches);
+      return {
+        id: p.id,
+        feasible: p.feasible,
+        witness: p.witness,
+        concreteEnv: p.concreteEnv,
+        concreteReturn: p.concreteReturn,
+        pathCondition: p.pathCondition.slice(),
+        returnExpression: p.returnExpression,
+        branches: p.branches.slice(),
+        cfgNodes: mapping.nodes.slice(),
+        cfgEdges: mapping.edges.slice(),
+        cfgUnresolved: mapping.unresolved
+      };
+    });
+    const requirementCoverage = requirements.map(
+      (req) => coverageForRequirement(req, witnessedPaths)
+    );
+    const selectedTests = greedyCoverSelect(witnessedPaths, requirements);
+    return {
+      function: symbex.function,
+      cfg,
+      criterion,
+      requirements,
+      witnessedPaths,
+      requirementCoverage,
+      selectedTests,
+      totalRequirements: requirements.length,
+      feasibleRequirements: requirementCoverage.filter((r) => r.feasible).length,
+      selectedCount: selectedTests.length,
+      symbexTruncated: Boolean(symbex.truncated)
+    };
+  }
+  function coverageForRequirement(requirement, witnessedPaths) {
+    var _a2, _b, _c;
+    const coveringIds = [];
+    let representative = null;
+    for (const wp of witnessedPaths) {
+      if (!wp.feasible) continue;
+      const record = { path: wp.cfgNodes, edgeIds: wp.cfgEdges };
+      if (!requirementCoveredByRecord(requirement, record)) continue;
+      coveringIds.push(wp.id);
+      if (!representative) representative = wp;
+    }
+    return {
+      requirementId: requirement.id,
+      requirement,
+      coveringPathIds: coveringIds,
+      feasible: coveringIds.length > 0,
+      representativeWitness: (_a2 = representative == null ? void 0 : representative.witness) != null ? _a2 : null,
+      representativeReturn: (_b = representative == null ? void 0 : representative.concreteReturn) != null ? _b : null,
+      representativePathId: (_c = representative == null ? void 0 : representative.id) != null ? _c : null
+    };
+  }
+  function greedyCoverSelect(witnessedPaths, requirements) {
+    const feasiblePaths = witnessedPaths.filter((wp) => wp.feasible);
+    const pathCovers = /* @__PURE__ */ new Map();
+    for (const wp of feasiblePaths) {
+      const record = { path: wp.cfgNodes, edgeIds: wp.cfgEdges };
+      const covered = /* @__PURE__ */ new Set();
+      for (const req of requirements) {
+        if (requirementCoveredByRecord(req, record)) covered.add(req.id);
+      }
+      pathCovers.set(wp.id, covered);
+    }
+    const remaining = /* @__PURE__ */ new Set();
+    for (const req of requirements) {
+      for (const wp of feasiblePaths) {
+        if (pathCovers.get(wp.id).has(req.id)) {
+          remaining.add(req.id);
+          break;
+        }
+      }
+    }
+    const used = /* @__PURE__ */ new Set();
+    const result = [];
+    while (remaining.size > 0) {
+      let best = null;
+      let bestGain = 0;
+      let bestMagnitude = Infinity;
+      for (const wp of feasiblePaths) {
+        if (used.has(wp.id)) continue;
+        const covers = pathCovers.get(wp.id);
+        let gain = 0;
+        for (const id of covers) if (remaining.has(id)) gain += 1;
+        if (gain === 0) continue;
+        const magnitude = witnessMagnitude(wp.witness);
+        if (gain > bestGain || gain === bestGain && magnitude < bestMagnitude) {
+          best = wp;
+          bestGain = gain;
+          bestMagnitude = magnitude;
+        }
+      }
+      if (!best) break;
+      used.add(best.id);
+      const newlyCovered = [];
+      for (const id of pathCovers.get(best.id)) {
+        if (remaining.has(id)) {
+          newlyCovered.push(id);
+          remaining.delete(id);
+        }
+      }
+      result.push({
+        pathId: best.id,
+        witness: best.witness,
+        concreteEnv: best.concreteEnv,
+        concreteReturn: best.concreteReturn,
+        pathCondition: best.pathCondition.slice(),
+        returnExpression: best.returnExpression,
+        coveredRequirementIds: newlyCovered
+      });
+    }
+    return result;
+  }
+  function witnessMagnitude(witness) {
+    if (!witness) return Infinity;
+    let sum = 0;
+    for (const v of Object.values(witness)) sum += Math.abs(Number(v) || 0);
+    return sum;
+  }
+  function formatConcreteCall(fnName, params, witness) {
+    if (!witness) return `${fnName}(?)`;
+    const args = params.map((p) => formatWitnessValue(witness[p]));
+    return `${fnName}(${args.join(", ")})`;
+  }
+  function formatWitnessValue(value) {
+    if (value === null || value === void 0) return "?";
+    if (typeof value === "boolean") return value ? "true" : "false";
+    return String(value);
+  }
+  function formatExpectedReturn(value) {
+    if (value === null || value === void 0) return "undefined";
+    if (typeof value === "boolean") return value ? "true" : "false";
+    if (typeof value === "object") {
+      try {
+        return JSON.stringify(value);
+      } catch {
+        return String(value);
+      }
+    }
+    return String(value);
+  }
+  function errorResult(criterion, message, partial = {}) {
+    return {
+      function: partial.cfg ? { name: "", params: [] } : null,
+      cfg: partial.cfg || null,
+      criterion,
+      requirements: [],
+      witnessedPaths: [],
+      requirementCoverage: [],
+      selectedTests: [],
+      totalRequirements: 0,
+      feasibleRequirements: 0,
+      selectedCount: 0,
+      symbexTruncated: false,
+      error: message
+    };
+  }
+
+  // src/components/TestGenerationExplorer.js
+  var STORAGE_KEY8 = "stvisual.testgen.v1";
+  var DEFAULT_CRITERION = "edge";
+  var CRITERIA = [
+    { id: "node", group: "structural", labelKey: "graph.coverage.node" },
+    { id: "edge", group: "structural", labelKey: "graph.coverage.edge" },
+    { id: "edge-pair", group: "structural", labelKey: "graph.coverage.edge-pair" },
+    { id: "prime-path", group: "structural", labelKey: "graph.coverage.prime-path" },
+    { id: "complete-path", group: "structural", labelKey: "graph.coverage.complete-path" },
+    { id: "all-defs", group: "dataflow", labelKey: "graph.coverage.all-defs" },
+    { id: "all-uses", group: "dataflow", labelKey: "graph.coverage.all-uses" },
+    { id: "all-du-paths", group: "dataflow", labelKey: "graph.coverage.all-du-paths" }
+  ];
+  function escapeHtml9(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function loadSaved5() {
+    var _a2;
+    try {
+      const raw = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY8);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+  function persist5(state) {
+    var _a2;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(STORAGE_KEY8, JSON.stringify({
+        exampleId: state.exampleId,
+        sourceCode: state.sourceCode,
+        criterion: state.criterion,
+        cfgZoom: state.cfgZoom
+      }));
+    } catch {
+    }
+  }
+  function createTestGenerationExplorer() {
+    const root2 = document.createElement("div");
+    root2.className = "testgen-explorer";
+    root2.dataset.testid = "testgen-explorer";
+    const saved = loadSaved5();
+    const defaultExample = symbolicExecutionExamples[0];
+    const state = {
+      exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
+      sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
+      criterion: (saved == null ? void 0 : saved.criterion) || DEFAULT_CRITERION,
+      cfgZoom: typeof (saved == null ? void 0 : saved.cfgZoom) === "number" ? saved.cfgZoom : 1,
+      result: null,
+      selectedRequirementId: null,
+      selectedTestPathId: null
+    };
+    function recompute() {
+      var _a2, _b, _c, _d;
+      state.result = generateTestsFromCoverage({
+        sourceCode: state.sourceCode,
+        criterion: state.criterion
+      });
+      if ((_b = (_a2 = state.result) == null ? void 0 : _a2.requirements) == null ? void 0 : _b.length) {
+        const exists = state.result.requirements.some((r) => r.id === state.selectedRequirementId);
+        if (!exists) state.selectedRequirementId = state.result.requirements[0].id;
+      } else {
+        state.selectedRequirementId = null;
+      }
+      if ((_d = (_c = state.result) == null ? void 0 : _c.selectedTests) == null ? void 0 : _d.length) {
+        const exists = state.result.selectedTests.some((t2) => t2.pathId === state.selectedTestPathId);
+        if (!exists) state.selectedTestPathId = state.result.selectedTests[0].pathId;
+      } else {
+        state.selectedTestPathId = null;
+      }
+      persist5(state);
+    }
+    function render() {
+      recompute();
+      const exampleButtons = symbolicExecutionExamples.map((ex) => `
+      <button type="button"
+        class="testgen-example-btn${state.exampleId === ex.id ? " active" : ""}"
+        data-testgen-example="${ex.id}"
+        data-testid="testgen-example-${ex.id}"
+        title="${escapeHtml9(pickField(ex, "description") || "")}">
+        ${escapeHtml9(pickField(ex, "name") || ex.name)}
+      </button>
+    `).join("");
+      const criterionOptions = CRITERIA.map((c) => `
+      <option value="${c.id}"${state.criterion === c.id ? " selected" : ""}>
+        ${escapeHtml9(t(c.labelKey))}
+      </option>
+    `).join("");
+      root2.innerHTML = `
+      <div class="testgen-toolbar">
+        <div class="testgen-examples" data-testid="testgen-examples">${exampleButtons}</div>
+        <div class="testgen-controls">
+          <label class="testgen-control">
+            <span>${t("testgen.criterion")}</span>
+            <select data-testid="testgen-criterion">${criterionOptions}</select>
+          </label>
+        </div>
+      </div>
+
+      <div class="testgen-split-body">
+        <div class="testgen-cfg-pane">
+          ${renderCfgPane()}
+        </div>
+        <div class="testgen-right-pane">
+          ${renderSummary()}
+          ${renderError()}
+          <div class="testgen-results-grid">
+            <div class="testgen-requirements-card" data-testid="testgen-requirements-card">
+              <h3>${t("testgen.requirements.title")}</h3>
+              ${renderRequirements()}
+            </div>
+            <div class="testgen-tests-card" data-testid="testgen-tests-card">
+              <h3>${t("testgen.tests.title")}</h3>
+              ${renderSelectedTests()}
+            </div>
+          </div>
+          <div class="testgen-editor-pane">
+            <label class="testgen-editor-label" for="testgen-source">${t("testgen.source")}</label>
+            <textarea id="testgen-source"
+              class="testgen-editor"
+              data-testid="testgen-source"
+              spellcheck="false"
+              autocomplete="off"
+              rows="14">${escapeHtml9(state.sourceCode)}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <p class="testgen-hint">${t("testgen.hint")}</p>
+    `;
+      bindEvents();
+    }
+    function renderSummary() {
+      const r = state.result;
+      if (!r || r.error) return "";
+      return `
+      <p class="testgen-summary" data-testid="testgen-summary">
+        ${t("testgen.summary.requirements")}<strong data-testid="testgen-req-count">${r.totalRequirements}</strong>
+        <span class="testgen-divider">\xB7</span>
+        ${t("testgen.summary.feasible")}<strong data-testid="testgen-feasible-count">${r.feasibleRequirements}</strong>
+        <span class="testgen-divider">\xB7</span>
+        ${t("testgen.summary.selected")}<strong data-testid="testgen-selected-count">${r.selectedCount}</strong>
+        ${r.symbexTruncated ? `<span class="testgen-divider">\xB7</span><span class="testgen-truncated">${t("testgen.summary.truncated")}</span>` : ""}
+      </p>
+    `;
+    }
+    function renderError() {
+      const r = state.result;
+      if (!(r == null ? void 0 : r.error)) return "";
+      return `<div class="testgen-error" data-testid="testgen-error">${escapeHtml9(r.error)}</div>`;
+    }
+    function renderRequirements() {
+      const r = state.result;
+      if (!r || r.error) return "";
+      if (!r.requirementCoverage.length) {
+        return `<p class="testgen-empty">${t("testgen.empty")}</p>`;
+      }
+      const items = r.requirementCoverage.map((rc) => {
+        const cls = rc.feasible ? "feasible" : "infeasible";
+        const active = state.selectedRequirementId === rc.requirementId ? " selected" : "";
+        const witness = rc.feasible && rc.representativeWitness ? formatConcreteCall(r.function.name, r.function.params, rc.representativeWitness) : `<span class="testgen-no-witness">${t("testgen.requirements.noWitness")}</span>`;
+        return `
+        <li class="testgen-req ${cls}${active}"
+          data-testid="testgen-req-${escapeHtml9(rc.requirementId)}"
+          data-testgen-req="${escapeHtml9(rc.requirementId)}"
+          tabindex="0"
+          role="button">
+          <header class="testgen-req-header">
+            <span class="testgen-req-id">${escapeHtml9(rc.requirement.id)}</span>
+            <span class="testgen-req-status">${rc.feasible ? t("testgen.requirements.feasible") : t("testgen.requirements.infeasible")}</span>
+          </header>
+          <p class="testgen-req-label">${escapeHtml9(rc.requirement.label || rc.requirement.displayText || "")}</p>
+          <p class="testgen-req-witness">${typeof witness === "string" ? escapeHtml9(witness) : witness}</p>
+        </li>
+      `;
+      }).join("");
+      return `<ol class="testgen-req-list" data-testid="testgen-req-list">${items}</ol>`;
+    }
+    function renderSelectedTests() {
+      const r = state.result;
+      if (!r || r.error) return "";
+      if (!r.selectedTests.length) {
+        return `<p class="testgen-empty">${t("testgen.tests.empty")}</p>`;
+      }
+      const items = r.selectedTests.map((tc, i) => {
+        const call = formatConcreteCall(r.function.name, r.function.params, tc.witness);
+        const ret = formatExpectedReturn(tc.concreteReturn);
+        const active = state.selectedTestPathId === tc.pathId ? " selected" : "";
+        const covers = tc.coveredRequirementIds.join(", ");
+        return `
+        <li class="testgen-test${active}"
+          data-testid="testgen-test-${i + 1}"
+          data-testgen-test="${escapeHtml9(tc.pathId)}"
+          tabindex="0"
+          role="button">
+          <header class="testgen-test-header">
+            <span class="testgen-test-id">T${i + 1}</span>
+            <span class="testgen-test-path">${escapeHtml9(tc.pathId)}</span>
+          </header>
+          <p class="testgen-test-call"><code>${escapeHtml9(call)}</code> \u2192 <code>${escapeHtml9(ret)}</code></p>
+          <p class="testgen-test-covers"><span>${t("testgen.tests.covers")}</span> ${escapeHtml9(covers)}</p>
+        </li>
+      `;
+      }).join("");
+      return `<ol class="testgen-test-list" data-testid="testgen-test-list">${items}</ol>`;
+    }
+    function renderCfgPane() {
+      const r = state.result;
+      if (!r) return "";
+      if (r.error && !r.cfg) {
+        return `<div class="testgen-cfg" data-testid="testgen-cfg">
+        <p class="testgen-cfg-error">${escapeHtml9(r.error)}</p>
+      </div>`;
+      }
+      if (!r.cfg) return "";
+      let mapping = { nodes: [], edges: [] };
+      let selectedLabel = t("testgen.cfg.none");
+      const selectedTest = r.selectedTests.find((tc) => tc.pathId === state.selectedTestPathId);
+      if (selectedTest) {
+        const wp = r.witnessedPaths.find((w) => w.id === selectedTest.pathId);
+        if (wp) mapping = { nodes: wp.cfgNodes, edges: wp.cfgEdges };
+        selectedLabel = `T${r.selectedTests.indexOf(selectedTest) + 1} (${selectedTest.pathId})`;
+      } else if (state.selectedRequirementId) {
+        const req = r.requirements.find((q) => q.id === state.selectedRequirementId);
+        if (req) {
+          mapping = {
+            nodes: req.nodes || (req.path ? [...new Set(req.path)] : []),
+            edges: req.edges || []
+          };
+          selectedLabel = req.id;
+        }
+      }
+      const svg = renderCfgSvg(r.cfg, mapping, {
+        idPrefix: "testgen-cfg",
+        ariaLabel: "Test generation CFG",
+        zoom: state.cfgZoom
+      });
+      const zoomPct = Math.round(state.cfgZoom * 100);
+      return `
+      <div class="testgen-cfg" data-testid="testgen-cfg">
+        <div class="testgen-cfg-header">
+          <h3>${t("testgen.cfg.title")}</h3>
+          <span class="testgen-cfg-selected" data-testid="testgen-cfg-selected">${escapeHtml9(selectedLabel)}</span>
+          <div class="testgen-cfg-zoom" role="group" aria-label="${t("testgen.cfg.zoom")}">
+            <button type="button" data-testgen-zoom="out" data-testid="testgen-cfg-zoom-out" title="${t("testgen.cfg.zoomOut")}">\u2212</button>
+            <button type="button" data-testgen-zoom="reset" data-testid="testgen-cfg-zoom-reset" title="${t("testgen.cfg.zoomReset")}">${zoomPct}%</button>
+            <button type="button" data-testgen-zoom="in" data-testid="testgen-cfg-zoom-in" title="${t("testgen.cfg.zoomIn")}">+</button>
+          </div>
+        </div>
+        <div class="testgen-cfg-canvas graph-canvas">${svg}</div>
+      </div>
+    `;
+    }
+    function bindEvents() {
+      root2.querySelectorAll("[data-testgen-example]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.testgenExample;
+          const ex = symbolicExecutionExamples.find((x) => x.id === id);
+          if (!ex) return;
+          state.exampleId = ex.id;
+          state.sourceCode = ex.sourceCode;
+          state.selectedRequirementId = null;
+          state.selectedTestPathId = null;
+          render();
+        });
+      });
+      const criterionSelect = root2.querySelector('[data-testid="testgen-criterion"]');
+      if (criterionSelect) {
+        criterionSelect.addEventListener("change", () => {
+          state.criterion = criterionSelect.value;
+          state.selectedRequirementId = null;
+          state.selectedTestPathId = null;
+          render();
+        });
+      }
+      root2.querySelectorAll("[data-testgen-req]").forEach((el) => {
+        const select = () => {
+          state.selectedRequirementId = el.dataset.testgenReq;
+          state.selectedTestPathId = null;
+          render();
+        };
+        el.addEventListener("click", select);
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            select();
+          }
+        });
+      });
+      root2.querySelectorAll("[data-testgen-test]").forEach((el) => {
+        const select = () => {
+          state.selectedTestPathId = el.dataset.testgenTest;
+          render();
+        };
+        el.addEventListener("click", select);
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            select();
+          }
+        });
+      });
+      const editor = root2.querySelector('[data-testid="testgen-source"]');
+      if (editor) {
+        let timer = null;
+        editor.addEventListener("input", () => {
+          state.sourceCode = editor.value;
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => {
+            renderPreservingFocus("testgen-source");
+          }, 280);
+        });
+      }
+      root2.querySelectorAll("[data-testgen-zoom]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const action = btn.dataset.testgenZoom;
+          if (action === "in") state.cfgZoom = Math.min(4, +(state.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state.cfgZoom = Math.max(0.25, +(state.cfgZoom - 0.25).toFixed(2));
+          else state.cfgZoom = 1;
+          render();
+        });
+      });
+    }
+    function renderPreservingFocus(testid) {
+      const previously = root2.querySelector(`[data-testid="${testid}"]`);
+      const start = previously == null ? void 0 : previously.selectionStart;
+      const end = previously == null ? void 0 : previously.selectionEnd;
+      render();
+      const next = root2.querySelector(`[data-testid="${testid}"]`);
+      if (next) {
+        next.focus();
+        if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
+          next.setSelectionRange(start, end);
+        }
+      }
+    }
+    render();
+    return root2;
+  }
+
   // src/app.js
   var sectionsConfig = [
     { id: "all", key: "section.all" },
@@ -10698,6 +11959,8 @@ INVARSPEC !w | (i & (l | h))`
     { id: "syntax", key: "section.syntax" },
     { id: "symbex", key: "section.symbex" },
     { id: "concolic", key: "section.concolic" },
+    { id: "fuzz", key: "section.fuzz" },
+    { id: "testgen", key: "section.testgen" },
     { id: "cloud", key: "section.cloud" },
     { id: "flow", key: "section.flow" },
     { id: "types", key: "section.types" }
@@ -10729,6 +11992,8 @@ INVARSPEC !w | (i & (l | h))`
           <section data-testid="section-syntax"><h2>${t("section.syntax.title")}</h2><div data-slot="syntax"></div></section>
           <section data-testid="section-symbex"><h2>${t("section.symbex.title")}</h2><div data-slot="symbex"></div></section>
           <section data-testid="section-concolic"><h2>${t("section.concolic.title")}</h2><div data-slot="concolic"></div></section>
+          <section data-testid="section-fuzz"><h2>${t("section.fuzz.title")}</h2><div data-slot="fuzz"></div></section>
+          <section data-testid="section-testgen"><h2>${t("section.testgen.title")}</h2><div data-slot="testgen"></div></section>
           <section data-testid="section-cloud"><h2>${t("section.cloud.title")}</h2><div data-slot="cloud"></div></section>
           <section data-testid="section-flow"><h2>${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types"><h2>${t("section.types.title")}</h2><div data-slot="types"></div></section>
@@ -10748,6 +12013,8 @@ INVARSPEC !w | (i & (l | h))`
         syntax: main.querySelector('[data-testid="section-syntax"]'),
         symbex: main.querySelector('[data-testid="section-symbex"]'),
         concolic: main.querySelector('[data-testid="section-concolic"]'),
+        fuzz: main.querySelector('[data-testid="section-fuzz"]'),
+        testgen: main.querySelector('[data-testid="section-testgen"]'),
         cloud: main.querySelector('[data-testid="section-cloud"]'),
         flow: main.querySelector('[data-testid="section-flow"]'),
         types: main.querySelector('[data-testid="section-types"]')
@@ -10761,6 +12028,8 @@ INVARSPEC !w | (i & (l | h))`
         specMutation: createSpecMutationExplorer(),
         symbex: createSymbolicExecutionExplorer(),
         concolic: createConcolicExecutionExplorer(),
+        fuzz: createFuzzTestingExplorer(),
+        testgen: createTestGenerationExplorer(),
         cloud: createCloudStoragePanel(),
         flow: createTestingFlow(),
         types: createTestingTypesTable()
@@ -10831,6 +12100,8 @@ INVARSPEC !w | (i & (l | h))`
       container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
       container.querySelector('[data-slot="symbex"]').appendChild(components.symbex);
       container.querySelector('[data-slot="concolic"]').appendChild(components.concolic);
+      container.querySelector('[data-slot="fuzz"]').appendChild(components.fuzz);
+      container.querySelector('[data-slot="testgen"]').appendChild(components.testgen);
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);
       let activeSection = "all";

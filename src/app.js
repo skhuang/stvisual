@@ -10,6 +10,7 @@ import { createSpecMutationExplorer } from './components/SpecMutationExplorer.js
 import { createSymbolicExecutionExplorer } from './components/SymbolicExecutionExplorer.js';
 import { createConcolicExecutionExplorer } from './components/ConcolicExecutionExplorer.js';
 import { createFuzzTestingExplorer } from './components/FuzzTestingExplorer.js';
+import { createTestGenerationExplorer } from './components/TestGenerationExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const sectionsConfig = [
@@ -21,6 +22,7 @@ const sectionsConfig = [
   { id: 'symbex', key: 'section.symbex' },
   { id: 'concolic', key: 'section.concolic' },
   { id: 'fuzz', key: 'section.fuzz' },
+  { id: 'testgen', key: 'section.testgen' },
   { id: 'cloud', key: 'section.cloud' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -54,6 +56,7 @@ export function renderApp(container) {
           <section data-testid="section-symbex"><h2>${t('section.symbex.title')}</h2><div data-slot="symbex"></div></section>
           <section data-testid="section-concolic"><h2>${t('section.concolic.title')}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz"><h2>${t('section.fuzz.title')}</h2><div data-slot="fuzz"></div></section>
+          <section data-testid="section-testgen"><h2>${t('section.testgen.title')}</h2><div data-slot="testgen"></div></section>
           <section data-testid="section-cloud"><h2>${t('section.cloud.title')}</h2><div data-slot="cloud"></div></section>
           <section data-testid="section-flow"><h2>${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types"><h2>${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -75,6 +78,7 @@ export function renderApp(container) {
       symbex: main.querySelector('[data-testid="section-symbex"]'),
       concolic: main.querySelector('[data-testid="section-concolic"]'),
       fuzz: main.querySelector('[data-testid="section-fuzz"]'),
+      testgen: main.querySelector('[data-testid="section-testgen"]'),
       cloud: main.querySelector('[data-testid="section-cloud"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -90,6 +94,7 @@ export function renderApp(container) {
       symbex: createSymbolicExecutionExplorer(),
       concolic: createConcolicExecutionExplorer(),
       fuzz: createFuzzTestingExplorer(),
+      testgen: createTestGenerationExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       types: createTestingTypesTable(),
@@ -158,6 +163,7 @@ export function renderApp(container) {
     container.querySelector('[data-slot="symbex"]').appendChild(components.symbex);
     container.querySelector('[data-slot="concolic"]').appendChild(components.concolic);
     container.querySelector('[data-slot="fuzz"]').appendChild(components.fuzz);
+    container.querySelector('[data-slot="testgen"]').appendChild(components.testgen);
     container.querySelector('[data-slot="flow"]').appendChild(components.flow);
     container.querySelector('[data-slot="types"]').appendChild(components.types);
 
