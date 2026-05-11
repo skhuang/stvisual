@@ -618,6 +618,28 @@ export const concolicExecutionExamples = [
     description: '經典 DART 測試對象（Khurshid et al.）：回傳三數的中位數。',
     descriptionEn: 'A classic DART benchmark (Khurshid et al.): returns the median of three integers.',
     seed: 'a=0, b=0, c=0',
+    sourceCode: `function middle(a, b, c) {
+  let m = b;
+  if (a < b) {
+    if (b > c) {
+      if (a < c) {
+        m = c;
+      } else {
+        m = a;
+      }
+    }
+  } else {
+    if (b < c) {
+      if (a < c) {
+        m = a;
+      } else {
+        m = c;
+      }
+    }
+  }
+  return m;
+}
+`,
   },
 ];
 
