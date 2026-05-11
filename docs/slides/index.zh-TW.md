@@ -1,6 +1,6 @@
 # 軟體測試視覺化 — 課程簡報目錄
 
-stvisual 課程共 **11 講**，每講皆有：
+stvisual 課程共 **12 講**，每講皆有：
 - **觀念**：定義 + subsumption / 演算法總覽
 - **範例**：手算示範 + 教科書引用
 - **工具演示**：對應的 testid、互動步驟、截圖
@@ -26,6 +26,7 @@ stvisual 課程共 **11 講**，每講皆有：
 | 9 | Fuzz Testing | [09-fuzz-testing.zh-TW.md](09-fuzz-testing.zh-TW.md) | [09-fuzz-testing.en.md](09-fuzz-testing.en.md) | fuzz-overview、fuzz-cfg |
 | 10 | Symbolic Execution | [10-symbolic-execution.zh-TW.md](10-symbolic-execution.zh-TW.md) | [10-symbolic-execution.en.md](10-symbolic-execution.en.md) | symbex-overview、paths、cfg |
 | 11 | Concolic Execution | [11-concolic-execution.zh-TW.md](11-concolic-execution.zh-TW.md) | [11-concolic-execution.en.md](11-concolic-execution.en.md) | concolic-overview、iters、cfg |
+| 12 | Test Generation from Coverage | [12-test-generation.zh-TW.md](12-test-generation.zh-TW.md) | [12-test-generation.en.md](12-test-generation.en.md) | testgen-overview、requirements、tests、cfg |
 
 ---
 
@@ -44,10 +45,13 @@ stvisual 課程共 **11 講**，每講皆有：
        ├──► #6 Program Mutation ──► #7 Grammar Mutation ──► #8 Spec Mutation
        │
        └──► #9 Fuzz Testing ──► #10 Symbolic Execution ──► #11 Concolic Execution
+                                                                      │
+                                                                      ▼
+                                          #12 Test Generation from Coverage (#3+#4+#10 橋接)
 ```
 
 四條子線（圖、邏輯、突變、執行式測試）：
-- #3–#4 圖與資料流
+- #3–#4 圖與資料流 → **#12 自動測試產生**（橋接 #3/#4 需求與 #10 witness）
 - #5、#8 共用 predicate parser
 - #6–#8 一脈：突變對象從**程式**走到**規格**
 - #9–#11 一脈：搜尋從**隨機**走到**符號**再走到**concolic**
@@ -69,6 +73,7 @@ stvisual 課程共 **11 講**，每講皆有：
 | 9 | §15 | FuzzTestingExplorer + fuzzTesting.js + pathToCfg.js |
 | 10 | §16 | SymbolicExecutionExplorer + symbolicExecution.js |
 | 11 | §17 | ConcolicExecutionExplorer + concolicExecution.js |
+| 12 | §12 | TestGenerationExplorer + testGeneration.js |
 
 完整規格：[docs/Specification.zh-TW.md](../Specification.zh-TW.md)。
 
@@ -114,7 +119,7 @@ npx -y @marp-team/marp-cli --watch docs/slides/03-graph-coverage.zh-TW.md --html
 
 ---
 
-## 截圖清單（39 張）
+## 截圖清單（43 張）
 
 存放於 [docs/assets/slides/](../assets/slides/)：
 
@@ -130,13 +135,14 @@ spec-{overview,mutants,fsm,smv-source}.png
 fuzz-{overview,cfg}.png
 symbex-{overview,paths,cfg}.png
 concolic-{overview,iters,cfg}.png
+testgen-{overview,requirements,tests,cfg}.png
 ```
 
 ---
 
 ## 後續可能擴充
 
-- **#12 Test Generation from Coverage**：把 #3–#5 的 requirement 機制 → 自動產測試（與 #7 string mutation 串接）。
+- **#12.2 Logic Coverage Binding**：手動 clause → 程式變數對應，再自動求 concrete inputs。
 - **Speaker notes**：每張投影片下方加 `<!-- speaker -->` Marp speaker notes（目前刻意省略，方便講師自行擴展）。
 - **SMT solver 整合**：把 #10 / #11 的 brute-force witness solver 換成 z3-solver-js，支援大整數與字串 constraint。
 
