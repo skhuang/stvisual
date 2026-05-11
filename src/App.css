@@ -24,14 +24,19 @@ body {
   position: relative;
   z-index: 1;
 }
-.app-lang {
+.app-header__tools {
   position: absolute;
   top: 16px;
   right: 20px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   z-index: 2;
+}
+.app-lang {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 0.85rem;
 }
 .app-lang__label {
@@ -45,6 +50,24 @@ body {
   padding: 4px 8px;
   font-size: 0.85rem;
   cursor: pointer;
+}
+.app-cloud-link {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.app-cloud-link:hover,
+.app-cloud-link.active {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.95);
+  color: #1a252f;
 }
 .app-header::before {
   content: '';
@@ -157,6 +180,21 @@ body {
   line-height: 1.7;
 }
 .overview-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.overview-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.overview-group h3 {
+  color: #334155;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.overview-card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
@@ -289,12 +327,34 @@ body {
   }
 
   .overview-grid {
+    gap: 24px;
+  }
+
+  .overview-card-grid {
     grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    padding: 58px 16px 40px;
+  }
+
+  .app-header__tools {
+    left: 16px;
+    right: 16px;
+    justify-content: space-between;
+  }
+
+  .app-cloud-link {
+    padding-inline: 9px;
+  }
+
+  .app-lang__label {
+    display: none;
   }
 }
 
 @media (min-width: 681px) and (max-width: 1040px) {
-  .overview-grid {
+  .overview-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
