@@ -528,6 +528,26 @@ details.logic-binding[open] .logic-binding-summary::before { content: '▼ '; }
   box-shadow: 0 0 0 2px rgba(59,130,246,0.18);
 }
 
+.logic-binding-restore-btn {
+  align-self: center;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.78rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #f9fafb;
+  color: #374151;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.logic-binding-restore-btn:hover { background: #f3f4f6; border-color: #9ca3af; }
+
+.logic-binding-params-hint {
+  display: block;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.4rem;
+}
+
 .logic-binding-range-row {
   display: flex;
   align-items: center;

@@ -694,9 +694,17 @@ export function createLogicCoverageExplorer() {
     `;
   }
 
+  function activePredicateExample() {
+    return logicCoveragePredicates.find((p) => p.expression === state.expression) || null;
+  }
+
   function renderBindingPanel() {
     if (!state.analysis || state.error) return '';
     const { clauses } = state.analysis;
+    const example = activePredicateExample();
+    const hasDefaults = example?.defaultBindings &&
+      clauses.some((c) => example.defaultBindings[c]);
+
     const inputRows = clauses.map((c) => `
       <label class="logic-binding-clause-row">
         <span class="logic-binding-clause-name" aria-label="${t('logic.binding.clause')} ${escapeHtml(c)}">${escapeHtml(c)}</span>
@@ -715,13 +723,25 @@ export function createLogicCoverageExplorer() {
       </label>
     `).join('');
 
+    const restoreBtn = hasDefaults
+      ? `<button type="button" class="logic-binding-restore-btn"
+           data-testid="logic-binding-restore"
+           title="${t('logic.binding.restore')}">${t('logic.binding.restore')}</button>`
+      : '';
+
+    const paramsHint = example?.bindingParams
+      ? `<span class="logic-binding-params-hint">${t('logic.binding.params')} <code>${escapeHtml(example.bindingParams)}</code></span>`
+      : '';
+
     return `
       <details class="logic-binding" data-testid="logic-binding" open>
         <summary class="logic-binding-summary">${t('logic.binding.title')}</summary>
         <p class="logic-binding-desc">${t('logic.binding.hint')}</p>
         <div class="logic-binding-inputs" data-testid="logic-binding-inputs">
           ${inputRows}
+          ${restoreBtn}
         </div>
+        ${paramsHint}
         <div class="logic-binding-range-row">
           <span class="logic-binding-range-label">${t('logic.binding.range')}</span>
           <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-min"
@@ -767,6 +787,11 @@ export function createLogicCoverageExplorer() {
       btn.addEventListener('click', () => {
         state.expression = btn.dataset.expression;
         recompute();
+        // Auto-fill bindings from defaultBindings when available.
+        const example = activePredicateExample();
+        if (example?.defaultBindings) {
+          state.bindings = { ...example.defaultBindings };
+        }
         render();
       });
     });
@@ -803,6 +828,18 @@ export function createLogicCoverageExplorer() {
         bindingTimer = setTimeout(() => refreshBindingResults(), 200);
       });
     });
+
+    // Restore defaults button.
+    const restoreBtn = root.querySelector('[data-testid="logic-binding-restore"]');
+    if (restoreBtn) {
+      restoreBtn.addEventListener('click', () => {
+        const example = activePredicateExample();
+        if (example?.defaultBindings) {
+          state.bindings = { ...example.defaultBindings };
+          render();
+        }
+      });
+    }
 
     // Search range inputs.
     root.querySelectorAll('[data-binding-range]').forEach((input) => {

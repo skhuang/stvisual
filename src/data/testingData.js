@@ -461,6 +461,9 @@ export const logicCoveragePredicates = [
     expression: '(a && b) || c',
     description: '常見的混合 AND/OR predicate，三個子句。',
     descriptionEn: 'A common mixed AND/OR predicate with three clauses.',
+    // Binding: f(x,y,z) returns true when (x>0 && y>0) || z===0
+    defaultBindings: { a: 'x > 0', b: 'y > 0', c: 'z === 0' },
+    bindingParams: 'x, y, z',
   },
   {
     id: 'guarded-exit',
@@ -468,6 +471,9 @@ export const logicCoveragePredicates = [
     expression: 'a && (b || !c)',
     description: '帶有否定子句的守衛條件。',
     descriptionEn: 'A guarded condition that includes a negated clause.',
+    // Binding: guard — n must be positive and either even or not large
+    defaultBindings: { a: 'n > 0', b: 'n % 2 === 0', c: 'n > 100' },
+    bindingParams: 'n',
   },
   {
     id: 'four-clause',
@@ -475,6 +481,36 @@ export const logicCoveragePredicates = [
     expression: '(a || b) && (c || d)',
     description: '四個子句的乘積式 predicate，常見於範圍檢查。',
     descriptionEn: 'A four-clause product predicate, common in range checks.',
+    // Binding: x out-of-range OR y out-of-range — both axes must trigger
+    defaultBindings: { a: 'x < 0', b: 'x > 100', c: 'y < 0', d: 'y > 100' },
+    bindingParams: 'x, y',
+  },
+  {
+    id: 'triangle-valid',
+    name: 'Triangle valid',
+    expression: 'a && b && c',
+    description: '三角形合法性：三邊正數且任意兩邊之和大於第三邊。',
+    descriptionEn: 'Triangle validity: all sides positive and triangle inequality holds.',
+    defaultBindings: { a: 'p > 0 && q > 0 && r > 0', b: 'p + q > r', c: 'p + r > q' },
+    bindingParams: 'p, q, r',
+  },
+  {
+    id: 'abs-predicate',
+    name: 'abs(x) branch',
+    expression: 'a',
+    description: 'abs(x) 函式的單一分支條件：x < 0 → 回傳 -x。',
+    descriptionEn: 'The single branch condition inside abs(x): x < 0 returns -x.',
+    defaultBindings: { a: 'x < 0' },
+    bindingParams: 'x',
+  },
+  {
+    id: 'max3-predicate',
+    name: 'max3(a,b,c) branches',
+    expression: 'a && b',
+    description: 'max3 的雙層 if：a>b 且 a>c 時 a 為最大值。',
+    descriptionEn: 'Nested ifs in max3: a is maximum when a>b and a>c.',
+    defaultBindings: { a: 'x > y', b: 'x > z' },
+    bindingParams: 'x, y, z',
   },
 ];
 
