@@ -733,6 +733,10 @@ export function createLogicCoverageExplorer() {
       ? `<span class="logic-binding-params-hint">${t('logic.binding.params')} <code>${escapeHtml(example.bindingParams)}</code></span>`
       : '';
 
+    const sourceBlock = example?.sourceCode
+      ? `<pre class="logic-binding-source" data-testid="logic-binding-source"><code>${escapeHtml(example.sourceCode)}</code></pre>`
+      : '';
+
     return `
       <details class="logic-binding" data-testid="logic-binding" open>
         <summary class="logic-binding-summary">${t('logic.binding.title')}</summary>
@@ -742,6 +746,7 @@ export function createLogicCoverageExplorer() {
           ${restoreBtn}
         </div>
         ${paramsHint}
+        ${sourceBlock}
         <div class="logic-binding-range-row">
           <span class="logic-binding-range-label">${t('logic.binding.range')}</span>
           <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-min"
