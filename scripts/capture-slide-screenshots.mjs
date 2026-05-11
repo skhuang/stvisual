@@ -504,6 +504,58 @@ async function main() {
   }
   await concolicPage.close();
 
+  // ---- Deck #12: Test Generation from Coverage ----
+
+  const testgenPage = await ctx.newPage();
+  await testgenPage.goto(URL, { waitUntil: 'networkidle' });
+  await testgenPage.getByTestId('nav-btn-testgen').click();
+  await testgenPage.getByTestId('testgen-explorer').waitFor();
+  const testgenExplorer = testgenPage.getByTestId('testgen-explorer');
+
+  // Use the triangle classifier as the running example with Edge Coverage (default).
+  await testgenPage.getByTestId('testgen-example-triangle-classifier').click().catch(() => {});
+  await sleep(400);
+
+  // 40. Full testgen explorer overview.
+  await testgenExplorer.screenshot({ path: join(OUT_DIR, 'testgen-overview.png') });
+  console.log('[capture] saved testgen-overview.png');
+
+  // 41. Requirements card — click first requirement to highlight it.
+  const firstReq = testgenPage.locator('[data-testgen-req]').first();
+  if (await firstReq.count()) {
+    await firstReq.click();
+    await sleep(300);
+  }
+  const reqCard = testgenPage.getByTestId('testgen-requirements-card');
+  if (await reqCard.count()) {
+    await reqCard.scrollIntoViewIfNeeded();
+    await reqCard.screenshot({ path: join(OUT_DIR, 'testgen-requirements.png') });
+    console.log('[capture] saved testgen-requirements.png');
+  }
+
+  // 42. Minimal tests card — select first test to see CFG path highlight.
+  const firstTest = testgenPage.locator('[data-testgen-test]').first();
+  if (await firstTest.count()) {
+    await firstTest.click();
+    await sleep(300);
+  }
+  const testsCard = testgenPage.getByTestId('testgen-tests-card');
+  if (await testsCard.count()) {
+    await testsCard.scrollIntoViewIfNeeded();
+    await testsCard.screenshot({ path: join(OUT_DIR, 'testgen-tests.png') });
+    console.log('[capture] saved testgen-tests.png');
+  }
+
+  // 43. CFG pane with a selected test highlighted.
+  const testgenCfg = testgenPage.getByTestId('testgen-cfg');
+  if (await testgenCfg.count()) {
+    await testgenCfg.scrollIntoViewIfNeeded();
+    await testgenCfg.screenshot({ path: join(OUT_DIR, 'testgen-cfg.png') });
+    console.log('[capture] saved testgen-cfg.png');
+  }
+
+  await testgenPage.close();
+
   await browser.close();
   if (serverChild) {
     serverChild.kill();

@@ -1,6 +1,6 @@
 # Software Testing Visualization — Slide-Deck Index
 
-The stvisual course is **11 lectures**. Each deck contains:
+The stvisual course is **12 lectures**. Each deck contains:
 - **Concept**: definitions + subsumption / algorithm overview
 - **Worked example**: hand calculation + textbook citation
 - **Tool demo**: testids, click-by-click steps, screenshots
@@ -26,6 +26,7 @@ All decks are Marp Markdown — convert to PPTX with a single command. Screensho
 | 9 | Fuzz Testing | [09-fuzz-testing.zh-TW.md](09-fuzz-testing.zh-TW.md) | [09-fuzz-testing.en.md](09-fuzz-testing.en.md) | fuzz-overview, fuzz-cfg |
 | 10 | Symbolic Execution | [10-symbolic-execution.zh-TW.md](10-symbolic-execution.zh-TW.md) | [10-symbolic-execution.en.md](10-symbolic-execution.en.md) | symbex-overview, paths, cfg |
 | 11 | Concolic Execution | [11-concolic-execution.zh-TW.md](11-concolic-execution.zh-TW.md) | [11-concolic-execution.en.md](11-concolic-execution.en.md) | concolic-overview, iters, cfg |
+| 12 | Test Generation from Coverage | [12-test-generation.zh-TW.md](12-test-generation.zh-TW.md) | [12-test-generation.en.md](12-test-generation.en.md) | testgen-overview, requirements, tests, cfg |
 
 ---
 
@@ -44,10 +45,13 @@ All decks are Marp Markdown — convert to PPTX with a single command. Screensho
        ├──► #6 Program Mutation ──► #7 Grammar Mutation ──► #8 Spec Mutation
        │
        └──► #9 Fuzz Testing ──► #10 Symbolic Execution ──► #11 Concolic Execution
+                                                                      │
+                                                                      ▼
+                                          #12 Test Generation from Coverage (#3+#4+#10 bridge)
 ```
 
 Four threads:
-- #3–#4 graphs & data flow
+- #3–#4 graphs & data flow → **#12 auto test generation** (bridges #3/#4 requirements with #10 witnesses)
 - #5 and #8 share the predicate parser
 - #6–#8 chain — the mutation subject walks from **program** to **spec**
 - #9–#11 chain — the search strategy walks from **random** to **symbolic** to **concolic**
@@ -69,6 +73,7 @@ Four threads:
 | 9 | §15 | FuzzTestingExplorer + fuzzTesting.js + pathToCfg.js |
 | 10 | §16 | SymbolicExecutionExplorer + symbolicExecution.js |
 | 11 | §17 | ConcolicExecutionExplorer + concolicExecution.js |
+| 12 | §12 | TestGenerationExplorer + testGeneration.js |
 
 Full spec: [docs/Specification.zh-TW.md](../Specification.zh-TW.md).
 
@@ -114,7 +119,7 @@ Open `docs/slides/03-graph-coverage.en.html` — saving the source re-renders.
 
 ---
 
-## Screenshot inventory (39 files)
+## Screenshot inventory (43 files)
 
 Located in [docs/assets/slides/](../assets/slides/):
 
@@ -130,13 +135,14 @@ spec-{overview,mutants,fsm,smv-source}.png
 fuzz-{overview,cfg}.png
 symbex-{overview,paths,cfg}.png
 concolic-{overview,iters,cfg}.png
+testgen-{overview,requirements,tests,cfg}.png
 ```
 
 ---
 
 ## Possible extensions
 
-- **#12 Test Generation from Coverage** — turn requirements produced by #3–#5 into auto-generated tests (cross-linking with #7 string mutation).
+- **#12.2 Logic Coverage Binding** — manually map clause variables to program expressions, auto-solve concrete inputs.
 - **Speaker notes** — add `<!-- speaker -->` Marp speaker notes below each slide (deliberately omitted today so instructors can adapt freely).
 - **SMT solver integration** — replace #10 / #11’s brute-force witness solver with z3-solver-js for large integers and string constraints.
 
