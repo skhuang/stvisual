@@ -15,6 +15,9 @@ export const messages = {
 
     // Sections
     'section.all': 'Overview',
+    'overview.group.foundations': 'Foundations',
+    'overview.group.coverage': 'Coverage Criteria',
+    'overview.group.execution': 'Execution & Test Generation',
     'section.methods': 'Testing Methods',
     'section.graph': 'Graph Coverage',
     'section.logic': 'Logic Coverage',
@@ -487,6 +490,9 @@ export const messages = {
     'app.lang.zh': '中文',
 
     'section.all': '全覽',
+    'overview.group.foundations': '基礎概念',
+    'overview.group.coverage': '覆蓋準則',
+    'overview.group.execution': '執行與測試生成',
     'section.methods': '測試方法',
     'section.graph': 'Graph Coverage',
     'section.logic': 'Logic Coverage',

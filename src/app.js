@@ -13,7 +13,7 @@ import { createFuzzTestingExplorer } from './components/FuzzTestingExplorer.js';
 import { createTestGenerationExplorer } from './components/TestGenerationExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
-const sectionsConfig = [
+const learningSectionsConfig = [
   { id: 'all', key: 'section.all' },
   { id: 'methods', key: 'section.methods' },
   { id: 'graph', key: 'section.graph' },
@@ -23,9 +23,29 @@ const sectionsConfig = [
   { id: 'concolic', key: 'section.concolic' },
   { id: 'fuzz', key: 'section.fuzz' },
   { id: 'testgen', key: 'section.testgen' },
-  { id: 'cloud', key: 'section.cloud' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
+];
+
+const utilitySectionsConfig = [
+  { id: 'cloud', key: 'section.cloud' },
+];
+
+const sectionSelectConfig = [...learningSectionsConfig, ...utilitySectionsConfig];
+
+const overviewGroups = [
+  {
+    key: 'overview.group.foundations',
+    sectionIds: ['methods', 'flow', 'types'],
+  },
+  {
+    key: 'overview.group.coverage',
+    sectionIds: ['graph', 'logic', 'syntax'],
+  },
+  {
+    key: 'overview.group.execution',
+    sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen'],
+  },
 ];
 
 export function renderApp(container) {
@@ -37,12 +57,17 @@ export function renderApp(container) {
             <h1>${t('app.title')}</h1>
             ${getLocale() === 'zh' ? `<p>${t('app.subtitle')}</p>` : ''}
           </div>
-          <div class="app-lang" role="group" aria-label="${t('app.lang.label')}">
-            <label class="app-lang__label" for="app-lang-select">${t('app.lang.label')}</label>
-            <select id="app-lang-select" data-testid="app-lang-select">
-              <option value="en"${getLocale() === 'en' ? ' selected' : ''}>${t('app.lang.en')}</option>
-              <option value="zh"${getLocale() === 'zh' ? ' selected' : ''}>${t('app.lang.zh')}</option>
-            </select>
+          <div class="app-header__tools">
+            <button class="app-cloud-link" type="button" data-app-cloud data-testid="app-cloud-link">
+              ${t('section.cloud')}
+            </button>
+            <div class="app-lang" role="group" aria-label="${t('app.lang.label')}">
+              <label class="app-lang__label" for="app-lang-select">${t('app.lang.label')}</label>
+              <select id="app-lang-select" data-testid="app-lang-select">
+                <option value="en"${getLocale() === 'en' ? ' selected' : ''}>${t('app.lang.en')}</option>
+                <option value="zh"${getLocale() === 'zh' ? ' selected' : ''}>${t('app.lang.zh')}</option>
+              </select>
+            </div>
           </div>
         </header>
 
@@ -176,19 +201,30 @@ export function renderApp(container) {
     container.querySelector('[data-slot="types"]').appendChild(components.types);
 
     let activeSection = 'all';
-    const overviewItems = sectionsConfig.filter((section) => section.id !== 'all');
+    const sectionsById = Object.fromEntries(sectionSelectConfig.map((section) => [section.id, section]));
     const overviewGrid = container.querySelector('[data-testid="overview-grid"]');
+    const cloudTrigger = container.querySelector('[data-app-cloud]');
 
     function renderOverview() {
-      overviewGrid.innerHTML = overviewItems.map((section) => `
-        <button
-          class="overview-card"
-          type="button"
-          data-overview-section="${section.id}"
-        >
-          <span class="overview-card__label">${t(section.key)}</span>
-          <span class="overview-card__title">${t(`section.${section.id}.title`)}</span>
-        </button>
+      overviewGrid.innerHTML = overviewGroups.map((group) => `
+        <section class="overview-group">
+          <h3>${t(group.key)}</h3>
+          <div class="overview-card-grid">
+            ${group.sectionIds.map((id) => {
+              const section = sectionsById[id];
+              return `
+                <button
+                  class="overview-card"
+                  type="button"
+                  data-overview-section="${section.id}"
+                >
+                  <span class="overview-card__label">${t(section.key)}</span>
+                  <span class="overview-card__title">${t(`section.${section.id}.title`)}</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </section>
       `).join('');
 
       overviewGrid.querySelectorAll('[data-overview-section]').forEach((button) => {
@@ -201,7 +237,7 @@ export function renderApp(container) {
     function renderNav() {
       nav.innerHTML = `
         <div class="app-nav__buttons">
-          ${sectionsConfig.map((section) => `
+          ${learningSectionsConfig.map((section) => `
             <button
               class="nav-btn${activeSection === section.id ? ' active' : ''}"
               data-testid="nav-btn-${section.id}"
@@ -214,7 +250,7 @@ export function renderApp(container) {
         </div>
         <label class="app-section-select-label" for="app-section-select">${t('app.section.label')}</label>
         <select class="app-section-select" id="app-section-select" data-testid="app-section-select">
-          ${sectionsConfig.map((section) => `
+          ${sectionSelectConfig.map((section) => `
             <option value="${section.id}"${activeSection === section.id ? ' selected' : ''}>${t(section.key)}</option>
           `).join('')}
         </select>
@@ -244,10 +280,17 @@ export function renderApp(container) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
+    function updateCloudTriggerState() {
+      const isActive = activeSection === 'cloud';
+      cloudTrigger.classList.toggle('active', isActive);
+      cloudTrigger.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    }
+
     function setActiveSection(sectionId, shouldScroll = false) {
       activeSection = sectionId;
       renderNav();
       updateSectionVisibility();
+      updateCloudTriggerState();
       if (shouldScroll) {
         requestAnimationFrame(scrollToActiveSection);
       }
@@ -257,9 +300,14 @@ export function renderApp(container) {
       setLocale(e.target.value);
     });
 
+    cloudTrigger.addEventListener('click', () => {
+      setActiveSection('cloud', true);
+    });
+
     renderOverview();
     renderNav();
     updateSectionVisibility();
+    updateCloudTriggerState();
   }
 
   paint();
