@@ -461,9 +461,14 @@ export const logicCoveragePredicates = [
     expression: '(a && b) || c',
     description: '常見的混合 AND/OR predicate，三個子句。',
     descriptionEn: 'A common mixed AND/OR predicate with three clauses.',
-    // Binding: f(x,y,z) returns true when (x>0 && y>0) || z===0
     defaultBindings: { a: 'x > 0', b: 'y > 0', c: 'z === 0' },
     bindingParams: 'x, y, z',
+    sourceCode: `function f(x, y, z) {
+  if ((x > 0 && y > 0) || z === 0) {  // ← (a && b) || c
+    return 'pass';
+  }
+  return 'fail';
+}`,
   },
   {
     id: 'guarded-exit',
@@ -471,9 +476,14 @@ export const logicCoveragePredicates = [
     expression: 'a && (b || !c)',
     description: '帶有否定子句的守衛條件。',
     descriptionEn: 'A guarded condition that includes a negated clause.',
-    // Binding: guard — n must be positive and either even or not large
     defaultBindings: { a: 'n > 0', b: 'n % 2 === 0', c: 'n > 100' },
     bindingParams: 'n',
+    sourceCode: `function process(n) {
+  if (n > 0 && (n % 2 === 0 || !(n > 100))) {  // ← a && (b || !c)
+    return 'ok';
+  }
+  return 'skip';
+}`,
   },
   {
     id: 'four-clause',
@@ -481,9 +491,14 @@ export const logicCoveragePredicates = [
     expression: '(a || b) && (c || d)',
     description: '四個子句的乘積式 predicate，常見於範圍檢查。',
     descriptionEn: 'A four-clause product predicate, common in range checks.',
-    // Binding: x out-of-range OR y out-of-range — both axes must trigger
     defaultBindings: { a: 'x < 0', b: 'x > 100', c: 'y < 0', d: 'y > 100' },
     bindingParams: 'x, y',
+    sourceCode: `function outOfBounds(x, y) {
+  if ((x < 0 || x > 100) && (y < 0 || y > 100)) {  // ← (a||b) && (c||d)
+    return true;   // both axes out of range
+  }
+  return false;
+}`,
   },
   {
     id: 'triangle-valid',
@@ -493,6 +508,14 @@ export const logicCoveragePredicates = [
     descriptionEn: 'Triangle validity: all sides positive and triangle inequality holds.',
     defaultBindings: { a: 'p > 0 && q > 0 && r > 0', b: 'p + q > r', c: 'p + r > q' },
     bindingParams: 'p, q, r',
+    sourceCode: `function isValidTriangle(p, q, r) {
+  if (p > 0 && q > 0 && r > 0   // ← a
+      && p + q > r               // ← b
+      && p + r > q) {            // ← c
+    return 'valid';
+  }
+  return 'invalid';
+}`,
   },
   {
     id: 'abs-predicate',
@@ -502,15 +525,31 @@ export const logicCoveragePredicates = [
     descriptionEn: 'The single branch condition inside abs(x): x < 0 returns -x.',
     defaultBindings: { a: 'x < 0' },
     bindingParams: 'x',
+    sourceCode: `function abs(x) {
+  if (x < 0) {   // ← a
+    return -x;
+  }
+  return x;
+}`,
   },
   {
     id: 'max3-predicate',
-    name: 'max3(a,b,c) branches',
+    name: 'max3 branches',
     expression: 'a && b',
-    description: 'max3 的雙層 if：a>b 且 a>c 時 a 為最大值。',
-    descriptionEn: 'Nested ifs in max3: a is maximum when a>b and a>c.',
+    description: 'max3 的雙層 if：x>y 且 x>z 時 x 為最大值。',
+    descriptionEn: 'Nested ifs in max3: x is maximum when x>y and x>z.',
     defaultBindings: { a: 'x > y', b: 'x > z' },
     bindingParams: 'x, y, z',
+    sourceCode: `function max3(x, y, z) {
+  if (x > y) {      // ← a
+    if (x > z) {    // ← b
+      return x;
+    }
+    return z;
+  }
+  if (y > z) { return y; }
+  return z;
+}`,
   },
 ];
 

@@ -548,6 +548,19 @@ details.logic-binding[open] .logic-binding-summary::before { content: '▼ '; }
   margin-bottom: 0.4rem;
 }
 
+.logic-binding-source {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  overflow-x: auto;
+  margin: 0 0 0.75rem;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
 .logic-binding-range-row {
   display: flex;
   align-items: center;
