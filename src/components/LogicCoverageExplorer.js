@@ -10,6 +10,7 @@ import {
 import { buildKMap } from '../utils/karnaughMap.js';
 import { t, getLocale, pickField } from '../i18n/index.js';
 import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
+import { solveBinding, formatWitnessStr, extractVarsFromBindings } from '../utils/logicBinding.js';
 
 const RECENT_KEY = 'stvisual.logic.recentPredicates';
 const RECENT_LIMIT = 8;
@@ -197,6 +198,7 @@ export function createLogicCoverageExplorer() {
     error: null,
     parsed: null,
     analysis: null,
+    bindings: {},  // clauseName → JS expression string
     recent: loadRecent(),
     cloudUser: null,
   };
@@ -249,6 +251,11 @@ export function createLogicCoverageExplorer() {
       }
       state.analysis = buildAllCoverageSets(state.parsed);
       state.error = null;
+      // Drop bindings for clauses no longer in the predicate.
+      const clauseSet = new Set(state.parsed.clauses);
+      for (const k of Object.keys(state.bindings)) {
+        if (!clauseSet.has(k)) delete state.bindings[k];
+      }
     } catch (err) {
       state.parsed = null;
       state.analysis = null;
@@ -350,6 +357,8 @@ export function createLogicCoverageExplorer() {
       </div>
 
       <div class="logic-summary" data-testid="logic-summary">${summaryMarkup}</div>
+
+      ${renderBindingPanel()}
 
       <div class="logic-truth-table-wrap">${truthTableMarkup}</div>
     `;
@@ -619,6 +628,109 @@ export function createLogicCoverageExplorer() {
     `;
   }
 
+  // ---- Clause Binding panel ----
+
+  function buildBindingResultsHTML() {
+    if (!state.analysis) return '';
+    const { clauses } = state.analysis;
+    const hasAnyBinding = clauses.some((c) => state.bindings[c]?.trim());
+    if (!hasAnyBinding) {
+      return `<p class="logic-binding-hint-noentry" data-testid="logic-binding-no-entry">${t('logic.binding.noBinding')}</p>`;
+    }
+
+    const vars = extractVarsFromBindings(state.bindings);
+    const activeSet = getActiveSet();
+    if (!activeSet) return '';
+
+    const seenRows = new Set();
+    const uniqueTests = activeSet.tests.filter((test) => {
+      const key = `r${test.row.index}`;
+      if (seenRows.has(key)) return false;
+      seenRows.add(key);
+      return true;
+    });
+
+    const rows = uniqueTests.map((test) => {
+      const valStr = clauses.map((c) => `${c}=${test.row.values[c] ? 'T' : 'F'}`).join(', ');
+      // Only include clauses that have a binding expression.
+      const boundClauseValues = {};
+      for (const c of clauses) {
+        if (state.bindings[c]?.trim()) boundClauseValues[c] = test.row.values[c];
+      }
+      const result = solveBinding({
+        clauseValues: boundClauseValues,
+        bindings: state.bindings,
+      });
+      const witnessCell = result.witness
+        ? `<code class="logic-binding-witness" data-testid="logic-binding-witness-${test.row.index}">${escapeHtml(formatWitnessStr(result.witness))}</code>`
+        : `<span class="logic-binding-infeasible" data-testid="logic-binding-infeasible-${test.row.index}">${t('logic.binding.infeasible')}</span>`;
+      return `
+        <tr data-testid="logic-binding-row-${test.row.index}">
+          <td class="logic-binding-td-index">#${test.row.index}</td>
+          <td class="logic-binding-td-vals">${escapeHtml(valStr)}</td>
+          <td class="logic-binding-td-witness">${witnessCell}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const varList = vars.length ? `<span class="logic-binding-vars">${t('logic.binding.vars')} <code>${escapeHtml(vars.join(', '))}</code></span>` : '';
+    return `
+      ${varList}
+      <table class="logic-binding-table" data-testid="logic-binding-table">
+        <thead>
+          <tr>
+            <th>${t('logic.binding.col.row')}</th>
+            <th>${t('logic.binding.col.vals')}</th>
+            <th>${t('logic.binding.col.witness')}</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+
+  function renderBindingPanel() {
+    if (!state.analysis || state.error) return '';
+    const { clauses } = state.analysis;
+    const inputRows = clauses.map((c) => `
+      <label class="logic-binding-clause-row">
+        <span class="logic-binding-clause-name" aria-label="${t('logic.binding.clause')} ${escapeHtml(c)}">${escapeHtml(c)}</span>
+        <span class="logic-binding-arrow" aria-hidden="true">↦</span>
+        <input
+          type="text"
+          class="logic-binding-expr-input"
+          data-testid="logic-binding-input-${escapeHtml(c)}"
+          data-binding-clause="${escapeHtml(c)}"
+          value="${escapeHtml(state.bindings[c] || '')}"
+          placeholder="${t('logic.binding.placeholder')}"
+          spellcheck="false"
+          autocomplete="off"
+          aria-label="${t('logic.binding.clause')} ${escapeHtml(c)}"
+        />
+      </label>
+    `).join('');
+
+    return `
+      <details class="logic-binding" data-testid="logic-binding" open>
+        <summary class="logic-binding-summary">${t('logic.binding.title')}</summary>
+        <p class="logic-binding-desc">${t('logic.binding.hint')}</p>
+        <div class="logic-binding-inputs" data-testid="logic-binding-inputs">
+          ${inputRows}
+        </div>
+        <div class="logic-binding-results" data-testid="logic-binding-results">
+          ${buildBindingResultsHTML()}
+        </div>
+      </details>
+    `;
+  }
+
+  function refreshBindingResults() {
+    const el = root.querySelector('[data-testid="logic-binding-results"]');
+    if (el) el.innerHTML = buildBindingResultsHTML();
+  }
+
+  // ---- end Clause Binding panel ----
+
   function bindEvents() {
     const input = root.querySelector('[data-testid="logic-expression-input"]');
     if (input) {
@@ -665,6 +777,17 @@ export function createLogicCoverageExplorer() {
       btn.addEventListener('click', () => {
         state.selectedCriterion = btn.dataset.criterion;
         render();
+      });
+    });
+
+    // Binding inputs — update results section only (no full re-render → no focus loss).
+    let bindingTimer = null;
+    root.querySelectorAll('[data-binding-clause]').forEach((input) => {
+      input.addEventListener('input', () => {
+        const clause = input.dataset.bindingClause;
+        state.bindings[clause] = input.value;
+        if (bindingTimer) clearTimeout(bindingTimer);
+        bindingTimer = setTimeout(() => refreshBindingResults(), 200);
       });
     });
   }

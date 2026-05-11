@@ -462,3 +462,126 @@
 }
 .logic-cell-result.is-true { color: #27ae60; font-weight: 700; }
 .logic-cell-result.is-false { color: #c0392b; font-weight: 700; }
+
+/* ---- Clause Binding panel ---- */
+.logic-binding {
+  border: 1px solid var(--app-border, #d0d7e2);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+}
+.logic-binding-summary {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1f2a44;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+.logic-binding-summary::-webkit-details-marker { display: none; }
+.logic-binding-summary::before { content: '▶ '; font-size: 0.75rem; }
+details.logic-binding[open] .logic-binding-summary::before { content: '▼ '; }
+
+.logic-binding-desc {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.logic-binding-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.logic-binding-clause-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.logic-binding-clause-name {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f3a8a;
+  min-width: 1.4rem;
+  text-align: center;
+}
+.logic-binding-arrow {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+.logic-binding-expr-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--app-border, #d0d7e2);
+  border-radius: 6px;
+  background: #fff;
+  width: 14rem;
+  transition: border-color 0.15s;
+}
+.logic-binding-expr-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.18);
+}
+
+.logic-binding-results {
+  margin-top: 0.25rem;
+}
+
+.logic-binding-vars {
+  display: block;
+  font-size: 0.82rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.logic-binding-hint-noentry {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  font-style: italic;
+  margin: 0;
+}
+
+.logic-binding-table {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  width: 100%;
+  max-width: 42rem;
+}
+.logic-binding-table th {
+  text-align: left;
+  padding: 0.3rem 0.6rem;
+  border-bottom: 2px solid #e5e7eb;
+  font-weight: 600;
+  color: #374151;
+}
+.logic-binding-table td {
+  padding: 0.25rem 0.6rem;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+.logic-binding-td-index { color: #6b7280; font-size: 0.78rem; white-space: nowrap; }
+.logic-binding-td-vals {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  color: #374151;
+}
+.logic-binding-td-witness { min-width: 8rem; }
+
+.logic-binding-witness {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  background: #ecfdf5;
+  color: #047857;
+  padding: 0.1rem 0.45rem;
+  border-radius: 5px;
+}
+.logic-binding-infeasible {
+  font-size: 0.8rem;
+  color: #b91c1c;
+  font-style: italic;
+}
