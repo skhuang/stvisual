@@ -49,6 +49,13 @@ export function renderApp(container) {
         <nav class="app-nav" aria-label="${t('app.nav.aria')}" data-testid="app-nav"></nav>
 
         <main class="app-main">
+          <section class="overview-section" data-testid="section-overview">
+            <div class="overview-section__header">
+              <h2>${t('section.all')}</h2>
+              <p>${t('app.overview.subtitle')}</p>
+            </div>
+            <div class="overview-grid" data-testid="overview-grid"></div>
+          </section>
           <section data-testid="section-methods"><h2>${t('section.methods.title')}</h2><div data-slot="methods"></div></section>
           <section data-testid="section-graph"><h2>${t('section.graph.title')}</h2><div data-slot="graph"></div></section>
           <section data-testid="section-logic"><h2>${t('section.logic.title')}</h2><div data-slot="logic"></div></section>
@@ -71,6 +78,7 @@ export function renderApp(container) {
     const nav = container.querySelector('.app-nav');
     const main = container.querySelector('.app-main');
     const sections = {
+      overview: main.querySelector('[data-testid="section-overview"]'),
       methods: main.querySelector('[data-testid="section-methods"]'),
       graph: main.querySelector('[data-testid="section-graph"]'),
       logic: main.querySelector('[data-testid="section-logic"]'),
@@ -168,39 +176,88 @@ export function renderApp(container) {
     container.querySelector('[data-slot="types"]').appendChild(components.types);
 
     let activeSection = 'all';
+    const overviewItems = sectionsConfig.filter((section) => section.id !== 'all');
+    const overviewGrid = container.querySelector('[data-testid="overview-grid"]');
 
-    function renderNav() {
-      nav.innerHTML = sectionsConfig.map((section) => `
+    function renderOverview() {
+      overviewGrid.innerHTML = overviewItems.map((section) => `
         <button
-          class="nav-btn${activeSection === section.id ? ' active' : ''}"
-          data-testid="nav-btn-${section.id}"
-          data-section="${section.id}"
+          class="overview-card"
           type="button"
+          data-overview-section="${section.id}"
         >
-          ${t(section.key)}
+          <span class="overview-card__label">${t(section.key)}</span>
+          <span class="overview-card__title">${t(`section.${section.id}.title`)}</span>
         </button>
       `).join('');
 
+      overviewGrid.querySelectorAll('[data-overview-section]').forEach((button) => {
+        button.addEventListener('click', () => {
+          setActiveSection(button.dataset.overviewSection, true);
+        });
+      });
+    }
+
+    function renderNav() {
+      nav.innerHTML = `
+        <div class="app-nav__buttons">
+          ${sectionsConfig.map((section) => `
+            <button
+              class="nav-btn${activeSection === section.id ? ' active' : ''}"
+              data-testid="nav-btn-${section.id}"
+              data-section="${section.id}"
+              type="button"
+            >
+              ${t(section.key)}
+            </button>
+          `).join('')}
+        </div>
+        <label class="app-section-select-label" for="app-section-select">${t('app.section.label')}</label>
+        <select class="app-section-select" id="app-section-select" data-testid="app-section-select">
+          ${sectionsConfig.map((section) => `
+            <option value="${section.id}"${activeSection === section.id ? ' selected' : ''}>${t(section.key)}</option>
+          `).join('')}
+        </select>
+      `;
+
       nav.querySelectorAll('[data-section]').forEach((button) => {
         button.addEventListener('click', () => {
-          activeSection = button.dataset.section;
-          renderNav();
-          updateSectionVisibility();
+          setActiveSection(button.dataset.section, true);
         });
+      });
+
+      nav.querySelector('[data-testid="app-section-select"]').addEventListener('change', (event) => {
+        setActiveSection(event.target.value, true);
       });
     }
 
     function updateSectionVisibility() {
       Object.entries(sections).forEach(([id, element]) => {
-        const visible = activeSection === 'all' || activeSection === id;
+        const visible = (activeSection === 'all' && id === 'overview') || activeSection === id;
         element.style.display = visible ? '' : 'none';
       });
+    }
+
+    function scrollToActiveSection() {
+      const target = activeSection === 'all' ? sections.overview : sections[activeSection];
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function setActiveSection(sectionId, shouldScroll = false) {
+      activeSection = sectionId;
+      renderNav();
+      updateSectionVisibility();
+      if (shouldScroll) {
+        requestAnimationFrame(scrollToActiveSection);
+      }
     }
 
     container.querySelector('#app-lang-select').addEventListener('change', (e) => {
       setLocale(e.target.value);
     });
 
+    renderOverview();
     renderNav();
     updateSectionVisibility();
   }

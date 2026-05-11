@@ -118,6 +118,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
   gap: 1rem;
+  min-width: 0;
 }
 
 @media (max-width: 900px) {
@@ -126,6 +127,7 @@
 
 .syntax-program,
 .syntax-tests {
+  min-width: 0;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
@@ -133,6 +135,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.syntax-tests {
+  overflow-x: auto;
 }
 
 .syntax-label {
@@ -178,6 +184,7 @@
 
 .syntax-test-table {
   width: 100%;
+  min-width: 42rem;
   border-collapse: collapse;
   font-size: 0.85rem;
 }

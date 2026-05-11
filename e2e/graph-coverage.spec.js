@@ -9,6 +9,7 @@ test.beforeEach(async ({ context }) => {
 test.describe('Graph Coverage Browser Tests', () => {
   test('supports advanced criteria and generated test paths', async ({ page }) => {
     await page.goto('/index.html');
+    await page.getByTestId('nav-btn-graph').click();
 
     await page.getByTestId('criterion-edge-pair').click();
     await expect(page.getByTestId('requirement-list')).toContainText('S -> A -> B');
@@ -23,6 +24,7 @@ test.describe('Graph Coverage Browser Tests', () => {
 
   test('recomputes requirements and test paths after graph editing', async ({ page }) => {
     await page.goto('/index.html');
+    await page.getByTestId('nav-btn-graph').click();
 
     await page.getByTestId('graph-nodes-input').fill([
       'S,Start,80,170',

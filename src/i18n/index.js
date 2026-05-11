@@ -11,6 +11,8 @@ let current = (() => {
     const saved = globalThis.localStorage?.getItem(STORAGE_KEY);
     if (saved && SUPPORTED.includes(saved)) return saved;
   } catch {}
+  const browserLocale = globalThis.navigator?.language || '';
+  if (browserLocale.toLowerCase().startsWith('zh')) return 'zh';
   return DEFAULT_LOCALE;
 })();
 

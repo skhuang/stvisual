@@ -9,6 +9,7 @@ test.beforeEach(async ({ context }) => {
 test.describe('Path Optimization Metrics', () => {
   test('shows before and after path counts', async ({ page }) => {
     await page.goto('/index.html');
+    await page.getByTestId('nav-btn-graph').click();
 
     await expect(page.getByTestId('test-path-metrics')).toBeVisible();
 

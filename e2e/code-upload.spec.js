@@ -8,6 +8,7 @@ test.describe('Code Upload to CFG', () => {
   });
   test('uploads source code, generates CFG, and shows source mapping', async ({ page }) => {
     await page.goto('/index.html');
+    await page.getByTestId('nav-btn-graph').click();
 
     await page.getByTestId('program-language-select').selectOption('javascript');
     await page.getByTestId('code-upload-input').setInputFiles({
@@ -40,6 +41,7 @@ test.describe('Code Upload to CFG', () => {
 
   test('keeps mapping correct when switching requirements on complex control flow', async ({ page }) => {
     await page.goto('/index.html');
+    await page.getByTestId('nav-btn-graph').click();
 
     await page.getByTestId('program-language-select').selectOption('javascript');
     await page.getByTestId('code-upload-input').setInputFiles({
@@ -86,6 +88,7 @@ test.describe('Code Upload to CFG', () => {
 
   test('keeps source mapping consistent when switching node/edge/prime-path criteria', async ({ page }) => {
     await page.goto('/index.html');
+    await page.getByTestId('nav-btn-graph').click();
 
     await page.getByTestId('program-language-select').selectOption('javascript');
     await page.getByTestId('code-upload-input').setInputFiles({
