@@ -455,21 +455,96 @@
       name: "(a && b) || c",
       expression: "(a && b) || c",
       description: "\u5E38\u898B\u7684\u6DF7\u5408 AND/OR predicate\uFF0C\u4E09\u500B\u5B50\u53E5\u3002",
-      descriptionEn: "A common mixed AND/OR predicate with three clauses."
+      descriptionEn: "A common mixed AND/OR predicate with three clauses.",
+      defaultBindings: { a: "x > 0", b: "y > 0", c: "z === 0" },
+      bindingParams: "x, y, z",
+      sourceCode: `function f(x, y, z) {
+  if ((x > 0 && y > 0) || z === 0) {  // \u2190 (a && b) || c
+    return 'pass';
+  }
+  return 'fail';
+}`
     },
     {
       id: "guarded-exit",
       name: "a && (b || !c)",
       expression: "a && (b || !c)",
       description: "\u5E36\u6709\u5426\u5B9A\u5B50\u53E5\u7684\u5B88\u885B\u689D\u4EF6\u3002",
-      descriptionEn: "A guarded condition that includes a negated clause."
+      descriptionEn: "A guarded condition that includes a negated clause.",
+      defaultBindings: { a: "n > 0", b: "n % 2 === 0", c: "n > 100" },
+      bindingParams: "n",
+      sourceCode: `function process(n) {
+  if (n > 0 && (n % 2 === 0 || !(n > 100))) {  // \u2190 a && (b || !c)
+    return 'ok';
+  }
+  return 'skip';
+}`
     },
     {
       id: "four-clause",
       name: "(a || b) && (c || d)",
       expression: "(a || b) && (c || d)",
       description: "\u56DB\u500B\u5B50\u53E5\u7684\u4E58\u7A4D\u5F0F predicate\uFF0C\u5E38\u898B\u65BC\u7BC4\u570D\u6AA2\u67E5\u3002",
-      descriptionEn: "A four-clause product predicate, common in range checks."
+      descriptionEn: "A four-clause product predicate, common in range checks.",
+      defaultBindings: { a: "x < 0", b: "x > 100", c: "y < 0", d: "y > 100" },
+      bindingParams: "x, y",
+      sourceCode: `function outOfBounds(x, y) {
+  if ((x < 0 || x > 100) && (y < 0 || y > 100)) {  // \u2190 (a||b) && (c||d)
+    return true;   // both axes out of range
+  }
+  return false;
+}`
+    },
+    {
+      id: "triangle-valid",
+      name: "Triangle valid",
+      expression: "a && b && c",
+      description: "\u4E09\u89D2\u5F62\u5408\u6CD5\u6027\uFF1A\u4E09\u908A\u6B63\u6578\u4E14\u4EFB\u610F\u5169\u908A\u4E4B\u548C\u5927\u65BC\u7B2C\u4E09\u908A\u3002",
+      descriptionEn: "Triangle validity: all sides positive and triangle inequality holds.",
+      defaultBindings: { a: "p > 0 && q > 0 && r > 0", b: "p + q > r", c: "p + r > q" },
+      bindingParams: "p, q, r",
+      sourceCode: `function isValidTriangle(p, q, r) {
+  if (p > 0 && q > 0 && r > 0   // \u2190 a
+      && p + q > r               // \u2190 b
+      && p + r > q) {            // \u2190 c
+    return 'valid';
+  }
+  return 'invalid';
+}`
+    },
+    {
+      id: "abs-predicate",
+      name: "abs(x) branch",
+      expression: "a",
+      description: "abs(x) \u51FD\u5F0F\u7684\u55AE\u4E00\u5206\u652F\u689D\u4EF6\uFF1Ax < 0 \u2192 \u56DE\u50B3 -x\u3002",
+      descriptionEn: "The single branch condition inside abs(x): x < 0 returns -x.",
+      defaultBindings: { a: "x < 0" },
+      bindingParams: "x",
+      sourceCode: `function abs(x) {
+  if (x < 0) {   // \u2190 a
+    return -x;
+  }
+  return x;
+}`
+    },
+    {
+      id: "max3-predicate",
+      name: "max3 branches",
+      expression: "a && b",
+      description: "max3 \u7684\u96D9\u5C64 if\uFF1Ax>y \u4E14 x>z \u6642 x \u70BA\u6700\u5927\u503C\u3002",
+      descriptionEn: "Nested ifs in max3: x is maximum when x>y and x>z.",
+      defaultBindings: { a: "x > y", b: "x > z" },
+      bindingParams: "x, y, z",
+      sourceCode: `function max3(x, y, z) {
+  if (x > y) {      // \u2190 a
+    if (x > z) {    // \u2190 b
+      return x;
+    }
+    return z;
+  }
+  if (y > z) { return y; }
+  return z;
+}`
     }
   ];
   var symbolicExecutionExamples = [
@@ -747,11 +822,19 @@
       "app.subtitle": "Software Testing Methods Visualization",
       "app.nav.aria": "Switch section",
       "app.footer": "Built per Plan.md \xB7 Software Testing Methods Visualization",
+      "app.overview.subtitle": "Choose a topic to open one focused explorer at a time.",
+      "app.section.label": "Section",
       "app.lang.label": "Language",
       "app.lang.en": "English",
       "app.lang.zh": "\u4E2D\u6587",
+      "explorer.panel.input": "Input",
+      "explorer.panel.cfg": "Control Flow Graph",
+      "explorer.panel.results": "Results",
       // Sections
       "section.all": "Overview",
+      "overview.group.foundations": "Foundations",
+      "overview.group.coverage": "Coverage Criteria",
+      "overview.group.execution": "Execution & Test Generation",
       "section.methods": "Testing Methods",
       "section.graph": "Graph Coverage",
       "section.logic": "Logic Coverage",
@@ -762,7 +845,7 @@
       "section.methods.title": "Testing Method Categories",
       "section.graph.title": "Graph Coverage Visualization",
       "section.logic.title": "Logic Coverage Visualization",
-      "section.syntax.title": "Syntax-Based Testing: Program Mutation",
+      "section.syntax.title": "Syntax-Based Testing Explorer",
       "syntaxTab.mutation": "Program Mutation",
       "syntaxTab.grammar": "Grammar Coverage",
       "syntaxTab.spec": "Specification Mutation",
@@ -832,6 +915,7 @@
       "fuzz.empty": "No test cases yet.",
       "fuzz.hint": "Fuzz testing generates random inputs and executes the program, detecting crashes and anomalies. Supports: function with int/bool/string params, int/bool/string operations, if/else, while loops. Monitor output for runtime errors.",
       "fuzz.cfg.title": "Control Flow Graph",
+      "fuzz.cfg.coverage": "Coverage",
       "fuzz.cfg.zoom": "Zoom",
       "fuzz.cfg.zoomIn": "Zoom in",
       "fuzz.cfg.zoomOut": "Zoom out",
@@ -1065,6 +1149,22 @@
       "logic.metric.unique": "Unique rows: ",
       "logic.metric.duplicate": "Duplicates: ",
       "logic.metric.requirements": "Suggested requirements: ",
+      // Clause Binding
+      "logic.binding.title": "Clause Binding \u2192 Concrete Inputs",
+      "logic.binding.hint": "Map each clause to a JS expression using program variables (e.g. x > 0, x + y > z). The solver searches integers in the range below.",
+      "logic.binding.placeholder": "e.g. x > 0",
+      "logic.binding.clause": "Clause",
+      "logic.binding.vars": "Variables detected:",
+      "logic.binding.noBinding": "Enter at least one binding expression above to see concrete witnesses.",
+      "logic.binding.infeasible": "infeasible",
+      "logic.binding.range": "Search range:",
+      "logic.binding.rangeTo": "to",
+      "logic.binding.col.row": "Test row",
+      "logic.binding.col.vals": "Clause values",
+      "logic.binding.col.constraint": "Constraint",
+      "logic.binding.col.witness": "Witness",
+      "logic.binding.restore": "Restore defaults",
+      "logic.binding.params": "Suggested variables:",
       // Syntax / mutation
       "syntax.title": "Syntax-Based Testing: Program Mutation",
       "syntax.subtitle": "Pick a program, choose mutation operators, and a test set; the system generates mutants and reports the score.",
@@ -1185,10 +1285,18 @@
       "app.subtitle": "Software Testing Methods Visualization",
       "app.nav.aria": "\u5207\u63DB\u5340\u584A",
       "app.footer": "\u6839\u64DA Plan.md \u5EFA\u7ACB \xB7 \u8EDF\u9AD4\u6E2C\u8A66\u65B9\u6CD5\u8996\u89BA\u5316\u7CFB\u7D71",
+      "app.overview.subtitle": "\u9078\u64C7\u4E00\u500B\u4E3B\u984C\uFF0C\u9032\u5165\u55AE\u4E00\u4E92\u52D5\u6A21\u7D44\u3002",
+      "app.section.label": "\u5340\u584A",
       "app.lang.label": "\u8A9E\u8A00",
       "app.lang.en": "English",
       "app.lang.zh": "\u4E2D\u6587",
+      "explorer.panel.input": "\u8F38\u5165",
+      "explorer.panel.cfg": "\u63A7\u5236\u6D41\u7A0B\u5716",
+      "explorer.panel.results": "\u7D50\u679C",
       "section.all": "\u5168\u89BD",
+      "overview.group.foundations": "\u57FA\u790E\u6982\u5FF5",
+      "overview.group.coverage": "\u8986\u84CB\u6E96\u5247",
+      "overview.group.execution": "\u57F7\u884C\u8207\u6E2C\u8A66\u751F\u6210",
       "section.methods": "\u6E2C\u8A66\u65B9\u6CD5",
       "section.graph": "Graph Coverage",
       "section.logic": "Logic Coverage",
@@ -1199,7 +1307,7 @@
       "section.methods.title": "\u6E2C\u8A66\u65B9\u6CD5\u5206\u985E",
       "section.graph.title": "Graph Coverage \u8996\u89BA\u5316",
       "section.logic.title": "Logic Coverage \u8996\u89BA\u5316",
-      "section.syntax.title": "Syntax-Based Testing\uFF1AProgram Mutation",
+      "section.syntax.title": "Syntax-Based Testing Explorer",
       "syntaxTab.mutation": "\u7A0B\u5F0F Mutation",
       "syntaxTab.grammar": "Grammar Coverage",
       "syntaxTab.spec": "\u898F\u683C Mutation",
@@ -1269,6 +1377,7 @@
       "fuzz.empty": "\u5C1A\u7121\u6E2C\u8A66\u7D50\u679C\u3002",
       "fuzz.hint": "\u6A21\u7CCA\u6E2C\u8A66\u7522\u751F\u96A8\u6A5F\u8F38\u5165\u4E26\u57F7\u884C\u7A0B\u5F0F\uFF0C\u5075\u6E2C\u5D29\u6F70\u8207\u7570\u5E38\u3002\u652F\u63F4\uFF1A\u6574\u6578/\u5E03\u6797/\u5B57\u7B26\u4E32\u53C3\u6578\u7684\u51FD\u5F0F\u3001\u7B97\u8853/\u6BD4\u8F03/\u908F\u8F2F\u904B\u7B97\u3001\u689D\u4EF6/\u8FF4\u5708\u3002\u76E3\u6E2C\u57F7\u884C\u6642\u932F\u8AA4\u3002",
       "fuzz.cfg.title": "\u63A7\u5236\u6D41\u7A0B\u5716",
+      "fuzz.cfg.coverage": "\u8986\u84CB\u72C0\u614B",
       "fuzz.cfg.zoom": "\u7E2E\u653E",
       "fuzz.cfg.zoomIn": "\u653E\u5927",
       "fuzz.cfg.zoomOut": "\u7E2E\u5C0F",
@@ -1493,6 +1602,22 @@
       "logic.metric.unique": "\u5BE6\u969B\u9700\u8981\uFF08\u53BB\u91CD\uFF09\uFF1A",
       "logic.metric.duplicate": "\u91CD\u8907\u6578\u91CF\uFF1A",
       "logic.metric.requirements": "\u5EFA\u8B70\u6E2C\u8A66\u9700\u6C42\uFF1A",
+      // Clause Binding（ZH）
+      "logic.binding.title": "Clause Binding \u2192 \u5177\u9AD4\u8F38\u5165",
+      "logic.binding.hint": "\u628A\u6BCF\u500B clause \u5C0D\u61C9\u5230\u7A0B\u5F0F\u88E1\u7684 JS \u904B\u7B97\u5F0F\uFF08\u4F8B\u5982 x > 0, x + y > z\uFF09\u3002\u6C42\u89E3\u5668\u5728\u4E0B\u65B9\u8A2D\u5B9A\u7684\u6574\u6578\u7BC4\u570D\u5167\u66B4\u529B\u641C\u5C0B\u3002",
+      "logic.binding.placeholder": "\u4F8B\uFF1Ax > 0",
+      "logic.binding.clause": "Clause",
+      "logic.binding.vars": "\u5075\u6E2C\u5230\u7684\u8B8A\u6578\uFF1A",
+      "logic.binding.noBinding": "\u8ACB\u81F3\u5C11\u8F38\u5165\u4E00\u500B binding \u904B\u7B97\u5F0F\uFF0C\u4EE5\u67E5\u770B\u5177\u9AD4\u7684 witness\u3002",
+      "logic.binding.infeasible": "\u4E0D\u53EF\u884C",
+      "logic.binding.range": "\u641C\u7D22\u7BC4\u570D\uFF1A",
+      "logic.binding.rangeTo": "\u5230",
+      "logic.binding.col.row": "\u6E2C\u8A66\u5217",
+      "logic.binding.col.vals": "Clause \u503C",
+      "logic.binding.col.constraint": "\u6C42\u89E3\u689D\u4EF6",
+      "logic.binding.col.witness": "Witness",
+      "logic.binding.restore": "\u9084\u539F\u9810\u8A2D binding",
+      "logic.binding.params": "\u5EFA\u8B70\u8B8A\u6578\u540D\u7A31\uFF1A",
       "syntax.title": "Syntax-Based Testing\uFF1AProgram Mutation",
       "syntax.subtitle": "\u6311\u9078\u7A0B\u5F0F\u3001\u9078\u64C7 mutation operators \u8207 test set\uFF0C\u7CFB\u7D71\u6703\u7522\u751F mutants \u4E26\u8A08\u5206\u3002",
       "syntax.example": "\u7BC4\u4F8B\u7A0B\u5F0F",
@@ -1614,12 +1739,14 @@
   var DEFAULT_LOCALE = "en";
   var SUPPORTED = ["en", "zh"];
   var current = (() => {
-    var _a2;
+    var _a2, _b;
     try {
       const saved = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(STORAGE_KEY);
       if (saved && SUPPORTED.includes(saved)) return saved;
     } catch {
     }
+    const browserLocale = ((_b = globalThis.navigator) == null ? void 0 : _b.language) || "";
+    if (browserLocale.toLowerCase().startsWith("zh")) return "zh";
     return DEFAULT_LOCALE;
   })();
   var listeners = /* @__PURE__ */ new Set();
@@ -5216,6 +5343,145 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     };
   }
 
+  // src/utils/logicBinding.js
+  var JS_KEYWORDS = /* @__PURE__ */ new Set([
+    "break",
+    "case",
+    "catch",
+    "class",
+    "const",
+    "continue",
+    "debugger",
+    "default",
+    "delete",
+    "do",
+    "else",
+    "export",
+    "extends",
+    "false",
+    "finally",
+    "for",
+    "function",
+    "if",
+    "import",
+    "in",
+    "instanceof",
+    "let",
+    "new",
+    "null",
+    "return",
+    "static",
+    "super",
+    "switch",
+    "this",
+    "throw",
+    "true",
+    "try",
+    "typeof",
+    "undefined",
+    "var",
+    "void",
+    "while",
+    "with",
+    "yield",
+    "Math",
+    "Number",
+    "parseInt",
+    "parseFloat",
+    "Infinity",
+    "NaN"
+  ]);
+  var IDENT_RE2 = /\b([A-Za-z_$][A-Za-z0-9_$]*)\b/g;
+  function extractVarsFromBindings(bindings) {
+    const clauseNames = new Set(Object.keys(bindings));
+    const vars = /* @__PURE__ */ new Set();
+    for (const expr of Object.values(bindings)) {
+      if (!expr || !expr.trim()) continue;
+      for (const [, name] of expr.matchAll ? expr.matchAll(IDENT_RE2) : []) {
+        if (!JS_KEYWORDS.has(name) && !clauseNames.has(name)) {
+          vars.add(name);
+        }
+      }
+    }
+    return [...vars].sort();
+  }
+  function buildChecker(clauseValues, bindings, varNames) {
+    var _a2;
+    const parts = [];
+    for (const [clause, val] of Object.entries(clauseValues)) {
+      const expr = (_a2 = bindings[clause]) == null ? void 0 : _a2.trim();
+      if (!expr) return null;
+      parts.push(val ? `(${expr})` : `!(${expr})`);
+    }
+    if (!parts.length) return null;
+    try {
+      return new Function(...varNames, `'use strict'; return ${parts.join(" && ")};`);
+    } catch {
+      return null;
+    }
+  }
+  function* smallAbsFirst(min, max) {
+    const limit = Math.max(Math.abs(min), Math.abs(max));
+    for (let d = 0; d <= limit; d++) {
+      if (d >= min && d <= max) yield d;
+      if (d > 0 && -d >= min && -d <= max) yield -d;
+    }
+  }
+  function* cartesian(vars, range) {
+    function* gen(depth, current2) {
+      if (depth === vars.length) {
+        yield [...current2];
+        return;
+      }
+      for (const v of smallAbsFirst(range[0], range[1])) {
+        current2.push(v);
+        yield* gen(depth + 1, current2);
+        current2.pop();
+      }
+    }
+    yield* gen(0, []);
+  }
+  function solveBinding({ clauseValues, bindings, searchRange = [-10, 10] }) {
+    const varNames = extractVarsFromBindings(bindings);
+    if (!varNames.length) return { error: "no-vars" };
+    let checker;
+    try {
+      checker = buildChecker(clauseValues, bindings, varNames);
+    } catch (e) {
+      return { error: String(e.message || e) };
+    }
+    if (!checker) return { error: "bad-expr" };
+    for (const combo of cartesian(varNames, searchRange)) {
+      let result;
+      try {
+        result = checker(...combo);
+      } catch {
+        continue;
+      }
+      if (result) {
+        const witness = {};
+        varNames.forEach((v, i) => {
+          witness[v] = combo[i];
+        });
+        return { witness };
+      }
+    }
+    return { error: "infeasible" };
+  }
+  function formatWitnessStr(witness) {
+    return Object.entries(witness).map(([k, v]) => `${k}=${v}`).join(", ");
+  }
+  function buildConstraintStr(clauseValues, bindings) {
+    var _a2;
+    const parts = [];
+    for (const [clause, val] of Object.entries(clauseValues)) {
+      const expr = (_a2 = bindings[clause]) == null ? void 0 : _a2.trim();
+      if (!expr) continue;
+      parts.push(val ? `(${expr})` : `!(${expr})`);
+    }
+    return parts.join(" && ") || "\u2014";
+  }
+
   // src/components/LogicCoverageExplorer.js
   var RECENT_KEY = "stvisual.logic.recentPredicates";
   var RECENT_LIMIT = 8;
@@ -5366,6 +5632,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       error: null,
       parsed: null,
       analysis: null,
+      bindings: {},
+      // clauseName → JS expression string
+      bindingRange: [-10, 10],
+      // [min, max] for brute-force search
       recent: loadRecent(),
       cloudUser: null
     };
@@ -5411,6 +5681,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         }
         state.analysis = buildAllCoverageSets(state.parsed);
         state.error = null;
+        const clauseSet = new Set(state.parsed.clauses);
+        for (const k of Object.keys(state.bindings)) {
+          if (!clauseSet.has(k)) delete state.bindings[k];
+        }
       } catch (err) {
         state.parsed = null;
         state.analysis = null;
@@ -5497,6 +5771,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       </div>
 
       <div class="logic-summary" data-testid="logic-summary">${summaryMarkup}</div>
+
+      ${renderBindingPanel()}
 
       <div class="logic-truth-table-wrap">${truthTableMarkup}</div>
     `;
@@ -5722,6 +5998,123 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       ${unsatisfied}
     `;
     }
+    function buildBindingResultsHTML() {
+      if (!state.analysis) return "";
+      const { clauses } = state.analysis;
+      const hasAnyBinding = clauses.some((c) => {
+        var _a2;
+        return (_a2 = state.bindings[c]) == null ? void 0 : _a2.trim();
+      });
+      if (!hasAnyBinding) {
+        return `<p class="logic-binding-hint-noentry" data-testid="logic-binding-no-entry">${t("logic.binding.noBinding")}</p>`;
+      }
+      const vars = extractVarsFromBindings(state.bindings);
+      const activeSet = getActiveSet();
+      if (!activeSet) return "";
+      const seenRows = /* @__PURE__ */ new Set();
+      const uniqueTests = activeSet.tests.filter((test) => {
+        const key = `r${test.row.index}`;
+        if (seenRows.has(key)) return false;
+        seenRows.add(key);
+        return true;
+      });
+      const rows = uniqueTests.map((test) => {
+        var _a2;
+        const valStr = clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ");
+        const boundClauseValues = {};
+        for (const c of clauses) {
+          if ((_a2 = state.bindings[c]) == null ? void 0 : _a2.trim()) boundClauseValues[c] = test.row.values[c];
+        }
+        const constraintStr = buildConstraintStr(boundClauseValues, state.bindings);
+        const result = solveBinding({
+          clauseValues: boundClauseValues,
+          bindings: state.bindings,
+          searchRange: state.bindingRange
+        });
+        const witnessCell = result.witness ? `<code class="logic-binding-witness" data-testid="logic-binding-witness-${test.row.index}">${escapeHtml2(formatWitnessStr(result.witness))}</code>` : `<span class="logic-binding-infeasible" data-testid="logic-binding-infeasible-${test.row.index}">${t("logic.binding.infeasible")}</span>`;
+        return `
+        <tr data-testid="logic-binding-row-${test.row.index}">
+          <td class="logic-binding-td-index">#${test.row.index}</td>
+          <td class="logic-binding-td-vals">${escapeHtml2(valStr)}</td>
+          <td class="logic-binding-td-constraint"><code>${escapeHtml2(constraintStr)}</code></td>
+          <td class="logic-binding-td-witness">${witnessCell}</td>
+        </tr>
+      `;
+      }).join("");
+      const varList = vars.length ? `<span class="logic-binding-vars">${t("logic.binding.vars")} <code>${escapeHtml2(vars.join(", "))}</code></span>` : "";
+      return `
+      ${varList}
+      <table class="logic-binding-table" data-testid="logic-binding-table">
+        <thead>
+          <tr>
+            <th>${t("logic.binding.col.row")}</th>
+            <th>${t("logic.binding.col.vals")}</th>
+            <th>${t("logic.binding.col.constraint")}</th>
+            <th>${t("logic.binding.col.witness")}</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+    }
+    function activePredicateExample() {
+      return logicCoveragePredicates.find((p) => p.expression === state.expression) || null;
+    }
+    function renderBindingPanel() {
+      if (!state.analysis || state.error) return "";
+      const { clauses } = state.analysis;
+      const example = activePredicateExample();
+      const hasDefaults = (example == null ? void 0 : example.defaultBindings) && clauses.some((c) => example.defaultBindings[c]);
+      const inputRows = clauses.map((c) => `
+      <label class="logic-binding-clause-row">
+        <span class="logic-binding-clause-name" aria-label="${t("logic.binding.clause")} ${escapeHtml2(c)}">${escapeHtml2(c)}</span>
+        <span class="logic-binding-arrow" aria-hidden="true">\u21A6</span>
+        <input
+          type="text"
+          class="logic-binding-expr-input"
+          data-testid="logic-binding-input-${escapeHtml2(c)}"
+          data-binding-clause="${escapeHtml2(c)}"
+          value="${escapeHtml2(state.bindings[c] || "")}"
+          placeholder="${t("logic.binding.placeholder")}"
+          spellcheck="false"
+          autocomplete="off"
+          aria-label="${t("logic.binding.clause")} ${escapeHtml2(c)}"
+        />
+      </label>
+    `).join("");
+      const restoreBtn = hasDefaults ? `<button type="button" class="logic-binding-restore-btn"
+           data-testid="logic-binding-restore"
+           title="${t("logic.binding.restore")}">${t("logic.binding.restore")}</button>` : "";
+      const paramsHint = (example == null ? void 0 : example.bindingParams) ? `<span class="logic-binding-params-hint">${t("logic.binding.params")} <code>${escapeHtml2(example.bindingParams)}</code></span>` : "";
+      const sourceBlock = (example == null ? void 0 : example.sourceCode) ? `<pre class="logic-binding-source" data-testid="logic-binding-source"><code>${escapeHtml2(example.sourceCode)}</code></pre>` : "";
+      return `
+      <details class="logic-binding" data-testid="logic-binding" open>
+        <summary class="logic-binding-summary">${t("logic.binding.title")}</summary>
+        <p class="logic-binding-desc">${t("logic.binding.hint")}</p>
+        <div class="logic-binding-inputs" data-testid="logic-binding-inputs">
+          ${inputRows}
+          ${restoreBtn}
+        </div>
+        ${paramsHint}
+        ${sourceBlock}
+        <div class="logic-binding-range-row">
+          <span class="logic-binding-range-label">${t("logic.binding.range")}</span>
+          <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-min"
+            data-binding-range="min" value="${state.bindingRange[0]}" min="-1000" max="0" step="1" />
+          <span class="logic-binding-range-sep">${t("logic.binding.rangeTo")}</span>
+          <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-max"
+            data-binding-range="max" value="${state.bindingRange[1]}" min="0" max="1000" step="1" />
+        </div>
+        <div class="logic-binding-results" data-testid="logic-binding-results">
+          ${buildBindingResultsHTML()}
+        </div>
+      </details>
+    `;
+    }
+    function refreshBindingResults() {
+      const el = root2.querySelector('[data-testid="logic-binding-results"]');
+      if (el) el.innerHTML = buildBindingResultsHTML();
+    }
     function bindEvents() {
       const input = root2.querySelector('[data-testid="logic-expression-input"]');
       if (input) {
@@ -5744,6 +6137,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         btn.addEventListener("click", () => {
           state.expression = btn.dataset.expression;
           recompute();
+          const example = activePredicateExample();
+          if (example == null ? void 0 : example.defaultBindings) {
+            state.bindings = { ...example.defaultBindings };
+          }
           render();
         });
       });
@@ -5764,6 +6161,37 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         btn.addEventListener("click", () => {
           state.selectedCriterion = btn.dataset.criterion;
           render();
+        });
+      });
+      let bindingTimer = null;
+      root2.querySelectorAll("[data-binding-clause]").forEach((input2) => {
+        input2.addEventListener("input", () => {
+          const clause = input2.dataset.bindingClause;
+          state.bindings[clause] = input2.value;
+          if (bindingTimer) clearTimeout(bindingTimer);
+          bindingTimer = setTimeout(() => refreshBindingResults(), 200);
+        });
+      });
+      const restoreBtn = root2.querySelector('[data-testid="logic-binding-restore"]');
+      if (restoreBtn) {
+        restoreBtn.addEventListener("click", () => {
+          const example = activePredicateExample();
+          if (example == null ? void 0 : example.defaultBindings) {
+            state.bindings = { ...example.defaultBindings };
+            render();
+          }
+        });
+      }
+      root2.querySelectorAll("[data-binding-range]").forEach((input2) => {
+        input2.addEventListener("change", () => {
+          const v = parseInt(input2.value, 10);
+          if (Number.isNaN(v)) return;
+          if (input2.dataset.bindingRange === "min") {
+            state.bindingRange = [Math.min(v, state.bindingRange[1] - 1), state.bindingRange[1]];
+          } else {
+            state.bindingRange = [state.bindingRange[0], Math.max(v, state.bindingRange[0] + 1)];
+          }
+          refreshBindingResults();
         });
       });
     }
@@ -10227,37 +10655,46 @@ INVARSPEC !w | (i & (l | h))`
          ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state.result.paths.filter((p) => p.feasible).length}</strong>
          ${state.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
       root2.innerHTML = `
-      <div class="symbex-toolbar">
-        <div class="symbex-examples" data-testid="symbex-examples">${exampleButtons}</div>
-        <div class="symbex-controls">
-          <label class="symbex-control">
-            <span>${t("symbex.maxUnroll")}</span>
-            <input type="number" min="0" max="6" step="1"
-              value="${state.maxLoopUnroll}"
-              data-testid="symbex-max-unroll" />
-          </label>
+      <section class="symbex-panel symbex-input-panel">
+        <header class="symbex-panel-header">
+          <h3>${t("explorer.panel.input")}</h3>
+        </header>
+        <div class="symbex-toolbar">
+          <div class="symbex-examples" data-testid="symbex-examples">${exampleButtons}</div>
+          <div class="symbex-controls">
+            <label class="symbex-control">
+              <span>${t("symbex.maxUnroll")}</span>
+              <input type="number" min="0" max="6" step="1"
+                value="${state.maxLoopUnroll}"
+                data-testid="symbex-max-unroll" />
+            </label>
+          </div>
         </div>
-      </div>
+        <div class="symbex-editor-pane">
+          <label class="symbex-editor-label" for="symbex-source">${t("symbex.source")}</label>
+          <textarea id="symbex-source"
+            class="symbex-editor"
+            data-testid="symbex-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml6(state.sourceCode)}</textarea>
+        </div>
+      </section>
 
       <div class="symbex-split-body">
-        <div class="symbex-cfg-pane">
+        <section class="symbex-panel symbex-cfg-pane">
+          <header class="symbex-panel-header">
+            <h3>${t("explorer.panel.cfg")}</h3>
+          </header>
           ${renderCfgPane()}
-        </div>
-        <div class="symbex-right-pane">
-          <div class="symbex-results-pane">
-            <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
-            ${pathsMarkup}
-          </div>
-          <div class="symbex-editor-pane">
-            <label class="symbex-editor-label" for="symbex-source">${t("symbex.source")}</label>
-            <textarea id="symbex-source"
-              class="symbex-editor"
-              data-testid="symbex-source"
-              spellcheck="false"
-              autocomplete="off"
-              rows="14">${escapeHtml6(state.sourceCode)}</textarea>
-          </div>
-        </div>
+        </section>
+        <section class="symbex-panel symbex-results-pane">
+          <header class="symbex-panel-header">
+            <h3>${t("explorer.panel.results")}</h3>
+          </header>
+          <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
+          ${pathsMarkup}
+        </section>
       </div>
 
       <p class="symbex-hint">${t("symbex.hint")}</p>
@@ -10694,43 +11131,52 @@ INVARSPEC !w | (i & (l | h))`
          ${t("concolic.summary.uniqueInputs")}<strong>${state.result.uniqueInputCount}</strong>
          ${state.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
       root2.innerHTML = `
-      <div class="concolic-toolbar">
-        <div class="concolic-examples" data-testid="concolic-examples">${exampleButtons}</div>
-        <div class="concolic-controls">
-          <label class="concolic-control">
-            <span>${t("concolic.seed")}</span>
-            <input type="text" value="${escapeHtml7(state.seedText)}"
-              data-testid="concolic-seed"
-              placeholder="a=1, b=1, c=1" />
-          </label>
-          <label class="concolic-control">
-            <span>${t("concolic.maxIterations")}</span>
-            <input type="number" min="1" max="64" step="1"
-              value="${state.maxIterations}"
-              data-testid="concolic-max-iter" />
-          </label>
+      <section class="concolic-panel concolic-input-panel">
+        <header class="concolic-panel-header">
+          <h3>${t("explorer.panel.input")}</h3>
+        </header>
+        <div class="concolic-toolbar">
+          <div class="concolic-examples" data-testid="concolic-examples">${exampleButtons}</div>
+          <div class="concolic-controls">
+            <label class="concolic-control">
+              <span>${t("concolic.seed")}</span>
+              <input type="text" value="${escapeHtml7(state.seedText)}"
+                data-testid="concolic-seed"
+                placeholder="a=1, b=1, c=1" />
+            </label>
+            <label class="concolic-control">
+              <span>${t("concolic.maxIterations")}</span>
+              <input type="number" min="1" max="64" step="1"
+                value="${state.maxIterations}"
+                data-testid="concolic-max-iter" />
+            </label>
+          </div>
         </div>
-      </div>
+        <div class="concolic-editor-pane">
+          <label class="concolic-editor-label" for="concolic-source">${t("concolic.source")}</label>
+          <textarea id="concolic-source"
+            class="concolic-editor"
+            data-testid="concolic-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml7(state.sourceCode)}</textarea>
+        </div>
+      </section>
 
       <div class="concolic-split-body">
-        <div class="concolic-cfg-pane">
+        <section class="concolic-panel concolic-cfg-pane">
+          <header class="concolic-panel-header">
+            <h3>${t("explorer.panel.cfg")}</h3>
+          </header>
           ${renderCfgPane()}
-        </div>
-        <div class="concolic-right-pane">
-          <div class="concolic-results-pane">
-            <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
-            ${body}
-          </div>
-          <div class="concolic-editor-pane">
-            <label class="concolic-editor-label" for="concolic-source">${t("concolic.source")}</label>
-            <textarea id="concolic-source"
-              class="concolic-editor"
-              data-testid="concolic-source"
-              spellcheck="false"
-              autocomplete="off"
-              rows="14">${escapeHtml7(state.sourceCode)}</textarea>
-          </div>
-        </div>
+        </section>
+        <section class="concolic-panel concolic-results-pane">
+          <header class="concolic-panel-header">
+            <h3>${t("explorer.panel.results")}</h3>
+          </header>
+          <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
+          ${body}
+        </section>
       </div>
 
       <p class="concolic-hint">${t("concolic.hint")}</p>
@@ -11177,44 +11623,53 @@ INVARSPEC !w | (i & (l | h))`
          ${result.truncated ? `<span class="fuzz-divider">\xB7</span><span class="fuzz-truncated">${t("fuzz.summary.truncated")}</span>` : ""}` : "";
       const testCasesMarkup = error ? `<div class="fuzz-error" data-testid="fuzz-error">${escapeHtml8(error)}</div>` : renderTestCases(result);
       root2.innerHTML = `
-      <div class="fuzz-toolbar">
-        <div class="fuzz-examples" data-testid="fuzz-examples">${exampleButtons}</div>
-        <div class="fuzz-controls">
-          <label class="fuzz-control">
-            <span>${t("fuzz.testCount")}</span>
-            <input type="number" min="10" max="500" step="10"
-              value="${state.testCount}"
-              data-testid="fuzz-test-count-input" />
-          </label>
-          <button type="button" 
-            class="fuzz-run-btn"
-            data-testid="fuzz-run-btn"
-            data-fuzz-run="true">
-            ${t("fuzz.run")}
-          </button>
+      <section class="fuzz-panel fuzz-input-panel">
+        <header class="fuzz-panel-header">
+          <h3>${t("explorer.panel.input")}</h3>
+        </header>
+        <div class="fuzz-toolbar">
+          <div class="fuzz-examples" data-testid="fuzz-examples">${exampleButtons}</div>
+          <div class="fuzz-controls">
+            <label class="fuzz-control">
+              <span>${t("fuzz.testCount")}</span>
+              <input type="number" min="10" max="500" step="10"
+                value="${state.testCount}"
+                data-testid="fuzz-test-count-input" />
+            </label>
+            <button type="button"
+              class="fuzz-run-btn"
+              data-testid="fuzz-run-btn"
+              data-fuzz-run="true">
+              ${t("fuzz.run")}
+            </button>
+          </div>
         </div>
-      </div>
+        <div class="fuzz-editor-pane">
+          <label class="fuzz-source-label" for="fuzz-source">${t("fuzz.source")}</label>
+          <textarea id="fuzz-source"
+            class="fuzz-source"
+            data-testid="fuzz-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml8(state.sourceCode)}</textarea>
+        </div>
+      </section>
 
       <div class="fuzz-split-body">
-        <div class="fuzz-cfg-pane">
+        <section class="fuzz-panel fuzz-cfg-pane">
+          <header class="fuzz-panel-header">
+            <h3>${t("explorer.panel.cfg")}</h3>
+          </header>
           ${renderCfgPane()}
-        </div>
+        </section>
 
-        <div class="fuzz-right-pane">
-          <div class="fuzz-results-pane">
-            <p class="fuzz-summary" data-testid="fuzz-summary">${summary}</p>
-            ${testCasesMarkup}
-          </div>
-          <div class="fuzz-editor-pane">
-            <label class="fuzz-source-label" for="fuzz-source">${t("fuzz.source")}</label>
-            <textarea id="fuzz-source"
-              class="fuzz-source"
-              data-testid="fuzz-source"
-              spellcheck="false"
-              autocomplete="off"
-              rows="14">${escapeHtml8(state.sourceCode)}</textarea>
-          </div>
-        </div>
+        <section class="fuzz-panel fuzz-results-pane">
+          <header class="fuzz-panel-header">
+            <h3>${t("explorer.panel.results")}</h3>
+          </header>
+          <p class="fuzz-summary" data-testid="fuzz-summary">${summary}</p>
+          ${testCasesMarkup}
+        </section>
       </div>
 
       <p class="fuzz-hint">${t("fuzz.hint")}</p>
@@ -11257,7 +11712,7 @@ INVARSPEC !w | (i & (l | h))`
       return `
       <div class="fuzz-cfg" data-testid="fuzz-cfg">
         <div class="fuzz-cfg-header">
-          <h3>${t("fuzz.cfg.title")}</h3>
+          <h3>${t("fuzz.cfg.coverage")}</h3>
           ${cfgSubtitle}
           <div class="fuzz-cfg-zoom" role="group" aria-label="${t("fuzz.cfg.zoom")}">
             <button type="button" data-fuzz-zoom="out" data-testid="fuzz-cfg-zoom-out" title="${t("fuzz.cfg.zoomOut")}">\u2212</button>
@@ -11699,21 +12154,41 @@ INVARSPEC !w | (i & (l | h))`
       </option>
     `).join("");
       root2.innerHTML = `
-      <div class="testgen-toolbar">
-        <div class="testgen-examples" data-testid="testgen-examples">${exampleButtons}</div>
-        <div class="testgen-controls">
-          <label class="testgen-control">
-            <span>${t("testgen.criterion")}</span>
-            <select data-testid="testgen-criterion">${criterionOptions}</select>
-          </label>
+      <section class="testgen-panel testgen-input-panel">
+        <header class="testgen-panel-header">
+          <h3>${t("explorer.panel.input")}</h3>
+        </header>
+        <div class="testgen-toolbar">
+          <div class="testgen-examples" data-testid="testgen-examples">${exampleButtons}</div>
+          <div class="testgen-controls">
+            <label class="testgen-control">
+              <span>${t("testgen.criterion")}</span>
+              <select data-testid="testgen-criterion">${criterionOptions}</select>
+            </label>
+          </div>
         </div>
-      </div>
+        <div class="testgen-editor-pane">
+          <label class="testgen-editor-label" for="testgen-source">${t("testgen.source")}</label>
+          <textarea id="testgen-source"
+            class="testgen-editor"
+            data-testid="testgen-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml9(state.sourceCode)}</textarea>
+        </div>
+      </section>
 
       <div class="testgen-split-body">
-        <div class="testgen-cfg-pane">
+        <section class="testgen-panel testgen-cfg-pane">
+          <header class="testgen-panel-header">
+            <h3>${t("explorer.panel.cfg")}</h3>
+          </header>
           ${renderCfgPane()}
-        </div>
-        <div class="testgen-right-pane">
+        </section>
+        <section class="testgen-panel testgen-results-pane">
+          <header class="testgen-panel-header">
+            <h3>${t("explorer.panel.results")}</h3>
+          </header>
           ${renderSummary()}
           ${renderError()}
           <div class="testgen-results-grid">
@@ -11726,16 +12201,7 @@ INVARSPEC !w | (i & (l | h))`
               ${renderSelectedTests()}
             </div>
           </div>
-          <div class="testgen-editor-pane">
-            <label class="testgen-editor-label" for="testgen-source">${t("testgen.source")}</label>
-            <textarea id="testgen-source"
-              class="testgen-editor"
-              data-testid="testgen-source"
-              spellcheck="false"
-              autocomplete="off"
-              rows="14">${escapeHtml9(state.sourceCode)}</textarea>
-          </div>
-        </div>
+        </section>
       </div>
 
       <p class="testgen-hint">${t("testgen.hint")}</p>
@@ -11951,7 +12417,7 @@ INVARSPEC !w | (i & (l | h))`
   }
 
   // src/app.js
-  var sectionsConfig = [
+  var learningSectionsConfig = [
     { id: "all", key: "section.all" },
     { id: "methods", key: "section.methods" },
     { id: "graph", key: "section.graph" },
@@ -11961,9 +12427,26 @@ INVARSPEC !w | (i & (l | h))`
     { id: "concolic", key: "section.concolic" },
     { id: "fuzz", key: "section.fuzz" },
     { id: "testgen", key: "section.testgen" },
-    { id: "cloud", key: "section.cloud" },
     { id: "flow", key: "section.flow" },
     { id: "types", key: "section.types" }
+  ];
+  var utilitySectionsConfig = [
+    { id: "cloud", key: "section.cloud" }
+  ];
+  var sectionSelectConfig = [...learningSectionsConfig, ...utilitySectionsConfig];
+  var overviewGroups = [
+    {
+      key: "overview.group.foundations",
+      sectionIds: ["methods", "flow", "types"]
+    },
+    {
+      key: "overview.group.coverage",
+      sectionIds: ["graph", "logic", "syntax"]
+    },
+    {
+      key: "overview.group.execution",
+      sectionIds: ["symbex", "concolic", "fuzz", "testgen"]
+    }
   ];
   function renderApp(container) {
     function paint() {
@@ -11974,18 +12457,30 @@ INVARSPEC !w | (i & (l | h))`
             <h1>${t("app.title")}</h1>
             ${getLocale() === "zh" ? `<p>${t("app.subtitle")}</p>` : ""}
           </div>
-          <div class="app-lang" role="group" aria-label="${t("app.lang.label")}">
-            <label class="app-lang__label" for="app-lang-select">${t("app.lang.label")}</label>
-            <select id="app-lang-select" data-testid="app-lang-select">
-              <option value="en"${getLocale() === "en" ? " selected" : ""}>${t("app.lang.en")}</option>
-              <option value="zh"${getLocale() === "zh" ? " selected" : ""}>${t("app.lang.zh")}</option>
-            </select>
+          <div class="app-header__tools">
+            <button class="app-cloud-link" type="button" data-app-cloud data-testid="app-cloud-link">
+              ${t("section.cloud")}
+            </button>
+            <div class="app-lang" role="group" aria-label="${t("app.lang.label")}">
+              <label class="app-lang__label" for="app-lang-select">${t("app.lang.label")}</label>
+              <select id="app-lang-select" data-testid="app-lang-select">
+                <option value="en"${getLocale() === "en" ? " selected" : ""}>${t("app.lang.en")}</option>
+                <option value="zh"${getLocale() === "zh" ? " selected" : ""}>${t("app.lang.zh")}</option>
+              </select>
+            </div>
           </div>
         </header>
 
         <nav class="app-nav" aria-label="${t("app.nav.aria")}" data-testid="app-nav"></nav>
 
         <main class="app-main">
+          <section class="overview-section" data-testid="section-overview">
+            <div class="overview-section__header">
+              <h2>${t("section.all")}</h2>
+              <p>${t("app.overview.subtitle")}</p>
+            </div>
+            <div class="overview-grid" data-testid="overview-grid"></div>
+          </section>
           <section data-testid="section-methods"><h2>${t("section.methods.title")}</h2><div data-slot="methods"></div></section>
           <section data-testid="section-graph"><h2>${t("section.graph.title")}</h2><div data-slot="graph"></div></section>
           <section data-testid="section-logic"><h2>${t("section.logic.title")}</h2><div data-slot="logic"></div></section>
@@ -12007,6 +12502,7 @@ INVARSPEC !w | (i & (l | h))`
       const nav = container.querySelector(".app-nav");
       const main = container.querySelector(".app-main");
       const sections = {
+        overview: main.querySelector('[data-testid="section-overview"]'),
         methods: main.querySelector('[data-testid="section-methods"]'),
         graph: main.querySelector('[data-testid="section-graph"]'),
         logic: main.querySelector('[data-testid="section-logic"]'),
@@ -12105,36 +12601,101 @@ INVARSPEC !w | (i & (l | h))`
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);
       let activeSection = "all";
-      function renderNav() {
-        nav.innerHTML = sectionsConfig.map((section) => `
-        <button
-          class="nav-btn${activeSection === section.id ? " active" : ""}"
-          data-testid="nav-btn-${section.id}"
-          data-section="${section.id}"
-          type="button"
-        >
-          ${t(section.key)}
-        </button>
+      const sectionsById = Object.fromEntries(sectionSelectConfig.map((section) => [section.id, section]));
+      const overviewGrid = container.querySelector('[data-testid="overview-grid"]');
+      const cloudTrigger = container.querySelector("[data-app-cloud]");
+      function renderOverview() {
+        overviewGrid.innerHTML = overviewGroups.map((group) => `
+        <section class="overview-group">
+          <h3>${t(group.key)}</h3>
+          <div class="overview-card-grid">
+            ${group.sectionIds.map((id) => {
+          const section = sectionsById[id];
+          return `
+                <button
+                  class="overview-card"
+                  type="button"
+                  data-overview-section="${section.id}"
+                >
+                  <span class="overview-card__label">${t(section.key)}</span>
+                  <span class="overview-card__title">${t(`section.${section.id}.title`)}</span>
+                </button>
+              `;
+        }).join("")}
+          </div>
+        </section>
       `).join("");
+        overviewGrid.querySelectorAll("[data-overview-section]").forEach((button) => {
+          button.addEventListener("click", () => {
+            setActiveSection(button.dataset.overviewSection, true);
+          });
+        });
+      }
+      function renderNav() {
+        nav.innerHTML = `
+        <div class="app-nav__buttons">
+          ${learningSectionsConfig.map((section) => `
+            <button
+              class="nav-btn${activeSection === section.id ? " active" : ""}"
+              data-testid="nav-btn-${section.id}"
+              data-section="${section.id}"
+              type="button"
+            >
+              ${t(section.key)}
+            </button>
+          `).join("")}
+        </div>
+        <label class="app-section-select-label" for="app-section-select">${t("app.section.label")}</label>
+        <select class="app-section-select" id="app-section-select" data-testid="app-section-select">
+          ${sectionSelectConfig.map((section) => `
+            <option value="${section.id}"${activeSection === section.id ? " selected" : ""}>${t(section.key)}</option>
+          `).join("")}
+        </select>
+      `;
         nav.querySelectorAll("[data-section]").forEach((button) => {
           button.addEventListener("click", () => {
-            activeSection = button.dataset.section;
-            renderNav();
-            updateSectionVisibility();
+            setActiveSection(button.dataset.section, true);
           });
+        });
+        nav.querySelector('[data-testid="app-section-select"]').addEventListener("change", (event) => {
+          setActiveSection(event.target.value, true);
         });
       }
       function updateSectionVisibility() {
         Object.entries(sections).forEach(([id, element]) => {
-          const visible = activeSection === "all" || activeSection === id;
+          const visible = activeSection === "all" && id === "overview" || activeSection === id;
           element.style.display = visible ? "" : "none";
         });
+      }
+      function scrollToActiveSection() {
+        const target = activeSection === "all" ? sections.overview : sections[activeSection];
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      function updateCloudTriggerState() {
+        const isActive = activeSection === "cloud";
+        cloudTrigger.classList.toggle("active", isActive);
+        cloudTrigger.setAttribute("aria-pressed", isActive ? "true" : "false");
+      }
+      function setActiveSection(sectionId, shouldScroll = false) {
+        activeSection = sectionId;
+        renderNav();
+        updateSectionVisibility();
+        updateCloudTriggerState();
+        if (shouldScroll) {
+          requestAnimationFrame(scrollToActiveSection);
+        }
       }
       container.querySelector("#app-lang-select").addEventListener("change", (e) => {
         setLocale(e.target.value);
       });
+      cloudTrigger.addEventListener("click", () => {
+        setActiveSection("cloud", true);
+      });
+      renderOverview();
       renderNav();
       updateSectionVisibility();
+      updateCloudTriggerState();
     }
     paint();
     onLocaleChange(() => paint());
