@@ -1,12 +1,14 @@
 // Clause Binding — map abstract logic-coverage clauses to concrete program
-// expressions, then brute-force a witness for each test row.
+// expressions, then solve a witness for each test row.
 //
-// Example:
-//   predicate : (a && b) || c
-//   bindings  : { a: 'x > 0', b: 'y < 10', c: 'z === 0' }
-//   test row  : { a: true, b: false, c: true }
-//   → need: x > 0 && !(y < 10) && z === 0
-//   → search integers → witness: { x: 1, y: 10, z: 0 }
+// Solving strategy (two phases):
+//   1. Analytic interval solver — parses expressions of the form "VAR OP k"
+//      (where OP ∈ {>, >=, <, <=, ===, ==, !==, !=} and k is a number literal).
+//      Computes the exact integer interval per variable, picks the integer with
+//      the smallest absolute value.  Works for any range, returns instantly.
+//   2. Brute-force fallback — for expressions the analytic solver cannot handle
+//      (multi-variable comparisons, arithmetic, method calls, etc.).  Iterates
+//      the Cartesian product of [min, max] in smallest-absolute-value order.
 
 const JS_KEYWORDS = new Set([
   'break', 'case', 'catch', 'class', 'const', 'continue', 'debugger',
@@ -35,11 +37,108 @@ export function extractVarsFromBindings(bindings) {
   return [...vars].sort();
 }
 
-// Build a JS checker function for one test row.
-// clauseValues: { a: true, b: false, c: true }
-// bindings:     { a: 'x > 0', b: 'y < 10', c: 'z === 0' }
-// varNames: ['x', 'y', 'z']
-// Returns a function (...values) => boolean, or null if any expression is empty/invalid.
+// ---- Analytic interval solver ----
+
+// Regex for a simple single-variable comparison: "VAR OP NUMBER" or "NUMBER OP VAR"
+const SIMPLE_RE_LHS = /^([A-Za-z_$][A-Za-z0-9_$]*)\s*(===|!==|==|!=|>=|<=|>|<)\s*(-?\d+(?:\.\d*)?)$/;
+const SIMPLE_RE_RHS = /^(-?\d+(?:\.\d*)?)\s*(===|!==|==|!=|>=|<=|>|<)\s*([A-Za-z_$][A-Za-z0-9_$]*)$/;
+
+const FLIP_OP = { '>': '<', '>=': '<=', '<': '>', '<=': '>=', '===': '===', '!==': '!==', '==': '==', '!=': '!=' };
+const NEG_OP  = { '>': '<=', '>=': '<', '<': '>=', '<=': '>', '===': '!==', '!==': '===', '==': '!=', '!=': '==' };
+
+function parseSimpleConstraint(expr) {
+  const s = expr.trim();
+  const m1 = s.match(SIMPLE_RE_LHS);
+  if (m1) return { varName: m1[1], op: m1[2], val: Number(m1[3]) };
+  const m2 = s.match(SIMPLE_RE_RHS);
+  if (m2) return { varName: m2[3], op: FLIP_OP[m2[2]], val: Number(m2[1]) };
+  return null;
+}
+
+// An interval is { lo, loOpen, hi, hiOpen, neq: Set<number> }.
+// lo=-Infinity / hi=+Infinity means unbounded.
+function mkInterval(op, val) {
+  switch (op) {
+    case '===': case '==':  return { lo: val,       loOpen: false, hi: val,       hiOpen: false, neq: new Set() };
+    case '!==': case '!=':  return { lo: -Infinity,  loOpen: true,  hi: Infinity,  hiOpen: true,  neq: new Set([val]) };
+    case '>':               return { lo: val,        loOpen: true,  hi: Infinity,  hiOpen: true,  neq: new Set() };
+    case '>=':              return { lo: val,        loOpen: false, hi: Infinity,  hiOpen: true,  neq: new Set() };
+    case '<':               return { lo: -Infinity,  loOpen: true,  hi: val,       hiOpen: true,  neq: new Set() };
+    case '<=':              return { lo: -Infinity,  loOpen: true,  hi: val,       hiOpen: false, neq: new Set() };
+    default:                return null;
+  }
+}
+
+function intersectIntervals(a, b) {
+  let lo, loOpen, hi, hiOpen;
+  if (a.lo === b.lo) {
+    lo = a.lo; loOpen = a.loOpen || b.loOpen;
+  } else if (a.lo > b.lo) {
+    lo = a.lo; loOpen = a.loOpen;
+  } else {
+    lo = b.lo; loOpen = b.loOpen;
+  }
+  if (a.hi === b.hi) {
+    hi = a.hi; hiOpen = a.hiOpen || b.hiOpen;
+  } else if (a.hi < b.hi) {
+    hi = a.hi; hiOpen = a.hiOpen;
+  } else {
+    hi = b.hi; hiOpen = b.hiOpen;
+  }
+  const neq = new Set([...a.neq, ...b.neq]);
+  return { lo, loOpen, hi, hiOpen, neq };
+}
+
+function pickSmallestInInterval(interval) {
+  const { lo, loOpen, hi, hiOpen, neq } = interval;
+  const loInt = isFinite(lo) ? (loOpen ? Math.floor(lo) + 1 : Math.ceil(lo)) : -Infinity;
+  const hiInt = isFinite(hi) ? (hiOpen ? Math.ceil(hi) - 1 : Math.floor(hi)) : Infinity;
+  if (loInt > hiInt) return null;
+
+  const absMax = Math.max(
+    isFinite(loInt) ? Math.abs(loInt) : 1000,
+    isFinite(hiInt) ? Math.abs(hiInt) : 1000,
+  );
+  for (let d = 0; d <= absMax + 1; d++) {
+    for (const v of d === 0 ? [0] : [d, -d]) {
+      if (v < loInt || v > hiInt) continue;
+      if (neq.has(v)) continue;
+      return v;
+    }
+  }
+  return null;
+}
+
+function solveAnalytic(clauseValues, bindings, varNames) {
+  const intervals = {};
+  for (const v of varNames) {
+    intervals[v] = { lo: -Infinity, loOpen: true, hi: Infinity, hiOpen: true, neq: new Set() };
+  }
+
+  for (const [clause, clauseIsTrue] of Object.entries(clauseValues)) {
+    const expr = bindings[clause]?.trim();
+    if (!expr) continue;
+    const parsed = parseSimpleConstraint(expr);
+    if (!parsed) return null; // can't solve analytically — fall back
+    if (!intervals[parsed.varName]) return null; // variable not in our set
+
+    const op = clauseIsTrue ? parsed.op : NEG_OP[parsed.op];
+    const iv = mkInterval(op, parsed.val);
+    if (!iv) return null;
+    intervals[parsed.varName] = intersectIntervals(intervals[parsed.varName], iv);
+  }
+
+  const witness = {};
+  for (const [varName, iv] of Object.entries(intervals)) {
+    const v = pickSmallestInInterval(iv);
+    if (v === null) return { error: 'infeasible' };
+    witness[varName] = v;
+  }
+  return { witness };
+}
+
+// ---- Brute-force fallback ----
+
 function buildChecker(clauseValues, bindings, varNames) {
   const parts = [];
   for (const [clause, val] of Object.entries(clauseValues)) {
@@ -55,8 +154,6 @@ function buildChecker(clauseValues, bindings, varNames) {
   }
 }
 
-// Yields integers in [min, max] ordered by ascending absolute value:
-// 0, 1, -1, 2, -2, … so witnesses prefer small, readable numbers.
 function* smallAbsFirst(min, max) {
   const limit = Math.max(Math.abs(min), Math.abs(max));
   for (let d = 0; d <= limit; d++) {
@@ -65,13 +162,9 @@ function* smallAbsFirst(min, max) {
   }
 }
 
-// Cartesian product over integer range, smallest-abs-value first.
 function* cartesian(vars, range) {
   function* gen(depth, current) {
-    if (depth === vars.length) {
-      yield [...current];
-      return;
-    }
+    if (depth === vars.length) { yield [...current]; return; }
     for (const v of smallAbsFirst(range[0], range[1])) {
       current.push(v);
       yield* gen(depth + 1, current);
@@ -81,15 +174,26 @@ function* cartesian(vars, range) {
   yield* gen(0, []);
 }
 
-// Main export.
+// ---- Main export ----
+//
 // clauseValues: { a: true, b: false, ... }
 // bindings:     { a: 'x > 0', b: 'y < 10', ... }
-// searchRange:  [min, max]  defaults to [-10, 10]
-// Returns { witness: {x: 1, y: 11, ...} } or { error: 'infeasible' | '<message>' }
+// searchRange:  [min, max]  defaults to [-10, 10] (only used for brute-force fallback)
+//
+// Returns { witness: {x: 1, y: 11, ...}, analytic: true|false }
+//      or { error: 'infeasible' | 'no-vars' | 'bad-expr' | '<message>' }
 export function solveBinding({ clauseValues, bindings, searchRange = [-10, 10] }) {
   const varNames = extractVarsFromBindings(bindings);
   if (!varNames.length) return { error: 'no-vars' };
 
+  // Phase 1: analytic interval solver (exact, unlimited range).
+  const analyticResult = solveAnalytic(clauseValues, bindings, varNames);
+  if (analyticResult !== null) {
+    // analyticResult is either { witness } or { error: 'infeasible' }
+    return analyticResult.error ? analyticResult : { ...analyticResult, analytic: true };
+  }
+
+  // Phase 2: brute-force fallback for complex expressions.
   let checker;
   try {
     checker = buildChecker(clauseValues, bindings, varNames);
@@ -108,7 +212,7 @@ export function solveBinding({ clauseValues, bindings, searchRange = [-10, 10] }
     if (result) {
       const witness = {};
       varNames.forEach((v, i) => { witness[v] = combo[i]; });
-      return { witness };
+      return { witness, analytic: false };
     }
   }
   return { error: 'infeasible' };
@@ -120,9 +224,6 @@ export function formatWitnessStr(witness) {
 }
 
 // Build a human-readable constraint string for one test row.
-// clauseValues: { a: true, b: false, c: true }
-// bindings:     { a: 'x > 0', b: 'y < 10', c: 'z === 0' }
-// → '(x > 0) && !(y < 10) && (z === 0)'
 export function buildConstraintStr(clauseValues, bindings) {
   const parts = [];
   for (const [clause, val] of Object.entries(clauseValues)) {
@@ -133,8 +234,7 @@ export function buildConstraintStr(clauseValues, bindings) {
   return parts.join(' && ') || '—';
 }
 
-// Validate a single binding expression for a given clause.
-// Returns null if valid, or an error string.
+// Validate a single binding expression. Returns null if valid, or an error string.
 export function validateBindingExpr(expr) {
   if (!expr || !expr.trim()) return null;
   try {

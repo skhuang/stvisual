@@ -84,6 +84,49 @@ describe('solveBinding', () => {
     expect(z).toBe(0);
   });
 
+  it('analytic solver: negated clause flips operator correctly', () => {
+    // a=F means !(x > 0) → x <= 0 → smallest abs is 0
+    const result = solveBinding({
+      clauseValues: { a: false },
+      bindings: { a: 'x > 0' },
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.witness.x).toBe(0);
+    expect(result.analytic).toBe(true);
+  });
+
+  it('analytic solver: handles !== correctly', () => {
+    // z !== 0 → z = 1 (smallest abs ≠ 0)
+    const result = solveBinding({
+      clauseValues: { a: true },
+      bindings: { a: 'z !== 0' },
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.witness.z).not.toBe(0);
+    expect(result.analytic).toBe(true);
+  });
+
+  it('analytic solver: handles multi-clause single-var intersection', () => {
+    // a=T: x > 0, b=F: !(y < 10) → y >= 10. Two independent variables.
+    const result = solveBinding({
+      clauseValues: { a: true, b: false },
+      bindings: { a: 'x > 0', b: 'y < 10' },
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.witness.x).toBe(1);
+    expect(result.witness.y).toBe(10);
+    expect(result.analytic).toBe(true);
+  });
+
+  it('analytic solver: infeasible when interval is empty', () => {
+    // x > 0 AND x < 0 → empty intersection
+    const result = solveBinding({
+      clauseValues: { a: true, b: true },
+      bindings: { a: 'x > 0', b: 'x < 0' },
+    });
+    expect(result.error).toBe('infeasible');
+  });
+
   it('returns no-vars when bindings have no expressions', () => {
     const result = solveBinding({
       clauseValues: { a: true },
@@ -92,22 +135,35 @@ describe('solveBinding', () => {
     expect(result.error).toBe('no-vars');
   });
 
-  it('respects a custom search range', () => {
-    // x > 50 is only satisfiable with range [51, 100]
-    const infeasible = solveBinding({
+  it('analytic solver finds x > 50 without needing a wide search range', () => {
+    // The analytic solver handles simple linear constraints exactly,
+    // ignoring the search range, so x > 50 → x = 51 even with [-10, 10].
+    const result = solveBinding({
       clauseValues: { a: true },
       bindings: { a: 'x > 50' },
       searchRange: [-10, 10],
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.witness.x).toBe(51);
+    expect(result.analytic).toBe(true);
+  });
+
+  it('brute-force fallback respects searchRange for complex expressions', () => {
+    // x > y requires two-variable constraint — analytic falls back to brute-force.
+    const infeasible = solveBinding({
+      clauseValues: { a: true },
+      bindings: { a: 'x > y' },
+      searchRange: [5, 5],  // only one value, x > x is impossible
     });
     expect(infeasible.error).toBe('infeasible');
 
     const feasible = solveBinding({
       clauseValues: { a: true },
-      bindings: { a: 'x > 50' },
-      searchRange: [0, 100],
+      bindings: { a: 'x > y' },
+      searchRange: [-5, 5],
     });
     expect(feasible.error).toBeUndefined();
-    expect(feasible.witness.x).toBeGreaterThan(50);
+    expect(feasible.witness.x).toBeGreaterThan(feasible.witness.y);
   });
 });
 
