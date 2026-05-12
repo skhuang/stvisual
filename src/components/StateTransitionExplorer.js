@@ -84,6 +84,44 @@ export function createStateTransitionExplorer() {
   let nextSId = 20;
   let nextTId = 20;
 
+  const stQuiz = { active: false, phase: 'question', answer: '', result: null };
+
+  function renderStQuizPanel() {
+    if (!stQuiz.active) return '';
+    const tests = getTests();
+    const count = tests.length;
+    const modeLabel = state.mode === 'sequence' ? t('st.mode.sequence') : t('st.mode.transition');
+    const isGraded = stQuiz.phase === 'graded';
+    const correct = isGraded && parseInt(stQuiz.answer, 10) === count;
+    return `
+      <div class="quiz-panel" data-testid="st-quiz">
+        <div class="quiz-header">
+          <h4>${t('quiz.st.title')}</h4>
+          <button type="button" class="quiz-close-btn" data-testid="st-quiz-close">${t('quiz.close')}</button>
+        </div>
+        <p class="quiz-prompt">${t('quiz.st.prompt').replace('{mode}', esc(modeLabel))}</p>
+        <div class="quiz-bva-inputs">
+          <label class="quiz-bva-field">
+            <span>${t('quiz.st.label')}</span>
+            <input type="number" min="0"
+              class="quiz-bva-input${isGraded ? (correct ? ' quiz-input-correct' : ' quiz-input-wrong') : ''}"
+              data-testid="st-quiz-answer" value="${esc(stQuiz.answer)}" ${isGraded ? 'readonly' : ''}>
+          </label>
+        </div>
+        ${isGraded ? `
+          <p class="quiz-score" data-testid="st-quiz-score">
+            ${correct
+              ? `<strong>${t('quiz.bva.perfect')}</strong>`
+              : `${t('quiz.ec.wrong')} ${t('quiz.ec.answer').replace('{count}', count)}`}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="st-quiz-reset">${t('quiz.reset')}</button>
+        ` : `
+          <button type="button" class="quiz-start-btn" data-testid="st-quiz-check">${t('quiz.check')}</button>
+        `}
+      </div>
+    `;
+  }
+
   function getTests() {
     if (!state.states.length || !state.transitions.length) return [];
     return state.mode === 'sequence'
@@ -235,6 +273,7 @@ export function createStateTransitionExplorer() {
               data-mode="transition" data-testid="st-mode-transition">${t('st.mode.transition')}</button>
             <button type="button" class="st-mode-btn${state.mode === 'sequence' ? ' active' : ''}"
               data-mode="sequence" data-testid="st-mode-sequence">${t('st.mode.sequence')}</button>
+            <button type="button" class="quiz-start-btn" data-testid="st-quiz-start">${t('quiz.start')}</button>
           </div>
         </div>
 
@@ -268,6 +307,7 @@ export function createStateTransitionExplorer() {
               <span class="st-count">${tests.length} ${t('st.results.count')}</span>
             </h3>
             ${renderTestTable(tests)}
+            ${renderStQuizPanel()}
           </div>
         </div>
       </div>
@@ -365,6 +405,20 @@ export function createStateTransitionExplorer() {
       const to   = state.states[1]?.id ?? from;
       state.transitions.push({ id: `t${nextTId++}`, from, to, event: 'event', action: '' });
       render();
+    });
+
+    root.querySelector('[data-testid="st-quiz-start"]')?.addEventListener('click', () => {
+      stQuiz.active = true; stQuiz.phase = 'question'; stQuiz.answer = ''; render();
+    });
+    root.querySelector('[data-testid="st-quiz-close"]')?.addEventListener('click', () => {
+      stQuiz.active = false; render();
+    });
+    root.querySelector('[data-testid="st-quiz-check"]')?.addEventListener('click', () => {
+      stQuiz.answer = root.querySelector('[data-testid="st-quiz-answer"]')?.value ?? '';
+      stQuiz.phase = 'graded'; render();
+    });
+    root.querySelector('[data-testid="st-quiz-reset"]')?.addEventListener('click', () => {
+      stQuiz.phase = 'question'; stQuiz.answer = ''; render();
     });
   }
 

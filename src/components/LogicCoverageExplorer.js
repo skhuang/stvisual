@@ -204,6 +204,59 @@ export function createLogicCoverageExplorer() {
     cloudUser: null,
   };
 
+  const logicQuiz = { active: false, phase: 'question', answer: '', result: null };
+
+  function getQuizUniqueCount() {
+    const set = getActiveSet();
+    if (!set) return null;
+    const seen = new Set();
+    for (const test of set.tests) {
+      seen.add(`r${test.row.index}`);
+    }
+    return seen.size;
+  }
+
+  function renderLogicQuizPanel() {
+    if (!logicQuiz.active) return '';
+    const criterion = logicCoverageCriteria.find((c) => c.id === state.selectedCriterion);
+    const criterionLabel = pickField(criterion, 'label') || criterion?.id || state.selectedCriterion;
+    const uniqueCount = getQuizUniqueCount();
+    if (uniqueCount === null) return '';
+    const isGraded = logicQuiz.phase === 'graded';
+    const correct = isGraded && parseInt(logicQuiz.answer, 10) === uniqueCount;
+    return `
+      <div class="quiz-panel" data-testid="logic-quiz">
+        <div class="quiz-header">
+          <h4>${t('quiz.logic.title')}</h4>
+          <button type="button" class="quiz-close-btn" data-testid="logic-quiz-close">${t('quiz.close')}</button>
+        </div>
+        <p class="quiz-prompt">${t('quiz.logic.prompt')
+          .replace('{expr}', escapeHtml(state.expression))
+          .replace('{criterion}', escapeHtml(criterionLabel))}</p>
+        <div class="quiz-bva-inputs">
+          <label class="quiz-bva-field">
+            <span>${t('quiz.logic.label')}</span>
+            <input type="number" min="0"
+              class="quiz-bva-input${isGraded ? (correct ? ' quiz-input-correct' : ' quiz-input-wrong') : ''}"
+              data-testid="logic-quiz-answer"
+              value="${escapeHtml(logicQuiz.answer)}"
+              ${isGraded ? 'readonly' : ''}>
+          </label>
+        </div>
+        ${isGraded ? `
+          <p class="quiz-score" data-testid="logic-quiz-score">
+            ${correct
+              ? `<strong>${t('quiz.bva.perfect')}</strong>`
+              : `${t('quiz.ec.wrong')} ${t('quiz.ec.answer').replace('{count}', uniqueCount)}`}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="logic-quiz-reset">${t('quiz.reset')}</button>
+        ` : `
+          <button type="button" class="quiz-start-btn" data-testid="logic-quiz-check">${t('quiz.check')}</button>
+        `}
+      </div>
+    `;
+  }
+
   let cloudClient = null;
   try {
     cloudClient = createCloudIntegrationClient();
@@ -354,8 +407,16 @@ export function createLogicCoverageExplorer() {
       ${state.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml(state.error)}</div>` : ''}
 
       <div class="logic-criteria" role="tablist" aria-label="${t('logic.aria.criteria')}">
-        ${criteriaMarkup}
+        <div class="graph-criterion-row">
+          ${criteriaMarkup}
+          ${!state.error && state.analysis ? `
+            <button type="button" class="quiz-start-btn" data-testid="logic-quiz-start">
+              ${t('quiz.start')}
+            </button>` : ''}
+        </div>
       </div>
+
+      ${renderLogicQuizPanel()}
 
       <div class="logic-summary" data-testid="logic-summary">${summaryMarkup}</div>
 
@@ -819,8 +880,44 @@ export function createLogicCoverageExplorer() {
     root.querySelectorAll('[data-criterion]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.selectedCriterion = btn.dataset.criterion;
+        logicQuiz.active = false;
+        logicQuiz.phase = 'question';
+        logicQuiz.answer = '';
+        logicQuiz.result = null;
         render();
       });
+    });
+
+    root.querySelector('[data-testid="logic-quiz-start"]')?.addEventListener('click', () => {
+      logicQuiz.active = true;
+      logicQuiz.phase = 'question';
+      logicQuiz.answer = '';
+      logicQuiz.result = null;
+      const quizEl = root.querySelector('[data-testid="logic-quiz"]');
+      if (!quizEl) { render(); return; }
+      quizEl.outerHTML = renderLogicQuizPanel();
+      // Re-insert by full render since outerHTML swap loses binding
+      render();
+    });
+
+    root.querySelector('[data-testid="logic-quiz-close"]')?.addEventListener('click', () => {
+      logicQuiz.active = false;
+      render();
+    });
+
+    root.querySelector('[data-testid="logic-quiz-check"]')?.addEventListener('click', () => {
+      const inp = root.querySelector('[data-testid="logic-quiz-answer"]');
+      logicQuiz.answer = inp?.value ?? '';
+      logicQuiz.phase = 'graded';
+      const panel = root.querySelector('[data-testid="logic-quiz"]');
+      if (panel) panel.outerHTML = renderLogicQuizPanel();
+      render();
+    });
+
+    root.querySelector('[data-testid="logic-quiz-reset"]')?.addEventListener('click', () => {
+      logicQuiz.phase = 'question';
+      logicQuiz.answer = '';
+      render();
     });
 
     // Binding inputs — update results section only (no full re-render → no focus loss).

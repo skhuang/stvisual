@@ -231,6 +231,23 @@ export const messages = {
     'quiz.graph.perfect': 'Optimal!',
     'quiz.graph.incomplete': 'Incomplete — some requirements are not covered.',
 
+    // Quiz — Logic Coverage
+    'quiz.logic.title': 'Logic Coverage Self-Test',
+    'quiz.logic.prompt': 'Predicate: "{expr}" — Criterion: {criterion}. How many unique test cases are required?',
+    'quiz.logic.label': 'Unique test cases',
+
+    // Quiz — Decision Table
+    'quiz.dt.title': 'Decision Table Self-Test',
+    'quiz.dt.prompt': 'For the current decision table, answer the two questions below.',
+    'quiz.dt.label.covered': 'Unique rule combinations covered',
+    'quiz.dt.label.dup': 'Duplicate rules',
+    'quiz.dt.answer': 'Answer: {covered} unique, {dup} duplicate',
+
+    // Quiz — State Transition
+    'quiz.st.title': 'State Transition Self-Test',
+    'quiz.st.prompt': 'Using "{mode}", how many test cases does the current state machine require?',
+    'quiz.st.label': 'Number of test cases',
+
     'section.flow': 'Testing Flow',
     'section.types': 'Testing Types',
     'section.methods.title': 'Testing Method Categories',
@@ -946,6 +963,20 @@ export const messages = {
     'quiz.graph.score': '您的選擇覆蓋了 {covered}/{total} 項需求。最優最小集：{optimal} 條路徑。',
     'quiz.graph.perfect': '最優！',
     'quiz.graph.incomplete': '未完整 — 仍有部分需求未被覆蓋。',
+
+    'quiz.logic.title': 'Logic Coverage 自我測驗',
+    'quiz.logic.prompt': '謂詞："{expr}" — 準則：{criterion}。需要幾個不重複的測試案例？',
+    'quiz.logic.label': '不重複測試案例數',
+
+    'quiz.dt.title': '決策表 自我測驗',
+    'quiz.dt.prompt': '針對目前的決策表，回答下列兩個問題。',
+    'quiz.dt.label.covered': '已覆蓋的不重複規則組合數',
+    'quiz.dt.label.dup': '重複規則數',
+    'quiz.dt.answer': '答案：{covered} 個不重複，{dup} 個重複',
+
+    'quiz.st.title': '狀態轉移 自我測驗',
+    'quiz.st.prompt': '使用「{mode}」模式，目前的狀態機需要幾個測試案例？',
+    'quiz.st.label': '測試案例數',
 
     'section.flow': '測試流程',
     'section.types': '測試類型',

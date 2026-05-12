@@ -106,6 +106,52 @@ export function createDecisionTableExplorer() {
   let nextActId  = 10;
   let nextRuleId = 10;
 
+  const dtQuiz = { active: false, phase: 'question', ansCovered: '', ansDup: '', result: null };
+
+  function renderDtQuizPanel() {
+    if (!dtQuiz.active) return '';
+    const validation = validateDecisionTable(state.conditions, state.rules);
+    const isGraded = dtQuiz.phase === 'graded';
+    const covCorrect = isGraded && parseInt(dtQuiz.ansCovered, 10) === validation.covered;
+    const dupCorrect = isGraded && parseInt(dtQuiz.ansDup, 10) === validation.duplicate.length;
+    const allCorrect = covCorrect && dupCorrect;
+    return `
+      <div class="quiz-panel" data-testid="dt-quiz">
+        <div class="quiz-header">
+          <h4>${t('quiz.dt.title')}</h4>
+          <button type="button" class="quiz-close-btn" data-testid="dt-quiz-close">${t('quiz.close')}</button>
+        </div>
+        <p class="quiz-prompt">${t('quiz.dt.prompt')}</p>
+        <div class="quiz-bva-inputs">
+          <label class="quiz-bva-field">
+            <span>${t('quiz.dt.label.covered')}</span>
+            <input type="number" min="0"
+              class="quiz-bva-input${isGraded ? (covCorrect ? ' quiz-input-correct' : ' quiz-input-wrong') : ''}"
+              data-testid="dt-quiz-covered" value="${esc(dtQuiz.ansCovered)}" ${isGraded ? 'readonly' : ''}>
+          </label>
+          <label class="quiz-bva-field">
+            <span>${t('quiz.dt.label.dup')}</span>
+            <input type="number" min="0"
+              class="quiz-bva-input${isGraded ? (dupCorrect ? ' quiz-input-correct' : ' quiz-input-wrong') : ''}"
+              data-testid="dt-quiz-dup" value="${esc(dtQuiz.ansDup)}" ${isGraded ? 'readonly' : ''}>
+          </label>
+        </div>
+        ${isGraded ? `
+          <p class="quiz-score" data-testid="dt-quiz-score">
+            ${allCorrect
+              ? `<strong>${t('quiz.bva.perfect')}</strong>`
+              : `${t('quiz.ec.wrong')} ${t('quiz.dt.answer')
+                  .replace('{covered}', validation.covered)
+                  .replace('{dup}', validation.duplicate.length)}`}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="dt-quiz-reset">${t('quiz.reset')}</button>
+        ` : `
+          <button type="button" class="quiz-start-btn" data-testid="dt-quiz-check">${t('quiz.check')}</button>
+        `}
+      </div>
+    `;
+  }
+
   function renderTable() {
     const tests = generateDecisionTableTests(state.conditions, state.actions, state.rules);
     const validation = validateDecisionTable(state.conditions, state.rules);
@@ -159,6 +205,7 @@ export function createDecisionTableExplorer() {
         <span class="dt-coverage-badge" data-testid="dt-coverage">${t('dt.coverage')}: ${validation.covered}/${validation.total}</span>
         ${dupMsg}
         <button class="dt-add-rule-btn" data-testid="dt-add-rule">+ ${t('dt.rule.add')}</button>
+        <button class="quiz-start-btn dt-quiz-trigger" data-testid="dt-quiz-start">${t('quiz.start')}</button>
       </div>
     </div>`;
   }
@@ -223,6 +270,7 @@ export function createDecisionTableExplorer() {
               <span class="dt-count">${state.rules.length} ${t('dt.results.count')}</span>
             </h3>
             ${renderTable()}
+            ${renderDtQuizPanel()}
           </div>
         </div>
       </div>
@@ -353,6 +401,24 @@ export function createDecisionTableExplorer() {
       else r.actions.push(aid);
       refreshResults();
       persist(state);
+    });
+
+    root.querySelector('[data-testid="dt-quiz-start"]')?.addEventListener('click', () => {
+      dtQuiz.active = true; dtQuiz.phase = 'question';
+      dtQuiz.ansCovered = ''; dtQuiz.ansDup = '';
+      render();
+    });
+    root.querySelector('[data-testid="dt-quiz-close"]')?.addEventListener('click', () => {
+      dtQuiz.active = false; render();
+    });
+    root.querySelector('[data-testid="dt-quiz-check"]')?.addEventListener('click', () => {
+      dtQuiz.ansCovered = root.querySelector('[data-testid="dt-quiz-covered"]')?.value ?? '';
+      dtQuiz.ansDup     = root.querySelector('[data-testid="dt-quiz-dup"]')?.value ?? '';
+      dtQuiz.phase = 'graded';
+      render();
+    });
+    root.querySelector('[data-testid="dt-quiz-reset"]')?.addEventListener('click', () => {
+      dtQuiz.phase = 'question'; dtQuiz.ansCovered = ''; dtQuiz.ansDup = ''; render();
     });
   }
 
