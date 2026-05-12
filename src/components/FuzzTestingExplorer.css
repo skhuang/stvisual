@@ -6,11 +6,11 @@
 
 .fuzz-panel {
   min-width: 0;
-  background: #fff;
-  border: 1px solid #d7e0ea;
-  border-radius: 8px;
+  background: var(--app-surface, #fff);
+  border: 1px solid var(--app-border, #d7e0ea);
+  border-radius: var(--app-radius-md, 8px);
   padding: 0.85rem;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  box-shadow: var(--app-shadow-md, 0 10px 24px rgba(15, 23, 42, 0.05));
 }
 .fuzz-panel-header {
   display: flex;
@@ -19,7 +19,7 @@
 }
 .fuzz-panel-header h3 {
   margin: 0;
-  color: #334155;
+  color: var(--app-text-strong, #334155);
   font-size: 0.95rem;
   font-weight: 800;
 }
@@ -45,8 +45,8 @@
 
 .fuzz-example-btn {
   padding: 0.4rem 0.75rem;
-  border: 1px solid #cdd5df;
-  background: #fff;
+  border: 1px solid var(--app-border, #cdd5df);
+  background: var(--app-surface, #fff);
   border-radius: 999px;
   cursor: pointer;
   font-size: 0.875rem;
@@ -57,7 +57,7 @@
   border-color: #8b5cf6;
 }
 .fuzz-example-btn:hover {
-  background: #eef2f7;
+  background: var(--app-surface-hover, #eef2f7);
 }
 .fuzz-example-btn.active:hover {
   background: #8b5cf6;
@@ -79,8 +79,8 @@
 .fuzz-control input[type='number'] {
   width: 4rem;
   padding: 0.25rem 0.4rem;
-  border: 1px solid #cdd5df;
-  border-radius: 4px;
+  border: 1px solid var(--app-border, #cdd5df);
+  border-radius: var(--app-radius-sm, 4px);
 }
 
 .fuzz-run-btn {
@@ -88,7 +88,7 @@
   border: 1px solid #8b5cf6;
   background: #8b5cf6;
   color: #fff;
-  border-radius: 4px;
+  border-radius: var(--app-radius-sm, 4px);
   cursor: pointer;
   font-weight: 600;
   font-size: 0.875rem;
@@ -148,8 +148,8 @@
   width: 100%;
   min-height: 12rem;
   padding: 0.6rem;
-  border: 1px solid #cdd5df;
-  border-radius: 6px;
+  border: 1px solid var(--app-border, #cdd5df);
+  border-radius: var(--app-radius-sm, 6px);
   font-family: 'SF Mono', Menlo, Consolas, monospace;
   font-size: 0.85rem;
   line-height: 1.45;
@@ -173,7 +173,7 @@
 }
 .fuzz-divider {
   margin: 0 0.4rem;
-  color: #cbd5e1;
+  color: var(--app-border, #cbd5e1);
 }
 .fuzz-truncated {
   color: #b45309;
@@ -192,15 +192,15 @@
 }
 
 .fuzz-case {
-  border: 1px solid #cdd5df;
-  border-radius: 6px;
+  border: 1px solid var(--app-border, #cdd5df);
+  border-radius: var(--app-radius-sm, 6px);
   padding: 0.6rem 0.75rem;
-  background: #f8fafc;
+  background: var(--app-surface-muted, #f8fafc);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
 .fuzz-case:hover {
-  background: #f1f5f9;
+  background: var(--app-surface-hover, #f1f5f9);
 }
 .fuzz-case.selected {
   border-color: #7c3aed;
@@ -278,7 +278,7 @@
 }
 
 .fuzz-empty {
-  color: #64748b;
+  color: var(--app-text-subtle, #64748b);
   font-style: italic;
   margin: 0;
 }
@@ -294,7 +294,7 @@
 
 .fuzz-hint {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--app-text-subtle, #64748b);
   margin: 0;
 }
 
@@ -328,9 +328,9 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  background: #fff;
+  border: 1px solid var(--app-border-muted, #e2e8f0);
+  border-radius: var(--app-radius-sm, 6px);
+  background: var(--app-surface, #fff);
 }
 
 .fuzz-cfg-canvas svg {
@@ -351,9 +351,9 @@
 
 .fuzz-cfg-zoom button {
   padding: 0.2rem 0.55rem;
-  border: 1px solid #cdd5df;
-  background: #fff;
-  border-radius: 4px;
+  border: 1px solid var(--app-border, #cdd5df);
+  background: var(--app-surface, #fff);
+  border-radius: var(--app-radius-sm, 4px);
   cursor: pointer;
   font-family: 'SF Mono', monospace;
   font-size: 0.8rem;
@@ -361,7 +361,7 @@
 }
 
 .fuzz-cfg-zoom button:hover {
-  background: #eef2f7;
+  background: var(--app-surface-hover, #eef2f7);
 }
 
 .fuzz-cfg-selected {

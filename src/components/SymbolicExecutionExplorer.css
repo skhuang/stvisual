@@ -3,11 +3,11 @@
 
 .symbex-panel {
   min-width: 0;
-  background: #fff;
-  border: 1px solid #d7e0ea;
-  border-radius: 8px;
+  background: var(--app-surface, #fff);
+  border: 1px solid var(--app-border, #d7e0ea);
+  border-radius: var(--app-radius-md, 8px);
   padding: 0.85rem;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  box-shadow: var(--app-shadow-md, 0 10px 24px rgba(15, 23, 42, 0.05));
 }
 .symbex-panel-header {
   display: flex;
@@ -16,7 +16,7 @@
 }
 .symbex-panel-header h3 {
   margin: 0;
-  color: #334155;
+  color: var(--app-text-strong, #334155);
   font-size: 0.95rem;
   font-weight: 800;
 }
@@ -72,8 +72,8 @@
 
 .symbex-example-btn {
   padding: 0.4rem 0.75rem;
-  border: 1px solid #cdd5df;
-  background: #fff;
+  border: 1px solid var(--app-border, #cdd5df);
+  background: var(--app-surface, #fff);
   border-radius: 999px;
   cursor: pointer;
   font-size: 0.875rem;
@@ -83,7 +83,7 @@
 .symbex-results-pane { gap: 0.5rem; }
 
 .symbex-example-btn.active { background: #1f6feb; color: #fff; border-color: #1f6feb; }
-.symbex-example-btn:hover { background: #eef2f7; }
+.symbex-example-btn:hover { background: var(--app-surface-hover, #eef2f7); }
 .symbex-example-btn.active:hover { background: #1f6feb; opacity: 0.9; }
 
 .symbex-controls { display: flex; gap: 0.75rem; align-items: center; }
@@ -91,8 +91,8 @@
 .symbex-control input[type="number"] {
   width: 4rem;
   padding: 0.25rem 0.4rem;
-  border: 1px solid #cdd5df;
-  border-radius: 4px;
+  border: 1px solid var(--app-border, #cdd5df);
+  border-radius: var(--app-radius-sm, 4px);
 }
 
 .symbex-body {
@@ -118,8 +118,8 @@
   width: 100%;
   min-height: 12rem;
   padding: 0.6rem;
-  border: 1px solid #cdd5df;
-  border-radius: 6px;
+  border: 1px solid var(--app-border, #cdd5df);
+  border-radius: var(--app-radius-sm, 6px);
   font-family: 'SF Mono', Menlo, Consolas, monospace;
   font-size: 0.85rem;
   line-height: 1.45;
@@ -128,9 +128,9 @@
   color: #e2e8f0;
 }
 
-.symbex-summary { font-size: 0.95rem; color: #475569; }
-.symbex-summary strong { margin-left: 0.25rem; color: #0f172a; }
-.symbex-divider { margin: 0 0.4rem; color: #cbd5e1; }
+.symbex-summary { font-size: 0.95rem; color: var(--app-text-muted, #475569); }
+.symbex-summary strong { margin-left: 0.25rem; color: var(--app-text-strong, #0f172a); }
+.symbex-divider { margin: 0 0.4rem; color: var(--app-border, #cbd5e1); }
 .symbex-truncated { color: #b45309; font-weight: 600; }
 
 .symbex-paths {
@@ -145,10 +145,10 @@
 }
 
 .symbex-path {
-  border: 1px solid #cdd5df;
-  border-radius: 6px;
+  border: 1px solid var(--app-border, #cdd5df);
+  border-radius: var(--app-radius-sm, 6px);
   padding: 0.6rem 0.75rem;
-  background: #f8fafc;
+  background: var(--app-surface-muted, #f8fafc);
 }
 
 .symbex-path.infeasible {
@@ -179,7 +179,7 @@
   font-size: 0.85rem;
 }
 .symbex-pc li { margin: 0.1rem 0; }
-.symbex-pc-empty { font-style: italic; color: #64748b; font-size: 0.85rem; }
+.symbex-pc-empty { font-style: italic; color: var(--app-text-subtle, #64748b); font-size: 0.85rem; }
 
 .symbex-witness {
   display: grid;
@@ -199,7 +199,7 @@
   margin: 0;
 }
 
-.symbex-empty { color: #64748b; font-style: italic; }
+.symbex-empty { color: var(--app-text-subtle, #64748b); font-style: italic; }
 .symbex-error {
   background: #fef2f2;
   border: 1px solid #fecaca;
@@ -212,12 +212,12 @@
 
 .symbex-hint {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--app-text-subtle, #64748b);
   margin: 0;
 }
 
 .symbex-path { cursor: pointer; transition: background 0.15s, border-color 0.15s; }
-.symbex-path:hover { background: #f1f5f9; }
+.symbex-path:hover { background: var(--app-surface-hover, #f1f5f9); }
 .symbex-path.selected { border-color: #7c3aed; box-shadow: 0 0 0 2px rgba(124,58,237,0.18); }
 .symbex-cfg {
   display: flex;
@@ -234,9 +234,9 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  background: #fff;
+  border: 1px solid var(--app-border-muted, #e2e8f0);
+  border-radius: var(--app-radius-sm, 6px);
+  background: var(--app-surface, #fff);
 }
 .symbex-cfg-canvas svg { width: 100%; height: auto; }
 .symbex-cfg-error { color: #b45309; font-size: 0.85rem; }
@@ -244,12 +244,12 @@
 .symbex-cfg-zoom { margin-left: auto; display: inline-flex; gap: 0.25rem; }
 .symbex-cfg-zoom button {
   padding: 0.2rem 0.55rem;
-  border: 1px solid #cdd5df;
-  background: #fff;
-  border-radius: 4px;
+  border: 1px solid var(--app-border, #cdd5df);
+  background: var(--app-surface, #fff);
+  border-radius: var(--app-radius-sm, 4px);
   cursor: pointer;
   font-family: 'SF Mono', monospace;
   font-size: 0.8rem;
   min-width: 2.4rem;
 }
-.symbex-cfg-zoom button:hover { background: #eef2f7; }
+.symbex-cfg-zoom button:hover { background: var(--app-surface-hover, #eef2f7); }
