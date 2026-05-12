@@ -11,6 +11,8 @@ import { createSymbolicExecutionExplorer } from './components/SymbolicExecutionE
 import { createConcolicExecutionExplorer } from './components/ConcolicExecutionExplorer.js';
 import { createFuzzTestingExplorer } from './components/FuzzTestingExplorer.js';
 import { createTestGenerationExplorer } from './components/TestGenerationExplorer.js';
+import { createBoundaryValueExplorer } from './components/BoundaryValueExplorer.js';
+import { createEquivalenceClassExplorer } from './components/EquivalenceClassExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const learningSectionsConfig = [
@@ -23,6 +25,7 @@ const learningSectionsConfig = [
   { id: 'concolic', key: 'section.concolic' },
   { id: 'fuzz', key: 'section.fuzz' },
   { id: 'testgen', key: 'section.testgen' },
+  { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
 ];
@@ -46,6 +49,10 @@ const overviewGroups = [
   {
     key: 'overview.group.execution',
     sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen'],
+  },
+  {
+    key: 'overview.group.blackbox',
+    sectionIds: ['blackbox'],
   },
 ];
 
@@ -109,6 +116,7 @@ export function renderApp(container) {
           <section data-testid="section-concolic" tabindex="-1" aria-labelledby="section-concolic-title"><h2 id="section-concolic-title">${t('section.concolic.title')}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t('section.fuzz.title')}</h2><div data-slot="fuzz"></div></section>
           <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t('section.testgen.title')}</h2><div data-slot="testgen"></div></section>
+          <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
         </main>
@@ -145,6 +153,7 @@ export function renderApp(container) {
       concolic: main.querySelector('[data-testid="section-concolic"]'),
       fuzz: main.querySelector('[data-testid="section-fuzz"]'),
       testgen: main.querySelector('[data-testid="section-testgen"]'),
+      blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
     };
@@ -160,6 +169,8 @@ export function renderApp(container) {
       concolic: createConcolicExecutionExplorer(),
       fuzz: createFuzzTestingExplorer(),
       testgen: createTestGenerationExplorer(),
+      bva: createBoundaryValueExplorer(),
+      ec: createEquivalenceClassExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       types: createTestingTypesTable(),
@@ -223,6 +234,60 @@ export function renderApp(container) {
     }
     renderSyntaxTabs();
     updateSyntaxPanels();
+
+    // --- Black-Box Testing: BVA + EC tabs ---
+    const blackboxTabs = [
+      { id: 'bva', key: 'blackboxTab.bva', component: components.bva },
+      { id: 'ec',  key: 'blackboxTab.ec',  component: components.ec },
+    ];
+    const blackboxSlot = container.querySelector('[data-slot="blackbox"]');
+    const blackboxTabBar = document.createElement('nav');
+    blackboxTabBar.className = 'syntax-tab-row';
+    blackboxTabBar.dataset.testid = 'blackbox-tab-row';
+    blackboxTabBar.setAttribute('role', 'tablist');
+    blackboxSlot.appendChild(blackboxTabBar);
+    const blackboxPanels = document.createElement('div');
+    blackboxPanels.className = 'syntax-tab-panels';
+    blackboxSlot.appendChild(blackboxPanels);
+    for (const tab of blackboxTabs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.blackboxPanel = tab.id;
+      panel.appendChild(tab.component);
+      blackboxPanels.appendChild(panel);
+    }
+    const BLACKBOX_TAB_KEY = 'stvisual.blackboxActiveTab';
+    let activeBlackboxTab = (() => {
+      try {
+        const v = globalThis.localStorage?.getItem(BLACKBOX_TAB_KEY);
+        return blackboxTabs.find((tb) => tb.id === v) ? v : 'bva';
+      } catch { return 'bva'; }
+    })();
+    function renderBlackboxTabs() {
+      blackboxTabBar.innerHTML = blackboxTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeBlackboxTab === tab.id ? ' active' : ''}"
+          data-blackbox-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeBlackboxTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      blackboxTabBar.querySelectorAll('[data-blackbox-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeBlackboxTab = btn.dataset.blackboxTab;
+          try { globalThis.localStorage?.setItem(BLACKBOX_TAB_KEY, activeBlackboxTab); } catch {}
+          renderBlackboxTabs();
+          updateBlackboxPanels();
+        });
+      });
+    }
+    function updateBlackboxPanels() {
+      blackboxPanels.querySelectorAll('[data-blackbox-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.blackboxPanel === activeBlackboxTab ? '' : 'none';
+      });
+    }
+    renderBlackboxTabs();
+    updateBlackboxPanels();
 
     container.querySelector('[data-slot="cloud"]').appendChild(components.cloud);
     container.querySelector('[data-slot="symbex"]').appendChild(components.symbex);
