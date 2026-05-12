@@ -551,6 +551,62 @@ export const logicCoveragePredicates = [
   return z;
 }`,
   },
+  {
+    id: 'leap-year',
+    name: 'isLeapYear(y)',
+    expression: 'a && (b || c)',
+    description: '閏年判斷：能被 4 整除，且（不能被 100 整除 或 能被 400 整除）。',
+    descriptionEn: 'Leap year: divisible by 4 AND (not divisible by 100 OR divisible by 400).',
+    defaultBindings: { a: 'y % 4 === 0', b: 'y % 100 !== 0', c: 'y % 400 === 0' },
+    bindingParams: 'y',
+    sourceCode: `function isLeapYear(y) {
+  if (y % 4 === 0) {       // ← a
+    if (y % 100 !== 0) {   // ← b
+      return true;
+    }
+    if (y % 400 === 0) {   // ← c
+      return true;
+    }
+  }
+  return false;
+}`,
+  },
+  {
+    id: 'gcd-step',
+    name: 'gcdStep(a, b)',
+    expression: 'p && q',
+    description: 'Euclidean GCD 的一步：b>0 時繼續，a>b 時做減法。',
+    descriptionEn: 'One step of Euclidean GCD: continue if b>0, subtract if a>b.',
+    defaultBindings: { p: 'b > 0', q: 'a > b' },
+    bindingParams: 'a, b',
+    sourceCode: `function gcdStep(a, b) {
+  if (b > 0) {     // ← p: still processing
+    if (a > b) {   // ← q: subtract direction
+      return a - b;
+    }
+    return b - a;
+  }
+  return a;        // base case
+}`,
+  },
+  {
+    id: 'binary-search-step',
+    name: 'binarySearch step',
+    expression: 'q || r',
+    description: 'Binary search 的比較步驟：target 小於或大於 midVal 時分別往左或右走。',
+    descriptionEn: 'Binary search comparison: go left if target < midVal, right if target > midVal.',
+    defaultBindings: { q: 'target < midVal', r: 'target > midVal' },
+    bindingParams: 'target, midVal',
+    sourceCode: `function searchStep(target, midVal) {
+  if (target < midVal) {   // ← q: go left
+    return -1;
+  }
+  if (target > midVal) {   // ← r: go right
+    return 1;
+  }
+  return 0;                // found
+}`,
+  },
 ];
 
 export const symbolicExecutionExamples = [
