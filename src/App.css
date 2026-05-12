@@ -200,12 +200,12 @@ body {
   gap: 16px;
 }
 .overview-card {
-  min-height: 112px;
+  min-height: 148px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px;
+  justify-content: flex-start;
+  gap: 10px;
   padding: 18px;
   border: 1px solid #d7e0ea;
   border-radius: 8px;
@@ -233,6 +233,11 @@ body {
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.35;
+}
+.overview-card__desc {
+  color: #51606f;
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .app-main section h2::before {

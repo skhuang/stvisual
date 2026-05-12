@@ -835,6 +835,16 @@
       "overview.group.foundations": "Foundations",
       "overview.group.coverage": "Coverage Criteria",
       "overview.group.execution": "Execution & Test Generation",
+      "overview.desc.methods": "Browse testing families and how black-box, white-box, and gray-box methods relate.",
+      "overview.desc.flow": "Walk through the testing lifecycle from requirements to defect reporting.",
+      "overview.desc.types": "Compare common testing levels and when each type is used.",
+      "overview.desc.graph": "Explore CFG coverage requirements, paths, and optimized test sets.",
+      "overview.desc.logic": "Evaluate predicates with truth tables, clause criteria, and Karnaugh maps.",
+      "overview.desc.syntax": "Try program, grammar, and specification mutation in one syntax-based workspace.",
+      "overview.desc.symbex": "Enumerate symbolic paths and inspect feasible witnesses on the CFG.",
+      "overview.desc.concolic": "Start from concrete inputs and watch branch negation discover new paths.",
+      "overview.desc.fuzz": "Generate random inputs, surface crashes, and inspect aggregate CFG coverage.",
+      "overview.desc.testgen": "Produce concrete tests from coverage requirements using symbolic witnesses.",
       "section.methods": "Testing Methods",
       "section.graph": "Graph Coverage",
       "section.logic": "Logic Coverage",
@@ -1298,6 +1308,16 @@
       "overview.group.foundations": "\u57FA\u790E\u6982\u5FF5",
       "overview.group.coverage": "\u8986\u84CB\u6E96\u5247",
       "overview.group.execution": "\u57F7\u884C\u8207\u6E2C\u8A66\u751F\u6210",
+      "overview.desc.methods": "\u700F\u89BD\u9ED1\u7BB1\u3001\u767D\u7BB1\u3001\u7070\u7BB1\u6E2C\u8A66\u65B9\u6CD5\uFF0C\u4EE5\u53CA\u5404\u985E\u65B9\u6CD5\u4E4B\u9593\u7684\u95DC\u4FC2\u3002",
+      "overview.desc.flow": "\u5F9E\u9700\u6C42\u5206\u6790\u5230\u7F3A\u9677\u56DE\u5831\uFF0C\u9010\u6B65\u67E5\u770B\u6E2C\u8A66\u751F\u547D\u9031\u671F\u3002",
+      "overview.desc.types": "\u6BD4\u8F03\u5E38\u898B\u6E2C\u8A66\u5C64\u7D1A\uFF0C\u4EE5\u53CA\u5404\u985E\u578B\u9069\u5408\u4F7F\u7528\u7684\u6642\u6A5F\u3002",
+      "overview.desc.graph": "\u63A2\u7D22 CFG \u8986\u84CB\u9700\u6C42\u3001\u6E2C\u8A66\u8DEF\u5F91\u8207\u6700\u4F73\u5316\u5F8C\u7684\u6E2C\u8A66\u96C6\u5408\u3002",
+      "overview.desc.logic": "\u7528\u771F\u503C\u8868\u3001\u5B50\u53E5\u6E96\u5247\u8207 Karnaugh map \u5206\u6790\u908F\u8F2F\u8FF0\u8A5E\u3002",
+      "overview.desc.syntax": "\u5728\u540C\u4E00\u500B\u5DE5\u4F5C\u5340\u64CD\u4F5C\u7A0B\u5F0F\u3001\u6587\u6CD5\u8207\u898F\u683C mutation\u3002",
+      "overview.desc.symbex": "\u5217\u8209\u7B26\u865F\u8DEF\u5F91\uFF0C\u4E26\u5728 CFG \u4E0A\u6AA2\u8996\u53EF\u6EFF\u8DB3\u8DEF\u5F91\u8207 witness\u3002",
+      "overview.desc.concolic": "\u5F9E\u5177\u9AD4\u8F38\u5165\u51FA\u767C\uFF0C\u89C0\u5BDF\u5206\u652F\u53CD\u8F49\u5982\u4F55\u63A2\u7D22\u65B0\u8DEF\u5F91\u3002",
+      "overview.desc.fuzz": "\u7522\u751F\u96A8\u6A5F\u8F38\u5165\u3001\u627E\u51FA crash\uFF0C\u4E26\u6AA2\u8996\u6574\u9AD4 CFG \u8986\u84CB\u72C0\u614B\u3002",
+      "overview.desc.testgen": "\u6839\u64DA\u8986\u84CB\u9700\u6C42\u8207\u7B26\u865F witness \u7522\u751F\u5177\u9AD4\u6E2C\u8A66\u6848\u4F8B\u3002",
       "section.methods": "\u6E2C\u8A66\u65B9\u6CD5",
       "section.graph": "Graph Coverage",
       "section.logic": "Logic Coverage",
@@ -12654,6 +12674,7 @@ INVARSPEC !w | (i & (l | h))`
                 >
                   <span class="overview-card__label">${t(section.key)}</span>
                   <span class="overview-card__title">${t(`section.${section.id}.title`)}</span>
+                  <span class="overview-card__desc">${t(`overview.desc.${section.id}`)}</span>
                 </button>
               `;
         }).join("")}

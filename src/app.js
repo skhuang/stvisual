@@ -254,6 +254,7 @@ export function renderApp(container) {
                 >
                   <span class="overview-card__label">${t(section.key)}</span>
                   <span class="overview-card__title">${t(`section.${section.id}.title`)}</span>
+                  <span class="overview-card__desc">${t(`overview.desc.${section.id}`)}</span>
                 </button>
               `;
             }).join('')}
