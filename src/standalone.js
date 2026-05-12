@@ -824,6 +824,7 @@
       "app.footer": "Built per Plan.md \xB7 Software Testing Methods Visualization",
       "app.overview.subtitle": "Choose a topic to open one focused explorer at a time.",
       "app.section.label": "Section",
+      "app.skipMain": "Skip to main content",
       "app.lang.label": "Language",
       "app.lang.en": "English",
       "app.lang.zh": "\u4E2D\u6587",
@@ -1298,6 +1299,7 @@
       "app.footer": "\u6839\u64DA Plan.md \u5EFA\u7ACB \xB7 \u8EDF\u9AD4\u6E2C\u8A66\u65B9\u6CD5\u8996\u89BA\u5316\u7CFB\u7D71",
       "app.overview.subtitle": "\u9078\u64C7\u4E00\u500B\u4E3B\u984C\uFF0C\u9032\u5165\u55AE\u4E00\u4E92\u52D5\u6A21\u7D44\u3002",
       "app.section.label": "\u5340\u584A",
+      "app.skipMain": "\u8DF3\u5230\u4E3B\u8981\u5167\u5BB9",
       "app.lang.label": "\u8A9E\u8A00",
       "app.lang.en": "English",
       "app.lang.zh": "\u4E2D\u6587",
@@ -12492,6 +12494,7 @@ INVARSPEC !w | (i & (l | h))`
     function paint() {
       container.innerHTML = `
       <div class="app">
+        <a class="skip-link" href="#app-main">${t("app.skipMain")}</a>
         <header class="app-header">
           <div class="app-header__text">
             <h1>${t("app.title")}</h1>
@@ -12513,28 +12516,28 @@ INVARSPEC !w | (i & (l | h))`
 
         <nav class="app-nav" aria-label="${t("app.nav.aria")}" data-testid="app-nav"></nav>
 
-        <main class="app-main">
-          <section class="overview-section" data-testid="section-overview">
+        <main class="app-main" id="app-main" tabindex="-1">
+          <section class="overview-section" data-testid="section-overview" tabindex="-1" aria-labelledby="section-overview-title">
             <div class="overview-section__header">
-              <h2>${t("section.all")}</h2>
+              <h2 id="section-overview-title">${t("section.all")}</h2>
               <p>${t("app.overview.subtitle")}</p>
             </div>
             <div class="overview-grid" data-testid="overview-grid"></div>
           </section>
-          <section data-testid="section-methods"><h2>${t("section.methods.title")}</h2><div data-slot="methods"></div></section>
-          <section data-testid="section-graph"><h2>${t("section.graph.title")}</h2><div data-slot="graph"></div></section>
-          <section data-testid="section-logic"><h2>${t("section.logic.title")}</h2><div data-slot="logic"></div></section>
-          <section data-testid="section-syntax"><h2>${t("section.syntax.title")}</h2><div data-slot="syntax"></div></section>
-          <section data-testid="section-symbex"><h2>${t("section.symbex.title")}</h2><div data-slot="symbex"></div></section>
-          <section data-testid="section-concolic"><h2>${t("section.concolic.title")}</h2><div data-slot="concolic"></div></section>
-          <section data-testid="section-fuzz"><h2>${t("section.fuzz.title")}</h2><div data-slot="fuzz"></div></section>
-          <section data-testid="section-testgen"><h2>${t("section.testgen.title")}</h2><div data-slot="testgen"></div></section>
-          <section data-testid="section-flow"><h2>${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
-          <section data-testid="section-types"><h2>${t("section.types.title")}</h2><div data-slot="types"></div></section>
+          <section data-testid="section-methods" tabindex="-1" aria-labelledby="section-methods-title"><h2 id="section-methods-title">${t("section.methods.title")}</h2><div data-slot="methods"></div></section>
+          <section data-testid="section-graph" tabindex="-1" aria-labelledby="section-graph-title"><h2 id="section-graph-title">${t("section.graph.title")}</h2><div data-slot="graph"></div></section>
+          <section data-testid="section-logic" tabindex="-1" aria-labelledby="section-logic-title"><h2 id="section-logic-title">${t("section.logic.title")}</h2><div data-slot="logic"></div></section>
+          <section data-testid="section-syntax" tabindex="-1" aria-labelledby="section-syntax-title"><h2 id="section-syntax-title">${t("section.syntax.title")}</h2><div data-slot="syntax"></div></section>
+          <section data-testid="section-symbex" tabindex="-1" aria-labelledby="section-symbex-title"><h2 id="section-symbex-title">${t("section.symbex.title")}</h2><div data-slot="symbex"></div></section>
+          <section data-testid="section-concolic" tabindex="-1" aria-labelledby="section-concolic-title"><h2 id="section-concolic-title">${t("section.concolic.title")}</h2><div data-slot="concolic"></div></section>
+          <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t("section.fuzz.title")}</h2><div data-slot="fuzz"></div></section>
+          <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t("section.testgen.title")}</h2><div data-slot="testgen"></div></section>
+          <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
+          <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t("section.types.title")}</h2><div data-slot="types"></div></section>
         </main>
 
         <div class="cloud-drawer" data-testid="cloud-settings-drawer" hidden>
-          <button class="cloud-drawer__backdrop" type="button" data-cloud-close aria-label="${t("common.close")}"></button>
+          <button class="cloud-drawer__backdrop" type="button" data-cloud-close tabindex="-1" aria-label="${t("common.close")}"></button>
           <aside class="cloud-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="cloud-drawer-title" tabindex="-1">
             <header class="cloud-drawer__header">
               <div>
@@ -12659,6 +12662,7 @@ INVARSPEC !w | (i & (l | h))`
       const cloudTrigger = container.querySelector("[data-app-cloud]");
       const cloudDrawer = container.querySelector('[data-testid="cloud-settings-drawer"]');
       const cloudDrawerPanel = cloudDrawer.querySelector(".cloud-drawer__panel");
+      let drawerReturnFocusTarget = null;
       function renderOverview() {
         overviewGrid.innerHTML = overviewGroups.map((group) => `
         <section class="overview-group">
@@ -12696,6 +12700,7 @@ INVARSPEC !w | (i & (l | h))`
               data-testid="nav-btn-${section.id}"
               data-section="${section.id}"
               type="button"
+              aria-current="${activeSection === section.id ? "page" : "false"}"
             >
               ${t(section.key)}
             </button>
@@ -12726,12 +12731,22 @@ INVARSPEC !w | (i & (l | h))`
         Object.entries(sections).forEach(([id, element]) => {
           const visible = activeSection === "all" && id === "overview" || activeSection === id;
           element.style.display = visible ? "" : "none";
+          element.setAttribute("aria-hidden", visible ? "false" : "true");
         });
       }
-      function scrollToActiveSection() {
+      function getActiveSectionElement() {
         const target = activeSection === "all" ? sections.overview : sections[activeSection];
+        return target || null;
+      }
+      function scrollToActiveSection() {
+        const target = getActiveSectionElement();
         if (!target) return;
         target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      function focusActiveSection() {
+        const target = getActiveSectionElement();
+        if (!target) return;
+        target.focus({ preventScroll: true });
       }
       function updateCloudTriggerState() {
         cloudTrigger.classList.toggle("active", cloudDrawerOpen);
@@ -12740,9 +12755,11 @@ INVARSPEC !w | (i & (l | h))`
       function updateCloudDrawerState() {
         cloudDrawer.hidden = !cloudDrawerOpen;
         cloudDrawer.classList.toggle("open", cloudDrawerOpen);
+        cloudDrawer.setAttribute("aria-hidden", cloudDrawerOpen ? "false" : "true");
         updateCloudTriggerState();
       }
       function openCloudDrawer() {
+        drawerReturnFocusTarget = document.activeElement instanceof HTMLElement ? document.activeElement : cloudTrigger;
         cloudDrawerOpen = true;
         updateCloudDrawerState();
         requestAnimationFrame(() => cloudDrawerPanel.focus());
@@ -12750,7 +12767,9 @@ INVARSPEC !w | (i & (l | h))`
       function closeCloudDrawer() {
         cloudDrawerOpen = false;
         updateCloudDrawerState();
-        cloudTrigger.focus();
+        const focusTarget = (drawerReturnFocusTarget == null ? void 0 : drawerReturnFocusTarget.isConnected) ? drawerReturnFocusTarget : cloudTrigger;
+        drawerReturnFocusTarget = null;
+        focusTarget.focus();
       }
       function setActiveSection(sectionId, shouldScroll = false) {
         if (sectionId === "cloud") {
@@ -12763,7 +12782,10 @@ INVARSPEC !w | (i & (l | h))`
         updateSectionVisibility();
         updateCloudTriggerState();
         if (shouldScroll) {
-          requestAnimationFrame(scrollToActiveSection);
+          requestAnimationFrame(() => {
+            scrollToActiveSection();
+            focusActiveSection();
+          });
         }
       }
       container.querySelector("#app-lang-select").addEventListener("change", (e) => {
@@ -12777,7 +12799,25 @@ INVARSPEC !w | (i & (l | h))`
       });
       cloudDrawer.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
+          event.preventDefault();
           closeCloudDrawer();
+          return;
+        }
+        if (event.key !== "Tab" || !cloudDrawerOpen) {
+          return;
+        }
+        const focusableElements = [...cloudDrawer.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )].filter((element) => !element.disabled && element.offsetParent !== null);
+        if (!focusableElements.length) return;
+        const first = focusableElements[0];
+        const last = focusableElements[focusableElements.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
         }
       });
       renderOverview();

@@ -43,6 +43,36 @@ textarea:focus-visible {
   box-shadow: var(--app-focus-ring);
 }
 
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 300;
+  transform: translateY(-160%);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface);
+  color: var(--app-primary-strong);
+  box-shadow: var(--app-shadow-lg);
+  font-weight: 800;
+  padding: 10px 14px;
+  text-decoration: none;
+  transition: transform 0.15s;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.app-main:focus,
+.app-main > section:focus {
+  outline: none;
+}
+
+.app-main > section:focus-visible {
+  box-shadow: var(--app-focus-ring);
+  border-radius: var(--app-radius-md);
+}
+
 /* Header */
 .app-header {
   background: linear-gradient(135deg, #1a252f 0%, #2980b9 100%);
