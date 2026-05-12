@@ -957,6 +957,7 @@
       "common.save": "Save",
       "common.delete": "Delete",
       "common.add": "Add",
+      "common.close": "Close",
       "common.notes": "Notes",
       "common.actual": "Actual",
       "common.expected": "Expected",
@@ -1418,6 +1419,7 @@
       "common.save": "\u5132\u5B58",
       "common.delete": "\u522A\u9664",
       "common.add": "\u65B0\u589E",
+      "common.close": "\u95DC\u9589",
       "common.notes": "\u5099\u8A3B",
       "common.actual": "\u5BE6\u969B",
       "common.expected": "\u9810\u671F",
@@ -12489,10 +12491,23 @@ INVARSPEC !w | (i & (l | h))`
           <section data-testid="section-concolic"><h2>${t("section.concolic.title")}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz"><h2>${t("section.fuzz.title")}</h2><div data-slot="fuzz"></div></section>
           <section data-testid="section-testgen"><h2>${t("section.testgen.title")}</h2><div data-slot="testgen"></div></section>
-          <section data-testid="section-cloud"><h2>${t("section.cloud.title")}</h2><div data-slot="cloud"></div></section>
           <section data-testid="section-flow"><h2>${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types"><h2>${t("section.types.title")}</h2><div data-slot="types"></div></section>
         </main>
+
+        <div class="cloud-drawer" data-testid="cloud-settings-drawer" hidden>
+          <button class="cloud-drawer__backdrop" type="button" data-cloud-close aria-label="${t("common.close")}"></button>
+          <aside class="cloud-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="cloud-drawer-title" tabindex="-1">
+            <header class="cloud-drawer__header">
+              <div>
+                <p>${t("cloud.kicker")}</p>
+                <h2 id="cloud-drawer-title">${t("section.cloud.title")}</h2>
+              </div>
+              <button class="cloud-drawer__close" type="button" data-cloud-close aria-label="${t("common.close")}">\xD7</button>
+            </header>
+            <div class="cloud-drawer__body" data-slot="cloud"></div>
+          </aside>
+        </div>
 
         <footer class="app-footer">
           <p>${t("app.footer")}</p>
@@ -12511,7 +12526,6 @@ INVARSPEC !w | (i & (l | h))`
         concolic: main.querySelector('[data-testid="section-concolic"]'),
         fuzz: main.querySelector('[data-testid="section-fuzz"]'),
         testgen: main.querySelector('[data-testid="section-testgen"]'),
-        cloud: main.querySelector('[data-testid="section-cloud"]'),
         flow: main.querySelector('[data-testid="section-flow"]'),
         types: main.querySelector('[data-testid="section-types"]')
       };
@@ -12601,9 +12615,12 @@ INVARSPEC !w | (i & (l | h))`
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);
       let activeSection = "all";
+      let cloudDrawerOpen = false;
       const sectionsById = Object.fromEntries(sectionSelectConfig.map((section) => [section.id, section]));
       const overviewGrid = container.querySelector('[data-testid="overview-grid"]');
       const cloudTrigger = container.querySelector("[data-app-cloud]");
+      const cloudDrawer = container.querySelector('[data-testid="cloud-settings-drawer"]');
+      const cloudDrawerPanel = cloudDrawer.querySelector(".cloud-drawer__panel");
       function renderOverview() {
         overviewGrid.innerHTML = overviewGroups.map((group) => `
         <section class="overview-group">
@@ -12658,6 +12675,11 @@ INVARSPEC !w | (i & (l | h))`
           });
         });
         nav.querySelector('[data-testid="app-section-select"]').addEventListener("change", (event) => {
+          if (event.target.value === "cloud") {
+            openCloudDrawer();
+            renderNav();
+            return;
+          }
           setActiveSection(event.target.value, true);
         });
       }
@@ -12673,11 +12695,29 @@ INVARSPEC !w | (i & (l | h))`
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
       function updateCloudTriggerState() {
-        const isActive = activeSection === "cloud";
-        cloudTrigger.classList.toggle("active", isActive);
-        cloudTrigger.setAttribute("aria-pressed", isActive ? "true" : "false");
+        cloudTrigger.classList.toggle("active", cloudDrawerOpen);
+        cloudTrigger.setAttribute("aria-pressed", cloudDrawerOpen ? "true" : "false");
+      }
+      function updateCloudDrawerState() {
+        cloudDrawer.hidden = !cloudDrawerOpen;
+        cloudDrawer.classList.toggle("open", cloudDrawerOpen);
+        updateCloudTriggerState();
+      }
+      function openCloudDrawer() {
+        cloudDrawerOpen = true;
+        updateCloudDrawerState();
+        requestAnimationFrame(() => cloudDrawerPanel.focus());
+      }
+      function closeCloudDrawer() {
+        cloudDrawerOpen = false;
+        updateCloudDrawerState();
+        cloudTrigger.focus();
       }
       function setActiveSection(sectionId, shouldScroll = false) {
+        if (sectionId === "cloud") {
+          openCloudDrawer();
+          return;
+        }
         activeSection = sectionId;
         renderNav();
         updateSectionVisibility();
@@ -12690,12 +12730,20 @@ INVARSPEC !w | (i & (l | h))`
         setLocale(e.target.value);
       });
       cloudTrigger.addEventListener("click", () => {
-        setActiveSection("cloud", true);
+        openCloudDrawer();
+      });
+      cloudDrawer.querySelectorAll("[data-cloud-close]").forEach((button) => {
+        button.addEventListener("click", closeCloudDrawer);
+      });
+      cloudDrawer.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeCloudDrawer();
+        }
       });
       renderOverview();
       renderNav();
       updateSectionVisibility();
-      updateCloudTriggerState();
+      updateCloudDrawerState();
     }
     paint();
     onLocaleChange(() => paint());
