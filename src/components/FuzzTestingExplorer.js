@@ -163,7 +163,13 @@ export function createFuzzTestingExplorer() {
       : renderTestCases(result);
 
     root.innerHTML = `
-      <section class="fuzz-panel fuzz-input-panel">
+      <nav class="explorer-mobile-nav" aria-label="${t('explorer.mobileNav')}" data-testid="fuzz-mobile-nav">
+        <a href="#fuzz-input-panel">${t('explorer.panel.input')}</a>
+        <a href="#fuzz-cfg-panel">${t('explorer.panel.cfg')}</a>
+        <a href="#fuzz-results-panel">${t('explorer.panel.results')}</a>
+      </nav>
+
+      <section class="fuzz-panel fuzz-input-panel" id="fuzz-input-panel">
         <header class="fuzz-panel-header">
           <h3>${t('explorer.panel.input')}</h3>
         </header>
@@ -196,14 +202,14 @@ export function createFuzzTestingExplorer() {
       </section>
 
       <div class="fuzz-split-body">
-        <section class="fuzz-panel fuzz-cfg-pane">
+        <section class="fuzz-panel fuzz-cfg-pane" id="fuzz-cfg-panel">
           <header class="fuzz-panel-header">
             <h3>${t('explorer.panel.cfg')}</h3>
           </header>
           ${renderCfgPane()}
         </section>
 
-        <section class="fuzz-panel fuzz-results-pane">
+        <section class="fuzz-panel fuzz-results-pane" id="fuzz-results-panel">
           <header class="fuzz-panel-header">
             <h3>${t('explorer.panel.results')}</h3>
           </header>

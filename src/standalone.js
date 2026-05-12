@@ -831,6 +831,7 @@
       "explorer.panel.input": "Input",
       "explorer.panel.cfg": "Control Flow Graph",
       "explorer.panel.results": "Results",
+      "explorer.mobileNav": "Explorer sections",
       // Sections
       "section.all": "Overview",
       "overview.group.foundations": "Foundations",
@@ -1306,6 +1307,7 @@
       "explorer.panel.input": "\u8F38\u5165",
       "explorer.panel.cfg": "\u63A7\u5236\u6D41\u7A0B\u5716",
       "explorer.panel.results": "\u7D50\u679C",
+      "explorer.mobileNav": "Explorer \u5340\u584A",
       "section.all": "\u5168\u89BD",
       "overview.group.foundations": "\u57FA\u790E\u6982\u5FF5",
       "overview.group.coverage": "\u8986\u84CB\u6E96\u5247",
@@ -10679,7 +10681,13 @@ INVARSPEC !w | (i & (l | h))`
          ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state.result.paths.filter((p) => p.feasible).length}</strong>
          ${state.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
       root2.innerHTML = `
-      <section class="symbex-panel symbex-input-panel">
+      <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="symbex-mobile-nav">
+        <a href="#symbex-input-panel">${t("explorer.panel.input")}</a>
+        <a href="#symbex-cfg-panel">${t("explorer.panel.cfg")}</a>
+        <a href="#symbex-results-panel">${t("explorer.panel.results")}</a>
+      </nav>
+
+      <section class="symbex-panel symbex-input-panel" id="symbex-input-panel">
         <header class="symbex-panel-header">
           <h3>${t("explorer.panel.input")}</h3>
         </header>
@@ -10706,13 +10714,13 @@ INVARSPEC !w | (i & (l | h))`
       </section>
 
       <div class="symbex-split-body">
-        <section class="symbex-panel symbex-cfg-pane">
+        <section class="symbex-panel symbex-cfg-pane" id="symbex-cfg-panel">
           <header class="symbex-panel-header">
             <h3>${t("explorer.panel.cfg")}</h3>
           </header>
           ${renderCfgPane()}
         </section>
-        <section class="symbex-panel symbex-results-pane">
+        <section class="symbex-panel symbex-results-pane" id="symbex-results-panel">
           <header class="symbex-panel-header">
             <h3>${t("explorer.panel.results")}</h3>
           </header>
@@ -11155,7 +11163,13 @@ INVARSPEC !w | (i & (l | h))`
          ${t("concolic.summary.uniqueInputs")}<strong>${state.result.uniqueInputCount}</strong>
          ${state.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
       root2.innerHTML = `
-      <section class="concolic-panel concolic-input-panel">
+      <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="concolic-mobile-nav">
+        <a href="#concolic-input-panel">${t("explorer.panel.input")}</a>
+        <a href="#concolic-cfg-panel">${t("explorer.panel.cfg")}</a>
+        <a href="#concolic-results-panel">${t("explorer.panel.results")}</a>
+      </nav>
+
+      <section class="concolic-panel concolic-input-panel" id="concolic-input-panel">
         <header class="concolic-panel-header">
           <h3>${t("explorer.panel.input")}</h3>
         </header>
@@ -11188,13 +11202,13 @@ INVARSPEC !w | (i & (l | h))`
       </section>
 
       <div class="concolic-split-body">
-        <section class="concolic-panel concolic-cfg-pane">
+        <section class="concolic-panel concolic-cfg-pane" id="concolic-cfg-panel">
           <header class="concolic-panel-header">
             <h3>${t("explorer.panel.cfg")}</h3>
           </header>
           ${renderCfgPane()}
         </section>
-        <section class="concolic-panel concolic-results-pane">
+        <section class="concolic-panel concolic-results-pane" id="concolic-results-panel">
           <header class="concolic-panel-header">
             <h3>${t("explorer.panel.results")}</h3>
           </header>
@@ -11647,7 +11661,13 @@ INVARSPEC !w | (i & (l | h))`
          ${result.truncated ? `<span class="fuzz-divider">\xB7</span><span class="fuzz-truncated">${t("fuzz.summary.truncated")}</span>` : ""}` : "";
       const testCasesMarkup = error ? `<div class="fuzz-error" data-testid="fuzz-error">${escapeHtml8(error)}</div>` : renderTestCases(result);
       root2.innerHTML = `
-      <section class="fuzz-panel fuzz-input-panel">
+      <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="fuzz-mobile-nav">
+        <a href="#fuzz-input-panel">${t("explorer.panel.input")}</a>
+        <a href="#fuzz-cfg-panel">${t("explorer.panel.cfg")}</a>
+        <a href="#fuzz-results-panel">${t("explorer.panel.results")}</a>
+      </nav>
+
+      <section class="fuzz-panel fuzz-input-panel" id="fuzz-input-panel">
         <header class="fuzz-panel-header">
           <h3>${t("explorer.panel.input")}</h3>
         </header>
@@ -11680,14 +11700,14 @@ INVARSPEC !w | (i & (l | h))`
       </section>
 
       <div class="fuzz-split-body">
-        <section class="fuzz-panel fuzz-cfg-pane">
+        <section class="fuzz-panel fuzz-cfg-pane" id="fuzz-cfg-panel">
           <header class="fuzz-panel-header">
             <h3>${t("explorer.panel.cfg")}</h3>
           </header>
           ${renderCfgPane()}
         </section>
 
-        <section class="fuzz-panel fuzz-results-pane">
+        <section class="fuzz-panel fuzz-results-pane" id="fuzz-results-panel">
           <header class="fuzz-panel-header">
             <h3>${t("explorer.panel.results")}</h3>
           </header>
@@ -12178,7 +12198,13 @@ INVARSPEC !w | (i & (l | h))`
       </option>
     `).join("");
       root2.innerHTML = `
-      <section class="testgen-panel testgen-input-panel">
+      <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="testgen-mobile-nav">
+        <a href="#testgen-input-panel">${t("explorer.panel.input")}</a>
+        <a href="#testgen-cfg-panel">${t("explorer.panel.cfg")}</a>
+        <a href="#testgen-results-panel">${t("explorer.panel.results")}</a>
+      </nav>
+
+      <section class="testgen-panel testgen-input-panel" id="testgen-input-panel">
         <header class="testgen-panel-header">
           <h3>${t("explorer.panel.input")}</h3>
         </header>
@@ -12203,13 +12229,13 @@ INVARSPEC !w | (i & (l | h))`
       </section>
 
       <div class="testgen-split-body">
-        <section class="testgen-panel testgen-cfg-pane">
+        <section class="testgen-panel testgen-cfg-pane" id="testgen-cfg-panel">
           <header class="testgen-panel-header">
             <h3>${t("explorer.panel.cfg")}</h3>
           </header>
           ${renderCfgPane()}
         </section>
-        <section class="testgen-panel testgen-results-pane">
+        <section class="testgen-panel testgen-results-pane" id="testgen-results-panel">
           <header class="testgen-panel-header">
             <h3>${t("explorer.panel.results")}</h3>
           </header>

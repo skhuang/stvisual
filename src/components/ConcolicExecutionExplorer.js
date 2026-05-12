@@ -138,7 +138,13 @@ export function createConcolicExecutionExplorer() {
       : '';
 
     root.innerHTML = `
-      <section class="concolic-panel concolic-input-panel">
+      <nav class="explorer-mobile-nav" aria-label="${t('explorer.mobileNav')}" data-testid="concolic-mobile-nav">
+        <a href="#concolic-input-panel">${t('explorer.panel.input')}</a>
+        <a href="#concolic-cfg-panel">${t('explorer.panel.cfg')}</a>
+        <a href="#concolic-results-panel">${t('explorer.panel.results')}</a>
+      </nav>
+
+      <section class="concolic-panel concolic-input-panel" id="concolic-input-panel">
         <header class="concolic-panel-header">
           <h3>${t('explorer.panel.input')}</h3>
         </header>
@@ -171,13 +177,13 @@ export function createConcolicExecutionExplorer() {
       </section>
 
       <div class="concolic-split-body">
-        <section class="concolic-panel concolic-cfg-pane">
+        <section class="concolic-panel concolic-cfg-pane" id="concolic-cfg-panel">
           <header class="concolic-panel-header">
             <h3>${t('explorer.panel.cfg')}</h3>
           </header>
           ${renderCfgPane()}
         </section>
-        <section class="concolic-panel concolic-results-pane">
+        <section class="concolic-panel concolic-results-pane" id="concolic-results-panel">
           <header class="concolic-panel-header">
             <h3>${t('explorer.panel.results')}</h3>
           </header>

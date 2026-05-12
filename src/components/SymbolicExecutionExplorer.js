@@ -119,7 +119,13 @@ export function createSymbolicExecutionExplorer() {
 
 
     root.innerHTML = `
-      <section class="symbex-panel symbex-input-panel">
+      <nav class="explorer-mobile-nav" aria-label="${t('explorer.mobileNav')}" data-testid="symbex-mobile-nav">
+        <a href="#symbex-input-panel">${t('explorer.panel.input')}</a>
+        <a href="#symbex-cfg-panel">${t('explorer.panel.cfg')}</a>
+        <a href="#symbex-results-panel">${t('explorer.panel.results')}</a>
+      </nav>
+
+      <section class="symbex-panel symbex-input-panel" id="symbex-input-panel">
         <header class="symbex-panel-header">
           <h3>${t('explorer.panel.input')}</h3>
         </header>
@@ -146,13 +152,13 @@ export function createSymbolicExecutionExplorer() {
       </section>
 
       <div class="symbex-split-body">
-        <section class="symbex-panel symbex-cfg-pane">
+        <section class="symbex-panel symbex-cfg-pane" id="symbex-cfg-panel">
           <header class="symbex-panel-header">
             <h3>${t('explorer.panel.cfg')}</h3>
           </header>
           ${renderCfgPane()}
         </section>
-        <section class="symbex-panel symbex-results-pane">
+        <section class="symbex-panel symbex-results-pane" id="symbex-results-panel">
           <header class="symbex-panel-header">
             <h3>${t('explorer.panel.results')}</h3>
           </header>

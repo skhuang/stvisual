@@ -114,7 +114,13 @@ export function createTestGenerationExplorer() {
     `).join('');
 
     root.innerHTML = `
-      <section class="testgen-panel testgen-input-panel">
+      <nav class="explorer-mobile-nav" aria-label="${t('explorer.mobileNav')}" data-testid="testgen-mobile-nav">
+        <a href="#testgen-input-panel">${t('explorer.panel.input')}</a>
+        <a href="#testgen-cfg-panel">${t('explorer.panel.cfg')}</a>
+        <a href="#testgen-results-panel">${t('explorer.panel.results')}</a>
+      </nav>
+
+      <section class="testgen-panel testgen-input-panel" id="testgen-input-panel">
         <header class="testgen-panel-header">
           <h3>${t('explorer.panel.input')}</h3>
         </header>
@@ -139,13 +145,13 @@ export function createTestGenerationExplorer() {
       </section>
 
       <div class="testgen-split-body">
-        <section class="testgen-panel testgen-cfg-pane">
+        <section class="testgen-panel testgen-cfg-pane" id="testgen-cfg-panel">
           <header class="testgen-panel-header">
             <h3>${t('explorer.panel.cfg')}</h3>
           </header>
           ${renderCfgPane()}
         </section>
-        <section class="testgen-panel testgen-results-pane">
+        <section class="testgen-panel testgen-results-pane" id="testgen-results-panel">
           <header class="testgen-panel-header">
             <h3>${t('explorer.panel.results')}</h3>
           </header>

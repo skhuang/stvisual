@@ -347,6 +347,22 @@ textarea:focus-visible {
   gap: 32px;
 }
 
+.explorer-mobile-nav {
+  display: none;
+}
+
+.explorer-mobile-nav a {
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  background: var(--app-surface);
+  color: var(--app-primary-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 7px 11px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
 /* Cloud drawer */
 .cloud-drawer {
   position: fixed;
@@ -461,6 +477,24 @@ textarea:focus-visible {
 
   .app-main > section {
     scroll-margin-top: 92px;
+  }
+
+  .explorer-mobile-nav {
+    position: sticky;
+    top: 68px;
+    z-index: 90;
+    display: flex;
+    gap: 8px;
+    margin: -4px -4px 4px;
+    padding: 8px 4px;
+    overflow-x: auto;
+    background: rgba(240, 244, 248, 0.94);
+    backdrop-filter: blur(10px);
+  }
+
+  .explorer-mobile-nav + section,
+  .explorer-mobile-nav ~ div > section {
+    scroll-margin-top: 128px;
   }
 
   .overview-grid {

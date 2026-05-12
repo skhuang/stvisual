@@ -16,6 +16,7 @@ export const messages = {
     'explorer.panel.input': 'Input',
     'explorer.panel.cfg': 'Control Flow Graph',
     'explorer.panel.results': 'Results',
+    'explorer.mobileNav': 'Explorer sections',
 
     // Sections
     'section.all': 'Overview',
@@ -508,6 +509,7 @@ export const messages = {
     'explorer.panel.input': '輸入',
     'explorer.panel.cfg': '控制流程圖',
     'explorer.panel.results': '結果',
+    'explorer.mobileNav': 'Explorer 區塊',
 
     'section.all': '全覽',
     'overview.group.foundations': '基礎概念',
