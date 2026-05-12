@@ -27,6 +27,7 @@ All decks are Marp Markdown — convert to PPTX with a single command. Screensho
 | 10 | Symbolic Execution | [10-symbolic-execution.zh-TW.md](10-symbolic-execution.zh-TW.md) | [10-symbolic-execution.en.md](10-symbolic-execution.en.md) | symbex-overview, paths, cfg |
 | 11 | Concolic Execution | [11-concolic-execution.zh-TW.md](11-concolic-execution.zh-TW.md) | [11-concolic-execution.en.md](11-concolic-execution.en.md) | concolic-overview, iters, cfg |
 | 12 | Test Generation from Coverage | [12-test-generation.zh-TW.md](12-test-generation.zh-TW.md) | [12-test-generation.en.md](12-test-generation.en.md) | testgen-overview, requirements, tests, cfg |
+| 13 | Logic Coverage Binding | [13-logic-binding.zh-TW.md](13-logic-binding.zh-TW.md) | [13-logic-binding.en.md](13-logic-binding.en.md) | binding-panel, binding-results |
 
 ---
 
@@ -48,6 +49,9 @@ All decks are Marp Markdown — convert to PPTX with a single command. Screensho
                                                                       │
                                                                       ▼
                                           #12 Test Generation from Coverage (#3+#4+#10 bridge)
+                                                                      │
+                                                                      ▼
+                                          #13 Logic Coverage Binding (#5 extension: clause → concrete witness)
 ```
 
 Four threads:
@@ -74,6 +78,7 @@ Four threads:
 | 10 | §16 | SymbolicExecutionExplorer + symbolicExecution.js |
 | 11 | §17 | ConcolicExecutionExplorer + concolicExecution.js |
 | 12 | §12 | TestGenerationExplorer + testGeneration.js |
+| 13 | §4–5 (ext.) | LogicCoverageExplorer (Binding) + logicBinding.js |
 
 Full spec: [docs/Specification.zh-TW.md](../Specification.zh-TW.md).
 
@@ -119,7 +124,7 @@ Open `docs/slides/03-graph-coverage.en.html` — saving the source re-renders.
 
 ---
 
-## Screenshot inventory (43 files)
+## Screenshot inventory (46 files)
 
 Located in [docs/assets/slides/](../assets/slides/):
 
@@ -136,6 +141,7 @@ fuzz-{overview,cfg}.png
 symbex-{overview,paths,cfg}.png
 concolic-{overview,iters,cfg}.png
 testgen-{overview,requirements,tests,cfg}.png
+binding-{panel,results}.png
 ```
 
 ---

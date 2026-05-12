@@ -27,6 +27,7 @@ stvisual 課程共 **12 講**，每講皆有：
 | 10 | Symbolic Execution | [10-symbolic-execution.zh-TW.md](10-symbolic-execution.zh-TW.md) | [10-symbolic-execution.en.md](10-symbolic-execution.en.md) | symbex-overview、paths、cfg |
 | 11 | Concolic Execution | [11-concolic-execution.zh-TW.md](11-concolic-execution.zh-TW.md) | [11-concolic-execution.en.md](11-concolic-execution.en.md) | concolic-overview、iters、cfg |
 | 12 | Test Generation from Coverage | [12-test-generation.zh-TW.md](12-test-generation.zh-TW.md) | [12-test-generation.en.md](12-test-generation.en.md) | testgen-overview、requirements、tests、cfg |
+| 13 | Logic Coverage Binding | [13-logic-binding.zh-TW.md](13-logic-binding.zh-TW.md) | [13-logic-binding.en.md](13-logic-binding.en.md) | binding-panel、binding-results |
 
 ---
 
@@ -48,6 +49,9 @@ stvisual 課程共 **12 講**，每講皆有：
                                                                       │
                                                                       ▼
                                           #12 Test Generation from Coverage (#3+#4+#10 橋接)
+                                                                      │
+                                                                      ▼
+                                          #13 Logic Coverage Binding (#5 延伸：clause → concrete witness)
 ```
 
 四條子線（圖、邏輯、突變、執行式測試）：
@@ -74,6 +78,7 @@ stvisual 課程共 **12 講**，每講皆有：
 | 10 | §16 | SymbolicExecutionExplorer + symbolicExecution.js |
 | 11 | §17 | ConcolicExecutionExplorer + concolicExecution.js |
 | 12 | §12 | TestGenerationExplorer + testGeneration.js |
+| 13 | §4–5 (延伸) | LogicCoverageExplorer（Binding）+ logicBinding.js |
 
 完整規格：[docs/Specification.zh-TW.md](../Specification.zh-TW.md)。
 
@@ -119,7 +124,7 @@ npx -y @marp-team/marp-cli --watch docs/slides/03-graph-coverage.zh-TW.md --html
 
 ---
 
-## 截圖清單（43 張）
+## 截圖清單（46 張）
 
 存放於 [docs/assets/slides/](../assets/slides/)：
 
@@ -136,13 +141,13 @@ fuzz-{overview,cfg}.png
 symbex-{overview,paths,cfg}.png
 concolic-{overview,iters,cfg}.png
 testgen-{overview,requirements,tests,cfg}.png
+binding-{panel,results}.png
 ```
 
 ---
 
 ## 後續可能擴充
 
-- **#12.2 Logic Coverage Binding**：手動 clause → 程式變數對應，再自動求 concrete inputs。
 - **Speaker notes**：每張投影片下方加 `<!-- speaker -->` Marp speaker notes（目前刻意省略，方便講師自行擴展）。
 - **SMT solver 整合**：把 #10 / #11 的 brute-force witness solver 換成 z3-solver-js，支援大整數與字串 constraint。
 

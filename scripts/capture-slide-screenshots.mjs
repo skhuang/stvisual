@@ -75,6 +75,7 @@ async function main() {
   });
   const page = await ctx.newPage();
   await page.goto(URL, { waitUntil: 'networkidle' });
+  await page.getByTestId('nav-btn-graph').click();
   await page.getByTestId('graph-coverage-explorer').waitFor();
 
   const explorer = page.getByTestId('graph-coverage-explorer');
@@ -521,9 +522,9 @@ async function main() {
   console.log('[capture] saved testgen-overview.png');
 
   // 41. Requirements card — click first requirement to highlight it.
-  const firstReq = testgenPage.locator('[data-testgen-req]').first();
-  if (await firstReq.count()) {
-    await firstReq.click();
+  const firstTestgenReq = testgenPage.locator('[data-testgen-req]').first();
+  if (await firstTestgenReq.count()) {
+    await firstTestgenReq.click();
     await sleep(300);
   }
   const reqCard = testgenPage.getByTestId('testgen-requirements-card');
@@ -555,6 +556,40 @@ async function main() {
   }
 
   await testgenPage.close();
+
+  // ---- Deck #13: Logic Coverage Binding ----
+
+  const bindingPage = await ctx.newPage();
+  await bindingPage.goto(URL, { waitUntil: 'networkidle' });
+  await bindingPage.getByTestId('nav-btn-logic').click();
+  await bindingPage.getByTestId('logic-coverage').waitFor();
+
+  // Pick the triangle predicate example and select CACC.
+  const triangleBtn = bindingPage.locator('[data-expression="p && q"]').first();
+  if (await triangleBtn.count()) {
+    await triangleBtn.click();
+    await sleep(300);
+  }
+  await bindingPage.locator('[data-criterion="CACC"]').click().catch(() => {});
+  await sleep(300);
+
+  // Scroll binding panel into view.
+  const bindingPanel = bindingPage.getByTestId('logic-binding');
+  if (await bindingPanel.count()) {
+    await bindingPanel.scrollIntoViewIfNeeded();
+    // 44. Binding panel — inputs + source code.
+    await bindingPanel.screenshot({ path: join(OUT_DIR, 'binding-panel.png') });
+    console.log('[capture] saved binding-panel.png');
+
+    // 45. Binding results table.
+    const bindingResults = bindingPage.getByTestId('logic-binding-results');
+    if (await bindingResults.count()) {
+      await bindingResults.screenshot({ path: join(OUT_DIR, 'binding-results.png') });
+      console.log('[capture] saved binding-results.png');
+    }
+  }
+
+  await bindingPage.close();
 
   await browser.close();
   if (serverChild) {
