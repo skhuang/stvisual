@@ -114,21 +114,41 @@ export function createTestGenerationExplorer() {
     `).join('');
 
     root.innerHTML = `
-      <div class="testgen-toolbar">
-        <div class="testgen-examples" data-testid="testgen-examples">${exampleButtons}</div>
-        <div class="testgen-controls">
-          <label class="testgen-control">
-            <span>${t('testgen.criterion')}</span>
-            <select data-testid="testgen-criterion">${criterionOptions}</select>
-          </label>
+      <section class="testgen-panel testgen-input-panel">
+        <header class="testgen-panel-header">
+          <h3>${t('explorer.panel.input')}</h3>
+        </header>
+        <div class="testgen-toolbar">
+          <div class="testgen-examples" data-testid="testgen-examples">${exampleButtons}</div>
+          <div class="testgen-controls">
+            <label class="testgen-control">
+              <span>${t('testgen.criterion')}</span>
+              <select data-testid="testgen-criterion">${criterionOptions}</select>
+            </label>
+          </div>
         </div>
-      </div>
+        <div class="testgen-editor-pane">
+          <label class="testgen-editor-label" for="testgen-source">${t('testgen.source')}</label>
+          <textarea id="testgen-source"
+            class="testgen-editor"
+            data-testid="testgen-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml(state.sourceCode)}</textarea>
+        </div>
+      </section>
 
       <div class="testgen-split-body">
-        <div class="testgen-cfg-pane">
+        <section class="testgen-panel testgen-cfg-pane">
+          <header class="testgen-panel-header">
+            <h3>${t('explorer.panel.cfg')}</h3>
+          </header>
           ${renderCfgPane()}
-        </div>
-        <div class="testgen-right-pane">
+        </section>
+        <section class="testgen-panel testgen-results-pane">
+          <header class="testgen-panel-header">
+            <h3>${t('explorer.panel.results')}</h3>
+          </header>
           ${renderSummary()}
           ${renderError()}
           <div class="testgen-results-grid">
@@ -141,16 +161,7 @@ export function createTestGenerationExplorer() {
               ${renderSelectedTests()}
             </div>
           </div>
-          <div class="testgen-editor-pane">
-            <label class="testgen-editor-label" for="testgen-source">${t('testgen.source')}</label>
-            <textarea id="testgen-source"
-              class="testgen-editor"
-              data-testid="testgen-source"
-              spellcheck="false"
-              autocomplete="off"
-              rows="14">${escapeHtml(state.sourceCode)}</textarea>
-          </div>
-        </div>
+        </section>
       </div>
 
       <p class="testgen-hint">${t('testgen.hint')}</p>

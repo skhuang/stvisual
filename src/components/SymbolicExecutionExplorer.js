@@ -119,37 +119,46 @@ export function createSymbolicExecutionExplorer() {
 
 
     root.innerHTML = `
-      <div class="symbex-toolbar">
-        <div class="symbex-examples" data-testid="symbex-examples">${exampleButtons}</div>
-        <div class="symbex-controls">
-          <label class="symbex-control">
-            <span>${t('symbex.maxUnroll')}</span>
-            <input type="number" min="0" max="6" step="1"
-              value="${state.maxLoopUnroll}"
-              data-testid="symbex-max-unroll" />
-          </label>
+      <section class="symbex-panel symbex-input-panel">
+        <header class="symbex-panel-header">
+          <h3>${t('explorer.panel.input')}</h3>
+        </header>
+        <div class="symbex-toolbar">
+          <div class="symbex-examples" data-testid="symbex-examples">${exampleButtons}</div>
+          <div class="symbex-controls">
+            <label class="symbex-control">
+              <span>${t('symbex.maxUnroll')}</span>
+              <input type="number" min="0" max="6" step="1"
+                value="${state.maxLoopUnroll}"
+                data-testid="symbex-max-unroll" />
+            </label>
+          </div>
         </div>
-      </div>
+        <div class="symbex-editor-pane">
+          <label class="symbex-editor-label" for="symbex-source">${t('symbex.source')}</label>
+          <textarea id="symbex-source"
+            class="symbex-editor"
+            data-testid="symbex-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml(state.sourceCode)}</textarea>
+        </div>
+      </section>
 
       <div class="symbex-split-body">
-        <div class="symbex-cfg-pane">
+        <section class="symbex-panel symbex-cfg-pane">
+          <header class="symbex-panel-header">
+            <h3>${t('explorer.panel.cfg')}</h3>
+          </header>
           ${renderCfgPane()}
-        </div>
-        <div class="symbex-right-pane">
-          <div class="symbex-results-pane">
-            <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
-            ${pathsMarkup}
-          </div>
-          <div class="symbex-editor-pane">
-            <label class="symbex-editor-label" for="symbex-source">${t('symbex.source')}</label>
-            <textarea id="symbex-source"
-              class="symbex-editor"
-              data-testid="symbex-source"
-              spellcheck="false"
-              autocomplete="off"
-              rows="14">${escapeHtml(state.sourceCode)}</textarea>
-          </div>
-        </div>
+        </section>
+        <section class="symbex-panel symbex-results-pane">
+          <header class="symbex-panel-header">
+            <h3>${t('explorer.panel.results')}</h3>
+          </header>
+          <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
+          ${pathsMarkup}
+        </section>
       </div>
 
       <p class="symbex-hint">${t('symbex.hint')}</p>

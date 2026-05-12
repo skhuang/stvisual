@@ -163,44 +163,53 @@ export function createFuzzTestingExplorer() {
       : renderTestCases(result);
 
     root.innerHTML = `
-      <div class="fuzz-toolbar">
-        <div class="fuzz-examples" data-testid="fuzz-examples">${exampleButtons}</div>
-        <div class="fuzz-controls">
-          <label class="fuzz-control">
-            <span>${t('fuzz.testCount')}</span>
-            <input type="number" min="10" max="500" step="10"
-              value="${state.testCount}"
-              data-testid="fuzz-test-count-input" />
-          </label>
-          <button type="button" 
-            class="fuzz-run-btn"
-            data-testid="fuzz-run-btn"
-            data-fuzz-run="true">
-            ${t('fuzz.run')}
-          </button>
+      <section class="fuzz-panel fuzz-input-panel">
+        <header class="fuzz-panel-header">
+          <h3>${t('explorer.panel.input')}</h3>
+        </header>
+        <div class="fuzz-toolbar">
+          <div class="fuzz-examples" data-testid="fuzz-examples">${exampleButtons}</div>
+          <div class="fuzz-controls">
+            <label class="fuzz-control">
+              <span>${t('fuzz.testCount')}</span>
+              <input type="number" min="10" max="500" step="10"
+                value="${state.testCount}"
+                data-testid="fuzz-test-count-input" />
+            </label>
+            <button type="button"
+              class="fuzz-run-btn"
+              data-testid="fuzz-run-btn"
+              data-fuzz-run="true">
+              ${t('fuzz.run')}
+            </button>
+          </div>
         </div>
-      </div>
+        <div class="fuzz-editor-pane">
+          <label class="fuzz-source-label" for="fuzz-source">${t('fuzz.source')}</label>
+          <textarea id="fuzz-source"
+            class="fuzz-source"
+            data-testid="fuzz-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml(state.sourceCode)}</textarea>
+        </div>
+      </section>
 
       <div class="fuzz-split-body">
-        <div class="fuzz-cfg-pane">
+        <section class="fuzz-panel fuzz-cfg-pane">
+          <header class="fuzz-panel-header">
+            <h3>${t('explorer.panel.cfg')}</h3>
+          </header>
           ${renderCfgPane()}
-        </div>
+        </section>
 
-        <div class="fuzz-right-pane">
-          <div class="fuzz-results-pane">
-            <p class="fuzz-summary" data-testid="fuzz-summary">${summary}</p>
-            ${testCasesMarkup}
-          </div>
-          <div class="fuzz-editor-pane">
-            <label class="fuzz-source-label" for="fuzz-source">${t('fuzz.source')}</label>
-            <textarea id="fuzz-source"
-              class="fuzz-source"
-              data-testid="fuzz-source"
-              spellcheck="false"
-              autocomplete="off"
-              rows="14">${escapeHtml(state.sourceCode)}</textarea>
-          </div>
-        </div>
+        <section class="fuzz-panel fuzz-results-pane">
+          <header class="fuzz-panel-header">
+            <h3>${t('explorer.panel.results')}</h3>
+          </header>
+          <p class="fuzz-summary" data-testid="fuzz-summary">${summary}</p>
+          ${testCasesMarkup}
+        </section>
       </div>
 
       <p class="fuzz-hint">${t('fuzz.hint')}</p>
@@ -258,7 +267,7 @@ export function createFuzzTestingExplorer() {
     return `
       <div class="fuzz-cfg" data-testid="fuzz-cfg">
         <div class="fuzz-cfg-header">
-          <h3>${t('fuzz.cfg.title')}</h3>
+          <h3>${t('fuzz.cfg.coverage')}</h3>
           ${cfgSubtitle}
           <div class="fuzz-cfg-zoom" role="group" aria-label="${t('fuzz.cfg.zoom')}">
             <button type="button" data-fuzz-zoom="out" data-testid="fuzz-cfg-zoom-out" title="${t('fuzz.cfg.zoomOut')}">−</button>

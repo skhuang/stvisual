@@ -12,6 +12,9 @@ export const messages = {
     'app.lang.label': 'Language',
     'app.lang.en': 'English',
     'app.lang.zh': '中文',
+    'explorer.panel.input': 'Input',
+    'explorer.panel.cfg': 'Control Flow Graph',
+    'explorer.panel.results': 'Results',
 
     // Sections
     'section.all': 'Overview',
@@ -99,6 +102,7 @@ export const messages = {
     'fuzz.empty': 'No test cases yet.',
     'fuzz.hint': 'Fuzz testing generates random inputs and executes the program, detecting crashes and anomalies. Supports: function with int/bool/string params, int/bool/string operations, if/else, while loops. Monitor output for runtime errors.',
       'fuzz.cfg.title': 'Control Flow Graph',
+      'fuzz.cfg.coverage': 'Coverage',
       'fuzz.cfg.zoom': 'Zoom',
       'fuzz.cfg.zoomIn': 'Zoom in',
       'fuzz.cfg.zoomOut': 'Zoom out',
@@ -488,6 +492,9 @@ export const messages = {
     'app.lang.label': '語言',
     'app.lang.en': 'English',
     'app.lang.zh': '中文',
+    'explorer.panel.input': '輸入',
+    'explorer.panel.cfg': '控制流程圖',
+    'explorer.panel.results': '結果',
 
     'section.all': '全覽',
     'overview.group.foundations': '基礎概念',
@@ -574,6 +581,7 @@ export const messages = {
     'fuzz.empty': '尚無測試結果。',
     'fuzz.hint': '模糊測試產生隨機輸入並執行程式，偵測崩潰與異常。支援：整數/布林/字符串參數的函式、算術/比較/邏輯運算、條件/迴圈。監測執行時錯誤。',
       'fuzz.cfg.title': '控制流程圖',
+      'fuzz.cfg.coverage': '覆蓋狀態',
       'fuzz.cfg.zoom': '縮放',
       'fuzz.cfg.zoomIn': '放大',
       'fuzz.cfg.zoomOut': '縮小',

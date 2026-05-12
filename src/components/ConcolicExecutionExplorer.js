@@ -138,43 +138,52 @@ export function createConcolicExecutionExplorer() {
       : '';
 
     root.innerHTML = `
-      <div class="concolic-toolbar">
-        <div class="concolic-examples" data-testid="concolic-examples">${exampleButtons}</div>
-        <div class="concolic-controls">
-          <label class="concolic-control">
-            <span>${t('concolic.seed')}</span>
-            <input type="text" value="${escapeHtml(state.seedText)}"
-              data-testid="concolic-seed"
-              placeholder="a=1, b=1, c=1" />
-          </label>
-          <label class="concolic-control">
-            <span>${t('concolic.maxIterations')}</span>
-            <input type="number" min="1" max="64" step="1"
-              value="${state.maxIterations}"
-              data-testid="concolic-max-iter" />
-          </label>
+      <section class="concolic-panel concolic-input-panel">
+        <header class="concolic-panel-header">
+          <h3>${t('explorer.panel.input')}</h3>
+        </header>
+        <div class="concolic-toolbar">
+          <div class="concolic-examples" data-testid="concolic-examples">${exampleButtons}</div>
+          <div class="concolic-controls">
+            <label class="concolic-control">
+              <span>${t('concolic.seed')}</span>
+              <input type="text" value="${escapeHtml(state.seedText)}"
+                data-testid="concolic-seed"
+                placeholder="a=1, b=1, c=1" />
+            </label>
+            <label class="concolic-control">
+              <span>${t('concolic.maxIterations')}</span>
+              <input type="number" min="1" max="64" step="1"
+                value="${state.maxIterations}"
+                data-testid="concolic-max-iter" />
+            </label>
+          </div>
         </div>
-      </div>
+        <div class="concolic-editor-pane">
+          <label class="concolic-editor-label" for="concolic-source">${t('concolic.source')}</label>
+          <textarea id="concolic-source"
+            class="concolic-editor"
+            data-testid="concolic-source"
+            spellcheck="false"
+            autocomplete="off"
+            rows="14">${escapeHtml(state.sourceCode)}</textarea>
+        </div>
+      </section>
 
       <div class="concolic-split-body">
-        <div class="concolic-cfg-pane">
+        <section class="concolic-panel concolic-cfg-pane">
+          <header class="concolic-panel-header">
+            <h3>${t('explorer.panel.cfg')}</h3>
+          </header>
           ${renderCfgPane()}
-        </div>
-        <div class="concolic-right-pane">
-          <div class="concolic-results-pane">
-            <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
-            ${body}
-          </div>
-          <div class="concolic-editor-pane">
-            <label class="concolic-editor-label" for="concolic-source">${t('concolic.source')}</label>
-            <textarea id="concolic-source"
-              class="concolic-editor"
-              data-testid="concolic-source"
-              spellcheck="false"
-              autocomplete="off"
-              rows="14">${escapeHtml(state.sourceCode)}</textarea>
-          </div>
-        </div>
+        </section>
+        <section class="concolic-panel concolic-results-pane">
+          <header class="concolic-panel-header">
+            <h3>${t('explorer.panel.results')}</h3>
+          </header>
+          <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
+          ${body}
+        </section>
       </div>
 
       <p class="concolic-hint">${t('concolic.hint')}</p>
