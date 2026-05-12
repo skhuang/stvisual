@@ -62,4 +62,13 @@ describe('TestGenerationExplorer smoke', () => {
     document.querySelector('[data-testid^="testgen-example-"]').click();
     expect(document.querySelector('[data-testid="testgen-cfg"]')).toBeInTheDocument();
   });
+
+  it('shows download button when tests exist', () => {
+    mount();
+    document.querySelector('[data-testid^="testgen-example-"]').click();
+    const testList = document.querySelector('[data-testid="testgen-test-list"]');
+    if (testList && testList.children.length > 0) {
+      expect(document.querySelector('[data-testid="testgen-download-btn"]')).toBeInTheDocument();
+    }
+  });
 });

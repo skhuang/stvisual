@@ -185,6 +185,25 @@
   margin: 0.5rem 0;
 }
 
+.testgen-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.testgen-download-btn:hover {
+  background: #dbeafe;
+  border-color: #2563eb;
+}
+
 .testgen-req-list,
 .testgen-test-list {
   margin: 0;
