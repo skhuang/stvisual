@@ -12436,6 +12436,7 @@ INVARSPEC !w | (i & (l | h))`
     { id: "cloud", key: "section.cloud" }
   ];
   var sectionSelectConfig = [...learningSectionsConfig, ...utilitySectionsConfig];
+  var ACTIVE_SECTION_KEY = "stvisual.activeSection";
   var overviewGroups = [
     {
       key: "overview.group.foundations",
@@ -12450,6 +12451,23 @@ INVARSPEC !w | (i & (l | h))`
       sectionIds: ["symbex", "concolic", "fuzz", "testgen"]
     }
   ];
+  function loadSavedSection() {
+    var _a2;
+    try {
+      const saved = (_a2 = globalThis.localStorage) == null ? void 0 : _a2.getItem(ACTIVE_SECTION_KEY);
+      return learningSectionsConfig.some((section) => section.id === saved) ? saved : "all";
+    } catch {
+      return "all";
+    }
+  }
+  function persistActiveSection(sectionId) {
+    var _a2;
+    if (!learningSectionsConfig.some((section) => section.id === sectionId)) return;
+    try {
+      (_a2 = globalThis.localStorage) == null ? void 0 : _a2.setItem(ACTIVE_SECTION_KEY, sectionId);
+    } catch {
+    }
+  }
   function renderApp(container) {
     function paint() {
       container.innerHTML = `
@@ -12614,7 +12632,7 @@ INVARSPEC !w | (i & (l | h))`
       container.querySelector('[data-slot="testgen"]').appendChild(components.testgen);
       container.querySelector('[data-slot="flow"]').appendChild(components.flow);
       container.querySelector('[data-slot="types"]').appendChild(components.types);
-      let activeSection = "all";
+      let activeSection = loadSavedSection();
       let cloudDrawerOpen = false;
       const sectionsById = Object.fromEntries(sectionSelectConfig.map((section) => [section.id, section]));
       const overviewGrid = container.querySelector('[data-testid="overview-grid"]');
@@ -12719,6 +12737,7 @@ INVARSPEC !w | (i & (l | h))`
           return;
         }
         activeSection = sectionId;
+        persistActiveSection(activeSection);
         renderNav();
         updateSectionVisibility();
         updateCloudTriggerState();
