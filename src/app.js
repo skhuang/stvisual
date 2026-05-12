@@ -18,6 +18,7 @@ import { createStateTransitionExplorer } from './components/StateTransitionExplo
 import { createMetamorphicTestingExplorer } from './components/MetamorphicTestingExplorer.js';
 import { createExploratoryTestingExplorer } from './components/ExploratoryTestingExplorer.js';
 import { createTestDoublesExplorer } from './components/TestDoublesExplorer.js';
+import { createDefectCostExplorer } from './components/DefectCostExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const learningSectionsConfig = [
@@ -183,6 +184,7 @@ export function renderApp(container) {
       td: createTestDoublesExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
+      defectCost: createDefectCostExplorer(),
       types: createTestingTypesTable(),
     };
 
@@ -309,7 +311,60 @@ export function renderApp(container) {
     container.querySelector('[data-slot="concolic"]').appendChild(components.concolic);
     container.querySelector('[data-slot="fuzz"]').appendChild(components.fuzz);
     container.querySelector('[data-slot="testgen"]').appendChild(components.testgen);
-    container.querySelector('[data-slot="flow"]').appendChild(components.flow);
+    // --- Testing Flow: tabbed layout ---
+    const flowTabs = [
+      { id: 'flow',       key: 'flowTab.flow',       component: components.flow },
+      { id: 'defectCost', key: 'flowTab.defectCost', component: components.defectCost },
+    ];
+    const flowSlot = container.querySelector('[data-slot="flow"]');
+    const flowTabBar = document.createElement('nav');
+    flowTabBar.className = 'syntax-tab-row';
+    flowTabBar.dataset.testid = 'flow-tab-row';
+    flowTabBar.setAttribute('role', 'tablist');
+    flowSlot.appendChild(flowTabBar);
+    const flowPanels = document.createElement('div');
+    flowPanels.className = 'syntax-tab-panels';
+    flowSlot.appendChild(flowPanels);
+    for (const tab of flowTabs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.flowPanel = tab.id;
+      panel.appendChild(tab.component);
+      flowPanels.appendChild(panel);
+    }
+    const FLOW_TAB_KEY = 'stvisual.flowActiveTab';
+    let activeFlowTab = (() => {
+      try {
+        const v = globalThis.localStorage?.getItem(FLOW_TAB_KEY);
+        return flowTabs.find((tb) => tb.id === v) ? v : 'flow';
+      } catch { return 'flow'; }
+    })();
+    function renderFlowTabs() {
+      flowTabBar.innerHTML = flowTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeFlowTab === tab.id ? ' active' : ''}"
+          data-flow-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeFlowTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      flowTabBar.querySelectorAll('[data-flow-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeFlowTab = btn.dataset.flowTab;
+          try { globalThis.localStorage?.setItem(FLOW_TAB_KEY, activeFlowTab); } catch {}
+          renderFlowTabs();
+          updateFlowPanels();
+        });
+      });
+    }
+    function updateFlowPanels() {
+      flowPanels.querySelectorAll('[data-flow-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.flowPanel === activeFlowTab ? '' : 'none';
+      });
+    }
+    renderFlowTabs();
+    updateFlowPanels();
+
     container.querySelector('[data-slot="types"]').appendChild(components.types);
 
     let activeSection = loadSavedSection();
