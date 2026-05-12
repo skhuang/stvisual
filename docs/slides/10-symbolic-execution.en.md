@@ -14,6 +14,7 @@ lang: en
 Software Testing Visualization, Lecture #10
 Tool: `/section-symbex` ([SymbolicExecutionExplorer](../../src/components/SymbolicExecutionExplorer.js) + [symbolicExecution.js](../../src/utils/symbolicExecution.js))
 
+<!-- Symbolic execution is the most "mathematical" method in this series: treating program inputs as symbols and using constraint solvers to find concrete inputs for every path. -->
 ---
 
 ## From fuzz to symbex
@@ -27,6 +28,7 @@ Tool: `/section-symbex` ([SymbolicExecutionExplorer](../../src/components/Symbol
 
 > Pivot: **treat branch conditions as equations to solve**.
 
+<!-- Fuzz is "blind trial"; symbex is "systematic analysis." Symbex guarantees finding inputs for every reachable path (if solvable). -->
 ---
 
 ## Three things to track: env / pc / branches
@@ -41,6 +43,7 @@ Every path is a 3-tuple:
 
 > Imagine walking through the CFG in shadow form: every `if` forks; each child appends its condition to `pc`.
 
+<!-- Execution state = environment (symbolic variable values) + path condition (constraints to reach this point) + branch trace (which branches taken). -->
 ---
 
 ## The fork mechanism
@@ -60,6 +63,7 @@ Each child continues; when it hits `return`, **one path is complete**.
 
 > `while` loops are unrolled up to `maxLoopUnroll` (default 3); each iteration forks “enter loop” vs “exit”.
 
+<!-- At each conditional branch, symbex "forks" into two execution states (true and false paths). This is the root of path explosion. -->
 ---
 
 ## Finding a witness: bounded brute force
@@ -80,6 +84,7 @@ return null;
 
 > No SMT solver — sufficient for teaching, students get it immediately.
 
+<!-- The tool uses bounded brute-force search ([-10, 10] integer grid) to find concrete values satisfying the path condition. Real symbex systems use SMT solvers (e.g., Z3). -->
 ---
 
 ## Why infeasible paths matter
@@ -96,6 +101,7 @@ if (x > 0) {
 - Symbex **solves the pc** and discovers the second `then` is unreachable.
 - The tool marks `feasible: false` paths in red — dead code is visible at a glance.
 
+<!-- If a path's constraints are unsatisfiable (infeasible), no test case can reach that path — this itself is important test information. -->
 ---
 
 ## Built-in 4 examples
@@ -109,6 +115,7 @@ if (x > 0) {
 
 > `abs` is great for first exposure; `gcd` shows why max-unroll matters.
 
+<!-- Four examples cover: simple conditionals, multi-branch, nested conditions, and paths with equality constraints. -->
 ---
 
 ## Tool: overview
@@ -119,6 +126,7 @@ if (x > 0) {
 - `symbex-source` is the code editor; `symbex-max-unroll` sets the while-unroll cap (default 3).
 - `symbex-summary` shows total paths, feasible count, and whether the run truncated.
 
+<!-- Left side: code input. Right side: path list (each path shows path condition, witness, infeasibility flag). -->
 ---
 
 ## Tool: path list
@@ -129,6 +137,7 @@ if (x > 0) {
 - Feasible paths are green, infeasible ones grey; clicking one highlights the matching nodes on the CFG.
 - `symbex-feasible-count` shows the “solvable” path count — fewer than `total` means dead code exists.
 
+<!-- Each path entry shows: path condition (formula), concrete witness (x=1, y=-3), execution result. Click a path to highlight the CFG. -->
 ---
 
 ## Tool: CFG path highlight
@@ -139,6 +148,7 @@ if (x > 0) {
 - Click any path → the matching nodes / edges colour up, end-to-end from start to return.
 - `symbex-cfg-zoom-{in,out,reset}` controls scale (useful for `gcd` once unrolled).
 
+<!-- Clicking a path entry highlights the corresponding node and edge sequence in purple. Have students confirm the path condition matches the CFG path. -->
 ---
 
 ## Path explosion
@@ -156,6 +166,7 @@ The tool’s safeguards:
 2. `maxPaths` (default 64) — overall cap; setting `truncated: true`.
 3. UI banner indicating “results may be incomplete”.
 
+<!-- Exponential path count is symbex's biggest challenge. The tool uses a depth limit (max paths) to avoid explosion. -->
 ---
 
 ## Algorithm peek
@@ -175,6 +186,7 @@ The tool’s safeguards:
 
 > ≈ 570 lines of pure JS — tokenizer, parser, evaluator, solver in one file.
 
+<!-- The tool uses recursive DFS to unfold the AST, cloning execution state at each conditional branch, accumulating the path condition, then solving. -->
 ---
 
 ## How real symbex systems differ
@@ -189,6 +201,7 @@ The tool’s safeguards:
 
 > The tool is the “smallest textbook version” — porting to KLEE keeps every concept the same.
 
+<!-- Real systems (KLEE, Angr, S2E) use Z3/Boolector SMT solvers and can handle integers, characters, pointers, and complex constraints. -->
 ---
 
 ## Summary
@@ -198,6 +211,7 @@ The tool’s safeguards:
 - The tool uses brute-force witness search (no SMT) — perfect for teaching; production systems use Z3 etc.
 - **Path explosion** is the core challenge — `maxLoopUnroll` + `maxPaths` are the teaching-grade response.
 
+<!-- Symbex systematically covers all reachable paths but is limited by path explosion. Concolic (#11) is a hybrid strategy combining concrete execution with symbolic analysis. -->
 ---
 
 ## Exercises
@@ -207,6 +221,7 @@ The tool’s safeguards:
 3. Write a function with `if (a + b == 7)`. Does the witness search slow down? What would changing the domain do (the tool’s domain is fixed)?
 4. Why does `abs` always yield exactly 2 feasible paths? Can you rewrite it to have 3?
 
+<!-- Exercise 1 (manually trace path conditions) is the most important. Exercise 3 (infeasible paths) suits students with linear algebra background. -->
 ---
 
 ## Further reading
@@ -218,3 +233,5 @@ The tool’s safeguards:
   - [src/utils/symbolicExecution.js](../../src/utils/symbolicExecution.js) — 570 lines, self-contained engine.
   - [src/components/SymbolicExecutionExplorer.js](../../src/components/SymbolicExecutionExplorer.js) — UI.
 - Next → **Lecture #11 — Concolic Execution** (concrete + symbolic = DART/CUTE).
+
+<!-- KLEE is the most famous symbex tool. EXE is KLEE's predecessor. A&O §13 has a detailed introduction. -->

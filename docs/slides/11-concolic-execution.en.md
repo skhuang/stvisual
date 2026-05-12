@@ -14,6 +14,7 @@ lang: en
 Software Testing Visualization, Lecture #11
 Tool: `/section-concolic` ([ConcolicExecutionExplorer](../../src/components/ConcolicExecutionExplorer.js) + [concolicExecution.js](../../src/utils/concolicExecution.js))
 
+<!-- Concolic = concrete + symbolic. Core idea: execute with concrete values, simultaneously track symbolic path conditions, then negate conditions to find new paths. -->
 ---
 
 ## Three-way comparison: fuzz → symbex → concolic
@@ -27,6 +28,7 @@ Tool: `/section-concolic` ([ConcolicExecutionExplorer](../../src/components/Conc
 
 > Concolic is the engineering compromise — symbex’s direction plus concrete execution’s reliability.
 
+<!-- Fuzz is fastest but blind; symbex is systematic but slow; concolic compromises: start with concrete execution, use symbex to guide the next input. -->
 ---
 
 ## The name
@@ -38,6 +40,7 @@ Tool: `/section-concolic` ([ConcolicExecutionExplorer](../../src/components/Conc
 
 > Same year, same idea — “concolic” became the umbrella term for dynamic symbolic execution.
 
+<!-- Concolic = concurrent symbolic + concrete. DART (2005) was the first paper to coin this term — worth mentioning historically. -->
 ---
 
 ## Four core steps per iteration
@@ -57,6 +60,7 @@ Tool: `/section-concolic` ([ConcolicExecutionExplorer](../../src/components/Conc
 
 Every iteration runs the program for real — the trace is always “actually walked”.
 
+<!-- Each iteration: execute → collect path condition → negate the last unexplored branch → solve for new input. These four steps are the algorithm's heart. -->
 ---
 
 ## “Flip the last unexplored branch”
@@ -73,6 +77,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
 
 > Result: each iteration advances exactly one new path — a natural BFS-style exploration.
 
+<!-- "Negate" means: take the negation of the last path condition constraint, then solve. This guarantees a different branch is taken in the next execution. -->
 ---
 
 ## Key differences vs symbex
@@ -86,6 +91,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
 
 > Concolic turns “exploration” into a controllable iteration loop — much closer to a unit-test workflow.
 
+<!-- Symbex tracks all paths simultaneously (exponential space); concolic takes one path at a time (linear space), progressively exploring. -->
 ---
 
 ## Built-in 4 examples
@@ -99,6 +105,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
 
 > Each example ships with a `seed`; the UI renders it in `concolic-seed`.
 
+<!-- The four examples match symbex, making it easy for students to compare how the two methods find witnesses differently. -->
 ---
 
 ## Tool: overview + settings
@@ -109,6 +116,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
 - `concolic-seed` accepts the initial input (`a=1, b=2, ...`); `concolic-max-iter` caps iteration count (default 16).
 - `concolic-summary` shows total iterations, unique paths, unique inputs.
 
+<!-- The "Seed Input" lets students control the starting point; "Max Iterations" controls exploration depth. Start with a small iteration count to observe behavior. -->
 ---
 
 ## Tool: iteration list
@@ -121,6 +129,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
   - `nextInput` is the derived input for the next iteration.
 - Clicking an entry highlights that iteration’s path on the CFG.
 
+<!-- Each iteration entry shows: concrete input, path condition, execution result, which branch was negated. -->
 ---
 
 ## Tool: CFG sync highlight
@@ -131,6 +140,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
 - Switch between iterations to feel the “one new path at a time” exploration in motion.
 - `concolic-cfg-selected` displays the current iteration id.
 
+<!-- Clicking an iteration entry synchronizes the CFG to highlight that iteration's path, letting students trace the exploration progress. -->
 ---
 
 ## Algorithm peek
@@ -153,6 +163,7 @@ while (worklist.length && iterations < maxIterations) {
 
 > ~240 lines: the parser is reused from [symbolicExecution.js](../../src/utils/symbolicExecution.js); only the concrete runner + flip loop are new.
 
+<!-- The tool maintains both concrete values and symbolic expressions in an AST interpreter simultaneously, recording both at branch points. -->
 ---
 
 ## Path convergence
@@ -164,6 +175,7 @@ For a fixed `maxIterations`, concolic:
 
 > Unlike symbex (Lecture #10): concolic never enumerates an infeasible path — every path was actually walked.
 
+<!-- Concolic does not guarantee finding all paths (limited by iteration count) but can explore many paths in a bounded number of steps — more systematic than pure fuzz. -->
 ---
 
 ## Real-world systems vs this tool
@@ -179,6 +191,7 @@ For a fixed `maxIterations`, concolic:
 
 > Microsoft SAGE has found around a third of Windows 7 parser bugs — concolic is mainstream in industry.
 
+<!-- Real systems (SAGE, DrChecker) use Z3 for constraint solving and can handle characters, memory addresses, and complex types. This tool uses integer brute-force for simplicity. -->
 ---
 
 ## Summary
@@ -188,6 +201,7 @@ For a fixed `maxIterations`, concolic:
 - Adds one new path per iteration, sidestepping path explosion while keeping concrete-execution reliability.
 - Shares parser + solver with #10 symbex — direct comparison of two search strategies.
 
+<!-- Concolic is the best compromise between fuzz + symbex: starting from concrete execution, using symbolic analysis to guide the next step, avoiding path explosion. -->
 ---
 
 ## Exercises
@@ -197,6 +211,7 @@ For a fixed `maxIterations`, concolic:
 3. The 8 truth combinations of `middle` — does concolic explore them in BFS or DFS order?
 4. Change `seed` to invalid input (`a=-1, b=-1, c=-1`) on `triangle`. How does the exploration order change?
 
+<!-- Exercise 1 (trace iterations) is the most core understanding exercise. Exercise 3 (compare with fuzz) works well as a final discussion. -->
 ---
 
 ## Further reading
@@ -209,3 +224,5 @@ For a fixed `maxIterations`, concolic:
   - Shares [src/utils/symbolicExecution.js](../../src/utils/symbolicExecution.js) — parser, substitute, negate, findWitness.
   - [src/components/ConcolicExecutionExplorer.js](../../src/components/ConcolicExecutionExplorer.js) — UI.
 - End of the series — full course index in [docs/slides/index.en.md](index.en.md).
+
+<!-- The DART paper (Godefroid et al., 2005) is the founding work on concolic execution. SAGE is Microsoft's concolic tool for Windows fuzzing. -->

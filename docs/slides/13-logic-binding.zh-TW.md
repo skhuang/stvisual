@@ -14,6 +14,7 @@ lang: zh-TW
 軟體測試視覺化系列 #13
 搭配工具：`/section-logic`（[LogicCoverageExplorer](../../src/components/LogicCoverageExplorer.js) 的 Clause Binding 子面板 + [logicBinding.js](../../src/utils/logicBinding.js)）
 
+<!-- 本講解決 Logic Coverage 的「最後一哩」問題：把抽象的子句（a、b、c）對應到具體的程式表達式，才能實際執行測試。 -->
 ---
 
 ## 問題：Logic Coverage 的「落地鴻溝」
@@ -31,6 +32,7 @@ if (x > 0 && y < 10) { ... }
 
 > **Clause Binding** 解決這個落地鴻溝 — 自動從抽象布林表格求出具體整數見證。
 
+<!-- 學生可以計算 CACC 的需求表，但不知道如何生成滿足「a=T, b=F」的具體輸入。Binding 就是填補這個鴻溝的機制。 -->
 ---
 
 ## 核心概念：三層對應
@@ -51,6 +53,7 @@ if (x > 0 && y < 10) { ... }
 
 > 每一行 coverage 需求都能自動變成可執行的具體測試輸入。
 
+<!-- 三層：準則（CACC）→ 子句真值組合（a=T, b=F）→ 具體 witness（x=1, y=10）。Binding 負責第二到第三層的轉換。 -->
 ---
 
 ## Binding 介面
@@ -61,6 +64,7 @@ if (x > 0 && y < 10) { ... }
 - 每個子句（a, b, c…）對應一個 JS 表達式輸入框
 - 右側顯示 **Constraint** 欄（完整布林謂詞）與 **Witness** 欄（具體整數值）
 
+<!-- 工具的 Binding 面板緊接在邏輯覆蓋工具之下。選好準則後，每個需求行都有對應的 witness 顯示。 -->
 ---
 
 ## Clause Binding 子面板構成
@@ -74,6 +78,7 @@ if (x > 0 && y < 10) { ... }
 | Restore button | 還原為範例預設 binding |
 | 結果表格 | Test row / Clause values / Constraint / Witness |
 
+<!-- 每個子句（a, b, c）對應一個輸入框，讓學生填入 JavaScript 表達式（例如 x > 0）。 -->
 ---
 
 ## 結果表格四欄
@@ -93,6 +98,7 @@ if (x > 0 && y < 10) { ... }
 - **Witness**：最小絕對值整數解（0, 1, −1, 2, −2, …）
 - **infeasible**：若無整數解（如 `x>0 && x<0`），標紅顯示
 
+<!-- 四欄：行號（哪個需求）、子句真值組合（a=T, b=F, c=T）、約束式（(x > 0) && !(y < 10)）、witness（x=1, y=10）。 -->
 ---
 
 ## 求解演算法：bounded brute-force
@@ -118,6 +124,7 @@ for (const combo of cartesianSmallFirst(vars, range)) {
 }
 ```
 
+<!-- 工具先嘗試解析型解法（interval arithmetic），若失敗則用暴力搜尋 [-10, 10] 整數格點的 Cartesian product。 -->
 ---
 
 ## 為什麼選「最小絕對值」順序？
@@ -129,6 +136,7 @@ for (const combo of cartesianSmallFirst(vars, range)) {
 
 > 測試見證應該盡量**簡單、接近邊界**，方便讀者理解條件。
 
+<!-- 從 0 開始、依 |x| 遞增搜尋，確保找到最接近 0 的 witness，讓學生驗算時最容易手工計算。 -->
 ---
 
 ## 範例程式：abs(x)
@@ -151,6 +159,7 @@ function abs(x) {
 | 1 | T | `(x < 0)` | x=−1 |
 | 2 | F | `!(x < 0)` | x=0 |
 
+<!-- abs(x) 的 predicate 是 x >= 0，只有一個子句。Binding 非常直接：a=T → x=0，a=F → x=-1。 -->
 ---
 
 ## 範例程式：max(a, b)
@@ -173,6 +182,7 @@ function max(a, b) {
 | 1 | T | `(a > b)` | a=1, b=0 |
 | 2 | F | `!(a > b)` | a=0, b=0 |
 
+<!-- max(a, b) 的 predicate 是 a >= b，一個子句。CACC 需要 a=T 和 a=F 兩個 witness。 -->
 ---
 
 ## 範例程式：triangle
@@ -196,6 +206,7 @@ predicate: `p && q`；binding: `p ↦ a === b`, `q ↦ b === c`
 | 1 | T | T | `(a===b) && (b===c)` | a=0, b=0, c=0 |
 | 2 | T | F | `(a===b) && !(b===c)` | a=0, b=0, c=1 |
 
+<!-- triangle 有多個子句，CACC 需求較多。讓學生逐行驗算每個 witness 是否真的滿足對應的子句真值組合。 -->
 ---
 
 ## 自動填入（Auto-fill）
@@ -212,6 +223,7 @@ predicate: `p && q`；binding: `p ↦ a === b`, `q ↦ b === c`
 - 「還原預設 binding」按鈕：一鍵回復出廠設定
 - 手動修改後，結果立即更新（200ms debounce）
 
+<!-- Auto-fill 讀取所選範例的 defaultBindings，一鍵填入所有子句表達式。讓學生用 auto-fill 快速看到結果，再手動修改學習。 -->
 ---
 
 ## Binding 工具演示
@@ -222,6 +234,7 @@ predicate: `p && q`；binding: `p ↦ a === b`, `q ↦ b === c`
 - 中欄：程式原始碼（含 `← a` 標注）
 - 下方：四欄結果表格（含 infeasible 紅字標示）
 
+<!-- 現場選 triangle → 選 CACC → 點 auto-fill。讓學生觀察 witness 表格，找出哪一行對應教科書的哪個需求。 -->
 ---
 
 ## 搜尋範圍設定
@@ -237,6 +250,7 @@ predicate: `p && q`；binding: `p ↦ a === b`, `q ↦ b === c`
 範圍 [-100, 100]，3 個變數 → 201³ ≈ 800 萬次（約 1–2 秒）
 ```
 
+<!-- 搜尋範圍預設 [-10, 10]。如果子句表達式涉及大數（例如 x > 50），可以擴大範圍找到 x=51 等 witness。 -->
 ---
 
 ## 限制與後續
@@ -250,6 +264,7 @@ predicate: `p && q`；binding: `p ↦ a === b`, `q ↦ b === c`
 
 > 目前實作展示核心概念；SMT solver 整合為 B1 階段目標。
 
+<!-- 限制：工具只能處理整數 witness，且搜尋範圍有限。解析型解法（interval arithmetic）已在 B1 版本加入，可處理 x > 50 等情況。 -->
 ---
 
 ## 小結
@@ -260,6 +275,7 @@ predicate: `p && q`；binding: `p ↦ a === b`, `q ↦ b === c`
 - 最小絕對值搜尋讓見證簡單易讀。
 - 範例程式自動填入 + 原始碼顯示降低學習門檻。
 
+<!-- Binding 把 Logic Coverage 從「紙上作業」變成「可驗證的測試輸入」。掌握這個三層對應，才算真正學會 Logic Coverage 的工程應用。 -->
 ---
 
 ## 課堂練習
@@ -269,6 +285,7 @@ predicate: `p && q`；binding: `p ↦ a === b`, `q ↦ b === c`
 3. 把搜尋範圍縮到 `[0, 2]`，看 `a ↦ x < 0` 的 binding 是否出現 infeasible。
 4. 對 `a && b && c` 設計一組 RACC 測試集，並用 binding 求解三個變數的具體值。
 
+<!-- 練習 1（手填 binding 驗算 witness）最重要。練習 3（擴大搜尋範圍）適合理解 solver 限制。 -->
 ---
 
 ## 進一步閱讀
@@ -281,3 +298,5 @@ predicate: `p && q`；binding: `p ↦ a === b`, `q ↦ b === c`
   - [src/components/LogicCoverageExplorer.js](../../src/components/LogicCoverageExplorer.js) — binding 子面板 UI
   - [src/data/testingData.js](../../src/data/testingData.js) — 6 個附 binding 的範例程式
 - 系列繼續 — 完整課程目錄請見 [docs/slides/index.zh-TW.md](index.zh-TW.md)
+
+<!-- A&O §4–5 有 Logic Coverage 的完整理論。Binding 的 solver 實作在 src/utils/logicBinding.js。 -->

@@ -14,6 +14,7 @@ lang: zh-TW
 軟體測試視覺化系列 #9
 搭配工具：`/section-fuzz`（[FuzzTestingExplorer](../../src/components/FuzzTestingExplorer.js) + [fuzzTesting.js](../../src/utils/fuzzTesting.js)）
 
+<!-- 從本講開始，系列進入「自動化測試生成」三連講（Fuzz → Symbex → Concolic）。Fuzz 是最簡單但仍非常有效的方法。 -->
 ---
 
 ## 觀念定位
@@ -26,6 +27,7 @@ lang: zh-TW
 
 > 觀念支點：**隨機性是最便宜的搜尋方法**。配合分支追蹤就能反映出真實覆蓋。
 
+<!-- Fuzz testing 的核心優勢：完全自動化、無需規格、能找到人工測試難以發現的邊界情況。缺點：覆蓋率不可預期。 -->
 ---
 
 ## 何時用 fuzz？
@@ -37,6 +39,7 @@ lang: zh-TW
 
 > 真實系統的歷史里程碑：AFL、libFuzzer、ClusterFuzz；本工具是教學等級「概念展示」版。
 
+<!-- 最適合：接受大量外部輸入的系統（parser、網路協議、檔案處理）。不適合：需要特定語意輸入才能觸發的 bug。 -->
 ---
 
 ## Fuzz 三步驟
@@ -56,6 +59,7 @@ node coverage、edge coverage、unique error 列表
 
 每筆 testCase 都會帶 `branches`（每個 `if/while` 分支 taken 與否）。
 
+<!-- 本工具實現：生成隨機整數/布林輸入 → 執行被測函式 → 記錄崩潰和分支 trace。 -->
 ---
 
 ## 技術核心：分支 instrumentation
@@ -73,6 +77,7 @@ if ((__b__.push({ taken: !!(cond) }), __b__[__b__.length-1].taken))
 > 整段函式被 `new Function('__b__', ...paramNames, instrumented)` 包成可呼叫物件。
 > 每次 fuzz 跑會傳入新的 `branches=[]` 陣列收集 trace。
 
+<!-- 工具在執行前「插樁」（instrument）每個 if/while 條件，把 taken/not-taken 記錄到 branch trace 陣列。 -->
 ---
 
 ## 從 trace 到 CFG 覆蓋
@@ -85,6 +90,7 @@ if ((__b__.push({ taken: !!(cond) }), __b__[__b__.length-1].taken))
 
 > 點選任一 testCase → CFG 高亮**該次執行**走過的節點與邊。
 
+<!-- Branch trace 對應到 CFG 的 edge，工具計算 node coverage 和 edge coverage 百分比。 -->
 ---
 
 ## 內建 6 個範例
@@ -100,6 +106,7 @@ if ((__b__.push({ taken: !!(cond) }), __b__[__b__.length-1].taken))
 
 > 6 個都是純整數 / 布林輸入 — 避免字串造成 NaN-based 無限迴圈。
 
+<!-- 六個範例覆蓋：簡單算術、邊界判斷、遞迴（fibonacci）、字串處理、迴圈、多分支。 -->
 ---
 
 ## 工具：總覽
@@ -111,6 +118,7 @@ if ((__b__.push({ taken: !!(cond) }), __b__[__b__.length-1].taken))
 - `fuzz-run-btn` 觸發一次 fuzz；`fuzz-summary` 顯示 tests / passed / crashes。
 - 右上 `fuzz-node-cov` / `fuzz-edge-cov` 是 N% / E% 即時 badge。
 
+<!-- 左側輸入程式碼和測試數量，右側是測試案例列表（pass/crash）和 CFG 視圖。 -->
 ---
 
 ## 工具：testCases 與 CFG
@@ -122,6 +130,7 @@ if ((__b__.push({ taken: !!(cond) }), __b__[__b__.length-1].taken))
 - 點某筆 testCase → 該次的 path 在 CFG 上加深色標示。
 - `fuzz-cfg-selected` 顯示目前選中的 testCase id。
 
+<!-- 點擊測試案例，CFG 會高亮該次執行所走過的 node 和 edge。讓學生找出「哪個分支從未被覆蓋」。 -->
 ---
 
 ## 工具：crash 偵測
@@ -133,6 +142,7 @@ if ((__b__.push({ taken: !!(cond) }), __b__[__b__.length-1].taken))
 
 > Triangle Classifier 在 `a + b <= c` 不檢查整數溢位 → 對大數很容易 crash，是教學常用的「找 bug」範例。
 
+<!-- Crash = 執行時拋出 exception。工具顯示崩潰率和錯誤訊息，幫助定位問題。 -->
 ---
 
 ## 隨機輸入策略
@@ -152,6 +162,7 @@ return boolean;
 
 > 教學側重「分支搜尋」而非「邊界值精準」 — 用 BVA 配合即可彌補。
 
+<!-- 本工具的第一階段（Phase 1）用純隨機整數/布林；第二階段（Phase 2）對有趣的種子做變異（±1、邊界值、bitflip）。 -->
 ---
 
 ## Fuzz 的本質限制
@@ -163,6 +174,7 @@ return boolean;
 
 > 這是 fuzz 的「天花板」— 後面 #10/#11 講的 symbex/concolic 就是補這四個短板。
 
+<!-- 純隨機 fuzz 無法處理「magic number」（例如需要輸入特定常數才能觸發的分支）。Concolic 執行（#11）解決這個問題。 -->
 ---
 
 ## 常見陷阱
@@ -172,6 +184,7 @@ return boolean;
 - **`branches[]` 空陣列**：表示函式沒有 if/while → 任何 testCase 走的都是同一條路徑。
 - **CFG mapping 失敗**：source 含工具 parser 不支援的語法（try/catch、destructuring）→ CFG 為空，覆蓋率算不出來。
 
+<!-- 高 node coverage 不代表測試好：如果斷言只有「不崩潰」，fuzz 找不到邏輯錯誤。 -->
 ---
 
 ## 演算法窺探
@@ -193,6 +206,7 @@ function fuzzTest(sourceCode, maxTests) {
 
 > 簡單到單頁可讀完 — 但已能展示業界 fuzzer 的核心心智。
 
+<!-- 插樁用正則表達式替換 if/while 條件。迴圈有迭代次數上限（10000 次）防止無窮迴圈。 -->
 ---
 
 ## 小結
@@ -202,6 +216,7 @@ function fuzzTest(sourceCode, maxTests) {
 - 6 個內建範例覆蓋常見分支型態；可即時改 source / test count 重算。
 - 是現代測試的「第一道防線」— 但有方向性、無形變、精確命中三大短板。
 
+<!-- Fuzz 是「以量取勝」的策略。第二階段的 mutation（变異）讓工具能探索隨機輸入遺漏的邊界。 -->
 ---
 
 ## 課堂練習
@@ -211,6 +226,7 @@ function fuzzTest(sourceCode, maxTests) {
 3. 自寫一個有 4 層巢狀 if 的函式，估算純隨機能達到的最大 edge coverage。
 4. 哪個範例在 200 次中最容易出現 crash？crash 都集中在哪個 error message？
 
+<!-- 練習 1（觀察崩潰率）最直觀。練習 3（比較 fuzz 和 random 的差異）適合作討論主題。 -->
 ---
 
 ## 進一步閱讀
@@ -223,3 +239,5 @@ function fuzzTest(sourceCode, maxTests) {
   - [src/utils/pathToCfg.js](../../src/utils/pathToCfg.js) — branches → CFG mapping
   - [src/components/FuzzTestingExplorer.js](../../src/components/FuzzTestingExplorer.js) — UI
 - 下一講 → **#10 Symbolic Execution**（沒方向 → 用 path condition 做精準搜尋）
+
+<!-- AFL 和 libFuzzer 是業界最廣泛使用的 fuzz 工具。學生有興趣可以試著對自己的程式跑一次真正的 AFL。 -->

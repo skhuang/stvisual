@@ -14,6 +14,7 @@ lang: zh-TW
 軟體測試視覺化系列 #7
 搭配工具：`/section-syntax → Grammar Coverage`（[GrammarCoverageExplorer](../../src/components/GrammarCoverageExplorer.js) + [grammar.js](../../src/utils/grammar.js)）
 
+<!-- 本講把「文法」當作測試的 subject，不是測試的工具。文法定義合法輸入的結構，覆蓋準則要求生成覆蓋文法的測試案例。 -->
 ---
 
 ## 為什麼是 Grammar-Based Testing？
@@ -26,6 +27,7 @@ lang: zh-TW
 > 用 grammar 生測資 → 同時逼出**語法錯誤偵測**與**正向流暢路徑**。
 > 用 grammar 變異 → 測**規格本身**寫得夠不夠精確。
 
+<!-- 本講把「文法」當作測試的 subject，不是測試的工具。文法定義合法輸入的結構，覆蓋準則要求生成覆蓋文法的測試案例。 -->
 ---
 
 ## 兩條教學主線
@@ -38,6 +40,7 @@ lang: zh-TW
 
 三者共用同一個工具卡片，靠分頁切換（`grammar-subtab-row`）。
 
+<!-- 本講同時涵蓋 Grammar Coverage（測覆蓋 BNF）和 String Mutation（突變字串找邊界）。兩條主線互補。 -->
 ---
 
 ## BNF 速覽
@@ -58,6 +61,7 @@ lang: zh-TW
 
 > 工具的 BNF parser：`parseGrammar(text)`，產出 `{ rules, productions, terminals, start }`。
 
+<!-- BNF 的 `::=`、`|`、`*`、`+` 語法是文法測試的語言。工具接受標準 BNF 格式，自動推導。 -->
 ---
 
 ## 內建文法
@@ -70,6 +74,7 @@ lang: zh-TW
 
 > 三個都刻意做小（≤ 10 productions），讓 derivation 與 mutation 的視覺密度可控。
 
+<!-- 工具有三個內建文法（arithmetic、URL、JSON）。讓學生先試 arithmetic，觀察 derivation 樹狀展開。 -->
 ---
 
 ## Derivation：BFS 左推導
@@ -83,6 +88,7 @@ lang: zh-TW
 
 回傳 `[{ string, productionsUsed, depth }]`。
 
+<!-- BFS 左推導保證最短推導先出現。這讓工具能在合理時間內找到滿足覆蓋準則的最少測試集。 -->
 ---
 
 ## 兩條覆蓋指標
@@ -95,6 +101,7 @@ lang: zh-TW
 > 工具會把 covered production 標綠（`grammar-prod covered`）、covered terminal 籌碼變色。
 > 顯示為 `covered / all (ratio%)`。
 
+<!-- PDC（Production Coverage）要求每個產生式至少用一次；TSC（Terminal Symbol Coverage）要求每個終端符號至少出現一次。 -->
 ---
 
 ## 工具：總覽
@@ -105,6 +112,7 @@ lang: zh-TW
 - `grammar-text` textarea 可手改 BNF；`grammar-parse-error` 即時報錯。
 - 中段顯示所有 productions（編號 + 對應 RHS），下方是 terminals 籌碼。
 
+<!-- 左側輸入文法，右側看 derivation 列表和覆蓋統計。讓學生先試預設文法，再換成自己寫的文法。 -->
 ---
 
 ## 工具：derivations + PDC / TSC
@@ -115,6 +123,7 @@ lang: zh-TW
 - 上方 `grammar-pdc` / `grammar-tsc` 即時更新 ratio。
 - 可加 `grammar-extra-tests`（一行一個合法字串），讓你手動補測沒覆蓋到的 production。
 
+<!-- 工具同步高亮哪些產生式被覆蓋（PDC）和哪些終端符號被覆蓋（TSC）。 -->
 ---
 
 ## Grammar Mutation：4 個 operators
@@ -130,6 +139,7 @@ lang: zh-TW
 
 > 這是 grammar 層級的「突變」— 變的是規則本身，**不是字串**。
 
+<!-- operator 針對文法本身：替換、刪除、插入非終端、修改量詞。這些 mutant 模擬「文法錯誤」。 -->
 ---
 
 ## Kill criterion（Grammar Mutation）
@@ -141,6 +151,7 @@ lang: zh-TW
 
 `evaluateMutantsAgainstStrings(orig, mutants, strings)` 一次跑完。
 
+<!-- 如果測試案例能接受 original grammar 生成的字串但拒絕 mutant grammar 生成的字串（或反之），則 mutant 被殺死。 -->
 ---
 
 ## 工具：grammar mutants
@@ -153,6 +164,7 @@ lang: zh-TW
 
 > 教學脈絡：**很多 mutant 仍 live → grammar 描述太寬鬆**，可以提示學生加 production 或縮 terminal。
 
+<!-- 工具列出所有 grammar mutant 和它們的 kill 狀態。可以問學生：哪種 operator 的 mutant 最難被殺死？ -->
 ---
 
 ## 接到 Strings：Mutation on Strings（§9.2 Ammann/Offutt）
@@ -172,6 +184,7 @@ lang: zh-TW
           └─ s′ 不合法 → negative test
 ```
 
+<!-- String Mutation 是字串層次的突變測試，不修改文法，而是修改單個字串輸入，尋找邊界情況。 -->
 ---
 
 ## 5 個 String Mutation Operators
@@ -188,6 +201,7 @@ lang: zh-TW
 
 > Alphabet 由 `deriveAlphabet(grammar, derivations)` 自 grammar 的所有 terminal 拆字 + derivation 出現過的字元取聯集。
 
+<!-- AOR/LCR/SOR/UOI/COR 在字串層次有對應版本：插入、刪除、替換字元等。 -->
 ---
 
 ## 為什麼分 positive / negative？
@@ -202,6 +216,7 @@ lang: zh-TW
 - `mutAccepts === (kind === 'positive')`
 - `flipped` 旗標 → kind === 'negative'
 
+<!-- positive test 應該通過（文法正確的輸入），negative test 應該失敗（故意錯誤的輸入）。兩種都要設計。 -->
 ---
 
 ## 工具：string mutation
@@ -213,6 +228,7 @@ lang: zh-TW
 - `grammar-string-mutant-table`：Op / Mutated / Result（綠勾＝in language、紅叉＝not in language）。
 - `grammar-string-stats`：positive / negative 數量。
 
+<!-- 工具的 string mutant 列表同時顯示 positive/negative 分類，方便學生確認每個 mutant 的預期行為。 -->
 ---
 
 ## 演算法窺探
@@ -226,6 +242,7 @@ lang: zh-TW
 5. `generateGrammarMutants` + `evaluateMutantsAgainstStrings`。
 6. `generateStringMutants` + `classifyStringMutants` + `deriveAlphabet`。
 
+<!-- BFS 推導用遞迴展開 + 去重複。Grammar mutation 是對 AST（文法樹）做 operator 替換。 -->
 ---
 
 ## 從雲端載入 grammar
@@ -242,6 +259,7 @@ window.dispatchEvent(new CustomEvent('stvisual:load-program-source', {
 - 按下後：捲動到 syntax 區塊、切到 `grammar` 子分頁、建立 `uploaded-grammar-<ts>` 範例。
 - 之後 BNF / derivations / mutants 全部即時重算。
 
+<!-- 雲端載入功能讓學生可以共享自定義文法。適合分組作業：每組設計一個文法，互相測試。 -->
 ---
 
 ## 小結
@@ -253,6 +271,7 @@ window.dispatchEvent(new CustomEvent('stvisual:load-program-source', {
 - 同一個 grammar 串起三層：改一處 BNF → 衍生字串、覆蓋、mutants 全部即時重算。
 - 跟 #6 Program Mutation 的核心心智模型一致：**「變壞 → 測試集該抓到」**，只是 subject 換成 grammar / string。
 
+<!-- 文法既是測試輸入的規格，也可以是測試的 subject。PDC/TSC 幫助確保文法的所有「路徑」都被測試。 -->
 ---
 
 ## 課堂練習
@@ -262,6 +281,7 @@ window.dispatchEvent(new CustomEvent('stvisual:load-program-source', {
 3. 切到 `Mutation on Strings`，挑 `aba` 為 seed、只開 `SWP`。能不能產出 negative test？為什麼？
 4. 在 `json-tiny` 啟用 `INS`，看 INS 把 `{` 或 `,` 插到不該的位置時，是否變 negative test？
 
+<!-- 練習 1（手工推導）是最基本的技能。練習 3（JSON 文法覆蓋）適合作進階作業。 -->
 ---
 
 ## 進一步閱讀

@@ -14,6 +14,7 @@ lang: en
 Software Testing Visualizer Series #13
 Tool: `/section-logic` → Clause Binding sub-panel ([LogicCoverageExplorer](../../src/components/LogicCoverageExplorer.js) + [logicBinding.js](../../src/utils/logicBinding.js))
 
+<!-- This lecture solves the "last mile" problem of Logic Coverage: mapping abstract clauses (a, b, c) to concrete program expressions so tests can actually be executed. -->
 ---
 
 ## The "Last Mile" Problem in Logic Coverage
@@ -31,6 +32,7 @@ if (x > 0 && y < 10) { ... }
 
 > **Clause Binding** closes this gap — automatically solving concrete integer witnesses from abstract truth-table rows.
 
+<!-- Students can compute CACC requirement tables but don't know how to generate concrete inputs satisfying "a=T, b=F." Binding bridges this gap. -->
 ---
 
 ## Core Concept: Three Layers of Mapping
@@ -51,6 +53,7 @@ Abstract layer (Logic Coverage)
 
 > Every coverage requirement row becomes a concrete, executable test input.
 
+<!-- Three layers: criterion (CACC) → clause truth value combination (a=T, b=F) → concrete witness (x=1, y=10). Binding handles the second-to-third layer conversion. -->
 ---
 
 ## The Binding UI
@@ -61,6 +64,7 @@ Abstract layer (Logic Coverage)
 - Each clause (a, b, c…) has a JS expression input
 - Results show a **Constraint** column (full Boolean predicate) and a **Witness** column (concrete integers)
 
+<!-- The tool's Binding panel sits immediately below the logic coverage tool. After selecting a criterion, each requirement row shows a corresponding witness. -->
 ---
 
 ## Clause Binding Sub-panel Elements
@@ -74,6 +78,7 @@ Abstract layer (Logic Coverage)
 | Restore button | Reset to example default bindings |
 | Results table | Test row / Clause values / Constraint / Witness |
 
+<!-- Each clause (a, b, c) has an input box where students enter a JavaScript expression (e.g., x > 0). -->
 ---
 
 ## The Four-Column Results Table
@@ -93,6 +98,7 @@ Abstract layer (Logic Coverage)
 - **Witness**: smallest absolute-value integer solution (0, 1, −1, 2, −2, …)
 - **infeasible**: shown in red when no solution exists (e.g. `x>0 && x<0`)
 
+<!-- Four columns: row number (which requirement), clause truth values (a=T, b=F, c=T), constraint formula ((x > 0) && !(y < 10)), witness (x=1, y=10). -->
 ---
 
 ## The Solving Algorithm: Bounded Brute-force
@@ -118,6 +124,7 @@ for (const combo of cartesianSmallFirst(vars, range)) {
 }
 ```
 
+<!-- The tool first tries an analytic solver (interval arithmetic); if that fails, it uses brute-force search over the [-10, 10] integer Cartesian product. -->
 ---
 
 ## Why "Smallest Absolute Value" Order?
@@ -129,6 +136,7 @@ for (const combo of cartesianSmallFirst(vars, range)) {
 
 > Test witnesses should be **simple and close to boundaries** — easiest to understand and debug.
 
+<!-- Searching from 0 upward in |x| order ensures the witness closest to 0 is found, making it easiest for students to verify by hand. -->
 ---
 
 ## Example Program: abs(x)
@@ -151,6 +159,7 @@ function abs(x) {
 | 1 | T | `(x < 0)` | x=−1 |
 | 2 | F | `!(x < 0)` | x=0 |
 
+<!-- abs(x)'s predicate is x >= 0, with one clause. Binding is straightforward: a=T → x=0, a=F → x=-1. -->
 ---
 
 ## Example Program: max(a, b)
@@ -173,6 +182,7 @@ function max(a, b) {
 | 1 | T | `(a > b)` | a=1, b=0 |
 | 2 | F | `!(a > b)` | a=0, b=0 |
 
+<!-- max(a, b)'s predicate is a >= b, one clause. CACC needs two witnesses: a=T and a=F. -->
 ---
 
 ## Example Program: triangle
@@ -194,6 +204,7 @@ predicate: `p && q`; binding: `p ↦ a === b`, `q ↦ b === c`
 | 1 | T | T | `(a===b) && (b===c)` | a=0, b=0, c=0 |
 | 2 | T | F | `(a===b) && !(b===c)` | a=0, b=0, c=1 |
 
+<!-- Triangle has multiple clauses; CACC has more requirements. Have students verify each witness actually satisfies the corresponding clause truth values. -->
 ---
 
 ## Auto-fill from Predicate Examples
@@ -210,6 +221,7 @@ Clicking an example chip auto-fills `defaultBindings`:
 - "Restore defaults" button resets bindings to example values
 - Manual changes update the results immediately (200ms debounce)
 
+<!-- Auto-fill reads the selected example's defaultBindings and fills all clause expressions with one click. Use auto-fill to quickly see results, then manually modify to learn. -->
 ---
 
 ## Binding Tool in Action
@@ -220,6 +232,7 @@ Clicking an example chip auto-fills `defaultBindings`:
 - Middle: annotated source code (`← a` marks)
 - Bottom: four-column results table (infeasible shown in red)
 
+<!-- Live demo: select triangle → select CACC → click auto-fill. Have students match each witness table row to the corresponding textbook requirement. -->
 ---
 
 ## Tuning the Search Range
@@ -235,6 +248,7 @@ Range [-10, 10], 2 variables → 21² = 441 attempts (instant)
 Range [-100, 100], 3 variables → 201³ ≈ 8M attempts (~1–2 s)
 ```
 
+<!-- Default search range is [-10, 10]. For expressions involving large numbers (e.g., x > 50), the analytic solver handles this case exactly without range limits. -->
 ---
 
 ## Limitations and Future Work
@@ -248,6 +262,7 @@ Range [-100, 100], 3 variables → 201³ ≈ 8M attempts (~1–2 s)
 
 > Current implementation demonstrates the core concept; SMT solver integration is a planned B1 improvement.
 
+<!-- Limitation: the brute-force fallback can only find integer witnesses within the search range. The analytic interval solver handles simple linear constraints like x > 50 exactly. -->
 ---
 
 ## Summary
@@ -258,6 +273,7 @@ Range [-100, 100], 3 variables → 201³ ≈ 8M attempts (~1–2 s)
 - Smallest-absolute-value search produces simple, readable witnesses.
 - Auto-fill and source code display lower the learning curve.
 
+<!-- Binding turns Logic Coverage from "paper exercise" into "verifiable test inputs." Mastering this three-layer mapping is what it means to truly understand the engineering application of Logic Coverage. -->
 ---
 
 ## Classroom Exercises
@@ -267,6 +283,7 @@ Range [-100, 100], 3 variables → 201³ ≈ 8M attempts (~1–2 s)
 3. Shrink the search range to `[0, 2]` — does `a ↦ x < 0` become infeasible?
 4. Design a RACC test set for `a && b && c` and use binding to find three concrete variable values.
 
+<!-- Exercise 1 (manually fill bindings and verify witnesses) is the most important. Exercise 3 (expand search range) helps understand solver limitations. -->
 ---
 
 ## Further Reading
@@ -279,3 +296,5 @@ Range [-100, 100], 3 variables → 201³ ≈ 8M attempts (~1–2 s)
   - [src/components/LogicCoverageExplorer.js](../../src/components/LogicCoverageExplorer.js) — binding sub-panel UI
   - [src/data/testingData.js](../../src/data/testingData.js) — 6 example programs with default bindings
 - Series continues — full index at [docs/slides/index.en.md](index.en.md)
+
+<!-- A&O §4–5 has the complete Logic Coverage theory. The binding solver implementation is in src/utils/logicBinding.js. -->

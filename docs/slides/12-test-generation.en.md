@@ -14,6 +14,7 @@ lang: en
 Software Testing Visualization Series #12
 Tool: `/section-testgen` ([TestGenerationExplorer](../../src/components/TestGenerationExplorer.js) + [testGeneration.js](../../src/utils/testGeneration.js))
 
+<!-- This lecture connects all previous criteria: using coverage criteria to generate the "minimum test set" covering "all requirements." The culminating application of the series. -->
 ---
 
 ## Where This Lecture Fits
@@ -29,6 +30,7 @@ Tool: `/section-testgen` ([TestGenerationExplorer](../../src/components/TestGene
 > This lecture is the **bridge** between #3/#4 and #10:
 > starting from **abstract structural requirements**, it automatically derives the **minimum number of concrete inputs** that collectively cover all feasible requirements.
 
+<!-- Previous lectures "define criteria"; this lecture "automatically generates test sets satisfying criteria." The last mile from theory to engineering practice. -->
 ---
 
 ## Problem Definition
@@ -44,6 +46,7 @@ Find:
 
 > Equivalent to **greedy set cover** over feasible requirements.
 
+<!-- Problem: given a function and a coverage criterion, find the minimum set of test cases such that all criterion-required requirements are covered. -->
 ---
 
 ## The Computation Pipeline
@@ -69,6 +72,7 @@ sourceCode
   selectedTests[ ]   ← minimal test set
 ```
 
+<!-- Pipeline: source code → CFG → coverage requirements → Greedy Set Cover → minimum test set → execution verification. -->
 ---
 
 ## Key Modules
@@ -82,6 +86,7 @@ sourceCode
 | `requirementCoveredByRecord` | test whether a path covers a requirement | from `graphCoverage.js` (newly exported) |
 | `testGeneration.js` | chains all five steps + greedy cover | **new in this lecture** |
 
+<!-- Four modules work together: pathFinder, TestPathSelector (greedy), TestCaseBuilder (concretize), Runner (verify). Each has a clear role. -->
 ---
 
 ## Greedy Set Cover
@@ -101,6 +106,7 @@ while R is not empty:
 
 > Not guaranteed optimal (the decision problem is NP-hard), but greedy is near-optimal in practice for typical functions and is easy to explain.
 
+<!-- Greedy Set Cover is an approximation for an NP-hard problem: each step picks the path covering the most uncovered requirements. Approximation ratio ln(n). -->
 ---
 
 ## 8 Coverage Criteria
@@ -116,6 +122,7 @@ while R is not empty:
 | All-Uses | Data Flow | (var, def-node, use-node) |
 | All-DU-Paths | Data Flow | (var, simple def→use path) |
 
+<!-- The tool supports NC/EC/ECC/PPC/ADUP/ADU/ADef + CACC. Have students switch criteria and observe how test set size changes. -->
 ---
 
 ## Tool: Overview
@@ -126,6 +133,7 @@ while R is not empty:
 - Left pane: interactive CFG (highlights change when you select a requirement or test)
 - Right pane: Requirements card + Minimal Tests card
 
+<!-- Left: code input. Right: three sections — requirements list, selected tests list, CFG view. -->
 ---
 
 ## Tool: Requirements Card
@@ -135,6 +143,7 @@ while R is not empty:
 - Each row shows: requirement id, feasible/infeasible badge, representative witness (concrete call)
 - Click a row → CFG highlights the corresponding nodes/edges
 
+<!-- The requirements card lists all coverage requirements (node/edge/path/clause). Click a requirement to highlight the CFG and show which test covers it. -->
 ---
 
 ## Tool: Minimal Tests Card
@@ -144,6 +153,7 @@ while R is not empty:
 - Each row shows: test number T₁/T₂/…, path id, concrete call + expected return value, covers list
 - Click a row → CFG highlights the full execution path of that test
 
+<!-- The minimal tests card lists the Greedy Set Cover–selected minimum test set. Each test shows which requirements it covers. -->
 ---
 
 ## Tool: CFG Interaction
@@ -155,6 +165,7 @@ while R is not empty:
 - Select a test → highlights the complete execution path (orange/bold)
 - Zoom buttons `+/−/100%` adjust the CFG scale
 
+<!-- Clicking a requirement or test synchronizes the CFG to highlight related nodes/edges/paths, helping students build visual connections. -->
 ---
 
 ## Example: abs(x) + Edge Coverage
@@ -175,6 +186,7 @@ Edge Coverage requirements:
 
 → Minimal test set T = { `abs(-1)`, `abs(1)` } — 2 tests cover 5 edges
 
+<!-- abs(x) is the simplest demo: only two edges, needing two tests (x>0 and x<=0). -->
 ---
 
 ## Example: triangle + Prime Path Coverage
@@ -187,6 +199,7 @@ Symbolic execution solves each path condition in symbol space, e.g.:
 
 Greedy set cover selects the fewest tests to cover all feasible paths.
 
+<!-- Triangle has multiple prime paths, requiring a significantly larger test set than edge coverage. This illustrates the impact of criterion strength. -->
 ---
 
 ## Infeasible Requirements
@@ -204,6 +217,7 @@ status:       infeasible
 
 > Tip: the depth limit can be raised via `symbexOptions.maxDepth`, but the number of paths grows exponentially.
 
+<!-- Some requirements correspond to paths that are semantically unreachable (infeasible). The tool marks these in red and skips them. -->
 ---
 
 ## Comparison with #10 and #11
@@ -215,6 +229,7 @@ status:       infeasible
 | Output | path list + witnesses | iteration list + witnesses | **minimal test set** + coverage report |
 | Use case | full path analysis | automated guidance | direct input to a test runner |
 
+<!-- Symbex/Concolic use constraint solving to find inputs; this tool uses brute-force integer grid search. The former is more powerful; the latter is more intuitive. -->
 ---
 
 ## Implementation Highlight
@@ -236,6 +251,7 @@ export function generateTestsFromCoverage({ sourceCode, criterion }) {
 }
 ```
 
+<!-- The tool's core challenge: translating a coverage requirement (abstract path) into concrete input values (integer combinations). -->
 ---
 
 ## Summary
@@ -246,6 +262,7 @@ export function generateTestsFromCoverage({ sourceCode, criterion }) {
 - Supports 8 criteria covering all Graph Coverage and Data Flow Coverage categories
 - Output is a **test specification**: paste directly into Jest / Pytest to run
 
+<!-- This lecture turns "defining criteria" into "automated generation." Coverage criteria are not just evaluation metrics but also specifications for generating tests. -->
 ---
 
 ## Exercises
@@ -256,6 +273,7 @@ export function generateTestsFromCoverage({ sourceCode, criterion }) {
 4. In the Source editor, add a new branch (e.g. `if (x === 0) return 0;`). Watch how requirements and tests change.
 5. Try All-DU-Paths + `max3(a, b, c)`. Count how many tests are needed to cover all feasible requirements.
 
+<!-- Exercise 1 (observe test set sizes for different criteria) is the most intuitive. Exercise 3 (modify code and observe CFG changes) works as an interactive demo. -->
 ---
 
 ## Further Reading
@@ -268,3 +286,5 @@ export function generateTestsFromCoverage({ sourceCode, criterion }) {
   - [src/components/TestGenerationExplorer.js](../../src/components/TestGenerationExplorer.js) — UI (389 lines)
 - Full specification: [docs/Specification.zh-TW.md §12](../Specification.zh-TW.md)
 - Next → **#12.2 Logic Coverage Binding** (map clause variables to program expressions, auto-solve concrete inputs)
+
+<!-- A&O §8 has the complete Test Path theory. The Set Cover implementation is in src/utils/setCover.js. -->

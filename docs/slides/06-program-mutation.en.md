@@ -14,6 +14,7 @@ lang: en
 Software Testing Visualization, Lecture #6
 Tool: `/section-syntax → Program Mutation` ([SyntaxCoverageExplorer](../../src/components/SyntaxCoverageExplorer.js) + [mutation.js](../../src/utils/mutation.js))
 
+<!-- This lecture shifts perspective: instead of testing the program, we test the test suite itself. Mutation score is an objective metric for test suite quality. -->
 ---
 
 ## A shift in perspective: test the tests
@@ -26,6 +27,7 @@ Tool: `/section-syntax → Program Mutation` ([SyntaxCoverageExplorer](../../src
 
 > Pivot: a good test set must kill a large fraction of plausible-but-wrong program variants.
 
+<!-- Traditional testing answers "is the program correct?"; mutation testing answers "how strong is my test suite?" — a meta-question. -->
 ---
 
 ## Mutation testing in three steps
@@ -44,6 +46,7 @@ Program  P  ─┐
 
 > **Mutation Score** = killed ÷ (total − equivalent)
 
+<!-- Three steps: generate mutants → run test suite against each mutant → compute mutation score. Numerator = killed; denominator = all non-equivalent mutants. -->
 ---
 
 ## Why “killed”?
@@ -56,7 +59,6 @@ For a test `t` and a mutant `P′`:
 Teaching points:
 - **Live mutants** are the next opportunity to improve the test suite — ask why no test caught it.
 - **Equivalent mutants** are undecidable in general — they must be marked manually.
-
 ---
 
 ## 15 operators (11 procedural)
@@ -75,6 +77,7 @@ Teaching points:
 | BSR | Bomb Statement Replacement | replace a whole line with `throw` |
 | ABS | Absolute Value Insertion | wrap `x` as `Math.abs(x)` / `-(x)` |
 
+<!-- AOR (arithmetic operator replacement) and ROR (relational operator replacement) are the most common operators and easiest to compute by hand. -->
 ---
 
 ## 15 operators (4 object-oriented)
@@ -88,6 +91,7 @@ Teaching points:
 
 > OO operators require a `class`-based example. The built-in `shapeHierarchy` (Square / Circle inheriting Shape) is designed for this.
 
+<!-- OO operators target class inheritance and polymorphism, especially important in Java/C++ programs. The current tool implements 11 procedural operators. -->
 ---
 
 ## Worked example: AOR on max(a, b)
@@ -107,6 +111,7 @@ Test set:
 - AOR produces no mutants on max() — there is no `+ - * / %`.
 - ROR is the interesting operator: `a > b` mutates to `a >= b`, `a < b`, `a === b`, …
 
+<!-- For hand calculation: replace a > b with a + b, a - b, a * b, etc. Ask which mutant is easiest to kill. -->
 ---
 
 ## Worked example: ROR on max(a, b)
@@ -122,6 +127,7 @@ Test set:
 - Adding t₅=[5,5]→5 does not help: the return value is the same regardless.
 - **You need a test where `a ≠ b` and only one side matches** to kill all ROR mutants.
 
+<!-- a > b changed to a >= b is the most subtle ROR mutant — it differs only when a == b, so tests need to include this boundary case. -->
 ---
 
 ## Equivalent mutants: the hard part
@@ -139,6 +145,7 @@ function isZero(x) {       // mutant: UOI inserts -
 - No test will ever kill it → **equivalent mutant**.
 - The tool offers a “mark as equivalent” button so it is removed from the denominator — otherwise the mutation score is misleadingly capped below 100%.
 
+<!-- Equivalent mutants are mutation testing's biggest challenge — no test can kill them because they are semantically identical to the original program. -->
 ---
 
 ## Tool: overview
@@ -149,6 +156,7 @@ function isZero(x) {       // mutant: UOI inserts -
 - `syntax-operators` is a row of 15 toggles, all multi-selectable.
 - Edit the program with `syntax-params` / `syntax-body`; edit the test set with `syntax-test-table`.
 
+<!-- Left side: program input and test suite. Right side: mutant list and killed/alive statistics. Suggest students look at the summary numbers first. -->
 ---
 
 ## Tool: execution flow
@@ -161,6 +169,7 @@ Every change to program / tests / operators kicks off a three-step pipeline:
 
 > All in-browser (Workers are unnecessary — JS function calls are cheap).
 
+<!-- Clicking "Run Mutation" triggers: parse program → generate all mutants → run all tests against each mutant → compute score. -->
 ---
 
 ## Tool: mutant list
@@ -171,6 +180,7 @@ Every change to program / tests / operators kicks off a three-step pipeline:
 - Each row shows `L<line>:<col>` and `original → mutated`.
 - Click any mutant → `syntax-mutant-detail` on the right shows the full mutated source plus the killer test IDs.
 
+<!-- Each mutant can be expanded to see the diff — which operator applied to which token made what replacement. -->
 ---
 
 ## Tool: per-test results
@@ -181,6 +191,7 @@ Every change to program / tests / operators kicks off a three-step pipeline:
 - Rows that kill the mutant are highlighted red; rows that do not are dimmed.
 - Pedagogical payoff: you can immediately see “why this test failed to catch the mutant”.
 
+<!-- The mutant detail page shows which tests killed it and which didn't. This helps students understand why one test is stronger than another. -->
 ---
 
 ## OO showcase: shapeHierarchy
@@ -198,6 +209,7 @@ class Circle extends Shape { constructor(r){ super(); this.r=r; } area(){ return
 | `ISD` | `super()` → `undefined`, breaks inherited initialisation |
 | `PRV` | `new Square(s)` → `new Circle(s)` |
 
+<!-- The shapeHierarchy example shows OO mutation: replacing subclass instances, modifying polymorphic calls, etc. Good for students with OO background. -->
 ---
 
 ## Persistence: test sets and cloud sync
@@ -212,6 +224,7 @@ Behaviour:
 - Signed in → debounced writes to Firestore; the panel offers `syntax-cloud-reload` to fetch fresh.
 - A `pagehide` listener flushes the last write so closing the tab does not lose data.
 
+<!-- The tool supports cloud sync of test sets, making it easy for students to share the same mutant list for group discussion. -->
 ---
 
 ## Algorithm peek: mutate pipeline
@@ -225,6 +238,7 @@ Core of [`mutation.js`](../../src/utils/mutation.js):
 
 > The OO operators (JTD / ISD / IOD / PRV) work at source-level via pattern matching — regex is easier than tokens for class structure.
 
+<!-- AST transformation is the core technique for generating mutants. The tool has a corresponding AST visitor for each operator. -->
 ---
 
 ## Common pitfalls
@@ -234,6 +248,7 @@ Core of [`mutation.js`](../../src/utils/mutation.js):
 3. **Slow runs**: complex mutants × big test sets is `O(M × T)`. The built-in examples are tiny; when you upload your own, keep tests under ~50.
 4. **Cloud race**: simultaneous debounce + reload → the tool follows the “last successful write wins” rule; click `syntax-reload-btn` if you’re unsure.
 
+<!-- High coverage ≠ high mutation score. Example: 100% coverage but tests only assert "no crash" → mutation score can be very low. -->
 ---
 
 ## Summary
@@ -243,6 +258,7 @@ Core of [`mutation.js`](../../src/utils/mutation.js):
 - Mutation score = killed / (total − equivalent) — a single health metric for the test set.
 - The tool offers both **per-mutant** and **per-test** views — find “the unkilled mutant” and “the useless test” in one place.
 
+<!-- Mutation score is an objective measure of test suite strength. The goal is not 100% (impossible with equivalent mutants) but approaching 80–90%. -->
 ---
 
 ## Exercises
@@ -252,6 +268,7 @@ Core of [`mutation.js`](../../src/utils/mutation.js):
 3. Switch to `shapeHierarchy`. Which OO operator generates the most equivalent mutants? Why?
 4. Upload a short function (≤ 10 lines) of your own. Which operator produces the most mutants?
 
+<!-- Exercise 1 (compute AOR mutants by hand) is the most important foundational skill. Exercise 3 (equivalent mutant judgment) works for advanced students. -->
 ---
 
 ## Further reading
@@ -263,3 +280,5 @@ Core of [`mutation.js`](../../src/utils/mutation.js):
   - [src/components/SyntaxCoverageExplorer.js](../../src/components/SyntaxCoverageExplorer.js) — UI / cloud sync.
 - Spec §11.2 / §17.3: [docs/Specification.zh-TW.md](../Specification.zh-TW.md).
 - Next → **Lecture #7 — Grammar-Based Testing + Mutation on Strings**.
+
+<!-- A&O §11.2 has complete mutation operator definitions. PIT is the most widely used Java mutation testing tool in industry. -->

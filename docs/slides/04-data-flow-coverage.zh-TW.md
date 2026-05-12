@@ -14,6 +14,7 @@ lang: zh-TW
 軟體測試視覺化系列 #4
 搭配工具：`/section-graph`（[GraphCoverageExplorer](../../src/components/GraphCoverageExplorer.js) + [dataFlow.js](../../src/utils/dataFlow.js)）
 
+<!-- 本講把 CFG 延伸到「資料流」，從結構走到語意。掌握 def/use 對的定義是整個講次的核心。 -->
 ---
 
 ## 從結構走到資料
@@ -26,6 +27,7 @@ lang: zh-TW
 
 > 同一張 CFG，多一層語意：**每個節點帶有 defs / uses 集合**。
 
+<!-- CFG 只看「走哪條邊」，DFC 還要看「變數在哪裡被賦值、在哪裡被使用」。這讓測試能捕捉更多語意錯誤。 -->
 ---
 
 ## 三個核心概念
@@ -38,6 +40,7 @@ lang: zh-TW
 
 把這些統合在 CFG 上 → 形成「**資料流圖（DFG）**」：edges 是 `(defNode, useNode, variable)`。
 
+<!-- def-clear path 是最重要的概念：從 def 到 use 的路徑上，如果變數沒有被重新賦值，才算是有效的 def-use 對。 -->
 ---
 
 ## 三條資料流覆蓋準則
@@ -50,6 +53,7 @@ lang: zh-TW
 
 > 在工具裡分別對應 `criterion-all-defs` / `criterion-all-uses` / `criterion-all-du-paths`。
 
+<!-- All-Defs < All-Uses < All-DU-Paths 的強弱順序。All-Uses 是最常在實務中被採用的準則。 -->
 ---
 
 ## Subsumption（結構 + 資料流）
@@ -63,6 +67,7 @@ All-DU-Paths ──►  All-Uses ──►  All-Defs
 - **All-Uses 蘊含 Edge Coverage**（前提：每條邊都有 def→use 經過；通常於有適度賦值的程式成立）
 - 教學常見搭配：先 EC 做結構性骨架，再 All-Uses 做變數正確性。
 
+<!-- 資料流覆蓋和結構覆蓋的 subsumption 關係交錯。All-Uses 包含 Edge Coverage，這是個重要但不直觀的結論。 -->
 ---
 
 ## 教科書範例：來自 Triangle Problem
@@ -80,6 +85,7 @@ function classifyTriangle(a, b, c) {
 - start 節點保留函式 header → **a, b, c 三個參數同時被 def**（commit `9e4c3fc` 之後的行為）。
 - 沒有任何重新賦值 → 所有 use 都是「def-clear from start」。
 
+<!-- Triangle Problem 是 Ammann & Offutt 的標準範例。讓學生先手工找出所有 def/use 對，再與工具比對。 -->
 ---
 
 ## def / use 抽取規則
@@ -97,6 +103,7 @@ function classifyTriangle(a, b, c) {
 
 > 是個刻意保守的啟發式解析器：不認得的句子 → 全當 use，避免漏掉 use 而出現假覆蓋。
 
+<!-- 可賦值語句（=）和函式參數是最常見的 def 點；條件判斷和運算元是最常見的 use 點。 -->
 ---
 
 ## 工具演示：DFG 視圖
@@ -107,6 +114,7 @@ function classifyTriangle(a, b, c) {
 - 邊就是 def→use 關係，**邊上標記攜帶的變數名**。
 - 從 `Start` 出發的多條邊代表參數 a/b/c 從 start 流出。
 
+<!-- 工具的 DFG 視圖把 CFG 的每個 node 展開成 def 點和 use 點。讓學生觀察箭頭如何連接 def 到 use。 -->
 ---
 
 ## 工具演示：All-Defs
@@ -116,6 +124,7 @@ function classifyTriangle(a, b, c) {
 - 點 `criterion-all-defs` → 右側 `requirement-list` 列出每個 (defNode, variable) 的代表性 def-clear 路徑（最短）。
 - 對 Triangle Problem：3 個參數 × 1 個 def 點 = 3 條 requirements，分別走到第一個讀到它的 decision 節點。
 
+<!-- All-Defs 只需要每個 def 至少走到一個 use。這是最弱的資料流準則，通常需求數最少。 -->
 ---
 
 ## 工具演示：All-Uses
@@ -126,6 +135,7 @@ function classifyTriangle(a, b, c) {
 - Triangle Problem 中參數 `a`、`b`、`c` 各被多個 decision 使用 → requirements 數量爆增。
 - 點 requirement，CFG 與 DFG 對應節點同步反白。
 
+<!-- All-Uses 要求每個 def-use 對都被測試。可以問：如果一個 def 有 5 個 use，需要幾條 test path？ -->
 ---
 
 ## 工具演示：All-DU-Paths
@@ -136,6 +146,7 @@ function classifyTriangle(a, b, c) {
 - 為避免爆炸，[`enumerateDefClearPaths`](../../src/utils/graphCoverage.js) 設了路徑長度上限：`max(8, |V| × 2)`。
 - 對 Triangle Problem（線性流程、無 loop）：路徑數仍可控；換成含 loop 的範例會立刻增多。
 
+<!-- All-DU-Paths 是最強的資料流準則，需要覆蓋每個 def-use 對的每一條 def-clear path。通常測試集很大。 -->
 ---
 
 ## DFG 為何可能是空的？
@@ -147,6 +158,7 @@ function classifyTriangle(a, b, c) {
 - 工具顯示 `graph-dfg-empty` 提示：「從目前原始程式未偵測到 def→use 關係。」
 - 解法：選任一個程式範例，或上傳自己的 JS 程式碼。
 
+<!-- 如果函式沒有變數賦值（只有 return 語句），DFG 會是空的。這是工具的設計選擇，不是 bug。 -->
 ---
 
 ## 演算法摘要
@@ -157,6 +169,7 @@ function classifyTriangle(a, b, c) {
 4. `requirementCoveredByRecord` 對 `all-defs/all-uses/all-du-paths` 改用 `containsNodePath(record.path, requirement.path)` 判定。
 5. `buildTestPathSetForRequirements` 與結構準則共用同一個 greedy set cover → 同樣產出 baseline / optimised / saved 三個指標。
 
+<!-- def/use 抽取用 AST 分析，DU-pair 枚舉用 BFS/DFS，def-clear 路徑用可達性分析。 -->
 ---
 
 ## 小結
@@ -169,6 +182,7 @@ function classifyTriangle(a, b, c) {
 
 > 若沒有 source code → 看不到 def/use → 直接用 sample CFG **無法**示範本講內容（這是設計上的選擇，不是 bug）。
 
+<!-- Data Flow Coverage 能捕捉 structure-only 準則漏掉的語意錯誤。掌握 def/use 對是後續所有資料流討論的基礎。 -->
 ---
 
 ## 課堂練習
@@ -178,6 +192,7 @@ function classifyTriangle(a, b, c) {
 3. 在自寫程式中加一行 `x = x + 1`（再 def 同變數），觀察 DFG 中對應變數的邊是否被「截斷」。
 4. 把 sample CFG 的某節點 label 改成 `x = 1` 等帶變數的字串（即使非可執行語法），觀察 DFG 是否從空 → 出現邊（提示：`extractDefUse` 只看文字）。
 
+<!-- 練習 1（手工找 def/use 對）是最核心的技能訓練。練習 3（比較 coverage 強度）適合作討論。 -->
 ---
 
 ## 進一步閱讀
@@ -188,3 +203,5 @@ function classifyTriangle(a, b, c) {
   - [src/utils/graphCoverage.js](../../src/utils/graphCoverage.js)（`getAllDefs/All-Uses/All-DU-Paths` + def-clear 路徑列舉）
 - 規格文件 §15：[docs/Specification.zh-TW.md](../Specification.zh-TW.md)
 - 下一講 → **#5 Logic Coverage**（真值表、ACC/ICC、DNF、Karnaugh map）
+
+<!-- A&O §15 有完整的資料流理論。工具實作在 src/utils/dataFlow.js。 -->

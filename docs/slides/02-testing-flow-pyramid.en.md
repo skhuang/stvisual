@@ -14,6 +14,7 @@ lang: en
 Software Testing Visualization, Lecture #2
 Tool: `/section-flow` ([TestingFlow](../../src/components/TestingFlow.js)) + `/section-types` ([TestingTypesTable](../../src/components/TestingTypesTable.js))
 
+<!-- This lecture connects two complementary views: flow tells you "what to do when," and pyramid tells you "the right proportion for each layer." -->
 ---
 
 ## Two parallel threads
@@ -25,6 +26,7 @@ Tool: `/section-flow` ([TestingFlow](../../src/components/TestingFlow.js)) + `/s
 
 > One is horizontal (timeline); the other vertical (layer distribution) — both visualised.
 
+<!-- Both views are needed. Flow gives the engineering lifecycle; pyramid gives the resource allocation ratio. Neither alone is sufficient. -->
 ---
 
 ## Testing flow: six steps
@@ -43,6 +45,7 @@ Requirements ──► Test Plan ──► Test Design ──► Execution ─�
 | 5 | Analysis | Defect list, coverage |
 | 6 | Defect Report | Fix-tracking status |
 
+<!-- This lecture connects two complementary views: flow tells you "what to do when," and pyramid tells you "the right proportion for each layer." -->
 ---
 
 ## Tool: auto-play flow
@@ -54,6 +57,7 @@ Requirements ──► Test Plan ──► Test Design ──► Execution ─�
 - The progress bar `flow-progress-fill` reflects the current step (0–100%).
 - Hover any step → `flow-tooltip-{id}` shows the full description.
 
+<!-- Open the tool and click auto-play to cycle through the six steps. Ask students to find the step they most commonly skip in their own projects. -->
 ---
 
 ## Why this flow still matters
@@ -66,6 +70,7 @@ Even in the agile / CI era:
 
 > Teaching tip: animating the flow is what makes students remember that “test design” is a separate stage.
 
+<!-- Even with CI/CD, this six-step logic still holds. CI/CD automates the flow; it does not eliminate it. -->
 ---
 
 ## Another angle: the testing pyramid
@@ -84,6 +89,7 @@ Even in the agile / CI era:
 
 > The tool draws an **inverted pyramid** (widening left → right) — the meaning is not “Unit is smallest” but “**scope** widens from narrow to broad”.
 
+<!-- The pyramid's most important insight: unit tests should be most numerous, E2E tests fewest, because of the speed and cost difference. -->
 ---
 
 ## Four testing layers
@@ -97,6 +103,7 @@ Even in the agile / CI era:
 
 > Moving up: **slower + more expensive**. Moving down: **narrower + less confidence**. Balance both ends.
 
+<!-- Ask students: what does your project's pyramid look like? Is it an inverted triangle (lots of E2E, few unit tests)? -->
 ---
 
 ## Tool: pyramid + cards
@@ -107,6 +114,7 @@ Even in the agile / CI era:
 - The bottom `types-grid` adds a card per layer (`type-card-{id}`): type + purpose + timing.
 - The colour scale (blue → green → orange → red) maps to the “fast → slow” intuition.
 
+<!-- The pyramid in the tool is interactive — clicking each layer expands a detail card. Ask students to click and read the examples for each layer. -->
 ---
 
 ## Classic guidance: Mike Cohn’s Test Pyramid
@@ -124,6 +132,7 @@ Even in the agile / CI era:
 
 > The pyramid still applies; **the exact ratio can adapt to tooling**.
 
+<!-- Mike Cohn's pyramid principle is widely cited, but many teams invert it. Ask why E2E tests shouldn't be the backbone of the test suite. -->
 ---
 
 ## Two common anti-pyramids
@@ -146,6 +155,7 @@ or
 
 > Both appear often. The first is the “ice-cream cone”; the second is “missing unit tests”. This tool won’t fix them — but it lets you **see the shape you actually have**.
 
+<!-- The ice-cream cone and hourglass are common anti-patterns. Ask students which shape their project is, and discuss how to improve it. -->
 ---
 
 ## Combining the two views
@@ -159,6 +169,7 @@ or
 
 > Both axes matter: **when to test** (flow) and **how much to test** (pyramid).
 
+<!-- Key connection: "Test Design" in the six steps corresponds to the pyramid layer decision — choose the layer first, then design the test cases. -->
 ---
 
 ## Summary
@@ -169,6 +180,7 @@ or
 - They are not “testing methods” themselves (that was Lecture #1) — they are the **engineering organisation** around testing.
 - The next seven lectures dive into the criteria that live inside the “test design” step.
 
+<!-- The core message: flow makes testing orderly, pyramid makes resource allocation rational. Both are essential. -->
 ---
 
 ## Exercises
@@ -178,6 +190,7 @@ or
 3. What automation layers should run in your CI pipeline? When do you still need manual acceptance?
 4. Read the colour intensity of `pyramid-row-{id}` in the tool — does darker mean **slower** or **broader scope**? Which interpretation does the designer intend?
 
+<!-- Exercise 1 (draw your own pyramid) is the most important. Exercise 3 (CI/CD discussion) guides students to think about the limits of automation. -->
 ---
 
 ## Further reading
@@ -191,3 +204,5 @@ or
   - [src/data/testingData.js](../../src/data/testingData.js) — `testingFlow` and `testingTypes`.
 - Spec §2.B: [docs/Specification.zh-TW.md](../Specification.zh-TW.md).
 - Next → **Lecture #3 — Graph Coverage (structural)**.
+
+<!-- Fowler's blog post "TestPyramid" is the best secondary resource for this concept — short and precise. -->

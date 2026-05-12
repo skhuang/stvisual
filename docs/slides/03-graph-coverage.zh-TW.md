@@ -14,6 +14,7 @@ lang: zh-TW
 軟體測試視覺化系列 #3
 搭配工具：`/section-graph`（[GraphCoverageExplorer](../../src/components/GraphCoverageExplorer.js)）
 
+<!-- 本講是整個系列的圖論基礎。學生先掌握這裡的 CFG 與覆蓋準則，後續的 Data Flow、Test Generation 才能順暢銜接。 -->
 ---
 
 ## 為什麼是 Graph Coverage？
@@ -27,6 +28,7 @@ lang: zh-TW
 
 > 觀念支點：先把程式抽象成圖，再在圖上談覆蓋。
 
+<!-- 本講是整個系列的圖論基礎。學生先掌握這裡的 CFG 與覆蓋準則，後續的 Data Flow、Test Generation 才能順暢銜接。 -->
 ---
 
 ## 抽象：什麼是 CFG？
@@ -45,6 +47,7 @@ G = (N, E, n_s, n_f)
 **Test path** = 從 `n_s` 走到 `n_f` 的一條路徑。
 **Test requirement** = 圖上某個必須被覆蓋的子結構。
 
+<!-- Node = 基本塊（basic block），Edge = 控制流轉移。可以現場白板畫一個簡單的 if-else CFG，讓學生參與填 node。 -->
 ---
 
 ## 五條結構性覆蓋準則
@@ -59,6 +62,7 @@ G = (N, E, n_s, n_f)
 
 > 在工具中以 `criterion-{id}` testid 對應左側按鈕。
 
+<!-- 這五條準則有嚴格的 subsumption 階梯。強調 Prime Path Coverage 是這裡的「王者」，能包含大部分下層準則。 -->
 ---
 
 ## Subsumption 關係
@@ -73,6 +77,7 @@ CPC  ──►  PPC  ──►  EPC  ──►  EC  ──►  NC
 - PPC 是課堂的甜蜜點：包含 EPC、處理迴圈、但通常仍可手算。
 - CPC 只在無環或限定深度下可行（工具裡有 `maxDepth`）。
 
+<!-- Subsumption 圖是理解準則強弱的關鍵工具。可以問：為什麼 Edge Coverage 不蘊含 Prime Path Coverage？ -->
 ---
 
 ## 教科書範例：sample CFG
@@ -92,6 +97,7 @@ S ─► A ─┤      ├─► D ─►──┤      ├─► T
               (back-edge E ──► B)
 ```
 
+<!-- 這個 sample CFG 是 Ammann & Offutt 教科書的標準範例。請學生先手算 NC 再對答案，建立計算直覺。 -->
 ---
 
 ## 手算：Node Coverage
@@ -108,6 +114,7 @@ S ─► A ─┤      ├─► D ─►──┤      ├─► T
 > NC 不要求覆蓋所有 edge — `E-B` 完全沒走也算過。
 > 這正是 NC 比 EC 弱的地方。
 
+<!-- NC 只需要每個 node 至少被一條 test path 通過一次。請學生試著找出最少測試路徑數。 -->
 ---
 
 ## 手算：Edge Coverage
@@ -125,6 +132,7 @@ TP₁、TP₂ 加起來漏掉 `E-B`，需要第三條：
 > 看到沒：**引入迴圈才能滿足 EC**。NC 不會逼你做這件事。
 > 工具切到 `criterion-edge` 即可看到 10 條 requirements 與覆蓋它們的測試集。
 
+<!-- EC 需要每條 edge 至少被覆蓋一次。常常只需要比 NC 多一到兩條路徑。 -->
 ---
 
 ## 手算：Prime Path Coverage
@@ -142,6 +150,7 @@ Prime path = 簡單路徑（節點不重複，端點除外）且**兩端都不�
 > PPC 一定涵蓋 EPC（每對相鄰邊都包在某個 prime path 中）。
 > 工具會自動列舉與最小化測試路徑集合。
 
+<!-- PPC 需要找出所有 prime paths（不重複自己的最長簡單路徑）。強調這可能比 TC 少，因為不用覆蓋所有路徑。 -->
 ---
 
 ## 工具演示：選 criterion
@@ -152,6 +161,7 @@ Prime path = 簡單路徑（節點不重複，端點除外）且**兩端都不�
 2. 按鈕列切換 5 個 criterion（`criterion-{id}`）。
 3. 右側 `requirement-list` 即時更新；點任一 requirement，畫布對應節點/邊變紅。
 
+<!-- 現場打開工具，選 Node Coverage，讓工具算出需求列表。觀察需求數量如何隨準則升高而增加。 -->
 ---
 
 ## 工具演示：metrics 與 greedy set cover
@@ -163,6 +173,7 @@ Sample CFG + Prime Path Coverage：baseline **7** → optimized **6**，省 1 �
 > 演算法位於 [`graphCoverage.js → greedySetCover`](../../src/utils/graphCoverage.js)：每次挑能覆蓋最多剩餘 requirement 的路徑。
 > 工程意義：把「全部走遍」化簡為「足夠」。
 
+<!-- 工具用 greedy set cover 找最少測試集。問學生：這個貪婪解是否保證最優？（不保證，但通常很接近。） -->
 ---
 
 ## 工具演示：上傳程式碼
@@ -174,6 +185,7 @@ Sample CFG + Prime Path Coverage：baseline **7** → optimized **6**，省 1 �
 - 切換 requirement 時，左下 `program-source-code` 同步反白對應原始碼行
 - 已內建範例：`triangle-problem`、`next-date`、`commission-problem`、`next-date-leap-year`、`calendar-days`、`quadrilateral-problem`、`next-week`
 
+<!-- 讓學生上傳自己寫的簡單函式，看工具如何自動生成 CFG。提醒工具只處理 JavaScript 函式語法。 -->
 ---
 
 ## 即時編輯 CFG
@@ -188,6 +200,7 @@ Sample CFG + Prime Path Coverage：baseline **7** → optimized **6**，省 1 �
 
 修改後立刻重算 requirements 與 paths。`graph-reset-btn` 還原。
 
+<!-- 即時編輯模式讓學生直接修改 dot 格式的 CFG，適合手動建構教科書範例。 -->
 ---
 
 ## 小結
@@ -200,6 +213,7 @@ Sample CFG + Prime Path Coverage：baseline **7** → optimized **6**，省 1 �
   3. 用 greedy set cover **最佳化** 測試集合
 - 同一 CFG 之後可直接被 **#4 Data Flow Coverage** 使用
 
+<!-- CFG + 五條準則是本系列的圖論骨幹。掌握這裡，Data Flow（#4）和 Test Generation（#12）自然銜接。 -->
 ---
 
 ## 課堂練習
@@ -209,6 +223,7 @@ Sample CFG + Prime Path Coverage：baseline **7** → optimized **6**，省 1 �
 3. 自編一個 3-節點圖（含自迴圈 `A → A`），確認自迴圈是不是 prime path（提示：cycle 端點同 → prime）。
 4. 比較 `Next Date` 在 EPC 與 PPC 下 `optimized-path-count` 的差距，並解釋為什麼差距小。
 
+<!-- 練習 1（手算 prime paths）最重要，建議現場完成。練習 3（上傳自己程式）適合作作業。 -->
 ---
 
 ## 進一步閱讀
@@ -220,3 +235,5 @@ Sample CFG + Prime Path Coverage：baseline **7** → optimized **6**，省 1 �
   - UI：[src/components/GraphCoverageExplorer.js](../../src/components/GraphCoverageExplorer.js)
 - 規格文件 §3：[docs/Specification.zh-TW.md](../Specification.zh-TW.md)
 - 下一講 → **#4 Data Flow Coverage**（同一個 CFG，引入 def / use）
+
+<!-- A&O §3 有完整的 CFG 理論。工具裡的 prime path 演算法可以在 src/utils/graphCoverage.js 看到實作細節。 -->

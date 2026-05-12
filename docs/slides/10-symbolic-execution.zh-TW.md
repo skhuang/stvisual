@@ -14,6 +14,7 @@ lang: zh-TW
 軟體測試視覺化系列 #10
 搭配工具：`/section-symbex`（[SymbolicExecutionExplorer](../../src/components/SymbolicExecutionExplorer.js) + [symbolicExecution.js](../../src/utils/symbolicExecution.js)）
 
+<!-- Symbolic execution 是本系列最「數學」的方法：把程式輸入當作符號，用約束求解器找到覆蓋每條路徑的具體輸入。 -->
 ---
 
 ## 從 fuzz 走到 symbex
@@ -27,6 +28,7 @@ lang: zh-TW
 
 > 觀念支點：**把分支條件視為待解的方程式**。
 
+<!-- Fuzz 是「盲目嘗試」，symbex 是「有系統地分析」。Symbex 能保證找到每條可達路徑的輸入（如果可解）。 -->
 ---
 
 ## 三件事：env / pc / branches
@@ -41,6 +43,7 @@ lang: zh-TW
 
 > 想像「踩著影子走 CFG」：踩到 if 就分叉成兩條，各自把條件加進 pc。
 
+<!-- 執行狀態 = 環境（變數符號值）+ 路徑條件（走到這裡的約束）+ 分支 trace（走過哪些分支）。 -->
 ---
 
 ## fork 機制
@@ -60,6 +63,7 @@ lang: zh-TW
 
 > while 迴圈用 `maxLoopUnroll` 限制展開次數（預設 3）— 每次都 fork 出「進迴圈」與「離開」兩條。
 
+<!-- 每遇到一個條件分支，symbex 「分叉」成兩個執行狀態（true 和 false 兩條路）。這就是路徑爆炸的根源。 -->
 ---
 
 ## 找 witness：bounded brute-force
@@ -80,6 +84,7 @@ return null;
 
 > 不用 SMT solver — 教學等級夠用，學生秒懂。
 
+<!-- 工具用有界的暴力搜尋（[-10, 10] 整數格點）找滿足路徑條件的具體值。真實 symbex 用 SMT solver（如 Z3）。 -->
 ---
 
 ## 為什麼 infeasible path 重要？
@@ -96,6 +101,7 @@ if (x > 0) {
 - Symbex **解 pc** 才會發現第二個 then **不可達**。
 - 工具用紅色標示 `feasible: false` 的路徑 — 學生直接看到「死代碼」。
 
+<!-- 如果一條路徑的約束不可滿足（infeasible），就代表不存在測試案例能走這條路——這本身就是重要的測試資訊。 -->
 ---
 
 ## 內建 4 個範例
@@ -109,6 +115,7 @@ if (x > 0) {
 
 > `abs` 適合第一次接觸；`gcd` 適合展示「為什麼 max-unroll 必要」。
 
+<!-- 四個範例覆蓋：簡單條件、多分支、巢狀條件、帶等式約束的路徑。 -->
 ---
 
 ## 工具：總覽
@@ -119,6 +126,7 @@ if (x > 0) {
 - `symbex-source` 是程式碼編輯器；`symbex-max-unroll` 設定 while 展開上限（預設 3）。
 - `symbex-summary` 顯示總路徑數、feasible 數、truncated 與否。
 
+<!-- 左側輸入程式碼，右側是路徑列表（每條路徑有路徑條件、witness、是否 infeasible）。 -->
 ---
 
 ## 工具：路徑列表
@@ -129,6 +137,7 @@ if (x > 0) {
 - Feasible 綠、infeasible 灰；點任一條 → CFG 同步高亮對應 nodes。
 - `symbex-feasible-count` 顯示「可解」的路徑數 — 比 `total` 小代表程式有 dead branch。
 
+<!-- 每個路徑項顯示：路徑條件（數學式）、具體 witness（x=1, y=-3）、執行結果。點擊路徑高亮 CFG。 -->
 ---
 
 ## 工具：CFG 路徑高亮
@@ -139,6 +148,7 @@ if (x > 0) {
 - 點某條路徑 → 該路徑走過的節點與邊變色，從 start 一路畫到 return。
 - `symbex-cfg-zoom-{in,out,reset}` 控制縮放（適合 `gcd` 這種展開後節點多的圖）。
 
+<!-- 點擊路徑項，CFG 會用紫色高亮對應的 node 和 edge 序列。讓學生確認路徑條件和 CFG 路徑一致。 -->
 ---
 
 ## Path explosion
@@ -156,6 +166,7 @@ for (let i=0; i<n; i++)         ← n 次迴圈
 2. `maxPaths`（預設 64）→ 整體上限，超過 `truncated: true`。
 3. UI 提示「結果可能不完整」。
 
+<!-- 指數級的路徑數是 symbex 最大的挑戰。工具用深度限制（max paths）避免爆炸，但真實系統需要更複雜的策略。 -->
 ---
 
 ## 演算法窺探
@@ -175,6 +186,7 @@ for (let i=0; i<n; i++)         ← n 次迴圈
 
 > ≈ 570 行純 JS — 含 tokenizer、parser、評估器、求解器。
 
+<!-- 工具用遞迴 DFS 展開 AST，在每個條件分支點克隆執行狀態，累積路徑條件，最後求解。 -->
 ---
 
 ## 真實 symbex 系統的差異
@@ -189,6 +201,7 @@ for (let i=0; i<n; i++)         ← n 次迴圈
 
 > 工具是「教科書描寫的最小版」— 換成 KLEE 後概念完全相同。
 
+<!-- 真實系統（KLEE、Angr、S2E）用 Z3/Boolector 等 SMT solver，能處理整數、字元、指標等複雜約束。 -->
 ---
 
 ## 小結
@@ -198,6 +211,7 @@ for (let i=0; i<n; i++)         ← n 次迴圈
 - 工具用暴力枚舉求 witness（不依賴 SMT），適合教學；真實系統用 Z3 等 solver。
 - **path explosion** 是符號執行的核心挑戰 — `maxLoopUnroll` + `maxPaths` 是教學等級的因應。
 
+<!-- Symbex 系統地覆蓋所有可達路徑，但受制於路徑爆炸。Concolic（#11）是在 fuzz 基礎上加入 symbex 的混合策略。 -->
 ---
 
 ## 課堂練習
@@ -207,6 +221,7 @@ for (let i=0; i<n; i++)         ← n 次迴圈
 3. 自寫含 `if (a + b == 7)` 的函式，witness 求解時間是否變慢？把 domain 改大會怎樣（這個工具預設 fix domain）？
 4. 為什麼 `abs` 一定只有 2 條 feasible 路徑？是否能改寫成 3 條？
 
+<!-- 練習 1（手動追蹤路徑條件）最重要。練習 3（infeasible 路徑）適合有代數基礎的學生。 -->
 ---
 
 ## 進一步閱讀
@@ -218,3 +233,5 @@ for (let i=0; i<n; i++)         ← n 次迴圈
   - [src/utils/symbolicExecution.js](../../src/utils/symbolicExecution.js) — 570 行 self-contained engine
   - [src/components/SymbolicExecutionExplorer.js](../../src/components/SymbolicExecutionExplorer.js) — UI
 - 下一講 → **#11 Concolic Execution**（concrete + symbolic = DART/CUTE）
+
+<!-- KLEE 是最著名的 symbex 工具。EXE 是 KLEE 的前身，A&O §13 有詳細介紹。 -->

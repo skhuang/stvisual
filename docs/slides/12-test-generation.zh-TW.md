@@ -14,6 +14,7 @@ lang: zh-TW
 軟體測試視覺化系列 #12
 搭配工具：`/section-testgen`（[TestGenerationExplorer](../../src/components/TestGenerationExplorer.js) + [testGeneration.js](../../src/utils/testGeneration.js)）
 
+<!-- 本講把前面所有準則串起來：用覆蓋準則生成「最少的測試集」覆蓋「所有需求」。這是整個系列的綜合應用。 -->
 ---
 
 ## 本講在系列中的位置
@@ -29,6 +30,7 @@ lang: zh-TW
 > 本講是 #3、#4、#10 的「橋」：
 > 從**抽象結構需求**出發，自動求得**最少幾組具體輸入**可以涵蓋所有可行需求。
 
+<!-- 前面各講「定義準則」，本講「自動化生成滿足準則的測試集」。這是從理論到工程實踐的最後一哩路。 -->
 ---
 
 ## 問題定義
@@ -44,6 +46,7 @@ lang: zh-TW
 
 > 等同於 greedy set cover on feasible requirements。
 
+<!-- 問題：給定一個函式和一個覆蓋準則，找出最少的測試案例集合，使得所有準則要求的 requirement 都被覆蓋。 -->
 ---
 
 ## 計算流水線
@@ -69,6 +72,7 @@ sourceCode
   selectedTests[ ]   ← 最小測試集
 ```
 
+<!-- 流水線：程式碼 → CFG → 覆蓋需求 → Greedy Set Cover → 最少測試集 → 執行驗證。 -->
 ---
 
 ## 關鍵模組
@@ -82,6 +86,7 @@ sourceCode
 | `requirementCoveredByRecord` | 判斷一個 path 是否覆蓋某 requirement | 來自 `graphCoverage.js`（新 export） |
 | `testGeneration.js` | 以上五步串成一條流水線 + greedy cover | **本講新增** |
 
+<!-- 四個模組各司其職：pathFinder（路徑搜尋）、TestPathSelector（貪婪選取）、TestCaseBuilder（具體化）、Runner（執行驗證）。 -->
 ---
 
 ## Greedy Set Cover
@@ -100,6 +105,7 @@ while R 不空：
 
 > 不保證最優（NP-hard）；但 greedy 往往在實際函式中達到接近最優，且可讀性好。
 
+<!-- Greedy Set Cover 是 NP-hard 問題的近似算法：每次選覆蓋最多未覆蓋 requirement 的路徑。近似比 ln(n)，通常實際效果很好。 -->
 ---
 
 ## 8 個 Coverage 準則
@@ -115,6 +121,7 @@ while R 不空：
 | All-Uses | 資料流 | (var, def node, use node) |
 | All-DU-Paths | 資料流 | (var, def→use 簡單路徑) |
 
+<!-- 工具支援 NC/EC/ECC/PPC/ADUP/ADU/ADef + CACC。可以讓學生選不同準則，觀察測試集大小的差異。 -->
 ---
 
 ## 工具：總覽
@@ -125,6 +132,7 @@ while R 不空：
 - 左側：CFG 視覺化（與選中 requirement/test 互動高亮）
 - 右側：Requirements 卡 + Minimal Tests 卡
 
+<!-- 左側輸入程式碼，右側分三區：requirements 列表、selected tests 列表、CFG 視圖。 -->
 ---
 
 ## 工具：Requirements 卡
@@ -134,6 +142,7 @@ while R 不空：
 - 每筆顯示：requirement id、feasible/infeasible 標籤、代表性 witness（具體呼叫）
 - 點擊後在 CFG 高亮該 requirement 的節點/邊
 
+<!-- Requirements 卡列出所有覆蓋需求（node/edge/path/clause）。點擊需求高亮 CFG，並顯示哪個測試覆蓋它。 -->
 ---
 
 ## 工具：Minimal Tests 卡
@@ -143,6 +152,7 @@ while R 不空：
 - 每筆顯示：測試編號 T₁/T₂/…、path id、具體呼叫 + 預期回傳值、covers 清單
 - 點擊後在 CFG 高亮該測試的完整執行路徑
 
+<!-- Minimal Tests 卡列出 Greedy Set Cover 選出的最少測試集。每個測試顯示它覆蓋了哪些 requirement。 -->
 ---
 
 ## 工具：CFG 互動
@@ -154,6 +164,7 @@ while R 不空：
 - 選 test → 高亮整條執行路徑（橘色加粗）
 - 縮放按鈕 `+/−/100%` 可調整 CFG 大小
 
+<!-- 點擊 requirement 或 test，CFG 同步高亮相關的 node/edge/path。幫助學生建立準則和程式結構的視覺連結。 -->
 ---
 
 ## 範例：abs(x) + Edge Coverage
@@ -174,6 +185,7 @@ Edge Coverage requirements：
 
 → 最小測試集 T = { `abs(-1)`, `abs(1)` }（2 個測試覆蓋 5 條邊）
 
+<!-- abs(x) 是最簡單的示範：只有兩條 edge，需要兩個測試（x>0 和 x<=0）。 -->
 ---
 
 ## 範例：triangle + Prime Path Coverage
@@ -186,6 +198,7 @@ Symbolic execution 在符號空間求解每條路徑條件，例如：
 
 Greedy set cover 選出最少測試涵蓋全部可行路徑。
 
+<!-- Triangle 有多條 prime path，需要的測試集明顯比 edge coverage 大。這展示了準則強度的影響。 -->
 ---
 
 ## Infeasible Requirements
@@ -203,6 +216,7 @@ status:       infeasible
 
 > 提示：depth limit 可透過 `symbexOptions.maxDepth` 調高，但測試數會指數成長。
 
+<!-- 有些需求對應的路徑在程式語意上不可達（infeasible）。工具用紅色標示這些需求，並跳過它們。 -->
 ---
 
 ## 與 #10/#11 的差異
@@ -214,6 +228,7 @@ status:       infeasible
 | 輸出 | path list + witnesses | iteration list + witnesses | **minimal test set** + coverage report |
 | 使用場景 | 完整路徑分析 | 自動引導測試 | 直接對接 test runner |
 
+<!-- Symbex/Concolic 用約束求解找輸入；本工具用 brute-force 整數格點搜尋。前者更強大，後者更直觀易解釋。 -->
 ---
 
 ## 程式設計重點
@@ -235,6 +250,7 @@ export function generateTestsFromCoverage({ sourceCode, criterion }) {
 }
 ```
 
+<!-- 工具的核心挑戰：如何把 coverage requirement（抽象路徑）轉化為具體的輸入值（整數組合）。 -->
 ---
 
 ## 小結
@@ -245,6 +261,7 @@ export function generateTestsFromCoverage({ sourceCode, criterion }) {
 - 工具支援 8 個準則，涵蓋 Graph Coverage 與 Data Flow Coverage 全部類別
 - 輸出即「測試規格」：可直接貼到 Jest / Pytest 等框架執行
 
+<!-- 本講把前面的「定義準則」轉化為「自動化生成」。目標是讓學生理解：覆蓋準則不只是評量指標，也是生成測試的規格。 -->
 ---
 
 ## 課堂練習
@@ -255,6 +272,7 @@ export function generateTestsFromCoverage({ sourceCode, criterion }) {
 4. 在 Source 編輯器中加一個新分支（例如 `if (x === 0) return 0;`），觀察 requirements 與 tests 如何變化。
 5. 改成 All-DU-Paths + `max3(a, b, c)`，數出需要幾組測試才能覆蓋全部可行需求。
 
+<!-- 練習 1（觀察不同準則的測試集大小）最直觀。練習 3（修改程式觀察 CFG 和需求的變化）適合作互動演示。 -->
 ---
 
 ## 進一步閱讀
@@ -267,3 +285,5 @@ export function generateTestsFromCoverage({ sourceCode, criterion }) {
   - [src/components/TestGenerationExplorer.js](../../src/components/TestGenerationExplorer.js) — UI（389 行）
 - 完整規格：[docs/Specification.zh-TW.md §12](../Specification.zh-TW.md)
 - 下一步 → **#12.2 Logic Coverage Binding**（把 clause → 程式變數，自動求 concrete inputs）
+
+<!-- A&O §8 有 Test Path 的完整理論。工具的 Set Cover 實作在 src/utils/setCover.js。 -->

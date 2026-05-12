@@ -14,6 +14,7 @@ lang: en
 Software Testing Visualization, Lecture #9
 Tool: `/section-fuzz` ([FuzzTestingExplorer](../../src/components/FuzzTestingExplorer.js) + [fuzzTesting.js](../../src/utils/fuzzTesting.js))
 
+<!-- From this lecture, the series enters the "automated test generation" trilogy (Fuzz → Symbex → Concolic). Fuzz is the simplest but still highly effective method. -->
 ---
 
 ## Where this fits
@@ -26,6 +27,7 @@ Tool: `/section-fuzz` ([FuzzTestingExplorer](../../src/components/FuzzTestingExp
 
 > Pivot: **randomness is the cheapest search strategy**. With branch tracing it still reflects real coverage.
 
+<!-- Fuzz testing's key advantage: fully automated, no specification required, can find boundary cases hard to find through manual testing. Drawback: unpredictable coverage. -->
 ---
 
 ## When to fuzz
@@ -37,6 +39,7 @@ Tool: `/section-fuzz` ([FuzzTestingExplorer](../../src/components/FuzzTestingExp
 
 > Real-world milestones: AFL, libFuzzer, ClusterFuzz. This tool is a teaching-grade demo of the core idea.
 
+<!-- Best for: systems accepting large volumes of external input (parsers, network protocols, file handlers). Less suitable for: bugs requiring specific semantic inputs. -->
 ---
 
 ## Fuzz in three steps
@@ -56,6 +59,7 @@ node coverage, edge coverage, unique error list
 
 Each testCase carries `branches[]` — the taken/not-taken record for every `if/while`.
 
+<!-- This tool implements: generate random integer/boolean inputs → execute the target function → record crashes and branch traces. -->
 ---
 
 ## Technical core: branch instrumentation
@@ -71,6 +75,7 @@ if ((__b__.push({ taken: !!(cond) }), __b__[__b__.length-1].taken))
 > The whole function is wrapped with `new Function('__b__', ...paramNames, instrumented)`.
 > Each fuzz run hands in a fresh `branches=[]` array to collect the trace.
 
+<!-- The tool "instruments" each if/while condition before execution, recording taken/not-taken into a branch trace array. -->
 ---
 
 ## From trace to CFG coverage
@@ -83,6 +88,7 @@ For every testCase:
 
 > Clicking a testCase highlights the path **that run** took on the CFG.
 
+<!-- Branch traces correspond to CFG edges. The tool computes node coverage and edge coverage percentages. -->
 ---
 
 ## Built-in 6 examples
@@ -98,6 +104,7 @@ For every testCase:
 
 > All six use pure integer / boolean inputs — strings cause NaN-based infinite loops, so they’re excluded by design.
 
+<!-- Six examples cover: simple arithmetic, boundary checks, recursion (fibonacci), string handling, loops, and multi-branch logic. -->
 ---
 
 ## Tool: overview
@@ -109,6 +116,7 @@ For every testCase:
 - `fuzz-run-btn` triggers a run; `fuzz-summary` shows tests / passed / crashes.
 - Top-right `fuzz-node-cov` / `fuzz-edge-cov` are live N% / E% badges.
 
+<!-- Left side: code input and test count. Right side: test case list (pass/crash) and CFG view. -->
 ---
 
 ## Tool: testCases and CFG
@@ -120,6 +128,7 @@ For every testCase:
 - Click a case → its path is highlighted on the CFG.
 - `fuzz-cfg-selected` shows the currently selected test case id.
 
+<!-- Click a test case and the CFG highlights the nodes and edges visited in that run. Ask students to find "which branch has never been covered." -->
 ---
 
 ## Tool: crash detection
@@ -131,6 +140,7 @@ For any testCase that throws:
 
 > The triangle classifier doesn’t guard against integer overflow on `a + b <= c` → easy to crash with large numbers; a good teaching case.
 
+<!-- Crash = runtime exception. The tool shows crash rate and error messages to help locate issues. -->
 ---
 
 ## Random-input strategy
@@ -150,6 +160,7 @@ return boolean;
 
 > The focus is “branch search”, not “boundary precision” — pair with BVA from Lecture #1 if you need that.
 
+<!-- Phase 1 uses pure random integers/booleans. Phase 2 mutates interesting seeds (crashes + novel branch patterns) using ±1, boundary values, and bitflip. -->
 ---
 
 ## Fundamental limits of random fuzzing
@@ -161,6 +172,7 @@ return boolean;
 
 > These four ceilings are exactly what #10 symbex / #11 concolic address.
 
+<!-- Pure random fuzz cannot handle "magic numbers" (specific constants needed to trigger certain branches). Concolic execution (#11) solves this. -->
 ---
 
 ## Common pitfalls
@@ -170,6 +182,7 @@ return boolean;
 - **Empty `branches[]`**: the function has no if/while → every testCase walks the same path.
 - **CFG mapping fails**: source uses syntax the parser doesn’t understand (try/catch, destructuring) → CFG empty, coverage uncomputable.
 
+<!-- High node coverage ≠ good testing: if assertions only check "no crash," fuzz cannot find logic errors. -->
 ---
 
 ## Algorithm peek
@@ -191,6 +204,7 @@ function fuzzTest(sourceCode, maxTests) {
 
 > Fits on one page — but already captures the core mental model behind production fuzzers.
 
+<!-- Instrumentation uses regex replacement of if/while conditions. Loops have an iteration limit (10,000) to prevent infinite loops. -->
 ---
 
 ## Summary
@@ -200,6 +214,7 @@ function fuzzTest(sourceCode, maxTests) {
 - 6 built-in examples cover common branch shapes; edit source / test count to re-run live.
 - The first line of defence in modern testing — limited by direction, structure, and precision (those gaps are #10/#11’s job).
 
+<!-- Fuzz is a "volume" strategy. Phase 2 mutation lets the tool explore boundaries missed by pure random testing. -->
 ---
 
 ## Exercises
@@ -209,6 +224,7 @@ function fuzzTest(sourceCode, maxTests) {
 3. Write a function with 4 levels of nested `if`. Estimate the max edge coverage random fuzzing can reach.
 4. Which example crashes most often in 200 runs? Do the crashes cluster around one error message?
 
+<!-- Exercise 1 (observe crash rate) is the most intuitive. Exercise 3 (compare fuzz vs. random) works well as a discussion topic. -->
 ---
 
 ## Further reading
@@ -221,3 +237,5 @@ function fuzzTest(sourceCode, maxTests) {
   - [src/utils/pathToCfg.js](../../src/utils/pathToCfg.js) — branches → CFG mapping.
   - [src/components/FuzzTestingExplorer.js](../../src/components/FuzzTestingExplorer.js) — UI.
 - Next → **Lecture #10 — Symbolic Execution** (no direction → use path conditions for precise search).
+
+<!-- AFL and libFuzzer are the most widely used fuzz tools in industry. Interested students can try running AFL on their own programs. -->

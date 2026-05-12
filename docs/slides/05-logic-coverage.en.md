@@ -14,6 +14,7 @@ lang: en
 Software Testing Visualization, Lecture #5
 Tool: `/section-logic` ([LogicCoverageExplorer](../../src/components/LogicCoverageExplorer.js) + [logicCoverage.js](../../src/utils/logicCoverage.js))
 
+<!-- This is the most theory-dense lecture in the series. 14 criteria take time to absorb. Suggested split: first session covers basic criteria, second covers DNF/IC/UTP. -->
 ---
 
 ## From graphs into logic
@@ -26,6 +27,7 @@ Tool: `/section-logic` ([LogicCoverageExplorer](../../src/components/LogicCovera
 
 > Pivot: decompose each decision into clauses and require every clause to be tested at the moment it matters.
 
+<!-- Starting from CFG branch conditions: if (a && b) has two clauses. Logic Coverage requires testing at the clause level, not just the branch level. -->
 ---
 
 ## Terminology
@@ -39,6 +41,7 @@ Tool: `/section-logic` ([LogicCoverageExplorer](../../src/components/LogicCovera
 
 > “Determines” is the cornerstone of the Active Clause family: the tool computes `determines[c]` per row.
 
+<!-- Clarify the predicate/clause/binding hierarchy: predicate is the whole boolean expression; clause is an atomic (indivisible) sub-condition. -->
 ---
 
 ## Truth table
@@ -57,6 +60,7 @@ type TruthRow = {
 > `determines[c] = evaluateAst(ast, {...values, [c]: !values[c]}) !== predicate`
 > This separates `c`’s **active** rows from its **inactive** rows.
 
+<!-- Each truth table row has corresponding DNF analysis and clause values. Have students find which row can "determine the predicate solely by changing a." -->
 ---
 
 ## Predicate grammar (program-style + textbook-style)
@@ -75,6 +79,7 @@ const TOKEN_REGEX = /\s*(?:(\()|(\))|(&&)|(\|\|)|(\+)|(!)|([A-Za-z][0-9]*))/y;
 
 > Recursive-descent parser; precedence OR < AND < NOT < Atom. `parseAnd` treats a following `(` / `!` / ident as a juxtaposition AND.
 
+<!-- The tool accepts JavaScript boolean expressions: &&, ||, !, (), ===, !==, and comparisons. -->
 ---
 
 ## 14 criteria, semantic family
@@ -90,6 +95,7 @@ const TOKEN_REGEX = /\s*(?:(\()|(\))|(&&)|(\|\|)|(\+)|(!)|([A-Za-z][0-9]*))/y;
 | `gicc` | General Inactive Clause Coverage | `c` is **inactive**; cover all 4 of (c, P) |
 | `ricc` | Restricted Inactive Clause Coverage | as GICC, plus identical minor clauses |
 
+<!-- The semantic series (PC/CC/CoC/GACC/CACC/RACC/GICC/RICC/IC) focuses on "how clauses determine predicate value." -->
 ---
 
 ## 14 criteria, DNF (syntactic) family
@@ -103,6 +109,7 @@ const TOKEN_REGEX = /\s*(?:(\()|(\))|(&&)|(\|\|)|(\+)|(!)|([A-Za-z][0-9]*))/y;
 | `mnfpc` | Multiple NFPC | the “multiple” version of NFPC |
 | `cutpnfp` | Corresponding UTP + NFP Pair Coverage | per (implicant, literal) pair (UTP, NFP) differing only in that literal |
 
+<!-- The DNF series (UTPC/MUTPC/NFPC/MNFPC) focuses on "coverage of DNF implicants" — an algebraic perspective. -->
 ---
 
 ## Subsumption (semantic family)
@@ -117,6 +124,7 @@ CoC ──► RACC ──► CACC ──► GACC ──► CC ──► PC
 - Weakest: PC (P must take T and F)
 - The ACC trio differ in **how tightly minor clauses are constrained**.
 
+<!-- The semantic series (PC/CC/CoC/GACC/CACC/RACC/GICC/RICC/IC) focuses on "how clauses determine predicate value." -->
 ---
 
 ## Worked example: `(a && b) || c`
@@ -136,6 +144,7 @@ CoC ──► RACC ──► CACC ──► GACC ──► CC ──► PC
 
 > The tool computes `determines[c]` automatically and colour-codes active rows.
 
+<!-- This three-clause example can fully illustrate all 14 criteria. The paired row structure in CACC is the basis for the tool's color highlighting design. -->
 ---
 
 ## By hand: PC / CC
@@ -151,6 +160,7 @@ CoC ──► RACC ──► CACC ──► GACC ──► CC ──► PC
 
 > Satisfying PC frequently satisfies CC for free — CC implies PC’s requirement on P.
 
+<!-- PC requires predicate true and false at least once each; CC requires each clause true and false (regardless of other clauses). -->
 ---
 
 ## By hand: CACC (with `a` as the major clause)
@@ -167,6 +177,7 @@ From the table: row 6 (`a=T, b=T, c=F`, P=T) and its flip (`a=F, b=T, c=F`, P=F)
 > RACC adds “minor clauses must match”: in this pair, b and c are already equal → this also satisfies RACC.
 > The tool runs `pickPair(rows, clause, mode)` to perform this selection.
 
+<!-- CACC requires: fixing other clauses' values such that the major clause's truth determines the predicate's truth — this is what "deterministic" means. -->
 ---
 
 ## DNF and Quine–McCluskey
@@ -181,6 +192,7 @@ From the table: row 6 (`a=T, b=T, c=F`, P=T) and its flip (`a=F, b=T, c=F`, P=F)
 > For `(a && b) || c` → minimal DNF of f is `ab + c`;
 > minimal DNF of ¬f is `!a!c + !b!c`.
 
+<!-- Quine-McCluskey is the standard DNF minimization algorithm. The tool uses it to compute implicants for UTPC/MUTPC criteria. -->
 ---
 
 ## IC, UTP, NFP
@@ -193,6 +205,7 @@ From the table: row 6 (`a=T, b=T, c=F`, P=T) and its flip (`a=F, b=T, c=F`, P=F)
 
 > Pedagogical framing: UTPs say “this implicant is irreplaceable”; NFPs say “this literal is irreplaceable”.
 
+<!-- IC is the strongest semantic criterion; UTPC is the most basic DNF criterion. Each has advantages in different scenarios. -->
 ---
 
 ## CUTPNFP intuition
@@ -208,6 +221,7 @@ NFP  a=F b=T c=F   → P=F (flipping a kills ab, and c is also false)
 The two rows share b and c; they only differ on `a` → exactly the “necessity of clause `a`” argument.
 The tool frames this pair on the K-map with a matching colour.
 
+<!-- CUTPNFP = UTPC ∩ NFP — a composite criterion satisfying both clause coverage and DNF implicant coverage simultaneously. -->
 ---
 
 ## Karnaugh maps (n = 1–4)
@@ -221,6 +235,7 @@ The tool frames this pair on the K-map with a matching colour.
 
 > For n > 4, `buildKMap` returns `{ unsupported: true, n }` and the UI shows an “unsupported” hint.
 
+<!-- K-maps visually represent truth tables, especially useful for showing which minterms are required by each criterion. -->
 ---
 
 ## K-map cell markers
@@ -237,6 +252,7 @@ The tool frames this pair on the K-map with a matching colour.
 
 > For CUTPNFP, the matched UTP / NFP cells under the same (implicant, literal) share a colour.
 
+<!-- The tool's K-map uses colors to distinguish: cells required by the criterion (requirement rows) vs. cells already covered by tests. -->
 ---
 
 ## Tool demo: pick an example and input
@@ -247,6 +263,7 @@ The tool frames this pair on the K-map with a matching colour.
 - `logic-expression-input` accepts program-style (`&& \|\| !`) or textbook-style (juxtaposition / `+`).
 - Recent inputs appear as removable chips in `logic-recent` (synced to Firestore when signed in).
 
+<!-- Select (a && b) || c live, have students follow along switching criteria and observing how the requirement list changes. -->
 ---
 
 ## Tool demo: truth table
@@ -257,6 +274,7 @@ The tool frames this pair on the K-map with a matching colour.
 - `logic-row-{i}` is colour-coded by P value and active-clause status.
 - After picking a criterion, the selected test rows are echoed on the right (`logic-test-{id}`) with their role.
 
+<!-- Each truth table row has corresponding DNF analysis and clause values. Have students find which row can "determine the predicate solely by changing a." -->
 ---
 
 ## Tool demo: CACC criterion
@@ -267,6 +285,7 @@ The tool frames this pair on the K-map with a matching colour.
 - Duplicate test rows are struck through (`logic-test-item duplicate`).
 - The summary (`logic-summary`) shows requirement count, actual test count, and duplicate count.
 
+<!-- CACC requires: fixing other clauses' values such that the major clause's truth determines the predicate's truth — this is what "deterministic" means. -->
 ---
 
 ## Tool demo: IC + DNF + K-map
@@ -277,6 +296,7 @@ The tool frames this pair on the K-map with a matching colour.
 - Both K-maps appear side-by-side: `logic-kmap-f` and `logic-kmap-not-f`.
 - Each implicant has a coloured dot + legend entry; selected test rows are marked with ★.
 
+<!-- IC usually has the most requirements. The K-map synchronously highlights the minterms required by IC. -->
 ---
 
 ## Tool demo: CUTPNFP K-map
@@ -287,6 +307,7 @@ The tool frames this pair on the K-map with a matching colour.
 - On the K-map: UTPs use a green solid frame, NFPs use a red dashed frame; matched pairs share a colour.
 - Pedagogical payoff: “why this literal is necessary” becomes a **visual, geometric** statement.
 
+<!-- CUTPNFP = UTPC ∩ NFP — a composite criterion satisfying both clause coverage and DNF implicant coverage simultaneously. -->
 ---
 
 ## Textbook-style DNF rendering
@@ -300,6 +321,7 @@ Example: `a̅bc + ac̅`
 
 > In the IC / UTPC / MUTPC / NFPC / MNFPC / CUTPNFP summaries the tool shows both ASCII (`!a b c + a !c`) and textbook form, making it easy to align with the textbook.
 
+<!-- The textbook-style DNF rendering uses ¬ and ∧/∨ notation, matching A&O §4–5 exactly. Useful for students working alongside the textbook. -->
 ---
 
 ## Persistence
@@ -311,6 +333,7 @@ Example: `a̅bc + ac̅`
 
 Flow: user presses Enter / blur → `rememberCurrentExpression` pushes the expression to the front → write to localStorage and (if signed in) `pushRecentToCloud`. On sign-in, the remote and local lists merge “remote-first, local-second” and are deduplicated.
 
+<!-- The tool persists the predicate and binding settings across sessions, so students can continue where they left off. -->
 ---
 
 ## Summary
@@ -322,6 +345,7 @@ Flow: user presses Enter / blur → `rememberCurrentExpression` pushes the expre
 - DNF derivation: **Quine–McCluskey minimisation + K-map visualisation**.
 - The tool is an **active object**: editing the predicate re-computes all 14 criteria immediately.
 
+<!-- 14 criteria can seem overwhelming at first. Remind students that CACC is the practical standard, and the others exist to understand the theoretical landscape. -->
 ---
 
 ## Exercises
@@ -331,6 +355,7 @@ Flow: user presses Enter / blur → `rememberCurrentExpression` pushes the expre
 3. In the CUTPNFP view, which (UTP, NFP) pair matches the rows you selected manually for CACC? If none does, why?
 4. The tool does not support XOR directly. Rewrite `a^b` as `(a && !b) || (!a && b)` and compare its IC analysis.
 
+<!-- Exercise 1 (truth table by hand) is the most foundational. Exercise 4 (CACC with 4 clauses) is the most challenging. -->
 ---
 
 ## Further reading
