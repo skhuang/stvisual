@@ -15,6 +15,8 @@ import { createBoundaryValueExplorer } from './components/BoundaryValueExplorer.
 import { createEquivalenceClassExplorer } from './components/EquivalenceClassExplorer.js';
 import { createDecisionTableExplorer } from './components/DecisionTableExplorer.js';
 import { createStateTransitionExplorer } from './components/StateTransitionExplorer.js';
+import { createMetamorphicTestingExplorer } from './components/MetamorphicTestingExplorer.js';
+import { createExploratoryTestingExplorer } from './components/ExploratoryTestingExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const learningSectionsConfig = [
@@ -175,6 +177,8 @@ export function renderApp(container) {
       ec: createEquivalenceClassExplorer(),
       dt: createDecisionTableExplorer(),
       st: createStateTransitionExplorer(),
+      mt: createMetamorphicTestingExplorer(),
+      et: createExploratoryTestingExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       types: createTestingTypesTable(),
@@ -245,6 +249,8 @@ export function renderApp(container) {
       { id: 'ec',  key: 'blackboxTab.ec',  component: components.ec },
       { id: 'dt',  key: 'blackboxTab.dt',  component: components.dt },
       { id: 'st',  key: 'blackboxTab.st',  component: components.st },
+      { id: 'mt',  key: 'blackboxTab.mt',  component: components.mt },
+      { id: 'et',  key: 'blackboxTab.et',  component: components.et },
     ];
     const blackboxSlot = container.querySelector('[data-slot="blackbox"]');
     const blackboxTabBar = document.createElement('nav');
