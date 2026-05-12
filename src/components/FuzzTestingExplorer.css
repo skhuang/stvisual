@@ -245,6 +245,13 @@
   background: #fee2e2;
   color: #991b1b;
 }
+.fuzz-case-mut {
+  font-size: 0.72rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
 .fuzz-case-duration {
   margin-left: auto;
   font-family: 'SF Mono', monospace;

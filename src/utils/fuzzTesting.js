@@ -92,8 +92,38 @@ function generateRandomValue(_index) {
   return Math.random() < 0.5;
 }
 
+// Mutation strategies applied one-at-a-time to individual parameter values.
+const MUTATIONS = [
+  (v) => (typeof v === 'number' ? v + 1 : v),           // +1 nudge
+  (v) => (typeof v === 'number' ? v - 1 : v),           // −1 nudge
+  (v) => (typeof v === 'number' ? 0 : v),               // boundary: zero
+  (v) => (typeof v === 'number' ? 1 : v),               // boundary: one
+  (v) => (typeof v === 'number' ? -1 : v),              // boundary: minus-one
+  (v) => (typeof v === 'number' ? MAX_INT_VALUE : v),   // boundary: max
+  (v) => (typeof v === 'number' ? -MAX_INT_VALUE : v),  // boundary: min
+  (v) => (typeof v === 'number' ? v ^ 1 : v),           // bitflip LSB
+  (v) => (typeof v === 'boolean' ? !v : v),             // boolean flip
+];
+
+// Returns a mutated copy of an input object by applying one random mutation
+// to one randomly-chosen parameter.
+function mutateInput(input) {
+  const keys = Object.keys(input);
+  if (!keys.length) return { ...input };
+  const key = keys[Math.floor(Math.random() * keys.length)];
+  const mut = MUTATIONS[Math.floor(Math.random() * MUTATIONS.length)];
+  return { ...input, [key]: mut(input[key]) };
+}
+
+// Serialise branch trace to a string for novelty detection.
+function branchKey(branches) {
+  return branches.map((b) => (b.taken ? '1' : '0')).join('');
+}
+
 /**
  * Execute fuzz testing on the given source code.
+ * Phase 1 (first half of budget): pure random inputs.
+ * Phase 2 (second half): mutation of interesting seeds (crashes + novel branch patterns).
  */
 export function fuzzTest(sourceCode, maxTests = MAX_TEST_CASES) {
   const testCases = [];
@@ -106,16 +136,15 @@ export function fuzzTest(sourceCode, maxTests = MAX_TEST_CASES) {
   try {
     const parsed = parseFunctionSignature(sourceCode);
 
-    for (let i = 0; i < maxTests; i++) {
-      const input = {};
-      const args = [];
+    // Phase boundary: first half random, second half mutation.
+    const seedBudget = Math.ceil(maxTests / 2);
+    const mutBudget = maxTests - seedBudget;
 
-      for (let j = 0; j < parsed.paramNames.length; j++) {
-        const value = generateRandomValue(j);
-        input[parsed.paramNames[j]] = value;
-        args.push(value);
-      }
+    const seenBranchKeys = new Set();
+    const interestingSeeds = []; // inputs worth mutating
 
+    function runOne(input, isMutated) {
+      const args = parsed.paramNames.map((p) => input[p]);
       let output = null;
       let error = null;
       let crashed = false;
@@ -134,20 +163,40 @@ export function fuzzTest(sourceCode, maxTests = MAX_TEST_CASES) {
 
       const duration = performance.now() - startTime;
       totalDuration += duration;
+      if (!crashed) passedTests++;
 
-      if (!crashed) {
-        passedTests++;
-      }
-
+      const idx = testCases.length;
       testCases.push({
-        id: `fuzz-${i}`,
+        id: `fuzz-${idx}`,
         input,
         output,
         error,
         crashed,
         duration,
         branches,
+        mutated: isMutated,
       });
+
+      // Track novelty for seed selection.
+      const bk = branchKey(branches);
+      if (crashed || !seenBranchKeys.has(bk)) {
+        seenBranchKeys.add(bk);
+        interestingSeeds.push(input);
+      }
+    }
+
+    // Phase 1: random seeds.
+    for (let i = 0; i < seedBudget; i++) {
+      const input = {};
+      for (const p of parsed.paramNames) input[p] = generateRandomValue();
+      runOne(input, false);
+    }
+
+    // Phase 2: mutate interesting seeds (or random if none yet).
+    for (let i = 0; i < mutBudget; i++) {
+      const pool = interestingSeeds.length ? interestingSeeds : testCases.map((tc) => tc.input);
+      const seed = pool[Math.floor(Math.random() * pool.length)];
+      runOne(mutateInput(seed), true);
     }
   } catch (err) {
     throw new Error(`Fuzz testing setup failed: ${err instanceof Error ? err.message : String(err)}`);

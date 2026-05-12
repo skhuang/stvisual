@@ -296,6 +296,9 @@ export function createFuzzTestingExplorer() {
         const statusClass = tc.crashed ? 'crash' : 'pass';
         const isSelected = state.selectedCaseId === tc.id;
         const statusLabel = tc.crashed ? t('fuzz.crash') : t('fuzz.pass');
+        const mutBadge = tc.mutated
+          ? `<span class="fuzz-case-mut" title="${t('fuzz.mutated.title')}">${t('fuzz.mutated')}</span>`
+          : '';
         return `
         <li class="fuzz-case ${statusClass}${isSelected ? ' selected' : ''}"
           data-testid="fuzz-case-${tc.id}"
@@ -305,6 +308,7 @@ export function createFuzzTestingExplorer() {
           <header class="fuzz-case-header">
             <span class="fuzz-case-id">${escapeHtml(tc.id)}</span>
             <span class="fuzz-case-status">${statusLabel}</span>
+            ${mutBadge}
             <span class="fuzz-case-duration">${tc.duration.toFixed(2)}ms</span>
           </header>
           <div class="fuzz-case-input">
