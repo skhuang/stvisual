@@ -13,6 +13,8 @@ import { createFuzzTestingExplorer } from './components/FuzzTestingExplorer.js';
 import { createTestGenerationExplorer } from './components/TestGenerationExplorer.js';
 import { createBoundaryValueExplorer } from './components/BoundaryValueExplorer.js';
 import { createEquivalenceClassExplorer } from './components/EquivalenceClassExplorer.js';
+import { createDecisionTableExplorer } from './components/DecisionTableExplorer.js';
+import { createStateTransitionExplorer } from './components/StateTransitionExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const learningSectionsConfig = [
@@ -171,6 +173,8 @@ export function renderApp(container) {
       testgen: createTestGenerationExplorer(),
       bva: createBoundaryValueExplorer(),
       ec: createEquivalenceClassExplorer(),
+      dt: createDecisionTableExplorer(),
+      st: createStateTransitionExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       types: createTestingTypesTable(),
@@ -239,6 +243,8 @@ export function renderApp(container) {
     const blackboxTabs = [
       { id: 'bva', key: 'blackboxTab.bva', component: components.bva },
       { id: 'ec',  key: 'blackboxTab.ec',  component: components.ec },
+      { id: 'dt',  key: 'blackboxTab.dt',  component: components.dt },
+      { id: 'st',  key: 'blackboxTab.st',  component: components.st },
     ];
     const blackboxSlot = container.querySelector('[data-slot="blackbox"]');
     const blackboxTabBar = document.createElement('nav');

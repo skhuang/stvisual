@@ -14,4 +14,6 @@
 @import url('./components/CloudStoragePanel.css');
 @import url('./components/BoundaryValueExplorer.css');
 @import url('./components/EquivalenceClassExplorer.css');
+@import url('./components/DecisionTableExplorer.css');
+@import url('./components/StateTransitionExplorer.css');
 @import url('./components/quiz.css');

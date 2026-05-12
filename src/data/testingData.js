@@ -607,6 +607,32 @@ export const logicCoveragePredicates = [
   return 0;                // found
 }`,
   },
+  {
+    id: 'calendar-month',
+    name: 'calendarDays(m, leap)',
+    expression: '(a || b || c) && !(d)',
+    description: '月份天數：月份為 1/3/5/7/8/10/12 (a)，或 4/6/9/11 (b)，或 2 (c)，且非閏年二月才是 28 天 (!d)。',
+    descriptionEn: 'Calendar days: month has 31 days (a), 30 days (b), is Feb (c), and is not a leap year (d).',
+    defaultBindings: {
+      a: '[1,3,5,7,8,10,12].includes(m)',
+      b: '[4,6,9,11].includes(m)',
+      c: 'm === 2',
+      d: 'leap',
+    },
+    bindingParams: 'm, leap',
+    sourceCode: `function calendarDays(m, leap) {
+  if ([1,3,5,7,8,10,12].includes(m)) {  // ← a: 31-day months
+    return 31;
+  }
+  if ([4,6,9,11].includes(m)) {          // ← b: 30-day months
+    return 30;
+  }
+  if (m === 2) {                          // ← c: February
+    return leap ? 29 : 28;               // ← d affects Feb
+  }
+  return -1;  // invalid month
+}`,
+  },
 ];
 
 export const symbolicExecutionExamples = [

@@ -201,3 +201,115 @@ export function generateSectTests(params, maxTests = 50) {
 
   return tests;
 }
+
+// ---------------------------------------------------------------------------
+// Decision Table Testing
+// ---------------------------------------------------------------------------
+
+/**
+ * Generate test cases from a decision table: one test case per rule.
+ *
+ * @param {Array<{id:string, name:string, values:string[]}>} conditions
+ * @param {Array<{id:string, name:string}>} actions
+ * @param {Array<{id:string, conditions:Object.<string,string>, actions:string[]}>} rules
+ */
+export function generateDecisionTableTests(conditions, actions, rules) {
+  return rules.map((rule, i) => ({
+    id: rule.id ?? `dt-${i}`,
+    label: `R${i + 1}`,
+    conditions: { ...rule.conditions },
+    actions: [...rule.actions],
+  }));
+}
+
+/**
+ * Validate a decision table: find duplicate rules and report coverage.
+ */
+export function validateDecisionTable(conditions, rules) {
+  const keys = rules.map((r) =>
+    conditions.map((c) => r.conditions[c.id] ?? '–').join('|')
+  );
+  const seen = new Set();
+  const duplicate = [];
+  for (let i = 0; i < keys.length; i++) {
+    if (seen.has(keys[i])) duplicate.push(`R${i + 1}`);
+    else seen.add(keys[i]);
+  }
+  const total = conditions.reduce((acc, c) => {
+    const real = c.values.filter((v) => v !== '–').length;
+    return acc * (real || 1);
+  }, 1);
+  return { duplicate, total, covered: seen.size };
+}
+
+// ---------------------------------------------------------------------------
+// State Transition Testing
+// ---------------------------------------------------------------------------
+
+/**
+ * Generate one test case per transition (0-switch / transition coverage).
+ *
+ * @param {Array<{id:string, name:string, initial?:boolean, final?:boolean}>} states
+ * @param {Array<{id:string, from:string, to:string, event:string, action?:string}>} transitions
+ */
+export function generateStTransitionTests(states, transitions) {
+  return transitions.map((tr, i) => {
+    const fromState = states.find((s) => s.id === tr.from);
+    const toState   = states.find((s) => s.id === tr.to);
+    return {
+      id: tr.id ?? `st-${i}`,
+      label: `T${i + 1}`,
+      from: fromState?.name ?? tr.from,
+      to: toState?.name ?? tr.to,
+      event: tr.event,
+      action: tr.action ?? '',
+    };
+  });
+}
+
+/**
+ * Generate test sequences (BFS shortest path from initial state + one more transition).
+ *
+ * @param {Array<{id:string, name:string, initial?:boolean}>} states
+ * @param {Array<{id:string, from:string, to:string, event:string, action?:string}>} transitions
+ */
+export function generateStSequenceTests(states, transitions) {
+  const initial = states.find((s) => s.initial) ?? states[0];
+  if (!initial) return [];
+
+  const adjOut = {};
+  for (const s of states) adjOut[s.id] = [];
+  for (const tr of transitions) {
+    if (adjOut[tr.from]) adjOut[tr.from].push(tr);
+  }
+
+  const dist = { [initial.id]: [] };
+  const queue = [initial.id];
+  while (queue.length) {
+    const cur = queue.shift();
+    for (const tr of adjOut[cur] ?? []) {
+      if (!(tr.to in dist)) {
+        dist[tr.to] = [...dist[cur], tr];
+        queue.push(tr.to);
+      }
+    }
+  }
+
+  return transitions.map((tr, i) => {
+    const pathToFrom = dist[tr.from] ?? [];
+    const fullPath = [...pathToFrom, tr];
+    const stateNames = [initial.name ?? initial.id];
+    const events = [];
+    for (const step of fullPath) {
+      const toSt = states.find((s) => s.id === step.to);
+      stateNames.push(toSt?.name ?? step.to);
+      events.push(step.event);
+    }
+    return {
+      id: `stseq-${i}`,
+      label: `Seq${i + 1}`,
+      sequence: stateNames,
+      events,
+    };
+  });
+}
