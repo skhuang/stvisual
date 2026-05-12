@@ -248,6 +248,22 @@ export const messages = {
     'quiz.st.prompt': 'Using "{mode}", how many test cases does the current state machine require?',
     'quiz.st.label': 'Number of test cases',
 
+    // Quiz — Syntax / Mutation
+    'quiz.syntax.title': 'Mutation Testing Self-Test',
+    'quiz.syntax.prompt': 'Program: "{program}". How many mutants does the current test suite kill?',
+    'quiz.syntax.label': 'Killed mutants',
+    'quiz.syntax.answer': 'Answer: {killed} killed out of {total} mutants.',
+
+    // Quiz — Metamorphic Testing
+    'quiz.mt.title': 'Metamorphic Testing Self-Test',
+    'quiz.mt.prompt': 'For relation "{rel}", how many of the 8 generated test pairs hold?',
+    'quiz.mt.label': 'Test pairs that hold (out of 8)',
+    'quiz.mt.answer': 'Answer: {count} out of 8 pairs hold.',
+
+    // Quiz — Test Doubles
+    'quiz.td.title': 'Test Doubles Self-Test',
+    'quiz.td.answer': 'The best fit is: {correct}.',
+
     'section.flow': 'Testing Flow',
     'section.types': 'Testing Types',
     'section.methods.title': 'Testing Method Categories',
@@ -977,6 +993,19 @@ export const messages = {
     'quiz.st.title': '狀態轉移 自我測驗',
     'quiz.st.prompt': '使用「{mode}」模式，目前的狀態機需要幾個測試案例？',
     'quiz.st.label': '測試案例數',
+
+    'quiz.syntax.title': 'Mutation Testing 自我測驗',
+    'quiz.syntax.prompt': '程式："{program}"。目前測試套件可以殺死幾個突變體？',
+    'quiz.syntax.label': '被殺死的突變體數',
+    'quiz.syntax.answer': '答案：共 {total} 個突變體，{killed} 個被殺死。',
+
+    'quiz.mt.title': '變形測試 自我測驗',
+    'quiz.mt.prompt': '對於變形關係「{rel}」，8 對生成的測試案例中有幾對成立？',
+    'quiz.mt.label': '成立的測試對數（共 8 對）',
+    'quiz.mt.answer': '答案：8 對中有 {count} 對成立。',
+
+    'quiz.td.title': '測試替身 自我測驗',
+    'quiz.td.answer': '最適合的替身類型是：{correct}。',
 
     'section.flow': '測試流程',
     'section.types': '測試類型',

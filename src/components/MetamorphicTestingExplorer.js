@@ -19,6 +19,50 @@ export function createMetamorphicTestingExplorer() {
     results: null,
   };
 
+  const mtQuiz = { active: false, phase: 'question', answer: '', autoResults: null };
+
+  function renderMtQuizPanel() {
+    if (!mtQuiz.active) return '';
+    const isZh = getLocale() === 'zh';
+    const rel = getRelation();
+    const relName = isZh ? rel.nameZh : rel.name;
+    if (mtQuiz.phase === 'graded') {
+      const correct = mtQuiz.autoResults ? mtQuiz.autoResults.filter((r) => r.holds).length : 0;
+      const userAns = parseInt(mtQuiz.answer, 10);
+      const ok = userAns === correct;
+      return `
+        <div class="quiz-panel" data-testid="mt-quiz-panel">
+          <div class="quiz-header">
+            <span>${t('quiz.mt.title')}</span>
+            <button type="button" class="quiz-close-btn" data-testid="mt-quiz-close">✕</button>
+          </div>
+          <p class="quiz-prompt">${t('quiz.mt.prompt', { rel: escapeHtml(relName) })}</p>
+          <p class="quiz-score ${ok ? 'quiz-score--perfect' : 'quiz-score--wrong'}">
+            ${ok ? t('quiz.graph.perfect') : ''}
+            ${t('quiz.mt.answer', { count: correct })}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="mt-quiz-reset">${t('quiz.retry')}</button>
+        </div>
+      `;
+    }
+    return `
+      <div class="quiz-panel" data-testid="mt-quiz-panel">
+        <div class="quiz-header">
+          <span>${t('quiz.mt.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="mt-quiz-close">✕</button>
+        </div>
+        <p class="quiz-prompt">${t('quiz.mt.prompt', { rel: escapeHtml(relName) })}</p>
+        <div class="quiz-bva-inputs">
+          <label class="quiz-bva-field">
+            ${t('quiz.mt.label')}
+            <input type="number" min="0" max="8" class="quiz-input" data-testid="mt-quiz-input" value="${escapeHtml(mtQuiz.answer)}" />
+          </label>
+        </div>
+        <button type="button" class="quiz-start-btn" data-testid="mt-quiz-check">${t('quiz.check')}</button>
+      </div>
+    `;
+  }
+
   function getExample() {
     return metamorphicExamples.find((e) => e.id === state.exampleId) ?? metamorphicExamples[0];
   }
@@ -76,12 +120,15 @@ export function createMetamorphicTestingExplorer() {
             <div class="mt-mr-header">
               <span class="mt-mr-name">${isZh ? rel.nameZh : rel.name}</span>
               <code class="mt-mr-formula">${escapeHtml(rel.formula)}</code>
+              ${!mtQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="mt-quiz-start">${t('quiz.start')}</button>` : ''}
             </div>
             <p class="mt-mr-desc">${isZh ? rel.descZh : rel.desc}</p>
             <button type="button" class="mt-generate-btn" data-testid="mt-generate">
               ${t('mt.generate')}
             </button>
           </div>
+
+          ${renderMtQuizPanel()}
 
           <div class="mt-results" data-testid="mt-results">
             ${state.results ? renderResults(state.results) : `<p class="mt-hint">${t('mt.hint')}</p>`}
@@ -141,6 +188,7 @@ export function createMetamorphicTestingExplorer() {
         const ex = getExample();
         state.relationId = ex.relations[0].id;
         state.results = null;
+        mtQuiz.active = false;
         render();
       });
     });
@@ -149,6 +197,7 @@ export function createMetamorphicTestingExplorer() {
       btn.addEventListener('click', () => {
         state.relationId = btn.dataset.rel;
         state.results = null;
+        mtQuiz.active = false;
         render();
       });
     });
@@ -161,6 +210,43 @@ export function createMetamorphicTestingExplorer() {
         state.results = generateMrTests(ex, rel, 8);
         const resultsEl = root.querySelector('[data-testid="mt-results"]');
         if (resultsEl) resultsEl.innerHTML = renderResults(state.results);
+      });
+    }
+
+    const mqStart = root.querySelector('[data-testid="mt-quiz-start"]');
+    if (mqStart) {
+      mqStart.addEventListener('click', () => {
+        const ex = getExample();
+        const rel = getRelation();
+        mtQuiz.autoResults = generateMrTests(ex, rel, 8);
+        mtQuiz.active = true;
+        mtQuiz.phase = 'question';
+        mtQuiz.answer = '';
+        render();
+      });
+    }
+    const mqClose = root.querySelector('[data-testid="mt-quiz-close"]');
+    if (mqClose) {
+      mqClose.addEventListener('click', () => { mtQuiz.active = false; render(); });
+    }
+    const mqCheck = root.querySelector('[data-testid="mt-quiz-check"]');
+    if (mqCheck) {
+      mqCheck.addEventListener('click', () => {
+        const inp = root.querySelector('[data-testid="mt-quiz-input"]');
+        mtQuiz.answer = inp ? inp.value : '';
+        mtQuiz.phase = 'graded';
+        render();
+      });
+    }
+    const mqReset = root.querySelector('[data-testid="mt-quiz-reset"]');
+    if (mqReset) {
+      mqReset.addEventListener('click', () => {
+        const ex = getExample();
+        const rel = getRelation();
+        mtQuiz.autoResults = generateMrTests(ex, rel, 8);
+        mtQuiz.phase = 'question';
+        mtQuiz.answer = '';
+        render();
       });
     }
   }

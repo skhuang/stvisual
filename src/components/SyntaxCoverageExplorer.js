@@ -152,6 +152,47 @@ export function createSyntaxCoverageExplorer() {
     pushToCloud();
   }
 
+  const syntaxQuiz = { active: false, phase: 'question', answer: '', result: null };
+
+  function renderSyntaxQuizPanel() {
+    if (!syntaxQuiz.active) return '';
+    if (syntaxQuiz.phase === 'graded') {
+      const correct = state.score.killed;
+      const userAns = parseInt(syntaxQuiz.answer, 10);
+      const ok = userAns === correct;
+      return `
+        <div class="quiz-panel" data-testid="syntax-quiz-panel">
+          <div class="quiz-header">
+            <span>${t('quiz.syntax.title')}</span>
+            <button type="button" class="quiz-close-btn" data-testid="syntax-quiz-close">✕</button>
+          </div>
+          <p class="quiz-prompt">${t('quiz.syntax.prompt', { program: escapeHtml(state.exampleId) })}</p>
+          <p class="quiz-score ${ok ? 'quiz-score--perfect' : 'quiz-score--wrong'}">
+            ${ok ? t('quiz.graph.perfect') : ''}
+            ${t('quiz.syntax.answer', { killed: correct, total: state.score.total })}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="syntax-quiz-reset">${t('quiz.retry')}</button>
+        </div>
+      `;
+    }
+    return `
+      <div class="quiz-panel" data-testid="syntax-quiz-panel">
+        <div class="quiz-header">
+          <span>${t('quiz.syntax.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="syntax-quiz-close">✕</button>
+        </div>
+        <p class="quiz-prompt">${t('quiz.syntax.prompt', { program: escapeHtml(state.exampleId) })}</p>
+        <div class="quiz-bva-inputs">
+          <label class="quiz-bva-field">
+            ${t('quiz.syntax.label')}
+            <input type="number" min="0" class="quiz-input" data-testid="syntax-quiz-input" value="${escapeHtml(syntaxQuiz.answer)}" />
+          </label>
+        </div>
+        <button type="button" class="quiz-start-btn" data-testid="syntax-quiz-check">${t('quiz.check')}</button>
+      </div>
+    `;
+  }
+
   let saveTimer = null;
   let pendingSave = null;
   function pushToCloud() {
@@ -495,7 +536,10 @@ export function createSyntaxCoverageExplorer() {
           live <strong>${state.score.live}</strong>
           <span class="syntax-divider">·</span>
           equivalent <strong>${state.score.equivalent}</strong>
+          <span class="syntax-divider">·</span>
+          ${!syntaxQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="syntax-quiz-start">${t('quiz.start')}</button>` : ''}
         </p>
+        ${renderSyntaxQuizPanel()}
       </section>
 
       <section class="syntax-mutant-section">
@@ -619,6 +663,39 @@ export function createSyntaxCoverageExplorer() {
         render();
       });
     });
+
+    const sqStart = root.querySelector('[data-testid="syntax-quiz-start"]');
+    if (sqStart) {
+      sqStart.addEventListener('click', () => {
+        syntaxQuiz.active = true;
+        syntaxQuiz.phase = 'question';
+        syntaxQuiz.answer = '';
+        syntaxQuiz.result = null;
+        render();
+      });
+    }
+    const sqClose = root.querySelector('[data-testid="syntax-quiz-close"]');
+    if (sqClose) {
+      sqClose.addEventListener('click', () => { syntaxQuiz.active = false; render(); });
+    }
+    const sqCheck = root.querySelector('[data-testid="syntax-quiz-check"]');
+    if (sqCheck) {
+      sqCheck.addEventListener('click', () => {
+        const inp = root.querySelector('[data-testid="syntax-quiz-input"]');
+        syntaxQuiz.answer = inp ? inp.value : '';
+        syntaxQuiz.phase = 'graded';
+        render();
+      });
+    }
+    const sqReset = root.querySelector('[data-testid="syntax-quiz-reset"]');
+    if (sqReset) {
+      sqReset.addEventListener('click', () => {
+        syntaxQuiz.phase = 'question';
+        syntaxQuiz.answer = '';
+        syntaxQuiz.result = null;
+        render();
+      });
+    }
   }
 
   render();

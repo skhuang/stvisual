@@ -536,6 +536,43 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`,
 };
 
 // ---------------------------------------------------------------------------
+// Quiz scenarios — ask user to pick the right double type
+// ---------------------------------------------------------------------------
+
+const TD_QUIZ_SCENARIOS = [
+  {
+    id: 'qs1',
+    correct: 'stub',
+    descEn: 'Your SUT calls a remote weather API to get current temperature. You want to test the SUT with a fixed return value without hitting the network.',
+    descZh: '您的 SUT 呼叫遠端天氣 API 取得目前溫度。您想在不連網的情況下，以固定回傳值測試 SUT。',
+  },
+  {
+    id: 'qs2',
+    correct: 'mock',
+    descEn: 'You want to verify that when a user is deleted, an audit log service is called exactly once with the correct user ID.',
+    descZh: '您要驗證當使用者被刪除時，稽核日誌服務必須被呼叫恰好一次，且帶有正確的使用者 ID。',
+  },
+  {
+    id: 'qs3',
+    correct: 'fake',
+    descEn: 'Your SUT requires a database-backed user repository. You want a full working implementation that avoids hitting a real database during unit tests.',
+    descZh: '您的 SUT 需要資料庫支持的使用者儲存庫。您需要一個功能完整、但不連接真實資料庫的替代實作。',
+  },
+  {
+    id: 'qs4',
+    correct: 'spy',
+    descEn: 'You want to use the real email service implementation in your test, but also record every call so you can assert on call counts afterward.',
+    descZh: '您想在測試中使用真正的 Email 服務實作，同時記錄每次呼叫，以便事後斷言呼叫次數。',
+  },
+  {
+    id: 'qs5',
+    correct: 'dummy',
+    descEn: 'Your SUT requires a logger object in its constructor but never actually calls it during the code path you are testing.',
+    descZh: '您的 SUT 建構式需要一個 logger 物件，但在您測試的程式路徑中從不呼叫它。',
+  },
+];
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
@@ -548,6 +585,58 @@ export function createTestDoublesExplorer() {
     scenarioId: 'order',
     result: null,
   };
+
+  let tdQuizScenarioIdx = 0;
+  const tdQuiz = { active: false, phase: 'question', selected: '', result: null };
+
+  function renderTdQuizPanel() {
+    if (!tdQuiz.active) return '';
+    const isZh = getLocale() === 'zh';
+    const qs = TD_QUIZ_SCENARIOS[tdQuizScenarioIdx];
+    const desc = isZh ? qs.descZh : qs.descEn;
+
+    if (tdQuiz.phase === 'graded') {
+      const ok = tdQuiz.selected === qs.correct;
+      return `
+        <div class="quiz-panel" data-testid="td-quiz-panel">
+          <div class="quiz-header">
+            <span>${t('quiz.td.title')}</span>
+            <button type="button" class="quiz-close-btn" data-testid="td-quiz-close">✕</button>
+          </div>
+          <p class="quiz-prompt">${escapeHtml(desc)}</p>
+          <p class="quiz-score ${ok ? 'quiz-score--perfect' : 'quiz-score--wrong'}">
+            ${ok ? t('quiz.graph.perfect') : ''}
+            ${t('quiz.td.answer', { correct: qs.correct })}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="td-quiz-reset">${t('quiz.retry')}</button>
+        </div>
+      `;
+    }
+
+    const typeButtons = DOUBLE_TYPES.map((d) => `
+      <button type="button"
+        class="td-type-btn${tdQuiz.selected === d.id ? ' active' : ''}"
+        data-testid="td-quiz-choice-${d.id}"
+        data-quiz-choice="${d.id}"
+        style="--td-color:${d.color}"
+      >
+        <span class="td-type-dot"></span>
+        <span class="td-type-name">${t(`td.type.${d.id}`)}</span>
+      </button>
+    `).join('');
+
+    return `
+      <div class="quiz-panel" data-testid="td-quiz-panel">
+        <div class="quiz-header">
+          <span>${t('quiz.td.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="td-quiz-close">✕</button>
+        </div>
+        <p class="quiz-prompt">${escapeHtml(desc)}</p>
+        <div class="td-type-list" style="margin:0.5rem 0">${typeButtons}</div>
+        <button type="button" class="quiz-start-btn" data-testid="td-quiz-check" ${!tdQuiz.selected ? 'disabled' : ''}>${t('quiz.check')}</button>
+      </div>
+    `;
+  }
 
   function getType() {
     return DOUBLE_TYPES.find((d) => d.id === state.typeId) ?? DOUBLE_TYPES[0];
@@ -698,7 +787,10 @@ export function createTestDoublesExplorer() {
             <button type="button" class="td-run-btn" data-testid="td-run">
               ▶ ${t('td.run')}
             </button>
+            ${!tdQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="td-quiz-start">${t('quiz.start')}</button>` : ''}
           </div>
+
+          ${renderTdQuizPanel()}
 
           <!-- Results -->
           <div class="td-result-panel" data-testid="td-result">
@@ -743,6 +835,50 @@ export function createTestDoublesExplorer() {
         }
         const panel = root.querySelector('[data-testid="td-result"]');
         if (panel) panel.innerHTML = renderResult(state.result);
+      });
+    }
+
+    const tqStart = root.querySelector('[data-testid="td-quiz-start"]');
+    if (tqStart) {
+      tqStart.addEventListener('click', () => {
+        tdQuizScenarioIdx = Math.floor(Math.random() * TD_QUIZ_SCENARIOS.length);
+        tdQuiz.active = true;
+        tdQuiz.phase = 'question';
+        tdQuiz.selected = '';
+        tdQuiz.result = null;
+        render();
+      });
+    }
+    const tqClose = root.querySelector('[data-testid="td-quiz-close"]');
+    if (tqClose) {
+      tqClose.addEventListener('click', () => { tdQuiz.active = false; render(); });
+    }
+    root.querySelectorAll('[data-quiz-choice]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tdQuiz.selected = btn.dataset.quizChoice;
+        const panel = root.querySelector('[data-testid="td-quiz-panel"]');
+        if (panel) {
+          root.querySelectorAll('[data-quiz-choice]').forEach((b) => b.classList.toggle('active', b.dataset.quizChoice === tdQuiz.selected));
+          const checkBtn = root.querySelector('[data-testid="td-quiz-check"]');
+          if (checkBtn) checkBtn.disabled = false;
+        }
+      });
+    });
+    const tqCheck = root.querySelector('[data-testid="td-quiz-check"]');
+    if (tqCheck) {
+      tqCheck.addEventListener('click', () => {
+        tdQuiz.phase = 'graded';
+        render();
+      });
+    }
+    const tqReset = root.querySelector('[data-testid="td-quiz-reset"]');
+    if (tqReset) {
+      tqReset.addEventListener('click', () => {
+        tdQuizScenarioIdx = (tdQuizScenarioIdx + 1) % TD_QUIZ_SCENARIOS.length;
+        tdQuiz.phase = 'question';
+        tdQuiz.selected = '';
+        tdQuiz.result = null;
+        render();
       });
     }
   }
