@@ -203,4 +203,26 @@ describe('GraphCoverageExplorer', () => {
     expect(document.querySelector('[data-testid="requirement-list"]').children.length).toBeGreaterThan(3);
     expect(document.querySelector('[data-testid="detail-source-mapping"]')).toHaveTextContent('L2');
   });
+
+  it('quiz start button shows quiz panel', () => {
+    renderGraphCoverageExplorer();
+    expect(document.querySelector('[data-testid="graph-quiz"]')).not.toBeInTheDocument();
+    document.querySelector('[data-testid="graph-quiz-start"]').click();
+    expect(document.querySelector('[data-testid="graph-quiz"]')).toBeInTheDocument();
+  });
+
+  it('quiz check answer shows score', () => {
+    renderGraphCoverageExplorer();
+    document.querySelector('[data-testid="graph-quiz-start"]').click();
+    document.querySelector('[data-testid="graph-quiz-check"]').click();
+    expect(document.querySelector('[data-testid="graph-quiz-score"]')).toBeInTheDocument();
+  });
+
+  it('quiz close button hides quiz panel', () => {
+    renderGraphCoverageExplorer();
+    document.querySelector('[data-testid="graph-quiz-start"]').click();
+    expect(document.querySelector('[data-testid="graph-quiz"]')).toBeInTheDocument();
+    document.querySelector('[data-testid="graph-quiz-close"]').click();
+    expect(document.querySelector('[data-testid="graph-quiz"]')).not.toBeInTheDocument();
+  });
 });

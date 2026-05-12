@@ -59,4 +59,28 @@ describe('BoundaryValueExplorer smoke', () => {
     const after = document.querySelectorAll('[data-testid^="bva-param-name-"]').length;
     expect(after).toBe(before + 1);
   });
+
+  it('quiz start button shows quiz panel', () => {
+    mount();
+    expect(document.querySelector('[data-testid="bva-quiz"]')).not.toBeInTheDocument();
+    document.querySelector('[data-testid="bva-quiz-start"]').click();
+    expect(document.querySelector('[data-testid="bva-quiz"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="bva-quiz-input-0"]')).toBeInTheDocument();
+  });
+
+  it('quiz check answer grades the inputs', () => {
+    mount();
+    document.querySelector('[data-testid="bva-quiz-start"]').click();
+    // Fill in some answers and check
+    document.querySelector('[data-testid="bva-quiz-check"]').click();
+    expect(document.querySelector('[data-testid="bva-quiz-score"]')).toBeInTheDocument();
+  });
+
+  it('quiz close button hides the quiz panel', () => {
+    mount();
+    document.querySelector('[data-testid="bva-quiz-start"]').click();
+    expect(document.querySelector('[data-testid="bva-quiz"]')).toBeInTheDocument();
+    document.querySelector('[data-testid="bva-quiz-close"]').click();
+    expect(document.querySelector('[data-testid="bva-quiz"]')).not.toBeInTheDocument();
+  });
 });

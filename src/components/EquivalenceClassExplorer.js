@@ -115,10 +115,68 @@ export function createEquivalenceClassExplorer() {
     mode: saved?.mode ?? 'wect',  // 'wect' | 'sect'
   };
 
+  const quiz = { active: false, wectAnswer: '', sectAnswer: '', phase: 'question', result: null };
+
   function getTests() {
     const valid = state.params.filter((p) => p.name && p.classes.length);
     if (!valid.length) return [];
     return state.mode === 'sect' ? generateSectTests(valid) : generateWectTests(valid);
+  }
+
+  function gradeEcQuiz() {
+    const valid = state.params.filter((p) => p.name && p.classes.length);
+    const wectCount = generateWectTests(valid).length;
+    const sectCount = generateSectTests(valid).length;
+    const wectUser = Number(quiz.wectAnswer);
+    const sectUser = Number(quiz.sectAnswer);
+    quiz.result = {
+      wectCount, sectCount,
+      wectCorrect: wectUser === wectCount,
+      sectCorrect: sectUser === sectCount,
+    };
+    quiz.phase = 'graded';
+    render();
+  }
+
+  function renderQuizPanel() {
+    if (!quiz.active) return '';
+    const isGraded = quiz.phase === 'graded';
+
+    const wectCls = isGraded ? (quiz.result.wectCorrect ? ' quiz-input-correct' : ' quiz-input-wrong') : '';
+    const sectCls = isGraded ? (quiz.result.sectCorrect ? ' quiz-input-correct' : ' quiz-input-wrong') : '';
+
+    const wectFeedback = isGraded ? `<span class="quiz-hint-val">${
+      quiz.result.wectCorrect ? t('quiz.ec.correct') : `${t('quiz.ec.wrong')} ${t('quiz.ec.answer').replace('{count}', quiz.result.wectCount)}`
+    }</span>` : '';
+    const sectFeedback = isGraded ? `<span class="quiz-hint-val">${
+      quiz.result.sectCorrect ? t('quiz.ec.correct') : `${t('quiz.ec.wrong')} ${t('quiz.ec.answer').replace('{count}', quiz.result.sectCount)}`
+    }</span>` : '';
+
+    return `<div class="quiz-panel" data-testid="ec-quiz">
+      <div class="quiz-header">
+        <h4>${t('quiz.ec.title')}</h4>
+        <button type="button" class="quiz-close-btn" data-testid="ec-quiz-close">${t('quiz.close')}</button>
+      </div>
+      <div class="quiz-ec-row">
+        <label class="quiz-bva-label">${t('quiz.ec.wect.prompt')}</label>
+        <input type="number" class="quiz-bva-input${wectCls}" data-testid="ec-quiz-wect"
+          value="${escapeHtml(String(quiz.wectAnswer))}" min="0"
+          ${isGraded ? 'disabled' : ''}/>
+        ${wectFeedback}
+      </div>
+      <div class="quiz-ec-row">
+        <label class="quiz-bva-label">${t('quiz.ec.sect.prompt')}</label>
+        <input type="number" class="quiz-bva-input${sectCls}" data-testid="ec-quiz-sect"
+          value="${escapeHtml(String(quiz.sectAnswer))}" min="0"
+          ${isGraded ? 'disabled' : ''}/>
+        ${sectFeedback}
+      </div>
+      <div class="quiz-actions">
+        ${!isGraded
+          ? `<button type="button" class="quiz-check-btn" data-testid="ec-quiz-check">${t('quiz.check')}</button>`
+          : `<button type="button" class="quiz-reset-btn" data-testid="ec-quiz-reset">${t('quiz.reset')}</button>`}
+      </div>
+    </div>`;
   }
 
   function renderClassTable(paramIdx, classes) {
@@ -208,11 +266,14 @@ export function createEquivalenceClassExplorer() {
       <div class="ec-panel">
         <div class="ec-toolbar">
           <div class="ec-examples" data-testid="ec-examples">${exBtns}</div>
-          <div class="ec-mode-toggle" role="group">
-            <button type="button" class="ec-mode-btn${state.mode === 'wect' ? ' active' : ''}"
-                data-mode="wect" data-testid="ec-mode-wect">WECT</button>
-            <button type="button" class="ec-mode-btn${state.mode === 'sect' ? ' active' : ''}"
-                data-mode="sect" data-testid="ec-mode-sect">SECT</button>
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+            <div class="ec-mode-toggle" role="group">
+              <button type="button" class="ec-mode-btn${state.mode === 'wect' ? ' active' : ''}"
+                  data-mode="wect" data-testid="ec-mode-wect">WECT</button>
+              <button type="button" class="ec-mode-btn${state.mode === 'sect' ? ' active' : ''}"
+                  data-mode="sect" data-testid="ec-mode-sect">SECT</button>
+            </div>
+            <button type="button" class="quiz-start-btn" data-testid="ec-quiz-start">${t('quiz.start')}</button>
           </div>
         </div>
 
@@ -234,6 +295,8 @@ export function createEquivalenceClassExplorer() {
             ${renderResultTable(tests)}
           </div>
         </div>
+
+        ${renderQuizPanel()}
       </div>
     `;
 
@@ -329,6 +392,40 @@ export function createEquivalenceClassExplorer() {
           { name: 'invalid', kind: 'invalid', representative: -1 },
         ],
       });
+      render();
+    });
+
+    root.querySelector('[data-testid="ec-quiz-start"]')?.addEventListener('click', () => {
+      quiz.active = true;
+      quiz.wectAnswer = '';
+      quiz.sectAnswer = '';
+      quiz.phase = 'question';
+      quiz.result = null;
+      render();
+    });
+
+    root.querySelector('[data-testid="ec-quiz-close"]')?.addEventListener('click', () => {
+      quiz.active = false;
+      render();
+    });
+
+    root.querySelector('[data-testid="ec-quiz-wect"]')?.addEventListener('input', (e) => {
+      quiz.wectAnswer = e.target.value;
+    });
+
+    root.querySelector('[data-testid="ec-quiz-sect"]')?.addEventListener('input', (e) => {
+      quiz.sectAnswer = e.target.value;
+    });
+
+    root.querySelector('[data-testid="ec-quiz-check"]')?.addEventListener('click', () => {
+      gradeEcQuiz();
+    });
+
+    root.querySelector('[data-testid="ec-quiz-reset"]')?.addEventListener('click', () => {
+      quiz.wectAnswer = '';
+      quiz.sectAnswer = '';
+      quiz.phase = 'question';
+      quiz.result = null;
       render();
     });
   }

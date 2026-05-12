@@ -69,4 +69,29 @@ describe('EquivalenceClassExplorer smoke', () => {
     const after = document.querySelectorAll('[data-testid^="ec-param-"]').length;
     expect(after).toBeGreaterThan(before);
   });
+
+  it('quiz start button shows quiz panel', () => {
+    mount();
+    expect(document.querySelector('[data-testid="ec-quiz"]')).not.toBeInTheDocument();
+    document.querySelector('[data-testid="ec-quiz-start"]').click();
+    expect(document.querySelector('[data-testid="ec-quiz"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="ec-quiz-wect"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="ec-quiz-sect"]')).toBeInTheDocument();
+  });
+
+  it('quiz check answer grades both inputs', () => {
+    mount();
+    document.querySelector('[data-testid="ec-quiz-start"]').click();
+    document.querySelector('[data-testid="ec-quiz-check"]').click();
+    // After grading, the reset button should appear
+    expect(document.querySelector('[data-testid="ec-quiz-reset"]')).toBeInTheDocument();
+  });
+
+  it('quiz close button hides the quiz panel', () => {
+    mount();
+    document.querySelector('[data-testid="ec-quiz-start"]').click();
+    expect(document.querySelector('[data-testid="ec-quiz"]')).toBeInTheDocument();
+    document.querySelector('[data-testid="ec-quiz-close"]').click();
+    expect(document.querySelector('[data-testid="ec-quiz"]')).not.toBeInTheDocument();
+  });
 });

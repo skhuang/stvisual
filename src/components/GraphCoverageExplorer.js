@@ -443,6 +443,90 @@ export function createGraphCoverageExplorer() {
   let autoApplyTimer = null;
   let draft = createDraftFromGraph(defaultGraph);
 
+  const graphQuiz = { active: false, selectedPaths: new Set(), phase: 'question', result: null };
+
+  function getQuizCandidates(pathPlan) {
+    const seen = new Set();
+    const candidates = [];
+    for (const rp of pathPlan.requirementPaths) {
+      if (!rp.path) continue;
+      const key = rp.path.join('->');
+      if (!seen.has(key)) { seen.add(key); candidates.push(rp.path); }
+    }
+    return candidates;
+  }
+
+  function gradeGraphQuiz(pathPlan) {
+    const requirements = getCoverageRequirements(graph, criterionId);
+    const userPaths = [...graphQuiz.selectedPaths].map((s) => s.split('->'));
+    const coveredReqIds = new Set();
+    for (const path of userPaths) {
+      for (const rp of pathPlan.requirementPaths) {
+        if (rp.path && rp.path.join('->') === path.join('->')) {
+          coveredReqIds.add(rp.requirement.id);
+        }
+      }
+    }
+    graphQuiz.result = {
+      covered: coveredReqIds.size,
+      total: requirements.length,
+      optimal: pathPlan.selectedPaths.length,
+      userCount: userPaths.length,
+    };
+    graphQuiz.phase = 'graded';
+    render();
+  }
+
+  function renderGraphQuizPanel(pathPlan, selectedCriterion) {
+    if (!graphQuiz.active) return '';
+    const candidates = getQuizCandidates(pathPlan);
+    const isGraded = graphQuiz.phase === 'graded';
+    const optimalKeys = new Set(pathPlan.selectedPaths.map((p) => p.join('->')));
+
+    const pathItems = candidates.map((path, idx) => {
+      const key = path.join('->');
+      const checked = graphQuiz.selectedPaths.has(key) ? ' checked' : '';
+      const isOptimal = optimalKeys.has(key);
+      const optLabel = isGraded && isOptimal ? ' <span class="quiz-optimal-badge">✓ optimal</span>' : '';
+      return `<label class="quiz-path-item">
+        <input type="checkbox" data-quiz-path="${escapeHtml(key)}"${checked}
+          ${isGraded ? 'disabled' : ''} data-testid="graph-quiz-path-${idx}"/>
+        <span class="quiz-path-text">${escapeHtml(key.replaceAll('->', ' → '))}</span>
+        ${optLabel}
+      </label>`;
+    }).join('');
+
+    const scoreRow = isGraded ? `<p class="quiz-score" data-testid="graph-quiz-score">
+      ${t('quiz.graph.score')
+        .replace('{covered}', graphQuiz.result.covered)
+        .replace('{total}', graphQuiz.result.total)
+        .replace('{optimal}', graphQuiz.result.optimal)}
+      ${graphQuiz.result.covered === graphQuiz.result.total && graphQuiz.result.userCount === graphQuiz.result.optimal
+        ? ` <strong>${t('quiz.graph.perfect')}</strong>`
+        : graphQuiz.result.covered < graphQuiz.result.total
+          ? ` <em>${t('quiz.graph.incomplete')}</em>` : ''}
+    </p>` : '';
+
+    const prompt = t('quiz.graph.prompt')
+      .replace('{criterion}', escapeHtml(selectedCriterion ? selectedCriterion.label : criterionId))
+      .replace('{program}', escapeHtml(activeProgram.name));
+
+    return `<div class="quiz-panel quiz-panel--graph" data-testid="graph-quiz">
+      <div class="quiz-header">
+        <h4>${t('quiz.graph.title')}</h4>
+        <button type="button" class="quiz-close-btn" data-testid="graph-quiz-close">${t('quiz.close')}</button>
+      </div>
+      <p class="quiz-prompt">${prompt}</p>
+      <div class="quiz-path-list">${pathItems || '<em>No candidate paths available.</em>'}</div>
+      ${scoreRow}
+      <div class="quiz-actions">
+        ${!isGraded
+          ? `<button type="button" class="quiz-check-btn" data-testid="graph-quiz-check">${t('quiz.graph.check')}</button>`
+          : `<button type="button" class="quiz-reset-btn" data-testid="graph-quiz-reset">${t('quiz.reset')}</button>`}
+      </div>
+    </div>`;
+  }
+
   function loadGraphSource(program, nextGraph, statusMessage) {
     activeProgram = { ...program };
     selectedProgramId = program.id;
@@ -507,6 +591,7 @@ export function createGraphCoverageExplorer() {
   function render() {
     const { requirements, selectedRequirement, selectedCriterion, pathPlan } = getState();
     const selectedSourceNodes = getSelectedSourceNodes(graph, selectedRequirement);
+    const quizPanel = renderGraphQuizPanel(pathPlan, selectedCriterion);
 
     root.className = 'graph-coverage';
     root.dataset.testid = 'graph-coverage-explorer';
@@ -602,20 +687,23 @@ export function createGraphCoverageExplorer() {
         </div>
       </div>
 
-      <div class="graph-criterion-switcher" role="tablist" aria-label="${t('graph.aria.switcher')}">
-        ${graphCoverageCriteria.map((criterion) => `
-          <button
-            class="criterion-chip${criterionId === criterion.id ? ' active' : ''}"
-            type="button"
-            data-testid="criterion-${criterion.id}"
-            data-criterion="${criterion.id}"
-            role="tab"
-            aria-selected="${criterionId === criterion.id}"
-          >
-            <span>${pickField(criterion, 'label')}</span>
-            <small>${criterion.label}</small>
-          </button>
-        `).join('')}
+      <div class="graph-criterion-row">
+        <div class="graph-criterion-switcher" role="tablist" aria-label="${t('graph.aria.switcher')}">
+          ${graphCoverageCriteria.map((criterion) => `
+            <button
+              class="criterion-chip${criterionId === criterion.id ? ' active' : ''}"
+              type="button"
+              data-testid="criterion-${criterion.id}"
+              data-criterion="${criterion.id}"
+              role="tab"
+              aria-selected="${criterionId === criterion.id}"
+            >
+              <span>${pickField(criterion, 'label')}</span>
+              <small>${criterion.label}</small>
+            </button>
+          `).join('')}
+        </div>
+        <button type="button" class="quiz-start-btn" data-testid="graph-quiz-start">${t('quiz.start')}</button>
       </div>
 
       <div class="graph-coverage-layout">
@@ -707,6 +795,8 @@ export function createGraphCoverageExplorer() {
           </div>
         </aside>
       </div>
+
+      ${quizPanel}
     `;
 
     root.querySelector('[data-testid="graph-reset-btn"]').addEventListener('click', () => {
@@ -825,6 +915,39 @@ export function createGraphCoverageExplorer() {
         selectedRequirementId = button.dataset.requirementId;
         render();
       });
+    });
+
+    root.querySelector('[data-testid="graph-quiz-start"]')?.addEventListener('click', () => {
+      graphQuiz.active = true;
+      graphQuiz.selectedPaths = new Set();
+      graphQuiz.phase = 'question';
+      graphQuiz.result = null;
+      render();
+    });
+
+    root.querySelector('[data-testid="graph-quiz-close"]')?.addEventListener('click', () => {
+      graphQuiz.active = false;
+      render();
+    });
+
+    root.querySelectorAll('[data-quiz-path]').forEach((cb) => {
+      cb.addEventListener('change', () => {
+        const key = cb.dataset.quizPath;
+        if (cb.checked) graphQuiz.selectedPaths.add(key);
+        else graphQuiz.selectedPaths.delete(key);
+      });
+    });
+
+    root.querySelector('[data-testid="graph-quiz-check"]')?.addEventListener('click', () => {
+      const { pathPlan } = getState();
+      gradeGraphQuiz(pathPlan);
+    });
+
+    root.querySelector('[data-testid="graph-quiz-reset"]')?.addEventListener('click', () => {
+      graphQuiz.selectedPaths = new Set();
+      graphQuiz.phase = 'question';
+      graphQuiz.result = null;
+      render();
     });
   }
 

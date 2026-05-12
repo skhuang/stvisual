@@ -60,6 +60,12 @@ function persist(state) {
   } catch {}
 }
 
+function expectedBva(param) {
+  const { min, max } = param;
+  const nom = Math.round((min + max) / 2);
+  return [min, min + 1, nom, max - 1, max];
+}
+
 export function createBoundaryValueExplorer() {
   const root = document.createElement('div');
   root.className = 'bva-explorer';
@@ -73,10 +79,86 @@ export function createBoundaryValueExplorer() {
     robust: saved?.robust ?? false,
   };
 
+  const quiz = { active: false, paramIdx: 0, answers: ['', '', '', '', ''], phase: 'question', result: null };
+
   function getTests() {
     const valid = state.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
     if (!valid.length) return [];
     return state.robust ? generateRobustBvaTests(valid) : generateBvaTests(valid);
+  }
+
+  function validParams() {
+    return state.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
+  }
+
+  function pickQuizParam() {
+    const vp = validParams();
+    quiz.paramIdx = Math.floor(Math.random() * vp.length);
+    quiz.answers = ['', '', '', '', ''];
+    quiz.phase = 'question';
+    quiz.result = null;
+  }
+
+  function gradeQuiz() {
+    const vp = validParams();
+    if (!vp.length) return;
+    const param = vp[quiz.paramIdx] ?? vp[0];
+    const expected = expectedBva(param);
+    const userNums = quiz.answers.map((a) => Number(a));
+    const correct = expected.map((e, i) => userNums[i] === e);
+    quiz.result = { expected, correct, score: correct.filter(Boolean).length };
+    quiz.phase = 'graded';
+    render();
+  }
+
+  function renderQuizPanel() {
+    if (!quiz.active) return '';
+    const vp = validParams();
+    if (!vp.length) {
+      return `<div class="quiz-panel" data-testid="bva-quiz">
+        <p>${escapeHtml(t('bva.hint'))}</p>
+      </div>`;
+    }
+    const param = vp[quiz.paramIdx] ?? vp[0];
+    const prompt = t('quiz.bva.prompt')
+      .replace('{name}', escapeHtml(param.name))
+      .replace('{min}', param.min)
+      .replace('{max}', param.max);
+    const labels = [0, 1, 2, 3, 4].map((i) => t(`quiz.bva.labels.${i}`));
+    const isGraded = quiz.phase === 'graded';
+
+    const inputs = labels.map((label, i) => {
+      const correct = isGraded ? quiz.result.correct[i] : null;
+      const cls = isGraded ? (correct ? ' quiz-input-correct' : ' quiz-input-wrong') : '';
+      const hint = isGraded ? ` <span class="quiz-hint-val">${quiz.result.expected[i]}</span>` : '';
+      return `<div class="quiz-bva-field">
+        <label class="quiz-bva-label">${escapeHtml(label)}</label>
+        <input type="number" class="quiz-bva-input${cls}" data-qi="${i}"
+          value="${escapeHtml(String(quiz.answers[i]))}"
+          ${isGraded ? 'disabled' : ''} data-testid="bva-quiz-input-${i}"/>
+        ${hint}
+      </div>`;
+    }).join('');
+
+    const scoreRow = isGraded ? `<p class="quiz-score" data-testid="bva-quiz-score">
+      ${t('quiz.bva.score').replace('{score}', quiz.result.score)}
+      ${quiz.result.score === 5 ? ` <strong>${t('quiz.bva.perfect')}</strong>` : ''}
+    </p>` : '';
+
+    return `<div class="quiz-panel" data-testid="bva-quiz">
+      <div class="quiz-header">
+        <h4>${t('quiz.bva.title')}</h4>
+        <button type="button" class="quiz-close-btn" data-testid="bva-quiz-close">${t('quiz.close')}</button>
+      </div>
+      <p class="quiz-prompt">${prompt}</p>
+      <div class="quiz-bva-inputs">${inputs}</div>
+      ${scoreRow}
+      <div class="quiz-actions">
+        ${!isGraded
+          ? `<button type="button" class="quiz-check-btn" data-testid="bva-quiz-check">${t('quiz.check')}</button>`
+          : `<button type="button" class="quiz-reset-btn" data-testid="bva-quiz-reset">${t('quiz.reset')}</button>`}
+      </div>
+    </div>`;
   }
 
   function renderParamRows() {
@@ -132,10 +214,13 @@ export function createBoundaryValueExplorer() {
       <div class="bva-panel">
         <div class="bva-toolbar">
           <div class="bva-examples" data-testid="bva-examples">${exBtns}</div>
-          <label class="bva-robust-label">
-            <input type="checkbox" data-testid="bva-robust-toggle" ${state.robust ? 'checked' : ''}/>
-            ${t('bva.robust')}
-          </label>
+          <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+            <label class="bva-robust-label">
+              <input type="checkbox" data-testid="bva-robust-toggle" ${state.robust ? 'checked' : ''}/>
+              ${t('bva.robust')}
+            </label>
+            <button type="button" class="quiz-start-btn" data-testid="bva-quiz-start">${t('quiz.start')}</button>
+          </div>
         </div>
 
         <div class="bva-body">
@@ -164,6 +249,8 @@ export function createBoundaryValueExplorer() {
             ${renderTestTable(tests)}
           </div>
         </div>
+
+        ${renderQuizPanel()}
       </div>
     `;
 
@@ -191,7 +278,6 @@ export function createBoundaryValueExplorer() {
       input.addEventListener('input', (e) => {
         const idx = Number(e.target.dataset.idx);
         state.params[idx].name = e.target.value;
-        // Re-render only results pane to avoid disrupting focus
         const tests = getTests();
         const resultsPane = root.querySelector('[data-testid="bva-results"]');
         if (resultsPane) {
@@ -230,6 +316,32 @@ export function createBoundaryValueExplorer() {
     root.querySelector('[data-testid="bva-add-param"]')?.addEventListener('click', () => {
       if (state.params.length >= PARAM_LIMIT) return;
       state.params.push({ name: `p${state.params.length + 1}`, min: 0, max: 100 });
+      render();
+    });
+
+    root.querySelector('[data-testid="bva-quiz-start"]')?.addEventListener('click', () => {
+      quiz.active = true;
+      pickQuizParam();
+      render();
+    });
+
+    root.querySelector('[data-testid="bva-quiz-close"]')?.addEventListener('click', () => {
+      quiz.active = false;
+      render();
+    });
+
+    root.querySelectorAll('[data-qi]').forEach((input) => {
+      input.addEventListener('input', (e) => {
+        quiz.answers[Number(e.target.dataset.qi)] = e.target.value;
+      });
+    });
+
+    root.querySelector('[data-testid="bva-quiz-check"]')?.addEventListener('click', () => {
+      gradeQuiz();
+    });
+
+    root.querySelector('[data-testid="bva-quiz-reset"]')?.addEventListener('click', () => {
+      pickQuizParam();
       render();
     });
   }
