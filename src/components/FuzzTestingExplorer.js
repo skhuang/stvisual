@@ -65,6 +65,49 @@ export function createFuzzTestingExplorer() {
     totalEdges: 0,
   };
 
+  const fuzzQuiz = { active: false, phase: 'question', answer: '', result: null };
+
+  function renderFuzzQuizPanel() {
+    if (!fuzzQuiz.active) return '';
+    const nodeCov = state.totalNodes > 0
+      ? Math.round((state.coveredNodes.length / state.totalNodes) * 100)
+      : 0;
+    if (fuzzQuiz.phase === 'graded') {
+      const userAns = parseInt(fuzzQuiz.answer, 10);
+      const ok = userAns === nodeCov;
+      return `
+        <div class="quiz-panel" data-testid="fuzz-quiz-panel">
+          <div class="quiz-header">
+            <span>${t('quiz.fuzz.title')}</span>
+            <button type="button" class="quiz-close-btn" data-testid="fuzz-quiz-close">✕</button>
+          </div>
+          <p class="quiz-prompt">${t('quiz.fuzz.prompt')}</p>
+          <p class="quiz-score ${ok ? 'quiz-score--perfect' : 'quiz-score--wrong'}">
+            ${ok ? t('quiz.graph.perfect') : ''}
+            ${t('quiz.fuzz.answer', { pct: nodeCov })}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-reset">${t('quiz.retry')}</button>
+        </div>
+      `;
+    }
+    return `
+      <div class="quiz-panel" data-testid="fuzz-quiz-panel">
+        <div class="quiz-header">
+          <span>${t('quiz.fuzz.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="fuzz-quiz-close">✕</button>
+        </div>
+        <p class="quiz-prompt">${t('quiz.fuzz.prompt')}</p>
+        <div class="quiz-bva-inputs">
+          <label class="quiz-bva-field">
+            ${t('quiz.fuzz.label')}
+            <input type="number" min="0" max="100" class="quiz-input" data-testid="fuzz-quiz-input" value="${escapeHtml(fuzzQuiz.answer)}" />
+          </label>
+        </div>
+        <button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-check">${t('quiz.check')}</button>
+      </div>
+    `;
+  }
+
   function recompute() {
     state.result = null;
     state.cfg = null;
@@ -213,7 +256,11 @@ export function createFuzzTestingExplorer() {
           <header class="fuzz-panel-header">
             <h3>${t('explorer.panel.results')}</h3>
           </header>
-          <p class="fuzz-summary" data-testid="fuzz-summary">${summary}</p>
+          <p class="fuzz-summary" data-testid="fuzz-summary">
+            ${summary}
+            ${!fuzzQuiz.active && state.result ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-start" style="margin-left:0.5rem">${t('quiz.start')}</button>` : ''}
+          </p>
+          ${renderFuzzQuizPanel()}
           ${testCasesMarkup}
         </section>
       </div>
@@ -340,6 +387,7 @@ export function createFuzzTestingExplorer() {
         state.exampleId = ex.id;
         state.sourceCode = ex.sourceCode;
         state.selectedCaseId = null;
+        fuzzQuiz.active = false;
         render();
       });
     });
@@ -402,6 +450,35 @@ export function createFuzzTestingExplorer() {
         render();
       });
     });
+
+    const fqStart = root.querySelector('[data-testid="fuzz-quiz-start"]');
+    if (fqStart) {
+      fqStart.addEventListener('click', () => {
+        fuzzQuiz.active = true;
+        fuzzQuiz.phase = 'question';
+        fuzzQuiz.answer = '';
+        render();
+      });
+    }
+    const fqClose = root.querySelector('[data-testid="fuzz-quiz-close"]');
+    if (fqClose) { fqClose.addEventListener('click', () => { fuzzQuiz.active = false; render(); }); }
+    const fqCheck = root.querySelector('[data-testid="fuzz-quiz-check"]');
+    if (fqCheck) {
+      fqCheck.addEventListener('click', () => {
+        const inp = root.querySelector('[data-testid="fuzz-quiz-input"]');
+        fuzzQuiz.answer = inp ? inp.value : '';
+        fuzzQuiz.phase = 'graded';
+        render();
+      });
+    }
+    const fqReset = root.querySelector('[data-testid="fuzz-quiz-reset"]');
+    if (fqReset) {
+      fqReset.addEventListener('click', () => {
+        fuzzQuiz.phase = 'question';
+        fuzzQuiz.answer = '';
+        render();
+      });
+    }
   }
 
   function renderPreservingFocus(testid) {

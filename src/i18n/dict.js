@@ -264,6 +264,24 @@ export const messages = {
     'quiz.td.title': 'Test Doubles Self-Test',
     'quiz.td.answer': 'The best fit is: {correct}.',
 
+    // Quiz — Symbolic Execution
+    'quiz.symbex.title': 'Symbolic Execution Self-Test',
+    'quiz.symbex.prompt': 'How many feasible paths does symbolic execution find for the current program?',
+    'quiz.symbex.label': 'Feasible paths',
+    'quiz.symbex.answer': 'Answer: {count} feasible path(s).',
+
+    // Quiz — Concolic Execution
+    'quiz.concolic.title': 'Concolic Execution Self-Test',
+    'quiz.concolic.prompt': 'How many unique paths does concolic execution discover for the current program?',
+    'quiz.concolic.label': 'Unique paths',
+    'quiz.concolic.answer': 'Answer: {count} unique path(s).',
+
+    // Quiz — Fuzz Testing
+    'quiz.fuzz.title': 'Fuzz Testing Self-Test',
+    'quiz.fuzz.prompt': 'After running the fuzzer, what is the node coverage percentage?',
+    'quiz.fuzz.label': 'Node coverage (%)',
+    'quiz.fuzz.answer': 'Answer: {pct}% node coverage.',
+
     'section.flow': 'Testing Flow',
     'section.types': 'Testing Types',
     'section.methods.title': 'Testing Method Categories',
@@ -1006,6 +1024,21 @@ export const messages = {
 
     'quiz.td.title': '測試替身 自我測驗',
     'quiz.td.answer': '最適合的替身類型是：{correct}。',
+
+    'quiz.symbex.title': '符號執行 自我測驗',
+    'quiz.symbex.prompt': '對於目前的程式，符號執行找到幾條可行路徑？',
+    'quiz.symbex.label': '可行路徑數',
+    'quiz.symbex.answer': '答案：{count} 條可行路徑。',
+
+    'quiz.concolic.title': 'Concolic 執行 自我測驗',
+    'quiz.concolic.prompt': '對於目前的程式，Concolic 執行共發現幾條不重複路徑？',
+    'quiz.concolic.label': '不重複路徑數',
+    'quiz.concolic.answer': '答案：{count} 條不重複路徑。',
+
+    'quiz.fuzz.title': 'Fuzz Testing 自我測驗',
+    'quiz.fuzz.prompt': '執行模糊測試後，節點覆蓋率為幾 %？',
+    'quiz.fuzz.label': '節點覆蓋率（%）',
+    'quiz.fuzz.answer': '答案：節點覆蓋率 {pct}%。',
 
     'section.flow': '測試流程',
     'section.types': '測試類型',

@@ -58,6 +58,47 @@ export function createSymbolicExecutionExplorer() {
     error: null,
   };
 
+  const symbexQuiz = { active: false, phase: 'question', answer: '', result: null };
+
+  function renderSymbexQuizPanel() {
+    if (!symbexQuiz.active) return '';
+    if (symbexQuiz.phase === 'graded') {
+      const correct = state.result ? state.result.paths.filter((p) => p.feasible).length : 0;
+      const userAns = parseInt(symbexQuiz.answer, 10);
+      const ok = userAns === correct;
+      return `
+        <div class="quiz-panel" data-testid="symbex-quiz-panel">
+          <div class="quiz-header">
+            <span>${t('quiz.symbex.title')}</span>
+            <button type="button" class="quiz-close-btn" data-testid="symbex-quiz-close">✕</button>
+          </div>
+          <p class="quiz-prompt">${t('quiz.symbex.prompt')}</p>
+          <p class="quiz-score ${ok ? 'quiz-score--perfect' : 'quiz-score--wrong'}">
+            ${ok ? t('quiz.graph.perfect') : ''}
+            ${t('quiz.symbex.answer', { count: correct })}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="symbex-quiz-reset">${t('quiz.retry')}</button>
+        </div>
+      `;
+    }
+    return `
+      <div class="quiz-panel" data-testid="symbex-quiz-panel">
+        <div class="quiz-header">
+          <span>${t('quiz.symbex.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="symbex-quiz-close">✕</button>
+        </div>
+        <p class="quiz-prompt">${t('quiz.symbex.prompt')}</p>
+        <div class="quiz-bva-inputs">
+          <label class="quiz-bva-field">
+            ${t('quiz.symbex.label')}
+            <input type="number" min="0" class="quiz-input" data-testid="symbex-quiz-input" value="${escapeHtml(symbexQuiz.answer)}" />
+          </label>
+        </div>
+        <button type="button" class="quiz-start-btn" data-testid="symbex-quiz-check">${t('quiz.check')}</button>
+      </div>
+    `;
+  }
+
   function recompute() {
     state.result = null;
     state.error = null;
@@ -162,7 +203,11 @@ export function createSymbolicExecutionExplorer() {
           <header class="symbex-panel-header">
             <h3>${t('explorer.panel.results')}</h3>
           </header>
-          <p class="symbex-summary" data-testid="symbex-summary">${summary}</p>
+          <p class="symbex-summary" data-testid="symbex-summary">
+            ${summary}
+            ${!symbexQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="symbex-quiz-start" style="margin-left:0.5rem">${t('quiz.start')}</button>` : ''}
+          </p>
+          ${renderSymbexQuizPanel()}
           ${pathsMarkup}
         </section>
       </div>
@@ -262,6 +307,7 @@ export function createSymbolicExecutionExplorer() {
         state.exampleId = ex.id;
         state.sourceCode = ex.sourceCode;
         state.selectedPathId = null;
+        symbexQuiz.active = false;
         render();
       });
     });
@@ -312,6 +358,35 @@ export function createSymbolicExecutionExplorer() {
         render();
       });
     });
+
+    const sqStart = root.querySelector('[data-testid="symbex-quiz-start"]');
+    if (sqStart) {
+      sqStart.addEventListener('click', () => {
+        symbexQuiz.active = true;
+        symbexQuiz.phase = 'question';
+        symbexQuiz.answer = '';
+        render();
+      });
+    }
+    const sqClose = root.querySelector('[data-testid="symbex-quiz-close"]');
+    if (sqClose) { sqClose.addEventListener('click', () => { symbexQuiz.active = false; render(); }); }
+    const sqCheck = root.querySelector('[data-testid="symbex-quiz-check"]');
+    if (sqCheck) {
+      sqCheck.addEventListener('click', () => {
+        const inp = root.querySelector('[data-testid="symbex-quiz-input"]');
+        symbexQuiz.answer = inp ? inp.value : '';
+        symbexQuiz.phase = 'graded';
+        render();
+      });
+    }
+    const sqReset = root.querySelector('[data-testid="symbex-quiz-reset"]');
+    if (sqReset) {
+      sqReset.addEventListener('click', () => {
+        symbexQuiz.phase = 'question';
+        symbexQuiz.answer = '';
+        render();
+      });
+    }
   }
 
   function renderPreservingFocus(testid) {

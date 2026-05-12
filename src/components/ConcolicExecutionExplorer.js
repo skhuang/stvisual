@@ -75,6 +75,47 @@ export function createConcolicExecutionExplorer() {
     error: null,
   };
 
+  const concolicQuiz = { active: false, phase: 'question', answer: '', result: null };
+
+  function renderConcolicQuizPanel() {
+    if (!concolicQuiz.active) return '';
+    if (concolicQuiz.phase === 'graded') {
+      const correct = state.result ? state.result.uniquePathCount : 0;
+      const userAns = parseInt(concolicQuiz.answer, 10);
+      const ok = userAns === correct;
+      return `
+        <div class="quiz-panel" data-testid="concolic-quiz-panel">
+          <div class="quiz-header">
+            <span>${t('quiz.concolic.title')}</span>
+            <button type="button" class="quiz-close-btn" data-testid="concolic-quiz-close">✕</button>
+          </div>
+          <p class="quiz-prompt">${t('quiz.concolic.prompt')}</p>
+          <p class="quiz-score ${ok ? 'quiz-score--perfect' : 'quiz-score--wrong'}">
+            ${ok ? t('quiz.graph.perfect') : ''}
+            ${t('quiz.concolic.answer', { count: correct })}
+          </p>
+          <button type="button" class="quiz-start-btn" data-testid="concolic-quiz-reset">${t('quiz.retry')}</button>
+        </div>
+      `;
+    }
+    return `
+      <div class="quiz-panel" data-testid="concolic-quiz-panel">
+        <div class="quiz-header">
+          <span>${t('quiz.concolic.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="concolic-quiz-close">✕</button>
+        </div>
+        <p class="quiz-prompt">${t('quiz.concolic.prompt')}</p>
+        <div class="quiz-bva-inputs">
+          <label class="quiz-bva-field">
+            ${t('quiz.concolic.label')}
+            <input type="number" min="0" class="quiz-input" data-testid="concolic-quiz-input" value="${escapeHtml(concolicQuiz.answer)}" />
+          </label>
+        </div>
+        <button type="button" class="quiz-start-btn" data-testid="concolic-quiz-check">${t('quiz.check')}</button>
+      </div>
+    `;
+  }
+
   function recompute() {
     state.result = null;
     state.error = null;
@@ -187,7 +228,11 @@ export function createConcolicExecutionExplorer() {
           <header class="concolic-panel-header">
             <h3>${t('explorer.panel.results')}</h3>
           </header>
-          <p class="concolic-summary" data-testid="concolic-summary">${summary}</p>
+          <p class="concolic-summary" data-testid="concolic-summary">
+            ${summary}
+            ${!concolicQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="concolic-quiz-start" style="margin-left:0.5rem">${t('quiz.start')}</button>` : ''}
+          </p>
+          ${renderConcolicQuizPanel()}
           ${body}
         </section>
       </div>
@@ -309,6 +354,7 @@ export function createConcolicExecutionExplorer() {
         state.sourceCode = ex.sourceCode;
         state.seedText = ex.seed || '';
         state.selectedIterId = null;
+        concolicQuiz.active = false;
         render();
       });
     });
@@ -367,6 +413,35 @@ export function createConcolicExecutionExplorer() {
         render();
       });
     });
+
+    const cqStart = root.querySelector('[data-testid="concolic-quiz-start"]');
+    if (cqStart) {
+      cqStart.addEventListener('click', () => {
+        concolicQuiz.active = true;
+        concolicQuiz.phase = 'question';
+        concolicQuiz.answer = '';
+        render();
+      });
+    }
+    const cqClose = root.querySelector('[data-testid="concolic-quiz-close"]');
+    if (cqClose) { cqClose.addEventListener('click', () => { concolicQuiz.active = false; render(); }); }
+    const cqCheck = root.querySelector('[data-testid="concolic-quiz-check"]');
+    if (cqCheck) {
+      cqCheck.addEventListener('click', () => {
+        const inp = root.querySelector('[data-testid="concolic-quiz-input"]');
+        concolicQuiz.answer = inp ? inp.value : '';
+        concolicQuiz.phase = 'graded';
+        render();
+      });
+    }
+    const cqReset = root.querySelector('[data-testid="concolic-quiz-reset"]');
+    if (cqReset) {
+      cqReset.addEventListener('click', () => {
+        concolicQuiz.phase = 'question';
+        concolicQuiz.answer = '';
+        render();
+      });
+    }
   }
 
   function renderPreservingFocus(testid) {
