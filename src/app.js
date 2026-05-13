@@ -21,6 +21,7 @@ import { createTestDoublesExplorer } from './components/TestDoublesExplorer.js';
 import { createDefectCostExplorer } from './components/DefectCostExplorer.js';
 import { createVModelExplorer } from './components/VModelExplorer.js';
 import { createPyramidAdjusterExplorer } from './components/PyramidAdjusterExplorer.js';
+import { createPairwiseExplorer } from './components/PairwiseExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { buildShareUrl } from './utils/resultExporter.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
@@ -186,6 +187,7 @@ export function renderApp(container) {
       mt: createMetamorphicTestingExplorer(),
       et: createExploratoryTestingExplorer(),
       td: createTestDoublesExplorer(),
+      pairwise: createPairwiseExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -262,6 +264,7 @@ export function renderApp(container) {
       { id: 'mt',  key: 'blackboxTab.mt',  component: components.mt },
       { id: 'et',  key: 'blackboxTab.et',  component: components.et },
       { id: 'td',  key: 'blackboxTab.td',  component: components.td },
+      { id: 'pairwise', key: 'blackboxTab.pairwise', component: components.pairwise },
     ];
     const blackboxSlot = container.querySelector('[data-slot="blackbox"]');
     const blackboxTabBar = document.createElement('nav');
