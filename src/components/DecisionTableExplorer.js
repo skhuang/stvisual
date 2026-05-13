@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 import { generateDecisionTableTests, validateDecisionTable } from '../utils/blackboxTesting.js';
 
 const STORAGE_KEY = 'stvisual.dt.v1';
@@ -144,6 +145,7 @@ export function createDecisionTableExplorer() {
                   .replace('{covered}', validation.covered)
                   .replace('{dup}', validation.duplicate.length)}`}
           </p>
+          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: 'dt', explorerLabel: t('quiz.dt.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: (covCorrect ? 1 : 0) + (dupCorrect ? 1 : 0), total: 2, items: [{ q: t('quiz.dt.label.covered'), a: String(dtQuiz.ansCovered), expected: String(validation.covered), ok: covCorrect }, { q: t('quiz.dt.label.dup'), a: String(dtQuiz.ansDup), expected: String(validation.duplicate.length), ok: dupCorrect }] })}" data-testid="dt-quiz-share">📋 ${t('quiz.share.btn')}</button>
           <button type="button" class="quiz-start-btn" data-testid="dt-quiz-reset">${t('quiz.reset')}</button>
         ` : `
           <button type="button" class="quiz-start-btn" data-testid="dt-quiz-check">${t('quiz.check')}</button>

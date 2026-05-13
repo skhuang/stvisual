@@ -8,6 +8,7 @@ import { buildTestPathSetForRequirements, getCoverageRequirements } from '../uti
 import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
 import { buildDataFlowGraph } from '../utils/dataFlow.js';
 import { t, getLocale, pickField } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 function cloneGraph(graph) {
   return {
@@ -505,7 +506,8 @@ export function createGraphCoverageExplorer() {
         ? ` <strong>${t('quiz.graph.perfect')}</strong>`
         : graphQuiz.result.covered < graphQuiz.result.total
           ? ` <em>${t('quiz.graph.incomplete')}</em>` : ''}
-    </p>` : '';
+    </p>
+    <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: 'graph', explorerLabel: t('quiz.graph.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: graphQuiz.result.covered, total: graphQuiz.result.total, items: candidates.map((path) => { const key = path.join('->'); const isOpt = optimalKeys.has(key); const checked = graphQuiz.selectedPaths.has(key); return { q: key.replaceAll('->', ' → '), a: checked ? '✓' : '—', expected: isOpt ? '✓' : '—', ok: checked === isOpt }; }) })}" data-testid="graph-quiz-share">📋 ${t('quiz.share.btn')}</button>` : '';
 
     const prompt = t('quiz.graph.prompt')
       .replace('{criterion}', escapeHtml(selectedCriterion ? selectedCriterion.label : criterionId))

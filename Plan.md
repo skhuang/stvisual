@@ -79,6 +79,85 @@ ExploratoryTestingExplorer、CloudStoragePanel。
 
 ---
 
+### F. Google Classroom 整合 + Self-Test 強化（進行中）
+
+#### 背景與目標
+
+讓老師可以透過 Google Classroom 出作業，學生在工具中完成 **Quiz 模式**（有正確答案、自動批改）或 **Lab 模式**（互動探索 + 反思問題 / 量化指標），再將成績回報給老師。
+
+#### Self-Test 模式定義
+
+| 模式 | 說明 | 批改方式 |
+|------|------|---------|
+| **Quiz** | 給定場景，輸入正確答案（數字、選擇題） | 自動批改，有確定正解 |
+| **Lab — Reflection** | 探索互動後回答 2–3 個反思問題（開放式文字） | 榮譽制，老師閱覽 |
+| **Lab — Metric** | 達成量化指標（如覆蓋率 ≥ 80%、消滅突變體 ≥ N 個） | 自動判定通過/未通過 |
+
+---
+
+#### F-A — Phase A：純前端成績匯出（進行中）
+
+**目標**：不需後端，學生完成 quiz/lab → 產生可分享的結果連結 → 貼到 Classroom 作業留言 → 老師點連結驗證。
+
+**元件**
+
+- `src/utils/resultExporter.js` — 將答題記錄序列化為 Base64 URL 參數
+- `src/components/ResultViewer.js` + CSS — 讀取 URL `?result=` 參數，呈現唯讀成績單
+- 各 Explorer quiz panel 加「📋 分享成績」按鈕（複製連結到剪貼板）
+- Lab — Reflection：在數個 Explorer 加「反思問題」（open-ended 文字輸入），同樣可匯出
+- Lab — Metric：在支援量化指標的 Explorer（Graph/Syntax/Fuzz 等）加「達標紀錄」匯出
+
+**URL 格式**（無後端簽章，榮譽制）
+
+```
+https://site/?result=<base64(JSON)>
+JSON = { v:1, explorer, mode:"quiz"|"lab-reflect"|"lab-metric",
+         ts, lang, items:[{q,a,correct?,score?}], total, passed? }
+```
+
+**限制**：純榮譽制，學生可自行修改連結；Phase B 才加簽章與身份驗證。
+
+**子任務**
+
+- [ ] F-A1：`resultExporter.js` + `ResultViewer` 元件 + i18n + 測試
+- [ ] F-A2：所有現有 Quiz Explorer 加「分享成績」按鈕
+- [ ] F-A3：Lab — Reflection：為 Graph / Logic / Fuzz / Symbex 加反思問題 + 匯出
+- [ ] F-A4：Lab — Metric：Graph（覆蓋率）、Syntax（殺死突變體 %）、Fuzz（節點覆蓋 %）加達標匯出
+- [ ] F-A5：`ResultViewer` 整合進 app 首頁（URL 有 `?result=` 時自動彈出）
+
+---
+
+#### F-B — Phase B：Firebase Auth + Firestore 成績儀表板（待規劃）
+
+**目標**：Google Sign-In（Firebase Auth）+ Firestore 存分數；老師 dashboard 頁面看全班成績。Classroom 作業仍手動建（連結到工具特定 section），但成績追蹤自動化。
+
+**需要新增**
+- Firebase Functions（Node.js）作 OAuth token 管理
+- Firestore 資料結構：`courses/{courseId}/students/{uid}/results/{resultId}`
+- 老師 dashboard：班級成績總覽、個別學生答題明細
+- 學生端：登入後成績自動上傳，不需手動複製連結
+
+**前置條件**：F-A 完成；確認 Firebase Functions 費用與 CI 部署流程
+
+---
+
+#### F-C — Phase C：完整 Google Classroom API 整合（待規劃）
+
+**目標**：老師在工具內一鍵建 Classroom 作業，學生完成後成績自動回寫 Classroom。
+
+**需要新增**
+- Firebase Functions 作 Classroom API OAuth proxy（避免 client secret 暴露）
+- Classroom API scopes：`classroom.coursework.students`、`classroom.rosters.readonly`
+- 作業類型：
+  - Quiz → Google Forms（FormItems API）或 Classroom Link 作業
+  - Lab-Reflect → Classroom 附件（學生填寫後提交）
+  - Lab-Metric → Classroom Link + 工具端自動 POST 成績
+- Google OAuth App 審查（需提交至 Google Cloud Console，審核約 1–4 週）
+
+**前置條件**：F-B 完成；Google Cloud 專案已申請 Classroom API 存取
+
+---
+
 ### D2. 關閉已完成的 GitHub Issues（已執行 2026-05-13）
 
 下列 issue 的對應 PR 均已 merge，已手動關閉：

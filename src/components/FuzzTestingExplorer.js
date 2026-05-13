@@ -1,4 +1,5 @@
-import { t, pickField } from '../i18n/index.js';
+import { t, getLocale, pickField } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 import { fuzzTest, formatInput, formatOutput } from '../utils/fuzzTesting.js';
 import { fuzzTestingExamples } from '../data/testingData.js';
 import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
@@ -75,6 +76,7 @@ export function createFuzzTestingExplorer() {
     if (fuzzQuiz.phase === 'graded') {
       const userAns = parseInt(fuzzQuiz.answer, 10);
       const ok = userAns === nodeCov;
+      const shareEncoded = encodeResult({ v: 1, explorer: 'fuzz', explorerLabel: t('quiz.fuzz.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t('quiz.fuzz.prompt'), a: String(fuzzQuiz.answer), expected: String(nodeCov), ok }] });
       return `
         <div class="quiz-panel" data-testid="fuzz-quiz-panel">
           <div class="quiz-header">
@@ -86,6 +88,7 @@ export function createFuzzTestingExplorer() {
             ${ok ? t('quiz.graph.perfect') : ''}
             ${t('quiz.fuzz.answer', { pct: nodeCov })}
           </p>
+          <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="fuzz-quiz-share">📋 ${t('quiz.share.btn')}</button>
           <button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-reset">${t('quiz.retry')}</button>
         </div>
       `;

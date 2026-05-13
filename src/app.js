@@ -21,6 +21,8 @@ import { createTestDoublesExplorer } from './components/TestDoublesExplorer.js';
 import { createDefectCostExplorer } from './components/DefectCostExplorer.js';
 import { createVModelExplorer } from './components/VModelExplorer.js';
 import { createPyramidAdjusterExplorer } from './components/PyramidAdjusterExplorer.js';
+import { createResultViewer } from './components/ResultViewer.js';
+import { buildShareUrl } from './utils/resultExporter.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const learningSectionsConfig = [
@@ -615,4 +617,32 @@ export function renderApp(container) {
 
   paint();
   onLocaleChange(() => paint());
+
+  // Show ResultViewer if URL contains ?result= (Phase A share link)
+  const viewer = createResultViewer();
+  if (viewer) document.body.appendChild(viewer);
+
+  // Global delegated handler for all quiz share buttons
+  document.body.addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-share-payload]');
+    if (!btn) return;
+    const url = buildShareUrl(btn.dataset.sharePayload);
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const inp = document.createElement('input');
+      inp.value = url;
+      document.body.appendChild(inp);
+      inp.select();
+      document.execCommand('copy');
+      inp.remove();
+    }
+    const orig = btn.innerHTML;
+    btn.innerHTML = t('quiz.share.copied');
+    btn.classList.add('quiz-share-btn--copied');
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.classList.remove('quiz-share-btn--copied');
+    }, 2000);
+  });
 }

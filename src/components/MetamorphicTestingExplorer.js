@@ -1,4 +1,5 @@
 import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 import { metamorphicExamples, generateMrTests } from '../utils/metamorphicTesting.js';
 
 function escapeHtml(v = '') {
@@ -30,6 +31,7 @@ export function createMetamorphicTestingExplorer() {
       const correct = mtQuiz.autoResults ? mtQuiz.autoResults.filter((r) => r.holds).length : 0;
       const userAns = parseInt(mtQuiz.answer, 10);
       const ok = userAns === correct;
+      const shareEncoded = encodeResult({ v: 1, explorer: 'mt', explorerLabel: t('quiz.mt.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t('quiz.mt.prompt', { rel: relName }), a: String(mtQuiz.answer), expected: String(correct), ok }] });
       return `
         <div class="quiz-panel" data-testid="mt-quiz-panel">
           <div class="quiz-header">
@@ -41,6 +43,7 @@ export function createMetamorphicTestingExplorer() {
             ${ok ? t('quiz.graph.perfect') : ''}
             ${t('quiz.mt.answer', { count: correct })}
           </p>
+          <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="mt-quiz-share">📋 ${t('quiz.share.btn')}</button>
           <button type="button" class="quiz-start-btn" data-testid="mt-quiz-reset">${t('quiz.retry')}</button>
         </div>
       `;

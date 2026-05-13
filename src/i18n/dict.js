@@ -204,6 +204,22 @@ export const messages = {
     'et.note.add': 'Log',
     'common.delete': 'Delete',
 
+    // Result sharing (Phase A)
+    'quiz.share.btn': 'Share Results',
+    'quiz.share.copied': '✓ Copied!',
+    'rv.title': 'Quiz Results',
+    'rv.mode.quiz': 'Quiz',
+    'rv.mode.labReflect': 'Lab · Reflection',
+    'rv.mode.labMetric': 'Lab · Metric',
+    'rv.score.label': 'Score',
+    'rv.passed': 'Passed ✓',
+    'rv.notPassed': 'Not yet passed',
+    'rv.col.question': 'Question',
+    'rv.col.answer': 'Your Answer',
+    'rv.col.expected': 'Expected',
+    'rv.close': 'Close',
+    'rv.disclaimer': '* This result was self-reported and has not been verified by a server.',
+
     // Quiz (self-test) mode — shared and per-topic
     'quiz.start': 'Self-Test',
     'quiz.close': 'Close Quiz',
@@ -1066,6 +1082,22 @@ export const messages = {
     'et.note.placeholder': '描述你的發現…',
     'et.note.add': '記錄',
     'common.delete': '刪除',
+
+    // Result sharing (Phase A)
+    'quiz.share.btn': '分享成績',
+    'quiz.share.copied': '✓ 已複製！',
+    'rv.title': '測驗成績單',
+    'rv.mode.quiz': 'Quiz',
+    'rv.mode.labReflect': 'Lab · 反思',
+    'rv.mode.labMetric': 'Lab · 指標',
+    'rv.score.label': '得分',
+    'rv.passed': '通過 ✓',
+    'rv.notPassed': '尚未通過',
+    'rv.col.question': '題目',
+    'rv.col.answer': '你的答案',
+    'rv.col.expected': '正確答案',
+    'rv.close': '關閉',
+    'rv.disclaimer': '* 此成績為學生自我回報，尚未經伺服器驗證。',
 
     // Quiz (self-test) mode
     'quiz.start': '自我測驗',

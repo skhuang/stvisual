@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 import { generateStTransitionTests, generateStSequenceTests } from '../utils/blackboxTesting.js';
 
 const STORAGE_KEY = 'stvisual.st.v1';
@@ -114,6 +115,7 @@ export function createStateTransitionExplorer() {
               ? `<strong>${t('quiz.bva.perfect')}</strong>`
               : `${t('quiz.ec.wrong')} ${t('quiz.ec.answer').replace('{count}', count)}`}
           </p>
+          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: 'st', explorerLabel: t('quiz.st.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: correct ? 1 : 0, total: 1, items: [{ q: t('quiz.st.prompt').replace('{mode}', modeLabel), a: String(stQuiz.answer), expected: String(count), ok: correct }] })}" data-testid="st-quiz-share">📋 ${t('quiz.share.btn')}</button>
           <button type="button" class="quiz-start-btn" data-testid="st-quiz-reset">${t('quiz.reset')}</button>
         ` : `
           <button type="button" class="quiz-start-btn" data-testid="st-quiz-check">${t('quiz.check')}</button>

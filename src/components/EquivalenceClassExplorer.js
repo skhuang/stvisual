@@ -1,5 +1,6 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
 import { generateWectTests, generateSectTests } from '../utils/blackboxTesting.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 const STORAGE_KEY = 'stvisual.ec.v1';
 
@@ -171,6 +172,7 @@ export function createEquivalenceClassExplorer() {
           ${isGraded ? 'disabled' : ''}/>
         ${sectFeedback}
       </div>
+      ${isGraded ? `<button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: 'ec', explorerLabel: t('quiz.ec.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: (quiz.result.wectCorrect ? 1 : 0) + (quiz.result.sectCorrect ? 1 : 0), total: 2, items: [{ q: t('quiz.ec.wect.prompt'), a: String(quiz.wectAnswer), expected: String(quiz.result.wectCount), ok: quiz.result.wectCorrect }, { q: t('quiz.ec.sect.prompt'), a: String(quiz.sectAnswer), expected: String(quiz.result.sectCount), ok: quiz.result.sectCorrect }] })}" data-testid="ec-quiz-share">📋 ${t('quiz.share.btn')}</button>` : ''}
       <div class="quiz-actions">
         ${!isGraded
           ? `<button type="button" class="quiz-check-btn" data-testid="ec-quiz-check">${t('quiz.check')}</button>`

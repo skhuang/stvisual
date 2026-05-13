@@ -1,0 +1,187 @@
+.rv-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  padding: 1rem;
+  animation: rvOverlayIn 0.18s ease;
+}
+@keyframes rvOverlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.rv-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  max-width: 560px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  animation: rvCardIn 0.22s ease;
+}
+@keyframes rvCardIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.rv-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rv-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+.rv-mode-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0369a1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rv-explorer {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+.rv-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.rv-close {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #9ca3af;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+}
+.rv-close:hover { color: #dc2626; }
+
+.rv-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+.rv-meta-item {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Score */
+.rv-score-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+.rv-score {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.rv-score-sep { font-size: 1.6rem; font-weight: 400; color: #94a3b8; }
+.rv-score--pass    { color: #16a34a; }
+.rv-score--partial { color: #d97706; }
+.rv-score--fail    { color: #dc2626; }
+.rv-score-label { font-size: 0.82rem; color: #6b7280; }
+
+/* Items table */
+.rv-items {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-bottom: 1rem;
+}
+.rv-items th {
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+.rv-items td {
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: top;
+}
+.rv-item-q  { color: #374151; max-width: 160px; }
+.rv-item-a  { color: #1e293b; font-family: ui-monospace, monospace; }
+.rv-item-exp { color: #6b7280; font-family: ui-monospace, monospace; }
+.rv-item-ok { font-size: 1rem; text-align: center; }
+.rv-items tr .rv-item-ok:last-child { color: #16a34a; }
+.rv-items tr:has(.rv-item-ok:not(:empty)) td.rv-item-ok { }
+.rv-items tr[data-ok="true"]  .rv-item-ok { color: #16a34a; }
+.rv-items tr[data-ok="false"] .rv-item-ok { color: #dc2626; }
+
+.rv-disclaimer {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  font-style: italic;
+  margin: 0 0 1rem;
+}
+
+.rv-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+.rv-btn {
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+.rv-btn--primary { background: #0f4c81; color: #fff; }
+.rv-btn--primary:hover { background: #0a3660; }
+
+/* Share button (injected into quiz panels) */
+.quiz-share-btn {
+  padding: 0.28rem 0.8rem;
+  border: 1px solid #0f4c81;
+  background: #fff;
+  color: #0f4c81;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: background 0.15s, color 0.15s;
+}
+.quiz-share-btn:hover { background: #0f4c81; color: #fff; }
+.quiz-share-btn--copied { background: #16a34a; border-color: #16a34a; color: #fff; }
+
+@media (max-width: 560px) {
+  .rv-card { padding: 1.1rem 1rem; border-radius: 10px; }
+  .rv-score { font-size: 2rem; }
+}

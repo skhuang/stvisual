@@ -1,5 +1,6 @@
 import { mutationOperators, programExamples } from '../data/mutationData.js';
 import { t, getLocale, pickField } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 import {
   generateMutants,
   evaluateMutants,
@@ -160,6 +161,7 @@ export function createSyntaxCoverageExplorer() {
       const correct = state.score.killed;
       const userAns = parseInt(syntaxQuiz.answer, 10);
       const ok = userAns === correct;
+      const shareEncoded = encodeResult({ v: 1, explorer: 'syntax', explorerLabel: t('quiz.syntax.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t('quiz.syntax.prompt', { program: state.exampleId }), a: String(syntaxQuiz.answer), expected: String(correct), ok }] });
       return `
         <div class="quiz-panel" data-testid="syntax-quiz-panel">
           <div class="quiz-header">
@@ -171,6 +173,7 @@ export function createSyntaxCoverageExplorer() {
             ${ok ? t('quiz.graph.perfect') : ''}
             ${t('quiz.syntax.answer', { killed: correct, total: state.score.total })}
           </p>
+          <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="syntax-quiz-share">📋 ${t('quiz.share.btn')}</button>
           <button type="button" class="quiz-start-btn" data-testid="syntax-quiz-reset">${t('quiz.retry')}</button>
         </div>
       `;

@@ -1,5 +1,6 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
 import { generateBvaTests, generateRobustBvaTests } from '../utils/blackboxTesting.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 const STORAGE_KEY = 'stvisual.bva.v1';
 const PARAM_LIMIT = 5;
@@ -140,10 +141,12 @@ export function createBoundaryValueExplorer() {
       </div>`;
     }).join('');
 
+    const bvaLabels = [0, 1, 2, 3, 4].map((i) => t(`quiz.bva.labels.${i}`));
     const scoreRow = isGraded ? `<p class="quiz-score" data-testid="bva-quiz-score">
       ${t('quiz.bva.score').replace('{score}', quiz.result.score)}
       ${quiz.result.score === 5 ? ` <strong>${t('quiz.bva.perfect')}</strong>` : ''}
-    </p>` : '';
+    </p>
+    <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: 'bva', explorerLabel: t('quiz.bva.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: quiz.result.score, total: 5, items: [0,1,2,3,4].map((i) => ({ q: bvaLabels[i], a: String(quiz.answers[i]), expected: String(quiz.result.expected[i]), ok: quiz.result.correct[i] })) })}" data-testid="bva-quiz-share">📋 ${t('quiz.share.btn')}</button>` : '';
 
     return `<div class="quiz-panel" data-testid="bva-quiz">
       <div class="quiz-header">

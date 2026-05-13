@@ -9,6 +9,7 @@ import {
 } from '../utils/logicCoverage.js';
 import { buildKMap } from '../utils/karnaughMap.js';
 import { t, getLocale, pickField } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
 import { solveBinding, formatWitnessStr, extractVarsFromBindings, buildConstraintStr } from '../utils/logicBinding.js';
 
@@ -249,6 +250,7 @@ export function createLogicCoverageExplorer() {
               ? `<strong>${t('quiz.bva.perfect')}</strong>`
               : `${t('quiz.ec.wrong')} ${t('quiz.ec.answer').replace('{count}', uniqueCount)}`}
           </p>
+          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: 'logic', explorerLabel: t('quiz.logic.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: correct ? 1 : 0, total: 1, items: [{ q: t('quiz.logic.prompt').replace('{expr}', state.expression).replace('{criterion}', criterionLabel), a: String(logicQuiz.answer), expected: String(uniqueCount), ok: correct }] })}" data-testid="logic-quiz-share">📋 ${t('quiz.share.btn')}</button>
           <button type="button" class="quiz-start-btn" data-testid="logic-quiz-reset">${t('quiz.reset')}</button>
         ` : `
           <button type="button" class="quiz-start-btn" data-testid="logic-quiz-check">${t('quiz.check')}</button>

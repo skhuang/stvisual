@@ -1,4 +1,5 @@
 import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 function escapeHtml(v = '') {
   return String(v)
@@ -597,6 +598,7 @@ export function createTestDoublesExplorer() {
 
     if (tdQuiz.phase === 'graded') {
       const ok = tdQuiz.selected === qs.correct;
+      const shareEncoded = encodeResult({ v: 1, explorer: 'td', explorerLabel: t('quiz.td.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: desc, a: tdQuiz.selected, expected: qs.correct, ok }] });
       return `
         <div class="quiz-panel" data-testid="td-quiz-panel">
           <div class="quiz-header">
@@ -608,6 +610,7 @@ export function createTestDoublesExplorer() {
             ${ok ? t('quiz.graph.perfect') : ''}
             ${t('quiz.td.answer', { correct: qs.correct })}
           </p>
+          <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="td-quiz-share">📋 ${t('quiz.share.btn')}</button>
           <button type="button" class="quiz-start-btn" data-testid="td-quiz-reset">${t('quiz.retry')}</button>
         </div>
       `;

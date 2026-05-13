@@ -1,4 +1,5 @@
 import { t, getLocale, pickField } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 import { concolicExecute } from '../utils/concolicExecution.js';
 import { concolicExecutionExamples } from '../data/testingData.js';
 import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
@@ -83,6 +84,7 @@ export function createConcolicExecutionExplorer() {
       const correct = state.result ? state.result.uniquePathCount : 0;
       const userAns = parseInt(concolicQuiz.answer, 10);
       const ok = userAns === correct;
+      const shareEncoded = encodeResult({ v: 1, explorer: 'concolic', explorerLabel: t('quiz.concolic.title'), mode: 'quiz', ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t('quiz.concolic.prompt'), a: String(concolicQuiz.answer), expected: String(correct), ok }] });
       return `
         <div class="quiz-panel" data-testid="concolic-quiz-panel">
           <div class="quiz-header">
@@ -94,6 +96,7 @@ export function createConcolicExecutionExplorer() {
             ${ok ? t('quiz.graph.perfect') : ''}
             ${t('quiz.concolic.answer', { count: correct })}
           </p>
+          <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="concolic-quiz-share">📋 ${t('quiz.share.btn')}</button>
           <button type="button" class="quiz-start-btn" data-testid="concolic-quiz-reset">${t('quiz.retry')}</button>
         </div>
       `;
