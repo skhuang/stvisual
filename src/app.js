@@ -19,6 +19,7 @@ import { createMetamorphicTestingExplorer } from './components/MetamorphicTestin
 import { createExploratoryTestingExplorer } from './components/ExploratoryTestingExplorer.js';
 import { createTestDoublesExplorer } from './components/TestDoublesExplorer.js';
 import { createDefectCostExplorer } from './components/DefectCostExplorer.js';
+import { createVModelExplorer } from './components/VModelExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const learningSectionsConfig = [
@@ -185,6 +186,7 @@ export function renderApp(container) {
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
+      vmodel: createVModelExplorer(),
       types: createTestingTypesTable(),
     };
 
@@ -315,6 +317,7 @@ export function renderApp(container) {
     const flowTabs = [
       { id: 'flow',       key: 'flowTab.flow',       component: components.flow },
       { id: 'defectCost', key: 'flowTab.defectCost', component: components.defectCost },
+      { id: 'vmodel',     key: 'flowTab.vmodel',     component: components.vmodel },
     ];
     const flowSlot = container.querySelector('[data-slot="flow"]');
     const flowTabBar = document.createElement('nav');
