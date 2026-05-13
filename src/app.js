@@ -25,6 +25,7 @@ import { createPairwiseExplorer } from './components/PairwiseExplorer.js';
 import { createCauseEffectExplorer } from './components/CauseEffectExplorer.js';
 import { createCodeCoverageExplorer } from './components/CodeCoverageExplorer.js';
 import { createIntegrationTestingExplorer } from './components/IntegrationTestingExplorer.js';
+import { createPropertyBasedTestingExplorer } from './components/PropertyBasedTestingExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { buildShareUrl } from './utils/resultExporter.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
@@ -40,6 +41,7 @@ const learningSectionsConfig = [
   { id: 'concolic', key: 'section.concolic' },
   { id: 'fuzz', key: 'section.fuzz' },
   { id: 'testgen', key: 'section.testgen' },
+  { id: 'pbt', key: 'section.pbt' },
   { id: 'inttest', key: 'section.inttest' },
   { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
@@ -64,7 +66,7 @@ const overviewGroups = [
   },
   {
     key: 'overview.group.execution',
-    sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen', 'inttest'],
+    sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen', 'pbt', 'inttest'],
   },
   {
     key: 'overview.group.blackbox',
@@ -133,6 +135,7 @@ export function renderApp(container) {
           <section data-testid="section-concolic" tabindex="-1" aria-labelledby="section-concolic-title"><h2 id="section-concolic-title">${t('section.concolic.title')}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t('section.fuzz.title')}</h2><div data-slot="fuzz"></div></section>
           <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t('section.testgen.title')}</h2><div data-slot="testgen"></div></section>
+          <section data-testid="section-pbt" tabindex="-1" aria-labelledby="section-pbt-title"><h2 id="section-pbt-title">${t('section.pbt.title')}</h2><div data-slot="pbt"></div></section>
           <section data-testid="section-inttest" tabindex="-1" aria-labelledby="section-inttest-title"><h2 id="section-inttest-title">${t('section.inttest.title')}</h2><div data-slot="inttest"></div></section>
           <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
@@ -172,6 +175,7 @@ export function renderApp(container) {
       concolic: main.querySelector('[data-testid="section-concolic"]'),
       fuzz: main.querySelector('[data-testid="section-fuzz"]'),
       testgen: main.querySelector('[data-testid="section-testgen"]'),
+      pbt: main.querySelector('[data-testid="section-pbt"]'),
       inttest: main.querySelector('[data-testid="section-inttest"]'),
       blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
@@ -200,6 +204,7 @@ export function renderApp(container) {
       ceg: createCauseEffectExplorer(),
       codecov: createCodeCoverageExplorer(),
       inttest: createIntegrationTestingExplorer(),
+      pbt: createPropertyBasedTestingExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -213,6 +218,7 @@ export function renderApp(container) {
     container.querySelector('[data-slot="logic"]').appendChild(components.logic);
     container.querySelector('[data-slot="codecov"]').appendChild(components.codecov);
     container.querySelector('[data-slot="inttest"]').appendChild(components.inttest);
+    container.querySelector('[data-slot="pbt"]').appendChild(components.pbt);
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [

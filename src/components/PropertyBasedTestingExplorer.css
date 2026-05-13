@@ -1,0 +1,299 @@
+.pbt-explorer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1rem 0;
+}
+
+/* ── Preset bar ── */
+.pbt-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.pbt-preset-btn {
+  padding: 0.25rem 0.7rem;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: monospace;
+  cursor: pointer;
+}
+.pbt-preset-btn:hover { background: #f1f5f9; }
+.pbt-preset-btn--active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; font-weight: 700; }
+.pbt-preset-btn--bug { border-color: #f87171; color: #dc2626; }
+.pbt-preset-btn--bug.pbt-preset-btn--active { background: #dc2626; border-color: #dc2626; color: #fff; }
+
+/* ── Main layout ── */
+.pbt-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+@media (max-width: 680px) {
+  .pbt-main { grid-template-columns: 1fr; }
+}
+
+/* ── Code card ── */
+.pbt-code-card {
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.pbt-code-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.pbt-code-block {
+  font-family: 'Fira Mono', monospace;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  white-space: pre;
+  line-height: 1.6;
+}
+
+/* ── Properties card ── */
+.pbt-props-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+}
+
+.pbt-props-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0 0 0.6rem;
+}
+
+.pbt-prop-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.pbt-prop-id {
+  min-width: 1.6rem;
+  padding: 0.1rem 0.35rem;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.pbt-prop-text {
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #374151;
+  line-height: 1.4;
+}
+
+/* ── Run controls ── */
+.pbt-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pbt-numtests-label {
+  font-size: 0.82rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.pbt-numtests-input {
+  width: 4.5rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #d0d7e2;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.pbt-run-btn {
+  padding: 0.35rem 1rem;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pbt-run-btn:hover { background: #1e40af; }
+
+/* ── Result card ── */
+.pbt-result-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.pbt-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+
+.pbt-result-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0;
+}
+
+.pbt-badge--pass {
+  padding: 0.15rem 0.6rem;
+  background: #d1fae5;
+  color: #065f46;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.pbt-badge--fail {
+  padding: 0.15rem 0.6rem;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.pbt-all-pass {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #059669;
+  padding: 0.5rem 0;
+}
+
+/* ── Counterexample ── */
+.pbt-cx-card {
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+}
+
+.pbt-cx-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #991b1b;
+  margin: 0 0 0.5rem;
+}
+
+.pbt-cx-row {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  margin-bottom: 0.3rem;
+  align-items: baseline;
+}
+
+.pbt-cx-key {
+  font-weight: 600;
+  color: #374151;
+  min-width: 6rem;
+}
+
+.pbt-cx-val {
+  font-family: monospace;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.pbt-cx-prop {
+  font-family: monospace;
+  color: #374151;
+}
+
+/* ── Distribution ── */
+.pbt-dist-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+}
+
+.pbt-dist-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0 0 0.5rem;
+}
+
+.pbt-dist-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.pbt-dist-sample {
+  padding: 0.1rem 0.4rem;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-family: monospace;
+}
+
+.pbt-dist-sample--fail {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ── Bottom ── */
+.pbt-bottom-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.pbt-bottom-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+
+.pbt-bottom-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0;
+}
+
+.pbt-bottom-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.pbt-hint {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0;
+}
