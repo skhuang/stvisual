@@ -20,6 +20,7 @@ import { createExploratoryTestingExplorer } from './components/ExploratoryTestin
 import { createTestDoublesExplorer } from './components/TestDoublesExplorer.js';
 import { createDefectCostExplorer } from './components/DefectCostExplorer.js';
 import { createVModelExplorer } from './components/VModelExplorer.js';
+import { createPyramidAdjusterExplorer } from './components/PyramidAdjusterExplorer.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
 const learningSectionsConfig = [
@@ -188,6 +189,7 @@ export function renderApp(container) {
       defectCost: createDefectCostExplorer(),
       vmodel: createVModelExplorer(),
       types: createTestingTypesTable(),
+      pyramid: createPyramidAdjusterExplorer(),
     };
 
     container.querySelector('[data-slot="methods"]').appendChild(components.methods);
@@ -368,7 +370,55 @@ export function renderApp(container) {
     renderFlowTabs();
     updateFlowPanels();
 
-    container.querySelector('[data-slot="types"]').appendChild(components.types);
+    // --- Testing Types: tabbed layout (pyramid table + adjuster) ---
+    const typesSlot = container.querySelector('[data-slot="types"]');
+    const typesTabs = [
+      { id: 'pyramid', key: 'typesTab.pyramid', component: components.types },
+      { id: 'adjuster', key: 'typesTab.adjuster', component: components.pyramid },
+    ];
+    let activeTypesTab = 'pyramid';
+
+    const typesTabBar = document.createElement('nav');
+    typesTabBar.className = 'syntax-tab-row';
+    typesTabBar.dataset.testid = 'types-tab-row';
+    typesTabBar.setAttribute('role', 'tablist');
+    typesSlot.appendChild(typesTabBar);
+
+    const typesPanels = document.createElement('div');
+    typesPanels.className = 'syntax-tab-panels';
+    for (const tab of typesTabs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.typesPanel = tab.id;
+      panel.appendChild(tab.component);
+      typesPanels.appendChild(panel);
+    }
+    typesSlot.appendChild(typesPanels);
+
+    function renderTypesTabs() {
+      typesTabBar.innerHTML = typesTabs.map((tab) => `
+        <button
+          class="syntax-tab-btn${activeTypesTab === tab.id ? ' active' : ''}"
+          data-types-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeTypesTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      typesTabBar.querySelectorAll('[data-types-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeTypesTab = btn.dataset.typesTab;
+          renderTypesTabs();
+          updateTypesPanels();
+        });
+      });
+    }
+    function updateTypesPanels() {
+      typesPanels.querySelectorAll('[data-types-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.typesPanel === activeTypesTab ? '' : 'none';
+      });
+    }
+    renderTypesTabs();
+    updateTypesPanels();
 
     let activeSection = loadSavedSection();
     let cloudDrawerOpen = false;
