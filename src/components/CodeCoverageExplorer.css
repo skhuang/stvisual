@@ -1,0 +1,366 @@
+.codecov-explorer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1rem 0;
+}
+
+/* ── Preset bar ── */
+.codecov-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.codecov-preset-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.codecov-preset-btn {
+  padding: 0.25rem 0.7rem;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: monospace;
+  cursor: pointer;
+}
+.codecov-preset-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
+.codecov-preset-btn--active {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+/* ── Main layout ── */
+.codecov-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .codecov-main { grid-template-columns: 1fr; }
+}
+
+/* ── Code view card ── */
+.codecov-code-card {
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.codecov-code-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.codecov-code-lines {
+  font-family: 'Fira Mono', 'Cascadia Code', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.codecov-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  transition: background 0.15s;
+}
+
+.codecov-line-num {
+  min-width: 1.4rem;
+  color: #475569;
+  font-size: 0.72rem;
+  text-align: right;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.codecov-line-text {
+  color: #e2e8f0;
+  white-space: pre;
+}
+
+.codecov-line--covered   { background: rgba(16, 185, 129, 0.15); }
+.codecov-line--covered .codecov-line-num   { color: #10b981; }
+.codecov-line--notcovered { background: rgba(239, 68, 68, 0.15); }
+.codecov-line--notcovered .codecov-line-num { color: #ef4444; }
+.codecov-line--partial   { background: rgba(245, 158, 11, 0.15); }
+.codecov-line--partial .codecov-line-num   { color: #f59e0b; }
+
+/* ── Right panel ── */
+.codecov-right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Coverage summary card ── */
+.codecov-summary-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.codecov-summary-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0 0 0.75rem;
+}
+
+.codecov-crit-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.codecov-crit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.codecov-crit-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  min-width: 4.5rem;
+  color: #374151;
+}
+
+.codecov-crit-bar-wrap {
+  flex: 1;
+  background: #f1f5f9;
+  border-radius: 4px;
+  height: 0.65rem;
+  overflow: hidden;
+}
+
+.codecov-crit-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+.codecov-crit-bar--stmt   { background: #60a5fa; }
+.codecov-crit-bar--branch { background: #34d399; }
+.codecov-crit-bar--cond   { background: #f59e0b; }
+.codecov-crit-bar--mcdc   { background: #a78bfa; }
+
+.codecov-crit-pct {
+  font-size: 0.8rem;
+  font-weight: 700;
+  min-width: 2.5rem;
+  text-align: right;
+  color: #0f4c81;
+}
+
+.codecov-crit-desc {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin: 0.1rem 0 0 4.5rem;
+  line-height: 1.4;
+}
+
+/* ── Criterion selector ── */
+.codecov-crit-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.codecov-crit-tab {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.codecov-crit-tab:hover { background: #f1f5f9; }
+.codecov-crit-tab--active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; font-weight: 700; }
+
+/* ── Structure card ── */
+.codecov-structure-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+}
+
+.codecov-structure-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0 0 0.6rem;
+}
+
+.codecov-struct-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.codecov-struct-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: #374151;
+}
+
+.codecov-struct-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.codecov-struct-dot--stmt   { background: #60a5fa; }
+.codecov-struct-dot--branch { background: #34d399; }
+.codecov-struct-dot--cond   { background: #f59e0b; }
+
+.codecov-analogy {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin: 0.5rem 0 0;
+}
+
+/* ── Test case editor ── */
+.codecov-tests-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.codecov-tests-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.codecov-tests-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0;
+  flex: 1;
+}
+
+.codecov-test-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.codecov-test-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.codecov-test-num {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  min-width: 1.2rem;
+}
+
+.codecov-test-args {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.codecov-arg-input {
+  width: 4.5rem;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid #d0d7e2;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-family: monospace;
+  text-align: center;
+}
+
+.codecov-test-remove {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 0;
+}
+.codecov-test-remove:hover { color: #dc2626; }
+
+.codecov-test-output {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.codecov-add-test-btn {
+  padding: 0.3rem 0.75rem;
+  border: 1px dashed #94a3b8;
+  background: transparent;
+  color: #64748b;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.codecov-add-test-btn:hover { border-color: #0369a1; color: #0369a1; }
+
+/* ── Bottom card (result / quiz / reflect) ── */
+.codecov-bottom-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.codecov-bottom-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+
+.codecov-bottom-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0;
+}
+
+.codecov-bottom-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.codecov-hint {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0;
+}

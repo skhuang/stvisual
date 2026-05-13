@@ -23,6 +23,7 @@ import { createVModelExplorer } from './components/VModelExplorer.js';
 import { createPyramidAdjusterExplorer } from './components/PyramidAdjusterExplorer.js';
 import { createPairwiseExplorer } from './components/PairwiseExplorer.js';
 import { createCauseEffectExplorer } from './components/CauseEffectExplorer.js';
+import { createCodeCoverageExplorer } from './components/CodeCoverageExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { buildShareUrl } from './utils/resultExporter.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
@@ -33,6 +34,7 @@ const learningSectionsConfig = [
   { id: 'graph', key: 'section.graph' },
   { id: 'logic', key: 'section.logic' },
   { id: 'syntax', key: 'section.syntax' },
+  { id: 'codecov', key: 'section.codecov' },
   { id: 'symbex', key: 'section.symbex' },
   { id: 'concolic', key: 'section.concolic' },
   { id: 'fuzz', key: 'section.fuzz' },
@@ -56,7 +58,7 @@ const overviewGroups = [
   },
   {
     key: 'overview.group.coverage',
-    sectionIds: ['graph', 'logic', 'syntax'],
+    sectionIds: ['graph', 'logic', 'syntax', 'codecov'],
   },
   {
     key: 'overview.group.execution',
@@ -124,6 +126,7 @@ export function renderApp(container) {
           <section data-testid="section-graph" tabindex="-1" aria-labelledby="section-graph-title"><h2 id="section-graph-title">${t('section.graph.title')}</h2><div data-slot="graph"></div></section>
           <section data-testid="section-logic" tabindex="-1" aria-labelledby="section-logic-title"><h2 id="section-logic-title">${t('section.logic.title')}</h2><div data-slot="logic"></div></section>
           <section data-testid="section-syntax" tabindex="-1" aria-labelledby="section-syntax-title"><h2 id="section-syntax-title">${t('section.syntax.title')}</h2><div data-slot="syntax"></div></section>
+          <section data-testid="section-codecov" tabindex="-1" aria-labelledby="section-codecov-title"><h2 id="section-codecov-title">${t('section.codecov.title')}</h2><div data-slot="codecov"></div></section>
           <section data-testid="section-symbex" tabindex="-1" aria-labelledby="section-symbex-title"><h2 id="section-symbex-title">${t('section.symbex.title')}</h2><div data-slot="symbex"></div></section>
           <section data-testid="section-concolic" tabindex="-1" aria-labelledby="section-concolic-title"><h2 id="section-concolic-title">${t('section.concolic.title')}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t('section.fuzz.title')}</h2><div data-slot="fuzz"></div></section>
@@ -161,6 +164,7 @@ export function renderApp(container) {
       graph: main.querySelector('[data-testid="section-graph"]'),
       logic: main.querySelector('[data-testid="section-logic"]'),
       syntax: main.querySelector('[data-testid="section-syntax"]'),
+      codecov: main.querySelector('[data-testid="section-codecov"]'),
       symbex: main.querySelector('[data-testid="section-symbex"]'),
       concolic: main.querySelector('[data-testid="section-concolic"]'),
       fuzz: main.querySelector('[data-testid="section-fuzz"]'),
@@ -190,6 +194,7 @@ export function renderApp(container) {
       td: createTestDoublesExplorer(),
       pairwise: createPairwiseExplorer(),
       ceg: createCauseEffectExplorer(),
+      codecov: createCodeCoverageExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -201,6 +206,7 @@ export function renderApp(container) {
     container.querySelector('[data-slot="methods"]').appendChild(components.methods);
     container.querySelector('[data-slot="graph"]').appendChild(components.graph);
     container.querySelector('[data-slot="logic"]').appendChild(components.logic);
+    container.querySelector('[data-slot="codecov"]').appendChild(components.codecov);
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [
