@@ -1,0 +1,59 @@
+.lab-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px solid #059669;
+  border-radius: var(--app-radius-md, 8px);
+  background: #f0fdf4;
+}
+
+.lab-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.lab-panel-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #065f46;
+}
+
+.lab-reflect-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.lab-reflect-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1f2a44;
+  line-height: 1.4;
+}
+
+.lab-reflect-textarea {
+  width: 100%;
+  min-height: 5rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #a7f3d0;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  resize: vertical;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.lab-reflect-textarea:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.15);
+}
+
+.lab-reflect-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}

@@ -1,5 +1,5 @@
 import { t, getLocale, pickField } from '../i18n/index.js';
-import { encodeResult } from '../utils/resultExporter.js';
+import { encodeResult, buildShareUrl } from '../utils/resultExporter.js';
 import { symbolicExecute } from '../utils/symbolicExecution.js';
 import { symbolicExecutionExamples } from '../data/testingData.js';
 import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
@@ -60,6 +60,30 @@ export function createSymbolicExecutionExplorer() {
   };
 
   const symbexQuiz = { active: false, phase: 'question', answer: '', result: null };
+  const symbexLabReflect = { active: false, a1: '', a2: '' };
+
+  function renderSymbexLabReflectPanel() {
+    if (!symbexLabReflect.active) return '';
+    return `
+      <div class="lab-panel" data-testid="symbex-lab-reflect">
+        <div class="lab-panel-header">
+          <span class="lab-panel-title">${t('lab.reflect.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="symbex-lab-reflect-close">✕</button>
+        </div>
+        <div class="lab-reflect-field">
+          <label class="lab-reflect-label">${t('lab.reflect.q.symbex.1')}</label>
+          <textarea class="lab-reflect-textarea" data-testid="symbex-lab-reflect-a1" placeholder="${t('lab.reflect.placeholder')}">${escapeHtml(symbexLabReflect.a1)}</textarea>
+        </div>
+        <div class="lab-reflect-field">
+          <label class="lab-reflect-label">${t('lab.reflect.q.symbex.2')}</label>
+          <textarea class="lab-reflect-textarea" data-testid="symbex-lab-reflect-a2" placeholder="${t('lab.reflect.placeholder')}">${escapeHtml(symbexLabReflect.a2)}</textarea>
+        </div>
+        <div class="lab-reflect-actions">
+          <button type="button" class="quiz-share-btn" data-testid="symbex-lab-reflect-share">📋 ${t('quiz.share.btn')}</button>
+        </div>
+      </div>
+    `;
+  }
 
   function renderSymbexQuizPanel() {
     if (!symbexQuiz.active) return '';
@@ -209,8 +233,10 @@ export function createSymbolicExecutionExplorer() {
           <p class="symbex-summary" data-testid="symbex-summary">
             ${summary}
             ${!symbexQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="symbex-quiz-start" style="margin-left:0.5rem">${t('quiz.start')}</button>` : ''}
+            ${!symbexLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="symbex-lab-reflect-start" style="margin-left:0.5rem">${t('lab.reflect.start')}</button>` : ''}
           </p>
           ${renderSymbexQuizPanel()}
+          ${renderSymbexLabReflectPanel()}
           ${pathsMarkup}
         </section>
       </div>
@@ -388,6 +414,49 @@ export function createSymbolicExecutionExplorer() {
         symbexQuiz.phase = 'question';
         symbexQuiz.answer = '';
         render();
+      });
+    }
+
+    root.querySelector('[data-testid="symbex-lab-reflect-start"]')?.addEventListener('click', () => {
+      symbexLabReflect.active = true;
+      render();
+    });
+
+    root.querySelector('[data-testid="symbex-lab-reflect-close"]')?.addEventListener('click', () => {
+      symbexLabReflect.a1 = root.querySelector('[data-testid="symbex-lab-reflect-a1"]')?.value || symbexLabReflect.a1;
+      symbexLabReflect.a2 = root.querySelector('[data-testid="symbex-lab-reflect-a2"]')?.value || symbexLabReflect.a2;
+      symbexLabReflect.active = false;
+      render();
+    });
+
+    root.querySelector('[data-testid="symbex-lab-reflect-a1"]')?.addEventListener('input', (e) => {
+      symbexLabReflect.a1 = e.target.value;
+    });
+    root.querySelector('[data-testid="symbex-lab-reflect-a2"]')?.addEventListener('input', (e) => {
+      symbexLabReflect.a2 = e.target.value;
+    });
+
+    const symbexLrShare = root.querySelector('[data-testid="symbex-lab-reflect-share"]');
+    if (symbexLrShare) {
+      symbexLrShare.addEventListener('click', async () => {
+        const a1 = root.querySelector('[data-testid="symbex-lab-reflect-a1"]')?.value || '';
+        const a2 = root.querySelector('[data-testid="symbex-lab-reflect-a2"]')?.value || '';
+        const url = buildShareUrl(encodeResult({
+          v: 1, explorer: 'symbex', explorerLabel: t('lab.reflect.title'), mode: 'lab-reflect',
+          ts: Date.now(), lang: getLocale(), score: (a1.trim() ? 1 : 0) + (a2.trim() ? 1 : 0), total: 2,
+          items: [
+            { q: t('lab.reflect.q.symbex.1'), a: a1 },
+            { q: t('lab.reflect.q.symbex.2'), a: a2 },
+          ],
+        }));
+        try { await navigator.clipboard.writeText(url); } catch {
+          const ta = document.createElement('textarea');
+          ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        }
+        const orig = symbexLrShare.innerHTML;
+        symbexLrShare.innerHTML = t('quiz.share.copied');
+        symbexLrShare.classList.add('quiz-share-btn--copied');
+        setTimeout(() => { symbexLrShare.innerHTML = orig; symbexLrShare.classList.remove('quiz-share-btn--copied'); }, 2000);
       });
     }
   }

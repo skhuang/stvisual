@@ -9,7 +9,7 @@ import {
 } from '../utils/logicCoverage.js';
 import { buildKMap } from '../utils/karnaughMap.js';
 import { t, getLocale, pickField } from '../i18n/index.js';
-import { encodeResult } from '../utils/resultExporter.js';
+import { encodeResult, buildShareUrl } from '../utils/resultExporter.js';
 import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
 import { solveBinding, formatWitnessStr, extractVarsFromBindings, buildConstraintStr } from '../utils/logicBinding.js';
 
@@ -206,6 +206,7 @@ export function createLogicCoverageExplorer() {
   };
 
   const logicQuiz = { active: false, phase: 'question', answer: '', result: null };
+  const logicLabReflect = { active: false, a1: '', a2: '' };
 
   function getQuizUniqueCount() {
     const set = getActiveSet();
@@ -215,6 +216,29 @@ export function createLogicCoverageExplorer() {
       seen.add(`r${test.row.index}`);
     }
     return seen.size;
+  }
+
+  function renderLogicLabReflectPanel() {
+    if (!logicLabReflect.active) return '';
+    return `
+      <div class="lab-panel" data-testid="logic-lab-reflect">
+        <div class="lab-panel-header">
+          <span class="lab-panel-title">${t('lab.reflect.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="logic-lab-reflect-close">✕</button>
+        </div>
+        <div class="lab-reflect-field">
+          <label class="lab-reflect-label">${t('lab.reflect.q.logic.1')}</label>
+          <textarea class="lab-reflect-textarea" data-testid="logic-lab-reflect-a1" placeholder="${t('lab.reflect.placeholder')}">${escapeHtml(logicLabReflect.a1)}</textarea>
+        </div>
+        <div class="lab-reflect-field">
+          <label class="lab-reflect-label">${t('lab.reflect.q.logic.2')}</label>
+          <textarea class="lab-reflect-textarea" data-testid="logic-lab-reflect-a2" placeholder="${t('lab.reflect.placeholder')}">${escapeHtml(logicLabReflect.a2)}</textarea>
+        </div>
+        <div class="lab-reflect-actions">
+          <button type="button" class="quiz-share-btn" data-testid="logic-lab-reflect-share">📋 ${t('quiz.share.btn')}</button>
+        </div>
+      </div>
+    `;
   }
 
   function renderLogicQuizPanel() {
@@ -414,11 +438,14 @@ export function createLogicCoverageExplorer() {
           ${!state.error && state.analysis ? `
             <button type="button" class="quiz-start-btn" data-testid="logic-quiz-start">
               ${t('quiz.start')}
-            </button>` : ''}
+            </button>
+            ${!logicLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="logic-lab-reflect-start">${t('lab.reflect.start')}</button>` : ''}
+          ` : ''}
         </div>
       </div>
 
       ${renderLogicQuizPanel()}
+      ${renderLogicLabReflectPanel()}
 
       <div class="logic-summary" data-testid="logic-summary">${summaryMarkup}</div>
 
@@ -921,6 +948,49 @@ export function createLogicCoverageExplorer() {
       logicQuiz.answer = '';
       render();
     });
+
+    root.querySelector('[data-testid="logic-lab-reflect-start"]')?.addEventListener('click', () => {
+      logicLabReflect.active = true;
+      render();
+    });
+
+    root.querySelector('[data-testid="logic-lab-reflect-close"]')?.addEventListener('click', () => {
+      logicLabReflect.a1 = root.querySelector('[data-testid="logic-lab-reflect-a1"]')?.value || logicLabReflect.a1;
+      logicLabReflect.a2 = root.querySelector('[data-testid="logic-lab-reflect-a2"]')?.value || logicLabReflect.a2;
+      logicLabReflect.active = false;
+      render();
+    });
+
+    root.querySelector('[data-testid="logic-lab-reflect-a1"]')?.addEventListener('input', (e) => {
+      logicLabReflect.a1 = e.target.value;
+    });
+    root.querySelector('[data-testid="logic-lab-reflect-a2"]')?.addEventListener('input', (e) => {
+      logicLabReflect.a2 = e.target.value;
+    });
+
+    const logicLrShare = root.querySelector('[data-testid="logic-lab-reflect-share"]');
+    if (logicLrShare) {
+      logicLrShare.addEventListener('click', async () => {
+        const a1 = root.querySelector('[data-testid="logic-lab-reflect-a1"]')?.value || '';
+        const a2 = root.querySelector('[data-testid="logic-lab-reflect-a2"]')?.value || '';
+        const url = buildShareUrl(encodeResult({
+          v: 1, explorer: 'logic', explorerLabel: t('lab.reflect.title'), mode: 'lab-reflect',
+          ts: Date.now(), lang: getLocale(), score: (a1.trim() ? 1 : 0) + (a2.trim() ? 1 : 0), total: 2,
+          items: [
+            { q: t('lab.reflect.q.logic.1'), a: a1 },
+            { q: t('lab.reflect.q.logic.2'), a: a2 },
+          ],
+        }));
+        try { await navigator.clipboard.writeText(url); } catch {
+          const ta = document.createElement('textarea');
+          ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        }
+        const orig = logicLrShare.innerHTML;
+        logicLrShare.innerHTML = t('quiz.share.copied');
+        logicLrShare.classList.add('quiz-share-btn--copied');
+        setTimeout(() => { logicLrShare.innerHTML = orig; logicLrShare.classList.remove('quiz-share-btn--copied'); }, 2000);
+      });
+    }
 
     // Binding inputs — update results section only (no full re-render → no focus loss).
     let bindingTimer = null;

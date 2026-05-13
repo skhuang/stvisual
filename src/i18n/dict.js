@@ -220,6 +220,24 @@ export const messages = {
     'rv.close': 'Close',
     'rv.disclaimer': '* This result was self-reported and has not been verified by a server.',
 
+    // Lab modes (F-A3 Reflection, F-A4 Metric)
+    'lab.reflect.title': 'Lab · Reflection',
+    'lab.reflect.start': 'Lab Reflect',
+    'lab.reflect.placeholder': 'Enter your reflection…',
+    'lab.reflect.q.graph.1': 'Which coverage criterion requires the most test paths? Why?',
+    'lab.reflect.q.graph.2': 'What would you add to achieve full edge-pair coverage?',
+    'lab.reflect.q.logic.1': 'Which clauses were hardest to satisfy independently? Why?',
+    'lab.reflect.q.logic.2': 'How does test-case count change between PC and MCDC?',
+    'lab.reflect.q.fuzz.1': 'Which nodes were hardest to reach through random fuzzing? Why?',
+    'lab.reflect.q.fuzz.2': 'How would you design a seed corpus to improve node coverage?',
+    'lab.reflect.q.symbex.1': 'How many paths are feasible vs infeasible? What causes infeasible paths?',
+    'lab.reflect.q.symbex.2': 'Which path constraints were most complex? How could you improve testability?',
+    'lab.metric.title': 'Lab · Metric',
+    'lab.metric.record': 'Record Metric',
+    'lab.metric.graph.label': 'Criterion: {criterion} · Paths: {paths}',
+    'lab.metric.syntax.label': 'Kill rate: {pct}%',
+    'lab.metric.fuzz.label': 'Node coverage: {pct}%',
+
     // Quiz (self-test) mode — shared and per-topic
     'quiz.start': 'Self-Test',
     'quiz.close': 'Close Quiz',
@@ -1098,6 +1116,24 @@ export const messages = {
     'rv.col.expected': '正確答案',
     'rv.close': '關閉',
     'rv.disclaimer': '* 此成績為學生自我回報，尚未經伺服器驗證。',
+
+    // Lab modes (F-A3 Reflection, F-A4 Metric)
+    'lab.reflect.title': 'Lab · 反思',
+    'lab.reflect.start': 'Lab 反思',
+    'lab.reflect.placeholder': '請輸入您的反思…',
+    'lab.reflect.q.graph.1': '哪種覆蓋準則需要最多測試路徑？為什麼？',
+    'lab.reflect.q.graph.2': '若要達到完整 Edge-Pair Coverage，你會加入哪些路徑？',
+    'lab.reflect.q.logic.1': '哪些子句最難獨立滿足？為什麼？',
+    'lab.reflect.q.logic.2': '在 PC 與 MCDC 準則之間，測試案例數如何變化？',
+    'lab.reflect.q.fuzz.1': '哪些節點最難透過隨機模糊測試到達？為什麼？',
+    'lab.reflect.q.fuzz.2': '你會如何設計 seed corpus 以提升節點覆蓋率？',
+    'lab.reflect.q.symbex.1': '可行路徑與不可行路徑各有幾條？造成不可行的原因是什麼？',
+    'lab.reflect.q.symbex.2': '哪些路徑條件最複雜？如何改善程式的可測試性？',
+    'lab.metric.title': 'Lab · 指標',
+    'lab.metric.record': '記錄指標',
+    'lab.metric.graph.label': '準則：{criterion} · 路徑數：{paths}',
+    'lab.metric.syntax.label': '殺死率：{pct}%',
+    'lab.metric.fuzz.label': '節點覆蓋率：{pct}%',
 
     // Quiz (self-test) mode
     'quiz.start': '自我測驗',

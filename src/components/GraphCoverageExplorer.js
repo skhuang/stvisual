@@ -8,7 +8,7 @@ import { buildTestPathSetForRequirements, getCoverageRequirements } from '../uti
 import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
 import { buildDataFlowGraph } from '../utils/dataFlow.js';
 import { t, getLocale, pickField } from '../i18n/index.js';
-import { encodeResult } from '../utils/resultExporter.js';
+import { encodeResult, buildShareUrl } from '../utils/resultExporter.js';
 
 function cloneGraph(graph) {
   return {
@@ -445,6 +445,7 @@ export function createGraphCoverageExplorer() {
   let draft = createDraftFromGraph(defaultGraph);
 
   const graphQuiz = { active: false, selectedPaths: new Set(), phase: 'question', result: null };
+  const graphLabReflect = { active: false, a1: '', a2: '' };
 
   function getQuizCandidates(pathPlan) {
     const seen = new Set();
@@ -476,6 +477,29 @@ export function createGraphCoverageExplorer() {
     };
     graphQuiz.phase = 'graded';
     render();
+  }
+
+  function renderGraphLabReflectPanel() {
+    if (!graphLabReflect.active) return '';
+    return `
+      <div class="lab-panel" data-testid="graph-lab-reflect">
+        <div class="lab-panel-header">
+          <span class="lab-panel-title">${t('lab.reflect.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="graph-lab-reflect-close">✕</button>
+        </div>
+        <div class="lab-reflect-field">
+          <label class="lab-reflect-label">${t('lab.reflect.q.graph.1')}</label>
+          <textarea class="lab-reflect-textarea" data-testid="graph-lab-reflect-a1" placeholder="${t('lab.reflect.placeholder')}">${escapeHtml(graphLabReflect.a1)}</textarea>
+        </div>
+        <div class="lab-reflect-field">
+          <label class="lab-reflect-label">${t('lab.reflect.q.graph.2')}</label>
+          <textarea class="lab-reflect-textarea" data-testid="graph-lab-reflect-a2" placeholder="${t('lab.reflect.placeholder')}">${escapeHtml(graphLabReflect.a2)}</textarea>
+        </div>
+        <div class="lab-reflect-actions">
+          <button type="button" class="quiz-share-btn" data-testid="graph-lab-reflect-share">📋 ${t('quiz.share.btn')}</button>
+        </div>
+      </div>
+    `;
   }
 
   function renderGraphQuizPanel(pathPlan, selectedCriterion) {
@@ -594,6 +618,13 @@ export function createGraphCoverageExplorer() {
     const { requirements, selectedRequirement, selectedCriterion, pathPlan } = getState();
     const selectedSourceNodes = getSelectedSourceNodes(graph, selectedRequirement);
     const quizPanel = renderGraphQuizPanel(pathPlan, selectedCriterion);
+    const labReflectPanel = renderGraphLabReflectPanel();
+    const metricEncoded = encodeResult({
+      v: 1, explorer: 'graph', explorerLabel: t('section.graph'),
+      mode: 'lab-metric', ts: Date.now(), lang: getLocale(),
+      score: 1, total: 1,
+      items: [{ q: t('lab.metric.graph.label', { criterion: selectedCriterion?.label || criterionId, paths: pathPlan.selectedPaths.length }), a: '', ok: true }],
+    });
 
     root.className = 'graph-coverage';
     root.dataset.testid = 'graph-coverage-explorer';
@@ -706,6 +737,8 @@ export function createGraphCoverageExplorer() {
           `).join('')}
         </div>
         <button type="button" class="quiz-start-btn" data-testid="graph-quiz-start">${t('quiz.start')}</button>
+        ${!graphLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="graph-lab-reflect-start">${t('lab.reflect.start')}</button>` : ''}
+        <button type="button" class="quiz-share-btn" data-share-payload="${metricEncoded}" data-testid="graph-lab-metric">📊 ${t('lab.metric.record')}</button>
       </div>
 
       <div class="graph-coverage-layout">
@@ -799,6 +832,7 @@ export function createGraphCoverageExplorer() {
       </div>
 
       ${quizPanel}
+      ${labReflectPanel}
     `;
 
     root.querySelector('[data-testid="graph-reset-btn"]').addEventListener('click', () => {
@@ -951,6 +985,49 @@ export function createGraphCoverageExplorer() {
       graphQuiz.result = null;
       render();
     });
+
+    root.querySelector('[data-testid="graph-lab-reflect-start"]')?.addEventListener('click', () => {
+      graphLabReflect.active = true;
+      render();
+    });
+
+    root.querySelector('[data-testid="graph-lab-reflect-close"]')?.addEventListener('click', () => {
+      graphLabReflect.a1 = root.querySelector('[data-testid="graph-lab-reflect-a1"]')?.value || graphLabReflect.a1;
+      graphLabReflect.a2 = root.querySelector('[data-testid="graph-lab-reflect-a2"]')?.value || graphLabReflect.a2;
+      graphLabReflect.active = false;
+      render();
+    });
+
+    root.querySelector('[data-testid="graph-lab-reflect-a1"]')?.addEventListener('input', (e) => {
+      graphLabReflect.a1 = e.target.value;
+    });
+    root.querySelector('[data-testid="graph-lab-reflect-a2"]')?.addEventListener('input', (e) => {
+      graphLabReflect.a2 = e.target.value;
+    });
+
+    const lrShare = root.querySelector('[data-testid="graph-lab-reflect-share"]');
+    if (lrShare) {
+      lrShare.addEventListener('click', async () => {
+        const a1 = root.querySelector('[data-testid="graph-lab-reflect-a1"]')?.value || '';
+        const a2 = root.querySelector('[data-testid="graph-lab-reflect-a2"]')?.value || '';
+        const url = buildShareUrl(encodeResult({
+          v: 1, explorer: 'graph', explorerLabel: t('lab.reflect.title'), mode: 'lab-reflect',
+          ts: Date.now(), lang: getLocale(), score: (a1.trim() ? 1 : 0) + (a2.trim() ? 1 : 0), total: 2,
+          items: [
+            { q: t('lab.reflect.q.graph.1'), a: a1 },
+            { q: t('lab.reflect.q.graph.2'), a: a2 },
+          ],
+        }));
+        try { await navigator.clipboard.writeText(url); } catch {
+          const ta = document.createElement('textarea');
+          ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        }
+        const orig = lrShare.innerHTML;
+        lrShare.innerHTML = t('quiz.share.copied');
+        lrShare.classList.add('quiz-share-btn--copied');
+        setTimeout(() => { lrShare.innerHTML = orig; lrShare.classList.remove('quiz-share-btn--copied'); }, 2000);
+      });
+    }
   }
 
   render();

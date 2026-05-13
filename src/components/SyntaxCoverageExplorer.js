@@ -476,6 +476,13 @@ export function createSyntaxCoverageExplorer() {
     ` : `<p class="syntax-mutant-empty">${t('syntax.mutant.empty')}</p>`;
 
     const scorePct = Math.round(state.score.score * 100);
+    const SYNTAX_THRESHOLD = 75;
+    const syntaxMetricEncoded = encodeResult({
+      v: 1, explorer: 'syntax', explorerLabel: t('section.syntax'),
+      mode: 'lab-metric', ts: Date.now(), lang: getLocale(),
+      score: scorePct >= SYNTAX_THRESHOLD ? 1 : 0, total: 1,
+      items: [{ q: t('lab.metric.syntax.label', { pct: scorePct }), a: `${scorePct}%`, ok: scorePct >= SYNTAX_THRESHOLD }],
+    });
 
     root.innerHTML = `
       <div class="syntax-toolbar">
@@ -541,6 +548,7 @@ export function createSyntaxCoverageExplorer() {
           equivalent <strong>${state.score.equivalent}</strong>
           <span class="syntax-divider">·</span>
           ${!syntaxQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="syntax-quiz-start">${t('quiz.start')}</button>` : ''}
+          <button type="button" class="quiz-share-btn" data-share-payload="${syntaxMetricEncoded}" data-testid="syntax-lab-metric">📊 ${t('lab.metric.record')}</button>
         </p>
         ${renderSyntaxQuizPanel()}
       </section>

@@ -1,5 +1,5 @@
 import { t, getLocale, pickField } from '../i18n/index.js';
-import { encodeResult } from '../utils/resultExporter.js';
+import { encodeResult, buildShareUrl } from '../utils/resultExporter.js';
 import { fuzzTest, formatInput, formatOutput } from '../utils/fuzzTesting.js';
 import { fuzzTestingExamples } from '../data/testingData.js';
 import { generateControlFlowGraphFromProgram } from '../utils/programToGraph.js';
@@ -67,6 +67,30 @@ export function createFuzzTestingExplorer() {
   };
 
   const fuzzQuiz = { active: false, phase: 'question', answer: '', result: null };
+  const fuzzLabReflect = { active: false, a1: '', a2: '' };
+
+  function renderFuzzLabReflectPanel() {
+    if (!fuzzLabReflect.active) return '';
+    return `
+      <div class="lab-panel" data-testid="fuzz-lab-reflect">
+        <div class="lab-panel-header">
+          <span class="lab-panel-title">${t('lab.reflect.title')}</span>
+          <button type="button" class="quiz-close-btn" data-testid="fuzz-lab-reflect-close">✕</button>
+        </div>
+        <div class="lab-reflect-field">
+          <label class="lab-reflect-label">${t('lab.reflect.q.fuzz.1')}</label>
+          <textarea class="lab-reflect-textarea" data-testid="fuzz-lab-reflect-a1" placeholder="${t('lab.reflect.placeholder')}">${escapeHtml(fuzzLabReflect.a1)}</textarea>
+        </div>
+        <div class="lab-reflect-field">
+          <label class="lab-reflect-label">${t('lab.reflect.q.fuzz.2')}</label>
+          <textarea class="lab-reflect-textarea" data-testid="fuzz-lab-reflect-a2" placeholder="${t('lab.reflect.placeholder')}">${escapeHtml(fuzzLabReflect.a2)}</textarea>
+        </div>
+        <div class="lab-reflect-actions">
+          <button type="button" class="quiz-share-btn" data-testid="fuzz-lab-reflect-share">📋 ${t('quiz.share.btn')}</button>
+        </div>
+      </div>
+    `;
+  }
 
   function renderFuzzQuizPanel() {
     if (!fuzzQuiz.active) return '';
@@ -208,6 +232,14 @@ export function createFuzzTestingExplorer() {
       ? `<div class="fuzz-error" data-testid="fuzz-error">${escapeHtml(error)}</div>`
       : renderTestCases(result);
 
+    const FUZZ_THRESHOLD = 80;
+    const fuzzMetricEncoded = state.result ? encodeResult({
+      v: 1, explorer: 'fuzz', explorerLabel: t('section.fuzz'),
+      mode: 'lab-metric', ts: Date.now(), lang: getLocale(),
+      score: nodeCov >= FUZZ_THRESHOLD ? 1 : 0, total: 1,
+      items: [{ q: t('lab.metric.fuzz.label', { pct: nodeCov }), a: `${nodeCov}%`, ok: nodeCov >= FUZZ_THRESHOLD }],
+    }) : null;
+
     root.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t('explorer.mobileNav')}" data-testid="fuzz-mobile-nav">
         <a href="#fuzz-input-panel">${t('explorer.panel.input')}</a>
@@ -262,8 +294,11 @@ export function createFuzzTestingExplorer() {
           <p class="fuzz-summary" data-testid="fuzz-summary">
             ${summary}
             ${!fuzzQuiz.active && state.result ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-start" style="margin-left:0.5rem">${t('quiz.start')}</button>` : ''}
+            ${state.result && !fuzzLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-lab-reflect-start" style="margin-left:0.5rem">${t('lab.reflect.start')}</button>` : ''}
+            ${fuzzMetricEncoded ? `<button type="button" class="quiz-share-btn" data-share-payload="${fuzzMetricEncoded}" data-testid="fuzz-lab-metric" style="margin-left:0.5rem">📊 ${t('lab.metric.record')}</button>` : ''}
           </p>
           ${renderFuzzQuizPanel()}
+          ${renderFuzzLabReflectPanel()}
           ${testCasesMarkup}
         </section>
       </div>
@@ -480,6 +515,49 @@ export function createFuzzTestingExplorer() {
         fuzzQuiz.phase = 'question';
         fuzzQuiz.answer = '';
         render();
+      });
+    }
+
+    root.querySelector('[data-testid="fuzz-lab-reflect-start"]')?.addEventListener('click', () => {
+      fuzzLabReflect.active = true;
+      render();
+    });
+
+    root.querySelector('[data-testid="fuzz-lab-reflect-close"]')?.addEventListener('click', () => {
+      fuzzLabReflect.a1 = root.querySelector('[data-testid="fuzz-lab-reflect-a1"]')?.value || fuzzLabReflect.a1;
+      fuzzLabReflect.a2 = root.querySelector('[data-testid="fuzz-lab-reflect-a2"]')?.value || fuzzLabReflect.a2;
+      fuzzLabReflect.active = false;
+      render();
+    });
+
+    root.querySelector('[data-testid="fuzz-lab-reflect-a1"]')?.addEventListener('input', (e) => {
+      fuzzLabReflect.a1 = e.target.value;
+    });
+    root.querySelector('[data-testid="fuzz-lab-reflect-a2"]')?.addEventListener('input', (e) => {
+      fuzzLabReflect.a2 = e.target.value;
+    });
+
+    const fuzzLrShare = root.querySelector('[data-testid="fuzz-lab-reflect-share"]');
+    if (fuzzLrShare) {
+      fuzzLrShare.addEventListener('click', async () => {
+        const a1 = root.querySelector('[data-testid="fuzz-lab-reflect-a1"]')?.value || '';
+        const a2 = root.querySelector('[data-testid="fuzz-lab-reflect-a2"]')?.value || '';
+        const url = buildShareUrl(encodeResult({
+          v: 1, explorer: 'fuzz', explorerLabel: t('lab.reflect.title'), mode: 'lab-reflect',
+          ts: Date.now(), lang: getLocale(), score: (a1.trim() ? 1 : 0) + (a2.trim() ? 1 : 0), total: 2,
+          items: [
+            { q: t('lab.reflect.q.fuzz.1'), a: a1 },
+            { q: t('lab.reflect.q.fuzz.2'), a: a2 },
+          ],
+        }));
+        try { await navigator.clipboard.writeText(url); } catch {
+          const ta = document.createElement('textarea');
+          ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        }
+        const orig = fuzzLrShare.innerHTML;
+        fuzzLrShare.innerHTML = t('quiz.share.copied');
+        fuzzLrShare.classList.add('quiz-share-btn--copied');
+        setTimeout(() => { fuzzLrShare.innerHTML = orig; fuzzLrShare.classList.remove('quiz-share-btn--copied'); }, 2000);
       });
     }
   }
