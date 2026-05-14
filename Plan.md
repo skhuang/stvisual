@@ -1,6 +1,6 @@
 # stvisual — 改善建議與路線圖
 
-> 最後更新：2026-05-14（I1–I5 AI 輔助測試 Explorer 全數完成；新增 Advanced Testing 分頁；新增 J 節 系統 / E2E / 驗收測試路線圖）
+> 最後更新：2026-05-15（新增 K 節 Tagging & Classification 規劃；J 節 Bridge Conventions 完成）
 
 ---
 
@@ -689,6 +689,97 @@ GitHub 警告 Node.js 20 將不再被支援；已更新兩個 workflow：
 | J6 Chaos Engineering | → J3、→ J4 | hypothesis 說明卡 | — | E2E · Contract · RiskBased |
 | J7 ATDD Cycle | → J1 (Gherkin)、→ VModel | 四 D 階段各帶說明卡 | — | Gherkin · VModel |
 | J8 Flaky Diagnosis | → TestQuality (I4) | 每分類附典型修法卡 | — | TestQuality · E2E |
+
+---
+
+## K. Tagging & Classification（路線圖）
+
+> 30 + 5 個 Explorer 已逼近「靠目錄表頭找不到想要的方法」的臨界點。本節規劃**多維 tag metadata**，讓未來能做：分類瀏覽、Tag 搜尋、子課程包匯出（例如把 H + I 合成「研究前沿課程包」）。
+>
+> 設計原則：**先存 metadata、不動 UI**——P1 完成後，現有 Explorer 一個不動但所有未來功能都能立刻接上。
+
+---
+
+### Tag 維度（三維必備 + 兩維可選）
+
+| 維度 | 控制詞彙（草案） | 用途 |
+|------|------------------|------|
+| **`level`** 測試層級 | `unit` · `integration` · `system` · `e2e` · `acceptance` · `nonfunctional` · `meta` | 對應金字塔／V-Model；「站在哪一層」 |
+| **`technique`** 具體技術 | `coverage` · `mutation` · `fuzzing` · `symbolic` · `concolic` · `property` · `metamorphic` · `boundary` · `equivalence` · `decision-table` · `state-transition` · `pairwise` · `cause-effect` · `exploratory` · `test-doubles` · `group-theory` · `llm-guided` · `bdd` · `contract` · `chaos` · `risk` · `process` | 最精細，搜尋 / Tag chip 直接顯示 |
+| **`series`** 課程系列 | `foundations` · `coverage-criteria` · `execution` · `blackbox` · `mutation-spec` · `group-theory` · `ai-assisted` · `acceptance-e2e` | 對應 G/H/I/J 路線圖；可組子課程 |
+| `difficulty` *(選用)* | `intro` · `intermediate` · `advanced` · `research` | 教師排課用 |
+| `source` *(選用)* | `textbook` · `paper:arxiv-2501.12862` · `standard:iso-29119` · ... | 學術引用 / 投影片補充 |
+
+每個 Explorer 一筆 metadata，陣列允許多 tag：
+
+```js
+// src/data/explorerTags.js
+export const EXPLORER_TAGS = {
+  EquivalentMutantExplorer: {
+    level: ['unit'],
+    technique: ['mutation', 'llm-guided'],
+    series: ['ai-assisted'],
+    difficulty: 'research',
+    source: ['paper:arxiv-2501.12862'],
+  },
+  PairwiseExplorer: {
+    level: ['system'],
+    technique: ['pairwise'],
+    series: ['blackbox'],
+    difficulty: 'intermediate',
+    source: ['textbook'],
+  },
+  // ...所有 30 + 5 Explorer
+};
+```
+
+---
+
+### Tag 字典 i18n 規則
+
+| 鍵命名 | 範例 |
+|--------|------|
+| `tag.level.<value>` | `tag.level.unit` → `'Unit'` / `'單元'` |
+| `tag.technique.<value>` | `tag.technique.mutation` → `'Mutation'` / `'突變'` |
+| `tag.series.<value>` | `tag.series.ai-assisted` → `'AI-Assisted'` / `'AI 輔助'` |
+| `tag.difficulty.<value>` | `tag.difficulty.research` → `'Research'` / `'研究前沿'` |
+| `tag.source.<value>` | `tag.source.textbook` → `'Textbook'` / `'教科書'` |
+
+論文 / 標準 source 例外：保留原 ID（`paper:arxiv-2501.12862`），i18n 鍵 `tag.source.paper.arxiv-2501.12862` 對應描述（'Meta ACH @ FSE 2025'）。
+
+---
+
+### 三階段實作
+
+| Phase | 工作 | 預估 |
+|-------|------|------|
+| **K1 — Metadata only**（高優先） | 建 `src/data/explorerTags.js` + 給 30 + 5 Explorer 都打上 tag；i18n 加 `tag.*` 鍵；附 1 個 unit test 驗證「每個註冊的 Explorer 都有完整三維 tag」 | 1 個 PR，約 250 行（多半是資料） |
+| **K2 — Overview Tag Filter**（中優先） | Overview 頁面上方加 multi-select tag chip filter（AND 語意），點選後即時隱藏不符卡片；URL query param 共享（`?level=unit&technique=mutation`） | 1 個 PR，約 300 行 |
+| **K3 — Course Series Export**（低優先） | `src/data/courseSeries.js` 定義課程包（例：`{ id: 'ai-assisted-track', title, explorers: ['EquivalentMutantExplorer', ...] }`）；產生 Marp 投影片清單 + deeplink；教師可一鍵下載「整套課程」連結組合 | 1 個 PR，約 350 行 |
+
+---
+
+### 用途範例
+
+| 使用情境 | 對應 Tag 查詢 |
+|----------|---------------|
+| 「給我所有黑盒方法」 | `family/series=blackbox` |
+| 「研究等級的進階主題」 | `difficulty=research` |
+| 「Meta ACH 論文相關」 | `source=paper:arxiv-2501.12862` |
+| 「驗收測試子課程」 | `series=acceptance-e2e` |
+| 「Mutation 全家桶」 | `technique=mutation`（涵蓋 SyntaxCoverage、SpecMutation、I1、I2、I5） |
+
+---
+
+### 與 J / 未來路線圖的關係
+
+- **J1–J8 新加入時直接套上 tag**：例如 J1 BDD `{ level:['acceptance'], technique:['bdd'], series:['acceptance-e2e'] }`
+- **既有 Explorer 一次補完**：K1 PR 一次給所有 30 + 5 個 Explorer 打 tag，不分批
+- **bridge conventions（J 章節）正交於 tag**：bridge 處理跳轉、tag 處理檢索，不互相取代
+
+### 建議切入
+
+最小可用版本：**先做 K1**——只動 metadata、不動 UI，但所有未來工作（搜尋、課程包、報表）立刻能用。K2/K3 視真實需求觸發。
 
 ---
 
