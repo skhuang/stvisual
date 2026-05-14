@@ -30,6 +30,7 @@
 @import url('./components/CodeCoverageExplorer.css');
 @import url('./components/EquivalentMutantExplorer.css');
 @import url('./components/MutationScoreExplorer.css');
+@import url('./components/LLMPipelineExplorer.css');
 @import url('./components/IntegrationTestingExplorer.css');
 @import url('./components/PropertyBasedTestingExplorer.css');
 @import url('./components/RiskBasedTestingExplorer.css');
