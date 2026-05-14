@@ -28,6 +28,7 @@ import { createIntegrationTestingExplorer } from './components/IntegrationTestin
 import { createPropertyBasedTestingExplorer } from './components/PropertyBasedTestingExplorer.js';
 import { createRiskBasedTestingExplorer } from './components/RiskBasedTestingExplorer.js';
 import { createGroupTheoryExplorer } from './components/GroupTheoryExplorer.js';
+import { createEquivalentMutantExplorer } from './components/EquivalentMutantExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { createTeacherDashboard } from './components/TeacherDashboard.js';
 import { buildShareUrl } from './utils/resultExporter.js';
@@ -48,6 +49,7 @@ const learningSectionsConfig = [
   { id: 'pbt', key: 'section.pbt' },
   { id: 'inttest', key: 'section.inttest' },
   { id: 'rbt', key: 'section.rbt' },
+  { id: 'advanced', key: 'section.advanced' },
   { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -76,6 +78,10 @@ const overviewGroups = [
   {
     key: 'overview.group.blackbox',
     sectionIds: ['blackbox'],
+  },
+  {
+    key: 'overview.group.advanced',
+    sectionIds: ['advanced'],
   },
 ];
 
@@ -144,6 +150,7 @@ export function renderApp(container) {
           <section data-testid="section-pbt" tabindex="-1" aria-labelledby="section-pbt-title"><h2 id="section-pbt-title">${t('section.pbt.title')}</h2><div data-slot="pbt"></div></section>
           <section data-testid="section-inttest" tabindex="-1" aria-labelledby="section-inttest-title"><h2 id="section-inttest-title">${t('section.inttest.title')}</h2><div data-slot="inttest"></div></section>
           <section data-testid="section-rbt" tabindex="-1" aria-labelledby="section-rbt-title"><h2 id="section-rbt-title">${t('section.rbt.title')}</h2><div data-slot="rbt"></div></section>
+          <section data-testid="section-advanced" tabindex="-1" aria-labelledby="section-advanced-title"><h2 id="section-advanced-title">${t('section.advanced.title')}</h2><div data-slot="advanced"></div></section>
           <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -186,6 +193,7 @@ export function renderApp(container) {
       pbt: main.querySelector('[data-testid="section-pbt"]'),
       inttest: main.querySelector('[data-testid="section-inttest"]'),
       rbt: main.querySelector('[data-testid="section-rbt"]'),
+      advanced: main.querySelector('[data-testid="section-advanced"]'),
       blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -216,6 +224,7 @@ export function renderApp(container) {
       pbt: createPropertyBasedTestingExplorer(),
       rbt: createRiskBasedTestingExplorer(),
       groupth: createGroupTheoryExplorer(),
+      equivmutant: createEquivalentMutantExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -232,6 +241,59 @@ export function renderApp(container) {
     container.querySelector('[data-slot="pbt"]').appendChild(components.pbt);
     container.querySelector('[data-slot="rbt"]').appendChild(components.rbt);
     container.querySelector('[data-slot="groupth"]').appendChild(components.groupth);
+
+    // --- Advanced Testing: tabbed (I1 Equivalent Mutants; I2–I5 added in subsequent PRs) ---
+    const advancedTabs = [
+      { id: 'equivmutant', key: 'advTab.equivmutant', component: components.equivmutant },
+    ];
+    const advancedSlot = container.querySelector('[data-slot="advanced"]');
+    const advancedTabBar = document.createElement('nav');
+    advancedTabBar.className = 'syntax-tab-row';
+    advancedTabBar.dataset.testid = 'advanced-tab-row';
+    advancedTabBar.setAttribute('role', 'tablist');
+    advancedSlot.appendChild(advancedTabBar);
+    const advancedPanels = document.createElement('div');
+    advancedPanels.className = 'syntax-tab-panels';
+    advancedSlot.appendChild(advancedPanels);
+    for (const tab of advancedTabs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.advancedPanel = tab.id;
+      panel.appendChild(tab.component);
+      advancedPanels.appendChild(panel);
+    }
+    const ADVANCED_TAB_KEY = 'stvisual.advancedActiveTab';
+    let activeAdvancedTab = (() => {
+      try {
+        const v = globalThis.localStorage?.getItem(ADVANCED_TAB_KEY);
+        return advancedTabs.find((tb) => tb.id === v) ? v : 'equivmutant';
+      } catch { return 'equivmutant'; }
+    })();
+    function renderAdvancedTabs() {
+      advancedTabBar.innerHTML = advancedTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeAdvancedTab === tab.id ? ' active' : ''}"
+          data-advanced-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeAdvancedTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      advancedTabBar.querySelectorAll('[data-advanced-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeAdvancedTab = btn.dataset.advancedTab;
+          try { globalThis.localStorage?.setItem(ADVANCED_TAB_KEY, activeAdvancedTab); } catch {}
+          renderAdvancedTabs();
+          updateAdvancedPanels();
+        });
+      });
+    }
+    function updateAdvancedPanels() {
+      advancedPanels.querySelectorAll('[data-advanced-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.advancedPanel === activeAdvancedTab ? '' : 'none';
+      });
+    }
+    renderAdvancedTabs();
+    updateAdvancedPanels();
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [
