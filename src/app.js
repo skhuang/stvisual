@@ -27,6 +27,7 @@ import { createCodeCoverageExplorer } from './components/CodeCoverageExplorer.js
 import { createIntegrationTestingExplorer } from './components/IntegrationTestingExplorer.js';
 import { createPropertyBasedTestingExplorer } from './components/PropertyBasedTestingExplorer.js';
 import { createRiskBasedTestingExplorer } from './components/RiskBasedTestingExplorer.js';
+import { createGroupTheoryExplorer } from './components/GroupTheoryExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { buildShareUrl } from './utils/resultExporter.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
@@ -38,6 +39,7 @@ const learningSectionsConfig = [
   { id: 'logic', key: 'section.logic' },
   { id: 'syntax', key: 'section.syntax' },
   { id: 'codecov', key: 'section.codecov' },
+  { id: 'groupth', key: 'section.groupth' },
   { id: 'symbex', key: 'section.symbex' },
   { id: 'concolic', key: 'section.concolic' },
   { id: 'fuzz', key: 'section.fuzz' },
@@ -64,7 +66,7 @@ const overviewGroups = [
   },
   {
     key: 'overview.group.coverage',
-    sectionIds: ['graph', 'logic', 'syntax', 'codecov'],
+    sectionIds: ['graph', 'logic', 'syntax', 'codecov', 'groupth'],
   },
   {
     key: 'overview.group.execution',
@@ -133,6 +135,7 @@ export function renderApp(container) {
           <section data-testid="section-logic" tabindex="-1" aria-labelledby="section-logic-title"><h2 id="section-logic-title">${t('section.logic.title')}</h2><div data-slot="logic"></div></section>
           <section data-testid="section-syntax" tabindex="-1" aria-labelledby="section-syntax-title"><h2 id="section-syntax-title">${t('section.syntax.title')}</h2><div data-slot="syntax"></div></section>
           <section data-testid="section-codecov" tabindex="-1" aria-labelledby="section-codecov-title"><h2 id="section-codecov-title">${t('section.codecov.title')}</h2><div data-slot="codecov"></div></section>
+          <section data-testid="section-groupth" tabindex="-1" aria-labelledby="section-groupth-title"><h2 id="section-groupth-title">${t('section.groupth.title')}</h2><div data-slot="groupth"></div></section>
           <section data-testid="section-symbex" tabindex="-1" aria-labelledby="section-symbex-title"><h2 id="section-symbex-title">${t('section.symbex.title')}</h2><div data-slot="symbex"></div></section>
           <section data-testid="section-concolic" tabindex="-1" aria-labelledby="section-concolic-title"><h2 id="section-concolic-title">${t('section.concolic.title')}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t('section.fuzz.title')}</h2><div data-slot="fuzz"></div></section>
@@ -174,6 +177,7 @@ export function renderApp(container) {
       logic: main.querySelector('[data-testid="section-logic"]'),
       syntax: main.querySelector('[data-testid="section-syntax"]'),
       codecov: main.querySelector('[data-testid="section-codecov"]'),
+      groupth: main.querySelector('[data-testid="section-groupth"]'),
       symbex: main.querySelector('[data-testid="section-symbex"]'),
       concolic: main.querySelector('[data-testid="section-concolic"]'),
       fuzz: main.querySelector('[data-testid="section-fuzz"]'),
@@ -210,6 +214,7 @@ export function renderApp(container) {
       inttest: createIntegrationTestingExplorer(),
       pbt: createPropertyBasedTestingExplorer(),
       rbt: createRiskBasedTestingExplorer(),
+      groupth: createGroupTheoryExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -225,6 +230,7 @@ export function renderApp(container) {
     container.querySelector('[data-slot="inttest"]').appendChild(components.inttest);
     container.querySelector('[data-slot="pbt"]').appendChild(components.pbt);
     container.querySelector('[data-slot="rbt"]').appendChild(components.rbt);
+    container.querySelector('[data-slot="groupth"]').appendChild(components.groupth);
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [

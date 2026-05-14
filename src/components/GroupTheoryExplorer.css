@@ -1,0 +1,295 @@
+.gth-explorer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1rem 0;
+}
+
+/* ── Input card ── */
+.gth-input-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.gth-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 0.4rem;
+}
+
+.gth-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.gth-formula-input {
+  flex: 1;
+  min-width: 14rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #d0d7e2;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: monospace;
+}
+
+.gth-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.gth-example-btn {
+  padding: 0.2rem 0.55rem;
+  border: 1px dashed #94a3b8;
+  background: transparent;
+  color: #475569;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-family: monospace;
+}
+.gth-example-btn:hover { border-color: #1d4ed8; color: #1d4ed8; }
+
+/* ── Tab bar ── */
+.gth-tab-row {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 2px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+
+.gth-tab-btn {
+  padding: 0.4rem 0.9rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: #64748b;
+  font-weight: 600;
+}
+.gth-tab-btn:hover { color: #1d4ed8; }
+.gth-tab-btn--active { color: #1d4ed8; border-bottom-color: #1d4ed8; }
+
+/* ── Tab pane ── */
+.gth-tab-pane {
+  min-height: 8rem;
+}
+
+.gth-stub {
+  padding: 2rem;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  border: 1px dashed #e2e8f0;
+  border-radius: 8px;
+}
+
+/* ── Orbits layout ── */
+.gth-orbits-layout {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .gth-orbits-layout { grid-template-columns: 1fr; }
+}
+
+/* ── Aut group card ── */
+.gth-aut-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+
+.gth-aut-title {
+  font-size: 1rem;
+  font-weight: 800;
+  font-style: italic;
+  color: #1f2a44;
+  margin: 0 0 0.3rem;
+}
+
+.gth-aut-order {
+  font-size: 0.8rem;
+  color: #374151;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.gth-perm-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.gth-perm {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  background: #ede9fe;
+  color: #5b21b6;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.gth-perm--id {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.gth-aut-hint {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ── Orbits main panel ── */
+.gth-orbits-main {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+
+.gth-orbits-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+  color: #374151;
+}
+
+.gth-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.gth-badge--blue  { background: #dbeafe; color: #1e40af; }
+.gth-badge--green { background: #dcfce7; color: #166534; }
+
+/* ── Orbit table ── */
+.gth-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.gth-table th {
+  background: #f1f5f9;
+  color: #374151;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.gth-table td {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+/* ── MR details ── */
+.gth-mr-details {
+  font-size: 0.78rem;
+  color: #374151;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.gth-mr-details summary {
+  font-weight: 700;
+  color: #1d4ed8;
+  padding: 0.25rem 0;
+}
+
+.gth-mr-list {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 0.25rem 0;
+}
+
+.gth-mr-item {
+  font-family: monospace;
+  font-size: 0.72rem;
+  margin-bottom: 0.2rem;
+  color: #1f2a44;
+}
+
+/* ── Copy button ── */
+.gth-copy-btn {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid #94a3b8;
+  background: transparent;
+  color: #475569;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+.gth-copy-btn:hover { border-color: #1d4ed8; color: #1d4ed8; }
+
+/* ── Error ── */
+.gth-error {
+  color: #dc2626;
+  font-size: 0.82rem;
+  padding: 0.5rem;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  background: #fef2f2;
+}
+
+/* ── Bottom card ── */
+.gth-bottom-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.gth-bottom-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+
+.gth-bottom-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0;
+  flex: 1;
+}
+
+.gth-bottom-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.gth-hint {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0;
+}
