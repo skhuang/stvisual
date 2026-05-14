@@ -4,9 +4,11 @@
 [![Deploy GitHub Pages](https://github.com/skhuang/stvisual/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/skhuang/stvisual/actions/workflows/deploy-pages.yml)
 [![Live Demo](https://img.shields.io/badge/demo-GitHub%20Pages-0a7ea4)](https://skhuang.github.io/stvisual/)
 
-An interactive visualization project for software testing concepts — covering graph coverage, logic coverage, syntax-based testing, symbolic/concolic execution, fuzzing, and black-box test design techniques.
+An interactive visualization project for software testing — **30 explorers across 6 sections**: foundations, coverage criteria, execution & test generation, black-box design, group-theory testing, and AI-assisted research methods (based on the **Meta ACH** paper at FSE 2025, [arXiv 2501.12862](https://arxiv.org/abs/2501.12862)).
 
 Live demo: <https://skhuang.github.io/stvisual/>
+
+Every explorer ships with bilingual UI (English / 繁體中文), a self-test quiz, Lab Reflect / Lab Metric modes, and shareable result URLs. Class results stream to Firestore and surface in a Teacher Dashboard.
 
 ## Preview
 
@@ -21,6 +23,8 @@ Live demo: <https://skhuang.github.io/stvisual/>
 | Symbolic Execution | Concolic Execution |
 |:---:|:---:|
 | ![Symbolic Execution](docs/assets/preview-symbolic-execution.png) | ![Concolic Execution](docs/assets/preview-concolic-execution.png) |
+
+Screenshots above are from the original Foundations + Coverage sections; newer explorers (Group Theory, Risk-Based, Advanced Testing / AI-Assisted) are best seen on the [live demo](https://skhuang.github.io/stvisual/).
 
 ## Feature Highlights
 
@@ -66,7 +70,7 @@ Live demo: <https://skhuang.github.io/stvisual/>
 - Automated test generation from symbolic paths with download-as-JS export
 
 ### Black-Box Test Design
-All seven techniques live under a single tabbed section:
+Nine techniques live under a single tabbed section:
 
 | Tab | What it covers |
 |-----|----------------|
@@ -74,14 +78,64 @@ All seven techniques live under a single tabbed section:
 | **Equivalence Classes** | Weak (WECT) and Strong (SECT) ECP; partition editor; self-test quiz |
 | **Decision Table** | Condition/action matrix; T/F/– cells; coverage badge; duplicate detection |
 | **State Transition** | SVG state diagram; transition coverage and sequence coverage (BFS paths) |
+| **Pairwise** | IPO greedy algorithm; covering matrix; vs full Cartesian product reduction |
+| **Cause-Effect Graph** | SVG cause-effect graph; AND/OR/NOT connectors; auto-derived decision table |
 | **Metamorphic Testing** | 5 built-in programs × 2–3 relations; generates 8 test pairs; pass/fail table |
 | **Exploratory Testing** | Session charter; SFDIPOT heuristics checklist; HICCUPPS oracle reference; countdown timer; observation log with Markdown export |
 | **Test Doubles** | Dummy / Stub / Fake / Mock / Spy; 2 runnable scenarios per type; live call-log + assertion results |
 
-### Cloud Integration
+### Coverage Criteria — Code Coverage Drill-down
+- Statement / Branch / Condition / MC-DC coverage on small JavaScript programs
+- Per-line highlighting; subsumption hint (`MC-DC ⊇ Condition ⊇ Branch ⊇ Statement`)
+- Built-in programs: `absVal`, `discount(age, isMember)`, `classify`, `maxOf3`
+- Self-test: identify the strongest criterion satisfied by the current suite
+
+### Execution & Test Generation
+- **Symbolic execution** explores all feasible paths and renders path conditions
+- **Concolic execution** (DART/CUTE-style) starts from concrete input and negates branches
+- **Fuzz testing** with mutation-based corpus, CFG coverage heat-map
+- **Test generation from coverage** with download-as-JS export
+- **Integration testing strategies** — Big Bang / Top-down / Bottom-up / Sandwich with step-by-step stub/driver visualization
+- **Property-based testing** — QuickCheck-style random input generation, automatic shrinking, counterexample visualization
+
+### Risk-Based Test Prioritization
+- Risk matrix (Likelihood × Impact) with heat-map view
+- Module ranking by risk score; filter to high-only / high+medium / all
+- Lab Metric: complete the ranked test order under a budget constraint
+
+### Group Theory Based Testing
+- Three tabs sharing one Boolean formula:
+  - **Orbit Explorer** — automorphism group, orbit partition of truth table, MR copy-button
+  - **CACC Bridge** — determination pairs from logic predicates, with “must test” vs “derivable by symmetry” classification
+  - **Covering Array** — OA(p, k, t) generator over GF(p), full orbit coverage check
+- Cross-explorer bridges: Group Theory ↔ Logic Coverage ↔ Metamorphic Testing
+- Per-tab self-test and Lab Reflect questions
+
+### Advanced Testing — AI-Assisted (Research)
+Five explorers tabbed under a single **Advanced Testing** section, all backed by the Meta ACH paper ([arXiv 2501.12862](https://arxiv.org/abs/2501.12862), FSE 2025):
+
+| Tab | What it teaches |
+|-----|------------------|
+| **Equivalent Mutants** | Three-stage pipeline (syntactic identity → strip-comments → LLM-as-judge); precision 0.79 → 0.95 and recall 0.47 → 0.96 once comments are stripped |
+| **Mutation Score vs Coverage** | Dual line-coverage / mutation-score meters; demonstrates the 49% of ACH tests that kill mutants without adding a single covered line |
+| **LLM Test Generation Pipeline** | Three-agent ACH flow (Mutation → Equivalence → Test); prompt templates, sample I/O, failure modes; rule-based vs LLM-guided kill-rate comparison (2.4% → 15%) |
+| **Test Quality Review** | Five engineer-acceptance dimensions (Buildable / Non-flaky / Hardening / Relevant / Style) across six annotated scenarios |
+| **Fault-Directed Testing** | Blind coverage-driven vs fault-directed mutation across four issue scenarios (null leak, off-by-one, missing cleanup, unchecked exception) |
+
+Every Advanced Testing tab shares the same paper-citation banner (`arXiv 2501.12862 · FSE 2025`) and ends with a quiz plus a reflection prompt.
+
+### Lab Modes & Result Sharing
+- **Lab Reflect** — open-ended reflection prompts on every explorer; freeform text capture
+- **Lab Metric** — pass/fail thresholds (e.g. Mutation Score ≥ 80%, full pairwise coverage)
+- **Share Results** button copies a self-contained URL containing the quiz/lab outcome (no server signature, honor system)
+- **Result Viewer** renders shared URLs side-by-side with the original explorer
+
+### Cloud Integration & Teacher Dashboard
 - Google sign-in via Firebase Authentication
 - Firestore sync for predicates, test sets, and mutation data
 - Google Drive upload for graph specs and source code
+- **Class results**: students enter a class code; every quiz/lab submission is auto-uploaded to `courses/{classCode}/results/`
+- **Teacher Dashboard**: load results by class code, filter by explorer, drill into individual student submissions
 
 ## Architecture
 
@@ -133,7 +187,7 @@ The app detects `file://` and switches to a pre-built `src/standalone.js` bundle
 npm run test:run
 ```
 
-346 tests across 34 files — covering all explorers, coverage algorithms, mutation engine, concolic/symbolic execution, and integration utilities.
+475 tests across 42 files — covering every explorer, coverage algorithms, mutation engine, concolic/symbolic execution, group-theory utilities, and the five Advanced Testing explorers.
 
 ### Browser E2E tests (Playwright / Chromium)
 
@@ -211,7 +265,7 @@ The live site is built and deployed automatically on every push to `main` via th
 push to main
   └─ test job (ubuntu-latest, Node 20)
        ├─ npm ci --legacy-peer-deps
-       ├─ npm run test:run              ← 346 unit tests must pass
+       ├─ npm run test:run              ← 475 unit tests must pass
        ├─ inject-env                    ← reads GitHub Secrets, writes cloudConfig.js
        ├─ build:standalone              ← esbuild bundles src/ → standalone.js
        └─ prepare-pages                 ← copies src tree → site/
@@ -324,8 +378,12 @@ Both workflows use **Node.js 24** and `npm ci --legacy-peer-deps`.
 │   │   ├── TestingMethodTree        # method taxonomy tree
 │   │   ├── TestingFlow              # animated testing workflow
 │   │   ├── TestingTypesTable        # unit/integration/system/acceptance
+│   │   ├── DefectCostExplorer       # cost-of-defect curve by phase
+│   │   ├── VModelExplorer           # V-model with dev/test phase mapping
+│   │   ├── PyramidAdjusterExplorer  # interactive test-pyramid trade-offs
 │   │   ├── GraphCoverageExplorer    # graph + DFG coverage + self-test quiz
 │   │   ├── LogicCoverageExplorer    # predicate/clause coverage + K-maps
+│   │   ├── CodeCoverageExplorer     # statement/branch/condition/MC-DC
 │   │   ├── SyntaxCoverageExplorer   # program mutation (AOR/ROR/LOR/COR/UOI/ABS)
 │   │   ├── GrammarCoverageExplorer  # grammar-based testing
 │   │   ├── SpecMutationExplorer     # specification mutation (SMV)
@@ -333,14 +391,27 @@ Both workflows use **Node.js 24** and `npm ci --legacy-peer-deps`.
 │   │   ├── ConcolicExecutionExplorer
 │   │   ├── FuzzTestingExplorer      # mutation-based fuzzing
 │   │   ├── TestGenerationExplorer   # path-driven test gen + JS export
-│   │   ├── CloudStoragePanel        # Firebase Auth + Firestore + Drive
+│   │   ├── IntegrationTestingExplorer  # Big Bang / Top-down / Bottom-up / Sandwich
+│   │   ├── PropertyBasedTestingExplorer # QuickCheck-style shrinking
+│   │   ├── RiskBasedTestingExplorer # risk matrix + heat-map + lab metric
 │   │   ├── BoundaryValueExplorer    # BVA + Robustness BVA + quiz
 │   │   ├── EquivalenceClassExplorer # WECT / SECT + quiz
 │   │   ├── DecisionTableExplorer    # condition/action decision tables
 │   │   ├── StateTransitionExplorer  # SVG diagram + transition/sequence coverage
+│   │   ├── PairwiseExplorer         # IPO greedy covering set
+│   │   ├── CauseEffectExplorer      # cause-effect graph + decision-table derivation
 │   │   ├── MetamorphicTestingExplorer  # MR test-pair generation
 │   │   ├── ExploratoryTestingExplorer  # charter + SFDIPOT + timer + log
 │   │   ├── TestDoublesExplorer      # Dummy/Stub/Fake/Mock/Spy + live runner
+│   │   ├── GroupTheoryExplorer      # Orbit / CACC Bridge / Covering Array
+│   │   ├── EquivalentMutantExplorer       # I1 — 3-stage equivalence pipeline
+│   │   ├── MutationScoreExplorer          # I2 — mutation score vs line coverage
+│   │   ├── LLMPipelineExplorer            # I3 — 3-agent ACH flow
+│   │   ├── TestQualityExplorer            # I4 — 5-dimension quality review
+│   │   ├── FaultDirectedTestingExplorer   # I5 — blind vs fault-directed mutation
+│   │   ├── CloudStoragePanel        # Firebase Auth + Firestore + Drive + class code
+│   │   ├── TeacherDashboard         # class-results dashboard (Firestore-backed)
+│   │   ├── ResultViewer             # render shared self-reported result URLs
 │   │   └── quiz.css                 # shared self-test quiz styles
 │   ├── config/
 │   │   └── cloudConfig.js       # __PLACEHOLDER__ tokens (replaced at build time)
@@ -352,16 +423,29 @@ Both workflows use **Node.js 24** and `npm ci --legacy-peer-deps`.
 │   ├── utils/
 │   │   ├── graphCoverage.js     # graph coverage algorithms
 │   │   ├── programToGraph.js    # source code → CFG + DFG
+│   │   ├── dataFlow.js          # def/use analysis + DU-paths
 │   │   ├── logicCoverage.js     # predicate/clause coverage engine
+│   │   ├── logicBinding.js      # analytic interval solver for clause binding
 │   │   ├── karnaughMap.js       # Quine–McCluskey + K-map rendering
+│   │   ├── codeCoverage.js      # statement / branch / condition / MC-DC engine
 │   │   ├── mutation.js          # mutation operator engine
+│   │   ├── grammar.js           # BNF grammar coverage + mutation
+│   │   ├── specMutation.js      # specification (boolean) mutation
+│   │   ├── specFsm.js           # safety-monitor FSM for SMV-style specs
 │   │   ├── symbolicExecution.js
 │   │   ├── concolicExecution.js
+│   │   ├── fuzzTesting.js       # mutation-based fuzzing engine
+│   │   ├── testGeneration.js    # path-driven test generator + JS export
 │   │   ├── pathToCfg.js         # branch trace → CFG SVG overlay
 │   │   ├── blackboxTesting.js   # BVA / ECP / DT / ST test generators
+│   │   ├── pairwise.js          # IPO greedy pairwise covering set
+│   │   ├── causeEffect.js       # cause-effect formula → decision table
 │   │   ├── metamorphicTesting.js # MR test-pair generation engine
-│   │   └── cloudIntegration.js  # Firebase Auth + Firestore + Drive
-│   └── tests/                   # 34 test files, 346 tests (Vitest + jsdom)
+│   │   ├── propertyTesting.js   # QuickCheck-style runner + shrinking
+│   │   ├── groupTheory.js       # automorphism / orbit / OA(p,k,t) over GF(p)
+│   │   ├── resultExporter.js    # base64 share-URL encoder / decoder
+│   │   └── cloudIntegration.js  # Firebase Auth + Firestore + Drive + class results
+│   └── tests/                   # 42 test files, 475 tests (Vitest + jsdom)
 ├── e2e/                         # Playwright browser tests
 ├── site/                        # generated GitHub Pages output (gitignored)
 └── .github/workflows/
