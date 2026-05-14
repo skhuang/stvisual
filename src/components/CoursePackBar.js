@@ -2,8 +2,9 @@ import { t } from '../i18n/index.js';
 import { COURSE_PACKS, getCoursePackExplorers, getCoursePackFilter } from '../data/courseSeries.js';
 import { downloadCoursePackMarkdown } from '../utils/coursePackExporter.js';
 
-export function createCoursePackBar({ onApplyFilter } = {}) {
-  const state = { activeId: null };
+export function createCoursePackBar({ initial, onApplyFilter } = {}) {
+  const validInitial = COURSE_PACKS.some((p) => p.id === initial);
+  const state = { activeId: validInitial ? initial : null };
   const root = document.createElement('div');
   root.className = 'course-pack-bar';
   root.dataset.testid = 'course-pack-bar';

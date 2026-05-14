@@ -33,9 +33,15 @@ import { createMutationScoreExplorer } from './components/MutationScoreExplorer.
 import { createLLMPipelineExplorer } from './components/LLMPipelineExplorer.js';
 import { createTestQualityExplorer } from './components/TestQualityExplorer.js';
 import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTestingExplorer.js';
-import { createTagFilterBar, filterFromQuery, filterToQuery } from './components/TagFilterBar.js';
+import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
+import { getCoursePackFilter } from './data/courseSeries.js';
+import {
+  parseAppLocation,
+  serializeLocation,
+  resolveInitialTab,
+} from './utils/urlRouter.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { createTeacherDashboard } from './components/TeacherDashboard.js';
 import { buildShareUrl } from './utils/resultExporter.js';
@@ -92,7 +98,9 @@ const overviewGroups = [
   },
 ];
 
-function loadSavedSection() {
+function loadSavedSection(urlSection) {
+  // URL > localStorage > default.
+  if (urlSection && learningSectionsConfig.some((s) => s.id === urlSection)) return urlSection;
   try {
     const saved = globalThis.localStorage?.getItem(ACTIVE_SECTION_KEY);
     return learningSectionsConfig.some((section) => section.id === saved) ? saved : 'all';
@@ -281,12 +289,14 @@ export function renderApp(container) {
       advancedPanels.appendChild(panel);
     }
     const ADVANCED_TAB_KEY = 'stvisual.advancedActiveTab';
-    let activeAdvancedTab = (() => {
-      try {
-        const v = globalThis.localStorage?.getItem(ADVANCED_TAB_KEY);
-        return advancedTabs.find((tb) => tb.id === v) ? v : 'equivmutant';
-      } catch { return 'equivmutant'; }
-    })();
+    let savedAdvancedTab = null;
+    try { savedAdvancedTab = globalThis.localStorage?.getItem(ADVANCED_TAB_KEY); } catch {}
+    let activeAdvancedTab = resolveInitialTab({
+      sectionId: 'advanced',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedAdvancedTab,
+    });
     function renderAdvancedTabs() {
       advancedTabBar.innerHTML = advancedTabs.map((tab) => `
         <button type="button"
@@ -302,6 +312,7 @@ export function renderApp(container) {
           try { globalThis.localStorage?.setItem(ADVANCED_TAB_KEY, activeAdvancedTab); } catch {}
           renderAdvancedTabs();
           updateAdvancedPanels();
+          if (activeSection === 'advanced') syncUrl();
         });
       });
     }
@@ -336,12 +347,14 @@ export function renderApp(container) {
       syntaxPanels.appendChild(panel);
     }
     const SYNTAX_TAB_KEY = 'stvisual.syntaxActiveTab';
-    let activeSyntaxTab = (() => {
-      try {
-        const v = globalThis.localStorage?.getItem(SYNTAX_TAB_KEY);
-        return syntaxTabs.find((t) => t.id === v) ? v : 'mutation';
-      } catch { return 'mutation'; }
-    })();
+    let savedSyntaxTab = null;
+    try { savedSyntaxTab = globalThis.localStorage?.getItem(SYNTAX_TAB_KEY); } catch {}
+    let activeSyntaxTab = resolveInitialTab({
+      sectionId: 'syntax',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedSyntaxTab,
+    });
     function renderSyntaxTabs() {
       syntaxTabBar.innerHTML = syntaxTabs.map((tab) => `
         <button type="button"
@@ -357,6 +370,7 @@ export function renderApp(container) {
           try { globalThis.localStorage?.setItem(SYNTAX_TAB_KEY, activeSyntaxTab); } catch {}
           renderSyntaxTabs();
           updateSyntaxPanels();
+          if (activeSection === 'syntax') syncUrl();
         });
       });
     }
@@ -397,12 +411,14 @@ export function renderApp(container) {
       blackboxPanels.appendChild(panel);
     }
     const BLACKBOX_TAB_KEY = 'stvisual.blackboxActiveTab';
-    let activeBlackboxTab = (() => {
-      try {
-        const v = globalThis.localStorage?.getItem(BLACKBOX_TAB_KEY);
-        return blackboxTabs.find((tb) => tb.id === v) ? v : 'bva';
-      } catch { return 'bva'; }
-    })();
+    let savedBlackboxTab = null;
+    try { savedBlackboxTab = globalThis.localStorage?.getItem(BLACKBOX_TAB_KEY); } catch {}
+    let activeBlackboxTab = resolveInitialTab({
+      sectionId: 'blackbox',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedBlackboxTab,
+    });
     function renderBlackboxTabs() {
       blackboxTabBar.innerHTML = blackboxTabs.map((tab) => `
         <button type="button"
@@ -418,6 +434,7 @@ export function renderApp(container) {
           try { globalThis.localStorage?.setItem(BLACKBOX_TAB_KEY, activeBlackboxTab); } catch {}
           renderBlackboxTabs();
           updateBlackboxPanels();
+          if (activeSection === 'blackbox') syncUrl();
         });
       });
     }
@@ -457,12 +474,14 @@ export function renderApp(container) {
       flowPanels.appendChild(panel);
     }
     const FLOW_TAB_KEY = 'stvisual.flowActiveTab';
-    let activeFlowTab = (() => {
-      try {
-        const v = globalThis.localStorage?.getItem(FLOW_TAB_KEY);
-        return flowTabs.find((tb) => tb.id === v) ? v : 'flow';
-      } catch { return 'flow'; }
-    })();
+    let savedFlowTab = null;
+    try { savedFlowTab = globalThis.localStorage?.getItem(FLOW_TAB_KEY); } catch {}
+    let activeFlowTab = resolveInitialTab({
+      sectionId: 'flow',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedFlowTab,
+    });
     function renderFlowTabs() {
       flowTabBar.innerHTML = flowTabs.map((tab) => `
         <button type="button"
@@ -478,6 +497,7 @@ export function renderApp(container) {
           try { globalThis.localStorage?.setItem(FLOW_TAB_KEY, activeFlowTab); } catch {}
           renderFlowTabs();
           updateFlowPanels();
+          if (activeSection === 'flow') syncUrl();
         });
       });
     }
@@ -495,7 +515,12 @@ export function renderApp(container) {
       { id: 'pyramid', key: 'typesTab.pyramid', component: components.types },
       { id: 'adjuster', key: 'typesTab.adjuster', component: components.pyramid },
     ];
-    let activeTypesTab = 'pyramid';
+    let activeTypesTab = resolveInitialTab({
+      sectionId: 'types',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: null,
+    });
 
     const typesTabBar = document.createElement('nav');
     typesTabBar.className = 'syntax-tab-row';
@@ -528,6 +553,7 @@ export function renderApp(container) {
           activeTypesTab = btn.dataset.typesTab;
           renderTypesTabs();
           updateTypesPanels();
+          if (activeSection === 'types') syncUrl();
         });
       });
     }
@@ -539,7 +565,8 @@ export function renderApp(container) {
     renderTypesTabs();
     updateTypesPanels();
 
-    let activeSection = loadSavedSection();
+    const urlState = parseAppLocation(globalThis.location?.search ?? '');
+    let activeSection = loadSavedSection(urlState.section);
     let cloudDrawerOpen = false;
     const sectionsById = Object.fromEntries(sectionSelectConfig.map((section) => [section.id, section]));
     const overviewGrid = container.querySelector('[data-testid="overview-grid"]');
@@ -551,38 +578,63 @@ export function renderApp(container) {
     const cloudDrawerPanel = cloudDrawer.querySelector('.cloud-drawer__panel');
     let drawerReturnFocusTarget = null;
 
-    let activeFilter = filterFromQuery(globalThis.location?.search ?? '');
+    // Initial filter: pack > raw filter > empty.
+    const initialPackFilter = urlState.pack ? getCoursePackFilter(urlState.pack) : null;
+    let activeFilter = (urlState.filter || initialPackFilter)
+      ? { level: [], technique: [], series: [], difficulty: [], ...(urlState.filter || initialPackFilter || {}) }
+      : { level: [], technique: [], series: [], difficulty: [] };
+
     const filterBar = createTagFilterBar({
       initial: activeFilter,
       onChange: (next) => {
         activeFilter = next;
-        syncFilterToUrl(next);
         // User-driven filter changes clear any active course pack so the
         // UI doesn't show a stale "this pack is selected" state.
         packBar?.clear();
+        syncUrl();
         renderOverview();
       },
     });
     overviewFilterHost.appendChild(filterBar.element);
 
     const packBar = createCoursePackBar({
+      initial: urlState.pack ?? null,
       onApplyFilter: (filter) => {
         const next = filter ?? { level: [], technique: [], series: [], difficulty: [] };
         activeFilter = { level: [], technique: [], series: [], difficulty: [], ...next };
         filterBar.setFilter(activeFilter);
-        syncFilterToUrl(activeFilter);
+        syncUrl();
         renderOverview();
       },
     });
     overviewPacksHost.appendChild(packBar.element);
 
-    function syncFilterToUrl(filter) {
+    function syncUrl() {
       try {
-        const qs = filterToQuery(filter);
+        const state = {
+          section: activeSection,
+          tab: getCurrentTabForSection(activeSection),
+          pack: packBar?.getActiveId() ?? null,
+          filter: activeFilter,
+        };
+        const qs = serializeLocation(state);
         const url = `${globalThis.location.pathname}${qs}${globalThis.location.hash}`;
         globalThis.history?.replaceState?.(null, '', url);
       } catch {
         // Ignore — `replaceState` may be unavailable in some test envs.
+      }
+    }
+
+    // Returns the active tab id for sections that have tabs, else undefined.
+    // Defined below `paint()` body so closure captures the latest tab state.
+    function getCurrentTabForSection(sectionId) {
+      switch (sectionId) {
+        case 'syntax':   return activeSyntaxTab;
+        case 'blackbox': return activeBlackboxTab;
+        case 'advanced': return activeAdvancedTab;
+        case 'flow':     return activeFlowTab;
+        case 'types':    return activeTypesTab;
+        default: return undefined;
       }
     }
 
@@ -735,6 +787,7 @@ export function renderApp(container) {
       renderNav();
       updateSectionVisibility();
       updateCloudTriggerState();
+      syncUrl();
       if (shouldScroll) {
         requestAnimationFrame(() => {
           scrollToActiveSection();
