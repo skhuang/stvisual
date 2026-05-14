@@ -647,6 +647,49 @@ GitHub 警告 Node.js 20 將不再被支援；已更新兩個 workflow：
 | J7 ATDD Cycle | J1 (Gherkin)、VModel (E2) |
 | J8 Flaky Diagnosis | TestQuality (I4)、E2E (J3) |
 
+### 關聯的 UI 呈現規則（Bridge Conventions）
+
+延續 H 系列 GroupTheoryExplorer ↔ Metamorphic / Logic 的 Bridge 模式。J 系列的關聯依強度選用以下四種其中之一或組合：
+
+| 模式 | 視覺 | 行為 | 適合場景 |
+|------|------|------|----------|
+| **A. Inline Bridge Button** | `🔗 → Target Explorer` 小按鈕貼在相關 widget 旁 | 點擊 = 切換到目標 section/tab + `scrollIntoView({behavior:'smooth'})` | 強關聯、一次性跳轉 |
+| **B. Side Tip Card** | 右側淺色卡片，一句說明 + 跳轉按鈕 | 同 A，但帶解釋文字 | 教學要強調「為什麼相關」 |
+| **C. Inline Data Reuse** | 直接 render 對方的核心輸出（例：J1 Examples 表直接以 Decision Table 格式並列顯示） | 不跳轉，資料雙向同步 | 兩個 Explorer 共用同一筆資料 |
+| **D. Footer Cross-Ref Strip** | Explorer 底部 `Related: A · B · C` 橫條 | 列出所有關聯項目，點擊跳轉 | 多對多、不想干擾主視線 |
+
+**預設組合：A + D**
+
+- 強關聯（會帶資料 / 對比）→ 用 **A** 嵌入按鈕
+- 弱關聯（概念延伸）→ 用 **D** 集中在 footer
+- 視需要升級到 **B**（解釋型）或 **C**（資料共用）
+
+**i18n / a11y 約定**
+
+- 按鈕文字一律 `🔗 → {目標 Explorer 名}`，名稱透過 `t('section.<id>')` 取得（避免硬編）
+- 跳轉按鈕的 `title` 屬性必含一句說明，回答「跳過去要看什麼」（沿用 `groupth.bridge.*.title` 鍵命名規則）
+- 命名空間：`<source-id>.bridge.<target-id>.btn` / `.title` / `.desc`
+- `data-testid="<source-id>-bridge-<target-id>"` 供 smoke test 點擊驗證
+
+**測試最低門檻**
+
+每個含 bridge 的 Explorer 在 smoke test 中新增 1–2 條斷言：
+- 按鈕存在且可見
+- 點擊後目標 section / tab 變成 active
+
+**各 J Explorer 預定呈現**
+
+| J Explorer | A (inline) | B (side card) | C (data reuse) | D (footer) |
+|------------|-----------|---------------|----------------|------------|
+| J1 BDD / Gherkin | → Decision Table、→ Pairwise | — | Examples 表 ↔ DT | DT · Pairwise · ATDD (J7) |
+| J2 Use Case → Test Case | → RiskBased、→ IntegrationTesting | — | — | RiskBased · Integration · ATDD |
+| J3 E2E User Journey | → TestQuality (I4 Non-flaky) | flaky source tag 旁的解釋卡 | — | TestQuality · Pyramid · RiskBased |
+| J4 Contract Testing | → IntegrationTesting | — | — | Integration · TestDoubles · E2E |
+| J5 Performance Load | → RiskBased | Little's Law 公式說明卡 | — | RiskBased · FuzzTesting |
+| J6 Chaos Engineering | → J3、→ J4 | hypothesis 說明卡 | — | E2E · Contract · RiskBased |
+| J7 ATDD Cycle | → J1 (Gherkin)、→ VModel | 四 D 階段各帶說明卡 | — | Gherkin · VModel |
+| J8 Flaky Diagnosis | → TestQuality (I4) | 每分類附典型修法卡 | — | TestQuality · E2E |
+
 ---
 
 ## 技術棧備忘
