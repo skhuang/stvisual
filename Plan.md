@@ -1,12 +1,12 @@
 # stvisual — 改善建議與路線圖
 
-> 最後更新：2026-05-14（F-B TeacherDashboard 完成；G1–G6、H1–H6 全數完成；新增 I 節 AI 輔助測試路線圖）
+> 最後更新：2026-05-14（I1–I5 AI 輔助測試 Explorer 全數完成；新增 Advanced Testing 分頁）
 
 ---
 
 ## 現況（已完成功能）
 
-### 互動式 Explorer（20 個）
+### 互動式 Explorer（30 個 + 5 個 Advanced Testing）
 
 | Explorer | 主要功能 | Quiz |
 |----------|----------|------|
@@ -36,6 +36,12 @@
 | PropertyBasedTestingExplorer | QuickCheck-style、隨機生成器、Shrinking、反例視覺化 | ✓ |
 | RiskBasedTestingExplorer | 風險矩陣熱圖、模組優先排序、Lab Metric | ✓ |
 | GroupTheoryExplorer | Orbit Explorer（Tab 1）、CACC Bridge（Tab 2）、Covering Array（Tab 3）；理論橋接 Logic & MT | ✓ |
+| **Advanced Testing 分頁** | 基於 arXiv 2501.12862（FSE 2025 / Meta ACH）— I1–I5 五個進階 Explorer | — |
+| ↳ EquivalentMutantExplorer (I1) | 等效突變體偵測：三階段前處理（syntactic / strip-comments / LLM-as-judge）+ 8 對題庫 | ✓ |
+| ↳ MutationScoreExplorer (I2) | 突變分數 vs 行覆蓋率雙儀表板；49% kill-no-cov 反直覺示範 | ✓ |
+| ↳ LLMPipelineExplorer (I3) | 三 Agent 流程（Mutation/Equivalence/Test）；ACH vs TestGen-LLM ~6× 對比 | ✓ |
+| ↳ TestQualityExplorer (I4) | 五品質維度（Buildable/Non-flaky/Hardening/Relevant/Style）× 6 情境 | ✓ |
+| ↳ FaultDirectedTestingExplorer (I5) | Blind coverage-driven vs Fault-directed 突變對比、4 issue 情境 | ✓ |
 | 全站 i18n | ZH-TW / EN 切換 | — |
 
 ### 投影片（13 講，雙語，含 speaker notes）
@@ -46,7 +52,7 @@
 
 ### 測試
 
-- 415 個 unit tests（Vitest + jsdom），37 個測試檔案
+- 475 個 unit tests（Vitest + jsdom），42 個測試檔案
 - Playwright E2E：GraphCoverage、LogicCoverage、SyntaxCoverage、TestingFlow 等
 
 ### CI / 佈署
@@ -277,10 +283,34 @@ GitHub 警告 Node.js 20 將不再被支援；已更新兩個 workflow：
 | F-B1 — Firestore saveResult / loadCourseResults + Security Rules | #162 | 2026-05-14 |
 | F-B2 — CloudStoragePanel 班級代碼 UI + 自動上傳攔截 | #164 | 2026-05-14 |
 | F-B3 — TeacherDashboard 全班成績儀表板 | #166 | 2026-05-14 |
+| I1 — EquivalentMutantExplorer（三階段前處理 + 8 對題庫） | #168 | 2026-05-14 |
+| I2 — MutationScoreExplorer（突變分數 vs 行覆蓋率雙儀表板） | #170 | 2026-05-14 |
+| I3 — LLMPipelineExplorer（三 Agent 流程 + 平台 kill-rate 對比） | #172 | 2026-05-14 |
+| I4 — TestQualityExplorer（五品質維度 × 6 情境） | #174 | 2026-05-14 |
+| I5 — FaultDirectedTestingExplorer（blind vs fault-directed mutation） | #176 | 2026-05-14 |
 
 ---
 
-## I. AI 輔助測試 Explorer（進階路線圖）
+## I. AI 輔助測試 Explorer（全部完成 2026-05-14）
+
+> 參考論文：**"Mutation-Guided LLM-based Test Generation at Meta"**（arXiv 2501.12862，FSE 2025）
+> Foster, Gulati, Harman, Harper, Mao, Ritchey, Robert, Sengupta（Meta）
+>
+> ACH（Automated Compliance Hardener）三階段 LLM Agent 流程在 10,795 個 Android Kotlin 類別上達到 73% 工程師接受率、15% 突變體殺死率（vs TestGen-LLM 2.4%）。
+
+| Item | Explorer | 核心教學點 | PR |
+|------|----------|-----------|-----|
+| I1 | EquivalentMutantExplorer | 三階段前處理（syntactic identity / strip-comments / LLM-as-judge）把 precision 0.79→0.95、recall 0.47→0.96 | #168 |
+| I2 | MutationScoreExplorer | 49% 的 ACH 測試殺死突變體卻不增加行覆蓋率——反直覺示範 | #170 |
+| I3 | LLMPipelineExplorer | 三 Agent 流程（Mutation→Equivalence→Test），含各 Agent 的 prompt、I/O、失敗模式 | #172 |
+| I4 | TestQualityExplorer | 五品質維度 Buildable / Non-flaky / Hardening / Relevant / Style；非穩定是普遍拒絕門檻 | #174 |
+| I5 | FaultDirectedTestingExplorer | Blind coverage-driven vs 規格導向 fault-directed mutation；6× 殺死率提升的本質 | #176 |
+
+共新增 5 個 Explorer、~2,500 行程式碼、60 個新測試（unit suite 415 → 475）、`section.advanced` + `advancedTabs` 分頁佈線、`emx.* / msx.* / llmp.* / tqx.* / fdx.*` i18n 命名空間（EN+ZH），全部 Explorer 共用 `.emx-paper-cite` 論文引用橫幅。
+
+---
+
+## I. AI 輔助測試 — 原始路線圖（已歸檔）
 
 > 參考論文：**"Mutation-Guided LLM-based Test Generation at Meta"**（arXiv 2501.12862，FSE 2025）
 > 作者：Foster, Gulati, Harman, Harper, Mao, Ritchey, Robert, Sengupta（Meta）
