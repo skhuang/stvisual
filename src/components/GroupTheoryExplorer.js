@@ -149,6 +149,68 @@ export function createGroupTheoryExplorer() {
       <button type="button" class="gth-copy-btn" data-testid="gth-copy">${t('groupth.copy.btn')}</button>`;
   }
 
+  // ── CACC Bridge tab ──────────────────────────────────────────────────────
+
+  function renderCACCTab(vars, autGroup) {
+    if (!vars || vars.length === 0) return `<p class="gth-error">${t('groupth.error.invalid')}</p>`;
+    if (vars.length > 6) return `<p class="gth-error">${t('groupth.error.toomany')}</p>`;
+
+    const n = vars.length;
+    const dp = determinationPairs(vars, formula, autGroup);
+    const allPairs = dp.flatMap(d => d.pairs);
+    const totalPairs = allPairs.length;
+    const neededCount = allPairs.filter(p => !p.derived).length;
+    const derivedCount = allPairs.filter(p => p.derived).length;
+
+    if (totalPairs === 0) {
+      return `<p class="gth-hint" data-testid="gth-cacc-empty">${t('groupth.cacc.empty')}</p>`;
+    }
+
+    function maskToStr(mask) {
+      const bools = maskToBools(mask, n);
+      return vars.map((v, i) => `${v}=${bools[i] ? 'T' : 'F'}`).join(', ');
+    }
+
+    const bodyRows = dp.flatMap(({ varName, pairs }) => {
+      if (pairs.length === 0) {
+        return [`<tr><td colspan="4" style="color:#94a3b8;font-style:italic">${escapeHtml(t('groupth.cacc.nopairs', { v: varName }))}</td></tr>`];
+      }
+      return pairs.map(({ row1, row2, derived }) => {
+        const bg = derived ? '#f0fdf4' : '#eff6ff';
+        const badge = derived
+          ? `<span class="gth-cacc-badge gth-cacc-badge--derived">${t('groupth.cacc.free')}</span>`
+          : `<span class="gth-cacc-badge gth-cacc-badge--seed">${t('groupth.cacc.seed')}</span>`;
+        return `<tr style="background:${bg}" data-testid="gth-cacc-row">
+          <td style="font-weight:700">${escapeHtml(varName)}</td>
+          <td><code style="font-size:0.75rem">${escapeHtml(maskToStr(row1))}</code></td>
+          <td><code style="font-size:0.75rem">${escapeHtml(maskToStr(row2))}</code></td>
+          <td>${badge}</td>
+        </tr>`;
+      });
+    }).join('');
+
+    return `
+      <div class="gth-cacc-card" data-testid="gth-cacc-content">
+        <div class="gth-orbits-summary">
+          <span>${t('groupth.cacc.total', { total: totalPairs })}</span>
+          <span class="gth-badge gth-badge--blue">${t('groupth.cacc.needed', { n: neededCount })}</span>
+          ${derivedCount > 0 ? `<span class="gth-badge gth-badge--green">${t('groupth.cacc.free.count', { n: derivedCount })}</span>` : ''}
+        </div>
+        <div style="overflow-x:auto">
+          <table class="gth-table" data-testid="gth-cacc-table">
+            <thead><tr>
+              <th>${t('groupth.cacc.var')}</th>
+              <th>${t('groupth.cacc.row1')}</th>
+              <th>${t('groupth.cacc.row2')}</th>
+              <th>${t('groupth.cacc.status')}</th>
+            </tr></thead>
+            <tbody>${bodyRows}</tbody>
+          </table>
+        </div>
+        <p class="gth-hint">${t('groupth.cacc.hint')}</p>
+      </div>`;
+  }
+
   function computeFVal(env) {
     const { evaluateFormula } = window.__gth_eval__ || {};
     if (evaluateFormula) return evaluateFormula(formula, env);
@@ -234,14 +296,18 @@ export function createGroupTheoryExplorer() {
 
     let orbitContent = '';
     let autContent = '';
+    let caccContent = '';
     if (!valid || vars.length === 0) {
       orbitContent = `<p class="gth-error">${t('groupth.error.invalid')}</p>`;
+      caccContent = `<p class="gth-error">${t('groupth.error.invalid')}</p>`;
     } else if (vars.length > 6) {
       orbitContent = `<p class="gth-error">${t('groupth.error.toomany')}</p>`;
+      caccContent = `<p class="gth-error">${t('groupth.error.toomany')}</p>`;
     } else {
       const { autGroup, orbits } = result;
       autContent = renderAutGroup(vars, autGroup);
       orbitContent = renderOrbitTable(vars, autGroup, orbits);
+      caccContent = renderCACCTab(vars, autGroup);
     }
 
     const metricData = result
@@ -280,7 +346,7 @@ export function createGroupTheoryExplorer() {
               ${autContent}
               <div class="gth-orbits-main" data-testid="gth-orbits-main">${orbitContent}</div>
             </div>` : ''}
-          ${activeTab === 'cacc' ? `<p class="gth-stub" data-testid="gth-cacc-stub">${t('groupth.stub.cacc')}</p>` : ''}
+          ${activeTab === 'cacc' ? caccContent : ''}
           ${activeTab === 'covarray' ? `<p class="gth-stub" data-testid="gth-covarray-stub">${t('groupth.stub.covarray')}</p>` : ''}
         </div>
 
