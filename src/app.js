@@ -29,6 +29,7 @@ import { createPropertyBasedTestingExplorer } from './components/PropertyBasedTe
 import { createRiskBasedTestingExplorer } from './components/RiskBasedTestingExplorer.js';
 import { createGroupTheoryExplorer } from './components/GroupTheoryExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
+import { createTeacherDashboard } from './components/TeacherDashboard.js';
 import { buildShareUrl } from './utils/resultExporter.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
 
@@ -657,6 +658,11 @@ export function renderApp(container) {
   // Show ResultViewer if URL contains ?result= (Phase A share link)
   const viewer = createResultViewer();
   if (viewer) document.body.appendChild(viewer);
+
+  // Teacher Dashboard (F-B): always present but hidden; opens via stvisual:open-teacher-dashboard event
+  const teacherDashboard = createTeacherDashboard();
+  teacherDashboard.hidden = true;
+  document.body.appendChild(teacherDashboard);
 
   // Global delegated handler for all quiz share buttons
   document.body.addEventListener('click', async (e) => {

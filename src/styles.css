@@ -12,6 +12,7 @@
 @import url('./components/FuzzTestingExplorer.css');
 @import url('./components/TestGenerationExplorer.css');
 @import url('./components/CloudStoragePanel.css');
+@import url('./components/TeacherDashboard.css');
 @import url('./components/BoundaryValueExplorer.css');
 @import url('./components/EquivalenceClassExplorer.css');
 @import url('./components/DecisionTableExplorer.css');
