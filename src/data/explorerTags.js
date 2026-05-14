@@ -212,6 +212,48 @@ export const EXPLORER_TAGS = {
   },
 };
 
+// ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
+//
+// Each Overview section card represents one or more child Explorers; this
+// table is the bridge from "section card" (the user-facing unit) to the
+// tag entries in EXPLORER_TAGS (which are per-Explorer).
+
+export const SECTION_EXPLORERS = {
+  methods: ['TestingMethodTree'],
+  flow: ['TestingFlow', 'DefectCostExplorer', 'VModelExplorer'],
+  types: ['TestingTypesTable', 'PyramidAdjusterExplorer'],
+  graph: ['GraphCoverageExplorer'],
+  logic: ['LogicCoverageExplorer'],
+  syntax: ['SyntaxCoverageExplorer', 'GrammarCoverageExplorer', 'SpecMutationExplorer'],
+  codecov: ['CodeCoverageExplorer'],
+  groupth: ['GroupTheoryExplorer'],
+  symbex: ['SymbolicExecutionExplorer'],
+  concolic: ['ConcolicExecutionExplorer'],
+  fuzz: ['FuzzTestingExplorer'],
+  testgen: ['TestGenerationExplorer'],
+  pbt: ['PropertyBasedTestingExplorer'],
+  inttest: ['IntegrationTestingExplorer'],
+  rbt: ['RiskBasedTestingExplorer'],
+  blackbox: [
+    'BoundaryValueExplorer',
+    'EquivalenceClassExplorer',
+    'DecisionTableExplorer',
+    'StateTransitionExplorer',
+    'PairwiseExplorer',
+    'CauseEffectExplorer',
+    'MetamorphicTestingExplorer',
+    'ExploratoryTestingExplorer',
+    'TestDoublesExplorer',
+  ],
+  advanced: [
+    'EquivalentMutantExplorer',
+    'MutationScoreExplorer',
+    'LLMPipelineExplorer',
+    'TestQualityExplorer',
+    'FaultDirectedTestingExplorer',
+  ],
+};
+
 // ── Helpers ────────────────────────────────────────────────────────
 
 export function getExplorerTags(id) {
@@ -230,4 +272,36 @@ export function filterExplorersByTag(dim, value) {
 
 export function listExplorersInSeries(seriesId) {
   return filterExplorersByTag('series', seriesId);
+}
+
+// Aggregate every tag value (union) across the explorers in `sectionId`.
+// Returns { level: Set, technique: Set, series: Set, difficulty: Set, source: Set }.
+export function getSectionTags(sectionId) {
+  const explorers = SECTION_EXPLORERS[sectionId] ?? [];
+  const agg = { level: new Set(), technique: new Set(), series: new Set(), difficulty: new Set(), source: new Set() };
+  for (const id of explorers) {
+    const tags = EXPLORER_TAGS[id];
+    if (!tags) continue;
+    for (const v of tags.level ?? []) agg.level.add(v);
+    for (const v of tags.technique ?? []) agg.technique.add(v);
+    for (const v of tags.series ?? []) agg.series.add(v);
+    if (tags.difficulty) agg.difficulty.add(tags.difficulty);
+    for (const v of tags.source ?? []) agg.source.add(v);
+  }
+  return agg;
+}
+
+// AND between dims, OR within a dim. Empty dim arrays act as wildcards.
+// Filter shape: { level: ['unit'], technique: ['mutation', 'llm-guided'], ... }
+export function sectionMatchesFilter(sectionId, filter) {
+  if (!filter) return true;
+  const tags = getSectionTags(sectionId);
+  for (const dim of ['level', 'technique', 'series', 'difficulty', 'source']) {
+    const wanted = filter[dim];
+    if (!Array.isArray(wanted) || wanted.length === 0) continue;
+    const has = tags[dim];
+    const hit = wanted.some((v) => has.has(v));
+    if (!hit) return false;
+  }
+  return true;
 }

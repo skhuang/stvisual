@@ -33,6 +33,8 @@ import { createMutationScoreExplorer } from './components/MutationScoreExplorer.
 import { createLLMPipelineExplorer } from './components/LLMPipelineExplorer.js';
 import { createTestQualityExplorer } from './components/TestQualityExplorer.js';
 import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTestingExplorer.js';
+import { createTagFilterBar, filterFromQuery, filterToQuery } from './components/TagFilterBar.js';
+import { sectionMatchesFilter } from './data/explorerTags.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { createTeacherDashboard } from './components/TeacherDashboard.js';
 import { buildShareUrl } from './utils/resultExporter.js';
@@ -139,6 +141,8 @@ export function renderApp(container) {
               <h2 id="section-overview-title">${t('section.all')}</h2>
               <p>${t('app.overview.subtitle')}</p>
             </div>
+            <div class="overview-filter" data-testid="overview-filter"></div>
+            <div class="overview-grid__counter" data-testid="overview-counter"></div>
             <div class="overview-grid" data-testid="overview-grid"></div>
           </section>
           <section data-testid="section-methods" tabindex="-1" aria-labelledby="section-methods-title"><h2 id="section-methods-title">${t('section.methods.title')}</h2><div data-slot="methods"></div></section>
@@ -537,33 +541,74 @@ export function renderApp(container) {
     let cloudDrawerOpen = false;
     const sectionsById = Object.fromEntries(sectionSelectConfig.map((section) => [section.id, section]));
     const overviewGrid = container.querySelector('[data-testid="overview-grid"]');
+    const overviewCounter = container.querySelector('[data-testid="overview-counter"]');
+    const overviewFilterHost = container.querySelector('[data-testid="overview-filter"]');
     const cloudTrigger = container.querySelector('[data-app-cloud]');
     const cloudDrawer = container.querySelector('[data-testid="cloud-settings-drawer"]');
     const cloudDrawerPanel = cloudDrawer.querySelector('.cloud-drawer__panel');
     let drawerReturnFocusTarget = null;
 
+    let activeFilter = filterFromQuery(globalThis.location?.search ?? '');
+    const filterBar = createTagFilterBar({
+      initial: activeFilter,
+      onChange: (next) => {
+        activeFilter = next;
+        syncFilterToUrl(next);
+        renderOverview();
+      },
+    });
+    overviewFilterHost.appendChild(filterBar.element);
+
+    function syncFilterToUrl(filter) {
+      try {
+        const qs = filterToQuery(filter);
+        const url = `${globalThis.location.pathname}${qs}${globalThis.location.hash}`;
+        globalThis.history?.replaceState?.(null, '', url);
+      } catch {
+        // Ignore — `replaceState` may be unavailable in some test envs.
+      }
+    }
+
     function renderOverview() {
-      overviewGrid.innerHTML = overviewGroups.map((group) => `
-        <section class="overview-group">
-          <h3>${t(group.key)}</h3>
-          <div class="overview-card-grid">
-            ${group.sectionIds.map((id) => {
-              const section = sectionsById[id];
-              return `
-                <button
-                  class="overview-card"
-                  type="button"
-                  data-overview-section="${section.id}"
-                >
-                  <span class="overview-card__label">${t(section.key)}</span>
-                  <span class="overview-card__title">${t(`section.${section.id}.title`)}</span>
-                  <span class="overview-card__desc">${t(`overview.desc.${section.id}`)}</span>
-                </button>
-              `;
-            }).join('')}
-          </div>
-        </section>
-      `).join('');
+      const totalSections = overviewGroups.reduce((n, g) => n + g.sectionIds.length, 0);
+      let visibleSections = 0;
+
+      overviewGrid.innerHTML = overviewGroups.map((group) => {
+        const visibleIds = group.sectionIds.filter((id) => sectionMatchesFilter(id, activeFilter));
+        visibleSections += visibleIds.length;
+        if (visibleIds.length === 0) {
+          return `<section class="overview-group overview-group--hidden" aria-hidden="true"></section>`;
+        }
+        return `
+          <section class="overview-group">
+            <h3>${t(group.key)}</h3>
+            <div class="overview-card-grid">
+              ${visibleIds.map((id) => {
+                const section = sectionsById[id];
+                return `
+                  <button
+                    class="overview-card"
+                    type="button"
+                    data-overview-section="${section.id}"
+                  >
+                    <span class="overview-card__label">${t(section.key)}</span>
+                    <span class="overview-card__title">${t(`section.${section.id}.title`)}</span>
+                    <span class="overview-card__desc">${t(`overview.desc.${section.id}`)}</span>
+                  </button>`;
+              }).join('')}
+            </div>
+          </section>`;
+      }).join('');
+
+      if (overviewCounter) {
+        if (visibleSections === 0) {
+          overviewCounter.textContent = t('filter.empty');
+        } else if (visibleSections === totalSections) {
+          overviewCounter.textContent = '';
+        } else {
+          overviewCounter.textContent = t('filter.results', { visible: visibleSections, total: totalSections });
+        }
+      }
 
       overviewGrid.querySelectorAll('[data-overview-section]').forEach((button) => {
         button.addEventListener('click', () => {

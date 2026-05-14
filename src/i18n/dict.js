@@ -1083,6 +1083,16 @@ export const messages = {
     'tag.source.textbook': 'Textbook',
     'tag.source.paper.arxiv-2501.12862': 'Meta ACH (FSE 2025)',
 
+    // K2 overview filter
+    'filter.title': 'Filter by tag',
+    'filter.clear': 'Clear all',
+    'filter.dim.level': 'Level',
+    'filter.dim.technique': 'Technique',
+    'filter.dim.series': 'Series',
+    'filter.dim.difficulty': 'Difficulty',
+    'filter.results': 'Showing {visible} of {total} sections',
+    'filter.empty': 'No sections match the current filter. Clear to see all.',
+
     'common.run': 'Run',
     'common.reset': 'Reset',
     'common.save': 'Save',
@@ -2550,6 +2560,16 @@ export const messages = {
     'tag.difficulty.research': '研究前沿',
     'tag.source.textbook': '教科書',
     'tag.source.paper.arxiv-2501.12862': 'Meta ACH（FSE 2025）',
+
+    // K2 總覽篩選
+    'filter.title': '依標籤篩選',
+    'filter.clear': '全部清除',
+    'filter.dim.level': '層級',
+    'filter.dim.technique': '技術',
+    'filter.dim.series': '系列',
+    'filter.dim.difficulty': '難度',
+    'filter.results': '顯示 {visible} / {total} 區塊',
+    'filter.empty': '目前篩選沒有符合的區塊，請清除後查看全部。',
 
     'common.reset': '重設',
     'common.save': '儲存',

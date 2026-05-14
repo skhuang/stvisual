@@ -33,6 +33,7 @@
 @import url('./components/LLMPipelineExplorer.css');
 @import url('./components/TestQualityExplorer.css');
 @import url('./components/FaultDirectedTestingExplorer.css');
+@import url('./components/TagFilterBar.css');
 @import url('./components/IntegrationTestingExplorer.css');
 @import url('./components/PropertyBasedTestingExplorer.css');
 @import url('./components/RiskBasedTestingExplorer.css');
