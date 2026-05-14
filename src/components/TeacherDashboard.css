@@ -9,6 +9,7 @@
   padding: 2rem 1rem;
   overflow-y: auto;
 }
+.td-overlay[hidden] { display: none; }
 
 .td-panel {
   background: #fff;
