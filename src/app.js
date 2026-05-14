@@ -26,6 +26,7 @@ import { createCauseEffectExplorer } from './components/CauseEffectExplorer.js';
 import { createCodeCoverageExplorer } from './components/CodeCoverageExplorer.js';
 import { createIntegrationTestingExplorer } from './components/IntegrationTestingExplorer.js';
 import { createPropertyBasedTestingExplorer } from './components/PropertyBasedTestingExplorer.js';
+import { createRiskBasedTestingExplorer } from './components/RiskBasedTestingExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { buildShareUrl } from './utils/resultExporter.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
@@ -43,6 +44,7 @@ const learningSectionsConfig = [
   { id: 'testgen', key: 'section.testgen' },
   { id: 'pbt', key: 'section.pbt' },
   { id: 'inttest', key: 'section.inttest' },
+  { id: 'rbt', key: 'section.rbt' },
   { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -66,7 +68,7 @@ const overviewGroups = [
   },
   {
     key: 'overview.group.execution',
-    sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen', 'pbt', 'inttest'],
+    sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen', 'pbt', 'inttest', 'rbt'],
   },
   {
     key: 'overview.group.blackbox',
@@ -137,6 +139,7 @@ export function renderApp(container) {
           <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t('section.testgen.title')}</h2><div data-slot="testgen"></div></section>
           <section data-testid="section-pbt" tabindex="-1" aria-labelledby="section-pbt-title"><h2 id="section-pbt-title">${t('section.pbt.title')}</h2><div data-slot="pbt"></div></section>
           <section data-testid="section-inttest" tabindex="-1" aria-labelledby="section-inttest-title"><h2 id="section-inttest-title">${t('section.inttest.title')}</h2><div data-slot="inttest"></div></section>
+          <section data-testid="section-rbt" tabindex="-1" aria-labelledby="section-rbt-title"><h2 id="section-rbt-title">${t('section.rbt.title')}</h2><div data-slot="rbt"></div></section>
           <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -177,6 +180,7 @@ export function renderApp(container) {
       testgen: main.querySelector('[data-testid="section-testgen"]'),
       pbt: main.querySelector('[data-testid="section-pbt"]'),
       inttest: main.querySelector('[data-testid="section-inttest"]'),
+      rbt: main.querySelector('[data-testid="section-rbt"]'),
       blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -205,6 +209,7 @@ export function renderApp(container) {
       codecov: createCodeCoverageExplorer(),
       inttest: createIntegrationTestingExplorer(),
       pbt: createPropertyBasedTestingExplorer(),
+      rbt: createRiskBasedTestingExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -219,6 +224,7 @@ export function renderApp(container) {
     container.querySelector('[data-slot="codecov"]').appendChild(components.codecov);
     container.querySelector('[data-slot="inttest"]').appendChild(components.inttest);
     container.querySelector('[data-slot="pbt"]').appendChild(components.pbt);
+    container.querySelector('[data-slot="rbt"]').appendChild(components.rbt);
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [

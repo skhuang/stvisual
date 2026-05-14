@@ -29,4 +29,5 @@
 @import url('./components/CodeCoverageExplorer.css');
 @import url('./components/IntegrationTestingExplorer.css');
 @import url('./components/PropertyBasedTestingExplorer.css');
+@import url('./components/RiskBasedTestingExplorer.css');
 @import url('./components/quiz.css');
