@@ -34,6 +34,7 @@ import { createLLMPipelineExplorer } from './components/LLMPipelineExplorer.js';
 import { createTestQualityExplorer } from './components/TestQualityExplorer.js';
 import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTestingExplorer.js';
 import { createTagFilterBar, filterFromQuery, filterToQuery } from './components/TagFilterBar.js';
+import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { createTeacherDashboard } from './components/TeacherDashboard.js';
@@ -141,6 +142,7 @@ export function renderApp(container) {
               <h2 id="section-overview-title">${t('section.all')}</h2>
               <p>${t('app.overview.subtitle')}</p>
             </div>
+            <div class="overview-packs" data-testid="overview-packs"></div>
             <div class="overview-filter" data-testid="overview-filter"></div>
             <div class="overview-grid__counter" data-testid="overview-counter"></div>
             <div class="overview-grid" data-testid="overview-grid"></div>
@@ -543,6 +545,7 @@ export function renderApp(container) {
     const overviewGrid = container.querySelector('[data-testid="overview-grid"]');
     const overviewCounter = container.querySelector('[data-testid="overview-counter"]');
     const overviewFilterHost = container.querySelector('[data-testid="overview-filter"]');
+    const overviewPacksHost = container.querySelector('[data-testid="overview-packs"]');
     const cloudTrigger = container.querySelector('[data-app-cloud]');
     const cloudDrawer = container.querySelector('[data-testid="cloud-settings-drawer"]');
     const cloudDrawerPanel = cloudDrawer.querySelector('.cloud-drawer__panel');
@@ -554,10 +557,24 @@ export function renderApp(container) {
       onChange: (next) => {
         activeFilter = next;
         syncFilterToUrl(next);
+        // User-driven filter changes clear any active course pack so the
+        // UI doesn't show a stale "this pack is selected" state.
+        packBar?.clear();
         renderOverview();
       },
     });
     overviewFilterHost.appendChild(filterBar.element);
+
+    const packBar = createCoursePackBar({
+      onApplyFilter: (filter) => {
+        const next = filter ?? { level: [], technique: [], series: [], difficulty: [] };
+        activeFilter = { level: [], technique: [], series: [], difficulty: [], ...next };
+        filterBar.setFilter(activeFilter);
+        syncFilterToUrl(activeFilter);
+        renderOverview();
+      },
+    });
+    overviewPacksHost.appendChild(packBar.element);
 
     function syncFilterToUrl(filter) {
       try {

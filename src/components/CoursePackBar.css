@@ -1,0 +1,101 @@
+.course-pack-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+  border: 1px solid var(--app-border, #e2e8f0);
+  border-radius: var(--app-radius-md, 8px);
+}
+
+.course-pack-bar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.course-pack-bar__title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--app-text-strong, #1f2a44);
+}
+
+.course-pack-bar__export {
+  padding: 0.28rem 0.7rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--app-primary, #1d4ed8);
+  border-radius: 999px;
+  background: var(--app-primary, #1d4ed8);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.course-pack-bar__export:hover {
+  background: #1e40af;
+}
+
+.course-pack-bar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.course-pack-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.32rem 0.65rem;
+  border: 1px solid var(--app-border, #e2e8f0);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.8rem;
+  color: var(--app-text, #374151);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s, transform 0.12s;
+}
+.course-pack-chip:hover {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+}
+.course-pack-chip--active {
+  background: #1d4ed8;
+  color: #fff;
+  border-color: #1d4ed8;
+  font-weight: 600;
+}
+.course-pack-chip--active:hover {
+  background: #1e40af;
+}
+
+.course-pack-chip__title {
+  font-weight: inherit;
+}
+.course-pack-chip__count {
+  display: inline-flex;
+  min-width: 1.4rem;
+  height: 1.1rem;
+  padding: 0 0.35rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.course-pack-chip--active .course-pack-chip__count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.course-pack-bar__desc {
+  margin: 0;
+  padding: 0.4rem 0.6rem;
+  background: #f8fafc;
+  border-left: 3px solid #1d4ed8;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: var(--app-text-muted, #475569);
+  line-height: 1.5;
+}
