@@ -1,0 +1,137 @@
+.msx-wrap { display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem 0; }
+.msx-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.msx-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+/* ── Function box ── */
+.msx-fn-box { background: #1e1e1e; border-radius: 8px; padding: 1rem; }
+.msx-fn-box h3 { margin: 0 0 0.5rem; font-size: 0.85rem; font-weight: 600; color: #94a3b8; }
+.msx-fn-code {
+  margin: 0;
+  font-family: 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.82rem;
+  color: #d4d4d4;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+/* ── Dashboard ── */
+.msx-dashboard { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.msx-meter { flex: 1; min-width: 12rem; }
+.msx-meter-label { font-size: 0.82rem; font-weight: 700; color: #374151; margin-bottom: 0.3rem; }
+.msx-meter-bar-wrap {
+  height: 1.1rem;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.msx-meter-bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s;
+}
+.msx-bar-blue  { background: #3b82f6; }
+.msx-bar-green { background: #22c55e; }
+.msx-meter-pct { font-size: 1.1rem; font-weight: 800; color: #1f2a44; margin-top: 0.2rem; }
+
+/* ── Insight ── */
+.msx-insight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fefce8;
+  border: 1px solid #fde047;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.msx-insight-num { font-size: 1.4rem; font-weight: 900; color: #854d0e; }
+.msx-insight-txt { color: #854d0e; font-weight: 600; }
+.msx-insight-ref { font-size: 0.75rem; color: #92400e; }
+
+/* ── Two-column layout ── */
+.msx-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 700px) { .msx-two-col { grid-template-columns: 1fr; } }
+
+/* ── Test list ── */
+.msx-test-list h4, .msx-mutant-list h4 {
+  margin: 0 0 0.5rem; font-size: 0.9rem; color: #1f2a44;
+}
+.msx-empty { color: #94a3b8; font-size: 0.82rem; }
+.msx-test-table, .msx-mutant-table {
+  width: 100%; border-collapse: collapse; font-size: 0.8rem;
+}
+.msx-test-table th, .msx-mutant-table th {
+  background: #f1f5f9; color: #374151; font-weight: 700;
+  padding: 0.25rem 0.5rem; border: 1px solid #e2e8f0; text-align: left;
+}
+.msx-test-table td, .msx-mutant-table td {
+  padding: 0.2rem 0.5rem; border: 1px solid #e2e8f0; vertical-align: top;
+}
+.msx-remove-btn {
+  background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; padding: 0 0.2rem;
+}
+.msx-remove-btn:hover { color: #b91c1c; }
+
+/* ── Mutant rows ── */
+.msx-row-killed { background: #f0fdf4; }
+.msx-row-alive  { background: #fef2f2; }
+.msx-row-equiv  { background: #f8fafc; opacity: 0.7; }
+.msx-mutant-desc { font-size: 0.75rem; color: #475569; }
+.msx-cat-badge {
+  background: #ede9fe; color: #5b21b6;
+  font-size: 0.68rem; font-weight: 700; font-family: monospace;
+  padding: 0.05rem 0.3rem; border-radius: 3px;
+}
+.msx-status { font-size: 0.72rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 4px; }
+.msx-status-killed { background: #bbf7d0; color: #166534; }
+.msx-status-alive  { background: #fecaca; color: #b91c1c; }
+.msx-status-equiv  { background: #f1f5f9; color: #64748b; }
+
+/* ── Add test ── */
+.msx-add-test { margin-top: 0.75rem; }
+.msx-add-test h4 { margin: 0 0 0.4rem; font-size: 0.9rem; color: #1f2a44; }
+.msx-add-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: flex-end; }
+.msx-add-label { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.78rem; font-weight: 600; color: #374151; }
+.msx-add-input, .msx-add-select {
+  padding: 0.25rem 0.4rem; border: 1px solid #d0d7e2; border-radius: 4px; font-size: 0.8rem;
+}
+.msx-add-input { width: 5rem; }
+.msx-add-btn {
+  padding: 0.3rem 0.75rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-end;
+}
+.msx-add-btn:hover { background: #1e40af; }
+.msx-add-error { color: #b91c1c; font-size: 0.78rem; margin: 0.25rem 0 0; }
+
+/* ── Presets ── */
+.msx-presets { margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+.msx-presets-label { font-size: 0.78rem; color: #64748b; font-weight: 600; }
+.msx-preset-btn {
+  padding: 0.2rem 0.6rem; border: 1px solid #d0d7e2; border-radius: 4px;
+  background: #f8fafc; font-size: 0.78rem; cursor: pointer; color: #374151;
+}
+.msx-preset-btn:hover { background: #e2e8f0; }
+
+/* ── Quiz / Lab ── */
+.msx-self-test { display: flex; flex-direction: column; gap: 1rem; }
+.msx-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.msx-quiz-start, .msx-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.msx-quiz-start:hover, .msx-lab-start:hover { background: #1e40af; }
+.msx-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.4rem; color: #1f2a44; }
+.msx-quiz-input {
+  width: 6rem; padding: 0.25rem 0.4rem; border: 1px solid #d0d7e2; border-radius: 4px; font-size: 0.85rem;
+}
+.msx-quiz-submit {
+  margin-left: 0.4rem; padding: 0.25rem 0.7rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.msx-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.msx-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.msx-lab { padding: 0.6rem 0.85rem; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 0.85rem; }
+.msx-lab--passed { border-color: #86efac; background: #f0fdf4; }
+.msx-lab-ok  { color: #166534; font-weight: 700; }
+.msx-lab-notok { color: #b91c1c; }

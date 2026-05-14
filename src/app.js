@@ -29,6 +29,7 @@ import { createPropertyBasedTestingExplorer } from './components/PropertyBasedTe
 import { createRiskBasedTestingExplorer } from './components/RiskBasedTestingExplorer.js';
 import { createGroupTheoryExplorer } from './components/GroupTheoryExplorer.js';
 import { createEquivalentMutantExplorer } from './components/EquivalentMutantExplorer.js';
+import { createMutationScoreExplorer } from './components/MutationScoreExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { createTeacherDashboard } from './components/TeacherDashboard.js';
 import { buildShareUrl } from './utils/resultExporter.js';
@@ -225,6 +226,7 @@ export function renderApp(container) {
       rbt: createRiskBasedTestingExplorer(),
       groupth: createGroupTheoryExplorer(),
       equivmutant: createEquivalentMutantExplorer(),
+      mutationscore: createMutationScoreExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -244,7 +246,8 @@ export function renderApp(container) {
 
     // --- Advanced Testing: tabbed (I1 Equivalent Mutants; I2–I5 added in subsequent PRs) ---
     const advancedTabs = [
-      { id: 'equivmutant', key: 'advTab.equivmutant', component: components.equivmutant },
+      { id: 'equivmutant',   key: 'advTab.equivmutant',   component: components.equivmutant },
+      { id: 'mutationscore', key: 'advTab.mutationscore', component: components.mutationscore },
     ];
     const advancedSlot = container.querySelector('[data-slot="advanced"]');
     const advancedTabBar = document.createElement('nav');
