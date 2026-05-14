@@ -32,6 +32,7 @@ import { createEquivalentMutantExplorer } from './components/EquivalentMutantExp
 import { createMutationScoreExplorer } from './components/MutationScoreExplorer.js';
 import { createLLMPipelineExplorer } from './components/LLMPipelineExplorer.js';
 import { createTestQualityExplorer } from './components/TestQualityExplorer.js';
+import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTestingExplorer.js';
 import { createResultViewer } from './components/ResultViewer.js';
 import { createTeacherDashboard } from './components/TeacherDashboard.js';
 import { buildShareUrl } from './utils/resultExporter.js';
@@ -231,6 +232,7 @@ export function renderApp(container) {
       mutationscore: createMutationScoreExplorer(),
       llmpipeline: createLLMPipelineExplorer(),
       testquality: createTestQualityExplorer(),
+      faultdirected: createFaultDirectedTestingExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -254,6 +256,7 @@ export function renderApp(container) {
       { id: 'mutationscore', key: 'advTab.mutationscore', component: components.mutationscore },
       { id: 'llmpipeline',   key: 'advTab.llmpipeline',   component: components.llmpipeline },
       { id: 'testquality',   key: 'advTab.testquality',   component: components.testquality },
+      { id: 'faultdirected', key: 'advTab.faultdirected', component: components.faultdirected },
     ];
     const advancedSlot = container.querySelector('[data-slot="advanced"]');
     const advancedTabBar = document.createElement('nav');
