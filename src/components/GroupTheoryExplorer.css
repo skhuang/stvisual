@@ -275,6 +275,65 @@
 .gth-cacc-badge--seed    { background: #dbeafe; color: #1e40af; }
 .gth-cacc-badge--derived { background: #dcfce7; color: #166534; }
 
+/* ── Covering Array tab ── */
+.gth-cov-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+
+.gth-cov-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.gth-cov-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.gth-cov-label {
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.gth-filter-select {
+  padding: 0.2rem 0.4rem;
+  border: 1px solid #d0d7e2;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  background: #fff;
+}
+
+.gth-slider {
+  width: 5rem;
+  accent-color: #1d4ed8;
+}
+
+.gth-slider-val {
+  min-width: 1.2rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  text-align: center;
+}
+
+.gth-cov-warn {
+  font-size: 0.75rem;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 /* ── Bottom card ── */
 .gth-bottom-card {
   background: #fff;

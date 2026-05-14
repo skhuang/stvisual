@@ -56,6 +56,9 @@ export function createGroupTheoryExplorer() {
 
   let formula = 'A AND B';
   let activeTab = 'orbits';
+  let covP = 2;  // prime alphabet size
+  let covK = 3;  // number of parameters
+  let covT = 2;  // coverage strength
 
   // Quiz state (Tab 1)
   const gthQuiz = { active: false, phase: 'question', answer: '' };
@@ -211,6 +214,85 @@ export function createGroupTheoryExplorer() {
       </div>`;
   }
 
+  // ── Covering Array tab ───────────────────────────────────────────────────
+
+  const COV_CELL_COLORS = ['#dbeafe','#dcfce7','#fef9c3','#fce7f3','#ede9fe'];
+  const COV_CELL_FG     = ['#1e40af','#166534','#92400e','#9d174d','#5b21b6'];
+
+  function countCoverage(ca, k, t, p) {
+    const covered = new Set();
+    if (t === 1) {
+      for (let col = 0; col < k; col++)
+        for (const row of ca) covered.add(`${col}:${row[col]}`);
+      return { covered: covered.size, total: k * p };
+    }
+    // t === 2
+    for (let c1 = 0; c1 < k; c1++)
+      for (let c2 = c1 + 1; c2 < k; c2++)
+        for (const row of ca) covered.add(`${c1},${c2}:${row[c1]},${row[c2]}`);
+    return { covered: covered.size, total: (k * (k - 1) / 2) * p * p };
+  }
+
+  function renderCovArrayTab() {
+    const maxK = covT === 2 ? covP + 1 : 8;
+    const k = Math.min(covK, maxK);
+    const ca = coveringArray(covP, k, covT);
+    const { covered, total } = countCoverage(ca, k, covT, covP);
+    const pct = total > 0 ? Math.round(covered / total * 100) : 100;
+
+    const headerCells = Array.from({ length: k }, (_, i) =>
+      `<th style="text-align:center">P${i + 1}</th>`).join('');
+    const bodyRows = ca.map((row, ri) => {
+      const cells = row.map((val, ci) => {
+        const v = Number(val);
+        const bg = COV_CELL_COLORS[v % COV_CELL_COLORS.length];
+        const fg = COV_CELL_FG[v % COV_CELL_FG.length];
+        return `<td style="text-align:center;background:${bg};color:${fg};font-weight:700" data-testid="gth-cov-cell-${ri}-${ci}">${val}</td>`;
+      }).join('');
+      return `<tr><td style="color:#94a3b8;font-size:0.72rem;text-align:center">T${ri + 1}</td>${cells}</tr>`;
+    }).join('');
+
+    const kCapped = covT === 2 && covK > maxK;
+    const oaName = `OA(${ca.length}; ${covT}, ${k}, ${covP})`;
+
+    return `
+      <div class="gth-cov-card" data-testid="gth-cov-content">
+        <div class="gth-cov-controls">
+          <label class="gth-cov-field">
+            <span class="gth-cov-label">${t('groupth.cov.p')}</span>
+            <select class="gth-filter-select" data-testid="gth-cov-p">
+              ${[2, 3, 5].map(v => `<option value="${v}" ${covP === v ? 'selected' : ''}>${v}</option>`).join('')}
+            </select>
+          </label>
+          <label class="gth-cov-field">
+            <span class="gth-cov-label">${t('groupth.cov.k')} (2–${maxK})</span>
+            <input type="range" min="2" max="${maxK}" value="${k}" class="gth-slider" data-testid="gth-cov-k" />
+            <span class="gth-slider-val" data-testid="gth-cov-k-val">${k}</span>
+          </label>
+          <label class="gth-cov-field">
+            <span class="gth-cov-label">${t('groupth.cov.t')}</span>
+            <select class="gth-filter-select" data-testid="gth-cov-t">
+              <option value="1" ${covT === 1 ? 'selected' : ''}>t = 1</option>
+              <option value="2" ${covT === 2 ? 'selected' : ''}>t = 2</option>
+            </select>
+          </label>
+        </div>
+        ${kCapped ? `<p class="gth-cov-warn">${t('groupth.cov.warn', { max: maxK })}</p>` : ''}
+        <div class="gth-orbits-summary">
+          <span class="gth-badge gth-badge--blue">${t('groupth.cov.rows', { n: ca.length })}</span>
+          <span class="gth-badge gth-badge--green">${t('groupth.cov.coverage', { covered, total })}</span>
+          <span class="gth-badge ${pct === 100 ? 'gth-badge--green' : 'gth-badge--blue'}">${pct}%</span>
+        </div>
+        <div style="overflow-x:auto;margin-top:0.5rem">
+          <table class="gth-table" data-testid="gth-cov-table">
+            <thead><tr><th style="color:#94a3b8">#</th>${headerCells}</tr></thead>
+            <tbody>${bodyRows}</tbody>
+          </table>
+        </div>
+        <p class="gth-hint">${t('groupth.cov.hint', { oaName, n: ca.length, t: covT, k, p: covP })}</p>
+      </div>`;
+  }
+
   function computeFVal(env) {
     const { evaluateFormula } = window.__gth_eval__ || {};
     if (evaluateFormula) return evaluateFormula(formula, env);
@@ -347,7 +429,7 @@ export function createGroupTheoryExplorer() {
               <div class="gth-orbits-main" data-testid="gth-orbits-main">${orbitContent}</div>
             </div>` : ''}
           ${activeTab === 'cacc' ? caccContent : ''}
-          ${activeTab === 'covarray' ? `<p class="gth-stub" data-testid="gth-covarray-stub">${t('groupth.stub.covarray')}</p>` : ''}
+          ${activeTab === 'covarray' ? renderCovArrayTab() : ''}
         </div>
 
         <div class="gth-bottom-card">
@@ -418,6 +500,23 @@ export function createGroupTheoryExplorer() {
         });
       });
     }
+
+    // Covering array controls
+    root.querySelector('[data-testid="gth-cov-p"]')?.addEventListener('change', e => {
+      covP = Number(e.target.value); render();
+    });
+    const covKSlider = root.querySelector('[data-testid="gth-cov-k"]');
+    if (covKSlider) {
+      covKSlider.addEventListener('input', e => {
+        covK = Number(e.target.value);
+        const val = root.querySelector('[data-testid="gth-cov-k-val"]');
+        if (val) val.textContent = covK;
+      });
+      covKSlider.addEventListener('change', () => render());
+    }
+    root.querySelector('[data-testid="gth-cov-t"]')?.addEventListener('change', e => {
+      covT = Number(e.target.value); render();
+    });
 
     // Quiz
     root.querySelector('[data-testid="gth-quiz-start"]')?.addEventListener('click', () => {
