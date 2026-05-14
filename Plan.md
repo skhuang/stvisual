@@ -1,6 +1,6 @@
 # stvisual — 改善建議與路線圖
 
-> 最後更新：2026-05-15（新增 K 節 Tagging & Classification 規劃；J 節 Bridge Conventions 完成）
+> 最後更新：2026-05-15（K1–K3 完成 PR #184/#186/#188；K 節新增 K4+K5 deeplink 延伸路線圖）
 
 ---
 
@@ -780,6 +780,95 @@ export const EXPLORER_TAGS = {
 ### 建議切入
 
 最小可用版本：**先做 K1**——只動 metadata、不動 UI，但所有未來工作（搜尋、課程包、報表）立刻能用。K2/K3 視真實需求觸發。
+
+### 完成狀態（2026-05-15）
+
+| Phase | PR | 內容 | 測試增量 |
+|-------|----|------|---------|
+| **K1** | #184 | 34 Explorer × 5 維 tag、`tag.*` i18n、完整性測試 | 479 → 489 |
+| **K2** | #186 | Overview tag-chip filter、AND/OR、URL query 同步、計數器 | 489 → 504 |
+| **K3** | #188 | 7 個 course pack、count badge、Markdown 匯出（jsdom fallback） | 504 → 520 |
+
+---
+
+### K4 + K5 — Deeplink 延伸路線圖（規劃中）
+
+> K1–K3 完成後 URL 只能編碼「filter 狀態」。下列延伸把 URL 提升為**完整的應用狀態**：哪個 section、哪個 tab、哪個 Explorer、哪個 pack 都可以分享 / 加書籤 / 寫進 Markdown 講義。
+
+#### 動機
+
+- **K3 Markdown 匯出目前只給根 demo 連結**：教師發出去的講義對每個 Explorer 都只能說「請自行導航到 …」，使用率大打折扣
+- **Tabbed sections 的內部 tab 狀態目前只存 localStorage**：分享連結會「丟到 section 首頁、tab 重置」
+- **Course pack 選擇狀態目前只反映在 filter URL**：URL `?series=ai-assisted` 還原不出「使用者按了 AI-Assisted 那顆 chip」的脈絡
+
+#### K4（核心路由）— Unified URL Routing
+
+**功能規劃**
+
+新增 `src/utils/urlRouter.js` 集中讀寫 URL 狀態，支援以下參數：
+
+| URL 參數 | 行為 | 範例 |
+|---------|------|------|
+| `?section=<id>` | 載入時直接開該 section | `?section=blackbox` |
+| `?tab=<id>` | 配合 section，選定該 section 內部的 tab | `?section=blackbox&tab=pairwise` |
+| `?explorer=<ComponentName>` | 解析為 section + tab + scroll；最方便給 Markdown 用 | `?explorer=PairwiseExplorer` |
+| `?pack=<id>` | 還原 course pack 選擇狀態（chip 高亮 + filter） | `?pack=ai-assisted` |
+| 現有 `?level/technique/series/difficulty=...` | 維持 K2 行為 | — |
+
+**實作要點**
+
+- 新增 `EXPLORER_TO_LOCATION` 反向 map（從 `SECTION_EXPLORERS` 衍生 + 補上 tab id），讓 `?explorer=PairwiseExplorer` 能解析為 `{ section: 'blackbox', tab: 'pairwise' }`
+- 將 4 種 tabbed sections（`blackbox` / `advanced` / `syntax` / `flow`）的 tab 狀態統一接到 router
+- URL 寫入用 `history.replaceState`，不污染 history
+- localStorage 仍當 fallback（URL 沒帶就讀 localStorage；URL 有帶以 URL 為準）
+- Pack URL 與 filter URL 互斥優先序：`?pack=` 解析後直接套用 pack filter，覆蓋 `?series=` 等
+- 一律支援與 `?lang=` 共存（lang 已在 i18n，不需另寫）
+
+**Quiz / Lab 不變**：互動狀態不入 URL，純展示狀態才入。
+
+**測試**
+
+- `urlRouter` 純函數：parse / serialize / round-trip
+- 整合：開 `?explorer=PairwiseExplorer` → activeSection === 'blackbox' && blackbox tab === 'pairwise'
+- 整合：點 pack chip → URL 變成 `?pack=ai-assisted`；reload URL 還原 pack 高亮 + filter
+- 確保 i18n 切換不影響 URL（locale 切換不該觸發 router 推進）
+
+**實作估計**：1 個 PR，約 350 行（router util + 反向 map + 4 處 tab 接線 + 測試）
+
+---
+
+#### K5（K3 Markdown 升級）— Per-Explorer Deeplinks
+
+**功能規劃**
+
+把 K3 匯出的 Markdown 從「單一 demo 連結」升級為「每個 Explorer 一個可點連結」。
+
+**改動範圍**
+
+- `src/utils/coursePackExporter.js`
+  - 引入 K4 的 `explorerToUrl(componentName)`
+  - 每個 Explorer 區段加一行 `**Open:** <url>`
+  - 把 demo 根 URL 從硬編常數改為可注入參數（測試友善 + 未來 self-host 可換 base）
+- `src/data/courseSeries.js`（可選）
+  - 允許 pack 自訂排序鍵 `order: [...]`，否則延用目前 `EXPLORER_TAGS` 鍵順序
+
+**測試**
+
+- 匯出的 Markdown 對每個 Explorer 都含一行可解析的 URL
+- 解析該 URL 透過 K4 router 還原為正確 section + tab
+
+**實作估計**：1 個 PR，約 100 行（K4 完成後 K5 大部分是接線）
+
+---
+
+#### 建議順序
+
+| 排序 | 項目 | 理由 |
+|-----|------|------|
+| ① | K4 統一路由 | 解鎖一切；其他延伸的前置 |
+| ② | K5 Markdown deeplink | K4 完成後 5 分鐘的工作量，立即兌現價值 |
+| ③ | （延後）K4f `?lang=` 鎖定 | 小細節，需求出現再做 |
+| ④ | （延後）K4g 原生 `#anchor` | 加 `id` 屬性即可，不急 |
 
 ---
 
