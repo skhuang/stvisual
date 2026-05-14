@@ -33,9 +33,7 @@ export function setLocale(locale) {
   listeners.forEach((cb) => {
     try { cb(locale); } catch (err) { console.error(err); }
   });
-  if (typeof document !== 'undefined') {
-    document.documentElement?.setAttribute('lang', locale === 'zh' ? 'zh-TW' : 'en');
-  }
+  applyDocumentLocale();
 }
 
 export function onLocaleChange(callback) {
@@ -81,7 +79,14 @@ export function pickField(item, base) {
   return item[base] ?? item[base + 'En'] ?? '';
 }
 
-// Initialise <html lang> attribute on load.
-if (typeof document !== 'undefined') {
+// Sync <html lang> and <title> with the current locale.
+function applyDocumentLocale() {
+  if (typeof document === 'undefined') return;
   document.documentElement?.setAttribute('lang', current === 'zh' ? 'zh-TW' : 'en');
+  const title = t('app.title');
+  if (title && title !== 'app.title') {
+    document.title = title;
+  }
 }
+
+applyDocumentLocale();
