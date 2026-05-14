@@ -1,6 +1,6 @@
 # stvisual — 改善建議與路線圖
 
-> 最後更新：2026-05-14（I1–I5 AI 輔助測試 Explorer 全數完成；新增 Advanced Testing 分頁）
+> 最後更新：2026-05-14（I1–I5 AI 輔助測試 Explorer 全數完成；新增 Advanced Testing 分頁；新增 J 節 系統 / E2E / 驗收測試路線圖）
 
 ---
 
@@ -431,6 +431,221 @@ GitHub 警告 Node.js 20 將不再被支援；已更新兩個 workflow：
 | ③ | I3 三階段 Agent 流程 | 系統架構概念，適合投影片搭配講解 |
 | ④ | I4 測試品質五維度 | 高度實務導向，適合進階課程 |
 | ⑤ | I5 缺陷導向測試 | 概念較抽象，適合研究所課程 |
+
+---
+
+## J. 系統 / E2E / 驗收測試 Explorer（路線圖）
+
+> 補足現有 Explorer 的層級分布：30 個 Explorer 多落在 unit / coverage / 黑盒設計，**系統測試（system）、端到端（E2E）、驗收測試（acceptance）** 是明顯空白。
+>
+> 與既有 Explorer 的關係：本節各 Explorer 屬於測試金字塔上層（V-Model 右上），補完 PyramidAdjuster (E3)、VModel (E2)、IntegrationTesting (G4)、Exploratory、RiskBased (G6) 之後的對話。
+>
+> 預設新增 `section.acceptance` 區塊，分頁形式擺放 J1–J8（與 Advanced Testing 同樣樣式）。
+
+---
+
+### J1（高優先）— BDD / Gherkin Explorer（行為驅動驗收）
+
+**教學動機**：BDD（Behavior-Driven Development）與 Gherkin 是業界最普遍的驗收測試語法（Cucumber、SpecFlow、Behave）。讓學生親手操作 Feature → Scenario → Step 的階層，理解「一個 Scenario Outline 如何自動展開成 N 個參數化測試」。
+
+**功能規劃**
+
+- 三欄佈局：
+  - **左欄**：Feature 檔編輯器（Gherkin 語法，含語法高亮）
+  - **中欄**：Step Definitions（Given/When/Then ↔ JS 函數綁定表）
+  - **右欄**：生成的測試案例表（Scenario Outline 自動展開）
+- 預設 3 個 Feature 範例：
+  - `login.feature`（基本 Given/When/Then 流程）
+  - `discount.feature`（Scenario Outline + Examples 表 → 5 列參數化）
+  - `cart.feature`（Background + Scenario + And 連接）
+- 即時驗證：未綁定的 step 以紅色標示；綁定後可「Run」執行模擬測試
+- **Bridge to D**：點擊 Examples 表可跳轉至 Decision Table Explorer
+- **Quiz**：「Scenario Outline with N=4 examples 與 4 個獨立 Scenario 在執行結果上有何差異？」
+- **Lab Reflect**：「Given/When/Then 三段式對測試可讀性的價值在哪？什麼時候 BDD 是過度設計？」
+
+**實作估計**：1 個 PR，約 450 行（Gherkin parser 是核心，可手寫小型 parser 或用最簡 regex）
+
+---
+
+### J2（高優先）— Use Case → Test Case Derivation Explorer（用例衍生）
+
+**教學動機**：Jacobson 的 Use Case 是經典系統測試起點。讓學生理解「一個 use case = happy path + N 個 alternate flow + M 個 exception flow」，並能機械地衍生最少測試案例集合。
+
+**功能規劃**
+
+- Use Case Diagram（SVG）：Actor + Use Case ovals + include / extend 關係
+- 內嵌 Use Case Detail 編輯器：
+  - 前置條件 / 後置條件
+  - 主要流程（Main Success Scenario）
+  - 替代流程（Alternate Flow，從某步驟分岔）
+  - 例外流程（Exception Flow）
+- 自動衍生測試案例樹：每個流程 = 一個測試案例，標示對應步驟
+- 預設 3 個範例：ATM 提款、線上訂票、新增使用者
+- 覆蓋指標：主要流程 100% 覆蓋；替代+例外流程的覆蓋率以進度條顯示
+- **Bridge to G6**：點擊例外流程 → 跳至 RiskBased（依風險排序測試順序）
+- **Quiz**：「給定 use case 有 1 個 main、3 個 alternate、2 個 exception，至少需要幾個測試案例覆蓋所有 flow？」
+- **Lab Reflect**：「Use case 衍生與 BDD scenario 衍生的差異？何時各自更適合？」
+
+**實作估計**：1 個 PR，約 400 行
+
+---
+
+### J3（高優先）— E2E User Journey Explorer（端到端使用者旅程）
+
+**教學動機**：E2E 測試常見痛點是「flaky」與「維護成本」。讓學生看見一個多步驟使用者旅程的失敗點分佈（timing、network、animation、async），理解何處需要顯式等待、何處需要重試。
+
+**功能規劃**
+
+- 旅程時間軸：橫向 6–8 步驟（例：login → search → add to cart → checkout → pay → confirm）
+- 每步驟可標記風險來源：
+  - ⏱ Timing（race condition、未等待 DOM 穩定）
+  - 🌐 Network（API 延遲、回應變動）
+  - 🎬 Animation（CSS transition 干擾點擊）
+  - ⚙ Async（背景任務、WebSocket、polling）
+- 模擬模式：點擊「執行 100 次」觀察 flakiness 分佈（紅綠長條圖）
+- 修復對照：每種風險顯示對應的 Playwright / Cypress 寫法（顯式等待、retry、network mock）
+- **Bridge to I4**：與 TestQuality Non-flaky 維度連動
+- **Quiz**：「下列失敗 log 屬於哪一類 flakiness？」（4 選 1）
+- **Lab Reflect**：「在你的專案中最常見的 flaky 來源是什麼？如何重現以便修復？」
+
+**實作估計**：1 個 PR，約 400 行
+
+---
+
+### J4（中優先）— Consumer-Driven Contract Testing Explorer（Pact 風格）
+
+**教學動機**：微服務架構下，服務級驗收測試的主流方法是 Consumer-Driven Contract（Pact）。讓學生理解「消費者寫契約、提供者驗證契約」與「broker 中介」的協作模式，補上 service-level acceptance 空白。
+
+**功能規劃**
+
+- 三方圖（SVG）：Consumer、Pact Broker、Provider
+- Consumer 端：定義 expected request / response（互動式 JSON 編輯器）
+- 自動生成 Pact 契約檔（JSON）並上傳至模擬 Broker
+- Provider 端：拉取契約 → 驗證自己的實作是否符合
+- Verification Matrix：Consumer × Provider 版本相容性矩陣（綠/紅儲存格）
+- 預設情境：3 個 consumer（web、mobile、partner-api）× 2 個 provider 版本
+- 反例展示：欄位移除、型態變更、必填變選填——分別會發生什麼破壞？
+- **Bridge to G4**：對比 Integration Testing 的 stub vs contract test
+- **Quiz**：「Provider 新增非必填欄位是否破壞契約？為什麼？」
+- **Lab Reflect**：「Contract test 與 E2E test 在微服務系統中的角色如何分工？」
+
+**實作估計**：1 個 PR，約 500 行（broker / matrix 視覺化是重點）
+
+---
+
+### J5（中優先）— Performance Load Profile Explorer（非功能驗收）
+
+**教學動機**：效能/負載測試常用四種負載剖面（load shape）：穩態（load）、極限（stress）、突波（spike）、持久（soak）。每種揭露不同問題。讓學生看見負載曲線與系統指標的關係。
+
+**功能規劃**
+
+- 上方：負載剖面選擇器（4 種曲線可疊加比較）
+- 中間：模擬系統指標（response time p50/p95/p99、throughput、error rate）
+- Little's Law 互動：L = λ × W，調 throughput 與 latency 觀察排隊長度
+- Knee-of-the-curve 視覺化：找出系統 saturation point
+- 預設情境：API gateway、DB-bound service、CPU-bound service（三種瓶頸特徵）
+- **Bridge to G6**：高風險模組搭配什麼負載剖面？
+- **Quiz**：「給定吞吐量 200 req/s、平均回應 50ms，依 Little's Law 系統內並行請求數為何？」
+- **Lab Reflect**：「Soak test 為何能找到 load test 找不到的記憶體洩漏？」
+
+**實作估計**：1 個 PR，約 500 行（負載曲線 + 指標圖表為主）
+
+---
+
+### J6（低優先）— Chaos Engineering Steady-State Explorer
+
+**教學動機**：Chaos Engineering（Netflix Simian Army、Principles of Chaos）以「對 steady-state 假說做實驗」為核心。讓學生體驗 fault injection → 觀察 blast radius → 學習迴圈。
+
+**功能規劃**
+
+- 系統拓撲圖（SVG）：5–7 個服務節點 + 依賴邊
+- Steady-state 指標儀表板（成功率、p95 latency、QPS）
+- Fault injection 選單：
+  - Latency（注入 200ms / 500ms / 1s）
+  - Packet drop（10% / 30% / 50%）
+  - Dependency death（強制下線某節點）
+- Blast radius 視覺化：受影響節點以漣漪動畫擴散
+- 假說對照：選定 hypothesis（「即使 service-X 死亡，使用者旅程成功率仍 ≥ 99%」）→ 注入錯誤 → 觀察是否成立
+- 預設情境：micro-services e-commerce、video streaming pipeline
+- **Bridge to J3**：失敗發生時，E2E user journey 的哪一步斷裂？
+- **Quiz**：「Hypothesis 不成立時應該繼續注入更大故障，還是停止實驗？」
+- **Lab Reflect**：「Chaos engineering 與傳統 disaster recovery test 的差異是什麼？」
+
+**實作估計**：1 個 PR，約 600 行（SVG 拓撲與動畫為主，複雜度較高）
+
+---
+
+### J7（低優先）— ATDD Cycle Explorer（驗收測試驅動開發）
+
+**教學動機**：ATDD（Acceptance Test-Driven Development，Discuss → Distill → Develop → Demo）是 BDD 的方法論前身。讓學生看見驗收測試從「對話」到「demo」的完整循環，並與 TDD 的 red-green-refactor 對比。
+
+**功能規劃**
+
+- 四階段循環圖（SVG）：Discuss / Distill / Develop / Demo，可逐步動畫
+- 每階段有具體產出物：
+  - Discuss → user story + acceptance criteria
+  - Distill → Gherkin scenarios（連結 J1）
+  - Develop → step definitions + production code（TDD inner loop）
+  - Demo → 給 PO 看的驗收會
+- 對比模式：ATDD 大循環 vs TDD 小循環（兩個動畫並列）
+- 預設情境：使用者故事「賦予折扣碼可被結帳套用」走完一輪
+- **Bridge to J1**：點擊 Distill 階段跳至 Gherkin Explorer
+- **Quiz**：「四 D 流程中哪一步包含 PO（Product Owner）？哪一步包含 dev only？」
+- **Lab Reflect**：「ATDD 與 TDD 的對話成本權衡為何？」
+
+**實作估計**：1 個 PR，約 350 行（概念與動畫為主，邏輯較少）
+
+---
+
+### J8（低優先）— Flaky Test Diagnosis Explorer
+
+**教學動機**：與 I4 TestQuality 的 Non-flaky 維度形成深度對：把 flaky 細分為 6 種來源並讓學生練習分類。
+
+**功能規劃**
+
+- 8 個失敗 log 樣本（隨機順序），學生分類為：
+  - Timing / Order dependency / Async / Network / Animation / Data pollution
+- 每分類附「典型修法」說明
+- 統計面板：學生在哪一類最常分錯
+- 與 I4 Non-flaky 連動：本 Explorer 是 I4 該維度的「深潛」版本
+- **Quiz**：「下列哪一種 flaky 用 retry 修復通常治標不治本？」
+- **Lab Reflect**：「同一個測試在 CI 上 flaky 但在本機穩定，最可能是哪種來源？」
+
+**實作估計**：1 個 PR，約 350 行
+
+---
+
+### 優先順序與分組
+
+| 排序 | 項目 | 理由 | 預估完成 |
+|------|------|------|---------|
+| ① | J1 BDD / Gherkin | 業界最普遍的驗收方法；視覺化效果好；可重用 Lab/Quiz 框架 | 1 個 PR |
+| ② | J2 Use Case → Test Case | 補上 Jacobson 經典；衍生邏輯機械化、易實作 | 1 個 PR |
+| ③ | J3 E2E User Journey | 補 E2E 缺口；與 I4 Non-flaky 與 PyramidAdjuster 形成對話 | 1 個 PR |
+| ④ | J4 Contract Testing (Pact) | 補 service-level acceptance；微服務時代必備 | 1 個 PR |
+| ⑤ | J5 Performance Load Profile | 補非功能驗收；Little's Law 視覺化教學效果強 | 1 個 PR |
+| ⑥ | J6 Chaos Engineering | 趨勢主題；有 Netflix 論文背書；實作較複雜 | 1 個 PR |
+| ⑦ | J7 ATDD Cycle | 概念性、適合搭配投影片；可作 J1 的前置講解 | 1 個 PR |
+| ⑧ | J8 Flaky Diagnosis | I4 的深潛；不需引論文也成立 | 1 個 PR |
+
+### 建議的合併策略
+
+- **第一波（核心驗收）**：J1 + J2 + J3 — 三個 PR 一氣完成，新建 `section.acceptance` 分頁
+- **第二波（服務 / 非功能）**：J4 + J5 — 兩個 PR，建立服務級驗收 & 非功能測試版圖
+- **第三波（彈性）**：J6 + J7 + J8 — 視課程需求選做
+
+### 與既有 Explorer 的關聯
+
+| J Explorer | 連動的既有 Explorer |
+|------------|---------------------|
+| J1 BDD / Gherkin | DecisionTable (E2/D)、PairwiseExplorer (G1) |
+| J2 Use Case → Test Case | RiskBased (G6)、IntegrationTesting (G4) |
+| J3 E2E User Journey | PyramidAdjuster (E3)、TestQuality (I4)、RiskBased (G6) |
+| J4 Contract Testing | IntegrationTesting (G4)、TestDoubles |
+| J5 Performance Load | RiskBased (G6)、FuzzTesting |
+| J6 Chaos Engineering | J3 (E2E)、J4 (Contract) |
+| J7 ATDD Cycle | J1 (Gherkin)、VModel (E2) |
+| J8 Flaky Diagnosis | TestQuality (I4)、E2E (J3) |
 
 ---
 
