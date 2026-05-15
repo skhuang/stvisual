@@ -15,7 +15,9 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:browser": "playwright test",
-    "test:browser:headed": "playwright test --headed"
+    "test:browser:headed": "playwright test --headed",
+    "print:test-plan": "pandoc MANUAL_TEST_PLAN.md -o MANUAL_TEST_PLAN.html --standalone --metadata title='Manual Test Plan' --css=scripts/print.css && open MANUAL_TEST_PLAN.html",
+    "print:test-plan:pdf": "pandoc MANUAL_TEST_PLAN.md -o MANUAL_TEST_PLAN.pdf --pdf-engine=xelatex -V geometry:margin=2cm -V mainfont='PingFang TC' -V CJKmainfont='PingFang TC' && open MANUAL_TEST_PLAN.pdf"
   },
   "devDependencies": {
     "@playwright/test": "^1.53.1",

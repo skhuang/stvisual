@@ -1,0 +1,92 @@
+/* Printable stylesheet for MANUAL_TEST_PLAN.html.
+   Optimized for A4 paper; clean tables and good page-break behaviour. */
+
+body {
+  font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Segoe UI", sans-serif;
+  line-height: 1.55;
+  max-width: 880px;
+  margin: 24px auto 48px;
+  padding: 0 24px;
+  color: #1f2a44;
+}
+
+h1 {
+  font-size: 1.6rem;
+  border-bottom: 2px solid #1d4ed8;
+  padding-bottom: 0.3rem;
+}
+h2 {
+  font-size: 1.2rem;
+  margin-top: 1.8rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.2rem;
+}
+h2::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 1em;
+  background: #1d4ed8;
+  margin-right: 0.5rem;
+  vertical-align: -2px;
+}
+h3 { font-size: 1.0rem; margin-top: 1.2rem; color: #1d4ed8; }
+h4 { font-size: 0.95rem; color: #475569; }
+
+blockquote {
+  margin: 0.6rem 0;
+  padding: 0.5rem 0.9rem;
+  background: #f8fafc;
+  border-left: 3px solid #1d4ed8;
+  color: #475569;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  margin: 0.5rem 0 1rem;
+}
+table th, table td {
+  border: 1px solid #cbd5e1;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+table th {
+  background: #f1f5f9;
+  font-weight: 700;
+  color: #1f2a44;
+}
+/* Add a check column with the first numeric-id column kept narrow. */
+table td:first-child { width: 3rem; font-weight: 700; color: #1d4ed8; text-align: center; }
+
+/* Make tables paginate cleanly. */
+table { page-break-inside: avoid; }
+tr { page-break-inside: avoid; }
+h2, h3 { page-break-after: avoid; }
+
+code, pre {
+  font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85em;
+}
+code { background: #f1f5f9; padding: 0.05rem 0.3rem; border-radius: 3px; }
+pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  page-break-inside: avoid;
+}
+
+/* Empty trailing cell in every action-row becomes a check-box on print. */
+@media print {
+  body { max-width: none; margin: 0; padding: 0.5cm 1cm; font-size: 10pt; }
+  h1 { font-size: 14pt; }
+  h2 { font-size: 12pt; }
+  a { color: inherit; text-decoration: none; }
+  /* Give every row an empty "checkbox" area on the right for ticking. */
+  table tr td::after,
+  table tr th::after { content: none; }
+}
