@@ -4,7 +4,7 @@
 [![Deploy GitHub Pages](https://github.com/skhuang/stvisual/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/skhuang/stvisual/actions/workflows/deploy-pages.yml)
 [![Live Demo](https://img.shields.io/badge/demo-GitHub%20Pages-0a7ea4)](https://skhuang.github.io/stvisual/)
 
-An interactive visualization project for software testing — **30 explorers across 6 sections**: foundations, coverage criteria, execution & test generation, black-box design, group-theory testing, and AI-assisted research methods (based on the **Meta ACH** paper at FSE 2025, [arXiv 2501.12862](https://arxiv.org/abs/2501.12862)).
+An interactive visualization project for software testing — **43 explorers across 7 sections**: foundations, coverage criteria, execution & test generation, black-box design, group-theory testing, AI-assisted research methods (based on the **Meta ACH** paper at FSE 2025, [arXiv 2501.12862](https://arxiv.org/abs/2501.12862)), and system / E2E / acceptance testing.
 
 Live demo: <https://skhuang.github.io/stvisual/>
 
@@ -124,6 +124,22 @@ Five explorers tabbed under a single **Advanced Testing** section, all backed by
 
 Every Advanced Testing tab shares the same paper-citation banner (`arXiv 2501.12862 · FSE 2025`) and ends with a quiz plus a reflection prompt.
 
+### Acceptance & E2E Testing
+Eight explorers tabbed under a single **Acceptance & E2E** section, filling the upper testing-pyramid (system / E2E / acceptance / non-functional) gap:
+
+| Tab | What it teaches |
+|-----|------------------|
+| **BDD / Gherkin** | Feature → Scenario → Step parsing with bound/unbound step highlighting; Scenario Outline + Examples table auto-expands to N parameterized cases; bridges to Decision Table |
+| **Use Case Derivation** | Jacobson's classic main + alternate + exception flow derivation; coverage meter; bridges exception flows to Risk-Based prioritization |
+| **E2E User Journey** | Multi-step journeys tagged per step with one of 5 flakiness sources; deterministic Monte-Carlo simulation of "run 100×" and per-step pass-rate fall-off |
+| **Contract Testing (Pact)** | Consumer/Broker/Provider triad with three breakage kinds (missing-required-request, missing-response-field, status-mismatch); consumer × provider verification matrix |
+| **Performance Load Profile** | Load / Stress / Spike / Soak sparklines × 3 system presets (gateway / DB-bound / CPU-bound); live Little's Law (L = λ × W); knee-of-the-curve marker |
+| **Chaos Engineering** | Steady-state hypothesis vs injected fault on a service-dependency graph; BFS blast-radius propagation; hypothesis-holds verdict box |
+| **ATDD Cycle** | Discuss → Distill → Develop → Demo with PO-involvement badges; TDD red-green-refactor inner loop visible inside Develop |
+| **Flaky Diagnosis** | 8 sample failure logs across 6 flaky categories; per-source mistake bars expose what the student keeps mis-classifying |
+
+Every tab is K1-tagged for filter/search and K4-routable as `?explorer=<ComponentName>`.
+
 ### Lab Modes & Result Sharing
 - **Lab Reflect** — open-ended reflection prompts on every explorer; freeform text capture
 - **Lab Metric** — pass/fail thresholds (e.g. Mutation Score ≥ 80%, full pairwise coverage)
@@ -216,7 +232,7 @@ The app detects `file://` and switches to a pre-built `src/standalone.js` bundle
 npm run test:run
 ```
 
-555 tests across 49 files — covering every explorer, coverage algorithms, mutation engine, concolic/symbolic execution, group-theory utilities, the five Advanced Testing explorers, the URL router, and the tag/course-pack metadata layer.
+656 tests across 57 files — covering every explorer, coverage algorithms, mutation engine, concolic/symbolic execution, group-theory utilities, the five Advanced Testing explorers, the URL router, the tag/course-pack metadata layer, and the eight Acceptance & E2E explorers.
 
 ### Browser E2E tests (Playwright / Chromium)
 
@@ -294,7 +310,7 @@ The live site is built and deployed automatically on every push to `main` via th
 push to main
   └─ test job (ubuntu-latest, Node 20)
        ├─ npm ci --legacy-peer-deps
-       ├─ npm run test:run              ← 555 unit tests must pass
+       ├─ npm run test:run              ← 656 unit tests must pass
        ├─ inject-env                    ← reads GitHub Secrets, writes cloudConfig.js
        ├─ build:standalone              ← esbuild bundles src/ → standalone.js
        └─ prepare-pages                 ← copies src tree → site/
@@ -438,6 +454,14 @@ Both workflows use **Node.js 24** and `npm ci --legacy-peer-deps`.
 │   │   ├── LLMPipelineExplorer            # I3 — 3-agent ACH flow
 │   │   ├── TestQualityExplorer            # I4 — 5-dimension quality review
 │   │   ├── FaultDirectedTestingExplorer   # I5 — blind vs fault-directed mutation
+│   │   ├── BDDGherkinExplorer             # J1 — Feature → Scenario → Step + Outline expansion
+│   │   ├── UseCaseDerivationExplorer      # J2 — Jacobson use-case flow derivation
+│   │   ├── E2EUserJourneyExplorer         # J3 — multi-step journey + flakiness Monte-Carlo
+│   │   ├── ContractTestingExplorer        # J4 — Pact-style consumer/broker/provider triad
+│   │   ├── PerformanceLoadProfileExplorer # J5 — Load/Stress/Spike/Soak + Little's Law
+│   │   ├── ChaosEngineeringExplorer       # J6 — fault injection + blast radius propagation
+│   │   ├── ATDDCycleExplorer              # J7 — 4-D outer loop + TDD inner loop
+│   │   ├── FlakyDiagnosisExplorer         # J8 — 6-category flakiness log classification
 │   │   ├── CloudStoragePanel        # Firebase Auth + Firestore + Drive + class code
 │   │   ├── TeacherDashboard         # class-results dashboard (Firestore-backed)
 │   │   ├── ResultViewer             # render shared self-reported result URLs
@@ -480,7 +504,7 @@ Both workflows use **Node.js 24** and `npm ci --legacy-peer-deps`.
 │   │   ├── urlRouter.js         # K4 — ?section / ?tab / ?explorer / ?pack parsing
 │   │   ├── coursePackExporter.js # K3+K5 — Markdown handout w/ per-row deeplinks
 │   │   └── cloudIntegration.js  # Firebase Auth + Firestore + Drive + class results
-│   └── tests/                   # 49 test files, 555 tests (Vitest + jsdom)
+│   └── tests/                   # 57 test files, 656 tests (Vitest + jsdom)
 ├── e2e/                         # Playwright browser tests
 ├── site/                        # generated GitHub Pages output (gitignored)
 └── .github/workflows/

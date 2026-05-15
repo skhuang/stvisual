@@ -1,12 +1,12 @@
 # stvisual — 改善建議與路線圖
 
-> 最後更新：2026-05-15（K1–K5 全數完成 PR #184/#186/#188/#191/#193；K 系列收官，Tagging + 路由 + Deeplink 全到位）
+> 最後更新：2026-05-15（J1–J8 系統 / E2E / 驗收測試 Explorer 全數完成 PR #197/#199/#201/#203/#205/#207/#209/#211；K + J 系列同日收官，43 個 Explorer）
 
 ---
 
 ## 現況（已完成功能）
 
-### 互動式 Explorer（30 個 + 5 個 Advanced Testing）
+### 互動式 Explorer（30 個 + 5 個 Advanced Testing + 8 個 Acceptance / E2E = 43）
 
 | Explorer | 主要功能 | Quiz |
 |----------|----------|------|
@@ -42,6 +42,15 @@
 | ↳ LLMPipelineExplorer (I3) | 三 Agent 流程（Mutation/Equivalence/Test）；ACH vs TestGen-LLM ~6× 對比 | ✓ |
 | ↳ TestQualityExplorer (I4) | 五品質維度（Buildable/Non-flaky/Hardening/Relevant/Style）× 6 情境 | ✓ |
 | ↳ FaultDirectedTestingExplorer (I5) | Blind coverage-driven vs Fault-directed 突變對比、4 issue 情境 | ✓ |
+| **Acceptance / E2E 分頁** | J1–J8 系統 / E2E / 驗收 / 非功能性測試 — 補完測試金字塔上層 | — |
+| ↳ BDDGherkinExplorer (J1) | Feature → Scenario → Step；3 預設範例；Scenario Outline + Examples → DT bridge | ✓ |
+| ↳ UseCaseDerivationExplorer (J2) | Jacobson 用例衍生：main + alternate + exception → 一流程一測試案例 | ✓ |
+| ↳ E2EUserJourneyExplorer (J3) | 多步驟旅程 + 5 維 flakiness taxonomy + Monte-Carlo「跑 100 次」模擬 | ✓ |
+| ↳ ContractTestingExplorer (J4) | Pact triad（Consumer / Broker / Provider）+ 3 種破壞性類型 + verification matrix | ✓ |
+| ↳ PerformanceLoadProfileExplorer (J5) | 4 種負載剖面（Load / Stress / Spike / Soak）+ Little's Law 互動 + knee 標記 | ✓ |
+| ↳ ChaosEngineeringExplorer (J6) | BFS 故障傳播 + blast radius 視覺化 + 穩態假說驗證 | ✓ |
+| ↳ ATDDCycleExplorer (J7) | 四 D 外圈（Discuss → Distill → Develop → Demo）+ Develop 內嵌 TDD red-green-refactor | ✓ |
+| ↳ FlakyDiagnosisExplorer (J8) | 6 類 flakiness × 8 sample logs，內建錯誤分佈長條圖 | ✓ |
 | 全站 i18n | ZH-TW / EN 切換 | — |
 
 ### 投影片（13 講，雙語，含 speaker notes）
@@ -52,7 +61,7 @@
 
 ### 測試
 
-- 555 個 unit tests（Vitest + jsdom），49 個測試檔案
+- 656 個 unit tests（Vitest + jsdom），57 個測試檔案
 - Playwright E2E：GraphCoverage、LogicCoverage、SyntaxCoverage、TestingFlow 等
 
 ### CI / 佈署
@@ -288,6 +297,14 @@ GitHub 警告 Node.js 20 將不再被支援；已更新兩個 workflow：
 | I3 — LLMPipelineExplorer（三 Agent 流程 + 平台 kill-rate 對比） | #172 | 2026-05-14 |
 | I4 — TestQualityExplorer（五品質維度 × 6 情境） | #174 | 2026-05-14 |
 | I5 — FaultDirectedTestingExplorer（blind vs fault-directed mutation） | #176 | 2026-05-14 |
+| J1 — BDDGherkinExplorer + `section.acceptance` shell | #197 | 2026-05-15 |
+| J2 — UseCaseDerivationExplorer（Jacobson 流程衍生） | #199 | 2026-05-15 |
+| J3 — E2EUserJourneyExplorer（5 維 flakiness + Monte-Carlo） | #201 | 2026-05-15 |
+| J4 — ContractTestingExplorer（Pact triad + verification matrix） | #203 | 2026-05-15 |
+| J5 — PerformanceLoadProfileExplorer（4 profiles + Little's Law） | #205 | 2026-05-15 |
+| J6 — ChaosEngineeringExplorer（BFS fault propagation + blast radius） | #207 | 2026-05-15 |
+| J7 — ATDDCycleExplorer（4-D outer loop + TDD inner loop） | #209 | 2026-05-15 |
+| J8 — FlakyDiagnosisExplorer（6 categories × 8 samples） | #211 | 2026-05-15 |
 
 ---
 
@@ -434,13 +451,43 @@ GitHub 警告 Node.js 20 將不再被支援；已更新兩個 workflow：
 
 ---
 
-## J. 系統 / E2E / 驗收測試 Explorer（路線圖）
+## J. 系統 / E2E / 驗收測試 Explorer（全部完成 2026-05-15）
 
-> 補足現有 Explorer 的層級分布：30 個 Explorer 多落在 unit / coverage / 黑盒設計，**系統測試（system）、端到端（E2E）、驗收測試（acceptance）** 是明顯空白。
+> 補足測試金字塔上層空白：原 30 個 Explorer 多落在 unit / coverage / 黑盒設計，本節 8 個 Explorer 提供完整的 system / E2E / acceptance / nonfunctional 版圖。
 >
-> 與既有 Explorer 的關係：本節各 Explorer 屬於測試金字塔上層（V-Model 右上），補完 PyramidAdjuster (E3)、VModel (E2)、IntegrationTesting (G4)、Exploratory、RiskBased (G6) 之後的對話。
->
-> 預設新增 `section.acceptance` 區塊，分頁形式擺放 J1–J8（與 Advanced Testing 同樣樣式）。
+> 全部以 `section.acceptance` 分頁呈現（與 Advanced Testing 同樣樣式）。
+
+### 完成狀態
+
+| Phase | PR | Explorer | 測試增量 |
+|-------|----|----------|---------|
+| **J1** | #197 | BDD / Gherkin Explorer + `section.acceptance` shell | 555 → 565 |
+| **J2** | #199 | Use Case → Test Case Derivation（Jacobson 流程） | 565 → 576 |
+| **J3** | #201 | E2E User Journey + 5-source flakiness taxonomy + Monte-Carlo 模擬 | 576 → 588 |
+| **J4** | #203 | Consumer-Driven Contract Testing（Pact triad、verification matrix） | 588 → 600 |
+| **J5** | #205 | Performance Load Profile（4 profiles、Little's Law、knee 標記） | 600 → 619 |
+| **J6** | #207 | Chaos Engineering Steady-State（BFS fault propagation、blast radius） | 619 → 632 |
+| **J7** | #209 | ATDD Cycle（Discuss → Distill → Develop → Demo + TDD inner loop） | 632 → 643 |
+| **J8** | #211 | Flaky Test Diagnosis（6 categories、8 sample logs、mistake bars） | 643 → 656 |
+
+8 個 Explorer 全部與 K1 metadata（5 維 tag）、K4 router（`?explorer=...` deeplink）、Bridge Conventions（A inline + D footer pattern）整合。
+
+### Bridge wiring（已實作）
+
+| J Explorer | Bridges 到 |
+|------------|-----------|
+| J1 BDD / Gherkin | → Decision Table（Examples 表展開） |
+| J2 Use Case | → Risk-Based（例外流程是高風險候選） |
+| J3 E2E Journey | → Test Quality (I4 Non-flaky)、→ Risk-Based |
+| J4 Contract | → Integration Testing |
+| J5 Performance Load | → Risk-Based |
+| J6 Chaos | → E2E (J3)、→ Contract (J4) |
+| J7 ATDD | → BDD / Gherkin (J1)、→ V-Model |
+| J8 Flaky Diagnosis | → E2E (J3)、→ Test Quality (I4) |
+
+---
+
+## J. 系統 / E2E / 驗收測試 — 原始路線圖（已歸檔）
 
 ---
 
@@ -806,7 +853,7 @@ export const EXPLORER_TAGS = {
 | 工具 | 用途 |
 |------|------|
 | Vite + 原生 JS | 前端，無框架 |
-| Vitest + jsdom | Unit tests（555 個，49 檔） |
+| Vitest + jsdom | Unit tests（656 個，57 檔） |
 | Playwright | E2E / screenshot capture |
 | Marp CLI | Markdown → PPTX |
 | Firebase / Google Drive | 雲端同步 |
