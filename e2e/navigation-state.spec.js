@@ -47,6 +47,34 @@ test.describe('Navigation state', () => {
     await expect(page.locator('[data-blackbox-tab="pairwise"]')).toHaveAttribute('aria-selected', 'true');
   });
 
+  test('browser back button returns to the source after a cross-section bridge click', async ({ page }) => {
+    // Start on the BDD/Gherkin tab via deeplink.
+    await page.goto('/index.html?explorer=BDDGherkinExplorer');
+    await page.waitForLoadState('networkidle');
+    await page.getByTestId('bdd-preset-discount').click();
+
+    // Snapshot the source URL exactly as the browser sees it — we don't
+    // care about the shape (`?explorer=` vs `?section=&tab=`), just that
+    // the back button takes us back to this exact string.
+    const sourceUrl = page.url();
+    await expect(page.getByTestId('section-acceptance')).toBeVisible();
+
+    // Cross-section jump to Decision Table.
+    await page.getByTestId('bdd-bridge-decision-table').click();
+    await expect(page.getByTestId('section-blackbox')).toBeVisible();
+    expect(page.url()).toContain('section=blackbox');
+    expect(page.url()).toContain('tab=dt');
+    expect(page.url()).not.toBe(sourceUrl);
+
+    // Browser back: URL is restored, page reloads (we listen for popstate
+    // and call location.reload()), and the source section is visible again.
+    await page.goBack();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('section-acceptance')).toBeVisible();
+    await expect(page.getByTestId('section-blackbox')).toBeHidden();
+    expect(page.url()).toBe(sourceUrl);
+  });
+
   test('cross-section bridge from J1 BDD → Decision Table switches section AND inner tab', async ({ page }) => {
     await page.goto('/index.html?explorer=BDDGherkinExplorer');
 

@@ -702,7 +702,11 @@ export function renderApp(container) {
     });
     overviewPacksHost.appendChild(packBar.element);
 
-    function syncUrl() {
+    // mode='push' creates a new history entry (so the browser back button
+    // returns the user to the previous URL); 'replace' overwrites the
+    // current entry without polluting the back stack. Section/nav changes
+    // push; filter/tab/pack chip changes replace.
+    function syncUrl(mode = 'replace') {
       try {
         const state = {
           section: activeSection,
@@ -712,9 +716,13 @@ export function renderApp(container) {
         };
         const qs = serializeLocation(state);
         const url = `${globalThis.location.pathname}${qs}${globalThis.location.hash}`;
-        globalThis.history?.replaceState?.(null, '', url);
+        if (mode === 'push') {
+          globalThis.history?.pushState?.(null, '', url);
+        } else {
+          globalThis.history?.replaceState?.(null, '', url);
+        }
       } catch {
-        // Ignore — `replaceState` may be unavailable in some test envs.
+        // Ignore — push/replaceState may be unavailable in some test envs.
       }
     }
 
@@ -876,12 +884,16 @@ export function renderApp(container) {
         openCloudDrawer();
         return;
       }
+      // Section change is a navigation: push a history entry so the
+      // browser back button returns the user to the previous section.
+      // Same-section re-clicks fall through to replace (no history spam).
+      const sectionChanged = activeSection !== sectionId;
       activeSection = sectionId;
       persistActiveSection(activeSection);
       renderNav();
       updateSectionVisibility();
       updateCloudTriggerState();
-      syncUrl();
+      syncUrl(sectionChanged ? 'push' : 'replace');
       if (shouldScroll) {
         requestAnimationFrame(() => {
           scrollToActiveSection();
@@ -952,6 +964,17 @@ export function renderApp(container) {
 
   paint();
   onLocaleChange(() => paint());
+
+  // When the browser navigates back/forward across a `pushState` entry,
+  // re-load the page so the app re-applies state from the new URL. A full
+  // reload is the cheapest way to keep section + tab + pack + filter
+  // state in lockstep with the URL without duplicating all the boot
+  // logic; the only thing lost is per-Explorer interaction state at the
+  // destination, which is acceptable when the user is undoing a bridge
+  // click anyway.
+  globalThis.addEventListener?.('popstate', () => {
+    globalThis.location?.reload?.();
+  });
 
   // Show ResultViewer if URL contains ?result= (Phase A share link)
   const viewer = createResultViewer();
