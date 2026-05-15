@@ -132,6 +132,11 @@ function persistActiveSection(sectionId) {
 }
 
 export function renderApp(container) {
+  // Tracks whether the initial deeplink scroll has run; reset across
+  // locale-change re-paints so we don't scroll the user again after they
+  // toggle the language.
+  let initialDeeplinkHandled = false;
+
   function paint() {
     // Read URL state once at the top of paint() — tabbed-section setups
     // below reference it, so this MUST run before any of them.
@@ -928,6 +933,21 @@ export function renderApp(container) {
     renderNav();
     updateSectionVisibility();
     updateCloudDrawerState();
+
+    // On first boot, if the URL pointed at a specific section/explorer,
+    // scroll it into view so the user actually sees the destination
+    // instead of the (now-hidden) overview / header area at the top.
+    // We only do this once per session — locale switches keep the user
+    // wherever they currently are.
+    if (!initialDeeplinkHandled) {
+      initialDeeplinkHandled = true;
+      if (activeSection !== 'all' && urlState.section) {
+        requestAnimationFrame(() => {
+          scrollToActiveSection();
+          focusActiveSection();
+        });
+      }
+    }
   }
 
   paint();

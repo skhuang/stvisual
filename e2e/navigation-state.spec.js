@@ -32,6 +32,21 @@ test.describe('Navigation state', () => {
     await expect(page.getByRole('tab', { name: /Grammar Coverage|Grammar/ })).toHaveAttribute('aria-selected', 'true');
   });
 
+  test('?explorer=… deeplink scrolls the destination section into view on boot', async ({ page }) => {
+    await page.goto('/index.html?explorer=PairwiseExplorer');
+    // Wait for the rAF inside paint() to execute the scroll.
+    await page.waitForFunction(() => window.scrollY > 0, { timeout: 2000 }).catch(() => {});
+
+    // Section is visible AND its top is within the viewport.
+    const section = page.getByTestId('section-blackbox');
+    await expect(section).toBeVisible();
+    const topInViewport = await section.evaluate((el) => el.getBoundingClientRect().top < window.innerHeight - 50);
+    expect(topInViewport).toBe(true);
+
+    // Pairwise tab is the active one.
+    await expect(page.locator('[data-blackbox-tab="pairwise"]')).toHaveAttribute('aria-selected', 'true');
+  });
+
   test('does not save the Cloud utility drawer as the active learning section', async ({ page }) => {
     await page.goto('/index.html');
 
