@@ -310,6 +310,7 @@ export const messages = {
     'acceptanceTab.gherkin': 'BDD / Gherkin',
     'acceptanceTab.usecase': 'Use Case Derivation',
     'acceptanceTab.e2ejourney': 'E2E User Journey',
+    'acceptanceTab.contract': 'Contract Testing',
 
     // BDD / Gherkin Explorer (J1)
     'bdd.title': 'BDD / Gherkin Explorer',
@@ -415,6 +416,43 @@ export const messages = {
     'e2e.quiz.correct': 'Right — the CSS transition on the parent is the giveaway; this is an animation-flake. Fix: disable transitions in test mode or await transitionend.',
     'e2e.quiz.wrong': 'Not quite. The log mentions active CSS transitions on the parent; that\'s the canonical animation flake.',
     'e2e.lab.prompt': 'What is the most common flaky source in your own project right now? How do you reproduce it (or do you only see it on CI)?',
+
+    // Contract Testing (J4)
+    'ct.title': 'Consumer-Driven Contract Testing Explorer',
+    'ct.desc': 'Pact-style: consumer writes its expectations, broker stores the contract, provider verifies against its actual implementation. Watch how non-breaking vs breaking schema changes propagate through the verification matrix.',
+    'ct.s.web.title': 'Web ↔ Orders API · compatible',
+    'ct.s.mobile.title': 'Mobile ↔ Orders API · added optional field (non-breaking)',
+    'ct.s.partner.title': 'Partner ↔ Payments API · required field + renamed response (breaking)',
+    'ct.role.consumer': 'Consumer',
+    'ct.role.provider': 'Provider',
+    'ct.actor.web': 'Web client',
+    'ct.actor.mobile': 'Mobile client',
+    'ct.actor.partner': 'Partner integration',
+    'ct.actor.orders': 'Orders API',
+    'ct.actor.payments': 'Payments API',
+    'ct.broker': 'Pact Broker',
+    'ct.broker.desc': 'Stores the contract published by the consumer; the provider pulls it during its verification step.',
+    'ct.request': 'Request',
+    'ct.expectedResp': 'Expected response',
+    'ct.actualResp': 'Actual response',
+    'ct.requiredFields': 'Required request fields',
+    'ct.verdict.pass': '✓ Verification passes',
+    'ct.verdict.pass.desc': 'Provider satisfies the consumer\'s contract (extra response fields are tolerated).',
+    'ct.verdict.fail': '✗ Verification fails — {n} issue(s)',
+    'ct.issue.missing-required-request': 'Provider now requires "{field}" in the request, but the consumer never sends it. Breaking — bump the API version or feature-flag the change.',
+    'ct.issue.missing-response-field': 'Consumer expects response field "{field}" but the provider no longer returns it. Breaking — keep the old field until every consumer migrates.',
+    'ct.issue.status-mismatch': 'Consumer expects HTTP {expected}, provider returns {actual}. Breaking — version the endpoint or restore the prior status code.',
+    'ct.matrix.title': 'Verification matrix',
+    'ct.bridge.inttest.title': 'Open Integration Testing Explorer — contract testing is the strict consumer-driven cousin of stub-based integration.',
+    'ct.quiz.prompt': 'A provider quietly adds an optional response field that no current consumer reads. Is this a breaking change?',
+    'ct.quiz.a': 'A. Yes — any schema change requires a major version bump.',
+    'ct.quiz.b': 'B. No — Pact tolerates extra response fields; verification still passes.',
+    'ct.quiz.c': 'C. Yes if it\'s nullable, no otherwise — nullability is what Pact actually compares.',
+    'ct.quiz.d': 'D. Only if the consumer\'s contract was registered before the new field was added.',
+    'ct.quiz.correct': 'Correct! Pact compares each field the consumer claims it reads. Anything else on the provider side is invisible to the verification.',
+    'ct.quiz.wrong': 'Not quite. Pact only fails when the consumer\'s expected fields are missing; extra provider fields slide through. That asymmetry is the consumer-driven part.',
+    'ct.lab.prompt': 'Contract testing vs E2E testing — what does each catch that the other misses? Sketch one example bug for each.',
+
 
 
     // J2 ATM use case
@@ -1996,6 +2034,7 @@ export const messages = {
     'acceptanceTab.gherkin': 'BDD / Gherkin',
     'acceptanceTab.usecase': '用例衍生',
     'acceptanceTab.e2ejourney': 'E2E 使用者旅程',
+    'acceptanceTab.contract': '契約測試',
 
     // BDD / Gherkin 探索器（J1）
     'bdd.title': 'BDD / Gherkin 探索器',
@@ -2101,6 +2140,43 @@ export const messages = {
     'e2e.quiz.correct': '正確！父層的 CSS transition 是關鍵線索——這是動畫 flaky。修法：測試模式關閉 transition，或等 transitionend。',
     'e2e.quiz.wrong': '不對。log 提到父層仍在做 CSS transition，這是典型的動畫 flaky。',
     'e2e.lab.prompt': '你目前專案中最常見的 flaky 來源是什麼？你怎麼重現（或只在 CI 上看到）？',
+
+    // 契約測試（J4）
+    'ct.title': '消費者導向契約測試探索器',
+    'ct.desc': 'Pact 風格：消費者寫下期望、Broker 儲存契約、Provider 用真實實作驗證。觀察「非破壞性」與「破壞性」結構變更如何在驗證矩陣上散播。',
+    'ct.s.web.title': 'Web ↔ Orders API · 相容',
+    'ct.s.mobile.title': 'Mobile ↔ Orders API · 新增選填欄位（非破壞性）',
+    'ct.s.partner.title': 'Partner ↔ Payments API · 新增必填 + 改名（破壞性）',
+    'ct.role.consumer': '消費者',
+    'ct.role.provider': '提供者',
+    'ct.actor.web': 'Web 客戶端',
+    'ct.actor.mobile': '行動端',
+    'ct.actor.partner': '合作夥伴整合',
+    'ct.actor.orders': 'Orders API',
+    'ct.actor.payments': 'Payments API',
+    'ct.broker': 'Pact Broker',
+    'ct.broker.desc': '儲存消費者發布的契約；提供者在驗證階段拉取使用。',
+    'ct.request': '請求',
+    'ct.expectedResp': '預期回應',
+    'ct.actualResp': '實際回應',
+    'ct.requiredFields': '必填請求欄位',
+    'ct.verdict.pass': '✓ 驗證通過',
+    'ct.verdict.pass.desc': 'Provider 滿足消費者契約（額外回應欄位是允許的）。',
+    'ct.verdict.fail': '✗ 驗證失敗——{n} 項問題',
+    'ct.issue.missing-required-request': 'Provider 現在要求「{field}」欄位，但消費者沒送出。破壞性——請升版本或加功能旗標。',
+    'ct.issue.missing-response-field': '消費者預期回應欄位「{field}」，但 Provider 不再回傳。破壞性——保留舊欄位直到所有消費者遷移。',
+    'ct.issue.status-mismatch': '消費者預期 HTTP {expected}，Provider 回 {actual}。破壞性——版本化端點或還原狀態碼。',
+    'ct.matrix.title': '驗證矩陣',
+    'ct.bridge.inttest.title': '開啟整合測試探索器——契約測試是 stub 整合的嚴格消費者導向版。',
+    'ct.quiz.prompt': 'Provider 在現有消費者都沒讀的欄位裡靜悄悄加了一個選填欄位，這是破壞性變更嗎？',
+    'ct.quiz.a': 'A. 是——任何 schema 變更都要升大版本。',
+    'ct.quiz.b': 'B. 不是——Pact 容許額外回應欄位，驗證仍通過。',
+    'ct.quiz.c': 'C. 看 nullability——可空才不破壞，否則破壞。',
+    'ct.quiz.d': 'D. 只有當消費者契約是在新欄位前註冊的才會破壞。',
+    'ct.quiz.correct': '正確！Pact 只比對消費者宣稱會讀的欄位；Provider 多出來的東西不會出現在驗證裡。這個不對稱性就是「consumer-driven」的核心。',
+    'ct.quiz.wrong': '不對。Pact 只在消費者預期欄位缺失時失敗；額外 Provider 欄位會直接通過。這個不對稱性才是「consumer-driven」的精神。',
+    'ct.lab.prompt': '契約測試 vs E2E 測試——各自能捕捉到對方錯過的什麼缺陷？分別舉一個典型例子。',
+
 
 
     // J2 ATM

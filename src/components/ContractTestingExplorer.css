@@ -1,0 +1,89 @@
+.ct-wrap { display: flex; flex-direction: column; gap: 1.25rem; padding: 1rem 0; }
+.ct-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.ct-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+.ct-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.ct-preset-chip {
+  padding: 0.3rem 0.7rem; border: 1px solid #e2e8f0; border-radius: 999px;
+  background: #f8fafc; font-size: 0.8rem; cursor: pointer; color: #374151;
+}
+.ct-preset-chip:hover { background: #eef2f7; }
+.ct-preset-chip--active {
+  background: #1d4ed8; border-color: #1d4ed8; color: #fff; font-weight: 600;
+}
+
+.ct-triad { display: grid; grid-template-columns: 1fr 0.8fr 1fr; gap: 1rem; }
+@media (max-width: 900px) { .ct-triad { grid-template-columns: 1fr; } }
+
+.ct-actor, .ct-broker {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+  padding: 0.7rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem;
+}
+.ct-actor header, .ct-broker header {
+  font-weight: 700; color: #1f2a44; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.ct-actor__role {
+  font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 4px; color: #fff;
+}
+.ct-actor--consumer { border-left: 4px solid #1d4ed8; }
+.ct-actor--consumer .ct-actor__role { background: #1d4ed8; }
+.ct-actor--provider { border-left: 4px solid #166534; }
+.ct-actor--provider .ct-actor__role { background: #166534; }
+.ct-broker { border-left: 4px solid #92400e; background: #fff7ed; }
+.ct-broker__note { margin: 0; font-size: 0.78rem; color: #78350f; }
+
+.ct-actor h4, .ct-broker h4 { margin: 0; font-size: 0.78rem; color: #475569; font-weight: 600; }
+.ct-json {
+  margin: 0; padding: 0.5rem 0.65rem;
+  background: #1e1e1e; color: #d4d4d4; border-radius: 6px;
+  font-family: 'Fira Code', monospace; font-size: 0.72rem; line-height: 1.5;
+  white-space: pre; overflow-x: auto;
+}
+
+.ct-verdict {
+  padding: 0.6rem 0.85rem; border-radius: 8px; font-size: 0.88rem; display: flex;
+  flex-direction: column; gap: 0.3rem;
+}
+.ct-verdict--pass { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+.ct-verdict--fail { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; }
+.ct-issues { margin: 0; padding-left: 1.1rem; font-size: 0.8rem; }
+
+.ct-matrix {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem 1rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.ct-matrix h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.ct-matrix__table { border-collapse: collapse; font-size: 0.82rem; }
+.ct-matrix__table th, .ct-matrix__table td {
+  border: 1px solid #e2e8f0; padding: 0.35rem 0.7rem; text-align: center;
+}
+.ct-matrix__table th { background: #f1f5f9; color: #1f2a44; }
+.ct-cell { font-weight: 700; }
+.ct-cell--pass { background: #f0fdf4; color: #166534; }
+.ct-cell--fail { background: #fef2f2; color: #b91c1c; }
+.ct-cell--na { color: #94a3b8; }
+
+.ct-bridges { display: flex; flex-wrap: wrap; gap: 6px; }
+.ct-bridge {
+  padding: 0.22rem 0.6rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.74rem; cursor: pointer;
+}
+.ct-bridge:hover { background: #1d4ed8; color: #fff; }
+
+.ct-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.ct-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.ct-quiz-start, .ct-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.ct-quiz-start:hover, .ct-lab-start:hover { background: #1e40af; }
+.ct-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.ct-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.ct-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.ct-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.ct-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.ct-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.ct-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }

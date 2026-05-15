@@ -36,6 +36,7 @@ import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTe
 import { createBDDGherkinExplorer } from './components/BDDGherkinExplorer.js';
 import { createUseCaseDerivationExplorer } from './components/UseCaseDerivationExplorer.js';
 import { createE2EUserJourneyExplorer } from './components/E2EUserJourneyExplorer.js';
+import { createContractTestingExplorer } from './components/ContractTestingExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -263,6 +264,7 @@ export function renderApp(container) {
       gherkin: createBDDGherkinExplorer(),
       usecase: createUseCaseDerivationExplorer(),
       e2ejourney: createE2EUserJourneyExplorer(),
+      contract: createContractTestingExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -345,6 +347,7 @@ export function renderApp(container) {
       { id: 'gherkin', key: 'acceptanceTab.gherkin', component: components.gherkin },
       { id: 'usecase', key: 'acceptanceTab.usecase', component: components.usecase },
       { id: 'e2ejourney', key: 'acceptanceTab.e2ejourney', component: components.e2ejourney },
+      { id: 'contract', key: 'acceptanceTab.contract', component: components.contract },
     ];
     const acceptanceSlot = container.querySelector('[data-slot="acceptance"]');
     const acceptanceTabBar = document.createElement('nav');
