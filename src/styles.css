@@ -34,6 +34,7 @@
 @import url('./components/TestQualityExplorer.css');
 @import url('./components/FaultDirectedTestingExplorer.css');
 @import url('./components/BDDGherkinExplorer.css');
+@import url('./components/UseCaseDerivationExplorer.css');
 @import url('./components/TagFilterBar.css');
 @import url('./components/CoursePackBar.css');
 @import url('./components/IntegrationTestingExplorer.css');

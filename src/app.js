@@ -34,6 +34,7 @@ import { createLLMPipelineExplorer } from './components/LLMPipelineExplorer.js';
 import { createTestQualityExplorer } from './components/TestQualityExplorer.js';
 import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTestingExplorer.js';
 import { createBDDGherkinExplorer } from './components/BDDGherkinExplorer.js';
+import { createUseCaseDerivationExplorer } from './components/UseCaseDerivationExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -259,6 +260,7 @@ export function renderApp(container) {
       testquality: createTestQualityExplorer(),
       faultdirected: createFaultDirectedTestingExplorer(),
       gherkin: createBDDGherkinExplorer(),
+      usecase: createUseCaseDerivationExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -339,6 +341,7 @@ export function renderApp(container) {
     // --- Acceptance & E2E: tabbed (J1 Gherkin; J2–J8 land in subsequent PRs) ---
     const acceptanceTabs = [
       { id: 'gherkin', key: 'acceptanceTab.gherkin', component: components.gherkin },
+      { id: 'usecase', key: 'acceptanceTab.usecase', component: components.usecase },
     ];
     const acceptanceSlot = container.querySelector('[data-slot="acceptance"]');
     const acceptanceTabBar = document.createElement('nav');
