@@ -256,6 +256,10 @@ export const EXPLORER_TAGS = {
     level: ['system'], technique: ['model-based', 'process'], series: ['model-based'],
     difficulty: 'intermediate', source: [TEXTBOOK],
   },
+  FSMTestGenerationExplorer: {
+    level: ['system'], technique: ['model-based', 'state-transition'], series: ['model-based'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -311,6 +315,7 @@ export const SECTION_EXPLORERS = {
   ],
   mbt: [
     'MBTWorkflowExplorer',
+    'FSMTestGenerationExplorer',
   ],
 };
 

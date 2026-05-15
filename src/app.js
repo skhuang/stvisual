@@ -43,6 +43,7 @@ import { createChaosEngineeringExplorer } from './components/ChaosEngineeringExp
 import { createATDDCycleExplorer } from './components/ATDDCycleExplorer.js';
 import { createFlakyDiagnosisExplorer } from './components/FlakyDiagnosisExplorer.js';
 import { createMBTWorkflowExplorer } from './components/MBTWorkflowExplorer.js';
+import { createFSMTestGenerationExplorer } from './components/FSMTestGenerationExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -295,6 +296,7 @@ export function renderApp(container) {
       atdd: createATDDCycleExplorer(),
       flaky: createFlakyDiagnosisExplorer(),
       mbtworkflow: createMBTWorkflowExplorer(),
+      fsmgen: createFSMTestGenerationExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -499,6 +501,7 @@ export function renderApp(container) {
     // --- Model-Based Testing: tabbed (L1 Workflow; L2–L6 land in subsequent PRs) ---
     const mbtTabs = [
       { id: 'workflow', key: 'mbtTab.workflow', component: components.mbtworkflow },
+      { id: 'fsmgen', key: 'mbtTab.fsmgen', component: components.fsmgen },
     ];
     const mbtSlot = container.querySelector('[data-slot="mbt"]');
     const mbtTabBar = document.createElement('nav');

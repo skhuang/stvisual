@@ -38,7 +38,6 @@ export const messages = {
     'overview.desc.fuzz': 'Generate random inputs, surface crashes, and inspect aggregate CFG coverage.',
     'overview.desc.testgen': 'Produce concrete tests from coverage requirements using symbolic witnesses.',
     'overview.desc.blackbox': 'Design black-box tests using boundary value analysis and equivalence class partitioning.',
-    'overview.desc.pairwise': 'Generate the minimum test set that covers every two-way parameter value combination.',
     'section.methods': 'Testing Methods',
     'section.graph': 'Graph Coverage',
     'section.logic': 'Logic Coverage',
@@ -194,7 +193,6 @@ export const messages = {
 
     // Property-Based Testing
     'section.pbt': 'Property-Based Testing',
-    'section.pbt.title': 'Property-Based Testing (QuickCheck-style)',
     'overview.desc.pbt': 'Explore QuickCheck-style property testing: generate random inputs, find counterexamples, and watch the shrinking algorithm minimize them.',
     'pbt.preset.mysort': 'mySort(arr) — correct',
     'pbt.preset.buggymax': 'buggyMax(a,b) — has bug',
@@ -224,7 +222,6 @@ export const messages = {
 
     // Group Theory Based Testing
     'section.groupth': 'Group Theory Testing',
-    'section.groupth.title': 'Group Theory Based Testing',
     'overview.desc.groupth': 'Visualize the automorphism group of a Boolean formula, partition its truth table into orbits, and discover which test cases are symmetry-equivalent.',
     'groupth.formula.label': 'Boolean formula (atoms AND/OR/NOT)',
     'groupth.formula.placeholder': 'e.g. A AND B',
@@ -291,7 +288,6 @@ export const messages = {
 
     // Risk-Based Test Prioritization
     'section.rbt': 'Risk-Based Test Prioritization',
-    'section.rbt.title': 'Risk-Based Test Prioritization',
     'overview.desc.rbt': 'Build a risk matrix, visualize a heat map, and prioritize your test suite by risk score = likelihood × impact.',
 
     // Advanced Testing (AI-Assisted, Research)
@@ -377,6 +373,55 @@ export const messages = {
     'mbtw.quiz.correct': 'Correct. A conformance failure is a divergence between model and system: the bug is in one of the two, and the failing step localizes it.',
     'mbtw.quiz.wrong': 'Not quite. A conformance verdict compares observed vs predicted behavior — a fail means the model and the system disagree, so the fault is in one of them.',
     'mbtw.lab.prompt': 'Pick a system you know (an ATM, a turnstile, a checkout flow). Sketch its FSM in 3–5 states, choose a generation criterion, and explain what one abstract test would look like — and one realistic way concretization could go wrong.',
+
+
+    // FSM Test Generation Explorer (L2)
+    'mbtTab.fsmgen': 'FSM Test Generation',
+    'fsmgen.title': 'FSM Test Generation Explorer',
+    'fsmgen.desc': 'Generate executable event sequences from a finite-state machine. Compare four model-coverage criteria by suite size, and find the shortest closed tour that fires every transition.',
+    'fsmgen.fsm.label': '1 · Choose a finite-state machine',
+    'fsmgen.fsm.login': 'Login Flow',
+    'fsmgen.fsm.atm': 'ATM Session',
+    'fsmgen.fsm.vending': 'Vending Machine',
+    'fsmgen.col.from': 'From',
+    'fsmgen.col.event': 'Event',
+    'fsmgen.col.to': 'To',
+    'fsmgen.crit.label': '2 · Pick a generation criterion',
+    'fsmgen.crit.state.name': 'State coverage',
+    'fsmgen.crit.state.desc': 'Every state is visited at least once. The weakest model criterion — a few short sequences from the initial state are enough.',
+    'fsmgen.crit.state.fault': 'Misses broken transitions: a state can be reached by another route while the wrong edge stays untested.',
+    'fsmgen.crit.transition.name': 'Transition coverage',
+    'fsmgen.crit.transition.desc': 'Every transition is fired at least once. Subsumes state coverage and is the usual baseline for FSM testing.',
+    'fsmgen.crit.transition.fault': 'Misses interaction faults: each transition works alone, but a wrong target state only shows up when two transitions run back to back.',
+    'fsmgen.crit.pair.name': 'Transition-pair (switch)',
+    'fsmgen.crit.pair.desc': "Chow's switch coverage: every pair of adjacent transitions — each incoming edge followed by each outgoing edge of a state — is exercised.",
+    'fsmgen.crit.pair.fault': 'Catches faults where a transition lands in the wrong state: the next transition then behaves unexpectedly.',
+    'fsmgen.crit.roundtrip.name': 'All round-trip paths',
+    'fsmgen.crit.roundtrip.desc': 'Every simple cycle in the model is traversed once, so loop and re-entry behavior is exercised.',
+    'fsmgen.crit.roundtrip.fault': 'Catches faults that only surface after a loop: stale state left behind by a previous pass.',
+    'fsmgen.metric.obligations': 'obligations',
+    'fsmgen.metric.tests': 'test cases',
+    'fsmgen.metric.length': 'total steps',
+    'fsmgen.tests.empty': 'No test case could be generated for this criterion.',
+    'fsmgen.compare.title': 'Suite size across criteria (test cases / total steps)',
+    'fsmgen.compare.note': 'Stronger criteria find more faults but cost more to run — the bar shows total event steps; the label shows test cases / steps.',
+    'fsmgen.tour.title': 'Chinese-Postman transition tour',
+    'fsmgen.tour.desc': 'The shortest closed walk from the initial state that fires every transition at least once.',
+    'fsmgen.tour.lowerbound': 'transitions (lower bound)',
+    'fsmgen.tour.cpp': 'shortest tour length',
+    'fsmgen.tour.overhead': 'repeated steps',
+    'fsmgen.tour.eulerian.yes': 'Eulerian — tour equals the lower bound',
+    'fsmgen.tour.eulerian.no': 'Not Eulerian — some transitions must repeat',
+    'fsmgen.tour.sequence': 'Tour',
+    'fsmgen.bridge.st.title': 'Open the State Transition Explorer — it counts coverage of the same FSM model this Explorer generates tests from.',
+    'fsmgen.quiz.prompt': 'Why does transition-pair (switch) coverage generally require more test cases than plain transition coverage?',
+    'fsmgen.quiz.a': 'It must visit every state at least once, which transition coverage skips.',
+    'fsmgen.quiz.b': 'It needs a Chinese-Postman tour, which transition coverage does not.',
+    'fsmgen.quiz.c': 'It must exercise every pair of adjacent transitions, so a state with i incoming and o outgoing transitions contributes i×o obligations.',
+    'fsmgen.quiz.d': 'It generates one test per transition, but makes each test twice as long.',
+    'fsmgen.quiz.correct': 'Correct. Switch coverage multiplies in-degree by out-degree at every state, so the obligation count — and the suite — grows fast.',
+    'fsmgen.quiz.wrong': 'Not quite. Switch coverage pairs each incoming transition with each outgoing transition of a state, so the obligations scale with i×o per state — far more than one-per-transition.',
+    'fsmgen.lab.prompt': 'Switch (transition-pair) coverage catches a fault class that plain transition coverage misses. Describe that fault class with a concrete example, and explain why firing transitions one at a time fails to expose it.',
 
     // BDD / Gherkin Explorer (J1)
     'bdd.title': 'BDD / Gherkin Explorer',
@@ -1224,7 +1269,6 @@ export const messages = {
     'et.note.idea': 'Idea',
     'et.note.placeholder': 'Describe your finding…',
     'et.note.add': 'Log',
-    'common.delete': 'Delete',
 
     // Result sharing (Phase A)
     'quiz.share.btn': 'Share Results',
@@ -1788,7 +1832,6 @@ export const messages = {
     'types.col.timing': 'Timing',
     'types.pyramid.title': 'Test Pyramid (bottom to top)',
 
-    // Graph coverage
     'graph.title': 'Graph Coverage Explorer',
     'graph.subtitle': 'Choose a sample program or upload your own JS function. The system extracts CFG and covers it by selected criterion.',
     'graph.example': 'Sample program',
@@ -2219,7 +2262,6 @@ export const messages = {
 
     // Property-Based Testing
     'section.pbt': '性質測試（Property-Based Testing）',
-    'section.pbt.title': '性質測試（QuickCheck 風格）',
     'overview.desc.pbt': '探索 QuickCheck 風格的性質測試：隨機生成輸入、找到反例，並觀察縮小演算法如何最小化反例。',
     'pbt.preset.mysort': 'mySort(arr) — 正確',
     'pbt.preset.buggymax': 'buggyMax(a,b) — 有 Bug',
@@ -2249,7 +2291,6 @@ export const messages = {
 
     // Group Theory Based Testing
     'section.groupth': '群論軟體測試',
-    'section.groupth.title': '群論基礎測試',
     'overview.desc.groupth': '視覺化 Boolean 公式的自同構群、分割真值表為軌道，並發現哪些測試案例因對稱性而等價。',
     'groupth.formula.label': 'Boolean 公式（原子 AND/OR/NOT）',
     'groupth.formula.placeholder': '例如 A AND B',
@@ -2318,7 +2359,6 @@ export const messages = {
 
     // Risk-Based Test Prioritization
     'section.rbt': '風險導向測試優先排序',
-    'section.rbt.title': '風險導向測試優先排序',
     'overview.desc.rbt': '建立風險矩陣、視覺化熱圖，並依風險分數（可能性 × 影響）排序測試套件。',
 
     // 進階測試（AI 輔助）
@@ -2352,6 +2392,7 @@ export const messages = {
     'section.mbt.title': '模型驅動測試（Model-Based Testing）',
     'overview.desc.mbt': '建立行為模型，從模型生成測試，對真實系統執行，再檢查一致性——這就是模型驅動的測試工作流程。',
     'mbtTab.workflow': 'MBT 工作流程',
+    'mbtTab.fsmgen': '狀態機測試生成',
 
     // MBT 工作流程探索器（L1）
     'mbtw.title': 'MBT 工作流程探索器',
@@ -2404,6 +2445,53 @@ export const messages = {
     'mbtw.quiz.correct': '正確。一致性失敗是模型與系統的分歧：缺陷在兩者之一，而失敗的那一步把它定位出來。',
     'mbtw.quiz.wrong': '不太對。一致性判定比對的是觀察行為 vs 預測行為——失敗代表模型與系統不一致，缺陷就在兩者之一。',
     'mbtw.lab.prompt': '挑一個你熟悉的系統（ATM、旋轉門、結帳流程）。用 3–5 個狀態畫出它的 FSM，選一個生成準則，說明其中一條抽象測試會長什麼樣——以及具體化可能出錯的一種實際情況。',
+
+    // 狀態機測試生成探索器（L2）
+    'fsmgen.title': '狀態機測試生成探索器',
+    'fsmgen.desc': '直接從有限狀態機生成可執行的事件序列。以套件大小比較四種模型涵蓋準則，並用中國郵差演算法找出觸發每一條轉移的最短封閉走訪。',
+    'fsmgen.fsm.label': '1 · 選一台狀態機',
+    'fsmgen.fsm.login': '登入流程',
+    'fsmgen.fsm.atm': 'ATM 交易',
+    'fsmgen.fsm.vending': '自動販賣機',
+    'fsmgen.col.from': '起點',
+    'fsmgen.col.event': '事件',
+    'fsmgen.col.to': '終點',
+    'fsmgen.crit.label': '2 · 選一個生成準則',
+    'fsmgen.crit.state.name': '狀態涵蓋',
+    'fsmgen.crit.state.desc': '每個狀態至少到訪一次。最弱的準則——從初始狀態出發的幾條短序列即可走遍所有狀態。',
+    'fsmgen.crit.state.fault': '會漏掉不在「抵達某狀態最短路徑」上的轉移——那些邊上的錯誤動作不會被發現。',
+    'fsmgen.crit.transition.name': '轉移涵蓋',
+    'fsmgen.crit.transition.desc': '每條轉移至少觸發一次。等同於狀態圖上的「邊涵蓋」。',
+    'fsmgen.crit.transition.fault': '能抓到損壞或缺漏的轉移，但抓不到只在特定轉移「順序」下才出現的錯誤。',
+    'fsmgen.crit.pair.name': '轉移對（switch）',
+    'fsmgen.crit.pair.desc': '每對通過某狀態的相鄰轉移都要操練——Chow 的 switch 涵蓋。一個有 i 條進入、o 條離開轉移的狀態貢獻 i×o 個義務。',
+    'fsmgen.crit.pair.fault': '能抓到「進入轉移」與「離開轉移」之間互動的錯誤——例如一個會「記得」自己如何被進入的狀態。',
+    'fsmgen.crit.roundtrip.name': '所有來回路徑',
+    'fsmgen.crit.roundtrip.desc': '機器中每個簡單迴圈都要涵蓋一次，且各自前面接一段從初始狀態出發的路徑。',
+    'fsmgen.crit.roundtrip.fault': '能抓到只在迴圈之後才浮現的錯誤——狀態未重置、計數器漂移、每圈洩漏一份資源。',
+    'fsmgen.metric.obligations': '項義務',
+    'fsmgen.metric.tests': '個測試案例',
+    'fsmgen.metric.length': '個事件總數',
+    'fsmgen.tests.empty': '沒有測試案例——此準則對這台機器未產生任何義務。',
+    'fsmgen.compare.title': '各準則的套件大小',
+    'fsmgen.compare.note': '長條＝事件總數；標籤＝測試案例數 / 事件總數。較強的準則抓到更多錯誤，但套件也較大。',
+    'fsmgen.tour.title': '中國郵差轉移巡迴',
+    'fsmgen.tour.desc': '從初始狀態出發、觸發每一條轉移至少一次的最短單一封閉走訪。',
+    'fsmgen.tour.lowerbound': '條轉移（下界）',
+    'fsmgen.tour.cpp': 'CPP 巡迴長度',
+    'fsmgen.tour.overhead': '額外步數',
+    'fsmgen.tour.eulerian.yes': '尤拉圖——每條轉移恰好觸發一次',
+    'fsmgen.tour.eulerian.no': '非尤拉圖——部分轉移必須重複',
+    'fsmgen.tour.sequence': '巡迴',
+    'fsmgen.bridge.st.title': '開啟狀態轉移探索器——同一個 FSM 模型，用來評分涵蓋率而非生成測試。',
+    'fsmgen.quiz.prompt': '為什麼轉移對（switch）涵蓋通常比單純的轉移涵蓋需要更多測試案例？',
+    'fsmgen.quiz.a': '它必須走訪每個狀態，而狀態數比轉移數多。',
+    'fsmgen.quiz.b': '它會重跑每條轉移直到通過，因而灌大數量。',
+    'fsmgen.quiz.c': '它必須操練每對相鄰轉移，因此一個有 i 條進入、o 條離開轉移的狀態貢獻 i×o 個義務。',
+    'fsmgen.quiz.d': '它總是為機器中每個簡單迴圈生成一個測試案例。',
+    'fsmgen.quiz.correct': '正確。switch 涵蓋以每個狀態的「進入×離開」轉移對計數，增長比單純轉移數更快。',
+    'fsmgen.quiz.wrong': '不太對。switch 涵蓋要求每個狀態的每對相鄰（進入、離開）轉移——每狀態 i×o 個義務——因此規模高於單純轉移涵蓋。',
+    'fsmgen.lab.prompt': '挑上面其中一台機器。描述一個轉移對（switch）涵蓋能抓到、但單純轉移涵蓋會漏掉的錯誤。要存在這種錯誤，狀態必須具備什麼樣的「記憶」？',
 
     // BDD / Gherkin 探索器（J1）
     'bdd.title': 'BDD / Gherkin 探索器',
@@ -3251,7 +3339,6 @@ export const messages = {
     'et.note.idea': '想法',
     'et.note.placeholder': '描述你的發現…',
     'et.note.add': '記錄',
-    'common.delete': '刪除',
 
     // Result sharing (Phase A)
     'quiz.share.btn': '分享成績',
