@@ -311,6 +311,7 @@ export const messages = {
     'acceptanceTab.usecase': 'Use Case Derivation',
     'acceptanceTab.e2ejourney': 'E2E User Journey',
     'acceptanceTab.contract': 'Contract Testing',
+    'acceptanceTab.perfload': 'Performance Load Profile',
 
     // BDD / Gherkin Explorer (J1)
     'bdd.title': 'BDD / Gherkin Explorer',
@@ -452,6 +453,42 @@ export const messages = {
     'ct.quiz.correct': 'Correct! Pact compares each field the consumer claims it reads. Anything else on the provider side is invisible to the verification.',
     'ct.quiz.wrong': 'Not quite. Pact only fails when the consumer\'s expected fields are missing; extra provider fields slide through. That asymmetry is the consumer-driven part.',
     'ct.lab.prompt': 'Contract testing vs E2E testing — what does each catch that the other misses? Sketch one example bug for each.',
+
+    // Performance Load Profile (J5)
+    'plp.title': 'Performance Load Profile Explorer',
+    'plp.desc': 'Four canonical load shapes (Load / Stress / Spike / Soak) reveal different system pathologies. Use Little\'s Law (L = λ × W) as your spine.',
+    'plp.sys.gateway': 'API gateway (stateless)',
+    'plp.sys.db': 'DB-bound service',
+    'plp.sys.cpu': 'CPU-bound service',
+    'plp.profile.load': 'Load',
+    'plp.profile.stress': 'Stress',
+    'plp.profile.spike': 'Spike',
+    'plp.profile.soak': 'Soak',
+    'plp.profile.load.desc': 'Steady normal traffic. Baseline measurement.',
+    'plp.profile.stress.desc': 'Ramp until it breaks. Finds saturation.',
+    'plp.profile.spike.desc': 'Brief impulse beyond capacity.',
+    'plp.profile.soak.desc': 'Long flat hold. Surfaces leaks.',
+    'plp.dash.title': '{sys} under {profile} load',
+    'plp.metric.concurrency': 'In-flight',
+    'plp.metric.throughput':  'Throughput',
+    'plp.metric.p50': 'p50',
+    'plp.metric.p95': 'p95',
+    'plp.metric.p99': 'p99',
+    'plp.metric.error': 'Error rate',
+    'plp.knee': 'Knee of the curve: latency starts doubling at ~{knee} in-flight (capacity ≈ {cap}).',
+    'plp.little.title': 'Little\'s Law',
+    'plp.little.derivedL': 'L (concurrent requests in system)',
+    'plp.little.hint': 'L = λ × W links throughput and latency to in-flight count. Pick any two and the third is fixed.',
+    'plp.bridge.rbt.title': 'Open Risk-Based Testing — pair load profile with risk to set the perf-test budget.',
+    'plp.quiz.prompt': 'A service averages 200 req/s with a mean response time of 80 ms. What is the average concurrent in-flight count?',
+    'plp.quiz.a': 'A. 2.5 (the inverse)',
+    'plp.quiz.b': 'B. 16 (200 × 0.08)',
+    'plp.quiz.c': 'C. 80 (latency in ms is the answer)',
+    'plp.quiz.d': 'D. Cannot tell without queue depth.',
+    'plp.quiz.correct': 'Correct! L = λ × W = 200 × 0.08 s = 16 concurrent in-flight requests.',
+    'plp.quiz.wrong': 'Not quite. Little\'s Law: L = λ × W → 200 × 0.08 s = 16 concurrent requests.',
+    'plp.lab.prompt': 'Why does a Soak test find bugs that a Stress test misses? Sketch one realistic example you have seen or would expect.',
+
 
 
 
@@ -2035,6 +2072,7 @@ export const messages = {
     'acceptanceTab.usecase': '用例衍生',
     'acceptanceTab.e2ejourney': 'E2E 使用者旅程',
     'acceptanceTab.contract': '契約測試',
+    'acceptanceTab.perfload': '效能負載剖面',
 
     // BDD / Gherkin 探索器（J1）
     'bdd.title': 'BDD / Gherkin 探索器',
@@ -2176,6 +2214,42 @@ export const messages = {
     'ct.quiz.correct': '正確！Pact 只比對消費者宣稱會讀的欄位；Provider 多出來的東西不會出現在驗證裡。這個不對稱性就是「consumer-driven」的核心。',
     'ct.quiz.wrong': '不對。Pact 只在消費者預期欄位缺失時失敗；額外 Provider 欄位會直接通過。這個不對稱性才是「consumer-driven」的精神。',
     'ct.lab.prompt': '契約測試 vs E2E 測試——各自能捕捉到對方錯過的什麼缺陷？分別舉一個典型例子。',
+
+    // 效能負載剖面（J5）
+    'plp.title': '效能負載剖面探索器',
+    'plp.desc': '四種經典負載曲線（穩態 / 極限 / 突波 / 持久）揭露不同的系統病理。以 Little\'s Law（L = λ × W）作為骨幹。',
+    'plp.sys.gateway': 'API Gateway（無狀態）',
+    'plp.sys.db': 'DB 受限服務',
+    'plp.sys.cpu': 'CPU 受限服務',
+    'plp.profile.load': '穩態 Load',
+    'plp.profile.stress': '極限 Stress',
+    'plp.profile.spike': '突波 Spike',
+    'plp.profile.soak': '持久 Soak',
+    'plp.profile.load.desc': '正常持續流量，作為基準。',
+    'plp.profile.stress.desc': '逐步加壓直到崩潰，找飽和點。',
+    'plp.profile.spike.desc': '短時間超量衝擊。',
+    'plp.profile.soak.desc': '長時間穩定運行，浮現洩漏。',
+    'plp.dash.title': '{sys} 在 {profile} 下的表現',
+    'plp.metric.concurrency': '同時在線',
+    'plp.metric.throughput':  '吞吐量',
+    'plp.metric.p50': 'p50',
+    'plp.metric.p95': 'p95',
+    'plp.metric.p99': 'p99',
+    'plp.metric.error': '錯誤率',
+    'plp.knee': '曲線拐點：延遲在 ~{knee} 同時請求開始加倍（容量 ≈ {cap}）。',
+    'plp.little.title': 'Little\'s Law',
+    'plp.little.derivedL': 'L（系統內並行請求數）',
+    'plp.little.hint': 'L = λ × W 連結吞吐量、延遲與並行數。任意兩個固定，第三個就確定了。',
+    'plp.bridge.rbt.title': '開啟風險導向測試——將負載剖面與風險搭配，決定效能測試預算。',
+    'plp.quiz.prompt': '某服務平均 200 req/s、平均回應時間 80 ms。系統內平均並行請求數是多少？',
+    'plp.quiz.a': 'A. 2.5（倒數）',
+    'plp.quiz.b': 'B. 16（200 × 0.08）',
+    'plp.quiz.c': 'C. 80（延遲毫秒就是答案）',
+    'plp.quiz.d': 'D. 不知 queue 深度無法回答。',
+    'plp.quiz.correct': '正確！L = λ × W = 200 × 0.08 s = 16 並行請求。',
+    'plp.quiz.wrong': '不對。Little\'s Law：L = λ × W → 200 × 0.08 s = 16 並行請求。',
+    'plp.lab.prompt': '為什麼 Soak 測試能找到 Stress 測試找不到的 bug？舉一個你看過或想得到的真實例子。',
+
 
 
 

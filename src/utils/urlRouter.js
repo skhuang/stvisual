@@ -26,7 +26,7 @@ export const TAB_SECTIONS = {
   flow:     { tabs: ['flow', 'defectCost', 'vmodel'],                                                 default: 'flow' },
   types:    { tabs: ['pyramid', 'adjuster'],                                                          default: 'pyramid' },
   // J-series acceptance tabs grow as J2-J8 land; J1 ships 'gherkin'.
-  acceptance: { tabs: ['gherkin', 'usecase', 'e2ejourney', 'contract'],                               default: 'gherkin' },
+  acceptance: { tabs: ['gherkin', 'usecase', 'e2ejourney', 'contract', 'perfload'],                   default: 'gherkin' },
 };
 
 // ── ComponentName → { section, tab? } ────────────────────────────────
@@ -71,6 +71,7 @@ export const EXPLORER_TO_LOCATION = {
   UseCaseDerivationExplorer:   { section: 'acceptance', tab: 'usecase' },
   E2EUserJourneyExplorer:      { section: 'acceptance', tab: 'e2ejourney' },
   ContractTestingExplorer:     { section: 'acceptance', tab: 'contract' },
+  PerformanceLoadProfileExplorer: { section: 'acceptance', tab: 'perfload' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

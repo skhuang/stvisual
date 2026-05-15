@@ -1,0 +1,85 @@
+.plp-wrap { display: flex; flex-direction: column; gap: 1.25rem; padding: 1rem 0; }
+.plp-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.plp-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+.plp-systems { display: flex; flex-wrap: wrap; gap: 6px; }
+.plp-system-chip {
+  padding: 0.3rem 0.7rem; border: 1px solid #e2e8f0; border-radius: 999px;
+  background: #f8fafc; font-size: 0.8rem; cursor: pointer; color: #374151;
+}
+.plp-system-chip:hover { background: #eef2f7; }
+.plp-system-chip--active {
+  background: #1d4ed8; border-color: #1d4ed8; color: #fff; font-weight: 600;
+}
+
+.plp-profiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+@media (max-width: 800px) { .plp-profiles { grid-template-columns: repeat(2, 1fr); } }
+.plp-profile-chip {
+  display: flex; flex-direction: column; align-items: stretch; gap: 0.3rem;
+  padding: 0.5rem 0.65rem; border: 1px solid #e2e8f0; border-radius: 8px;
+  background: #fff; color: #1f2a44; cursor: pointer;
+  font-size: 0.78rem; text-align: left;
+}
+.plp-profile-chip:hover { background: #f8fafc; }
+.plp-profile-chip--active { background: #eef2ff; border-color: #1d4ed8; }
+.plp-profile-chip__name { font-weight: 700; color: #1f2a44; }
+.plp-profile-chip__desc { font-size: 0.7rem; color: #64748b; }
+.plp-shape__svg { width: 100%; height: 50px; }
+
+.plp-dashboard, .plp-little {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+  padding: 0.9rem 1rem;
+}
+.plp-dashboard h3, .plp-little h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: #1f2a44; }
+
+.plp-metrics {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+  margin-bottom: 0.5rem;
+}
+@media (max-width: 800px) { .plp-metrics { grid-template-columns: repeat(3, 1fr); } }
+.plp-metric {
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;
+  padding: 0.4rem 0.55rem; display: flex; flex-direction: column; gap: 0.15rem;
+  font-size: 0.7rem; color: #64748b;
+}
+.plp-metric strong { color: #1f2a44; font-size: 0.95rem; font-weight: 700; }
+.plp-metric strong.plp-metric--err { color: #b91c1c; }
+.plp-knee { margin: 0; padding: 0.4rem 0.6rem; background: #fef3c7; border-left: 3px solid #f59e0b; border-radius: 4px; font-size: 0.78rem; color: #78350f; }
+
+.plp-little__formula {
+  font-family: 'Fira Code', monospace; font-size: 1rem;
+  margin: 0 0 0.5rem; color: #1d4ed8; font-weight: 700;
+}
+.plp-little__controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: end; }
+@media (max-width: 700px) { .plp-little__controls { grid-template-columns: 1fr; } }
+.plp-little__controls label { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.76rem; color: #475569; }
+.plp-little__controls label strong { color: #1f2a44; font-size: 0.85rem; }
+.plp-little__controls input[type=range] { width: 100%; }
+.plp-little__derived { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.76rem; color: #475569; padding: 0.4rem 0.6rem; background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px; }
+.plp-little__derived strong { color: #166534; font-size: 1.05rem; font-weight: 800; }
+.plp-little__hint { margin: 0.5rem 0 0; font-size: 0.78rem; color: #64748b; }
+
+.plp-bridges { display: flex; flex-wrap: wrap; gap: 6px; }
+.plp-bridge {
+  padding: 0.22rem 0.6rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.74rem; cursor: pointer;
+}
+.plp-bridge:hover { background: #1d4ed8; color: #fff; }
+
+.plp-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.plp-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.plp-quiz-start, .plp-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.plp-quiz-start:hover, .plp-lab-start:hover { background: #1e40af; }
+.plp-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.plp-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.plp-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.plp-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.plp-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.plp-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.plp-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }
