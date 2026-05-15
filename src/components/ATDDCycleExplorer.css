@@ -1,0 +1,94 @@
+.atdd-wrap { display: flex; flex-direction: column; gap: 1.25rem; padding: 1rem 0; }
+.atdd-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.atdd-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+.atdd-story {
+  background: #f8fafc; border-left: 4px solid #1d4ed8; border-radius: 4px;
+  padding: 0.7rem 0.9rem;
+}
+.atdd-story h3 { margin: 0 0 0.4rem; font-size: 0.95rem; color: #1f2a44; }
+.atdd-story p { margin: 0.15rem 0; font-size: 0.85rem; color: #374151; }
+
+.atdd-cycle {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: 6px;
+}
+.atdd-stage {
+  flex: 1; min-width: 130px;
+  display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+  padding: 0.6rem 0.5rem; border: 1px solid #e2e8f0; border-radius: 8px;
+  background: #fff; cursor: pointer; transition: border-color 0.15s, transform 0.15s;
+}
+.atdd-stage:hover { transform: translateY(-1px); border-color: #1d4ed8; }
+.atdd-stage--active { border-color: #1d4ed8; box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.18); }
+.atdd-stage--po { background: linear-gradient(180deg, #fff 0%, #eef2ff 100%); }
+.atdd-stage__icon { font-size: 1.4rem; }
+.atdd-stage__name { font-weight: 700; font-size: 0.85rem; color: #1f2a44; }
+.atdd-stage__actor { font-size: 0.7rem; color: #64748b; }
+
+.atdd-cycle__arrow { font-size: 1.1rem; color: #94a3b8; }
+
+.atdd-detail {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+.atdd-detail h3 { margin: 0 0 0.4rem; font-size: 1rem; color: #1f2a44; }
+.atdd-detail__chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.5rem; }
+.atdd-detail__chip {
+  font-size: 0.74rem; padding: 0.18rem 0.55rem;
+  border-radius: 999px; background: #f1f5f9; color: #475569;
+}
+.atdd-detail__chip--po { background: #eef2ff; color: #1d4ed8; font-weight: 600; }
+.atdd-detail__chip strong { color: #1f2a44; }
+.atdd-detail__list { margin: 0; padding-left: 1.2rem; font-size: 0.85rem; color: #374151; line-height: 1.6; }
+
+.atdd-tdd {
+  margin-top: 0.6rem; padding: 0.6rem 0.75rem;
+  background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px;
+}
+.atdd-tdd h4 { margin: 0 0 0.35rem; font-size: 0.85rem; color: #166534; }
+.atdd-tdd__loop { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.atdd-tdd__step {
+  padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; color: #fff;
+}
+.atdd-tdd__step--red { background: #b91c1c; }
+.atdd-tdd__step--green { background: #166534; }
+.atdd-tdd__step--refactor { background: #1d4ed8; }
+.atdd-tdd__arrow { color: #166534; font-weight: 700; }
+.atdd-tdd__loopback { color: #166534; font-size: 1.1rem; padding-left: 0.5rem; }
+.atdd-tdd__note { margin: 0.4rem 0 0; font-size: 0.76rem; color: #166534; }
+
+.atdd-bridges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.6rem; }
+.atdd-bridge {
+  padding: 0.22rem 0.6rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.74rem; cursor: pointer;
+}
+.atdd-bridge:hover { background: #1d4ed8; color: #fff; }
+
+.atdd-nav { display: flex; gap: 0.5rem; }
+.atdd-nav-btn {
+  padding: 0.3rem 0.85rem; border: 1px solid #e2e8f0; border-radius: 5px;
+  background: #f8fafc; font-size: 0.82rem; color: #374151; cursor: pointer;
+}
+.atdd-nav-btn:hover:not(:disabled) { background: #e2e8f0; }
+.atdd-nav-btn:disabled { opacity: 0.4; cursor: default; }
+.atdd-nav-btn--primary { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+.atdd-nav-btn--primary:hover { background: #1e40af; }
+
+.atdd-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.atdd-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.atdd-quiz-start, .atdd-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.atdd-quiz-start:hover, .atdd-lab-start:hover { background: #1e40af; }
+.atdd-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.atdd-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.atdd-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.atdd-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.atdd-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.atdd-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.atdd-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }

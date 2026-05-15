@@ -39,6 +39,7 @@ import { createE2EUserJourneyExplorer } from './components/E2EUserJourneyExplore
 import { createContractTestingExplorer } from './components/ContractTestingExplorer.js';
 import { createPerformanceLoadProfileExplorer } from './components/PerformanceLoadProfileExplorer.js';
 import { createChaosEngineeringExplorer } from './components/ChaosEngineeringExplorer.js';
+import { createATDDCycleExplorer } from './components/ATDDCycleExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -269,6 +270,7 @@ export function renderApp(container) {
       contract: createContractTestingExplorer(),
       perfload: createPerformanceLoadProfileExplorer(),
       chaos: createChaosEngineeringExplorer(),
+      atdd: createATDDCycleExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -354,6 +356,7 @@ export function renderApp(container) {
       { id: 'contract', key: 'acceptanceTab.contract', component: components.contract },
       { id: 'perfload', key: 'acceptanceTab.perfload', component: components.perfload },
       { id: 'chaos', key: 'acceptanceTab.chaos', component: components.chaos },
+      { id: 'atdd', key: 'acceptanceTab.atdd', component: components.atdd },
     ];
     const acceptanceSlot = container.querySelector('[data-slot="acceptance"]');
     const acceptanceTabBar = document.createElement('nav');
