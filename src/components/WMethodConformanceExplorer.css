@@ -1,0 +1,107 @@
+.wmethod-wrap { display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0; }
+.wmethod-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.wmethod-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+.wmethod-section-h { margin: 0.3rem 0 0; font-size: 0.95rem; color: #1f2a44; }
+
+/* ── FSM table ── */
+.wmethod-fsm { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.7rem; }
+.wmethod-trans-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.wmethod-trans-table th, .wmethod-trans-table td {
+  border: 1px solid #e2e8f0; padding: 0.25rem 0.6rem; text-align: left; color: #374151;
+}
+.wmethod-trans-table th { background: #eef2f7; color: #334155; font-weight: 700; }
+.wmethod-sym { font-family: 'Fira Code', monospace; color: #1d4ed8; }
+.wmethod-row--mutant { background: #fef2f2; }
+.wmethod-row--mutant td { color: #b91c1c; font-weight: 600; }
+
+/* ── Sets ── */
+.wmethod-sets { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+.wmethod-set-tabs { display: flex; border-bottom: 1px solid #e2e8f0; background: #f8fafc; flex-wrap: wrap; }
+.wmethod-set-tab {
+  padding: 0.4rem 0.85rem; border: none; background: transparent;
+  font-size: 0.81rem; cursor: pointer; color: #64748b; border-bottom: 2px solid transparent;
+}
+.wmethod-set-tab--active { color: #1d4ed8; border-bottom-color: #1d4ed8; font-weight: 700; }
+.wmethod-set-body { padding: 0.85rem; }
+.wmethod-set-desc { margin: 0 0 0.5rem; font-size: 0.84rem; color: #374151; line-height: 1.55; }
+.wmethod-m-row { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem; font-size: 0.8rem; color: #475569; }
+.wmethod-m-btn {
+  padding: 0.18rem 0.6rem; border: 1px solid #cbd5e1; border-radius: 999px;
+  background: #fff; color: #475569; font-size: 0.78rem; cursor: pointer;
+}
+.wmethod-m-btn--active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; font-weight: 700; }
+.wmethod-set-count { margin: 0 0 0.4rem; font-size: 0.8rem; color: #1f2a44; font-weight: 700; }
+.wmethod-seq-list { display: flex; flex-wrap: wrap; gap: 0.3rem; max-height: 11rem; overflow-y: auto; }
+.wmethod-seq {
+  font-family: 'Fira Code', monospace; font-size: 0.78rem;
+  background: #eef2ff; color: #3730a3; border-radius: 4px; padding: 0.12rem 0.45rem;
+}
+
+/* ── Distinguish ── */
+.wmethod-distinguish { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.85rem; }
+.wmethod-distinguish h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: #1f2a44; }
+.wmethod-dist-pick { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; font-size: 0.85rem; }
+.wmethod-dist-pick select {
+  padding: 0.2rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 0.82rem;
+}
+.wmethod-dist-seq { margin: 0 0 0.5rem; font-size: 0.85rem; color: #374151; }
+.wmethod-dist-seq code, .wmethod-dist-same code {
+  font-family: 'Fira Code', monospace; background: #eef2ff; color: #3730a3;
+  border-radius: 4px; padding: 0.05rem 0.35rem;
+}
+.wmethod-dist-same { margin: 0; font-size: 0.85rem; color: #64748b; }
+.wmethod-trace { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.35rem; }
+.wmethod-trace-label { font-size: 0.8rem; font-weight: 700; color: #1f2a44; width: 2.2rem; }
+.wmethod-trace-cell {
+  display: flex; flex-direction: column; align-items: center; min-width: 2rem;
+  border: 1px solid #cbd5e1; border-radius: 5px; padding: 0.15rem 0.35rem; background: #fff;
+}
+.wmethod-trace-cell small { font-size: 0.66rem; color: #94a3b8; }
+.wmethod-trace-cell b { font-size: 0.9rem; color: #1f2a44; font-family: 'Fira Code', monospace; }
+.wmethod-trace-cell--diff { border-color: #ef4444; background: #fef2f2; }
+.wmethod-trace-cell--diff b { color: #b91c1c; }
+.wmethod-dist-note { margin: 0.3rem 0 0; font-size: 0.78rem; color: #64748b; }
+
+/* ── Mutant ── */
+.wmethod-mutant { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 0.85rem; }
+.wmethod-mutant h3 { margin: 0 0 0.4rem; font-size: 0.95rem; color: #92400e; }
+.wmethod-mutant-toggle { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: #374151; cursor: pointer; }
+.wmethod-mutant-desc { margin: 0.4rem 0 0.5rem; font-size: 0.8rem; color: #78350f; }
+.wmethod-mutant-verdict { margin: 0 0 0.4rem; font-size: 0.85rem; font-weight: 700; border-radius: 5px; padding: 0.35rem 0.6rem; }
+.wmethod-caught { background: #dcfce7; color: #166534; }
+.wmethod-missed { background: #fee2e2; color: #b91c1c; }
+.wmethod-mutant-evidence { font-size: 0.82rem; color: #374151; }
+.wmethod-mutant-evidence p { margin: 0.15rem 0; }
+.wmethod-mutant-evidence code {
+  font-family: 'Fira Code', monospace; background: #fff; border: 1px solid #e2e8f0;
+  border-radius: 4px; padding: 0.05rem 0.35rem;
+}
+.wmethod-mutant-exp code { color: #166534; }
+.wmethod-mutant-act code { color: #b91c1c; }
+
+/* ── Bridge ── */
+.wmethod-bridges { display: flex; flex-wrap: wrap; gap: 6px; }
+.wmethod-bridge {
+  padding: 0.25rem 0.7rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.78rem; cursor: pointer;
+}
+.wmethod-bridge:hover { background: #1d4ed8; color: #fff; }
+
+/* ── Self-test ── */
+.wmethod-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.wmethod-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.wmethod-quiz-start, .wmethod-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.wmethod-quiz-start:hover, .wmethod-lab-start:hover { background: #1e40af; }
+.wmethod-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.wmethod-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.wmethod-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.wmethod-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.wmethod-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.wmethod-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.wmethod-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }

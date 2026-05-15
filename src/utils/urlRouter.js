@@ -27,8 +27,8 @@ export const TAB_SECTIONS = {
   types:    { tabs: ['pyramid', 'adjuster'],                                                          default: 'pyramid' },
   // J-series acceptance tabs grow as J2-J8 land; J1 ships 'gherkin'.
   acceptance: { tabs: ['gherkin', 'usecase', 'e2ejourney', 'contract', 'perfload', 'chaos', 'atdd', 'flaky'], default: 'gherkin' },
-  // L-series model-based tabs grow as L3-L6 land; L1-L2 ship here.
-  mbt: { tabs: ['workflow', 'fsmgen'], default: 'workflow' },
+  // L-series model-based tabs grow as L4-L6 land; L1-L3 ship here.
+  mbt: { tabs: ['workflow', 'fsmgen', 'wmethod'], default: 'workflow' },
 };
 
 // ── ComponentName → { section, tab? } ────────────────────────────────
@@ -80,6 +80,7 @@ export const EXPLORER_TO_LOCATION = {
   FlakyDiagnosisExplorer:      { section: 'acceptance', tab: 'flaky' },
   MBTWorkflowExplorer:         { section: 'mbt', tab: 'workflow' },
   FSMTestGenerationExplorer:   { section: 'mbt', tab: 'fsmgen' },
+  WMethodConformanceExplorer:  { section: 'mbt', tab: 'wmethod' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

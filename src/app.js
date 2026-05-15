@@ -44,6 +44,7 @@ import { createATDDCycleExplorer } from './components/ATDDCycleExplorer.js';
 import { createFlakyDiagnosisExplorer } from './components/FlakyDiagnosisExplorer.js';
 import { createMBTWorkflowExplorer } from './components/MBTWorkflowExplorer.js';
 import { createFSMTestGenerationExplorer } from './components/FSMTestGenerationExplorer.js';
+import { createWMethodConformanceExplorer } from './components/WMethodConformanceExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -297,6 +298,7 @@ export function renderApp(container) {
       flaky: createFlakyDiagnosisExplorer(),
       mbtworkflow: createMBTWorkflowExplorer(),
       fsmgen: createFSMTestGenerationExplorer(),
+      wmethod: createWMethodConformanceExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -502,6 +504,7 @@ export function renderApp(container) {
     const mbtTabs = [
       { id: 'workflow', key: 'mbtTab.workflow', component: components.mbtworkflow },
       { id: 'fsmgen', key: 'mbtTab.fsmgen', component: components.fsmgen },
+      { id: 'wmethod', key: 'mbtTab.wmethod', component: components.wmethod },
     ];
     const mbtSlot = container.querySelector('[data-slot="mbt"]');
     const mbtTabBar = document.createElement('nav');
