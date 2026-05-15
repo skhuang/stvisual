@@ -210,6 +210,12 @@ export const EXPLORER_TAGS = {
     level: ['unit'], technique: ['mutation', 'llm-guided'], series: ['ai-assisted'],
     difficulty: 'research', source: [ACH],
   },
+
+  // ── Acceptance / E2E (J-series) ───────────────────────────────────
+  BDDGherkinExplorer: {
+    level: ['acceptance'], technique: ['bdd'], series: ['acceptance-e2e'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -251,6 +257,9 @@ export const SECTION_EXPLORERS = {
     'LLMPipelineExplorer',
     'TestQualityExplorer',
     'FaultDirectedTestingExplorer',
+  ],
+  acceptance: [
+    'BDDGherkinExplorer',
   ],
 };
 

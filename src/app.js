@@ -33,6 +33,7 @@ import { createMutationScoreExplorer } from './components/MutationScoreExplorer.
 import { createLLMPipelineExplorer } from './components/LLMPipelineExplorer.js';
 import { createTestQualityExplorer } from './components/TestQualityExplorer.js';
 import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTestingExplorer.js';
+import { createBDDGherkinExplorer } from './components/BDDGherkinExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -63,6 +64,7 @@ const learningSectionsConfig = [
   { id: 'inttest', key: 'section.inttest' },
   { id: 'rbt', key: 'section.rbt' },
   { id: 'advanced', key: 'section.advanced' },
+  { id: 'acceptance', key: 'section.acceptance' },
   { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -95,6 +97,10 @@ const overviewGroups = [
   {
     key: 'overview.group.advanced',
     sectionIds: ['advanced'],
+  },
+  {
+    key: 'overview.group.acceptance',
+    sectionIds: ['acceptance'],
   },
 ];
 
@@ -172,6 +178,7 @@ export function renderApp(container) {
           <section data-testid="section-inttest" tabindex="-1" aria-labelledby="section-inttest-title"><h2 id="section-inttest-title">${t('section.inttest.title')}</h2><div data-slot="inttest"></div></section>
           <section data-testid="section-rbt" tabindex="-1" aria-labelledby="section-rbt-title"><h2 id="section-rbt-title">${t('section.rbt.title')}</h2><div data-slot="rbt"></div></section>
           <section data-testid="section-advanced" tabindex="-1" aria-labelledby="section-advanced-title"><h2 id="section-advanced-title">${t('section.advanced.title')}</h2><div data-slot="advanced"></div></section>
+          <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t('section.acceptance.title')}</h2><div data-slot="acceptance"></div></section>
           <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -215,6 +222,7 @@ export function renderApp(container) {
       inttest: main.querySelector('[data-testid="section-inttest"]'),
       rbt: main.querySelector('[data-testid="section-rbt"]'),
       advanced: main.querySelector('[data-testid="section-advanced"]'),
+      acceptance: main.querySelector('[data-testid="section-acceptance"]'),
       blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -250,6 +258,7 @@ export function renderApp(container) {
       llmpipeline: createLLMPipelineExplorer(),
       testquality: createTestQualityExplorer(),
       faultdirected: createFaultDirectedTestingExplorer(),
+      gherkin: createBDDGherkinExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -326,6 +335,62 @@ export function renderApp(container) {
     }
     renderAdvancedTabs();
     updateAdvancedPanels();
+
+    // --- Acceptance & E2E: tabbed (J1 Gherkin; J2–J8 land in subsequent PRs) ---
+    const acceptanceTabs = [
+      { id: 'gherkin', key: 'acceptanceTab.gherkin', component: components.gherkin },
+    ];
+    const acceptanceSlot = container.querySelector('[data-slot="acceptance"]');
+    const acceptanceTabBar = document.createElement('nav');
+    acceptanceTabBar.className = 'syntax-tab-row';
+    acceptanceTabBar.dataset.testid = 'acceptance-tab-row';
+    acceptanceTabBar.setAttribute('role', 'tablist');
+    acceptanceSlot.appendChild(acceptanceTabBar);
+    const acceptancePanels = document.createElement('div');
+    acceptancePanels.className = 'syntax-tab-panels';
+    acceptanceSlot.appendChild(acceptancePanels);
+    for (const tab of acceptanceTabs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.acceptancePanel = tab.id;
+      panel.appendChild(tab.component);
+      acceptancePanels.appendChild(panel);
+    }
+    const ACCEPTANCE_TAB_KEY = 'stvisual.acceptanceActiveTab';
+    let savedAcceptanceTab = null;
+    try { savedAcceptanceTab = globalThis.localStorage?.getItem(ACCEPTANCE_TAB_KEY); } catch {}
+    let activeAcceptanceTab = resolveInitialTab({
+      sectionId: 'acceptance',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedAcceptanceTab,
+    });
+    function renderAcceptanceTabs() {
+      acceptanceTabBar.innerHTML = acceptanceTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeAcceptanceTab === tab.id ? ' active' : ''}"
+          data-acceptance-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeAcceptanceTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      acceptanceTabBar.querySelectorAll('[data-acceptance-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeAcceptanceTab = btn.dataset.acceptanceTab;
+          try { globalThis.localStorage?.setItem(ACCEPTANCE_TAB_KEY, activeAcceptanceTab); } catch {}
+          renderAcceptanceTabs();
+          updateAcceptancePanels();
+          if (activeSection === 'acceptance') syncUrl();
+        });
+      });
+    }
+    function updateAcceptancePanels() {
+      acceptancePanels.querySelectorAll('[data-acceptance-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.acceptancePanel === activeAcceptanceTab ? '' : 'none';
+      });
+    }
+    renderAcceptanceTabs();
+    updateAcceptancePanels();
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [
@@ -631,11 +696,12 @@ export function renderApp(container) {
     // Defined below `paint()` body so closure captures the latest tab state.
     function getCurrentTabForSection(sectionId) {
       switch (sectionId) {
-        case 'syntax':   return activeSyntaxTab;
-        case 'blackbox': return activeBlackboxTab;
-        case 'advanced': return activeAdvancedTab;
-        case 'flow':     return activeFlowTab;
-        case 'types':    return activeTypesTab;
+        case 'syntax':     return activeSyntaxTab;
+        case 'blackbox':   return activeBlackboxTab;
+        case 'advanced':   return activeAdvancedTab;
+        case 'acceptance': return activeAcceptanceTab;
+        case 'flow':       return activeFlowTab;
+        case 'types':      return activeTypesTab;
         default: return undefined;
       }
     }

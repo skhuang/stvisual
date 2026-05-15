@@ -1,0 +1,88 @@
+.bdd-wrap { display: flex; flex-direction: column; gap: 1.25rem; padding: 1rem 0; }
+.bdd-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.bdd-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+.bdd-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.bdd-preset-chip {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid #e2e8f0; border-radius: 999px;
+  background: #f8fafc; font-size: 0.8rem; cursor: pointer; color: #374151;
+}
+.bdd-preset-chip:hover { background: #eef2f7; }
+.bdd-preset-chip--active {
+  background: #1d4ed8; border-color: #1d4ed8; color: #fff; font-weight: 600;
+}
+
+.bdd-feature-pane { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem 1rem; }
+.bdd-feature-pane h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: #1f2a44; }
+.bdd-feature-pre {
+  margin: 0; padding: 0.6rem 0.8rem;
+  background: #1e1e1e; color: #d4d4d4; border-radius: 6px;
+  font-family: 'Fira Code', monospace; font-size: 0.78rem; line-height: 1.55;
+  white-space: pre; overflow-x: auto;
+}
+
+.bdd-two-col { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1rem; }
+@media (max-width: 800px) { .bdd-two-col { grid-template-columns: 1fr; } }
+
+.bdd-stepdefs, .bdd-cases {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem 1rem;
+}
+.bdd-stepdefs h3, .bdd-cases h3 { margin: 0 0 0.6rem; font-size: 0.95rem; color: #1f2a44; }
+
+.bdd-stepdefs__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.bdd-stepdef {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 0.5rem; align-items: center;
+  padding: 0.3rem 0.6rem; border: 1px solid #e2e8f0; border-radius: 6px;
+  font-family: 'Fira Code', monospace; font-size: 0.78rem;
+}
+.bdd-stepdef--bound   { background: #f0fdf4; border-color: #86efac; color: #166534; }
+.bdd-stepdef--unbound { background: #fef2f2; border-color: #fca5a5; color: #b91c1c; }
+.bdd-stepdef__keyword { font-weight: 700; min-width: 3.5rem; }
+.bdd-stepdef__body    { word-break: break-word; }
+.bdd-stepdef__status  { font-weight: 800; }
+.bdd-stepdefs__legend { margin: 0.6rem 0 0; font-size: 0.72rem; color: #64748b; }
+
+.bdd-examples {
+  margin-bottom: 0.8rem; padding: 0.6rem 0.75rem;
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;
+}
+.bdd-examples__header {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.82rem; color: #1f2a44; margin-bottom: 0.4rem;
+}
+.bdd-examples__bridge {
+  padding: 0.18rem 0.5rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.72rem; cursor: pointer;
+}
+.bdd-examples__bridge:hover { background: #1d4ed8; color: #fff; }
+.bdd-examples__table { width: 100%; border-collapse: collapse; font-size: 0.74rem; }
+.bdd-examples__table th, .bdd-examples__table td {
+  border: 1px solid #e2e8f0; padding: 0.2rem 0.5rem; text-align: left;
+}
+.bdd-examples__table th { background: #f1f5f9; }
+
+.bdd-cases__list { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.bdd-case { padding: 0.5rem 0.7rem; border: 1px solid #e2e8f0; border-radius: 6px; background: #f8fafc; }
+.bdd-case--outline { background: #eef2ff; border-color: #c7d2fe; }
+.bdd-case__title { margin: 0 0 0.3rem; font-weight: 700; font-size: 0.82rem; color: #1f2a44; }
+.bdd-case__steps { margin: 0; padding-left: 1.1rem; font-size: 0.76rem; color: #374151; font-family: 'Fira Code', monospace; line-height: 1.6; }
+.bdd-case__kw { font-weight: 700; color: #1d4ed8; margin-right: 0.2rem; }
+
+.bdd-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.bdd-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.bdd-quiz-start, .bdd-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.bdd-quiz-start:hover, .bdd-lab-start:hover { background: #1e40af; }
+.bdd-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.bdd-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.bdd-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.bdd-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.bdd-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.bdd-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.bdd-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }
