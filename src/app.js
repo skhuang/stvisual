@@ -42,6 +42,7 @@ import { createPerformanceLoadProfileExplorer } from './components/PerformanceLo
 import { createChaosEngineeringExplorer } from './components/ChaosEngineeringExplorer.js';
 import { createATDDCycleExplorer } from './components/ATDDCycleExplorer.js';
 import { createFlakyDiagnosisExplorer } from './components/FlakyDiagnosisExplorer.js';
+import { createMBTWorkflowExplorer } from './components/MBTWorkflowExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -73,6 +74,7 @@ const learningSectionsConfig = [
   { id: 'rbt', key: 'section.rbt' },
   { id: 'advanced', key: 'section.advanced' },
   { id: 'acceptance', key: 'section.acceptance' },
+  { id: 'mbt', key: 'section.mbt' },
   { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -109,6 +111,10 @@ const overviewGroups = [
   {
     key: 'overview.group.acceptance',
     sectionIds: ['acceptance'],
+  },
+  {
+    key: 'overview.group.mbt',
+    sectionIds: ['mbt'],
   },
 ];
 
@@ -198,6 +204,7 @@ export function renderApp(container) {
           <section data-testid="section-rbt" tabindex="-1" aria-labelledby="section-rbt-title"><h2 id="section-rbt-title">${t('section.rbt.title')}</h2><div data-slot="rbt"></div></section>
           <section data-testid="section-advanced" tabindex="-1" aria-labelledby="section-advanced-title"><h2 id="section-advanced-title">${t('section.advanced.title')}</h2><div data-slot="advanced"></div></section>
           <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t('section.acceptance.title')}</h2><div data-slot="acceptance"></div></section>
+          <section data-testid="section-mbt" tabindex="-1" aria-labelledby="section-mbt-title"><h2 id="section-mbt-title">${t('section.mbt.title')}</h2><div data-slot="mbt"></div></section>
           <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -242,6 +249,7 @@ export function renderApp(container) {
       rbt: main.querySelector('[data-testid="section-rbt"]'),
       advanced: main.querySelector('[data-testid="section-advanced"]'),
       acceptance: main.querySelector('[data-testid="section-acceptance"]'),
+      mbt: main.querySelector('[data-testid="section-mbt"]'),
       blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -286,6 +294,7 @@ export function renderApp(container) {
       chaos: createChaosEngineeringExplorer(),
       atdd: createATDDCycleExplorer(),
       flaky: createFlakyDiagnosisExplorer(),
+      mbtworkflow: createMBTWorkflowExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -486,6 +495,62 @@ export function renderApp(container) {
     }
     renderAcceptanceTabs();
     updateAcceptancePanels();
+
+    // --- Model-Based Testing: tabbed (L1 Workflow; L2–L6 land in subsequent PRs) ---
+    const mbtTabs = [
+      { id: 'workflow', key: 'mbtTab.workflow', component: components.mbtworkflow },
+    ];
+    const mbtSlot = container.querySelector('[data-slot="mbt"]');
+    const mbtTabBar = document.createElement('nav');
+    mbtTabBar.className = 'syntax-tab-row';
+    mbtTabBar.dataset.testid = 'mbt-tab-row';
+    mbtTabBar.setAttribute('role', 'tablist');
+    mbtSlot.appendChild(mbtTabBar);
+    const mbtPanels = document.createElement('div');
+    mbtPanels.className = 'syntax-tab-panels';
+    mbtSlot.appendChild(mbtPanels);
+    for (const tab of mbtTabs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.mbtPanel = tab.id;
+      panel.appendChild(tab.component);
+      mbtPanels.appendChild(panel);
+    }
+    const MBT_TAB_KEY = 'stvisual.mbtActiveTab';
+    let savedMbtTab = null;
+    try { savedMbtTab = globalThis.localStorage?.getItem(MBT_TAB_KEY); } catch {}
+    let activeMbtTab = resolveInitialTab({
+      sectionId: 'mbt',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedMbtTab,
+    });
+    function renderMbtTabs() {
+      mbtTabBar.innerHTML = mbtTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeMbtTab === tab.id ? ' active' : ''}"
+          data-mbt-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeMbtTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      mbtTabBar.querySelectorAll('[data-mbt-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeMbtTab = btn.dataset.mbtTab;
+          try { globalThis.localStorage?.setItem(MBT_TAB_KEY, activeMbtTab); } catch {}
+          renderMbtTabs();
+          updateMbtPanels();
+          if (activeSection === 'mbt') syncUrl();
+        });
+      });
+    }
+    function updateMbtPanels() {
+      mbtPanels.querySelectorAll('[data-mbt-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.mbtPanel === activeMbtTab ? '' : 'none';
+      });
+    }
+    renderMbtTabs();
+    updateMbtPanels();
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [
@@ -808,6 +873,7 @@ export function renderApp(container) {
         case 'blackbox':   return activeBlackboxTab;
         case 'advanced':   return activeAdvancedTab;
         case 'acceptance': return activeAcceptanceTab;
+        case 'mbt':        return activeMbtTab;
         case 'flow':       return activeFlowTab;
         case 'types':      return activeTypesTab;
         default: return undefined;

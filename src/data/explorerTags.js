@@ -39,6 +39,7 @@ export const TAG_TECHNIQUES = [
   'chaos',
   'risk',
   'process',
+  'model-based',
 ];
 
 export const TAG_SERIES = [
@@ -50,6 +51,7 @@ export const TAG_SERIES = [
   'group-theory',
   'ai-assisted',
   'acceptance-e2e',
+  'model-based',
 ];
 
 export const TAG_DIFFICULTY = ['intro', 'intermediate', 'advanced', 'research'];
@@ -248,6 +250,12 @@ export const EXPLORER_TAGS = {
     level: ['e2e', 'meta'], technique: ['process'], series: ['acceptance-e2e'],
     difficulty: 'intermediate', source: [TEXTBOOK],
   },
+
+  // ── Model-Based Testing (L-series) ────────────────────────────────
+  MBTWorkflowExplorer: {
+    level: ['system'], technique: ['model-based', 'process'], series: ['model-based'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -300,6 +308,9 @@ export const SECTION_EXPLORERS = {
     'ChaosEngineeringExplorer',
     'ATDDCycleExplorer',
     'FlakyDiagnosisExplorer',
+  ],
+  mbt: [
+    'MBTWorkflowExplorer',
   ],
 };
 
