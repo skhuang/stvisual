@@ -303,16 +303,41 @@ export function renderApp(container) {
     container.querySelector('[data-slot="rbt"]').appendChild(components.rbt);
     container.querySelector('[data-slot="groupth"]').appendChild(components.groupth);
 
-    // --- Advanced Testing: tabbed (I1 Equivalent Mutants; I2–I5 added in subsequent PRs) ---
-    const advancedTabs = [
-      { id: 'equivmutant',   key: 'advTab.equivmutant',   component: components.equivmutant },
-      { id: 'mutationscore', key: 'advTab.mutationscore', component: components.mutationscore },
-      { id: 'llmpipeline',   key: 'advTab.llmpipeline',   component: components.llmpipeline },
-      { id: 'testquality',   key: 'advTab.testquality',   component: components.testquality },
-      { id: 'faultdirected', key: 'advTab.faultdirected', component: components.faultdirected },
-      { id: 'sailor',        key: 'advTab.sailor',        component: components.sailor },
+    // --- Advanced Testing: two-level nav — paper selector → that paper's tabs ---
+    // Each research paper groups its Explorers; the leaf tab id stays the URL
+    // identifier (?explorer / ?tab), so K4 routing is untouched. The paper
+    // level is a pure UI grouping derived from whichever leaf tab is active.
+    const advancedPapers = [
+      {
+        id: 'ach',
+        labelKey: 'advPaper.ach',
+        tabs: [
+          { id: 'equivmutant',   key: 'advTab.equivmutant',   component: components.equivmutant },
+          { id: 'mutationscore', key: 'advTab.mutationscore', component: components.mutationscore },
+          { id: 'llmpipeline',   key: 'advTab.llmpipeline',   component: components.llmpipeline },
+          { id: 'testquality',   key: 'advTab.testquality',   component: components.testquality },
+          { id: 'faultdirected', key: 'advTab.faultdirected', component: components.faultdirected },
+        ],
+      },
+      {
+        id: 'sailor',
+        labelKey: 'advPaper.sailor',
+        tabs: [
+          { id: 'sailor', key: 'advTab.sailor', component: components.sailor },
+        ],
+      },
     ];
+    // Flattened — drives panel creation and resolveInitialTab.
+    const advancedTabs = advancedPapers.flatMap((p) => p.tabs);
+    const paperOfAdvancedTab = (tabId) =>
+      advancedPapers.find((p) => p.tabs.some((tb) => tb.id === tabId)) || advancedPapers[0];
+
     const advancedSlot = container.querySelector('[data-slot="advanced"]');
+    const advancedPaperBar = document.createElement('nav');
+    advancedPaperBar.className = 'adv-paper-row';
+    advancedPaperBar.dataset.testid = 'advanced-paper-row';
+    advancedPaperBar.setAttribute('role', 'tablist');
+    advancedSlot.appendChild(advancedPaperBar);
     const advancedTabBar = document.createElement('nav');
     advancedTabBar.className = 'syntax-tab-row';
     advancedTabBar.dataset.testid = 'advanced-tab-row';
@@ -337,19 +362,53 @@ export function renderApp(container) {
       urlTab: urlState.tab,
       saved: savedAdvancedTab,
     });
-    function renderAdvancedTabs() {
-      advancedTabBar.innerHTML = advancedTabs.map((tab) => `
+    let activeAdvancedPaper = paperOfAdvancedTab(activeAdvancedTab).id;
+
+    function renderAdvancedPaperBar() {
+      advancedPaperBar.innerHTML = advancedPapers.map((paper) => `
         <button type="button"
-          class="syntax-tab-btn${activeAdvancedTab === tab.id ? ' active' : ''}"
-          data-advanced-tab="${tab.id}"
+          class="adv-paper-btn${activeAdvancedPaper === paper.id ? ' active' : ''}"
+          data-advanced-paper="${paper.id}"
           role="tab"
-          aria-selected="${activeAdvancedTab === tab.id ? 'true' : 'false'}"
-        >${t(tab.key)}</button>
+          aria-selected="${activeAdvancedPaper === paper.id ? 'true' : 'false'}"
+        >${t(paper.labelKey)}</button>
       `).join('');
+      advancedPaperBar.querySelectorAll('[data-advanced-paper]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const paper = advancedPapers.find((p) => p.id === btn.dataset.advancedPaper);
+          if (!paper) return;
+          activeAdvancedPaper = paper.id;
+          activeAdvancedTab = paper.tabs[0].id;  // jump to the paper's first Explorer
+          try { globalThis.localStorage?.setItem(ADVANCED_TAB_KEY, activeAdvancedTab); } catch {}
+          renderAdvancedPaperBar();
+          renderAdvancedTabs();
+          updateAdvancedPanels();
+          if (activeSection === 'advanced') syncUrl();
+        });
+      });
+    }
+    function renderAdvancedTabs() {
+      // Render every leaf tab, but `hidden` the ones outside the active
+      // paper. They stay in the DOM so a cross-section bridge that does
+      // `[data-advanced-tab="testquality"].click()` works regardless of
+      // which paper is currently showing — the click handler re-derives
+      // the paper and re-renders both bars.
+      advancedTabBar.innerHTML = advancedPapers.flatMap((paper) =>
+        paper.tabs.map((tab) => `
+          <button type="button"
+            class="syntax-tab-btn${activeAdvancedTab === tab.id ? ' active' : ''}"
+            data-advanced-tab="${tab.id}"
+            role="tab"
+            aria-selected="${activeAdvancedTab === tab.id ? 'true' : 'false'}"
+            ${paper.id === activeAdvancedPaper ? '' : 'hidden'}
+          >${t(tab.key)}</button>
+        `)).join('');
       advancedTabBar.querySelectorAll('[data-advanced-tab]').forEach((btn) => {
         btn.addEventListener('click', () => {
           activeAdvancedTab = btn.dataset.advancedTab;
+          activeAdvancedPaper = paperOfAdvancedTab(activeAdvancedTab).id;
           try { globalThis.localStorage?.setItem(ADVANCED_TAB_KEY, activeAdvancedTab); } catch {}
+          renderAdvancedPaperBar();
           renderAdvancedTabs();
           updateAdvancedPanels();
           if (activeSection === 'advanced') syncUrl();
@@ -361,6 +420,7 @@ export function renderApp(container) {
         panel.style.display = panel.dataset.advancedPanel === activeAdvancedTab ? '' : 'none';
       });
     }
+    renderAdvancedPaperBar();
     renderAdvancedTabs();
     updateAdvancedPanels();
 

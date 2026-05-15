@@ -347,6 +347,37 @@ textarea:focus-visible {
   gap: 32px;
 }
 
+/* Advanced Testing — paper selector (level 1, above the sub-tab row) */
+.adv-paper-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.adv-paper-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--app-text-subtle);
+  background: var(--app-surface-muted);
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.adv-paper-btn:hover {
+  color: var(--app-primary);
+  border-color: var(--app-primary);
+}
+.adv-paper-btn.active {
+  color: #fff;
+  background: var(--app-primary);
+  border-color: var(--app-primary);
+}
+
 .explorer-mobile-nav {
   display: none;
 }

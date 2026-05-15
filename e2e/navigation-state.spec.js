@@ -75,6 +75,41 @@ test.describe('Navigation state', () => {
     expect(page.url()).toBe(sourceUrl);
   });
 
+  test('Advanced Testing two-level nav: paper selector switches sub-tabs', async ({ page }) => {
+    // Deeplink to an ACH-paper Explorer.
+    await page.goto('/index.html?explorer=TestQualityExplorer');
+    await page.waitForLoadState('networkidle');
+
+    // ACH paper chip is active; its 5 sub-tabs are the visible ones.
+    await expect(page.locator('[data-advanced-paper="ach"]')).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator('[data-advanced-tab="testquality"]')).toHaveAttribute('aria-selected', 'true');
+    expect(await page.locator('[data-advanced-tab]:not([hidden])').count()).toBe(5);
+
+    // Switch to the SAILOR paper — its single tab becomes the visible set.
+    await page.locator('[data-advanced-paper="sailor"]').click();
+    await expect(page.locator('[data-advanced-tab="sailor"]')).toHaveAttribute('aria-selected', 'true');
+    expect(await page.locator('[data-advanced-tab]:not([hidden])').count()).toBe(1);
+    await expect(page.getByTestId('sailor-wrap')).toBeVisible();
+  });
+
+  test('cross-section bridge into a hidden Advanced tab still works (paper switch)', async ({ page }) => {
+    // Land on the SAILOR paper so the TestQuality tab is rendered-but-hidden.
+    await page.goto('/index.html?explorer=SAILORPipelineExplorer');
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('[data-advanced-paper="sailor"]')).toHaveAttribute('aria-selected', 'true');
+
+    // Bridge from J3 E2E → TestQuality (an ACH-paper tab).
+    await page.locator('[data-section="acceptance"]').click();
+    await page.locator('[data-acceptance-tab="e2ejourney"]').click();
+    await page.getByTestId('e2e-bridge-tqx').click();
+
+    // The bridge must flip both the paper chip AND the sub-tab.
+    await expect(page.getByTestId('section-advanced')).toBeVisible();
+    await expect(page.locator('[data-advanced-paper="ach"]')).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator('[data-advanced-tab="testquality"]')).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByTestId('tqx-wrap')).toBeVisible();
+  });
+
   test('cross-section bridge from J1 BDD → Decision Table switches section AND inner tab', async ({ page }) => {
     await page.goto('/index.html?explorer=BDDGherkinExplorer');
 

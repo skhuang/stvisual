@@ -303,6 +303,8 @@ export const messages = {
     'advTab.testquality': 'Test Quality Review',
     'advTab.faultdirected': 'Fault-Directed Testing',
     'advTab.sailor': 'SAILOR Pipeline',
+    'advPaper.ach': '📄 Meta ACH · FSE 2025',
+    'advPaper.sailor': '📄 SAILOR · arXiv 2026',
 
     // Acceptance & E2E (J-series)
     'section.acceptance': 'Acceptance & E2E',
@@ -2267,6 +2269,8 @@ export const messages = {
     'advTab.testquality': '測試品質審查',
     'advTab.faultdirected': '缺陷導向測試',
     'advTab.sailor': 'SAILOR 流程',
+    'advPaper.ach': '📄 Meta ACH · FSE 2025',
+    'advPaper.sailor': '📄 SAILOR · arXiv 2026',
 
     // 驗收 / E2E (J 系列)
     'section.acceptance': '驗收 / E2E',
