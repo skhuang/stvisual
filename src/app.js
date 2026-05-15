@@ -120,6 +120,9 @@ function persistActiveSection(sectionId) {
 
 export function renderApp(container) {
   function paint() {
+    // Read URL state once at the top of paint() — tabbed-section setups
+    // below reference it, so this MUST run before any of them.
+    const urlState = parseAppLocation(globalThis.location?.search ?? '');
     container.innerHTML = `
       <div class="app">
         <a class="skip-link" href="#app-main">${t('app.skipMain')}</a>
@@ -565,7 +568,6 @@ export function renderApp(container) {
     renderTypesTabs();
     updateTypesPanels();
 
-    const urlState = parseAppLocation(globalThis.location?.search ?? '');
     let activeSection = loadSavedSection(urlState.section);
     let cloudDrawerOpen = false;
     const sectionsById = Object.fromEntries(sectionSelectConfig.map((section) => [section.id, section]));
