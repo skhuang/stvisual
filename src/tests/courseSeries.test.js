@@ -85,3 +85,35 @@ describe('K3 — Markdown exporter', () => {
     expect(buildCoursePackMarkdown('no-such-pack')).toBe('');
   });
 });
+
+describe('K5 — per-Explorer deeplinks', () => {
+  it('every Explorer entry includes an Open URL with ?explorer=<id>', () => {
+    const md = buildCoursePackMarkdown('ai-assisted');
+    for (const id of getCoursePackExplorers('ai-assisted')) {
+      expect(md, `${id} should have an Open URL`).toContain(`- **Open:** `);
+      expect(md, `${id} URL`).toContain(`?explorer=${id}`);
+    }
+  });
+
+  it('custom baseUrl is honored in both demo link and every Open URL', () => {
+    const md = buildCoursePackMarkdown('ai-assisted', { baseUrl: 'https://example.test/app/' });
+    expect(md).toContain('**Live demo:** https://example.test/app/');
+    expect(md).toContain('https://example.test/app/?explorer=EquivalentMutantExplorer');
+    expect(md).not.toContain('skhuang.github.io');
+  });
+
+  it('defaults to the public demo URL when no baseUrl provided', () => {
+    const md = buildCoursePackMarkdown('foundations');
+    expect(md).toContain('https://skhuang.github.io/stvisual/');
+  });
+
+  it('Open URLs are present in every pack (not just ai-assisted)', () => {
+    for (const packId of ['foundations', 'coverage', 'blackbox', 'mutation', 'group-theory']) {
+      const md = buildCoursePackMarkdown(packId);
+      // Every emitted row should produce a ?explorer= URL.
+      const explorers = getCoursePackExplorers(packId);
+      const matches = md.match(/\?explorer=[A-Za-z]+/g) ?? [];
+      expect(matches.length, `pack ${packId} expected ${explorers.length} URLs`).toBe(explorers.length);
+    }
+  });
+});

@@ -1,6 +1,7 @@
 import { t } from '../i18n/index.js';
 import { EXPLORER_TAGS } from '../data/explorerTags.js';
 import { getCoursePack, getCoursePackExplorers } from '../data/courseSeries.js';
+import { explorerToUrl } from './urlRouter.js';
 
 const DEMO_URL = 'https://skhuang.github.io/stvisual/';
 
@@ -31,7 +32,9 @@ function tagLine(tags) {
   return parts.join(' · ');
 }
 
-export function buildCoursePackMarkdown(packId) {
+// `baseUrl` is injectable so self-hosted deployments can swap the demo
+// origin and tests can pin a stable value. Defaults to the public demo.
+export function buildCoursePackMarkdown(packId, { baseUrl = DEMO_URL } = {}) {
   const pack = getCoursePack(packId);
   if (!pack) return '';
   const ids = getCoursePackExplorers(packId);
@@ -42,7 +45,7 @@ export function buildCoursePackMarkdown(packId) {
   lines.push('');
   lines.push(desc);
   lines.push('');
-  lines.push(`**Live demo:** ${DEMO_URL}`);
+  lines.push(`**Live demo:** ${baseUrl}`);
   lines.push('');
   lines.push(`## Explorers (${ids.length})`);
   lines.push('');
@@ -51,6 +54,8 @@ export function buildCoursePackMarkdown(packId) {
     lines.push(`### ${explorerDisplayName(id)}`);
     lines.push('');
     lines.push(`- **ID:** \`${id}\``);
+    const openUrl = explorerToUrl(id, baseUrl);
+    if (openUrl) lines.push(`- **Open:** ${openUrl}`);
     const tagBits = tagLine(tags);
     if (tagBits) lines.push(`- **Tags:** ${tagBits}`);
     lines.push('');
@@ -65,8 +70,8 @@ export function buildCoursePackMarkdown(packId) {
 // invocation. Safe to call from a click handler. Returns the markdown
 // string so tests / non-browser callers can still inspect it without
 // relying on the file-save side-effect.
-export function downloadCoursePackMarkdown(packId) {
-  const md = buildCoursePackMarkdown(packId);
+export function downloadCoursePackMarkdown(packId, options) {
+  const md = buildCoursePackMarkdown(packId, options);
   if (!md) return null;
   if (typeof document === 'undefined') return md;
   // Some test environments (jsdom) don't implement URL.createObjectURL.
