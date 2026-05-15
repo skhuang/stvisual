@@ -220,6 +220,10 @@ export const EXPLORER_TAGS = {
     level: ['system'], technique: ['process'], series: ['acceptance-e2e'],
     difficulty: 'intermediate', source: [TEXTBOOK],
   },
+  E2EUserJourneyExplorer: {
+    level: ['e2e'], technique: ['process'], series: ['acceptance-e2e'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -265,6 +269,7 @@ export const SECTION_EXPLORERS = {
   acceptance: [
     'BDDGherkinExplorer',
     'UseCaseDerivationExplorer',
+    'E2EUserJourneyExplorer',
   ],
 };
 

@@ -35,6 +35,7 @@ import { createTestQualityExplorer } from './components/TestQualityExplorer.js';
 import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTestingExplorer.js';
 import { createBDDGherkinExplorer } from './components/BDDGherkinExplorer.js';
 import { createUseCaseDerivationExplorer } from './components/UseCaseDerivationExplorer.js';
+import { createE2EUserJourneyExplorer } from './components/E2EUserJourneyExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -261,6 +262,7 @@ export function renderApp(container) {
       faultdirected: createFaultDirectedTestingExplorer(),
       gherkin: createBDDGherkinExplorer(),
       usecase: createUseCaseDerivationExplorer(),
+      e2ejourney: createE2EUserJourneyExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -342,6 +344,7 @@ export function renderApp(container) {
     const acceptanceTabs = [
       { id: 'gherkin', key: 'acceptanceTab.gherkin', component: components.gherkin },
       { id: 'usecase', key: 'acceptanceTab.usecase', component: components.usecase },
+      { id: 'e2ejourney', key: 'acceptanceTab.e2ejourney', component: components.e2ejourney },
     ];
     const acceptanceSlot = container.querySelector('[data-slot="acceptance"]');
     const acceptanceTabBar = document.createElement('nav');
