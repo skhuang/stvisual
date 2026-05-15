@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 // Three preset feature files; tiny on purpose so students can read end-to-end.
 const PRESETS = [
@@ -279,8 +280,20 @@ function renderQuiz() {
   }
   if (state.quiz.phase === 'done') {
     const correct = state.quiz.answer === 'b';
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'bdd', explorerLabel: t('bdd.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('bdd.quiz.prompt'),
+        a: state.quiz.answer ? t('bdd.quiz.' + state.quiz.answer) : '',
+        expected: t('bdd.quiz.b'),
+        ok: correct,
+      }],
+    });
     return `<div class="bdd-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="bdd-quiz-result">
       <p>${correct ? t('bdd.quiz.correct') : t('bdd.quiz.wrong')}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="bdd-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `

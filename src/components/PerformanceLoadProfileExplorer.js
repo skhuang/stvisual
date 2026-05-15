@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 // Four load shapes. Each emits target concurrency at every tick (0–100).
 // load: steady; stress: ramp; spike: brief impulse; soak: long flat hold.
@@ -196,8 +197,20 @@ function renderQuiz() {
   }
   if (state.quiz.phase === 'done') {
     const correct = state.quiz.answer === 'b';
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'plp', explorerLabel: t('plp.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('plp.quiz.prompt'),
+        a: state.quiz.answer ? t('plp.quiz.' + state.quiz.answer) : '',
+        expected: t('plp.quiz.b'),
+        ok: correct,
+      }],
+    });
     return `<div class="plp-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="plp-quiz-result">
       <p>${correct ? t('plp.quiz.correct') : t('plp.quiz.wrong')}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="plp-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `

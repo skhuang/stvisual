@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 export const STAGES = ['discuss', 'distill', 'develop', 'demo'];
 
@@ -139,8 +140,20 @@ function renderQuiz() {
   }
   if (state.quiz.phase === 'done') {
     const correct = state.quiz.answer === 'c';
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'atdd', explorerLabel: t('atdd.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('atdd.quiz.prompt'),
+        a: state.quiz.answer ? t('atdd.quiz.' + state.quiz.answer) : '',
+        expected: t('atdd.quiz.c'),
+        ok: correct,
+      }],
+    });
     return `<div class="atdd-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="atdd-quiz-result">
       <p>${correct ? t('atdd.quiz.correct') : t('atdd.quiz.wrong')}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="atdd-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `

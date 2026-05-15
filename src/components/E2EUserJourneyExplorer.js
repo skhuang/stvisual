@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 // Each step has a per-flakiness-source failure rate (probability of THIS run
 // failing AT this step due to THIS source). Independent per-source draws; the
@@ -191,8 +192,20 @@ function renderQuiz() {
   }
   if (state.quiz.phase === 'done') {
     const correct = state.quiz.answer === QUIZ_LOGS[0].correct;
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'e2e', explorerLabel: t('e2e.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('e2e.quiz.prompt'),
+        a: state.quiz.answer || '',
+        expected: QUIZ_LOGS[0].correct,
+        ok: correct,
+      }],
+    });
     return `<div class="e2e-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="e2e-quiz-result">
       <p>${correct ? t('e2e.quiz.correct') : t('e2e.quiz.wrong')}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="e2e-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `

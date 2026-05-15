@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 // Four annotated issues paired with a target function, blind mutants (coverage-driven),
 // and the small set of fault-directed mutants the ACH pipeline would propose from the
@@ -217,8 +218,20 @@ function renderQuiz() {
   }
   if (state.quiz.phase === 'done') {
     const correct = state.quiz.answer === 'a';
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'fdx', explorerLabel: t('fdx.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('fdx.quiz.prompt'),
+        a: state.quiz.answer ? t('fdx.quiz.' + state.quiz.answer) : '',
+        expected: t('fdx.quiz.a'),
+        ok: correct,
+      }],
+    });
     return `<div class="fdx-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="fdx-quiz-result">
       <p>${correct ? t('fdx.quiz.correct') : t('fdx.quiz.wrong')}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="fdx-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `

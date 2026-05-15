@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 // Each topology is a tiny dependency graph: nodes (services) and edges
 // (consumer → provider). Fault propagation walks edges from any failing
@@ -247,8 +248,20 @@ function renderQuiz() {
   }
   if (state.quiz.phase === 'done') {
     const correct = state.quiz.answer === 'c';
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'chx', explorerLabel: t('chx.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('chx.quiz.prompt'),
+        a: state.quiz.answer ? t('chx.quiz.' + state.quiz.answer) : '',
+        expected: t('chx.quiz.c'),
+        ok: correct,
+      }],
+    });
     return `<div class="chx-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="chx-quiz-result">
       <p>${correct ? t('chx.quiz.correct') : t('chx.quiz.wrong')}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="chx-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `

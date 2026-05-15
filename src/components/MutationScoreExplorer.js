@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 // Pre-defined target function
 const TARGET_FN = `function classify(score) {
@@ -270,8 +271,20 @@ function renderQuiz(score) {
   if (state.quiz.phase === 'done') {
     const ans = parseInt(state.quiz.answer, 10);
     const correct = ans === score;
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'msx', explorerLabel: t('msx.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('msx.quiz.prompt', { total: NON_EQUIV_MUTANTS.length }),
+        a: String(state.quiz.answer ?? ''),
+        expected: String(score),
+        ok: correct,
+      }],
+    });
     return `<div class="msx-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="msx-quiz-result">
       <p>${correct ? t('msx.quiz.correct') : t('msx.quiz.wrong', { score })}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="msx-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `

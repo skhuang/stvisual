@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 const PAPER = {
   title: 'Mutation-Guided LLM-based Test Generation at Meta',
@@ -281,8 +282,20 @@ function renderQuiz() {
   }
   if (state.quiz.phase === 'done') {
     const correct = state.quiz.answer === 'b';
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'emx', explorerLabel: t('emx.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('emx.quiz.prompt'),
+        a: state.quiz.answer ? t('emx.quiz.' + state.quiz.answer) : '',
+        expected: t('emx.quiz.b'),
+        ok: correct,
+      }],
+    });
     return `<div class="emx-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="emx-quiz-result">
       <p>${correct ? t('emx.quiz.correct') : t('emx.quiz.wrong')}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="emx-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `

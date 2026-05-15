@@ -1,4 +1,5 @@
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
+import { encodeResult } from '../utils/resultExporter.js';
 
 // Six categories — same taxonomy as J3 plus an explicit "order" bucket.
 export const SOURCES = ['timing', 'order', 'async', 'network', 'animation', 'data'];
@@ -171,8 +172,20 @@ function renderQuiz() {
   }
   if (state.quiz.phase === 'done') {
     const correct = state.quiz.answer === 'b';
+    const shareEncoded = encodeResult({
+      v: 1, explorer: 'flx', explorerLabel: t('flx.title'),
+      mode: 'quiz', ts: Date.now(), lang: getLocale(),
+      score: correct ? 1 : 0, total: 1,
+      items: [{
+        q: t('flx.quiz.prompt'),
+        a: state.quiz.answer ? t('flx.quiz.' + state.quiz.answer) : '',
+        expected: t('flx.quiz.b'),
+        ok: correct,
+      }],
+    });
     return `<div class="flx-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="flx-quiz-result">
       <p>${correct ? t('flx.quiz.correct') : t('flx.quiz.wrong')}</p>
+      <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="flx-quiz-share">📋 ${t('quiz.share.btn')}</button>
     </div>`;
   }
   return `
