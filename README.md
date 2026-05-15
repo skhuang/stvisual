@@ -8,7 +8,7 @@ An interactive visualization project for software testing — **30 explorers acr
 
 Live demo: <https://skhuang.github.io/stvisual/>
 
-Every explorer ships with bilingual UI (English / 繁體中文), a self-test quiz, Lab Reflect / Lab Metric modes, and shareable result URLs. Class results stream to Firestore and surface in a Teacher Dashboard.
+Every explorer ships with bilingual UI (English / 繁體中文), a self-test quiz, Lab Reflect / Lab Metric modes, and shareable result URLs. Class results stream to Firestore and surface in a Teacher Dashboard. Every Explorer is also tagged across five dimensions (level / technique / series / difficulty / source) so the Overview supports tag-chip filtering, course-pack presets, and per-Explorer deeplinks (e.g. `?explorer=PairwiseExplorer`).
 
 ## Preview
 
@@ -130,6 +130,35 @@ Every Advanced Testing tab shares the same paper-citation banner (`arXiv 2501.12
 - **Share Results** button copies a self-contained URL containing the quiz/lab outcome (no server signature, honor system)
 - **Result Viewer** renders shared URLs side-by-side with the original explorer
 
+### Tagging, Overview Filter & Deeplinks
+Every Explorer carries multi-dimensional metadata in `src/data/explorerTags.js`:
+
+| Dimension | Controlled vocabulary |
+|-----------|------------------------|
+| `level` | `unit` · `integration` · `system` · `e2e` · `acceptance` · `nonfunctional` · `meta` |
+| `technique` | 22 values, e.g. `coverage`, `mutation`, `fuzzing`, `symbolic`, `metamorphic`, `group-theory`, `llm-guided`, `bdd`, `chaos`, `risk`, `process` |
+| `series` | `foundations` · `coverage-criteria` · `execution` · `blackbox` · `mutation-spec` · `group-theory` · `ai-assisted` · `acceptance-e2e` |
+| `difficulty` | `intro` · `intermediate` · `advanced` · `research` |
+| `source` | `textbook`, `paper:<id>`, `standard:<id>` |
+
+The Overview page renders this in two layers:
+- **Course packs** (7 presets — Foundations, Coverage Criteria, Black-Box Design, Execution & Test Generation, Mutation Track, Group Theory, AI-Assisted Research). Clicking a pack chip applies its filter and reveals an **⬇ Export Markdown** button that downloads a teaching handout with one row per Explorer, each containing a per-Explorer deeplink.
+- **Tag-chip filter** (level / series / difficulty / technique chip rows). AND across dimensions, OR within a dimension; "Showing N of M sections" counter; "Clear all" resets.
+
+### Shareable URLs
+Application state is fully encoded in the URL via `src/utils/urlRouter.js` so every view is bookmarkable / shareable:
+
+| URL parameter | Effect |
+|---------------|--------|
+| `?section=<id>` | Open that section on load |
+| `?section=<id>&tab=<id>` | Plus pick the inner tab (for `syntax` / `blackbox` / `advanced` / `flow` / `types`) |
+| `?explorer=<ComponentName>` | Single-param deeplink — resolves to section + tab via `EXPLORER_TO_LOCATION`. Example: `?explorer=PairwiseExplorer` |
+| `?pack=<id>` | Restore course-pack chip + its filter. Example: `?pack=ai-assisted` |
+| `?level=` `?technique=` `?series=` `?difficulty=` | Tag-chip filter dims (comma-separated multi-values) |
+| `?lang=zh` (planned) | URL-level locale lock — currently locale lives in `localStorage` |
+
+URL writes use `history.replaceState`, so chip toggles don't pollute the back button. The K3 Markdown exporter emits a `**Open:** <baseUrl>?explorer=<ComponentName>` line per Explorer; `baseUrl` is injectable for self-hosting.
+
 ### Cloud Integration & Teacher Dashboard
 - Google sign-in via Firebase Authentication
 - Firestore sync for predicates, test sets, and mutation data
@@ -187,7 +216,7 @@ The app detects `file://` and switches to a pre-built `src/standalone.js` bundle
 npm run test:run
 ```
 
-475 tests across 42 files — covering every explorer, coverage algorithms, mutation engine, concolic/symbolic execution, group-theory utilities, and the five Advanced Testing explorers.
+555 tests across 49 files — covering every explorer, coverage algorithms, mutation engine, concolic/symbolic execution, group-theory utilities, the five Advanced Testing explorers, the URL router, and the tag/course-pack metadata layer.
 
 ### Browser E2E tests (Playwright / Chromium)
 
@@ -265,7 +294,7 @@ The live site is built and deployed automatically on every push to `main` via th
 push to main
   └─ test job (ubuntu-latest, Node 20)
        ├─ npm ci --legacy-peer-deps
-       ├─ npm run test:run              ← 475 unit tests must pass
+       ├─ npm run test:run              ← 555 unit tests must pass
        ├─ inject-env                    ← reads GitHub Secrets, writes cloudConfig.js
        ├─ build:standalone              ← esbuild bundles src/ → standalone.js
        └─ prepare-pages                 ← copies src tree → site/
@@ -412,11 +441,15 @@ Both workflows use **Node.js 24** and `npm ci --legacy-peer-deps`.
 │   │   ├── CloudStoragePanel        # Firebase Auth + Firestore + Drive + class code
 │   │   ├── TeacherDashboard         # class-results dashboard (Firestore-backed)
 │   │   ├── ResultViewer             # render shared self-reported result URLs
+│   │   ├── TagFilterBar             # K2 — multi-dim chip filter on Overview
+│   │   ├── CoursePackBar            # K3 — course-pack chips + Markdown export
 │   │   └── quiz.css                 # shared self-test quiz styles
 │   ├── config/
 │   │   └── cloudConfig.js       # __PLACEHOLDER__ tokens (replaced at build time)
 │   ├── data/
-│   │   └── testingData.js       # technique metadata + predicate examples
+│   │   ├── testingData.js       # technique metadata + predicate examples
+│   │   ├── explorerTags.js      # K1 — Explorer × 5-dim tag metadata + helpers
+│   │   └── courseSeries.js      # K3 — named course packs (filter-driven)
 │   ├── i18n/
 │   │   ├── index.js             # t(), getLocale(), setLocale(), onLocaleChange()
 │   │   └── dict.js              # EN + ZH flat-key dictionary
@@ -444,8 +477,10 @@ Both workflows use **Node.js 24** and `npm ci --legacy-peer-deps`.
 │   │   ├── propertyTesting.js   # QuickCheck-style runner + shrinking
 │   │   ├── groupTheory.js       # automorphism / orbit / OA(p,k,t) over GF(p)
 │   │   ├── resultExporter.js    # base64 share-URL encoder / decoder
+│   │   ├── urlRouter.js         # K4 — ?section / ?tab / ?explorer / ?pack parsing
+│   │   ├── coursePackExporter.js # K3+K5 — Markdown handout w/ per-row deeplinks
 │   │   └── cloudIntegration.js  # Firebase Auth + Firestore + Drive + class results
-│   └── tests/                   # 42 test files, 475 tests (Vitest + jsdom)
+│   └── tests/                   # 49 test files, 555 tests (Vitest + jsdom)
 ├── e2e/                         # Playwright browser tests
 ├── site/                        # generated GitHub Pages output (gitignored)
 └── .github/workflows/
