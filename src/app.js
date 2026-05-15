@@ -137,6 +137,12 @@ export function renderApp(container) {
   // toggle the language.
   let initialDeeplinkHandled = false;
 
+  // Mirror of the most recent `location.search` we've written via
+  // `syncUrl()`. The popstate handler compares against this to decide
+  // whether to reload — hash-only navigation (skip-link Enter etc.)
+  // changes neither lastSearchSnapshot nor `location.search`.
+  let lastSearchSnapshot = globalThis.location?.search ?? '';
+
   function paint() {
     // Read URL state once at the top of paint() — tabbed-section setups
     // below reference it, so this MUST run before any of them.
@@ -721,6 +727,11 @@ export function renderApp(container) {
         } else {
           globalThis.history?.replaceState?.(null, '', url);
         }
+        // Keep the popstate handler's reference in lockstep with the URL
+        // we just wrote — so a true back-navigation across our pushed
+        // entries flips this comparison, but a hash-only navigation
+        // (skip-link) leaves it equal.
+        lastSearchSnapshot = qs;
       } catch {
         // Ignore — push/replaceState may be unavailable in some test envs.
       }
@@ -965,15 +976,17 @@ export function renderApp(container) {
   paint();
   onLocaleChange(() => paint());
 
-  // When the browser navigates back/forward across a `pushState` entry,
-  // re-load the page so the app re-applies state from the new URL. A full
-  // reload is the cheapest way to keep section + tab + pack + filter
-  // state in lockstep with the URL without duplicating all the boot
-  // logic; the only thing lost is per-Explorer interaction state at the
-  // destination, which is acceptable when the user is undoing a bridge
-  // click anyway.
+  // Browser back/forward across one of our pushState entries: reload so
+  // the app re-applies state from the new URL. Compare `location.search`
+  // against the last value `syncUrl()` wrote — hash-only navigation
+  // (skip-link `<a href="#app-main">` etc.) doesn't change search, so we
+  // ignore it.
   globalThis.addEventListener?.('popstate', () => {
-    globalThis.location?.reload?.();
+    const current = globalThis.location?.search ?? '';
+    if (current !== lastSearchSnapshot) {
+      lastSearchSnapshot = current;
+      globalThis.location?.reload?.();
+    }
   });
 
   // Show ResultViewer if URL contains ?result= (Phase A share link)
