@@ -348,9 +348,10 @@ function bindEvents() {
     });
   });
   root.querySelector('[data-testid="bdd-bridge-decision-table"]')?.addEventListener('click', () => {
-    // Defer to app.js's nav: switch to the blackbox section's dt tab.
+    // Switch the section via the nav button (setActiveSection + scroll),
+    // then click the inner Decision-Table tab.
+    document.querySelector('[data-section="blackbox"]')?.click();
     document.querySelector('[data-blackbox-tab="dt"]')?.click();
-    document.querySelector('[data-testid="section-blackbox"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   root.querySelector('[data-testid="bdd-quiz-start"]')?.addEventListener('click', () => {
     state.quiz = { active: true, phase: 'question', answer: '' };

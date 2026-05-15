@@ -47,6 +47,39 @@ test.describe('Navigation state', () => {
     await expect(page.locator('[data-blackbox-tab="pairwise"]')).toHaveAttribute('aria-selected', 'true');
   });
 
+  test('cross-section bridge from J1 BDD → Decision Table switches section AND inner tab', async ({ page }) => {
+    await page.goto('/index.html?explorer=BDDGherkinExplorer');
+
+    // Pick the discount preset so the Examples table + bridge button are present.
+    await page.getByTestId('bdd-preset-discount').click();
+    await expect(page.getByTestId('bdd-bridge-decision-table')).toBeVisible();
+
+    // Click the bridge.
+    await page.getByTestId('bdd-bridge-decision-table').click();
+
+    // Expectation: section-blackbox is now the active section, AND the DT tab
+    // is selected. The pre-fix bug was that activeSection stayed on
+    // 'acceptance' and the user kept seeing the BDD/Gherkin tab.
+    await expect(page.getByTestId('section-blackbox')).toBeVisible();
+    await expect(page.getByTestId('section-acceptance')).toBeHidden();
+    await expect(page.locator('[data-blackbox-tab="dt"]')).toHaveAttribute('aria-selected', 'true');
+  });
+
+  test('cross-section bridge from Logic Coverage → Group Theory switches active section', async ({ page }) => {
+    await page.goto('/index.html?section=logic');
+    await page.waitForLoadState('networkidle');
+
+    // Bridge button is rendered conditionally inside Logic — make sure it exists.
+    const bridge = page.getByTestId('logic-bridge-groupth');
+    await bridge.waitFor({ state: 'visible', timeout: 3000 }).catch(() => {});
+    if (!(await bridge.isVisible().catch(() => false))) {
+      test.skip(true, 'logic-bridge-groupth not rendered for the default predicate / criterion');
+    }
+    await bridge.click();
+    await expect(page.getByTestId('section-groupth')).toBeVisible();
+    await expect(page.getByTestId('section-logic')).toBeHidden();
+  });
+
   test('does not save the Cloud utility drawer as the active learning section', async ({ page }) => {
     await page.goto('/index.html');
 

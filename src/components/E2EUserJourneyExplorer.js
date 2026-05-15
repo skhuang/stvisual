@@ -262,8 +262,8 @@ function bindEvents() {
     render();
   });
   root.querySelector('[data-testid="e2e-bridge-tqx"]')?.addEventListener('click', () => {
+    document.querySelector('[data-section="advanced"]')?.click();
     document.querySelector('[data-advanced-tab="testquality"]')?.click();
-    document.querySelector('[data-testid="section-advanced"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   root.querySelector('[data-testid="e2e-bridge-rbt"]')?.addEventListener('click', () => {
     document.querySelector('[data-section="rbt"]')?.click();

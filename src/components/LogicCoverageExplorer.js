@@ -1052,7 +1052,10 @@ export function createLogicCoverageExplorer() {
     }
 
     root.querySelector('[data-testid="logic-bridge-groupth"]')?.addEventListener('click', () => {
-      document.querySelector('[data-testid="section-groupth"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Switch sections via the nav button so activeSection is updated
+      // (just calling scrollIntoView on a `display:none` section is a no-op).
+      // setActiveSection(true) handles smooth-scroll + focus on its own.
+      document.querySelector('[data-section="groupth"]')?.click();
     });
 
     // Search range inputs.
