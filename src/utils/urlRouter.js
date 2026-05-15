@@ -22,7 +22,7 @@
 export const TAB_SECTIONS = {
   syntax:   { tabs: ['mutation', 'grammar', 'spec'],                                                  default: 'mutation' },
   blackbox: { tabs: ['bva', 'ec', 'dt', 'st', 'mt', 'et', 'td', 'pairwise', 'ceg'],                   default: 'bva' },
-  advanced: { tabs: ['equivmutant', 'mutationscore', 'llmpipeline', 'testquality', 'faultdirected'], default: 'equivmutant' },
+  advanced: { tabs: ['equivmutant', 'mutationscore', 'llmpipeline', 'testquality', 'faultdirected', 'sailor'], default: 'equivmutant' },
   flow:     { tabs: ['flow', 'defectCost', 'vmodel'],                                                 default: 'flow' },
   types:    { tabs: ['pyramid', 'adjuster'],                                                          default: 'pyramid' },
   // J-series acceptance tabs grow as J2-J8 land; J1 ships 'gherkin'.
@@ -67,6 +67,7 @@ export const EXPLORER_TO_LOCATION = {
   LLMPipelineExplorer:         { section: 'advanced', tab: 'llmpipeline' },
   TestQualityExplorer:         { section: 'advanced', tab: 'testquality' },
   FaultDirectedTestingExplorer:{ section: 'advanced', tab: 'faultdirected' },
+  SAILORPipelineExplorer:      { section: 'advanced', tab: 'sailor' },
   BDDGherkinExplorer:          { section: 'acceptance', tab: 'gherkin' },
   UseCaseDerivationExplorer:   { section: 'acceptance', tab: 'usecase' },
   E2EUserJourneyExplorer:      { section: 'acceptance', tab: 'e2ejourney' },

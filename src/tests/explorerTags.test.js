@@ -85,7 +85,8 @@ describe('Explorer tag metadata (K1)', () => {
     const ai = filterExplorersByTag('series', 'ai-assisted');
     expect(ai).toContain('EquivalentMutantExplorer');
     expect(ai).toContain('FaultDirectedTestingExplorer');
-    expect(ai.length).toBe(5);
+    expect(ai).toContain('SAILORPipelineExplorer');
+    expect(ai.length).toBe(6);
   });
 
   it('listExplorersInSeries(\'blackbox\') returns the nine black-box explorers', () => {

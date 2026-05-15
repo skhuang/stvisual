@@ -210,6 +210,10 @@ export const EXPLORER_TAGS = {
     level: ['unit'], technique: ['mutation', 'llm-guided'], series: ['ai-assisted'],
     difficulty: 'research', source: [ACH],
   },
+  SAILORPipelineExplorer: {
+    level: ['unit', 'integration'], technique: ['symbolic', 'llm-guided'], series: ['ai-assisted'],
+    difficulty: 'research', source: ['paper:arxiv-2604.06506'],
+  },
 
   // ── Acceptance / E2E (J-series) ───────────────────────────────────
   BDDGherkinExplorer: {
@@ -285,6 +289,7 @@ export const SECTION_EXPLORERS = {
     'LLMPipelineExplorer',
     'TestQualityExplorer',
     'FaultDirectedTestingExplorer',
+    'SAILORPipelineExplorer',
   ],
   acceptance: [
     'BDDGherkinExplorer',

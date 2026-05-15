@@ -33,6 +33,7 @@ import { createMutationScoreExplorer } from './components/MutationScoreExplorer.
 import { createLLMPipelineExplorer } from './components/LLMPipelineExplorer.js';
 import { createTestQualityExplorer } from './components/TestQualityExplorer.js';
 import { createFaultDirectedTestingExplorer } from './components/FaultDirectedTestingExplorer.js';
+import { createSAILORPipelineExplorer } from './components/SAILORPipelineExplorer.js';
 import { createBDDGherkinExplorer } from './components/BDDGherkinExplorer.js';
 import { createUseCaseDerivationExplorer } from './components/UseCaseDerivationExplorer.js';
 import { createE2EUserJourneyExplorer } from './components/E2EUserJourneyExplorer.js';
@@ -276,6 +277,7 @@ export function renderApp(container) {
       llmpipeline: createLLMPipelineExplorer(),
       testquality: createTestQualityExplorer(),
       faultdirected: createFaultDirectedTestingExplorer(),
+      sailor: createSAILORPipelineExplorer(),
       gherkin: createBDDGherkinExplorer(),
       usecase: createUseCaseDerivationExplorer(),
       e2ejourney: createE2EUserJourneyExplorer(),
@@ -308,6 +310,7 @@ export function renderApp(container) {
       { id: 'llmpipeline',   key: 'advTab.llmpipeline',   component: components.llmpipeline },
       { id: 'testquality',   key: 'advTab.testquality',   component: components.testquality },
       { id: 'faultdirected', key: 'advTab.faultdirected', component: components.faultdirected },
+      { id: 'sailor',        key: 'advTab.sailor',        component: components.sailor },
     ];
     const advancedSlot = container.querySelector('[data-slot="advanced"]');
     const advancedTabBar = document.createElement('nav');

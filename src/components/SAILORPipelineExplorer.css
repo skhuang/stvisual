@@ -1,0 +1,103 @@
+.sailor-wrap { display: flex; flex-direction: column; gap: 1.25rem; padding: 1rem 0; }
+.sailor-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.sailor-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+/* ── Pipeline ── */
+.sailor-pipeline {
+  display: flex; align-items: stretch; flex-wrap: wrap; gap: 0;
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem;
+}
+.sailor-arrow { font-size: 1.4rem; color: #94a3b8; padding: 0 0.35rem; align-self: center; }
+.sailor-phase-card {
+  flex: 1; min-width: 9rem; max-width: 14rem;
+  border: 2px solid transparent; border-radius: 8px;
+  padding: 0.7rem 0.85rem; cursor: pointer; text-align: left;
+  background: #fff; transition: box-shadow 0.15s;
+}
+.sailor-phase-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.sailor-phase--active { box-shadow: 0 0 0 3px #3b82f6; }
+.sailor-phase--amber  { border-color: #fcd34d; }
+.sailor-phase--blue   { border-color: #bfdbfe; }
+.sailor-phase--purple { border-color: #ddd6fe; }
+.sailor-phase--green  { border-color: #bbf7d0; }
+.sailor-phase-num  { font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem; }
+.sailor-phase-name { font-size: 0.86rem; font-weight: 800; color: #1f2a44; margin-bottom: 0.15rem; }
+.sailor-phase-sub  { font-size: 0.74rem; color: #64748b; }
+
+/* ── Detail ── */
+.sailor-detail { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+.sailor-detail-tabs { display: flex; border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+.sailor-detail-tab {
+  padding: 0.4rem 0.9rem; border: none; background: transparent;
+  font-size: 0.82rem; cursor: pointer; color: #64748b; border-bottom: 2px solid transparent;
+}
+.sailor-detail-tab--active { color: #1d4ed8; border-bottom-color: #1d4ed8; font-weight: 700; }
+.sailor-detail-body { padding: 1rem; }
+.sailor-detail-role { margin: 0; font-size: 0.86rem; color: #374151; line-height: 1.6; }
+.sailor-detail-loop {
+  margin: 0.5rem 0 0; padding: 0.4rem 0.6rem; font-size: 0.78rem;
+  background: #eff6ff; border-left: 3px solid #1d4ed8; border-radius: 4px; color: #1e3a8a;
+}
+.sailor-example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) { .sailor-example-grid { grid-template-columns: 1fr; } }
+.sailor-example-grid h4 { margin: 0 0 0.3rem; font-size: 0.8rem; color: #374151; }
+.sailor-example-pre {
+  background: #1e1e1e; color: #d4d4d4; border-radius: 5px; padding: 0.6rem;
+  font-size: 0.74rem; font-family: 'Fira Code', monospace; white-space: pre-wrap; margin: 0;
+  line-height: 1.5;
+}
+.sailor-example-out { border-left: 3px solid #22c55e; }
+.sailor-failure-list { margin: 0; padding-left: 1.2rem; font-size: 0.84rem; color: #475569; line-height: 1.7; }
+
+/* ── Ablation ── */
+.sailor-ablation { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; }
+.sailor-ablation h3 { margin: 0 0 0.3rem; font-size: 0.95rem; color: #1f2a44; }
+.sailor-ablation-note { font-size: 0.78rem; color: #64748b; margin: 0 0 0.6rem; }
+.sailor-ablation-bars { display: flex; flex-direction: column; gap: 0.5rem; }
+.sailor-abl-row {
+  display: grid; grid-template-columns: 11rem 1fr 2.6rem; grid-auto-rows: auto;
+  gap: 0.5rem; align-items: center; font-size: 0.8rem;
+}
+.sailor-abl-label { color: #374151; font-weight: 600; }
+.sailor-abl-bar-wrap { height: 0.8rem; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+.sailor-abl-bar { height: 100%; border-radius: 999px; }
+.sailor-abl-bar--full     { background: #16a34a; }
+.sailor-abl-bar--no-static{ background: #f59e0b; }
+.sailor-abl-bar--no-llm   { background: #dc2626; }
+.sailor-abl-bar--baseline { background: #94a3b8; }
+.sailor-abl-val { text-align: right; font-weight: 800; color: #1f2a44; }
+.sailor-abl-detail {
+  grid-column: 1 / -1; font-size: 0.72rem; color: #94a3b8; margin: 0 0 0.15rem 11.5rem;
+}
+@media (max-width: 640px) {
+  .sailor-abl-row { grid-template-columns: 1fr 2.6rem; }
+  .sailor-abl-label { grid-column: 1 / -1; }
+  .sailor-abl-detail { margin-left: 0; }
+}
+
+/* ── Bridge ── */
+.sailor-bridges { display: flex; flex-wrap: wrap; gap: 6px; }
+.sailor-bridge {
+  padding: 0.25rem 0.7rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.78rem; cursor: pointer;
+}
+.sailor-bridge:hover { background: #1d4ed8; color: #fff; }
+
+/* ── Self-test ── */
+.sailor-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.sailor-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.sailor-quiz-start, .sailor-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.sailor-quiz-start:hover, .sailor-lab-start:hover { background: #1e40af; }
+.sailor-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.sailor-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.sailor-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.sailor-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.sailor-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.sailor-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.sailor-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }

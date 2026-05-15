@@ -33,6 +33,7 @@
 @import url('./components/LLMPipelineExplorer.css');
 @import url('./components/TestQualityExplorer.css');
 @import url('./components/FaultDirectedTestingExplorer.css');
+@import url('./components/SAILORPipelineExplorer.css');
 @import url('./components/BDDGherkinExplorer.css');
 @import url('./components/UseCaseDerivationExplorer.css');
 @import url('./components/E2EUserJourneyExplorer.css');

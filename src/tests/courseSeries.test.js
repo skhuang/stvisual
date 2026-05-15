@@ -25,14 +25,15 @@ describe('K3 — course packs', () => {
     }
   });
 
-  it('AI-Assisted pack contains all 5 I-series explorers', () => {
+  it('AI-Assisted pack contains all six research explorers (I1–I5 + SAILOR)', () => {
     const ids = getCoursePackExplorers('ai-assisted');
     expect(ids).toContain('EquivalentMutantExplorer');
     expect(ids).toContain('MutationScoreExplorer');
     expect(ids).toContain('LLMPipelineExplorer');
     expect(ids).toContain('TestQualityExplorer');
     expect(ids).toContain('FaultDirectedTestingExplorer');
-    expect(ids.length).toBe(5);
+    expect(ids).toContain('SAILORPipelineExplorer');
+    expect(ids.length).toBe(6);
   });
 
   it('Mutation Track spans program mutation + I-series mutation explorers', () => {
