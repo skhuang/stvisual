@@ -38,6 +38,7 @@ import { createUseCaseDerivationExplorer } from './components/UseCaseDerivationE
 import { createE2EUserJourneyExplorer } from './components/E2EUserJourneyExplorer.js';
 import { createContractTestingExplorer } from './components/ContractTestingExplorer.js';
 import { createPerformanceLoadProfileExplorer } from './components/PerformanceLoadProfileExplorer.js';
+import { createChaosEngineeringExplorer } from './components/ChaosEngineeringExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -267,6 +268,7 @@ export function renderApp(container) {
       e2ejourney: createE2EUserJourneyExplorer(),
       contract: createContractTestingExplorer(),
       perfload: createPerformanceLoadProfileExplorer(),
+      chaos: createChaosEngineeringExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -351,6 +353,7 @@ export function renderApp(container) {
       { id: 'e2ejourney', key: 'acceptanceTab.e2ejourney', component: components.e2ejourney },
       { id: 'contract', key: 'acceptanceTab.contract', component: components.contract },
       { id: 'perfload', key: 'acceptanceTab.perfload', component: components.perfload },
+      { id: 'chaos', key: 'acceptanceTab.chaos', component: components.chaos },
     ];
     const acceptanceSlot = container.querySelector('[data-slot="acceptance"]');
     const acceptanceTabBar = document.createElement('nav');

@@ -38,6 +38,7 @@
 @import url('./components/E2EUserJourneyExplorer.css');
 @import url('./components/ContractTestingExplorer.css');
 @import url('./components/PerformanceLoadProfileExplorer.css');
+@import url('./components/ChaosEngineeringExplorer.css');
 @import url('./components/TagFilterBar.css');
 @import url('./components/CoursePackBar.css');
 @import url('./components/IntegrationTestingExplorer.css');

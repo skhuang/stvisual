@@ -1,0 +1,76 @@
+.chx-wrap { display: flex; flex-direction: column; gap: 1.25rem; padding: 1rem 0; }
+.chx-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.chx-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+.chx-topos { display: flex; flex-wrap: wrap; gap: 6px; }
+.chx-topo-chip {
+  padding: 0.3rem 0.7rem; border: 1px solid #e2e8f0; border-radius: 999px;
+  background: #f8fafc; font-size: 0.8rem; cursor: pointer; color: #374151;
+}
+.chx-topo-chip:hover { background: #eef2f7; }
+.chx-topo-chip--active {
+  background: #1d4ed8; border-color: #1d4ed8; color: #fff; font-weight: 600;
+}
+
+.chx-graph {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+}
+.chx-graph svg { width: 100%; max-height: 220px; display: block; }
+.chx-node--blast circle { stroke: #b91c1c; stroke-width: 2; }
+
+.chx-fault {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+.chx-fault h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: #1f2a44; }
+.chx-fault__form { display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; gap: 8px; align-items: end; }
+@media (max-width: 800px) { .chx-fault__form { grid-template-columns: 1fr 1fr; } }
+.chx-fault__form label { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.74rem; color: #475569; }
+.chx-fault__form select { padding: 0.3rem 0.4rem; border: 1px solid #d0d7e2; border-radius: 5px; background: #fff; font-size: 0.82rem; }
+.chx-fault__inject {
+  padding: 0.35rem 0.85rem; background: #b91c1c; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; font-weight: 600;
+}
+.chx-fault__inject:hover { background: #991b1b; }
+.chx-fault__clear {
+  padding: 0.35rem 0.85rem; background: #f1f5f9; color: #374151;
+  border: 1px solid #d0d7e2; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.chx-fault__clear:hover { background: #e2e8f0; }
+
+.chx-hypo {
+  padding: 0.6rem 0.85rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.3rem;
+}
+.chx-hypo--pass { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+.chx-hypo--fail { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; }
+.chx-hypo strong { font-size: 0.95rem; }
+.chx-hypo p { margin: 0; font-size: 0.82rem; color: inherit; opacity: 0.85; }
+.chx-hypo__metrics { list-style: none; margin: 0; padding: 0; display: flex; gap: 1rem; font-size: 0.78rem; }
+.chx-hypo__metrics li { display: flex; flex-direction: column; gap: 0.1rem; }
+.chx-hypo__metrics strong { font-size: 0.95rem; }
+
+.chx-bridges { display: flex; flex-wrap: wrap; gap: 6px; }
+.chx-bridge {
+  padding: 0.22rem 0.6rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.74rem; cursor: pointer;
+}
+.chx-bridge:hover { background: #1d4ed8; color: #fff; }
+
+.chx-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.chx-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.chx-quiz-start, .chx-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.chx-quiz-start:hover, .chx-lab-start:hover { background: #1e40af; }
+.chx-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.chx-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.chx-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.chx-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.chx-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.chx-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.chx-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }
