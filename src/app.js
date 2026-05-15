@@ -40,6 +40,7 @@ import { createContractTestingExplorer } from './components/ContractTestingExplo
 import { createPerformanceLoadProfileExplorer } from './components/PerformanceLoadProfileExplorer.js';
 import { createChaosEngineeringExplorer } from './components/ChaosEngineeringExplorer.js';
 import { createATDDCycleExplorer } from './components/ATDDCycleExplorer.js';
+import { createFlakyDiagnosisExplorer } from './components/FlakyDiagnosisExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -271,6 +272,7 @@ export function renderApp(container) {
       perfload: createPerformanceLoadProfileExplorer(),
       chaos: createChaosEngineeringExplorer(),
       atdd: createATDDCycleExplorer(),
+      flaky: createFlakyDiagnosisExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -357,6 +359,7 @@ export function renderApp(container) {
       { id: 'perfload', key: 'acceptanceTab.perfload', component: components.perfload },
       { id: 'chaos', key: 'acceptanceTab.chaos', component: components.chaos },
       { id: 'atdd', key: 'acceptanceTab.atdd', component: components.atdd },
+      { id: 'flaky', key: 'acceptanceTab.flaky', component: components.flaky },
     ];
     const acceptanceSlot = container.querySelector('[data-slot="acceptance"]');
     const acceptanceTabBar = document.createElement('nav');

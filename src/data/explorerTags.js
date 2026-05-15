@@ -240,6 +240,10 @@ export const EXPLORER_TAGS = {
     level: ['acceptance', 'meta'], technique: ['process'], series: ['acceptance-e2e'],
     difficulty: 'intro', source: [TEXTBOOK],
   },
+  FlakyDiagnosisExplorer: {
+    level: ['e2e', 'meta'], technique: ['process'], series: ['acceptance-e2e'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -290,6 +294,7 @@ export const SECTION_EXPLORERS = {
     'PerformanceLoadProfileExplorer',
     'ChaosEngineeringExplorer',
     'ATDDCycleExplorer',
+    'FlakyDiagnosisExplorer',
   ],
 };
 
