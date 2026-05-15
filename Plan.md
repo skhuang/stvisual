@@ -1,6 +1,6 @@
 # stvisual — 改善建議與路線圖
 
-> 最後更新：2026-05-15（J1–J8 系統 / E2E / 驗收測試 Explorer 全數完成 PR #197/#199/#201/#203/#205/#207/#209/#211；K + J 系列同日收官，43 個 Explorer）
+> 最後更新：2026-05-16（新增 L 節 Model-Based Testing 路線圖；I6 SAILOR + Advanced Testing 兩層論文選單已上線 PR #222/#223）
 
 ---
 
@@ -845,6 +845,172 @@ export const EXPLORER_TAGS = {
 - **`?lang=` URL 鎖定**：分享連結強制語言。i18n 已在處理 locale，需求出現再加。
 - **原生 `#anchor` 跳轉**：替代 `?section=`，給 section 加 `id` 屬性即可。
 - **CoursePack 自訂排序**：`order: [...]` 欄位允許 pack 內部 Explorer 排序，目前延用 `EXPLORER_TAGS` 鍵序已夠用。
+
+---
+
+## L. Model-Based Testing Explorer（路線圖）
+
+> **教學缺口**：43 個 Explorer 裡，StateTransitionExplorer 只做「給定狀態機 → 數覆蓋」，沒有觸及 Model-Based Testing（MBT）的核心——**先建抽象模型、再從模型自動生成測試案例、執行後比對 conformance**。MBT 是把「測試設計」當成「模型推導」的一整套方法論，值得獨立一節。
+>
+> 與既有 Explorer 的關係：MBT 是 StateTransition（黑盒）、SymbolicExecution（白盒）、SpecMutation（規格）三者的上層整合視角。
+>
+> 預設新增 `section.mbt` 區塊，分頁形式擺放 L1–L6（與 Acceptance & E2E 同樣樣式）。
+
+---
+
+### L1（高優先）— MBT Workflow Explorer（模型導向測試流程）
+
+**教學動機**：學生常把 MBT 當成「畫個圖」。本 Explorer 把完整流程攤開：**模型 → 生成準則 → 抽象測試集 → 具體化（concretization）→ 執行 → conformance 判定**，並對比 offline（先產測試套件）與 online（on-the-fly 邊走邊測）兩種模式。
+
+**功能規劃**
+
+- 可點擊的 6 階段橫向流程圖（沿用 I3 / I6 LLMPipeline 樣式）：
+  1. **Model** — 抽象狀態機 / 行為模型
+  2. **Generation criterion** — state / transition / path 覆蓋等
+  3. **Abstract test suite** — 模型層級的事件序列
+  4. **Concretization** — 抽象事件 → 具體 API 呼叫 / 輸入值
+  5. **Execution** — 對 SUT 執行
+  6. **Conformance verdict** — pass / fail（觀察輸出 vs 模型預期）
+- 每階段點開顯示：角色、範例輸入/輸出、常見失敗模式
+- Offline vs Online 對照面板：offline 產出固定套件；online 依 SUT 回應自適應選下一步
+- **Bridge**：→ V-Model（MBT 落在右臂哪個層級）
+- **Quiz**：「concretization 失敗時，是模型錯還是 SUT 錯？」
+- **Lab Reflect**：「什麼專案值得投入建模成本？什麼時候 MBT 是過度設計？」
+
+**實作估計**：1 個 PR，約 450 行
+
+---
+
+### L2（高優先）— FSM Test Generation Explorer（狀態機測試生成）
+
+**教學動機**：StateTransitionExplorer 只「數」覆蓋；本 Explorer 真正**生成可執行測試序列**（含期望輸出），並比較不同模型覆蓋準則的測試集大小與抓錯能力。
+
+**功能規劃**
+
+- 預設 3 個 FSM（登入流程、ATM、自動販賣機）
+- 4 種生成準則並列：
+  - **State coverage** — 每個狀態至少到訪一次
+  - **Transition coverage** — 每條轉移至少觸發一次
+  - **Transition-pair (switch) coverage** — Chow 的相鄰轉移對
+  - **All-round-trip-paths** — 涵蓋每個迴圈一次
+- **Transition tour**：用 Chinese Postman 演算法求「涵蓋所有轉移的最短序列」
+- 每個準則顯示：生成的測試序列、序列總長度、測試案例數
+- **Bridge**：→ StateTransitionExplorer（同一個 FSM 模型）
+- **Quiz**：「給定 FSM，transition-pair 覆蓋比 transition 覆蓋多幾個測試案例？」
+- **Lab Reflect**：「switch coverage 能抓到 transition coverage 漏掉的哪類錯誤？」
+
+**實作估計**：1 個 PR，約 500 行（含 Chinese Postman 求解）
+
+---
+
+### L3（中優先）— W-Method Conformance Explorer（W 方法一致性測試）
+
+**教學動機**：W 方法是 FSM 一致性測試的經典——在「實作最多多 m 個額外狀態」的假設下，**保證偵測所有轉移 / 輸出錯誤**。視覺化 distinguishing sequence 與 characterizing set（W-set）。
+
+**功能規劃**
+
+- 給定規格 FSM，計算：
+  - **State cover (P)** — 抵達每個狀態的前綴集
+  - **Characterizing set (W)** — 能區分任兩個狀態的輸入序列集
+  - **Transition cover** — P · 輸入字母表
+  - 完整測試集 = P · (∪ Wᵢ) 形式
+- 動畫示範：兩個「看似相同」的狀態如何被 W-set 中的序列區分開
+- 注入一個 mutant FSM（改一條轉移），示範 W 測試集如何抓到它
+- **Bridge**：→ Group Theory（狀態等價 ↔ orbit）、→ Logic Coverage
+- **Quiz**：「W 方法在 m=1 時，測試集大小如何隨狀態數成長？」
+- **Lab Reflect**：「W 方法的 m 假設在真實系統中合理嗎？違反會怎樣？」
+
+**實作估計**：1 個 PR，約 500 行
+
+---
+
+### L4（中優先）— EFSM / Guarded-Transition Explorer（擴充狀態機）
+
+**教學動機**：真實系統的轉移帶 guard 條件與資料變數（Extended FSM）。本 Explorer 展示 guard 如何把一條轉移分裂成多條、如何產生 infeasible path、為何需要約束求解。
+
+**功能規劃**
+
+- EFSM 編輯器：狀態 + 帶 guard / action 的轉移（例：`balance >= amount`）
+- 抽象測試路徑 → 套用 guard → 標出 feasible / infeasible
+- 對 feasible 路徑呼叫約束求解，產生具體輸入值（沿用 logicBinding 求解器）
+- 對照：純 FSM 路徑數 vs EFSM 加 guard 後的可行路徑數
+- **Bridge**：→ Symbolic Execution、→ Logic Coverage（clause binding）
+- **Quiz**：「下列 EFSM 路徑，哪幾條因 guard 矛盾而 infeasible？」
+- **Lab Reflect**：「EFSM 建模比純 FSM 多花的成本，換到什麼？」
+
+**實作估計**：1 個 PR，約 500 行
+
+---
+
+### L5（低優先）— Usage-Model Statistical Testing Explorer（使用模型統計測試）
+
+**教學動機**：Markov-chain 使用模型把轉移加上「真實使用機率」（operational profile），讓測試依真實使用分佈加權——進而估計可靠度、預期測試長度、罕見路徑覆蓋。
+
+**功能規劃**
+
+- 使用模型 = 狀態機 + 每條轉移的機率（每個狀態出邊機率和為 1）
+- 依機率隨機漫步生成測試序列；統計各路徑被覆蓋的頻率
+- 可靠度估計面板：跑 N 條測試、加權通過率 → 可靠度區間
+- 罕見路徑警示：機率極低但高風險的路徑（連結風險導向）
+- **Bridge**：→ Risk-Based Testing、→ Property-Based Testing
+- **Quiz**：「依 Little's Law 風格計算：給定轉移機率，預期測試案例長度為何？」
+- **Lab Reflect**：「operational profile 估錯時，統計測試的結論會如何偏差？」
+
+**實作估計**：1 個 PR，約 450 行
+
+---
+
+### L6（低優先）— Model Mutation Explorer（模型突變充分性）
+
+**教學動機**：把突變測試套用到**模型本身**——突變狀態 / 轉移 / guard，檢查 MBT 生成的測試套件能否殺死這些 model-mutant，藉此評估「模型層級的測試充分性」。
+
+**功能規劃**
+
+- 給定 FSM / EFSM + 一份由 L2 生成的測試套件
+- 模型突變算子：刪除轉移、改變目標狀態、改 guard、改輸出
+- 對每個 model-mutant 跑測試套件 → killed / survived
+- Model mutation score；存活突變體分析（等價 model-mutant？）
+- 對照：與 I 系列「程式碼層級突變」的差異——抽象層級不同
+- **Bridge**：→ SpecMutationExplorer、→ EquivalentMutantExplorer (I1)
+- **Quiz**：「某 model-mutant 存活——是測試套件不足，還是等價突變體？」
+- **Lab Reflect**：「模型層級突變分數高，能保證程式碼層級也高嗎？」
+
+**實作估計**：1 個 PR，約 450 行
+
+---
+
+### 優先順序與分組
+
+| 排序 | 項目 | 理由 | 預估 |
+|------|------|------|------|
+| ① | L1 MBT Workflow | 觀念地基；其他 L 項目的前置脈絡 | 1 PR |
+| ② | L2 FSM Test Generation | 核心；直接補 StateTransition 的「生成」缺口 | 1 PR |
+| ③ | L3 W-Method Conformance | 經典理論，適合投影片搭配講解 | 1 PR |
+| ④ | L4 EFSM Guards | 銜接白盒：guard → 約束求解 | 1 PR |
+| ⑤ | L5 Usage-Model Statistical | 非功能視角（可靠度）；統計取向 | 1 PR |
+| ⑥ | L6 Model Mutation | 收尾：把 I 系列突變概念抬到模型層 | 1 PR |
+
+### 建議的合併策略
+
+- **第一波（核心）**：L1 + L2 — 新建 `section.mbt` 分頁、補足「從模型生成測試」的主線
+- **第二波（理論深化）**：L3 + L4 — 一致性測試與擴充狀態機
+- **第三波（彈性）**：L5 + L6 — 視課程需求選做
+
+### 與既有 Explorer 的關聯
+
+| L Explorer | 連動的既有 Explorer |
+|------------|---------------------|
+| L1 MBT Workflow | VModel (E2) |
+| L2 FSM Test Generation | StateTransitionExplorer（黑盒 ST 分頁） |
+| L3 W-Method Conformance | GroupTheoryExplorer (H)、LogicCoverageExplorer |
+| L4 EFSM Guards | SymbolicExecutionExplorer、LogicCoverageExplorer (clause binding) |
+| L5 Usage-Model Statistical | RiskBasedTestingExplorer (G6)、PropertyBasedTestingExplorer (G5) |
+| L6 Model Mutation | SpecMutationExplorer、EquivalentMutantExplorer (I1) |
+
+### K 系列 tag 約定
+
+新增 Explorer 套上 K1 tag：`technique` 詞彙表新增 `model-based`；`series` 新增 `model-based`。例如
+L2 = `{ level:['system'], technique:['model-based','state-transition'], series:['model-based'], difficulty:'intermediate' }`。
 
 ---
 
