@@ -105,6 +105,23 @@ In `/section-agile`, open the **Sprint Cadence Explorer**:
 
 ---
 
+## Tool — testing across a sprint
+
+![w:980](../assets/slides/cadence-overview-en.png)
+
+Each sprint stage and the testing activities woven through it.
+
+---
+
+## Tool — the sprint timeline
+
+![w:980](../assets/slides/cadence-timeline-en.png)
+
+Agile versus waterfall — see testing collapse into one late phase.
+
+---
+
+
 ## Summary
 
 - Agile testing is **continuous** — woven through refinement, planning, development, story testing, review and retro.

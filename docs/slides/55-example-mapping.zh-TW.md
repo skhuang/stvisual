@@ -108,6 +108,23 @@ Matt Wynne 的**範例映射（Example Mapping）**用四種卡片顏色來組�
 
 ---
 
+## 工具 —— 映射一個故事
+
+![w:980](../assets/slides/emap-overview.png)
+
+黃色故事、藍色規則、綠色範例、紅色問題。
+
+---
+
+## 工具 —— 範例映射
+
+![w:980](../assets/slides/emap-map.png)
+
+解決紅色問題卡，看就緒度量表上升。
+
+---
+
+
 ## 小結
 
 - **Three Amigos**（業務、開發、測試）精煉一個故事，使沒有任何單一盲點存活。

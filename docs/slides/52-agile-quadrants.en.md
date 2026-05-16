@@ -106,6 +106,23 @@ In `/section-agile`, open the **Agile Testing Quadrants Explorer**:
 
 ---
 
+## Tool — the four quadrants
+
+![w:980](../assets/slides/agq-overview-en.png)
+
+Business/tech-facing × supports-team/critiques-product — the map of agile testing.
+
+---
+
+## Tool — the quadrant grid
+
+![w:980](../assets/slides/agq-grid-en.png)
+
+Each quadrant carries technique chips that bridge to the explorer teaching them.
+
+---
+
+
 ## Summary
 
 - The **Agile Testing Quadrants** map all of agile testing on two axes: **business ↔ technology-facing** and **supporting the team ↔ critiquing the product**.

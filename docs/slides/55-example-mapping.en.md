@@ -108,6 +108,23 @@ In `/section-agile`, open the **Example Mapping Explorer**:
 
 ---
 
+## Tool — mapping a story
+
+![w:980](../assets/slides/emap-overview-en.png)
+
+Yellow story, blue rules, green examples, red questions.
+
+---
+
+## Tool — the example map
+
+![w:980](../assets/slides/emap-map-en.png)
+
+Resolve the red question cards and watch the readiness meter rise.
+
+---
+
+
 ## Summary
 
 - **Three Amigos** (business, dev, tester) refine a story so no single blind spot survives.

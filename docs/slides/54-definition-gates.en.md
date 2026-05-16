@@ -103,6 +103,23 @@ In `/section-agile`, open the **Definition of Ready / Done Explorer**:
 
 ---
 
+## Tool — the DoR / DoD gates
+
+![w:980](../assets/slides/gate-overview-en.png)
+
+Two checklists — Definition of Ready and Definition of Done.
+
+---
+
+## Tool — running a story through
+
+![w:980](../assets/slides/gate-summary-en.png)
+
+Disable a criterion and watch a latent issue leak to the next stage.
+
+---
+
+
 ## Summary
 
 - **DoR** and **DoD** are agile's two quality gates — one *into* the sprint, one *out*.

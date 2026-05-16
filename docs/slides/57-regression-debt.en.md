@@ -109,6 +109,23 @@ In `/section-agile`, open the **Regression & Test-Debt Explorer**:
 
 ---
 
+## Tool — cost versus value
+
+![w:980](../assets/slides/rdebt-overview-en.png)
+
+A regression suite simulated across 12 sprints — two curves diverging.
+
+---
+
+## Tool — the crossover point
+
+![w:980](../assets/slides/rdebt-chart-en.png)
+
+Where rising cost meets flattening value — the onset of test debt.
+
+---
+
+
 ## Summary
 
 - A regression suite **only grows**; each test is both an asset and a **liability**.

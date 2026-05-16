@@ -954,6 +954,39 @@ async function main() {
     await wp.close();
   }
 
+  // ---- Decks #52–#57: Wave G — agile testing explorers ----
+  // The agile section is tabbed; the overview shot uses the panel div.
+
+  const waveGShots = [
+    { tab: 'quadrants',  card: 'agq-grid',          names: ['agq-overview', 'agq-grid'] },
+    { tab: 'cadence',    card: 'cadence-timeline',  names: ['cadence-overview', 'cadence-timeline'] },
+    { tab: 'gates',      card: 'gate-summary',      names: ['gate-overview', 'gate-summary'] },
+    { tab: 'examplemap', card: 'emap-map',          names: ['emap-overview', 'emap-map'] },
+    { tab: 'pipeline',   card: 'ctp-pipeline',      names: ['ctp-overview', 'ctp-pipeline'] },
+    { tab: 'regression', card: 'rdebt-chart',       names: ['rdebt-overview', 'rdebt-chart'] },
+  ];
+  for (const s of waveGShots) {
+    const wp = await ctx.newPage();
+    await wp.goto(URL, { waitUntil: 'networkidle' });
+    await wp.getByTestId('nav-btn-agile').click();
+    await wp.locator(`[data-agile-tab="${s.tab}"]`).click();
+    const panel = wp.locator(`[data-agile-panel="${s.tab}"]`);
+    await panel.waitFor();
+    await sleep(500);
+    await panel.screenshot({ path: shot(s.names[0]) });
+    console.log(`[capture] saved ${s.names[0]}.png`);
+    const card = wp.getByTestId(s.card);
+    if (await card.count()) {
+      await card.scrollIntoViewIfNeeded();
+      await card.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png`);
+    } else {
+      await panel.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png (panel fallback)`);
+    }
+    await wp.close();
+  }
+
   await browser.close();
   if (serverChild) {
     serverChild.kill();

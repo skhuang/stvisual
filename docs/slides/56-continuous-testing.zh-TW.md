@@ -101,6 +101,23 @@ lang: zh-TW
 
 ---
 
+## 工具 —— 分層的測試管線
+
+![w:980](../assets/slides/ctp-overview.png)
+
+commit、PR、nightly 三層，各有自己的回饋時間。
+
+---
+
+## 工具 —— 管線層級
+
+![w:980](../assets/slides/ctp-pipeline.png)
+
+把 e2e 移到 commit 層，看快速回饋迴圈崩掉。
+
+---
+
+
 ## 小結
 
 - 一條**持續測試管線**用**分層**執行測試 —— commit（秒）、PR（分鐘）、nightly（小時）。

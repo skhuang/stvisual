@@ -101,6 +101,23 @@ In `/section-agile`, open the **Continuous Testing Pipeline Explorer**:
 
 ---
 
+## Tool — a tiered test pipeline
+
+![w:980](../assets/slides/ctp-overview-en.png)
+
+Commit, PR and nightly tiers, each with its own feedback time.
+
+---
+
+## Tool — the pipeline tiers
+
+![w:980](../assets/slides/ctp-pipeline-en.png)
+
+Move e2e onto the commit tier and watch the fast-feedback loop break.
+
+---
+
+
 ## Summary
 
 - A **continuous testing pipeline** runs tests in **tiers** — commit (seconds), PR (minutes), nightly (hours).
