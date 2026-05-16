@@ -51,6 +51,7 @@ import { createModelMutationExplorer } from './components/ModelMutationExplorer.
 import { createAgileQuadrantsExplorer } from './components/AgileQuadrantsExplorer.js';
 import { createSprintCadenceExplorer } from './components/SprintCadenceExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
+import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -318,6 +319,7 @@ export function renderApp(container) {
       agilequadrants: createAgileQuadrantsExplorer(),
       sprintcadence: createSprintCadenceExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
+      examplemapping: createExampleMappingExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -585,6 +587,7 @@ export function renderApp(container) {
       { id: 'quadrants', key: 'agileTab.quadrants', component: components.agilequadrants },
       { id: 'cadence', key: 'agileTab.cadence', component: components.sprintcadence },
       { id: 'gates', key: 'agileTab.gates', component: components.definitiongates },
+      { id: 'examplemap', key: 'agileTab.examplemap', component: components.examplemapping },
     ];
     const agileSlot = container.querySelector('[data-slot="agile"]');
     const agileTabBar = document.createElement('nav');
