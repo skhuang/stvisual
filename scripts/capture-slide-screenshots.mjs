@@ -591,6 +591,178 @@ async function main() {
 
   await bindingPage.close();
 
+  // ---- Deck #14: Defect Cost (DefectCostExplorer) ----
+
+  const dcePage = await ctx.newPage();
+  await dcePage.goto(URL, { waitUntil: 'networkidle' });
+  await dcePage.getByTestId('nav-btn-flow').click();
+  await dcePage.locator('[data-flow-tab="defectCost"]').click();
+  await dcePage.getByTestId('defect-cost-explorer').waitFor();
+  const dceExplorer = dcePage.getByTestId('defect-cost-explorer');
+
+  // 46. Overview — escalating-cost pyramid, no phase selected.
+  await dceExplorer.screenshot({ path: join(OUT_DIR, 'defect-cost-overview.png') });
+  console.log('[capture] saved defect-cost-overview.png');
+
+  // 47. Requirements phase selected — cheapest fix.
+  await dcePage.getByTestId('dce-col-requirements').click();
+  await sleep(250);
+  await dceExplorer.screenshot({ path: join(OUT_DIR, 'defect-cost-requirements.png') });
+  console.log('[capture] saved defect-cost-requirements.png');
+
+  // 48. Production phase selected — most expensive fix.
+  await dcePage.getByTestId('dce-col-production').click();
+  await sleep(250);
+  await dceExplorer.screenshot({ path: join(OUT_DIR, 'defect-cost-production.png') });
+  console.log('[capture] saved defect-cost-production.png');
+
+  // 49. Cost chart focused.
+  const dceChart = dcePage.getByTestId('dce-chart');
+  if (await dceChart.count()) {
+    await dceChart.scrollIntoViewIfNeeded();
+    await dceChart.screenshot({ path: join(OUT_DIR, 'defect-cost-chart.png') });
+    console.log('[capture] saved defect-cost-chart.png');
+  }
+  await dcePage.close();
+
+  // ---- Deck #15: V-Model (VModelExplorer) ----
+
+  const vmePage = await ctx.newPage();
+  await vmePage.goto(URL, { waitUntil: 'networkidle' });
+  await vmePage.getByTestId('nav-btn-flow').click();
+  await vmePage.locator('[data-flow-tab="vmodel"]').click();
+  await vmePage.getByTestId('vmodel-explorer').waitFor();
+  const vmeExplorer = vmePage.getByTestId('vmodel-explorer');
+
+  // 50. Overview — full V diagram, no pair selected.
+  await sleep(200);
+  await vmeExplorer.screenshot({ path: join(OUT_DIR, 'vmodel-overview.png') });
+  console.log('[capture] saved vmodel-overview.png');
+
+  // 51. Requirements ↔ acceptance pair selected (top of the V).
+  await vmePage.getByTestId('vme-dev-requirements').click();
+  await sleep(250);
+  await vmeExplorer.screenshot({ path: join(OUT_DIR, 'vmodel-requirements.png') });
+  console.log('[capture] saved vmodel-requirements.png');
+
+  // 52. Implementation node selected (bottom of the V).
+  const vmeImpl = vmePage.getByTestId('vme-impl');
+  if (await vmeImpl.count()) {
+    await vmeImpl.click();
+    await sleep(250);
+    await vmeExplorer.screenshot({ path: join(OUT_DIR, 'vmodel-implementation.png') });
+    console.log('[capture] saved vmodel-implementation.png');
+  }
+
+  // 53. Diagram focused.
+  const vmeDiagram = vmePage.getByTestId('vme-diagram');
+  if (await vmeDiagram.count()) {
+    await vmeDiagram.scrollIntoViewIfNeeded();
+    await vmeDiagram.screenshot({ path: join(OUT_DIR, 'vmodel-diagram.png') });
+    console.log('[capture] saved vmodel-diagram.png');
+  }
+  await vmePage.close();
+
+  // ---- Deck #16: Testing Types (TestingTypesTable) ----
+
+  const ttPage = await ctx.newPage();
+  await ttPage.goto(URL, { waitUntil: 'networkidle' });
+  await ttPage.getByTestId('nav-btn-types').click();
+  await ttPage.getByTestId('testing-types').waitFor();
+
+  // 54. Pyramid focused.
+  await sleep(300);
+  const ttPyramid = ttPage.getByTestId('pyramid');
+  if (await ttPyramid.count()) {
+    await ttPyramid.scrollIntoViewIfNeeded();
+    await ttPyramid.screenshot({ path: join(OUT_DIR, 'testing-types-pyramid.png') });
+    console.log('[capture] saved testing-types-pyramid.png');
+  }
+
+  // 55. Type-card grid focused.
+  const ttGrid = ttPage.getByTestId('types-grid');
+  if (await ttGrid.count()) {
+    await ttGrid.scrollIntoViewIfNeeded();
+    await ttGrid.screenshot({ path: join(OUT_DIR, 'testing-types-grid.png') });
+    console.log('[capture] saved testing-types-grid.png');
+  }
+
+  // 56. A single type card (unit testing).
+  const ttCard = ttPage.getByTestId('type-card-unit');
+  if (await ttCard.count()) {
+    await ttCard.scrollIntoViewIfNeeded();
+    await ttCard.screenshot({ path: join(OUT_DIR, 'testing-types-card.png') });
+    console.log('[capture] saved testing-types-card.png');
+  }
+  await ttPage.close();
+
+  // ---- Deck #17: Test Pyramid (PyramidAdjusterExplorer) ----
+
+  const pyaPage = await ctx.newPage();
+  await pyaPage.goto(URL, { waitUntil: 'networkidle' });
+  await pyaPage.getByTestId('nav-btn-types').click();
+  await pyaPage.locator('[data-types-tab="adjuster"]').click();
+  await pyaPage.getByTestId('pyramid-adjuster').waitFor();
+  const pyaExplorer = pyaPage.getByTestId('pyramid-adjuster');
+
+  // 57. Ideal pyramid (default preset).
+  await pyaPage.locator('[data-pya-preset="ideal"]').click().catch(() => {});
+  await sleep(300);
+  await pyaExplorer.screenshot({ path: join(OUT_DIR, 'test-pyramid-ideal.png') });
+  console.log('[capture] saved test-pyramid-ideal.png');
+
+  // 58. Ice-cream-cone anti-pattern.
+  await pyaPage.locator('[data-pya-preset="icecream"]').click().catch(() => {});
+  await sleep(300);
+  await pyaExplorer.screenshot({ path: join(OUT_DIR, 'test-pyramid-icecream.png') });
+  console.log('[capture] saved test-pyramid-icecream.png');
+
+  // 59. Trait bars focused (with the ice-cream preset still active).
+  const pyaTraits = pyaPage.getByTestId('pya-traits');
+  if (await pyaTraits.count()) {
+    await pyaTraits.scrollIntoViewIfNeeded();
+    await pyaTraits.screenshot({ path: join(OUT_DIR, 'test-pyramid-traits.png') });
+    console.log('[capture] saved test-pyramid-traits.png');
+  }
+  await pyaPage.close();
+
+  // ---- Deck #18: Code Coverage (CodeCoverageExplorer) ----
+
+  const ccPage = await ctx.newPage();
+  await ccPage.goto(URL, { waitUntil: 'networkidle' });
+  await ccPage.getByTestId('nav-btn-codecov').click();
+  await ccPage.getByTestId('codecov-explorer').waitFor();
+  const ccExplorer = ccPage.getByTestId('codecov-explorer');
+
+  // 60. Overview — absVal preset (default).
+  await sleep(300);
+  await ccExplorer.screenshot({ path: join(OUT_DIR, 'codecov-overview.png') });
+  console.log('[capture] saved codecov-overview.png');
+
+  // 61. Discount preset — a two-clause predicate (richer condition coverage).
+  await ccPage.getByTestId('codecov-preset-discount').click().catch(() => {});
+  await sleep(400);
+  await ccExplorer.screenshot({ path: join(OUT_DIR, 'codecov-discount.png') });
+  console.log('[capture] saved codecov-discount.png');
+
+  // 62. Coverage bars focused (stmt / branch / cond / mcdc).
+  const ccBranch = ccPage.getByTestId('codecov-bar-branch');
+  if (await ccBranch.count()) {
+    const ccBars = ccBranch.locator('xpath=..');
+    await ccBranch.scrollIntoViewIfNeeded();
+    await ccBars.screenshot({ path: join(OUT_DIR, 'codecov-bars.png') });
+    console.log('[capture] saved codecov-bars.png');
+  }
+
+  // 63. Code view focused — line-by-line coverage marking.
+  const ccCode = ccPage.getByTestId('codecov-code-view');
+  if (await ccCode.count()) {
+    await ccCode.scrollIntoViewIfNeeded();
+    await ccCode.screenshot({ path: join(OUT_DIR, 'codecov-code.png') });
+    console.log('[capture] saved codecov-code.png');
+  }
+  await ccPage.close();
+
   await browser.close();
   if (serverChild) {
     serverChild.kill();

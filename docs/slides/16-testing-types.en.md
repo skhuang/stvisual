@@ -103,6 +103,22 @@ In `/section-types`, open the **Testing Types** view:
 
 ---
 
+## Tool — the testing pyramid
+
+![w:980](../assets/slides/testing-types-pyramid.png)
+
+Four levels stacked, widening downward — width hints at relative test count.
+
+---
+
+## Tool — the four level cards
+
+![w:980](../assets/slides/testing-types-grid.png)
+
+Each card carries the level's purpose and the phase where it runs.
+
+---
+
 ## Common confusions to avoid
 
 - *"Integration test = several units"* — no. It tests the **interfaces**, not the units again.

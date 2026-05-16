@@ -116,6 +116,22 @@ In `/section-types`, open the **Pyramid Adjuster**:
 
 ---
 
+## Tool — the ideal pyramid
+
+![w:980](../assets/slides/test-pyramid-ideal.png)
+
+70 / 20 / 10 — a wide unit base; speed and confidence both high.
+
+---
+
+## Tool — the ice-cream-cone anti-pattern
+
+![w:980](../assets/slides/test-pyramid-icecream.png)
+
+10 / 20 / 70 — inverted; the trait bars show speed and maintenance worsen.
+
+---
+
 ## A modern caveat
 
 - The exact 70/20/10 is a heuristic, not a law.

@@ -142,6 +142,22 @@ MC/DC  ⊃  分支  ⊃  語句
 
 ---
 
+## 工具 —— 四種準則的覆蓋率
+
+![w:980](../assets/slides/codecov-overview.png)
+
+左側程式碼、右側逐準則長條：陳述式、分支、條件、MC/DC。
+
+---
+
+## 工具 —— 一個雙子句述詞
+
+![w:980](../assets/slides/codecov-discount.png)
+
+`discount` 預設的 `age >= 65 || isMember` 正是分支與 MC/DC 分歧之處。
+
+---
+
 ## 小結
 
 - 四個準則，強度遞增：**語句 → 分支 → 條件／MC/DC。**
