@@ -1272,13 +1272,16 @@ export function renderApp(container) {
   });
 
   // A deliberate `#section-<id>` hash navigation overrides any stale
-  // ?section= query. Reload from a search-free URL so boot re-applies
-  // state from the hash alone. Non-section hashes (skip-links) are left
-  // to the browser's native behaviour.
+  // ?section= query: reload from a URL carrying only the hash, so boot
+  // re-applies state from the hash alone. The ?lang= lock is carried
+  // across so a language-locked share link survives the hash jump.
+  // Non-section hashes (skip-links) are left to the browser.
   globalThis.addEventListener?.('hashchange', () => {
     const hash = globalThis.location?.hash ?? '';
     if (/^#section-[a-z0-9-]+$/.test(hash)) {
-      globalThis.location?.replace?.(`${globalThis.location.pathname}${hash}`);
+      const lang = new URLSearchParams(globalThis.location?.search ?? '').get('lang');
+      const qs = (lang === 'en' || lang === 'zh') ? `?lang=${lang}` : '';
+      globalThis.location?.replace?.(`${globalThis.location.pathname}${qs}${hash}`);
     }
   });
 
