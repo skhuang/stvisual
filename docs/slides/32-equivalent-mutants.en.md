@@ -104,6 +104,23 @@ In `/section-advanced`, open the **Equivalent Mutant Explorer**:
 
 ---
 
+## Tool — the three-stage classifier
+
+![w:980](../assets/slides/emx-overview-en.png)
+
+Syntactic, comment-strip and LLM-judge stages filter equivalence in turn.
+
+---
+
+## Tool — equivalent or not?
+
+![w:980](../assets/slides/emx-practice-en.png)
+
+Judge a mutant pair by hand — the diff is the whole question.
+
+---
+
+
 ## Summary
 
 - An **equivalent mutant** computes the same function as the original — *no test can kill it*.

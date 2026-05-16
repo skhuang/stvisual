@@ -850,6 +850,42 @@ async function main() {
     await wp.close();
   }
 
+  // ---- Decks #32–#37: Wave D — advanced / AI-assisted explorers ----
+  // The advanced section is tabbed; each explorer is one leaf tab. These
+  // components have no root testid, so the overview shot uses the panel div.
+
+  const waveDShots = [
+    { paper: 'ach',    tab: 'equivmutant',   panel: 'equivmutant',   card: 'emx-practice',    names: ['emx-overview', 'emx-practice'] },
+    { paper: 'ach',    tab: 'mutationscore', panel: 'mutationscore', card: 'msx-dashboard',   names: ['msx-overview', 'msx-dashboard'] },
+    { paper: 'ach',    tab: 'llmpipeline',   panel: 'llmpipeline',   card: 'llmp-detail',     names: ['llmp-overview', 'llmp-detail'] },
+    { paper: 'ach',    tab: 'testquality',   panel: 'testquality',   card: 'tqx-dims',        names: ['tqx-overview', 'tqx-dims'] },
+    { paper: 'ach',    tab: 'faultdirected', panel: 'faultdirected', card: 'fdx-issue',       names: ['fdx-overview', 'fdx-issue'] },
+    { paper: 'sailor', tab: 'sailor',        panel: 'sailor',        card: 'sailor-pipeline', names: ['sailor-overview', 'sailor-pipeline'] },
+  ];
+  for (const s of waveDShots) {
+    const wp = await ctx.newPage();
+    await wp.goto(URL, { waitUntil: 'networkidle' });
+    await wp.getByTestId('nav-btn-advanced').click();
+    await wp.locator(`[data-advanced-paper="${s.paper}"]`).click().catch(() => {});
+    await sleep(200);
+    await wp.locator(`[data-advanced-tab="${s.tab}"]`).click();
+    const panel = wp.locator(`[data-advanced-panel="${s.panel}"]`);
+    await panel.waitFor();
+    await sleep(500);
+    await panel.screenshot({ path: shot(s.names[0]) });
+    console.log(`[capture] saved ${s.names[0]}.png`);
+    const card = wp.getByTestId(s.card);
+    if (await card.count()) {
+      await card.scrollIntoViewIfNeeded();
+      await card.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png`);
+    } else {
+      await panel.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png (panel fallback)`);
+    }
+    await wp.close();
+  }
+
   await browser.close();
   if (serverChild) {
     serverChild.kill();

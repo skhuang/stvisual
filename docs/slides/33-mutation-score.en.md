@@ -102,6 +102,23 @@ In `/section-advanced`, open the **Mutation Score Explorer**:
 
 ---
 
+## Tool — seeded mutants and a test suite
+
+![w:980](../assets/slides/msx-overview-en.png)
+
+A target function, its mutants, and the suite run against each.
+
+---
+
+## Tool — the score dashboard
+
+![w:980](../assets/slides/msx-dashboard-en.png)
+
+killed / (total − equivalent) — survivors point at the suite's gaps.
+
+---
+
+
 ## Summary
 
 - Mutation testing seeds **mutants** (small faults) and checks whether the suite **kills** them.

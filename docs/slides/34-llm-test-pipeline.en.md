@@ -108,6 +108,23 @@ In `/section-advanced`, open the **LLM Pipeline Explorer**:
 
 ---
 
+## Tool — the three-stage LLM pipeline
+
+![w:980](../assets/slides/llmp-overview-en.png)
+
+Generate, filter, validate — an objective gate at every hand-off.
+
+---
+
+## Tool — a stage in detail
+
+![w:980](../assets/slides/llmp-detail-en.png)
+
+Each agent's input and output — the kill-check decides accept or reject.
+
+---
+
+
 ## Summary
 
 - A raw LLM writes plausible but unverified tests — coverage without fault detection.

@@ -100,6 +100,23 @@ In `/section-advanced`, open the **Fault-Directed Testing Explorer**:
 
 ---
 
+## Tool — blind versus fault-directed
+
+![w:980](../assets/slides/fdx-overview-en.png)
+
+Coverage-driven mutants beside mutants aimed at a described fault.
+
+---
+
+## Tool — the annotated issue
+
+![w:980](../assets/slides/fdx-issue-en.png)
+
+The fault report that steers generation — and the target function.
+
+---
+
+
 ## Summary
 
 - Coverage-driven generation is **blind** — it chases lines, not faults.

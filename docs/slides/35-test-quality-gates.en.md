@@ -102,6 +102,23 @@ In `/section-advanced`, open the **Test Quality Explorer**:
 
 ---
 
+## Tool — five quality gates
+
+![w:980](../assets/slides/tqx-overview-en.png)
+
+A generated test taken through all five gates, one at a time.
+
+---
+
+## Tool — the five dimensions
+
+![w:980](../assets/slides/tqx-dims-en.png)
+
+Each gate scored yes/no — the hardening gate is the mutation-kill check.
+
+---
+
+
 ## Summary
 
 - A test-generation pipeline produces **volume**; quality gates produce **trust**.
