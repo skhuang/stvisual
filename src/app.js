@@ -1047,6 +1047,14 @@ export function renderApp(container) {
 
     function renderNav() {
       nav.innerHTML = `
+        <div class="app-nav__selector">
+          <label class="app-section-select-label" for="app-section-select">${t('app.section.label')}</label>
+          <select class="app-section-select" id="app-section-select" data-testid="app-section-select">
+            ${sectionSelectConfig.map((section) => `
+              <option value="${section.id}"${activeSection === section.id ? ' selected' : ''}>${t(section.key)}</option>
+            `).join('')}
+          </select>
+        </div>
         <div class="app-nav__buttons">
           ${learningSectionsConfig.map((section) => `
             <button
@@ -1060,12 +1068,6 @@ export function renderApp(container) {
             </button>
           `).join('')}
         </div>
-        <label class="app-section-select-label" for="app-section-select">${t('app.section.label')}</label>
-        <select class="app-section-select" id="app-section-select" data-testid="app-section-select">
-          ${sectionSelectConfig.map((section) => `
-            <option value="${section.id}"${activeSection === section.id ? ' selected' : ''}>${t(section.key)}</option>
-          `).join('')}
-        </select>
       `;
 
       nav.querySelectorAll('[data-section]').forEach((button) => {

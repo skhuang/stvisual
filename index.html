@@ -13,6 +13,19 @@
     <script src="https://www.gstatic.com/firebasejs/11.7.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/11.7.1/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore-compat.js" defer></script>
-    <script src="./src/bootstrap.js" defer></script>
+    <script>
+      if (window.location.protocol === 'file:') {
+        window.__STVISUAL_FILE_BOOTSTRAPPED__ = true;
+        const script = document.createElement('script');
+        script.src = './src/standalone.js';
+        script.defer = true;
+        document.head.appendChild(script);
+      }
+    </script>
+    <script type="module">
+      if (window.location.protocol !== 'file:') {
+        import('./src/bootstrap.js');
+      }
+    </script>
   </body>
 </html>

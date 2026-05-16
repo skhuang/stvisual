@@ -154,43 +154,57 @@ textarea:focus-visible {
 /* Nav */
 .app-nav {
   display: grid;
-  justify-items: center;
-  flex-wrap: wrap;
-  padding: 14px 20px;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  align-items: end;
+  gap: 12px;
+  padding: 10px 20px;
   background: var(--app-surface);
   box-shadow: var(--app-shadow-sm);
   position: sticky;
   top: 0;
   z-index: 100;
 }
+.app-nav__selector {
+  display: grid;
+  gap: 4px;
+}
 .app-nav__buttons {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 6px;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 2px 2px 8px;
+  scrollbar-width: thin;
 }
 .nav-btn {
-  padding: 8px 22px;
-  border: 2px solid var(--app-primary);
-  border-radius: var(--app-radius-md);
+  flex: 0 0 auto;
+  padding: 7px 13px;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
   background: transparent;
-  color: var(--app-primary);
+  color: var(--app-primary-strong);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-family: inherit;
-  font-weight: 600;
-  transition: background 0.2s, color 0.2s, transform 0.15s;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, border-color 0.15s;
 }
 .nav-btn:hover {
   background: rgba(52, 152, 219, 0.1);
+  border-color: var(--app-primary);
 }
 .nav-btn.active {
-  background: var(--app-primary);
+  background: var(--app-primary-strong);
+  border-color: var(--app-primary-strong);
   color: #fff;
 }
-.app-section-select-label,
-.app-section-select {
-  display: none;
+.app-section-select-label {
+  color: var(--app-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 .app-section-select {
   width: min(100%, 360px);
@@ -492,6 +506,7 @@ textarea:focus-visible {
 
 @media (max-width: 680px) {
   .app-nav {
+    grid-template-columns: 1fr;
     justify-items: stretch;
     padding: 10px 16px;
   }
@@ -500,16 +515,7 @@ textarea:focus-visible {
     display: none;
   }
 
-  .app-section-select-label {
-    display: block;
-    margin-bottom: 6px;
-    color: var(--app-text-subtle);
-    font-size: 0.78rem;
-    font-weight: 700;
-  }
-
   .app-section-select {
-    display: block;
     width: 100%;
   }
 
