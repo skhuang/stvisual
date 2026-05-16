@@ -22,4 +22,12 @@ describe('slide deck data', () => {
       expect(d.zh.includes('../assets/slides/'), d.id).toBe(false);
     }
   });
+
+  it('rewrites repo-relative source/doc links to GitHub URLs', () => {
+    for (const d of SLIDE_DECKS) {
+      // No markdown link target should still point at a relative ../ path.
+      expect(/\]\(\.\.\//.test(d.en), `${d.id} en`).toBe(false);
+      expect(/\]\(\.\.\//.test(d.zh), `${d.id} zh`).toBe(false);
+    }
+  });
 });

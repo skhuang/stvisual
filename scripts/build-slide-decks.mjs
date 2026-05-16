@@ -3,7 +3,11 @@
 // Run via `npm run build:slide-decks`.
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, posix } from 'node:path';
+
+// Repo-relative source/doc links in the decks point at files that the app
+// cannot serve; rewrite them to viewable GitHub URLs.
+const REPO_URL = 'https://github.com/skhuang/stvisual';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SLIDES_DIR = join(ROOT, 'docs/slides');
@@ -43,6 +47,17 @@ function processImages(md) {
   });
 }
 
+// Rewrite remaining repo-relative markdown links (../../src/x.js, ../foo.md)
+// to GitHub URLs. Resolved against docs/slides/, where the decks live.
+// Run after processImages so screenshot links are already ./slide-assets/.
+function rewriteLinks(md) {
+  return md.replace(/(\]\()(\.\.[^)\s]+)(\))/g, (_, pre, rel, post) => {
+    const repoPath = posix.normalize(posix.join('docs/slides', rel));
+    const kind = posix.extname(repoPath.split('#')[0]) ? 'blob' : 'tree';
+    return `${pre}${REPO_URL}/${kind}/main/${repoPath}${post}`;
+  });
+}
+
 mkdirSync(ASSETS_OUT, { recursive: true });
 mkdirSync(join(ROOT, 'src/data'), { recursive: true });
 
@@ -53,8 +68,8 @@ const records = DECKS.map((d) => {
     id: d.id, num: d.num, section: d.section,
     titleEn: frontMatterTitle(enRaw) || d.id,
     titleZh: frontMatterTitle(zhRaw) || d.id,
-    en: processImages(enRaw),
-    zh: processImages(zhRaw),
+    en: rewriteLinks(processImages(enRaw)),
+    zh: rewriteLinks(processImages(zhRaw)),
   };
 });
 
