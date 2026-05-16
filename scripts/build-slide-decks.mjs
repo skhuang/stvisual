@@ -43,6 +43,10 @@ const DECKS = [
   { base: '25-metamorphic',                  id: 'metamorphic',         num: 25, section: 'blackbox' },
   { base: '26-exploratory',                  id: 'exploratory',         num: 26, section: 'blackbox' },
   { base: '27-test-doubles',                 id: 'test-doubles',        num: 27, section: 'blackbox' },
+  { base: '28-group-theory',                 id: 'group-theory',        num: 28, section: 'groupth' },
+  { base: '29-property-based',               id: 'property-based',      num: 29, section: 'pbt' },
+  { base: '30-integration-testing',          id: 'integration-testing', num: 30, section: 'inttest' },
+  { base: '31-risk-based',                   id: 'risk-based',          num: 31, section: 'rbt' },
 ];
 
 function frontMatterTitle(md) {
