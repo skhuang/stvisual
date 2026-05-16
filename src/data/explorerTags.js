@@ -288,6 +288,10 @@ export const EXPLORER_TAGS = {
     level: ['meta'], technique: ['agile', 'process'], series: ['agile'],
     difficulty: 'intro', source: [TEXTBOOK],
   },
+  DefinitionGatesExplorer: {
+    level: ['meta'], technique: ['agile', 'process'], series: ['agile'],
+    difficulty: 'intro', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -352,6 +356,7 @@ export const SECTION_EXPLORERS = {
   agile: [
     'AgileQuadrantsExplorer',
     'SprintCadenceExplorer',
+    'DefinitionGatesExplorer',
   ],
 };
 

@@ -50,6 +50,7 @@ import { createUsageModelStatisticalExplorer } from './components/UsageModelStat
 import { createModelMutationExplorer } from './components/ModelMutationExplorer.js';
 import { createAgileQuadrantsExplorer } from './components/AgileQuadrantsExplorer.js';
 import { createSprintCadenceExplorer } from './components/SprintCadenceExplorer.js';
+import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -316,6 +317,7 @@ export function renderApp(container) {
       modelmut: createModelMutationExplorer(),
       agilequadrants: createAgileQuadrantsExplorer(),
       sprintcadence: createSprintCadenceExplorer(),
+      definitiongates: createDefinitionGatesExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -582,6 +584,7 @@ export function renderApp(container) {
     const agileTabs = [
       { id: 'quadrants', key: 'agileTab.quadrants', component: components.agilequadrants },
       { id: 'cadence', key: 'agileTab.cadence', component: components.sprintcadence },
+      { id: 'gates', key: 'agileTab.gates', component: components.definitiongates },
     ];
     const agileSlot = container.querySelector('[data-slot="agile"]');
     const agileTabBar = document.createElement('nav');
