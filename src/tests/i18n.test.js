@@ -39,3 +39,26 @@ describe('i18n document side-effects', () => {
     expect(document.title).toBe('軟體測試方法視覺化');
   });
 });
+
+describe('i18n — setLocale persist option', () => {
+  let initialLocale;
+  beforeEach(() => { initialLocale = getLocale(); });
+  afterEach(() => {
+    setLocale(initialLocale);
+    try { globalThis.localStorage?.setItem('stvisual.locale', initialLocale); } catch {}
+  });
+
+  it('setLocale(other, { persist: false }) changes locale but not localStorage', () => {
+    setLocale('en');
+    globalThis.localStorage.setItem('stvisual.locale', 'en');
+    setLocale('zh', { persist: false });
+    expect(getLocale()).toBe('zh');
+    expect(globalThis.localStorage.getItem('stvisual.locale')).toBe('en');
+  });
+
+  it('setLocale(other) (default) writes localStorage', () => {
+    setLocale('en');
+    setLocale('zh');
+    expect(globalThis.localStorage.getItem('stvisual.locale')).toBe('zh');
+  });
+});

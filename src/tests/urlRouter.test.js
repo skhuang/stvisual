@@ -219,3 +219,19 @@ describe('K4 — resolveInitialTab', () => {
     expect(sectionHasTabs('all')).toBe(false);
   });
 });
+
+describe('K — ?lang= URL lock', () => {
+  it('?lang=en is parsed into { lang }', () => {
+    expect(parseAppLocation('?lang=en')).toEqual({ lang: 'en' });
+  });
+  it('an unsupported ?lang= value is ignored', () => {
+    expect(parseAppLocation('?lang=fr')).toEqual({});
+  });
+  it('serializeLocation emits ?lang=', () => {
+    expect(serializeLocation({ lang: 'zh' })).toBe('?lang=zh');
+  });
+  it('lang round-trips alongside a section', () => {
+    const qs = serializeLocation({ lang: 'en', section: 'graph' });
+    expect(parseAppLocation(qs)).toEqual({ lang: 'en', section: 'graph' });
+  });
+});

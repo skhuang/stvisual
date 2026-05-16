@@ -26,10 +26,12 @@ export function getSupportedLocales() {
   return [...SUPPORTED];
 }
 
-export function setLocale(locale) {
+export function setLocale(locale, { persist = true } = {}) {
   if (!SUPPORTED.includes(locale) || locale === current) return;
   current = locale;
-  try { globalThis.localStorage?.setItem(STORAGE_KEY, locale); } catch {}
+  if (persist) {
+    try { globalThis.localStorage?.setItem(STORAGE_KEY, locale); } catch {}
+  }
   listeners.forEach((cb) => {
     try { cb(locale); } catch (err) { console.error(err); }
   });

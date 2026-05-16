@@ -162,6 +162,10 @@ export function renderApp(container) {
   // toggle the language.
   let initialDeeplinkHandled = false;
 
+  // ?lang= URL lock: a share link can force the display language. Once a
+  // lang is present in the URL (or the user picks one) the URL keeps it.
+  let langInUrl = false;
+
   // Mirror of the most recent `location.search` we've written via
   // `syncUrl()`. The popstate handler compares against this to decide
   // whether to reload — hash-only navigation (skip-link Enter etc.)
@@ -963,6 +967,7 @@ export function renderApp(container) {
           tab: getCurrentTabForSection(activeSection),
           pack: packBar?.getActiveId() ?? null,
           filter: activeFilter,
+          lang: langInUrl ? getLocale() : undefined,
         };
         const qs = serializeLocation(state);
         const url = `${globalThis.location.pathname}${qs}${globalThis.location.hash}`;
@@ -1162,6 +1167,7 @@ export function renderApp(container) {
     }
 
     container.querySelector('#app-lang-select').addEventListener('change', (e) => {
+      langInUrl = true;
       setLocale(e.target.value);
     });
 
@@ -1219,6 +1225,21 @@ export function renderApp(container) {
         });
       }
     }
+
+    // Keep ?lang= current after a language toggle (paint() re-runs on
+    // every locale change). No-op when the language was never URL-locked.
+    if (langInUrl) syncUrl('replace');
+  }
+
+  // Apply a URL-supplied language before the first paint, without
+  // overwriting the visitor's own saved preference.
+  const bootState = parseAppLocation(
+    globalThis.location?.search ?? '',
+    globalThis.location?.hash ?? '',
+  );
+  if (bootState.lang) {
+    langInUrl = true;
+    setLocale(bootState.lang, { persist: false });
   }
 
   paint();

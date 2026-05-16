@@ -133,6 +133,9 @@ export function parseAppLocation(search) {
   }
   if (anyFilter) out.filter = filter;
 
+  const lang = params.get('lang');
+  if (lang === 'en' || lang === 'zh') out.lang = lang;
+
   return out;
 }
 
@@ -146,6 +149,7 @@ export function parseAppLocation(search) {
 export function serializeLocation(state) {
   if (!state) return '';
   const params = new URLSearchParams();
+  if (state.lang === 'en' || state.lang === 'zh') params.set('lang', state.lang);
 
   if (state.section && state.section !== 'all') {
     params.set('section', state.section);
