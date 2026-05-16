@@ -1,0 +1,81 @@
+.modelmut-wrap { display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0; }
+.modelmut-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.modelmut-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+.modelmut-section-h { margin: 0.3rem 0 0; font-size: 0.95rem; color: #1f2a44; }
+
+/* ── Model ── */
+.modelmut-model { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.7rem; }
+.modelmut-table { width: 100%; border-collapse: collapse; font-size: 0.81rem; }
+.modelmut-table th, .modelmut-table td {
+  border: 1px solid #e2e8f0; padding: 0.25rem 0.55rem; text-align: left; color: #374151;
+}
+.modelmut-table th { background: #eef2f7; color: #334155; font-weight: 700; }
+.modelmut-sym { font-family: 'Fira Code', monospace; color: #1d4ed8; }
+.modelmut-suite { margin: 0.55rem 0 0; font-size: 0.8rem; color: #475569; }
+.modelmut-suite code {
+  font-family: 'Fira Code', monospace; background: #eef2ff; color: #3730a3;
+  border-radius: 4px; padding: 0.05rem 0.4rem; margin: 0 0.1rem;
+}
+
+/* ── Mutants ── */
+.modelmut-mutant-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.modelmut-mutant-card {
+  display: flex; align-items: center; gap: 0.45rem;
+  border: 2px solid transparent; border-radius: 8px;
+  padding: 0.45rem 0.8rem; cursor: pointer; background: #fff;
+}
+.modelmut-mutant-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.modelmut-mutant--killed   { border-color: #fecaca; }
+.modelmut-mutant--survived { border-color: #fde68a; }
+.modelmut-mutant--active { box-shadow: 0 0 0 3px #3b82f6; }
+.modelmut-mutant-id { font-weight: 800; color: #1f2a44; font-size: 0.86rem; }
+.modelmut-mutant-badge { font-size: 0.74rem; color: #475569; }
+
+.modelmut-detail { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.85rem; }
+.modelmut-detail-op { margin: 0 0 0.5rem; font-size: 0.85rem; color: #374151; }
+.modelmut-verdict { margin: 0; font-size: 0.84rem; font-weight: 700; border-radius: 5px; padding: 0.45rem 0.6rem; line-height: 1.5; }
+.modelmut-verdict--killed { background: #fee2e2; color: #991b1b; }
+.modelmut-verdict--survived { background: #fef9c3; color: #854d0e; }
+.modelmut-trace { font-weight: 600; font-size: 0.78rem; }
+.modelmut-trace code { font-family: 'Fira Code', monospace; }
+.modelmut-equiv, .modelmut-gap {
+  margin: 0.5rem 0 0; font-size: 0.8rem; border-radius: 5px; padding: 0.4rem 0.6rem;
+}
+.modelmut-equiv { background: #ede9fe; color: #5b21b6; }
+.modelmut-gap { background: #e0f2fe; color: #075985; }
+
+/* ── Score ── */
+.modelmut-score { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.85rem; }
+.modelmut-score h3 { margin: 0 0 0.4rem; font-size: 0.95rem; color: #1f2a44; }
+.modelmut-score-nums { display: flex; align-items: baseline; gap: 0.6rem; }
+.modelmut-score-big { font-size: 1.8rem; font-weight: 800; color: #1d4ed8; }
+.modelmut-score-detail { font-size: 0.8rem; color: #475569; }
+.modelmut-score-adj { margin: 0.35rem 0 0; font-size: 0.82rem; color: #1f2a44; font-weight: 600; }
+.modelmut-contrast { margin: 0.5rem 0 0; font-size: 0.78rem; color: #64748b; line-height: 1.55; }
+
+/* ── Bridges ── */
+.modelmut-bridges { display: flex; flex-wrap: wrap; gap: 6px; }
+.modelmut-bridge {
+  padding: 0.25rem 0.7rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.78rem; cursor: pointer;
+}
+.modelmut-bridge:hover { background: #1d4ed8; color: #fff; }
+
+/* ── Self-test ── */
+.modelmut-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.modelmut-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.modelmut-quiz-start, .modelmut-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.modelmut-quiz-start:hover, .modelmut-lab-start:hover { background: #1e40af; }
+.modelmut-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.modelmut-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.modelmut-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.modelmut-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.modelmut-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.modelmut-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.modelmut-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }

@@ -53,4 +53,5 @@
 @import url('./components/WMethodConformanceExplorer.css');
 @import url('./components/EFSMGuardedTransitionExplorer.css');
 @import url('./components/UsageModelStatisticalExplorer.css');
+@import url('./components/ModelMutationExplorer.css');
 @import url('./components/quiz.css');

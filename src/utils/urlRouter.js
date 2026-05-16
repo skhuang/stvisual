@@ -27,8 +27,8 @@ export const TAB_SECTIONS = {
   types:    { tabs: ['pyramid', 'adjuster'],                                                          default: 'pyramid' },
   // J-series acceptance tabs grow as J2-J8 land; J1 ships 'gherkin'.
   acceptance: { tabs: ['gherkin', 'usecase', 'e2ejourney', 'contract', 'perfload', 'chaos', 'atdd', 'flaky'], default: 'gherkin' },
-  // L-series model-based tabs grow as L6 lands; L1-L5 ship here.
-  mbt: { tabs: ['workflow', 'fsmgen', 'wmethod', 'efsm', 'usage'], default: 'workflow' },
+  // L-series model-based tabs — L1-L6 complete.
+  mbt: { tabs: ['workflow', 'fsmgen', 'wmethod', 'efsm', 'usage', 'modelmut'], default: 'workflow' },
 };
 
 // ── ComponentName → { section, tab? } ────────────────────────────────
@@ -83,6 +83,7 @@ export const EXPLORER_TO_LOCATION = {
   WMethodConformanceExplorer:  { section: 'mbt', tab: 'wmethod' },
   EFSMGuardedTransitionExplorer: { section: 'mbt', tab: 'efsm' },
   UsageModelStatisticalExplorer: { section: 'mbt', tab: 'usage' },
+  ModelMutationExplorer:       { section: 'mbt', tab: 'modelmut' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

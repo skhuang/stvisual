@@ -272,6 +272,10 @@ export const EXPLORER_TAGS = {
     level: ['system'], technique: ['model-based', 'risk'], series: ['model-based'],
     difficulty: 'advanced', source: [TEXTBOOK],
   },
+  ModelMutationExplorer: {
+    level: ['system'], technique: ['model-based', 'mutation'], series: ['model-based'],
+    difficulty: 'advanced', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -331,6 +335,7 @@ export const SECTION_EXPLORERS = {
     'WMethodConformanceExplorer',
     'EFSMGuardedTransitionExplorer',
     'UsageModelStatisticalExplorer',
+    'ModelMutationExplorer',
   ],
 };
 

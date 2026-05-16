@@ -47,6 +47,7 @@ import { createFSMTestGenerationExplorer } from './components/FSMTestGenerationE
 import { createWMethodConformanceExplorer } from './components/WMethodConformanceExplorer.js';
 import { createEFSMGuardedTransitionExplorer } from './components/EFSMGuardedTransitionExplorer.js';
 import { createUsageModelStatisticalExplorer } from './components/UsageModelStatisticalExplorer.js';
+import { createModelMutationExplorer } from './components/ModelMutationExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -303,6 +304,7 @@ export function renderApp(container) {
       wmethod: createWMethodConformanceExplorer(),
       efsm: createEFSMGuardedTransitionExplorer(),
       usage: createUsageModelStatisticalExplorer(),
+      modelmut: createModelMutationExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -511,6 +513,7 @@ export function renderApp(container) {
       { id: 'wmethod', key: 'mbtTab.wmethod', component: components.wmethod },
       { id: 'efsm', key: 'mbtTab.efsm', component: components.efsm },
       { id: 'usage', key: 'mbtTab.usage', component: components.usage },
+      { id: 'modelmut', key: 'mbtTab.modelmut', component: components.modelmut },
     ];
     const mbtSlot = container.querySelector('[data-slot="mbt"]');
     const mbtTabBar = document.createElement('nav');
