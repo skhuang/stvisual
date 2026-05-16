@@ -1,0 +1,75 @@
+.ctp-wrap { display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0; }
+.ctp-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.ctp-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+/* ── Suite ── */
+.ctp-suite { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.85rem; }
+.ctp-suite h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: #1f2a44; }
+.ctp-suite-table { width: 100%; border-collapse: collapse; font-size: 0.81rem; }
+.ctp-suite-table th, .ctp-suite-table td {
+  border: 1px solid #e2e8f0; padding: 0.3rem 0.55rem; text-align: left; color: #374151;
+}
+.ctp-suite-table th { background: #eef2f7; color: #334155; font-weight: 700; }
+.ctp-type { font-weight: 700; color: #1f2a44; }
+.ctp-suite-table select { padding: 0.15rem 0.35rem; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 0.79rem; }
+.ctp-impact-toggle { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: #374151; margin-top: 0.55rem; cursor: pointer; }
+
+/* ── Pipeline ── */
+.ctp-pipeline {
+  display: flex; align-items: stretch; flex-wrap: wrap; gap: 0;
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.85rem;
+}
+.ctp-arrow { font-size: 1.4rem; color: #94a3b8; padding: 0 0.4rem; align-self: center; }
+.ctp-tier {
+  flex: 1; min-width: 8rem; border: 2px solid transparent; border-radius: 8px;
+  padding: 0.7rem 0.8rem; background: #fff;
+}
+.ctp-tier--fast { border-color: #bbf7d0; }
+.ctp-tier--ok   { border-color: #fde68a; }
+.ctp-tier--slow { border-color: #fca5a5; }
+.ctp-tier-name { font-size: 0.8rem; font-weight: 800; color: #1f2a44; }
+.ctp-tier-time { font-size: 1.4rem; font-weight: 800; color: #1f2a44; margin: 0.15rem 0; }
+.ctp-tier-tests { font-size: 0.74rem; color: #64748b; }
+.ctp-tier-verdict { font-size: 0.76rem; font-weight: 700; margin-top: 0.3rem; }
+.ctp-tier--fast .ctp-tier-verdict { color: #166534; }
+.ctp-tier--ok .ctp-tier-verdict   { color: #92400e; }
+.ctp-tier--slow .ctp-tier-verdict { color: #b91c1c; }
+
+/* ── Flaky ── */
+.ctp-flaky { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 0.85rem; }
+.ctp-flaky h3 { margin: 0 0 0.4rem; font-size: 0.95rem; color: #92400e; }
+.ctp-flaky-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: #475569; }
+.ctp-flaky-btn {
+  padding: 0.2rem 0.65rem; border: 1px solid #cbd5e1; border-radius: 999px;
+  background: #fff; color: #475569; font-size: 0.79rem; cursor: pointer;
+}
+.ctp-flaky-btn--active { background: #d97706; border-color: #d97706; color: #fff; font-weight: 700; }
+.ctp-flaky-result { margin: 0.5rem 0 0; font-size: 0.82rem; color: #78350f; }
+.ctp-flaky-result--bad { color: #b91c1c; font-weight: 700; }
+
+/* ── Bridges ── */
+.ctp-bridges { display: flex; flex-wrap: wrap; gap: 6px; }
+.ctp-bridge {
+  padding: 0.25rem 0.7rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.78rem; cursor: pointer;
+}
+.ctp-bridge:hover { background: #1d4ed8; color: #fff; }
+
+/* ── Self-test ── */
+.ctp-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.ctp-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.ctp-quiz-start, .ctp-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.ctp-quiz-start:hover, .ctp-lab-start:hover { background: #1e40af; }
+.ctp-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.ctp-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.ctp-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.ctp-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.ctp-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.ctp-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.ctp-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }

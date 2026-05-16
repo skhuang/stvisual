@@ -58,4 +58,5 @@
 @import url('./components/SprintCadenceExplorer.css');
 @import url('./components/DefinitionGatesExplorer.css');
 @import url('./components/ExampleMappingExplorer.css');
+@import url('./components/ContinuousTestingPipelineExplorer.css');
 @import url('./components/quiz.css');

@@ -52,6 +52,7 @@ import { createAgileQuadrantsExplorer } from './components/AgileQuadrantsExplore
 import { createSprintCadenceExplorer } from './components/SprintCadenceExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
+import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -320,6 +321,7 @@ export function renderApp(container) {
       sprintcadence: createSprintCadenceExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
+      ctpipeline: createContinuousTestingPipelineExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -588,6 +590,7 @@ export function renderApp(container) {
       { id: 'cadence', key: 'agileTab.cadence', component: components.sprintcadence },
       { id: 'gates', key: 'agileTab.gates', component: components.definitiongates },
       { id: 'examplemap', key: 'agileTab.examplemap', component: components.examplemapping },
+      { id: 'pipeline', key: 'agileTab.pipeline', component: components.ctpipeline },
     ];
     const agileSlot = container.querySelector('[data-slot="agile"]');
     const agileTabBar = document.createElement('nav');
