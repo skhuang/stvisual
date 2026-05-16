@@ -175,7 +175,10 @@ export function renderApp(container) {
   function paint() {
     // Read URL state once at the top of paint() — tabbed-section setups
     // below reference it, so this MUST run before any of them.
-    const urlState = parseAppLocation(globalThis.location?.search ?? '');
+    const urlState = parseAppLocation(
+      globalThis.location?.search ?? '',
+      globalThis.location?.hash ?? '',
+    );
     container.innerHTML = `
       <div class="app">
         <a class="skip-link" href="#app-main">${t('app.skipMain')}</a>
@@ -278,6 +281,11 @@ export function renderApp(container) {
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
     };
+
+    // A stable `id` per section so a `#section-<id>` hash can deep-link to it.
+    for (const [sectionId, el] of Object.entries(sections)) {
+      if (el) el.id = `section-${sectionId}`;
+    }
 
     // Attach a "course slides" button to every section that owns decks.
     const sectionsWithDecks = [...new Set(SLIDE_DECKS.map((d) => d.section))];
@@ -970,7 +978,12 @@ export function renderApp(container) {
           lang: langInUrl ? getLocale() : undefined,
         };
         const qs = serializeLocation(state);
-        const url = `${globalThis.location.pathname}${qs}${globalThis.location.hash}`;
+        // A `#section-*` hash is an entry-only anchor; once the app has
+        // navigated, drop it so the URL carries no contradictory anchor.
+        // Other hashes (skip-links) are preserved verbatim.
+        const rawHash = globalThis.location.hash || '';
+        const hash = /^#section-[a-z0-9-]+$/.test(rawHash) ? '' : rawHash;
+        const url = `${globalThis.location.pathname}${qs}${hash}`;
         if (mode === 'push') {
           globalThis.history?.pushState?.(null, '', url);
         } else {
@@ -1255,6 +1268,17 @@ export function renderApp(container) {
     if (current !== lastSearchSnapshot) {
       lastSearchSnapshot = current;
       globalThis.location?.reload?.();
+    }
+  });
+
+  // A deliberate `#section-<id>` hash navigation overrides any stale
+  // ?section= query. Reload from a search-free URL so boot re-applies
+  // state from the hash alone. Non-section hashes (skip-links) are left
+  // to the browser's native behaviour.
+  globalThis.addEventListener?.('hashchange', () => {
+    const hash = globalThis.location?.hash ?? '';
+    if (/^#section-[a-z0-9-]+$/.test(hash)) {
+      globalThis.location?.replace?.(`${globalThis.location.pathname}${hash}`);
     }
   });
 

@@ -98,7 +98,7 @@ const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];
 
 // ── parse ────────────────────────────────────────────────────────────
 
-export function parseAppLocation(search) {
+export function parseAppLocation(search, hash) {
   const params = new URLSearchParams(search ?? '');
   const out = {};
 
@@ -135,6 +135,13 @@ export function parseAppLocation(search) {
 
   const lang = params.get('lang');
   if (lang === 'en' || lang === 'zh') out.lang = lang;
+
+  // #section-<id> — an alternative entry path. Query params win: the hash
+  // is only consulted when neither ?explorer= nor ?section= set a section.
+  if (!out.section && typeof hash === 'string') {
+    const m = /^#section-([a-z0-9-]+)$/.exec(hash);
+    if (m) out.section = m[1];
+  }
 
   return out;
 }

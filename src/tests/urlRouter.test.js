@@ -235,3 +235,23 @@ describe('K — ?lang= URL lock', () => {
     expect(parseAppLocation(qs)).toEqual({ lang: 'en', section: 'graph' });
   });
 });
+
+describe('K — #section anchor', () => {
+  it('a #section-<id> hash resolves a section when no query section', () => {
+    expect(parseAppLocation('', '#section-graph')).toEqual({ section: 'graph' });
+  });
+  it('a query ?section= wins over a #section hash', () => {
+    expect(parseAppLocation('?section=logic', '#section-graph'))
+      .toEqual({ section: 'logic' });
+  });
+  it('a query ?explorer= wins over a #section hash', () => {
+    const state = parseAppLocation('?explorer=PairwiseExplorer', '#section-graph');
+    expect(state.section).toBe('blackbox');
+  });
+  it('a non-section hash (skip-link) is ignored', () => {
+    expect(parseAppLocation('', '#app-main')).toEqual({});
+  });
+  it('parseAppLocation still works when called with no hash argument', () => {
+    expect(parseAppLocation('?section=graph')).toEqual({ section: 'graph' });
+  });
+});
