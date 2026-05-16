@@ -47,6 +47,12 @@ const DECKS = [
   { base: '29-property-based',               id: 'property-based',      num: 29, section: 'pbt' },
   { base: '30-integration-testing',          id: 'integration-testing', num: 30, section: 'inttest' },
   { base: '31-risk-based',                   id: 'risk-based',          num: 31, section: 'rbt' },
+  { base: '32-equivalent-mutants',           id: 'equivalent-mutants',  num: 32, section: 'advanced' },
+  { base: '33-mutation-score',               id: 'mutation-score',      num: 33, section: 'advanced' },
+  { base: '34-llm-test-pipeline',            id: 'llm-test-pipeline',   num: 34, section: 'advanced' },
+  { base: '35-test-quality-gates',           id: 'test-quality-gates',  num: 35, section: 'advanced' },
+  { base: '36-fault-directed-testing',       id: 'fault-directed-testing', num: 36, section: 'advanced' },
+  { base: '37-sailor-vulnerability',         id: 'sailor-vulnerability', num: 37, section: 'advanced' },
 ];
 
 function frontMatterTitle(md) {
