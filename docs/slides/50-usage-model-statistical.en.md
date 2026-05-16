@@ -98,6 +98,23 @@ In `/section-mbt`, open the **Usage-Model Statistical Explorer**:
 
 ---
 
+## Tool — statistical usage testing
+
+![w:980](../assets/slides/usage-overview-en.png)
+
+Tests drawn by usage probability; reliability estimated with an interval.
+
+---
+
+## Tool — the usage model
+
+![w:980](../assets/slides/usage-model-en.png)
+
+Transition probabilities sum to 1 per state — rare paths are flagged.
+
+---
+
+
 ## Summary
 
 - A **usage model** is a Markov chain whose transition probabilities are the **operational profile**.

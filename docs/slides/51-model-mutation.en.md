@@ -103,6 +103,23 @@ In `/section-mbt`, open the **Model Mutation Explorer**:
 
 ---
 
+## Tool — mutating the model
+
+![w:980](../assets/slides/modelmut-overview-en.png)
+
+Operators mutate transitions, targets, outputs and guards of the FSM.
+
+---
+
+## Tool — the base FSM
+
+![w:980](../assets/slides/modelmut-model-en.png)
+
+Each model-mutant is one small edit — killed or survived by the suite.
+
+---
+
+
 ## Summary
 
 - **Model mutation** applies mutation testing to the **model**, auditing an MBT-generated suite.

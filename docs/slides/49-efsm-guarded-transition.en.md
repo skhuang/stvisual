@@ -104,6 +104,23 @@ In `/section-mbt`, open the **EFSM Guarded-Transition Explorer**:
 
 ---
 
+## Tool — guarded transitions
+
+![w:980](../assets/slides/efsm-overview-en.png)
+
+Each path carries a guard conjunction — feasible only if the solver agrees.
+
+---
+
+## Tool — the EFSM
+
+![w:980](../assets/slides/efsm-model-en.png)
+
+Transitions with guards — many syntactic paths turn out infeasible.
+
+---
+
+
 ## Summary
 
 - An **EFSM** adds data variables and **guard conditions** to a plain FSM's transitions.

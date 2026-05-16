@@ -100,6 +100,23 @@ In `/section-mbt`, open the **W-Method Conformance Explorer**:
 
 ---
 
+## Tool — the W-method suite
+
+![w:980](../assets/slides/wmethod-overview-en.png)
+
+Transition cover P, characterizing set W, and the conformance suite P·W.
+
+---
+
+## Tool — the spec FSM
+
+![w:980](../assets/slides/wmethod-fsm-en.png)
+
+A W-sequence separates two look-alike states the suite must distinguish.
+
+---
+
+
 ## Summary
 
 - The **W-method** is a conformance test: does the implementation match the spec FSM?

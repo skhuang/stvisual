@@ -921,6 +921,39 @@ async function main() {
     await wp.close();
   }
 
+  // ---- Decks #46–#51: Wave F — model-based testing explorers ----
+  // The mbt section is tabbed; the overview shot uses the panel div.
+
+  const waveFShots = [
+    { tab: 'workflow', card: 'mbtw-pipeline',  names: ['mbtw-overview', 'mbtw-pipeline'] },
+    { tab: 'fsmgen',   card: 'fsmgen-model',   names: ['fsmgen-overview', 'fsmgen-model'] },
+    { tab: 'wmethod',  card: 'wmethod-fsm',    names: ['wmethod-overview', 'wmethod-fsm'] },
+    { tab: 'efsm',     card: 'efsm-model',     names: ['efsm-overview', 'efsm-model'] },
+    { tab: 'usage',    card: 'usage-model',    names: ['usage-overview', 'usage-model'] },
+    { tab: 'modelmut', card: 'modelmut-model', names: ['modelmut-overview', 'modelmut-model'] },
+  ];
+  for (const s of waveFShots) {
+    const wp = await ctx.newPage();
+    await wp.goto(URL, { waitUntil: 'networkidle' });
+    await wp.getByTestId('nav-btn-mbt').click();
+    await wp.locator(`[data-mbt-tab="${s.tab}"]`).click();
+    const panel = wp.locator(`[data-mbt-panel="${s.tab}"]`);
+    await panel.waitFor();
+    await sleep(500);
+    await panel.screenshot({ path: shot(s.names[0]) });
+    console.log(`[capture] saved ${s.names[0]}.png`);
+    const card = wp.getByTestId(s.card);
+    if (await card.count()) {
+      await card.scrollIntoViewIfNeeded();
+      await card.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png`);
+    } else {
+      await panel.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png (panel fallback)`);
+    }
+    await wp.close();
+  }
+
   await browser.close();
   if (serverChild) {
     serverChild.kill();

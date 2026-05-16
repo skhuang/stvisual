@@ -99,6 +99,23 @@ lang: zh-TW
 
 ---
 
+## 工具 —— 從 FSM 生成測試
+
+![w:980](../assets/slides/fsmgen-overview.png)
+
+挑一個準則；事件序列套件即自動推導出來。
+
+---
+
+## 工具 —— 來源 FSM
+
+![w:980](../assets/slides/fsmgen-model.png)
+
+狀態與轉移 —— 每條生成序列所走的模型。
+
+---
+
+
 ## 小結
 
 - FSM 測試生成把一台狀態機變成**可執行的事件序列**。

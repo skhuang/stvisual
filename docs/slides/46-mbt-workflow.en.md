@@ -121,6 +121,23 @@ In `/section-mbt`, open the **MBT Workflow Explorer**:
 
 ---
 
+## Tool — the MBT workflow
+
+![w:980](../assets/slides/mbtw-overview-en.png)
+
+Six stages from informal spec to verdict, each with its own role.
+
+---
+
+## Tool — the workflow pipeline
+
+![w:980](../assets/slides/mbtw-pipeline-en.png)
+
+Model, generate, concretize, execute, verdict — click a stage for detail.
+
+---
+
+
 ## Summary
 
 - **Model-based testing** generates tests from an explicit model — test design becomes model derivation.

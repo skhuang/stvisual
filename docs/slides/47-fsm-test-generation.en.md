@@ -99,6 +99,23 @@ In `/section-mbt`, open the **FSM Test Generation Explorer**:
 
 ---
 
+## Tool — generating tests from an FSM
+
+![w:980](../assets/slides/fsmgen-overview-en.png)
+
+Pick a criterion; the suite of event sequences is derived automatically.
+
+---
+
+## Tool — the source FSM
+
+![w:980](../assets/slides/fsmgen-model-en.png)
+
+States and transitions — the model every generated sequence walks.
+
+---
+
+
 ## Summary
 
 - FSM test generation turns a state machine into **executable event sequences**.
