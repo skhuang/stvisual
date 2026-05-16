@@ -53,11 +53,13 @@
 | ↳ FlakyDiagnosisExplorer (J8) | 6 類 flakiness × 8 sample logs，內建錯誤分佈長條圖 | ✓ |
 | 全站 i18n | ZH-TW / EN 切換 | — |
 
-### 投影片（13 講，雙語，含 speaker notes）
+### 投影片（57 講，雙語，含 speaker notes）
 
-01 課程概觀、02 測試流程、03 Graph Coverage、04 Data Flow、05 Logic Coverage、
-06 Program Mutation、07 Grammar & String、08 Spec Mutation、09 Fuzz Testing、
-10 Symbolic Execution、11 Concolic Execution、12 Test Generation、13 Logic Binding
+完整課程簡報，每個 explorer 一講。#1–#13 為原始課程；#14–#57 由
+slide-completion 計畫（Waves A–G）補齊，涵蓋全部 54 個 explorer。Marp Markdown，
+可一鍵轉 PPTX，亦可在 app 內每個 section 的「📊 課程簡報」按鈕開啟全螢幕檢視。
+目錄見 [docs/slides/index.zh-TW.md](docs/slides/index.zh-TW.md) /
+[index.en.md](docs/slides/index.en.md)。截圖補強分批進行中。
 
 ### 測試
 
@@ -1016,8 +1018,14 @@ L2 = `{ level:['system'], technique:['model-based','state-transition'], series:[
 
 ---
 
-## M. Agile Testing Explorer（路線圖）
+## M. Agile Testing Explorer（全部完成 2026-05-16）
 
+> **狀態：M1–M6 已全數實作並合併。** `section.agile` 區塊上線，六個分頁分別為
+> M1 Agile Testing Quadrants（PR #240）、M2 Sprint Cadence（PR #242）、
+> M3 Definition of Ready/Done（PR #244）、M5 Three Amigos / Example Mapping（PR #246）、
+> M4 Continuous Testing Pipeline（PR #248）、M6 Regression & Test Debt（PR #250）。
+> 對應簡報為 #52–#57。以下為原始規劃內容，保留供對照。
+>
 > **教學缺口**：現有 Explorer 多以「單一測試技術」為單位（覆蓋準則、突變、符號執行……），但敏捷測試（Agile Testing）的核心不是某一種技術，而是**把測試織進整個交付節奏裡**——全隊參與、shift-left、快速回饋。學生常見的誤解是「敏捷 = 不寫測試文件 = 隨便測」。本節用兩層視角矯正：**概念地圖**（Agile Testing Quadrants）說明「敏捷下哪些測試該做、誰做、何時做」；**流程視角**（Sprint Cadence）說明「測試如何貫穿一個 sprint」。
 >
 > 與既有 Explorer 的關係：M 節是上層整合視角。M1 象限圖的多數技術 chip 直接 **bridge** 到既有 Explorer（BDD→J1、Exploratory、Performance Load→J5、覆蓋準則……），M 節本身只新增敏捷特有、現有 Explorer 未涵蓋的主題（節奏、品質閘、故事精煉、持續測試管線、回歸債）。
