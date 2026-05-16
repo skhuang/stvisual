@@ -820,6 +820,8 @@ export const messages = {
     'agileTab.regression': 'Regression & Test Debt',
     // Slide viewer
     'slides.open': '📊 Course slides',
+    'slides.dialog': 'Course slide viewer',
+    'slides.deckSelector': 'Slide decks',
     'slides.prev': 'Previous',
     'slides.next': 'Next',
     'slides.close': 'Close',
@@ -3321,6 +3323,8 @@ export const messages = {
     'agileTab.regression': '回歸與測試債',
     // 簡報檢視器
     'slides.open': '📊 課程簡報',
+    'slides.dialog': '課程簡報檢視器',
+    'slides.deckSelector': '簡報集',
     'slides.prev': '上一張',
     'slides.next': '下一張',
     'slides.close': '關閉',

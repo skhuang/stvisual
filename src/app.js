@@ -281,13 +281,17 @@ export function renderApp(container) {
       const node = sections[sectionId];
       const heading = node?.querySelector('h2');
       if (!heading) continue;
+      const headingRow = document.createElement('div');
+      headingRow.className = 'section-heading-row';
+      heading.parentNode.insertBefore(headingRow, heading);
+      headingRow.appendChild(heading);
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'section-slides-btn';
       btn.dataset.testid = `slides-btn-${sectionId}`;
       btn.textContent = t('slides.open');
       btn.addEventListener('click', () => openSlideViewer(sectionId));
-      heading.insertAdjacentElement('afterend', btn);
+      headingRow.appendChild(btn);
     }
 
     const components = {

@@ -12,6 +12,8 @@ describe('SlideViewer', () => {
     const overlay = document.querySelector('[data-testid="slideviewer"]');
     expect(overlay).toBeInTheDocument();
     expect(overlay.hasAttribute('hidden')).toBe(false);
+    expect(document.querySelector('.slideviewer-panel')).toHaveAttribute('role', 'dialog');
+    expect(document.activeElement).toBe(document.querySelector('[data-testid="slideviewer-close"]'));
     expect(document.querySelector('[data-testid="slideviewer-slide"]').innerHTML.trim()).not.toBe('');
   });
 
@@ -42,5 +44,28 @@ describe('SlideViewer', () => {
     openSlideViewer('graph');
     document.querySelector('[data-testid="slideviewer-close"]').click();
     expect(document.querySelector('[data-testid="slideviewer"]')).toBeNull();
+  });
+
+  it('supports Home and End keyboard navigation', () => {
+    openSlideViewer('graph');
+    const counter = () => document.querySelector('[data-testid="slideviewer-counter"]').textContent;
+    window.document.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    expect(counter()).toContain('/ ');
+    expect(document.querySelector('[data-testid="slideviewer-next"]')).toBeDisabled();
+    window.document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    expect(counter()).toMatch(/1\s*\//);
+    expect(document.querySelector('[data-testid="slideviewer-prev"]')).toBeDisabled();
+  });
+
+  it('keeps tab focus inside the viewer', () => {
+    openSlideViewer('graph');
+    const firstDeck = document.querySelector('[data-testid="slideviewer-deck-0"]');
+    const notesToggle = document.querySelector('[data-testid="slideviewer-notes-toggle"]');
+    notesToggle.focus();
+    window.document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(document.activeElement).toBe(firstDeck);
+    firstDeck.focus();
+    window.document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true }));
+    expect(document.activeElement).toBe(notesToggle);
   });
 });

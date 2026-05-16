@@ -64,8 +64,24 @@
 @import url('./components/quiz.css');
 
 .section-slides-btn {
-  margin: 0.2rem 0 0.6rem; padding: 0.25rem 0.7rem;
-  border: 1px solid #1d4ed8; border-radius: 999px;
-  background: #fff; color: #1d4ed8; font-size: 0.78rem; cursor: pointer;
+  flex: 0 0 auto;
+  margin-top: 2px;
+  padding: 0.42rem 0.78rem;
+  border: 1px solid var(--app-primary-strong);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface);
+  color: var(--app-primary-strong);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
-.section-slides-btn:hover { background: #1d4ed8; color: #fff; }
+.section-slides-btn:hover { background: var(--app-primary-strong); color: #fff; }
+
+@media (max-width: 680px) {
+  .section-slides-btn {
+    align-self: flex-end;
+    margin: 0 0 10px;
+  }
+}

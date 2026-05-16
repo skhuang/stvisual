@@ -229,6 +229,22 @@ textarea:focus-visible {
   gap: 10px;
 }
 
+.section-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  border-bottom: 3px solid var(--app-primary);
+}
+
+.section-heading-row h2 {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
 /* Overview */
 .overview-section__header {
   max-width: 720px;
@@ -504,6 +520,12 @@ textarea:focus-visible {
   .app-main {
     padding: 32px 24px;
     gap: 48px;
+  }
+
+  .section-heading-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .app-main > section {
