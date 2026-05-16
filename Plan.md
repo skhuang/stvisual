@@ -1,12 +1,12 @@
 # stvisual — 改善建議與路線圖
 
-> 最後更新：2026-05-16（新增 L 節 Model-Based Testing 路線圖；I6 SAILOR + Advanced Testing 兩層論文選單已上線 PR #222/#223）
+> 最後更新：2026-05-16（L 節 Model-Based Testing L1–L6 全數上線，PR #226 / #228 / #230 / #232 / #234 / #236）
 
 ---
 
 ## 現況（已完成功能）
 
-### 互動式 Explorer（30 個 + 5 個 Advanced Testing + 8 個 Acceptance / E2E = 43）
+### 互動式 Explorer（30 個 + 6 個 Advanced Testing + 8 個 Acceptance / E2E + 6 個 Model-Based Testing = 50）
 
 | Explorer | 主要功能 | Quiz |
 |----------|----------|------|
@@ -848,8 +848,10 @@ export const EXPLORER_TAGS = {
 
 ---
 
-## L. Model-Based Testing Explorer（路線圖）
+## L. Model-Based Testing Explorer — 原始路線圖（已歸檔）
 
+> **狀態：L1–L6 已全數實作並合併**（2026-05-16）。`section.mbt` 區塊上線，六個分頁分別為 L1 MBT Workflow（PR #226）、L2 FSM Test Generation（PR #228）、L3 W-Method Conformance（PR #230）、L4 EFSM Guarded-Transition（PR #232）、L5 Usage-Model Statistical（PR #234）、L6 Model Mutation（PR #236）。以下為原始規劃內容，保留供對照。
+>
 > **教學缺口**：43 個 Explorer 裡，StateTransitionExplorer 只做「給定狀態機 → 數覆蓋」，沒有觸及 Model-Based Testing（MBT）的核心——**先建抽象模型、再從模型自動生成測試案例、執行後比對 conformance**。MBT 是把「測試設計」當成「模型推導」的一整套方法論，值得獨立一節。
 >
 > 與既有 Explorer 的關係：MBT 是 StateTransition（黑盒）、SymbolicExecution（白盒）、SpecMutation（規格）三者的上層整合視角。
