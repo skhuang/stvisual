@@ -62,3 +62,10 @@
 @import url('./components/RegressionDebtExplorer.css');
 @import url('./components/SlideViewer.css');
 @import url('./components/quiz.css');
+
+.section-slides-btn {
+  margin: 0.2rem 0 0.6rem; padding: 0.25rem 0.7rem;
+  border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.78rem; cursor: pointer;
+}
+.section-slides-btn:hover { background: #1d4ed8; color: #fff; }

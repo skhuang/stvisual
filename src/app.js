@@ -54,6 +54,8 @@ import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplo
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
 import { createRegressionDebtExplorer } from './components/RegressionDebtExplorer.js';
+import { openSlideViewer } from './components/SlideViewer.js';
+import { SLIDE_DECKS } from './data/slideDecks.generated.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -272,6 +274,21 @@ export function renderApp(container) {
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
     };
+
+    // Attach a "course slides" button to every section that owns decks.
+    const sectionsWithDecks = [...new Set(SLIDE_DECKS.map((d) => d.section))];
+    for (const sectionId of sectionsWithDecks) {
+      const node = sections[sectionId];
+      const heading = node?.querySelector('h2');
+      if (!heading) continue;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'section-slides-btn';
+      btn.dataset.testid = `slides-btn-${sectionId}`;
+      btn.textContent = t('slides.open');
+      btn.addEventListener('click', () => openSlideViewer(sectionId));
+      heading.insertAdjacentElement('afterend', btn);
+    }
 
     const components = {
       methods: createTestingMethodTree(),
