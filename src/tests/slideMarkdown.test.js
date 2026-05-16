@@ -24,6 +24,28 @@ describe('renderMarkdown', () => {
     expect(renderMarkdown('![alt](./slide-assets/x.png)'))
       .toBe('<p><img alt="alt" src="./slide-assets/x.png"></p>');
   });
+  it('renders a $$ block as a math block', () => {
+    const html = renderMarkdown('$$\n\\frac{a}{b}\n$$');
+    expect(html).toBe(
+      '<div class="slide-math-block"><span class="tex-frac">'
+      + '<span class="tex-frac-num">a</span>'
+      + '<span class="tex-frac-den">b</span></span></div>',
+    );
+  });
+  it('renders inline $…$ math with a superscript', () => {
+    expect(renderMarkdown('all $2^n$ rows'))
+      .toBe('<p>all <span class="slide-math">2<sup>n</sup></span> rows</p>');
+  });
+  it('converts LaTeX symbol commands inside math', () => {
+    expect(renderMarkdown('$a \\le b$'))
+      .toBe('<p><span class="slide-math">a ≤ b</span></p>');
+  });
+  it('treats an escaped \\$ as a literal dollar sign', () => {
+    expect(renderMarkdown('costs \\$50 today')).toBe('<p>costs $50 today</p>');
+  });
+  it('leaves prose prices ($50 to $99) unmathed', () => {
+    expect(renderMarkdown('$50 to $99 range')).toBe('<p>$50 to $99 range</p>');
+  });
 });
 
 describe('parseDeck', () => {

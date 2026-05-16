@@ -129,6 +129,31 @@
 .slideviewer-slide table.slide-table tbody tr:nth-child(even) td {
   background: #fbfdff;
 }
+/* LaTeX math rendered by slideMarkdown.js */
+.slideviewer-slide .slide-math-block {
+  margin: 0.7rem 0;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #1e293b;
+}
+.slideviewer-slide .slide-math { white-space: nowrap; }
+.slideviewer-slide .tex-text { font-style: normal; }
+.slideviewer-slide .tex-frac {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: middle;
+  text-align: center;
+  margin: 0 0.2rem;
+}
+.slideviewer-slide .tex-frac-num { padding: 0 0.45rem; }
+.slideviewer-slide .tex-frac-den {
+  padding: 0.05rem 0.45rem 0;
+  border-top: 1.5px solid currentColor;
+}
+.slideviewer-slide .slide-math sup,
+.slideviewer-slide .slide-math sub,
+.slideviewer-slide .slide-math-block sup,
+.slideviewer-slide .slide-math-block sub { font-size: 0.7em; }
 .slideviewer-slide blockquote {
   margin: 0.5rem 0; padding: 0.4rem 0.8rem; border-left: 3px solid #1d4ed8;
   background: #eff6ff; color: #1e3a8a;

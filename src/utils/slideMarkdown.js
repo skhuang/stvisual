@@ -5,15 +5,101 @@ function escapeHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-// Inline formatting. Escapes first, then applies image/link/code/bold/italic.
+// LaTeX-math symbol commands the decks use, mapped to their Unicode glyph.
+const TEX_SYMBOLS = {
+  cup: '∪', cap: '∩', cdot: '·', times: '×', div: '÷',
+  le: '≤', ge: '≥', ne: '≠', neq: '≠', to: '→', mapsto: '↦', leftarrow: '←',
+  sum: '∑', prod: '∏', in: '∈', notin: '∉', approx: '≈', equiv: '≡',
+  pm: '±', infty: '∞', ldots: '…', cdots: '⋯', land: '∧', lor: '∨',
+  lnot: '¬', forall: '∀', exists: '∃', emptyset: '∅', subseteq: '⊆',
+  alpha: 'α', beta: 'β', lambda: 'λ', mu: 'μ', sigma: 'σ', theta: 'θ',
+};
+
+// Minimal, dependency-free LaTeX-math → HTML converter for the small subset
+// the docs/slides decks use: \frac, \text, super/subscripts and the symbols
+// above. Not a general TeX engine.
+function texToHtml(tex) {
+  let i = 0;
+  function group(untilBrace) {
+    let html = '';
+    while (i < tex.length) {
+      const c = tex[i];
+      if (c === '}') { i++; if (untilBrace) return html; continue; }
+      if (c === '{') { i++; html += group(true); continue; }
+      if (c === '\\') {
+        i++;
+        const m = /^[a-zA-Z]+/.exec(tex.slice(i));
+        if (!m) { html += escapeHtml(tex[i] || ''); i++; continue; }
+        const cmd = m[0];
+        i += cmd.length;
+        if (cmd === 'frac' || cmd === 'tfrac' || cmd === 'dfrac') {
+          const num = arg();
+          const den = arg();
+          html += `<span class="tex-frac"><span class="tex-frac-num">${num}</span>`
+            + `<span class="tex-frac-den">${den}</span></span>`;
+        } else if (cmd === 'text' || cmd === 'mathrm' || cmd === 'operatorname' || cmd === 'mathit') {
+          html += `<span class="tex-text">${arg()}</span>`;
+        } else if (cmd === 'left' || cmd === 'right') {
+          /* delimiter sizing — ignore; the bracket char itself follows */
+        } else if (TEX_SYMBOLS[cmd]) {
+          html += TEX_SYMBOLS[cmd];
+        } else {
+          html += escapeHtml(cmd);
+        }
+        continue;
+      }
+      if (c === '^' || c === '_') {
+        i++;
+        const tag = c === '^' ? 'sup' : 'sub';
+        html += `<${tag}>${arg()}</${tag}>`;
+        continue;
+      }
+      html += escapeHtml(c);
+      i++;
+    }
+    return html;
+  }
+  // Read one argument: a {…} group, a \command, or a single character.
+  function arg() {
+    while (tex[i] === ' ') i++;
+    if (tex[i] === '{') { i++; return group(true); }
+    if (tex[i] === '\\') {
+      i++;
+      const m = /^[a-zA-Z]+/.exec(tex.slice(i));
+      if (m) { i += m[0].length; return TEX_SYMBOLS[m[0]] || escapeHtml(m[0]); }
+      const ch = tex[i] || ''; i++; return escapeHtml(ch);
+    }
+    const ch = tex[i] || ''; i++; return escapeHtml(ch);
+  }
+  return group(false).trim();
+}
+
+// MATH_OPEN / DOLLAR are Private-Use-Area sentinels: they cannot occur
+// in deck markdown and survive both escapeHtml and the formatting rules.
+const MATH_OPEN = '\uE000';
+const DOLLAR = '\uE001';
+
+// Inline formatting. Pulls $…$ math out first (so it is not HTML-escaped or
+// touched by the other rules), escapes, applies image/link/code/bold/italic,
+// then restores the math.
 function renderInline(text) {
-  let h = escapeHtml(text);
+  const math = [];
+  // The open $ must not be followed by whitespace and the close $ not be
+  // preceded by it, so prose prices like "$50 each" stay literal.
+  let t = text.replace(/\$(?!\s)([^$\n]*?)(?<!\s)\$/g, (_, expr) => {
+    math.push(`<span class="slide-math">${texToHtml(expr)}</span>`);
+    return `${MATH_OPEN}${math.length - 1}${MATH_OPEN}`;
+  });
+  t = t.replace(/\\\$/g, DOLLAR); // \$ — a literal dollar sign
+  let h = escapeHtml(t);
   h = h.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => `<img alt="${alt}" src="${src}">`);
   h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,
-    (_, t, u) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`);
+    (_, t2, u) => `<a href="${u}" target="_blank" rel="noopener">${t2}</a>`);
   h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
   h = h.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   h = h.replace(/(^|[^*])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>');
+  h = h.replace(new RegExp(`${MATH_OPEN}(\\d+)${MATH_OPEN}`, 'g'), (_, n) => math[Number(n)]);
+  h = h.replace(new RegExp(DOLLAR, 'g'), '$');
   return h;
 }
 
@@ -22,7 +108,8 @@ function splitRow(line) {
 }
 
 function isBlockStart(line) {
-  return /^(#{1,6}\s|>|\s*([-*+]|\d+\.)\s|```)/.test(line) || line.includes('|');
+  return /^(#{1,6}\s|>|\s*([-*+]|\d+\.)\s|```)/.test(line)
+    || line.includes('|') || line.trim() === '$$';
 }
 
 export function renderMarkdown(md) {
@@ -39,6 +126,16 @@ export function renderMarkdown(md) {
       while (i < lines.length && !lines[i].trim().startsWith('```')) { code.push(lines[i]); i++; }
       i++;
       out.push(`<pre class="slide-code"><code>${escapeHtml(code.join('\n'))}</code></pre>`);
+      continue;
+    }
+
+    // Display math: a `$$` line, its TeX body, then a closing `$$` line.
+    if (line.trim() === '$$') {
+      const tex = [];
+      i++;
+      while (i < lines.length && lines[i].trim() !== '$$') { tex.push(lines[i]); i++; }
+      i++;
+      out.push(`<div class="slide-math-block">${texToHtml(tex.join(' '))}</div>`);
       continue;
     }
 
