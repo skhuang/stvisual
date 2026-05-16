@@ -9,7 +9,7 @@ The stvisual course is **57 lectures**. Each deck contains:
 
 All decks are Marp Markdown — convert to PPTX with a single command. Decks are also viewable inside the app: every section header carries a "📊 Slides" button. Screenshots are produced by [scripts/capture-slide-screenshots.mjs](../../scripts/capture-slide-screenshots.mjs).
 
-> #1–#13 ship with the original course; #14–#57 were authored by the slide-completion programme (Waves A–G), covering all 54 explorers. Screenshot reinforcement is being rolled out in batches.
+> #1–#13 ship with the original course; #14–#57 were authored by the slide-completion programme (Waves A–G), covering all 54 explorers. Every deck carries tool screenshots in its own interface language — English decks show the English UI, Chinese decks the Chinese UI.
 
 ---
 

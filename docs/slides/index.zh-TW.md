@@ -9,7 +9,7 @@ stvisual 課程共 **57 講**，每講皆有：
 
 所有簡報為 Marp Markdown，可一鍵轉 PPTX。簡報亦可直接在 app 內檢視：每個 section 標題下都有「📊 課程簡報」按鈕。截圖由 [scripts/capture-slide-screenshots.mjs](../../scripts/capture-slide-screenshots.mjs) 統一產生。
 
-> #1–#13 由原始課程建立；#14–#57 為 slide-completion 計畫（Waves A–G）補齊，涵蓋全部 54 個 explorer。截圖補強仍在分批進行中。
+> #1–#13 由原始課程建立；#14–#57 為 slide-completion 計畫（Waves A–G）補齊，涵蓋全部 54 個 explorer。每一講都附有對應介面語言的工具截圖 —— 英文講次顯示英文介面，中文講次顯示中文介面。
 
 ---
 
