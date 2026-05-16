@@ -34,6 +34,15 @@ const DECKS = [
   { base: '16-testing-types',                id: 'testing-types',       num: 16, section: 'types' },
   { base: '17-test-pyramid',                 id: 'test-pyramid',        num: 17, section: 'types' },
   { base: '18-code-coverage',                id: 'code-coverage',       num: 18, section: 'codecov' },
+  { base: '19-boundary-value',               id: 'boundary-value',      num: 19, section: 'blackbox' },
+  { base: '20-equivalence-partitioning',     id: 'equivalence-partitioning', num: 20, section: 'blackbox' },
+  { base: '21-decision-table',               id: 'decision-table',      num: 21, section: 'blackbox' },
+  { base: '22-state-transition',             id: 'state-transition',    num: 22, section: 'blackbox' },
+  { base: '23-pairwise',                     id: 'pairwise',            num: 23, section: 'blackbox' },
+  { base: '24-cause-effect',                 id: 'cause-effect',        num: 24, section: 'blackbox' },
+  { base: '25-metamorphic',                  id: 'metamorphic',         num: 25, section: 'blackbox' },
+  { base: '26-exploratory',                  id: 'exploratory',         num: 26, section: 'blackbox' },
+  { base: '27-test-doubles',                 id: 'test-doubles',        num: 27, section: 'blackbox' },
 ];
 
 function frontMatterTitle(md) {
