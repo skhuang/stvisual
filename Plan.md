@@ -1,6 +1,6 @@
 # stvisual — 改善建議與路線圖
 
-> 最後更新：2026-05-16（L 節 Model-Based Testing L1–L6 全數上線，PR #226 / #228 / #230 / #232 / #234 / #236）
+> 最後更新：2026-05-16（L 節 Model-Based Testing L1–L6 全數上線，PR #226 / #228 / #230 / #232 / #234 / #236；新增 M 節 Agile Testing 路線圖）
 
 ---
 
@@ -1013,6 +1013,181 @@ export const EXPLORER_TAGS = {
 
 新增 Explorer 套上 K1 tag：`technique` 詞彙表新增 `model-based`；`series` 新增 `model-based`。例如
 L2 = `{ level:['system'], technique:['model-based','state-transition'], series:['model-based'], difficulty:'intermediate' }`。
+
+---
+
+## M. Agile Testing Explorer（路線圖）
+
+> **教學缺口**：現有 Explorer 多以「單一測試技術」為單位（覆蓋準則、突變、符號執行……），但敏捷測試（Agile Testing）的核心不是某一種技術，而是**把測試織進整個交付節奏裡**——全隊參與、shift-left、快速回饋。學生常見的誤解是「敏捷 = 不寫測試文件 = 隨便測」。本節用兩層視角矯正：**概念地圖**（Agile Testing Quadrants）說明「敏捷下哪些測試該做、誰做、何時做」；**流程視角**（Sprint Cadence）說明「測試如何貫穿一個 sprint」。
+>
+> 與既有 Explorer 的關係：M 節是上層整合視角。M1 象限圖的多數技術 chip 直接 **bridge** 到既有 Explorer（BDD→J1、Exploratory、Performance Load→J5、覆蓋準則……），M 節本身只新增敏捷特有、現有 Explorer 未涵蓋的主題（節奏、品質閘、故事精煉、持續測試管線、回歸債）。
+>
+> 預設新增 `section.agile` 區塊，分頁形式擺放 M1–M6（與 Acceptance & E2E、Model-Based Testing 同樣樣式）。
+
+---
+
+### M1（高優先）— Agile Testing Quadrants Explorer（敏捷測試象限）
+
+**教學動機**：Brian Marick 提出、Lisa Crispin 與 Janet Gregory 推廣的「敏捷測試象限」是敏捷測試最權威的地圖。兩條軸：**面向業務 ↔ 面向技術**、**支援團隊 ↔ 批判產品**。它回答「敏捷下該做哪些測試、誰負責、何時做、自動化程度多高」。
+
+**功能規劃**
+
+- 互動 2×2 象限圖，點擊任一象限 → 顯示該象限的技術、自動化程度、在 sprint 中的時機：
+  - **Q1（面向技術／支援團隊）**：單元測試、元件測試、TDD —— 開發者寫、CI 跑、高度自動化
+  - **Q2（面向業務／支援團隊）**：功能測試、故事測試、範例、BDD、原型 —— 自動化＋人工
+  - **Q3（面向業務／批判產品）**：探索式測試、可用性測試、UAT、情境演練 —— 以人工為主
+  - **Q4（面向技術／批判產品）**：效能、負載、安全、各種 *-ility 測試 —— 仰賴工具
+- 每個技術 chip 都是 bridge：點擊跳到既有 Explorer（TDD→Code Coverage、BDD→J1、探索式→ExploratoryTesting、效能→J5 Performance Load……）
+- 「把測試放進象限」練習：給一段測試描述，學生選出正確象限
+- 標出自動化軸（手動／自動／工具輔助）
+
+**Bridge**：→ BDD/Gherkin (J1)、ExploratoryTestingExplorer、Performance Load (J5)、PyramidAdjusterExplorer
+
+**Quiz**：「給定一條測試，它落在哪一個象限？」
+
+**Lab Reflect**：「你的團隊最少投資哪一個象限？少了它會漏掉什麼？」
+
+**實作估計**：1 個 PR，約 450 行
+
+---
+
+### M2（高優先）— Sprint Testing Cadence Explorer（衝刺測試節奏）
+
+**教學動機**：敏捷測試不是一個「階段」，而是貫穿整個 sprint 的活動。本 Explorer 用一條 sprint 時間軸，呈現測試如何從 backlog refinement 一路織進到 retro——矯正「先開發完再測」的瀑布式直覺。
+
+**功能規劃**
+
+- sprint 時間軸：refinement → planning → 每日開發（TDD/CI）→ 故事測試 → review → retro，每個節點列出當下的測試活動與負責角色（whole-team）
+- **瀑布 vs 敏捷切換**：對照「獨立測試階段」與「持續測試」，顯示回饋延遲與缺陷外溢（defect escape）
+- shift-left 視覺化：把測試活動移到更早的節點，看缺陷成本下降
+- 標出「誰在何時測」——開發者、測試者、PO、整隊
+
+**Bridge**：→ VModelExplorer (E2)、DefectCostExplorer
+
+**Quiz**：「下列測試活動，在一個 sprint 中最早應該發生在哪個節點？」
+
+**Lab Reflect**：「你的團隊習慣把哪一項測試活動延到『之後再說』？延後的代價是什麼？」
+
+**實作估計**：1 個 PR，約 450 行
+
+---
+
+### M3（中優先）— Definition of Ready / Done Explorer（就緒／完成準則）
+
+**教學動機**：DoR 與 DoD 是敏捷的品質閘門。故事「未就緒」就進 sprint 會浪費整個衝刺；故事「未完成」卻被當成完成，缺陷會外洩到下一階段。
+
+**功能規劃**
+
+- 兩份檢查清單：Definition of Ready、Definition of Done
+- 可切換／拖入準則（可測的驗收條件、測試資料齊備、自動化測試通過、無已知 Sev-1……）
+- 讓一個故事跑過閘門：弱閘門 → 缺陷外洩到下一階段；強閘門 → 當場攔下，並以視覺化呈現外洩路徑
+- 對照 DoR 準則 vs DoD 準則的差異
+
+**Bridge**：→ DefectCostExplorer、BDD/Gherkin (J1，驗收條件)
+
+**Quiz**：「下列準則應該放在 DoR 還是 DoD？」
+
+**Lab Reflect**：「你的團隊把哪一條 DoD 準則當成『可選』？」
+
+**實作估計**：1 個 PR，約 400 行
+
+---
+
+### M4（中優先）— Continuous Testing Pipeline Explorer（持續測試管線）
+
+**教學動機**：敏捷仰賴快速的自動化回饋。測試分層執行：commit（單元、快）→ PR（整合）→ nightly（e2e、慢）。本 Explorer 說明回饋延遲的成本與測試分層的取捨。
+
+**功能規劃**
+
+- 測試管線：每個階段顯示測試數量／執行時間／層級（tier）
+- 調整套件組成 → 即時看各層級的回饋總時間
+- 慢回饋成本視覺化：commit 階段塞太多 e2e → 開發者等待、context switch
+- flaky 測試對管線的衝擊；測試挑選／影響分析（只跑受影響的測試）
+
+**Bridge**：→ PyramidAdjusterExplorer、Flaky Diagnosis (J8)
+
+**Quiz**：「一條跑 8 分鐘的 e2e 測試，應該安排在哪一個 tier？」
+
+**Lab Reflect**：「你的管線中回饋最慢的環節是哪一個？能往前移嗎？」
+
+**實作估計**：1 個 PR，約 450 行
+
+---
+
+### M5（中優先）— Three Amigos / Example Mapping Explorer（三方會談／範例映射）
+
+**教學動機**：品質從「故事精煉」就開始，遠在寫程式之前。Three Amigos（BA／開發／測試）配合 Matt Wynne 的 Example Mapping，把一個使用者故事拆成規則、範例、待解問題的彩色卡片。
+
+**功能規劃**
+
+- 給一個使用者故事 → 建出 example map：黃卡（故事）、藍卡（規則）、綠卡（範例）、紅卡（待解問題）
+- 紅卡太多 → 故事尚未就緒（接 M3 DoR）
+- 綠卡範例可一鍵轉成 BDD scenario（bridge 到 J1）
+- 三種角色視角：BA／開發／測試各看到什麼問題
+
+**Bridge**：→ BDD/Gherkin (J1)、Definition of Ready/Done (M3)
+
+**Quiz**：「下列項目在 example map 中是哪一種顏色的卡？」
+
+**Lab Reflect**：「你的團隊曾在範例不足的情況下就動手寫一個故事嗎？後果是什麼？」
+
+**實作估計**：1 個 PR，約 400 行
+
+---
+
+### M6（低優先）— Regression & Test-Debt Explorer（回歸測試與測試債）
+
+**教學動機**：敏捷的回歸測試套件每個 sprint 都在長大。若不照料：測試債累積、flaky 測試堆積、套件變慢、維護成本超過它抓到的價值。
+
+**功能規劃**
+
+- 模擬一個回歸套件跨 N 個 sprint 的演變：每 sprint 新增測試，部分變 flaky 或過時
+- 追蹤套件大小、執行時間、flaky 比例、維護成本 vs 缺陷攔截價值
+- 策略選項：修剪（prune）、隔離 flaky（quarantine）、風險導向挑選
+- 顯示「測試債」曲線——維護成本與價值的交叉點
+
+**Bridge**：→ RiskBasedTestingExplorer (G6)、Flaky Diagnosis (J8)
+
+**Quiz**：「面對一個間歇失敗的 flaky 測試，最佳的即時處置是什麼？」
+
+**Lab Reflect**：「你自己的測試套件裡，最該被修剪掉的是哪一類測試？」
+
+**實作估計**：1 個 PR，約 450 行
+
+---
+
+### 優先順序與分組
+
+| 排序 | 項目 | 理由 | 預估 |
+|------|------|------|------|
+| ① | M1 Agile Testing Quadrants | 概念地圖；其他 M 項目的定位框架 | 1 PR |
+| ② | M2 Sprint Testing Cadence | 流程視角；與 M1 互為兩層 | 1 PR |
+| ③ | M3 Definition of Ready/Done | 品質閘門；M5 的下游 | 1 PR |
+| ④ | M5 Three Amigos / Example Mapping | 故事精煉；M3 的上游 | 1 PR |
+| ⑤ | M4 Continuous Testing Pipeline | 自動化回饋；接 pyramid | 1 PR |
+| ⑥ | M6 Regression & Test-Debt | 收尾；長期維護視角 | 1 PR |
+
+### 建議的合併策略
+
+- **第一波（兩層骨架）**：M1 + M2 — 新建 `section.agile` 分頁、立起象限地圖與 sprint 節奏
+- **第二波（精煉與閘門）**：M5 + M3 — 故事精煉 → 就緒／完成準則，互為上下游
+- **第三波（管線與長期）**：M4 + M6 — 持續測試與回歸債
+
+### 與既有 Explorer 的關聯
+
+| M Explorer | 連動的既有 Explorer |
+|------------|---------------------|
+| M1 Agile Testing Quadrants | BDD/Gherkin (J1)、ExploratoryTestingExplorer、Performance Load (J5)、PyramidAdjusterExplorer |
+| M2 Sprint Testing Cadence | VModelExplorer (E2)、DefectCostExplorer |
+| M3 Definition of Ready/Done | DefectCostExplorer、BDD/Gherkin (J1) |
+| M4 Continuous Testing Pipeline | PyramidAdjusterExplorer、Flaky Diagnosis (J8) |
+| M5 Three Amigos / Example Mapping | BDD/Gherkin (J1)、Definition of Ready/Done (M3) |
+| M6 Regression & Test-Debt | RiskBasedTestingExplorer (G6)、Flaky Diagnosis (J8) |
+
+### K 系列 tag 約定
+
+新增 Explorer 套上 K1 tag：`technique` 詞彙表新增 `agile`；`series` 新增 `agile`。例如
+M1 = `{ level:['meta'], technique:['agile','process'], series:['agile'], difficulty:'intro' }`。
 
 ---
 
