@@ -53,6 +53,14 @@ const DECKS = [
   { base: '35-test-quality-gates',           id: 'test-quality-gates',  num: 35, section: 'advanced' },
   { base: '36-fault-directed-testing',       id: 'fault-directed-testing', num: 36, section: 'advanced' },
   { base: '37-sailor-vulnerability',         id: 'sailor-vulnerability', num: 37, section: 'advanced' },
+  { base: '38-bdd-gherkin',                  id: 'bdd-gherkin',         num: 38, section: 'acceptance' },
+  { base: '39-use-case-derivation',          id: 'use-case-derivation', num: 39, section: 'acceptance' },
+  { base: '40-e2e-user-journey',             id: 'e2e-user-journey',    num: 40, section: 'acceptance' },
+  { base: '41-contract-testing',             id: 'contract-testing',    num: 41, section: 'acceptance' },
+  { base: '42-performance-load',             id: 'performance-load',    num: 42, section: 'acceptance' },
+  { base: '43-chaos-engineering',            id: 'chaos-engineering',   num: 43, section: 'acceptance' },
+  { base: '44-atdd-cycle',                   id: 'atdd-cycle',          num: 44, section: 'acceptance' },
+  { base: '45-flaky-diagnosis',              id: 'flaky-diagnosis',     num: 45, section: 'acceptance' },
 ];
 
 function frontMatterTitle(md) {
