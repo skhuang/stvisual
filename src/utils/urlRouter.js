@@ -29,8 +29,8 @@ export const TAB_SECTIONS = {
   acceptance: { tabs: ['gherkin', 'usecase', 'e2ejourney', 'contract', 'perfload', 'chaos', 'atdd', 'flaky'], default: 'gherkin' },
   // L-series model-based tabs — L1-L6 complete.
   mbt: { tabs: ['workflow', 'fsmgen', 'wmethod', 'efsm', 'usage', 'modelmut'], default: 'workflow' },
-  // M-series agile tabs grow as M2-M6 land; M1 ships 'quadrants'.
-  agile: { tabs: ['quadrants'], default: 'quadrants' },
+  // M-series agile tabs grow as M3-M6 land; M1-M2 ship here.
+  agile: { tabs: ['quadrants', 'cadence'], default: 'quadrants' },
 };
 
 // ── ComponentName → { section, tab? } ────────────────────────────────
@@ -87,6 +87,7 @@ export const EXPLORER_TO_LOCATION = {
   UsageModelStatisticalExplorer: { section: 'mbt', tab: 'usage' },
   ModelMutationExplorer:       { section: 'mbt', tab: 'modelmut' },
   AgileQuadrantsExplorer:      { section: 'agile', tab: 'quadrants' },
+  SprintCadenceExplorer:       { section: 'agile', tab: 'cadence' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

@@ -49,6 +49,7 @@ import { createEFSMGuardedTransitionExplorer } from './components/EFSMGuardedTra
 import { createUsageModelStatisticalExplorer } from './components/UsageModelStatisticalExplorer.js';
 import { createModelMutationExplorer } from './components/ModelMutationExplorer.js';
 import { createAgileQuadrantsExplorer } from './components/AgileQuadrantsExplorer.js';
+import { createSprintCadenceExplorer } from './components/SprintCadenceExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -314,6 +315,7 @@ export function renderApp(container) {
       usage: createUsageModelStatisticalExplorer(),
       modelmut: createModelMutationExplorer(),
       agilequadrants: createAgileQuadrantsExplorer(),
+      sprintcadence: createSprintCadenceExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -579,6 +581,7 @@ export function renderApp(container) {
     // --- Agile Testing: tabbed (M1 Quadrants; M2-M6 land in subsequent PRs) ---
     const agileTabs = [
       { id: 'quadrants', key: 'agileTab.quadrants', component: components.agilequadrants },
+      { id: 'cadence', key: 'agileTab.cadence', component: components.sprintcadence },
     ];
     const agileSlot = container.querySelector('[data-slot="agile"]');
     const agileTabBar = document.createElement('nav');
