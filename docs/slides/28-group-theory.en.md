@@ -107,6 +107,23 @@ In `/section-groupth`, open the **Group Theory Explorer**:
 
 ---
 
+## Tool — automorphisms and orbits
+
+![w:980](../assets/slides/gth-overview-en.png)
+
+A predicate's symmetry group Aut(f); input rows collapse into orbits.
+
+---
+
+## Tool — the covering array
+
+![w:980](../assets/slides/gth-cov-table-en.png)
+
+One representative per orbit — a covering array that drops redundant rows.
+
+---
+
+
 ## Summary
 
 - A **symmetry** of a predicate is a variable permutation that leaves it invariant.

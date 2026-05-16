@@ -813,6 +813,43 @@ async function main() {
     await bp.close();
   }
 
+  // ---- Decks #28–#31: Wave C — coverage & execution explorers ----
+  // Each lives in its own (untabbed) section.
+
+  const waveCShots = [
+    { sect: 'groupth', root: 'gth-explorer',     card: 'gth-cov-table',      names: ['gth-overview', 'gth-cov-table'], tabClick: '[data-tab="covarray"]' },
+    { sect: 'pbt',     root: 'pbt-explorer',     card: 'pbt-distribution',   names: ['pbt-overview', 'pbt-distribution'], pre: 'pbt-run-btn' },
+    { sect: 'inttest', root: 'inttest-explorer', card: 'inttest-svg-wrap',   names: ['inttest-overview', 'inttest-diagram'] },
+    { sect: 'rbt',     root: 'rbt-explorer',     card: 'rbt-heatmap',        names: ['rbt-overview', 'rbt-heatmap'] },
+  ];
+  for (const s of waveCShots) {
+    const wp = await ctx.newPage();
+    await wp.goto(URL, { waitUntil: 'networkidle' });
+    await wp.getByTestId(`nav-btn-${s.sect}`).click();
+    await wp.getByTestId(s.root).waitFor();
+    await sleep(400);
+    await wp.getByTestId(s.root).screenshot({ path: shot(s.names[0]) });
+    console.log(`[capture] saved ${s.names[0]}.png`);
+    if (s.tabClick) {
+      await wp.locator(s.tabClick).click().catch(() => {});
+      await sleep(500);
+    }
+    if (s.pre) {
+      await wp.getByTestId(s.pre).click().catch(() => {});
+      await sleep(700);
+    }
+    const card = wp.getByTestId(s.card);
+    if (await card.count()) {
+      await card.scrollIntoViewIfNeeded();
+      await card.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png`);
+    } else {
+      await wp.getByTestId(s.root).screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png (root fallback)`);
+    }
+    await wp.close();
+  }
+
   await browser.close();
   if (serverChild) {
     serverChild.kill();

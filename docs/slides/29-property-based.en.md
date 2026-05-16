@@ -122,6 +122,23 @@ In `/section-pbt`, open the **Property-Based Testing Explorer**:
 
 ---
 
+## Tool — properties over generated inputs
+
+![w:980](../assets/slides/pbt-overview-en.png)
+
+A preset, its properties, and the generator that feeds them hundreds of inputs.
+
+---
+
+## Tool — a run and its shrunk counter-example
+
+![w:980](../assets/slides/pbt-distribution-en.png)
+
+On failure, the counter-example shrinks to a minimal reproducing case.
+
+---
+
+
 ## Summary
 
 - Property-based testing replaces *one example* with *one property + many generated inputs*.

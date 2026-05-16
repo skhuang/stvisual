@@ -106,6 +106,23 @@ lang: zh-TW
 
 ---
 
+## 工具 —— 四種整合策略
+
+![w:980](../assets/slides/inttest-overview.png)
+
+big-bang、由上而下、由下而上、三明治 —— 在模組圖上逐步走訪。
+
+---
+
+## 工具 —— 模組相依圖
+
+![w:980](../assets/slides/inttest-diagram.png)
+
+每一步標出受測模組，連同它的樁與驅動。
+
+---
+
+
 ## 小結
 
 - 整合測試操練**模組之間的接縫**，不是模組本身。

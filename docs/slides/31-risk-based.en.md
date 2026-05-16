@@ -113,6 +113,23 @@ In `/section-rbt`, open the **Risk-Based Testing Explorer**:
 
 ---
 
+## Tool — likelihood × impact
+
+![w:980](../assets/slides/rbt-overview-en.png)
+
+Each feature scored on likelihood and impact; risk is their product.
+
+---
+
+## Tool — the risk matrix
+
+![w:980](../assets/slides/rbt-heatmap-en.png)
+
+Features plotted on the heat-map — the top-right corner tests first.
+
+---
+
+
 ## Summary
 
 - The test budget is finite — **risk-based testing decides where it goes.**

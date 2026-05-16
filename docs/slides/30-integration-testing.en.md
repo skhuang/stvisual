@@ -106,6 +106,23 @@ In `/section-inttest`, open the **Integration Testing Explorer**:
 
 ---
 
+## Tool — four integration strategies
+
+![w:980](../assets/slides/inttest-overview-en.png)
+
+Big-bang, top-down, bottom-up, sandwich — stepped over a module graph.
+
+---
+
+## Tool — the module dependency graph
+
+![w:980](../assets/slides/inttest-diagram-en.png)
+
+Each step highlights modules under test, with their stubs and drivers.
+
+---
+
+
 ## Summary
 
 - Integration testing exercises the **seams between modules**, not the modules themselves.
