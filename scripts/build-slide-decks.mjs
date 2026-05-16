@@ -29,6 +29,11 @@ const DECKS = [
   { base: '11-concolic-execution',           id: 'concolic-execution',  num: 11, section: 'concolic' },
   { base: '12-test-generation',              id: 'test-generation',     num: 12, section: 'testgen' },
   { base: '13-logic-binding',                id: 'logic-binding',       num: 13, section: 'logic' },
+  { base: '14-defect-cost',                  id: 'defect-cost',         num: 14, section: 'flow' },
+  { base: '15-v-model',                      id: 'v-model',             num: 15, section: 'flow' },
+  { base: '16-testing-types',                id: 'testing-types',       num: 16, section: 'types' },
+  { base: '17-test-pyramid',                 id: 'test-pyramid',        num: 17, section: 'types' },
+  { base: '18-code-coverage',                id: 'code-coverage',       num: 18, section: 'codecov' },
 ];
 
 function frontMatterTitle(md) {
