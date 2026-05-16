@@ -4,6 +4,7 @@ import {
   getCoursePack,
   getCoursePackExplorers,
   getCoursePackFilter,
+  applyPackOrder,
 } from '../data/courseSeries.js';
 import { buildCoursePackMarkdown } from '../utils/coursePackExporter.js';
 import { messages } from '../i18n/dict.js';
@@ -84,6 +85,26 @@ describe('K3 — Markdown exporter', () => {
 
   it('returns empty string for an unknown pack', () => {
     expect(buildCoursePackMarkdown('no-such-pack')).toBe('');
+  });
+});
+
+describe('K — course pack custom ordering', () => {
+  it('applyPackOrder pins listed ids first and keeps the rest in place', () => {
+    expect(applyPackOrder(['a', 'b', 'c', 'd'], ['c', 'a']))
+      .toEqual(['c', 'a', 'b', 'd']);
+  });
+  it('applyPackOrder skips order ids that are not in the matched set', () => {
+    expect(applyPackOrder(['a', 'b'], ['zzz', 'b'])).toEqual(['b', 'a']);
+  });
+  it('applyPackOrder returns matched unchanged when order is absent or empty', () => {
+    expect(applyPackOrder(['a', 'b'], undefined)).toEqual(['a', 'b']);
+    expect(applyPackOrder(['a', 'b'], [])).toEqual(['a', 'b']);
+  });
+  it('the foundations pack honours its order field', () => {
+    expect(getCoursePackExplorers('foundations')).toEqual([
+      'TestingMethodTree', 'TestingFlow', 'DefectCostExplorer',
+      'VModelExplorer', 'TestingTypesTable', 'PyramidAdjusterExplorer',
+    ]);
   });
 });
 

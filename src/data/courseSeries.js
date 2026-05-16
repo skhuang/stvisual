@@ -27,6 +27,9 @@ export const COURSE_PACKS = [
     titleKey: 'pack.foundations.title',
     descKey: 'pack.foundations.desc',
     filter: { series: ['foundations'] },
+    // Pedagogical sequence: method map → flow → cost → V-model → types → pyramid.
+    order: ['TestingMethodTree', 'TestingFlow', 'DefectCostExplorer',
+            'VModelExplorer', 'TestingTypesTable', 'PyramidAdjusterExplorer'],
   },
   {
     id: 'coverage',
@@ -70,12 +73,24 @@ export function getCoursePack(id) {
   return COURSE_PACKS.find((p) => p.id === id) ?? null;
 }
 
+// Apply a pack's optional `order`: ids in `order` that are also in
+// `matched` come first (in `order` sequence); the rest keep their
+// original sequence. Order ids outside `matched` are skipped.
+export function applyPackOrder(matched, order) {
+  if (!Array.isArray(order) || order.length === 0) return matched;
+  const matchedSet = new Set(matched);
+  const pinned = order.filter((id) => matchedSet.has(id));
+  const pinnedSet = new Set(pinned);
+  return [...pinned, ...matched.filter((id) => !pinnedSet.has(id))];
+}
+
 export function getCoursePackExplorers(id) {
   const pack = getCoursePack(id);
   if (!pack) return [];
-  return Object.entries(EXPLORER_TAGS)
+  const matched = Object.entries(EXPLORER_TAGS)
     .filter(([, tags]) => explorerMatchesFilter(tags, pack.filter))
     .map(([explorerId]) => explorerId);
+  return applyPackOrder(matched, pack.order);
 }
 
 // Convenience: which top-level Overview sections a pack covers.
