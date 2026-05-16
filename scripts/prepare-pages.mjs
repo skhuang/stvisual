@@ -22,6 +22,9 @@ await cp(path.join(projectRoot, 'src', 'data'), path.join(outputDir, 'src', 'dat
 await cp(path.join(projectRoot, 'src', 'config'), path.join(outputDir, 'src', 'config'), { recursive: true });
 await cp(path.join(projectRoot, 'src', 'utils'), path.join(outputDir, 'src', 'utils'), { recursive: true });
 await cp(path.join(projectRoot, 'src', 'i18n'), path.join(outputDir, 'src', 'i18n'), { recursive: true });
+// public/ assets (e.g. slide-assets/) are served from the site root —
+// mirrors Vite's publicDir behaviour for the GitHub Pages build.
+await cp(path.join(projectRoot, 'public'), outputDir, { recursive: true });
 await writeFile(path.join(outputDir, '.nojekyll'), '');
 
 console.log(`Prepared GitHub Pages site at ${outputDir}`);
