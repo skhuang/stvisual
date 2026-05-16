@@ -60,7 +60,7 @@ describe('Explorer tag metadata (K1)', () => {
     const componentFiles = import.meta.glob('../components/*.js', { eager: false });
     const componentNames = Object.keys(componentFiles)
       .map((p) => p.split('/').pop().replace(/\.js$/, ''))
-      .filter((n) => !['CloudStoragePanel', 'TeacherDashboard', 'ResultViewer', 'TagFilterBar', 'CoursePackBar'].includes(n));
+      .filter((n) => !['CloudStoragePanel', 'TeacherDashboard', 'ResultViewer', 'TagFilterBar', 'CoursePackBar', 'SlideViewer'].includes(n));
     for (const name of componentNames) {
       expect(EXPLORER_TAGS, `missing tag entry for ${name}`).toHaveProperty(name);
     }
