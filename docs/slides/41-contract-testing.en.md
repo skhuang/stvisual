@@ -94,6 +94,23 @@ In `/section-acceptance`, open the **Contract Testing Explorer**:
 
 ---
 
+## Tool — consumer expectation vs provider response
+
+![w:980](../assets/slides/ct-overview-en.png)
+
+A contract scenario: what the consumer expects against what the provider sends.
+
+---
+
+## Tool — the structural diff
+
+![w:980](../assets/slides/ct-matrix-en.png)
+
+Field-by-field — a removed or retyped field is flagged as breaking.
+
+---
+
+
 ## Summary
 
 - **Contract testing** verifies the interface agreement between a **consumer** and a **provider** — without deploying both.

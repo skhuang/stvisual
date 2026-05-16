@@ -108,6 +108,23 @@ In `/section-acceptance`, open the **Use-Case Derivation Explorer**:
 
 ---
 
+## Tool — a use case and its flows
+
+![w:980](../assets/slides/uc-overview-en.png)
+
+Main, alternate and exception flows, colour-coded by kind.
+
+---
+
+## Tool — the derived test cases
+
+![w:980](../assets/slides/uc-cases-en.png)
+
+One test scenario per flow — exception flows pull their weight.
+
+---
+
+
 ## Summary
 
 - A **use case** describes a goal-oriented interaction — actor, goal, preconditions, flows.

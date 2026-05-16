@@ -121,6 +121,23 @@ Feature: 折扣碼
 
 ---
 
+## 工具 —— 一份 Gherkin feature
+
+![w:980](../assets/slides/bdd-overview.png)
+
+Given/When/Then scenario，連同步驟定義與執行狀態。
+
+---
+
+## 工具 —— feature 面板
+
+![w:980](../assets/slides/bdd-feature.png)
+
+未綁定步驟以紅色標出；Scenario Outline 展開成案例。
+
+---
+
+
 ## 小結
 
 - **BDD** 用結構化的平實語言寫驗收測試 —— 整個團隊可讀。

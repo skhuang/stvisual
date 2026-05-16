@@ -108,6 +108,23 @@ In `/section-acceptance`, open the **ATDD Cycle Explorer**:
 
 ---
 
+## Tool — the ATDD outer loop
+
+![w:980](../assets/slides/atdd-overview-en.png)
+
+Discuss → Distill → Develop → Demo, stepped over one worked story.
+
+---
+
+## Tool — the four stages
+
+![w:980](../assets/slides/atdd-cycle-en.png)
+
+Who acts at each stage, and where the TDD inner loop sits inside Develop.
+
+---
+
+
 ## Summary
 
 - **ATDD** agrees on the acceptance test **before** the code — the test defines "done".

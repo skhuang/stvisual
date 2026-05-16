@@ -99,6 +99,23 @@ In `/section-acceptance`, open the **E2E User Journey Explorer**:
 
 ---
 
+## Tool — an end-to-end journey
+
+![w:980](../assets/slides/e2e-overview-en.png)
+
+An ordered sequence of steps, simulated and scored for pass rate.
+
+---
+
+## Tool — the journey steps
+
+![w:980](../assets/slides/e2e-journey-en.png)
+
+Each step tagged with the failure sources that can break it.
+
+---
+
+
 ## Summary
 
 - An **E2E test** drives a complete **user journey** through the fully-running system — maximum realism.

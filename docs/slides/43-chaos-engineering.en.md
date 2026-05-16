@@ -95,6 +95,23 @@ In `/section-acceptance`, open the **Chaos Engineering Explorer**:
 
 ---
 
+## Tool — a fault-injection experiment
+
+![w:980](../assets/slides/chx-overview-en.png)
+
+A hypothesis, an injected fault, and the steady-state metrics it disturbs.
+
+---
+
+## Tool — the dependency topology
+
+![w:980](../assets/slides/chx-graph-en.png)
+
+Failure propagates backward along edges — the blast radius made visible.
+
+---
+
+
 ## Summary
 
 - Chaos engineering asks *how the system fails*, by **injecting failure deliberately** while observing.

@@ -95,6 +95,23 @@ In `/section-acceptance`, open the **Performance Load Profile Explorer**:
 
 ---
 
+## Tool — load shapes and latency
+
+![w:980](../assets/slides/plp-overview-en.png)
+
+Steady, stress, spike, soak — concurrency drives the latency curve.
+
+---
+
+## Tool — the metrics dashboard
+
+![w:980](../assets/slides/plp-dashboard-en.png)
+
+p50/p95/p99, error rate, and the knee where latency leaves its flat region.
+
+---
+
+
 ## Summary
 
 - Performance testing is **non-functional**: not "is it correct?" but "is it fast enough under load?"

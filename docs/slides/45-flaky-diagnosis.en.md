@@ -105,6 +105,23 @@ In `/section-acceptance`, open the **Flaky Diagnosis Explorer**:
 
 ---
 
+## Tool — diagnosing a flaky failure
+
+![w:980](../assets/slides/flx-overview-en.png)
+
+A failure-log sample to classify against the flakiness taxonomy.
+
+---
+
+## Tool — the flakiness taxonomy
+
+![w:980](../assets/slides/flx-taxonomy-en.png)
+
+Each category has its own fingerprint — and its own recommended fix.
+
+---
+
+
 ## Summary
 
 - A **flaky test** passes and fails with no code change — it **poisons trust** in the whole suite.

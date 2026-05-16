@@ -109,6 +109,23 @@ TDD 驅動*程式碼*；ATDD 驅動*功能*。它們巢狀 —— 一個 ATDD �
 
 ---
 
+## 工具 —— ATDD 外迴圈
+
+![w:980](../assets/slides/atdd-overview.png)
+
+Discuss → Distill → Develop → Demo，在一個範例故事上逐步走訪。
+
+---
+
+## 工具 —— 四個階段
+
+![w:980](../assets/slides/atdd-cycle.png)
+
+每個階段由誰行動，以及 TDD 內迴圈位在 Develop 的哪裡。
+
+---
+
+
 ## 小結
 
 - **ATDD** 在程式碼**之前**就對驗收測試達成共識 —— 測試定義「完成」。

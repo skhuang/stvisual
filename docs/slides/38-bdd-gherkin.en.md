@@ -121,6 +121,23 @@ In `/section-acceptance`, open the **BDD / Gherkin Explorer**:
 
 ---
 
+## Tool — a Gherkin feature
+
+![w:980](../assets/slides/bdd-overview-en.png)
+
+Given/When/Then scenarios with their step definitions and run state.
+
+---
+
+## Tool — the feature pane
+
+![w:980](../assets/slides/bdd-feature-en.png)
+
+Unbound steps flagged in red; a Scenario Outline fans out into cases.
+
+---
+
+
 ## Summary
 
 - **BDD** writes acceptance tests in structured plain language — readable by the whole team.

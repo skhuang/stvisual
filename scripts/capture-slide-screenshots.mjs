@@ -886,6 +886,41 @@ async function main() {
     await wp.close();
   }
 
+  // ---- Decks #38–#45: Wave E — acceptance / E2E explorers ----
+  // The acceptance section is tabbed; the overview shot uses the panel div.
+
+  const waveEShots = [
+    { tab: 'gherkin',    card: 'bdd-feature-pane', names: ['bdd-overview', 'bdd-feature'] },
+    { tab: 'usecase',    card: 'uc-cases',         names: ['uc-overview', 'uc-cases'] },
+    { tab: 'e2ejourney', card: 'e2e-journey',      names: ['e2e-overview', 'e2e-journey'] },
+    { tab: 'contract',   card: 'ct-matrix',        names: ['ct-overview', 'ct-matrix'] },
+    { tab: 'perfload',   card: 'plp-dashboard',    names: ['plp-overview', 'plp-dashboard'] },
+    { tab: 'chaos',      card: 'chx-graph',        names: ['chx-overview', 'chx-graph'] },
+    { tab: 'atdd',       card: 'atdd-cycle',       names: ['atdd-overview', 'atdd-cycle'] },
+    { tab: 'flaky',      card: 'flx-taxonomy',     names: ['flx-overview', 'flx-taxonomy'] },
+  ];
+  for (const s of waveEShots) {
+    const wp = await ctx.newPage();
+    await wp.goto(URL, { waitUntil: 'networkidle' });
+    await wp.getByTestId('nav-btn-acceptance').click();
+    await wp.locator(`[data-acceptance-tab="${s.tab}"]`).click();
+    const panel = wp.locator(`[data-acceptance-panel="${s.tab}"]`);
+    await panel.waitFor();
+    await sleep(500);
+    await panel.screenshot({ path: shot(s.names[0]) });
+    console.log(`[capture] saved ${s.names[0]}.png`);
+    const card = wp.getByTestId(s.card);
+    if (await card.count()) {
+      await card.scrollIntoViewIfNeeded();
+      await card.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png`);
+    } else {
+      await panel.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png (panel fallback)`);
+    }
+    await wp.close();
+  }
+
   await browser.close();
   if (serverChild) {
     serverChild.kill();
