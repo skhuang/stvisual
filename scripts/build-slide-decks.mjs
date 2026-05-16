@@ -61,6 +61,12 @@ const DECKS = [
   { base: '43-chaos-engineering',            id: 'chaos-engineering',   num: 43, section: 'acceptance' },
   { base: '44-atdd-cycle',                   id: 'atdd-cycle',          num: 44, section: 'acceptance' },
   { base: '45-flaky-diagnosis',              id: 'flaky-diagnosis',     num: 45, section: 'acceptance' },
+  { base: '46-mbt-workflow',                 id: 'mbt-workflow',        num: 46, section: 'mbt' },
+  { base: '47-fsm-test-generation',          id: 'fsm-test-generation', num: 47, section: 'mbt' },
+  { base: '48-w-method',                     id: 'w-method',            num: 48, section: 'mbt' },
+  { base: '49-efsm-guarded-transition',      id: 'efsm-guarded-transition', num: 49, section: 'mbt' },
+  { base: '50-usage-model-statistical',      id: 'usage-model-statistical', num: 50, section: 'mbt' },
+  { base: '51-model-mutation',               id: 'model-mutation',      num: 51, section: 'mbt' },
 ];
 
 function frontMatterTitle(md) {
