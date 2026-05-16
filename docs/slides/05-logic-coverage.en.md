@@ -257,7 +257,7 @@ The tool frames this pair on the K-map with a matching colour.
 
 ## Tool demo: pick an example and input
 
-![w:1000](../assets/slides/logic-overview.png)
+![w:1000](../assets/slides/logic-overview-en.png)
 
 - Built-in example chips: `logic-example-simple-and-or` / `logic-example-guarded-exit` / `logic-example-four-clause`.
 - `logic-expression-input` accepts program-style (`&& \|\| !`) or textbook-style (juxtaposition / `+`).
@@ -268,7 +268,7 @@ The tool frames this pair on the K-map with a matching colour.
 
 ## Tool demo: truth table
 
-![w:1000](../assets/slides/logic-truth-table.png)
+![w:1000](../assets/slides/logic-truth-table-en.png)
 
 - `logic-truth-table` renders the full $2^n$ table.
 - `logic-row-{i}` is colour-coded by P value and active-clause status.
@@ -279,7 +279,7 @@ The tool frames this pair on the K-map with a matching colour.
 
 ## Tool demo: CACC criterion
 
-![w:1000](../assets/slides/logic-cacc.png)
+![w:1000](../assets/slides/logic-cacc-en.png)
 
 - Click `logic-criterion-cacc` → for each clause the tool picks a pair of “active, P-differing” rows.
 - Duplicate test rows are struck through (`logic-test-item duplicate`).
@@ -290,7 +290,7 @@ The tool frames this pair on the K-map with a matching colour.
 
 ## Tool demo: IC + DNF + K-map
 
-![w:1000](../assets/slides/logic-ic-kmap.png)
+![w:1000](../assets/slides/logic-ic-kmap-en.png)
 
 - `logic-criterion-ic` → display the minimal DNF for f and ¬f (`logic-dnf` / `logic-dnf-neg`).
 - Both K-maps appear side-by-side: `logic-kmap-f` and `logic-kmap-not-f`.
@@ -301,7 +301,7 @@ The tool frames this pair on the K-map with a matching colour.
 
 ## Tool demo: CUTPNFP K-map
 
-![w:1000](../assets/slides/logic-cutpnfp.png)
+![w:1000](../assets/slides/logic-cutpnfp-en.png)
 
 - `logic-criterion-cutpnfp` → one (UTP, NFP) pair per (implicant, literal).
 - On the K-map: UTPs use a green solid frame, NFPs use a red dashed frame; matched pairs share a colour.

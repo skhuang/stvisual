@@ -103,6 +103,23 @@ lang: zh-TW
 
 ---
 
+## 工具 —— 五種測試替身
+
+![w:980](../assets/slides/td-overview.png)
+
+Dummy、stub、spy、mock、fake —— 每個都附程式碼例子。
+
+---
+
+## 工具 —— 替身在一個執行中的測試裡
+
+![w:980](../assets/slides/td-result.png)
+
+替身替換了什麼，以及測試接著檢查什麼。
+
+---
+
+
 ## 小結
 
 - **測試替身**替換真實相依，讓單元測試維持快速、隔離、決定性。

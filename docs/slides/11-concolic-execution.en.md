@@ -110,7 +110,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
 
 ## Tool: overview + settings
 
-![w:1000](../assets/slides/concolic-overview.png)
+![w:1000](../assets/slides/concolic-overview-en.png)
 
 - `concolic-example-{id}` example chips; `concolic-source` is the code editor.
 - `concolic-seed` accepts the initial input (`a=1, b=2, ...`); `concolic-max-iter` caps iteration count (default 16).
@@ -121,7 +121,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
 
 ## Tool: iteration list
 
-![w:1000](../assets/slides/concolic-iters.png)
+![w:1000](../assets/slides/concolic-iters-en.png)
 
 - `concolic-iters` is the ordered list. Each `concolic-{iter-id}` entry shows
   - The iteration number, its input, and the branches walked (line + symbolic condition).
@@ -134,7 +134,7 @@ Scan backwards: if `prefix + ¬c_i` corresponds to an unseen path key and `findW
 
 ## Tool: CFG sync highlight
 
-![w:1000](../assets/slides/concolic-cfg.png)
+![w:1000](../assets/slides/concolic-cfg-en.png)
 
 - `concolic-cfg` shares the CFG engine with Lectures #3 / #9 / #10.
 - Switch between iterations to feel the “one new path at a time” exploration in motion.

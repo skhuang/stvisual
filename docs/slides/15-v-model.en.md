@@ -122,7 +122,7 @@ The horizontal links are the lecture's whole point — make sure every student c
 
 ## Tool — the full V
 
-![w:980](../assets/slides/vmodel-overview.png)
+![w:980](../assets/slides/vmodel-overview-en.png)
 
 The left arm descends through development; the right arm rises through test levels.
 
@@ -130,7 +130,7 @@ The left arm descends through development; the right arm rises through test leve
 
 ## Tool — a verification pair
 
-![w:980](../assets/slides/vmodel-requirements.png)
+![w:980](../assets/slides/vmodel-requirements-en.png)
 
 Click a pair to see the horizontal link: requirements ↔ acceptance testing.
 
@@ -138,7 +138,7 @@ Click a pair to see the horizontal link: requirements ↔ acceptance testing.
 
 ## Tool — implementation, where the arms meet
 
-![w:980](../assets/slides/vmodel-implementation.png)
+![w:980](../assets/slides/vmodel-implementation-en.png)
 
 The bottom point: code is written, and the climb back up begins.
 

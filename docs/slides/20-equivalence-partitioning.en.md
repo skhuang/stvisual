@@ -110,6 +110,23 @@ In `/section-blackbox`, open the **Equivalence Class Explorer**:
 
 ---
 
+## Tool — valid and invalid classes
+
+![w:980](../assets/slides/ec-overview-en.png)
+
+Each parameter partitioned into equivalence classes, each with a representative.
+
+---
+
+## Tool — the derived test suite
+
+![w:980](../assets/slides/ec-results-en.png)
+
+WECT versus SECT — one test per class against one per combination.
+
+---
+
+
 ## Summary
 
 - Partition the input domain into **classes the program treats alike**.

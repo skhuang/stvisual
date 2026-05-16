@@ -144,7 +144,7 @@ In `/section-codecov`, open the **Code Coverage Explorer**:
 
 ## Tool — coverage across four criteria
 
-![w:980](../assets/slides/codecov-overview.png)
+![w:980](../assets/slides/codecov-overview-en.png)
 
 Code on the left, per-criterion bars on the right: statement, branch, condition, MC/DC.
 
@@ -152,7 +152,7 @@ Code on the left, per-criterion bars on the right: statement, branch, condition,
 
 ## Tool — a two-clause predicate
 
-![w:980](../assets/slides/codecov-discount.png)
+![w:980](../assets/slides/codecov-discount-en.png)
 
 The `discount` preset's `age >= 65 || isMember` is where branch and MC/DC diverge.
 

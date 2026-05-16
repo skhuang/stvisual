@@ -120,7 +120,7 @@ if (x > 0) {
 
 ## Tool: overview
 
-![w:1000](../assets/slides/symbex-overview.png)
+![w:1000](../assets/slides/symbex-overview-en.png)
 
 - Example chips: `symbex-example-{id}`.
 - `symbex-source` is the code editor; `symbex-max-unroll` sets the while-unroll cap (default 3).
@@ -131,7 +131,7 @@ if (x > 0) {
 
 ## Tool: path list
 
-![w:1000](../assets/slides/symbex-paths.png)
+![w:1000](../assets/slides/symbex-paths-en.png)
 
 - Each entry `symbex-{path-id}` lists the pc, return expression, witness, and the concrete return value.
 - Feasible paths are green, infeasible ones grey; clicking one highlights the matching nodes on the CFG.
@@ -142,7 +142,7 @@ if (x > 0) {
 
 ## Tool: CFG path highlight
 
-![w:1000](../assets/slides/symbex-cfg.png)
+![w:1000](../assets/slides/symbex-cfg-en.png)
 
 - The `symbex-cfg` shares the same CFG engine as Lectures #3 / #9.
 - Click any path → the matching nodes / edges colour up, end-to-end from start to return.

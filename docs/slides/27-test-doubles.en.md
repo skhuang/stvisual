@@ -103,6 +103,23 @@ In `/section-blackbox`, open the **Test Doubles Explorer**:
 
 ---
 
+## Tool — the five test doubles
+
+![w:980](../assets/slides/td-overview-en.png)
+
+Dummy, stub, spy, mock, fake — each with a code example.
+
+---
+
+## Tool — a double in a running test
+
+![w:980](../assets/slides/td-result-en.png)
+
+What the double replaces, and what the test then checks.
+
+---
+
+
 ## Summary
 
 - A **test double** replaces a real dependency so a unit test stays fast, isolated and deterministic.

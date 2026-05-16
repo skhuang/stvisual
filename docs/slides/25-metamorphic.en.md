@@ -107,6 +107,23 @@ In `/section-blackbox`, open the **Metamorphic Testing Explorer**:
 
 ---
 
+## Tool — metamorphic relations
+
+![w:980](../assets/slides/mt-overview-en.png)
+
+A program and the metamorphic relations its outputs must satisfy.
+
+---
+
+## Tool — source and follow-up runs
+
+![w:980](../assets/slides/mt-results-en.png)
+
+Source input, transformed input, both outputs — and no expected-value column.
+
+---
+
+
 ## Summary
 
 - The **oracle problem**: sometimes you cannot compute the expected output.

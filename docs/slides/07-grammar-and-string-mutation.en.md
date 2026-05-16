@@ -106,7 +106,7 @@ Returns `[{ string, productionsUsed, depth }]`.
 
 ## Tool: overview
 
-![w:1000](../assets/slides/grammar-overview.png)
+![w:1000](../assets/slides/grammar-overview-en.png)
 
 - Example chips: `grammar-example=arith / json-tiny / palindrome`.
 - `grammar-text` textarea takes free-form BNF; `grammar-parse-error` reports problems live.
@@ -117,7 +117,7 @@ Returns `[{ string, productionsUsed, depth }]`.
 
 ## Tool: derivations + PDC / TSC
 
-![w:1000](../assets/slides/grammar-derivations.png)
+![w:1000](../assets/slides/grammar-derivations-en.png)
 
 - Switch to the `derivations` tab → see the generated strings, their depth, and the productions they used.
 - The `grammar-pdc` / `grammar-tsc` metrics update live.
@@ -156,7 +156,7 @@ For a mutant grammar `G′`:
 
 ## Tool: grammar mutants
 
-![w:1000](../assets/slides/grammar-mutants.png)
+![w:1000](../assets/slides/grammar-mutants-en.png)
 
 - 4 operator checkboxes: `data-grammar-op=TR/PR/SD/DUP`.
 - `grammar-mutation-score` shows killed / total.
@@ -221,7 +221,7 @@ Pick a legal seed string  s
 
 ## Tool: string mutation
 
-![w:1000](../assets/slides/grammar-string-mutants.png)
+![w:1000](../assets/slides/grammar-string-mutants-en.png)
 
 - Seed dropdown: pick any legal string from the current derivations.
 - 5 operator checkboxes (REP / DEL on by default) + a per-operator cap (1–50).

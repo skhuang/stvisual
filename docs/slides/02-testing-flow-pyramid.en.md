@@ -50,7 +50,7 @@ Requirements ──► Test Plan ──► Test Design ──► Execution ─�
 
 ## Tool: auto-play flow
 
-![w:1000](../assets/slides/flow-overview.png)
+![w:1000](../assets/slides/flow-overview-en.png)
 
 - The six steps form a chain of icons (`flow-step-{id}` + `flow-arrow-{idx}`).
 - Click `flow-play-btn` → the tool auto-advances every 1800 ms.
@@ -108,7 +108,7 @@ Even in the agile / CI era:
 
 ## Tool: pyramid + cards
 
-![w:1000](../assets/slides/pyramid-overview.png)
+![w:1000](../assets/slides/pyramid-overview-en.png)
 
 - The top `pyramid` visualises layer widths (30% / 55% / 80% / 100%).
 - The bottom `types-grid` adds a card per layer (`type-card-{id}`): type + purpose + timing.

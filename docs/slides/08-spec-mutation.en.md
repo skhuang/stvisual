@@ -196,7 +196,7 @@ return flipped;
 
 ## Tool: overview
 
-![w:1000](../assets/slides/spec-overview.png)
+![w:1000](../assets/slides/spec-overview-en.png)
 
 - Top: segmented control `spec-category-row` (basic / smv).
 - Middle: example buttons (`data-spec-example`) and the example caption (`spec-example-caption`).
@@ -207,7 +207,7 @@ return flipped;
 
 ## Tool: mutants and score
 
-![w:1000](../assets/slides/spec-mutants.png)
+![w:1000](../assets/slides/spec-mutants-en.png)
 
 - 6 operator checkboxes (default: ENF / BCR / LRO / UOI).
 - `spec-mutant-list`: mutant text / operator / killed or live.
@@ -219,7 +219,7 @@ return flipped;
 
 ## Tool: dual FSM
 
-![w:1000](../assets/slides/spec-fsm.png)
+![w:1000](../assets/slides/spec-fsm-en.png)
 
 - `spec-fsm-grid`: left = original predicate, right = selected mutant.
 - Each side draws the two states (SAFE / VIOLATION) plus four transitions.
@@ -231,7 +231,7 @@ return flipped;
 
 ## Tool: SMV source
 
-![w:1000](../assets/slides/spec-smv-source.png)
+![w:1000](../assets/slides/spec-smv-source-en.png)
 
 - Pick the `smv` category and any example → a `spec-smv-source` `<details>` block appears.
 - Shows the full NuSMV module (MODULE / VAR / ASSIGN / INVARSPEC …).

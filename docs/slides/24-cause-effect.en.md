@@ -110,6 +110,23 @@ In `/section-blackbox`, open the **Cause-Effect Explorer**:
 
 ---
 
+## Tool — causes, effects, formulas
+
+![w:980](../assets/slides/ceg-overview-en.png)
+
+Causes wired to effects through boolean formulas.
+
+---
+
+## Tool — the derived decision table
+
+![w:980](../assets/slides/ceg-table-en.png)
+
+The graph compiles to a decision table — one test per surviving rule.
+
+---
+
+
 ## Summary
 
 - Cause-effect graphing models a spec as **causes → Boolean logic → effects**.

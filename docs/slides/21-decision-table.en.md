@@ -112,6 +112,23 @@ In `/section-blackbox`, open the **Decision Table Explorer**:
 
 ---
 
+## Tool — conditions, actions, rules
+
+![w:980](../assets/slides/dt-overview-en.png)
+
+Conditions on the left; each rule column is one combination to test.
+
+---
+
+## Tool — the decision table
+
+![w:980](../assets/slides/dt-table-en.png)
+
+Don't-care cells collapse rules — the coverage badge confirms completeness.
+
+---
+
+
 ## Summary
 
 - A decision table = **conditions × actions**, one **rule** per combination — `2ⁿ` rules.

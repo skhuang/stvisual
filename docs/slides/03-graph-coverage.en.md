@@ -155,7 +155,7 @@ A few prime paths (non-exhaustive):
 
 ## Tool demo: pick a criterion
 
-![w:1000](../assets/slides/graph-coverage-node.png)
+![w:1000](../assets/slides/graph-coverage-node-en.png)
 
 1. The sample CFG loads by default (left-hand `graph-canvas`).
 2. The button row switches the 5 criteria (`criterion-{id}`).
@@ -166,7 +166,7 @@ A few prime paths (non-exhaustive):
 
 ## Tool demo: metrics and greedy set cover
 
-![w:780](../assets/slides/graph-coverage-metrics.png)
+![w:780](../assets/slides/graph-coverage-metrics-en.png)
 
 Sample CFG + Prime Path Coverage: baseline **7** → optimised **6**, saved 1, 7/7 requirements covered.
 
@@ -178,7 +178,7 @@ Sample CFG + Prime Path Coverage: baseline **7** → optimised **6**, saved 1, 7
 
 ## Tool demo: upload code
 
-![w:1000](../assets/slides/graph-coverage-triangle.png)
+![w:1000](../assets/slides/graph-coverage-triangle-en.png)
 
 - Pick `Triangle Problem` from `program-example-select` (or upload JS / pseudocode).
 - [`programToGraph.js`](../../src/utils/programToGraph.js) converts source to a CFG.
@@ -190,7 +190,7 @@ Sample CFG + Prime Path Coverage: baseline **7** → optimised **6**, saved 1, 7
 
 ## Live CFG editor
 
-![w:1000](../assets/slides/graph-coverage-editor.png)
+![w:1000](../assets/slides/graph-coverage-editor-en.png)
 
 | Field | Meaning |
 | --- | --- |

@@ -103,6 +103,23 @@ In `/section-blackbox`, open the **Exploratory Testing Explorer**:
 
 ---
 
+## Tool — a test charter and session
+
+![w:980](../assets/slides/et-overview-en.png)
+
+Charter, session timer and observation log keep exploration disciplined.
+
+---
+
+## Tool — the SFDIPOT touring checklist
+
+![w:980](../assets/slides/et-sfdipot-en.png)
+
+Seven angles on the product — Structure, Function, Data, and four more.
+
+---
+
+
 ## Summary
 
 - Exploratory testing = simultaneous **learning + design + execution**, adapting as you go.

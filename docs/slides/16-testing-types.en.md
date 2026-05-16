@@ -105,7 +105,7 @@ In `/section-types`, open the **Testing Types** view:
 
 ## Tool — the testing pyramid
 
-![w:980](../assets/slides/testing-types-pyramid.png)
+![w:980](../assets/slides/testing-types-pyramid-en.png)
 
 Four levels stacked, widening downward — width hints at relative test count.
 
@@ -113,7 +113,7 @@ Four levels stacked, widening downward — width hints at relative test count.
 
 ## Tool — the four level cards
 
-![w:980](../assets/slides/testing-types-grid.png)
+![w:980](../assets/slides/testing-types-grid-en.png)
 
 Each card carries the level's purpose and the phase where it runs.
 

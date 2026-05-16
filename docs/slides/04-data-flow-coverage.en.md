@@ -108,7 +108,7 @@ function classifyTriangle(a, b, c) {
 
 ## Tool demo: the DFG view
 
-![w:1000](../assets/slides/dfg-triangle.png)
+![w:1000](../assets/slides/dfg-triangle-en.png)
 
 - After picking `Triangle Problem`, a **Data Flow Graph** card (`graph-dfg-card`) appears beneath the CFG.
 - Each edge is a def→use relation, **labelled with the variable carried**.
@@ -119,7 +119,7 @@ function classifyTriangle(a, b, c) {
 
 ## Tool demo: All-Defs
 
-![w:1000](../assets/slides/dfg-all-defs.png)
+![w:1000](../assets/slides/dfg-all-defs-en.png)
 
 - Click `criterion-all-defs` → `requirement-list` shows one representative def-clear path per (defNode, variable), shortest first.
 - On Triangle Problem: 3 parameters × 1 def site each = 3 requirements, each reaching the first decision that reads it.
@@ -129,7 +129,7 @@ function classifyTriangle(a, b, c) {
 
 ## Tool demo: All-Uses
 
-![w:1000](../assets/slides/dfg-all-uses.png)
+![w:1000](../assets/slides/dfg-all-uses-en.png)
 
 - Click `criterion-all-uses` → one requirement per (def, use, var) triple.
 - In Triangle Problem each of `a`, `b`, `c` is read at several decisions → the requirement list grows quickly.
@@ -140,7 +140,7 @@ function classifyTriangle(a, b, c) {
 
 ## Tool demo: All-DU-Paths
 
-![w:1000](../assets/slides/dfg-all-du-paths.png)
+![w:1000](../assets/slides/dfg-all-du-paths-en.png)
 
 - Click `criterion-all-du-paths` → **every** def-clear simple path for each (def, use, var) is a requirement.
 - To keep enumeration bounded, [`enumerateDefClearPaths`](../../src/utils/graphCoverage.js) caps path length at `max(8, |V| × 2)`.
@@ -151,7 +151,7 @@ function classifyTriangle(a, b, c) {
 
 ## Why the DFG can be empty
 
-![w:780](../assets/slides/dfg-empty.png)
+![w:780](../assets/slides/dfg-empty-en.png)
 
 - The default sample CFG uses abstract labels (S/A/B/...) without `sourceText`.
 - `extractDefUse` sees no variable names → 0 DFG edges.

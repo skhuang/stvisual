@@ -109,6 +109,23 @@ In `/section-blackbox`, open the **State Transition Explorer**:
 
 ---
 
+## Tool — the state machine
+
+![w:980](../assets/slides/st-overview-en.png)
+
+States, events and transitions, with generated coverage sequences.
+
+---
+
+## Tool — the state diagram
+
+![w:980](../assets/slides/st-diagram-en.png)
+
+States as nodes, transitions as edges — an invalid event has no edge.
+
+---
+
+
 ## Summary
 
 - Use state-transition testing when behavior depends on **history**, not just current input.

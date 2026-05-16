@@ -126,7 +126,7 @@ The explorer makes the curve concrete — the same curve this whole course is or
 
 ## Tool — the cost-escalation curve
 
-![w:980](../assets/slides/defect-cost-overview.png)
+![w:980](../assets/slides/defect-cost-overview-en.png)
 
 Five phase bars on a logarithmic scale: a defect's fix cost climbs 1× → 100×.
 
@@ -134,7 +134,7 @@ Five phase bars on a logarithmic scale: a defect's fix cost climbs 1× → 100×
 
 ## Tool — a requirements-phase defect (1×)
 
-![w:980](../assets/slides/defect-cost-requirements.png)
+![w:980](../assets/slides/defect-cost-requirements-en.png)
 
 Caught where it was introduced — the cheapest fix, plus the techniques that catch it there.
 
@@ -142,7 +142,7 @@ Caught where it was introduced — the cheapest fix, plus the techniques that ca
 
 ## Tool — the same defect in production (100×)
 
-![w:980](../assets/slides/defect-cost-production.png)
+![w:980](../assets/slides/defect-cost-production-en.png)
 
 Escaped every gate — now the "fix" is an incident response.
 

@@ -104,6 +104,23 @@ In `/section-blackbox`, open the **Pairwise Explorer**:
 
 ---
 
+## Tool — exhaustive versus pairwise
+
+![w:980](../assets/slides/pairwise-overview-en.png)
+
+Parameters and values, with the exhaustive count beside the reduced one.
+
+---
+
+## Tool — the pairwise suite
+
+![w:980](../assets/slides/pairwise-table-en.png)
+
+Every value pair appears in some row — a fraction of the exhaustive cost.
+
+---
+
+
 ## Summary
 
 - Most interaction bugs involve **two** parameters — so cover **every pair**.

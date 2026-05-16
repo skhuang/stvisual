@@ -124,7 +124,7 @@ Turn abstract test-criteria definitions into **operable, verifiable** visual tea
 
 ## Tool: testing method tree
 
-![w:1000](../assets/slides/methods-overview.png)
+![w:1000](../assets/slides/methods-overview-en.png)
 
 - Three cards (`method-card-{blackbox, whitebox, graybox}`), each with a `visibility-fill` bar at 0% / 50% / 100%.
 - Click `method-card-btn-{id}` to expand a category, or hit `toggle-all-btn` to expand / collapse everything.
@@ -135,7 +135,7 @@ Turn abstract test-criteria definitions into **operable, verifiable** visual tea
 
 ## Tool: white-box card expanded
 
-![w:1000](../assets/slides/methods-whitebox.png)
+![w:1000](../assets/slides/methods-whitebox-en.png)
 
 - All 10 white-box techniques are listed, highlighting which ones this series covers in depth.
 - The latest additions `symbex` / `concolic` are present — they correspond to textbook **symbolic execution** and DART/CUTE-style **concolic execution**.

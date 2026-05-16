@@ -21,6 +21,16 @@ const ROOT = join(HERE, '..');
 const OUT_DIR = join(ROOT, 'docs/assets/slides');
 const URL = 'http://127.0.0.1:4173/index.html';
 
+// Locale to drive the UI in. Run once per locale:
+//   SLIDE_LOCALE=zh node scripts/capture-slide-screenshots.mjs
+//   SLIDE_LOCALE=en node scripts/capture-slide-screenshots.mjs
+// zh shots keep their bare name; en shots get a `-en` suffix so the
+// English decks can reference an English-interface screenshot.
+const SLIDE_LOCALE = process.env.SLIDE_LOCALE === 'en' ? 'en' : 'zh';
+function shot(name) {
+  return join(OUT_DIR, SLIDE_LOCALE === 'en' ? `${name}-en.png` : `${name}.png`);
+}
+
 async function ensureDir(p) {
   await mkdir(p, { recursive: true });
 }
@@ -55,7 +65,7 @@ async function main() {
   let serverChild = null;
   if (!(await isServerUp())) {
     serverChild = await startServer();
-    console.log('[capture] started http.server on :4173');
+    console.log(`[capture] started http.server on :4173 (locale=${SLIDE_LOCALE})`);
   } else {
     console.log('[capture] reusing existing :4173 server');
   }
@@ -69,7 +79,7 @@ async function main() {
   });
   await ctx.addInitScript(() => {
     try {
-      window.localStorage.setItem('stvisual.locale', 'zh');
+      window.localStorage.setItem('stvisual.locale', SLIDE_LOCALE);
       window.localStorage.setItem('stvisual.syntaxActiveTab', 'mutation');
     } catch { /* ignore */ }
   });
@@ -83,22 +93,22 @@ async function main() {
   // 1. Full Graph Coverage explorer with Node Coverage selected (default).
   await page.getByTestId('criterion-node').click();
   await sleep(200);
-  await explorer.screenshot({ path: join(OUT_DIR, 'graph-coverage-node.png') });
+  await explorer.screenshot({ path: shot('graph-coverage-node') });
   console.log('[capture] saved graph-coverage-node.png');
 
   // 2. Edge Coverage — shows the back-edge E-B in requirement list.
   await page.getByTestId('criterion-edge').click();
   await sleep(200);
-  await explorer.screenshot({ path: join(OUT_DIR, 'graph-coverage-edge.png') });
+  await explorer.screenshot({ path: shot('graph-coverage-edge') });
   console.log('[capture] saved graph-coverage-edge.png');
 
   // 3. Prime Path Coverage + test-path-card with metrics.
   await page.getByTestId('criterion-prime-path').click();
   await sleep(300);
-  await explorer.screenshot({ path: join(OUT_DIR, 'graph-coverage-prime-path.png') });
+  await explorer.screenshot({ path: shot('graph-coverage-prime-path') });
   await page.getByTestId('graph-test-path-card').scrollIntoViewIfNeeded();
   await page.getByTestId('graph-test-path-card').screenshot({
-    path: join(OUT_DIR, 'graph-coverage-metrics.png'),
+    path: shot('graph-coverage-metrics'),
   });
   console.log('[capture] saved graph-coverage-prime-path.png + graph-coverage-metrics.png');
 
@@ -111,14 +121,14 @@ async function main() {
     await firstReq.click();
     await sleep(200);
   }
-  await explorer.screenshot({ path: join(OUT_DIR, 'graph-coverage-triangle.png') });
+  await explorer.screenshot({ path: shot('graph-coverage-triangle') });
   console.log('[capture] saved graph-coverage-triangle.png');
 
   // 5. CFG editor card focused (live editing).
   await page.selectOption('[data-testid="program-example-select"]', '__none__').catch(() => {});
   await page.getByTestId('graph-editor-card').scrollIntoViewIfNeeded();
   await page.getByTestId('graph-editor-card').screenshot({
-    path: join(OUT_DIR, 'graph-coverage-editor.png'),
+    path: shot('graph-coverage-editor'),
   });
   console.log('[capture] saved graph-coverage-editor.png');
 
@@ -132,7 +142,7 @@ async function main() {
   if (await emptyDfg.count()) {
     await emptyPage.getByTestId('graph-dfg-card').scrollIntoViewIfNeeded();
     await emptyPage.getByTestId('graph-dfg-card').screenshot({
-      path: join(OUT_DIR, 'dfg-empty.png'),
+      path: shot('dfg-empty'),
     });
     console.log('[capture] saved dfg-empty.png');
   } else {
@@ -145,26 +155,26 @@ async function main() {
   await sleep(400);
   await page.getByTestId('graph-dfg-card').scrollIntoViewIfNeeded();
   await page.getByTestId('graph-dfg-card').screenshot({
-    path: join(OUT_DIR, 'dfg-triangle.png'),
+    path: shot('dfg-triangle'),
   });
   console.log('[capture] saved dfg-triangle.png');
 
   // 8. All-Defs requirements view (full explorer screenshot).
   await page.getByTestId('criterion-all-defs').click();
   await sleep(300);
-  await explorer.screenshot({ path: join(OUT_DIR, 'dfg-all-defs.png') });
+  await explorer.screenshot({ path: shot('dfg-all-defs') });
   console.log('[capture] saved dfg-all-defs.png');
 
   // 9. All-Uses requirements view.
   await page.getByTestId('criterion-all-uses').click();
   await sleep(300);
-  await explorer.screenshot({ path: join(OUT_DIR, 'dfg-all-uses.png') });
+  await explorer.screenshot({ path: shot('dfg-all-uses') });
   console.log('[capture] saved dfg-all-uses.png');
 
   // 10. All-DU-Paths requirements view.
   await page.getByTestId('criterion-all-du-paths').click();
   await sleep(300);
-  await explorer.screenshot({ path: join(OUT_DIR, 'dfg-all-du-paths.png') });
+  await explorer.screenshot({ path: shot('dfg-all-du-paths') });
   console.log('[capture] saved dfg-all-du-paths.png');
 
   // ---- Deck #5: Logic Coverage ----
@@ -183,7 +193,7 @@ async function main() {
   await sleep(300);
 
   // 11. Overview — example chips, expression input, recent chips.
-  await logicExplorer.screenshot({ path: join(OUT_DIR, 'logic-overview.png') });
+  await logicExplorer.screenshot({ path: shot('logic-overview') });
   console.log('[capture] saved logic-overview.png');
 
   // 12. PC criterion + truth table (focus on truth-table card).
@@ -192,20 +202,20 @@ async function main() {
   const truthTable = logicPage.getByTestId('logic-truth-table');
   if (await truthTable.count()) {
     await truthTable.scrollIntoViewIfNeeded();
-    await truthTable.screenshot({ path: join(OUT_DIR, 'logic-truth-table.png') });
+    await truthTable.screenshot({ path: shot('logic-truth-table') });
     console.log('[capture] saved logic-truth-table.png');
   }
 
   // 13. CACC view (full explorer).
   await logicPage.getByTestId('logic-criterion-cacc').click();
   await sleep(200);
-  await logicExplorer.screenshot({ path: join(OUT_DIR, 'logic-cacc.png') });
+  await logicExplorer.screenshot({ path: shot('logic-cacc') });
   console.log('[capture] saved logic-cacc.png');
 
   // 14. IC + DNF + K-map (full explorer to capture both kmaps and DNF text).
   await logicPage.getByTestId('logic-criterion-ic').click();
   await sleep(300);
-  await logicExplorer.screenshot({ path: join(OUT_DIR, 'logic-ic-kmap.png') });
+  await logicExplorer.screenshot({ path: shot('logic-ic-kmap') });
   console.log('[capture] saved logic-ic-kmap.png');
 
   // 15. CUTPNFP K-map — switch to 4-clause example for richer K-map.
@@ -213,7 +223,7 @@ async function main() {
   await sleep(200);
   await logicPage.getByTestId('logic-criterion-cutpnfp').click();
   await sleep(300);
-  await logicExplorer.screenshot({ path: join(OUT_DIR, 'logic-cutpnfp.png') });
+  await logicExplorer.screenshot({ path: shot('logic-cutpnfp') });
   console.log('[capture] saved logic-cutpnfp.png');
 
   await logicPage.close();
@@ -231,7 +241,7 @@ async function main() {
   // 16. Overview — max example default.
   await mutPage.getByTestId('syntax-example-max').click();
   await sleep(400);
-  await mutExplorer.screenshot({ path: join(OUT_DIR, 'mutation-overview.png') });
+  await mutExplorer.screenshot({ path: shot('mutation-overview') });
   console.log('[capture] saved mutation-overview.png');
 
   // 17. Mutant list — switch to triangle (richer mutant variety).
@@ -240,7 +250,7 @@ async function main() {
   const mutantList = mutPage.getByTestId('syntax-mutant-list');
   if (await mutantList.count()) {
     await mutantList.scrollIntoViewIfNeeded();
-    await mutantList.screenshot({ path: join(OUT_DIR, 'mutation-mutant-list.png') });
+    await mutantList.screenshot({ path: shot('mutation-mutant-list') });
     console.log('[capture] saved mutation-mutant-list.png');
   }
 
@@ -251,13 +261,13 @@ async function main() {
     await firstMutant.click();
     await sleep(200);
   }
-  await mutExplorer.screenshot({ path: join(OUT_DIR, 'mutation-per-test.png') });
+  await mutExplorer.screenshot({ path: shot('mutation-per-test') });
   console.log('[capture] saved mutation-per-test.png');
 
   // 19. Object-Oriented example.
   await mutPage.getByTestId('syntax-example-shapeHierarchy').click();
   await sleep(500);
-  await mutExplorer.screenshot({ path: join(OUT_DIR, 'mutation-shape-hierarchy.png') });
+  await mutExplorer.screenshot({ path: shot('mutation-shape-hierarchy') });
   console.log('[capture] saved mutation-shape-hierarchy.png');
 
   await mutPage.close();
@@ -276,25 +286,25 @@ async function main() {
   await sleep(500);
 
   // 20. Grammar overview — BNF editor + productions + terminals.
-  await gramExplorer.screenshot({ path: join(OUT_DIR, 'grammar-overview.png') });
+  await gramExplorer.screenshot({ path: shot('grammar-overview') });
   console.log('[capture] saved grammar-overview.png');
 
   // 21. Derivations + PDC/TSC view.
   await gramPage.locator('[data-grammar-subtab="derivations"]').click().catch(() => {});
   await sleep(300);
-  await gramExplorer.screenshot({ path: join(OUT_DIR, 'grammar-derivations.png') });
+  await gramExplorer.screenshot({ path: shot('grammar-derivations') });
   console.log('[capture] saved grammar-derivations.png');
 
   // 22. Grammar mutants view.
   await gramPage.locator('[data-grammar-subtab="mutation"]').click().catch(() => {});
   await sleep(400);
-  await gramExplorer.screenshot({ path: join(OUT_DIR, 'grammar-mutants.png') });
+  await gramExplorer.screenshot({ path: shot('grammar-mutants') });
   console.log('[capture] saved grammar-mutants.png');
 
   // 23. String mutants view.
   await gramPage.locator('[data-grammar-subtab="string"]').click().catch(() => {});
   await sleep(400);
-  await gramExplorer.screenshot({ path: join(OUT_DIR, 'grammar-string-mutants.png') });
+  await gramExplorer.screenshot({ path: shot('grammar-string-mutants') });
   console.log('[capture] saved grammar-string-mutants.png');
 
   await gramPage.close();
@@ -315,7 +325,7 @@ async function main() {
   await sleep(400);
 
   // 24. Spec overview — category + example chips, predicate input.
-  await specExplorer.screenshot({ path: join(OUT_DIR, 'spec-overview.png') });
+  await specExplorer.screenshot({ path: shot('spec-overview') });
   console.log('[capture] saved spec-overview.png');
 
   // 25. Mutants list — focus on guarded predicate with ENF / BCR / LRO / UOI.
@@ -327,7 +337,7 @@ async function main() {
       await firstSpecMutant.click();
       await sleep(200);
     }
-    await specExplorer.screenshot({ path: join(OUT_DIR, 'spec-mutants.png') });
+    await specExplorer.screenshot({ path: shot('spec-mutants') });
     console.log('[capture] saved spec-mutants.png');
   }
 
@@ -336,7 +346,7 @@ async function main() {
   const fsmGrid = specPage.getByTestId('spec-fsm-grid');
   if (await fsmGrid.count()) {
     await fsmGrid.scrollIntoViewIfNeeded();
-    await fsmGrid.screenshot({ path: join(OUT_DIR, 'spec-fsm.png') });
+    await fsmGrid.screenshot({ path: shot('spec-fsm') });
     console.log('[capture] saved spec-fsm.png');
   }
 
@@ -348,7 +358,7 @@ async function main() {
   const smvSource = specPage.getByTestId('spec-smv-source');
   if (await smvSource.count()) {
     await smvSource.scrollIntoViewIfNeeded();
-    await smvSource.screenshot({ path: join(OUT_DIR, 'spec-smv-source.png') });
+    await smvSource.screenshot({ path: shot('spec-smv-source') });
     console.log('[capture] saved spec-smv-source.png');
   }
 
@@ -365,7 +375,7 @@ async function main() {
   await overviewPage.getByTestId('toggle-all-btn').click();
   await sleep(300);
   await overviewPage.getByTestId('testing-method-tree').screenshot({
-    path: join(OUT_DIR, 'methods-overview.png'),
+    path: shot('methods-overview'),
   });
   console.log('[capture] saved methods-overview.png');
 
@@ -375,7 +385,7 @@ async function main() {
   await overviewPage.getByTestId('method-card-btn-whitebox').click();
   await sleep(200);
   await overviewPage.getByTestId('method-card-whitebox').screenshot({
-    path: join(OUT_DIR, 'methods-whitebox.png'),
+    path: shot('methods-whitebox'),
   });
   console.log('[capture] saved methods-whitebox.png');
 
@@ -384,7 +394,7 @@ async function main() {
   await overviewPage.getByTestId('testing-flow').waitFor();
   await sleep(200);
   await overviewPage.getByTestId('testing-flow').screenshot({
-    path: join(OUT_DIR, 'flow-overview.png'),
+    path: shot('flow-overview'),
   });
   console.log('[capture] saved flow-overview.png');
 
@@ -393,7 +403,7 @@ async function main() {
   await overviewPage.getByTestId('testing-types').waitFor();
   await sleep(200);
   await overviewPage.getByTestId('testing-types').screenshot({
-    path: join(OUT_DIR, 'pyramid-overview.png'),
+    path: shot('pyramid-overview'),
   });
   console.log('[capture] saved pyramid-overview.png');
 
@@ -414,7 +424,7 @@ async function main() {
   await sleep(800);
 
   // 32. Overview — full explorer after a run.
-  await fuzzExplorer.screenshot({ path: join(OUT_DIR, 'fuzz-overview.png') });
+  await fuzzExplorer.screenshot({ path: shot('fuzz-overview') });
   console.log('[capture] saved fuzz-overview.png');
 
   // 33. CFG with a selected test case.
@@ -426,7 +436,7 @@ async function main() {
   const fuzzCfg = fuzzPage.getByTestId('fuzz-cfg');
   if (await fuzzCfg.count()) {
     await fuzzCfg.scrollIntoViewIfNeeded();
-    await fuzzCfg.screenshot({ path: join(OUT_DIR, 'fuzz-cfg.png') });
+    await fuzzCfg.screenshot({ path: shot('fuzz-cfg') });
     console.log('[capture] saved fuzz-cfg.png');
   }
   await fuzzPage.close();
@@ -443,14 +453,14 @@ async function main() {
   await sleep(500);
 
   // 34. Symbex overview — explorer with full path list.
-  await symbexExplorer.screenshot({ path: join(OUT_DIR, 'symbex-overview.png') });
+  await symbexExplorer.screenshot({ path: shot('symbex-overview') });
   console.log('[capture] saved symbex-overview.png');
 
   // 35. Path list focused.
   const symbexPathList = symbexPage.getByTestId('symbex-paths');
   if (await symbexPathList.count()) {
     await symbexPathList.scrollIntoViewIfNeeded();
-    await symbexPathList.screenshot({ path: join(OUT_DIR, 'symbex-paths.png') });
+    await symbexPathList.screenshot({ path: shot('symbex-paths') });
     console.log('[capture] saved symbex-paths.png');
   }
 
@@ -463,7 +473,7 @@ async function main() {
   const symbexCfg = symbexPage.getByTestId('symbex-cfg');
   if (await symbexCfg.count()) {
     await symbexCfg.scrollIntoViewIfNeeded();
-    await symbexCfg.screenshot({ path: join(OUT_DIR, 'symbex-cfg.png') });
+    await symbexCfg.screenshot({ path: shot('symbex-cfg') });
     console.log('[capture] saved symbex-cfg.png');
   }
   await symbexPage.close();
@@ -480,14 +490,14 @@ async function main() {
   await sleep(500);
 
   // 37. Concolic overview.
-  await concolicExplorer.screenshot({ path: join(OUT_DIR, 'concolic-overview.png') });
+  await concolicExplorer.screenshot({ path: shot('concolic-overview') });
   console.log('[capture] saved concolic-overview.png');
 
   // 38. Iteration list focused.
   const concolicIters = concolicPage.getByTestId('concolic-iters');
   if (await concolicIters.count()) {
     await concolicIters.scrollIntoViewIfNeeded();
-    await concolicIters.screenshot({ path: join(OUT_DIR, 'concolic-iters.png') });
+    await concolicIters.screenshot({ path: shot('concolic-iters') });
     console.log('[capture] saved concolic-iters.png');
   }
 
@@ -500,7 +510,7 @@ async function main() {
   const concolicCfg = concolicPage.getByTestId('concolic-cfg');
   if (await concolicCfg.count()) {
     await concolicCfg.scrollIntoViewIfNeeded();
-    await concolicCfg.screenshot({ path: join(OUT_DIR, 'concolic-cfg.png') });
+    await concolicCfg.screenshot({ path: shot('concolic-cfg') });
     console.log('[capture] saved concolic-cfg.png');
   }
   await concolicPage.close();
@@ -518,7 +528,7 @@ async function main() {
   await sleep(400);
 
   // 40. Full testgen explorer overview.
-  await testgenExplorer.screenshot({ path: join(OUT_DIR, 'testgen-overview.png') });
+  await testgenExplorer.screenshot({ path: shot('testgen-overview') });
   console.log('[capture] saved testgen-overview.png');
 
   // 41. Requirements card — click first requirement to highlight it.
@@ -530,7 +540,7 @@ async function main() {
   const reqCard = testgenPage.getByTestId('testgen-requirements-card');
   if (await reqCard.count()) {
     await reqCard.scrollIntoViewIfNeeded();
-    await reqCard.screenshot({ path: join(OUT_DIR, 'testgen-requirements.png') });
+    await reqCard.screenshot({ path: shot('testgen-requirements') });
     console.log('[capture] saved testgen-requirements.png');
   }
 
@@ -543,7 +553,7 @@ async function main() {
   const testsCard = testgenPage.getByTestId('testgen-tests-card');
   if (await testsCard.count()) {
     await testsCard.scrollIntoViewIfNeeded();
-    await testsCard.screenshot({ path: join(OUT_DIR, 'testgen-tests.png') });
+    await testsCard.screenshot({ path: shot('testgen-tests') });
     console.log('[capture] saved testgen-tests.png');
   }
 
@@ -551,7 +561,7 @@ async function main() {
   const testgenCfg = testgenPage.getByTestId('testgen-cfg');
   if (await testgenCfg.count()) {
     await testgenCfg.scrollIntoViewIfNeeded();
-    await testgenCfg.screenshot({ path: join(OUT_DIR, 'testgen-cfg.png') });
+    await testgenCfg.screenshot({ path: shot('testgen-cfg') });
     console.log('[capture] saved testgen-cfg.png');
   }
 
@@ -578,13 +588,13 @@ async function main() {
   if (await bindingPanel.count()) {
     await bindingPanel.scrollIntoViewIfNeeded();
     // 44. Binding panel — inputs + source code.
-    await bindingPanel.screenshot({ path: join(OUT_DIR, 'binding-panel.png') });
+    await bindingPanel.screenshot({ path: shot('binding-panel') });
     console.log('[capture] saved binding-panel.png');
 
     // 45. Binding results table.
     const bindingResults = bindingPage.getByTestId('logic-binding-results');
     if (await bindingResults.count()) {
-      await bindingResults.screenshot({ path: join(OUT_DIR, 'binding-results.png') });
+      await bindingResults.screenshot({ path: shot('binding-results') });
       console.log('[capture] saved binding-results.png');
     }
   }
@@ -601,26 +611,26 @@ async function main() {
   const dceExplorer = dcePage.getByTestId('defect-cost-explorer');
 
   // 46. Overview — escalating-cost pyramid, no phase selected.
-  await dceExplorer.screenshot({ path: join(OUT_DIR, 'defect-cost-overview.png') });
+  await dceExplorer.screenshot({ path: shot('defect-cost-overview') });
   console.log('[capture] saved defect-cost-overview.png');
 
   // 47. Requirements phase selected — cheapest fix.
   await dcePage.getByTestId('dce-col-requirements').click();
   await sleep(250);
-  await dceExplorer.screenshot({ path: join(OUT_DIR, 'defect-cost-requirements.png') });
+  await dceExplorer.screenshot({ path: shot('defect-cost-requirements') });
   console.log('[capture] saved defect-cost-requirements.png');
 
   // 48. Production phase selected — most expensive fix.
   await dcePage.getByTestId('dce-col-production').click();
   await sleep(250);
-  await dceExplorer.screenshot({ path: join(OUT_DIR, 'defect-cost-production.png') });
+  await dceExplorer.screenshot({ path: shot('defect-cost-production') });
   console.log('[capture] saved defect-cost-production.png');
 
   // 49. Cost chart focused.
   const dceChart = dcePage.getByTestId('dce-chart');
   if (await dceChart.count()) {
     await dceChart.scrollIntoViewIfNeeded();
-    await dceChart.screenshot({ path: join(OUT_DIR, 'defect-cost-chart.png') });
+    await dceChart.screenshot({ path: shot('defect-cost-chart') });
     console.log('[capture] saved defect-cost-chart.png');
   }
   await dcePage.close();
@@ -636,13 +646,13 @@ async function main() {
 
   // 50. Overview — full V diagram, no pair selected.
   await sleep(200);
-  await vmeExplorer.screenshot({ path: join(OUT_DIR, 'vmodel-overview.png') });
+  await vmeExplorer.screenshot({ path: shot('vmodel-overview') });
   console.log('[capture] saved vmodel-overview.png');
 
   // 51. Requirements ↔ acceptance pair selected (top of the V).
   await vmePage.getByTestId('vme-dev-requirements').click();
   await sleep(250);
-  await vmeExplorer.screenshot({ path: join(OUT_DIR, 'vmodel-requirements.png') });
+  await vmeExplorer.screenshot({ path: shot('vmodel-requirements') });
   console.log('[capture] saved vmodel-requirements.png');
 
   // 52. Implementation node selected (bottom of the V).
@@ -650,7 +660,7 @@ async function main() {
   if (await vmeImpl.count()) {
     await vmeImpl.click();
     await sleep(250);
-    await vmeExplorer.screenshot({ path: join(OUT_DIR, 'vmodel-implementation.png') });
+    await vmeExplorer.screenshot({ path: shot('vmodel-implementation') });
     console.log('[capture] saved vmodel-implementation.png');
   }
 
@@ -658,7 +668,7 @@ async function main() {
   const vmeDiagram = vmePage.getByTestId('vme-diagram');
   if (await vmeDiagram.count()) {
     await vmeDiagram.scrollIntoViewIfNeeded();
-    await vmeDiagram.screenshot({ path: join(OUT_DIR, 'vmodel-diagram.png') });
+    await vmeDiagram.screenshot({ path: shot('vmodel-diagram') });
     console.log('[capture] saved vmodel-diagram.png');
   }
   await vmePage.close();
@@ -675,7 +685,7 @@ async function main() {
   const ttPyramid = ttPage.getByTestId('pyramid');
   if (await ttPyramid.count()) {
     await ttPyramid.scrollIntoViewIfNeeded();
-    await ttPyramid.screenshot({ path: join(OUT_DIR, 'testing-types-pyramid.png') });
+    await ttPyramid.screenshot({ path: shot('testing-types-pyramid') });
     console.log('[capture] saved testing-types-pyramid.png');
   }
 
@@ -683,7 +693,7 @@ async function main() {
   const ttGrid = ttPage.getByTestId('types-grid');
   if (await ttGrid.count()) {
     await ttGrid.scrollIntoViewIfNeeded();
-    await ttGrid.screenshot({ path: join(OUT_DIR, 'testing-types-grid.png') });
+    await ttGrid.screenshot({ path: shot('testing-types-grid') });
     console.log('[capture] saved testing-types-grid.png');
   }
 
@@ -691,7 +701,7 @@ async function main() {
   const ttCard = ttPage.getByTestId('type-card-unit');
   if (await ttCard.count()) {
     await ttCard.scrollIntoViewIfNeeded();
-    await ttCard.screenshot({ path: join(OUT_DIR, 'testing-types-card.png') });
+    await ttCard.screenshot({ path: shot('testing-types-card') });
     console.log('[capture] saved testing-types-card.png');
   }
   await ttPage.close();
@@ -708,20 +718,20 @@ async function main() {
   // 57. Ideal pyramid (default preset).
   await pyaPage.locator('[data-pya-preset="ideal"]').click().catch(() => {});
   await sleep(300);
-  await pyaExplorer.screenshot({ path: join(OUT_DIR, 'test-pyramid-ideal.png') });
+  await pyaExplorer.screenshot({ path: shot('test-pyramid-ideal') });
   console.log('[capture] saved test-pyramid-ideal.png');
 
   // 58. Ice-cream-cone anti-pattern.
   await pyaPage.locator('[data-pya-preset="icecream"]').click().catch(() => {});
   await sleep(300);
-  await pyaExplorer.screenshot({ path: join(OUT_DIR, 'test-pyramid-icecream.png') });
+  await pyaExplorer.screenshot({ path: shot('test-pyramid-icecream') });
   console.log('[capture] saved test-pyramid-icecream.png');
 
   // 59. Trait bars focused (with the ice-cream preset still active).
   const pyaTraits = pyaPage.getByTestId('pya-traits');
   if (await pyaTraits.count()) {
     await pyaTraits.scrollIntoViewIfNeeded();
-    await pyaTraits.screenshot({ path: join(OUT_DIR, 'test-pyramid-traits.png') });
+    await pyaTraits.screenshot({ path: shot('test-pyramid-traits') });
     console.log('[capture] saved test-pyramid-traits.png');
   }
   await pyaPage.close();
@@ -736,13 +746,13 @@ async function main() {
 
   // 60. Overview — absVal preset (default).
   await sleep(300);
-  await ccExplorer.screenshot({ path: join(OUT_DIR, 'codecov-overview.png') });
+  await ccExplorer.screenshot({ path: shot('codecov-overview') });
   console.log('[capture] saved codecov-overview.png');
 
   // 61. Discount preset — a two-clause predicate (richer condition coverage).
   await ccPage.getByTestId('codecov-preset-discount').click().catch(() => {});
   await sleep(400);
-  await ccExplorer.screenshot({ path: join(OUT_DIR, 'codecov-discount.png') });
+  await ccExplorer.screenshot({ path: shot('codecov-discount') });
   console.log('[capture] saved codecov-discount.png');
 
   // 62. Coverage bars focused (stmt / branch / cond / mcdc).
@@ -750,7 +760,7 @@ async function main() {
   if (await ccBranch.count()) {
     const ccBars = ccBranch.locator('xpath=..');
     await ccBranch.scrollIntoViewIfNeeded();
-    await ccBars.screenshot({ path: join(OUT_DIR, 'codecov-bars.png') });
+    await ccBars.screenshot({ path: shot('codecov-bars') });
     console.log('[capture] saved codecov-bars.png');
   }
 
@@ -758,10 +768,50 @@ async function main() {
   const ccCode = ccPage.getByTestId('codecov-code-view');
   if (await ccCode.count()) {
     await ccCode.scrollIntoViewIfNeeded();
-    await ccCode.screenshot({ path: join(OUT_DIR, 'codecov-code.png') });
+    await ccCode.screenshot({ path: shot('codecov-code') });
     console.log('[capture] saved codecov-code.png');
   }
   await ccPage.close();
+
+  // ---- Decks #19–#27: Black-box design explorers ----
+  // The blackbox section is tabbed; each explorer is one tab. For every deck
+  // we grab an overview shot of the explorer root plus one focused sub-card.
+
+  const blackboxShots = [
+    { tab: 'bva',      root: 'bva-explorer',      card: 'bva-table',          names: ['bva-overview', 'bva-table'] },
+    { tab: 'ec',       root: 'ec-explorer',       card: 'ec-results',         names: ['ec-overview', 'ec-results'] },
+    { tab: 'dt',       root: 'dt-explorer',       card: 'dt-table',           names: ['dt-overview', 'dt-table'] },
+    { tab: 'st',       root: 'st-explorer',       card: 'st-diagram',         names: ['st-overview', 'st-diagram'] },
+    { tab: 'pairwise', root: 'pairwise-explorer', card: 'pairwise-table',     names: ['pairwise-overview', 'pairwise-table'] },
+    { tab: 'ceg',      root: 'ceg-explorer',      card: 'ceg-table',          names: ['ceg-overview', 'ceg-table'] },
+    { tab: 'mt',       root: 'mt-explorer',       card: 'mt-results',         names: ['mt-overview', 'mt-results'], pre: 'mt-generate' },
+    { tab: 'et',       root: 'et-explorer',       card: 'et-sfdipot-section', names: ['et-overview', 'et-sfdipot'] },
+    { tab: 'td',       root: 'td-explorer',       card: 'td-result',          names: ['td-overview', 'td-result'], pre: 'td-run' },
+  ];
+  for (const s of blackboxShots) {
+    const bp = await ctx.newPage();
+    await bp.goto(URL, { waitUntil: 'networkidle' });
+    await bp.getByTestId('nav-btn-blackbox').click();
+    await bp.locator(`[data-blackbox-tab="${s.tab}"]`).click();
+    await bp.getByTestId(s.root).waitFor();
+    await sleep(400);
+    await bp.getByTestId(s.root).screenshot({ path: shot(s.names[0]) });
+    console.log(`[capture] saved ${s.names[0]}.png`);
+    if (s.pre) {
+      await bp.getByTestId(s.pre).click().catch(() => {});
+      await sleep(600);
+    }
+    const card = bp.getByTestId(s.card);
+    if (await card.count()) {
+      await card.scrollIntoViewIfNeeded();
+      await card.screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png`);
+    } else {
+      await bp.getByTestId(s.root).screenshot({ path: shot(s.names[1]) });
+      console.log(`[capture] saved ${s.names[1]}.png (root fallback)`);
+    }
+    await bp.close();
+  }
 
   await browser.close();
   if (serverChild) {

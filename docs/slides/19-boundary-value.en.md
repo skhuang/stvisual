@@ -123,6 +123,23 @@ In `/section-blackbox`, open the **Boundary Value Explorer**:
 
 ---
 
+## Tool — boundary points per parameter
+
+![w:980](../assets/slides/bva-overview-en.png)
+
+Each parameter's 5 boundary points; the suite count grows as 4n+1.
+
+---
+
+## Tool — the generated BVA suite
+
+![w:980](../assets/slides/bva-table-en.png)
+
+Every row is one boundary case — min, min+1, nominal, max−1, max.
+
+---
+
+
 ## Summary
 
 - Defects cluster at **boundaries** — test the edges, not the middle.

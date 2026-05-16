@@ -109,7 +109,7 @@ For every testCase:
 
 ## Tool: overview
 
-![w:1000](../assets/slides/fuzz-overview.png)
+![w:1000](../assets/slides/fuzz-overview-en.png)
 
 - Top row: example chips `fuzz-example-{id}`.
 - `fuzz-source` is the code editor; `fuzz-test-count-input` accepts 1–200.
@@ -121,7 +121,7 @@ For every testCase:
 
 ## Tool: testCases and CFG
 
-![w:1000](../assets/slides/fuzz-cfg.png)
+![w:1000](../assets/slides/fuzz-cfg-en.png)
 
 - The middle `fuzz-cfg` renders the CFG, with `fuzz-cfg-zoom-{in,out,reset}` controls.
 - `fuzz-cases` lists every testCase (`fuzz-case-{id}`) with input, output, crash flag.

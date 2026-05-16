@@ -150,7 +150,7 @@ function isZero(x) {       // mutant: UOI inserts -
 
 ## Tool: overview
 
-![w:1000](../assets/slides/mutation-overview.png)
+![w:1000](../assets/slides/mutation-overview-en.png)
 
 - Built-in examples: `syntax-example-{max, isLeapYear, triangle, shapeHierarchy, nextDate, nextWeek}`.
 - `syntax-operators` is a row of 15 toggles, all multi-selectable.
@@ -174,7 +174,7 @@ Every change to program / tests / operators kicks off a three-step pipeline:
 
 ## Tool: mutant list
 
-![w:1000](../assets/slides/mutation-mutant-list.png)
+![w:1000](../assets/slides/mutation-mutant-list-en.png)
 
 - Grouped by operator (`syntax-mutant-group-{op}`); killed are green, live red, equivalent grey.
 - Each row shows `L<line>:<col>` and `original → mutated`.
@@ -185,7 +185,7 @@ Every change to program / tests / operators kicks off a three-step pipeline:
 
 ## Tool: per-test results
 
-![w:1000](../assets/slides/mutation-per-test.png)
+![w:1000](../assets/slides/mutation-per-test-en.png)
 
 - After selecting a mutant, `syntax-test-table` gains a column with **the mutant’s actual output for each test**.
 - Rows that kill the mutant are highlighted red; rows that do not are dimmed.

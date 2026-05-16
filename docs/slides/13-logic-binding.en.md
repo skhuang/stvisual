@@ -58,7 +58,7 @@ Abstract layer (Logic Coverage)
 
 ## The Binding UI
 
-![w:1000](../assets/slides/binding-panel.png)
+![w:1000](../assets/slides/binding-panel-en.png)
 
 - **Clause Binding** sub-panel sits below the Logic Coverage Explorer (expandable)
 - Each clause (a, b, c…) has a JS expression input
@@ -226,7 +226,7 @@ Clicking an example chip auto-fills `defaultBindings`:
 
 ## Binding Tool in Action
 
-![w:1000](../assets/slides/binding-results.png)
+![w:1000](../assets/slides/binding-results-en.png)
 
 - Left: clause input boxes (a ↦, b ↦, c ↦)
 - Middle: annotated source code (`← a` marks)

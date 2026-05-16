@@ -127,7 +127,7 @@ while R is not empty:
 
 ## Tool: Overview
 
-![w:1050](../assets/slides/testgen-overview.png)
+![w:1050](../assets/slides/testgen-overview-en.png)
 
 - Top bar: example chips (shared with #10/#11) + criterion drop-down
 - Left pane: interactive CFG (highlights change when you select a requirement or test)
@@ -138,7 +138,7 @@ while R is not empty:
 
 ## Tool: Requirements Card
 
-![w:1050](../assets/slides/testgen-requirements.png)
+![w:1050](../assets/slides/testgen-requirements-en.png)
 
 - Each row shows: requirement id, feasible/infeasible badge, representative witness (concrete call)
 - Click a row → CFG highlights the corresponding nodes/edges
@@ -148,7 +148,7 @@ while R is not empty:
 
 ## Tool: Minimal Tests Card
 
-![w:1050](../assets/slides/testgen-tests.png)
+![w:1050](../assets/slides/testgen-tests-en.png)
 
 - Each row shows: test number T₁/T₂/…, path id, concrete call + expected return value, covers list
 - Click a row → CFG highlights the full execution path of that test
@@ -158,7 +158,7 @@ while R is not empty:
 
 ## Tool: CFG Interaction
 
-![w:1050](../assets/slides/testgen-cfg.png)
+![w:1050](../assets/slides/testgen-cfg-en.png)
 
 - The CFG pane and the right cards are bidirectionally linked
 - Select a requirement → highlights that requirement's nodes/edges (blue/bold)
