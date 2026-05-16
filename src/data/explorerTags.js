@@ -40,6 +40,7 @@ export const TAG_TECHNIQUES = [
   'risk',
   'process',
   'model-based',
+  'agile',
 ];
 
 export const TAG_SERIES = [
@@ -52,6 +53,7 @@ export const TAG_SERIES = [
   'ai-assisted',
   'acceptance-e2e',
   'model-based',
+  'agile',
 ];
 
 export const TAG_DIFFICULTY = ['intro', 'intermediate', 'advanced', 'research'];
@@ -276,6 +278,12 @@ export const EXPLORER_TAGS = {
     level: ['system'], technique: ['model-based', 'mutation'], series: ['model-based'],
     difficulty: 'advanced', source: [TEXTBOOK],
   },
+
+  // ── Agile Testing (M-series) ──────────────────────────────────────
+  AgileQuadrantsExplorer: {
+    level: ['meta'], technique: ['agile', 'process'], series: ['agile'],
+    difficulty: 'intro', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -336,6 +344,9 @@ export const SECTION_EXPLORERS = {
     'EFSMGuardedTransitionExplorer',
     'UsageModelStatisticalExplorer',
     'ModelMutationExplorer',
+  ],
+  agile: [
+    'AgileQuadrantsExplorer',
   ],
 };
 

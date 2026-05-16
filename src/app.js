@@ -48,6 +48,7 @@ import { createWMethodConformanceExplorer } from './components/WMethodConformanc
 import { createEFSMGuardedTransitionExplorer } from './components/EFSMGuardedTransitionExplorer.js';
 import { createUsageModelStatisticalExplorer } from './components/UsageModelStatisticalExplorer.js';
 import { createModelMutationExplorer } from './components/ModelMutationExplorer.js';
+import { createAgileQuadrantsExplorer } from './components/AgileQuadrantsExplorer.js';
 import { createTagFilterBar } from './components/TagFilterBar.js';
 import { createCoursePackBar } from './components/CoursePackBar.js';
 import { sectionMatchesFilter } from './data/explorerTags.js';
@@ -80,6 +81,7 @@ const learningSectionsConfig = [
   { id: 'advanced', key: 'section.advanced' },
   { id: 'acceptance', key: 'section.acceptance' },
   { id: 'mbt', key: 'section.mbt' },
+  { id: 'agile', key: 'section.agile' },
   { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -120,6 +122,10 @@ const overviewGroups = [
   {
     key: 'overview.group.mbt',
     sectionIds: ['mbt'],
+  },
+  {
+    key: 'overview.group.agile',
+    sectionIds: ['agile'],
   },
 ];
 
@@ -210,6 +216,7 @@ export function renderApp(container) {
           <section data-testid="section-advanced" tabindex="-1" aria-labelledby="section-advanced-title"><h2 id="section-advanced-title">${t('section.advanced.title')}</h2><div data-slot="advanced"></div></section>
           <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t('section.acceptance.title')}</h2><div data-slot="acceptance"></div></section>
           <section data-testid="section-mbt" tabindex="-1" aria-labelledby="section-mbt-title"><h2 id="section-mbt-title">${t('section.mbt.title')}</h2><div data-slot="mbt"></div></section>
+          <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t('section.agile.title')}</h2><div data-slot="agile"></div></section>
           <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -255,6 +262,7 @@ export function renderApp(container) {
       advanced: main.querySelector('[data-testid="section-advanced"]'),
       acceptance: main.querySelector('[data-testid="section-acceptance"]'),
       mbt: main.querySelector('[data-testid="section-mbt"]'),
+      agile: main.querySelector('[data-testid="section-agile"]'),
       blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -305,6 +313,7 @@ export function renderApp(container) {
       efsm: createEFSMGuardedTransitionExplorer(),
       usage: createUsageModelStatisticalExplorer(),
       modelmut: createModelMutationExplorer(),
+      agilequadrants: createAgileQuadrantsExplorer(),
       cloud: createCloudStoragePanel(),
       flow: createTestingFlow(),
       defectCost: createDefectCostExplorer(),
@@ -566,6 +575,62 @@ export function renderApp(container) {
     }
     renderMbtTabs();
     updateMbtPanels();
+
+    // --- Agile Testing: tabbed (M1 Quadrants; M2-M6 land in subsequent PRs) ---
+    const agileTabs = [
+      { id: 'quadrants', key: 'agileTab.quadrants', component: components.agilequadrants },
+    ];
+    const agileSlot = container.querySelector('[data-slot="agile"]');
+    const agileTabBar = document.createElement('nav');
+    agileTabBar.className = 'syntax-tab-row';
+    agileTabBar.dataset.testid = 'agile-tab-row';
+    agileTabBar.setAttribute('role', 'tablist');
+    agileSlot.appendChild(agileTabBar);
+    const agilePanels = document.createElement('div');
+    agilePanels.className = 'syntax-tab-panels';
+    agileSlot.appendChild(agilePanels);
+    for (const tab of agileTabs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.agilePanel = tab.id;
+      panel.appendChild(tab.component);
+      agilePanels.appendChild(panel);
+    }
+    const AGILE_TAB_KEY = 'stvisual.agileActiveTab';
+    let savedAgileTab = null;
+    try { savedAgileTab = globalThis.localStorage?.getItem(AGILE_TAB_KEY); } catch {}
+    let activeAgileTab = resolveInitialTab({
+      sectionId: 'agile',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedAgileTab,
+    });
+    function renderAgileTabs() {
+      agileTabBar.innerHTML = agileTabs.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeAgileTab === tab.id ? ' active' : ''}"
+          data-agile-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeAgileTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      agileTabBar.querySelectorAll('[data-agile-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeAgileTab = btn.dataset.agileTab;
+          try { globalThis.localStorage?.setItem(AGILE_TAB_KEY, activeAgileTab); } catch {}
+          renderAgileTabs();
+          updateAgilePanels();
+          if (activeSection === 'agile') syncUrl();
+        });
+      });
+    }
+    function updateAgilePanels() {
+      agilePanels.querySelectorAll('[data-agile-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.agilePanel === activeAgileTab ? '' : 'none';
+      });
+    }
+    renderAgileTabs();
+    updateAgilePanels();
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [
@@ -889,6 +954,7 @@ export function renderApp(container) {
         case 'advanced':   return activeAdvancedTab;
         case 'acceptance': return activeAcceptanceTab;
         case 'mbt':        return activeMbtTab;
+        case 'agile':      return activeAgileTab;
         case 'flow':       return activeFlowTab;
         case 'types':      return activeTypesTab;
         default: return undefined;
