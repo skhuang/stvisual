@@ -67,6 +67,12 @@ const DECKS = [
   { base: '49-efsm-guarded-transition',      id: 'efsm-guarded-transition', num: 49, section: 'mbt' },
   { base: '50-usage-model-statistical',      id: 'usage-model-statistical', num: 50, section: 'mbt' },
   { base: '51-model-mutation',               id: 'model-mutation',      num: 51, section: 'mbt' },
+  { base: '52-agile-quadrants',              id: 'agile-quadrants',     num: 52, section: 'agile' },
+  { base: '53-sprint-cadence',               id: 'sprint-cadence',      num: 53, section: 'agile' },
+  { base: '54-definition-gates',             id: 'definition-gates',    num: 54, section: 'agile' },
+  { base: '55-example-mapping',              id: 'example-mapping',     num: 55, section: 'agile' },
+  { base: '56-continuous-testing',           id: 'continuous-testing',  num: 56, section: 'agile' },
+  { base: '57-regression-debt',              id: 'regression-debt',     num: 57, section: 'agile' },
 ];
 
 function frontMatterTitle(md) {
