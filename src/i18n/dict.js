@@ -818,6 +818,15 @@ export const messages = {
 
     // Regression & Test-Debt Explorer (M6)
     'agileTab.regression': 'Regression & Test Debt',
+    // Slide viewer
+    'slides.open': '📊 Course slides',
+    'slides.prev': 'Previous',
+    'slides.next': 'Next',
+    'slides.close': 'Close',
+    'slides.notes.show': '🗒 Notes',
+    'slides.notes.hide': '🗒 Hide notes',
+    'slides.counter': 'Slide {n} / {total}',
+    'slides.empty': 'No slides available.',
     'rdebt.title': 'Regression & Test-Debt Explorer',
     'rdebt.desc': 'An agile regression suite grows every sprint. Left unmanaged, obsolete and flaky tests pile up — maintenance cost climbs while the value the suite delivers flattens out. Where the lines cross is test debt. Pruning, quarantine and risk-based selection push that crossover back, or remove it.',
     'rdebt.strategies': 'Maintenance strategies:',
@@ -3310,6 +3319,15 @@ export const messages = {
 
     // 回歸測試與測試債探索器（M6）
     'agileTab.regression': '回歸與測試債',
+    // 簡報檢視器
+    'slides.open': '📊 課程簡報',
+    'slides.prev': '上一張',
+    'slides.next': '下一張',
+    'slides.close': '關閉',
+    'slides.notes.show': '🗒 講者備註',
+    'slides.notes.hide': '🗒 隱藏備註',
+    'slides.counter': '第 {n} / {total} 張',
+    'slides.empty': '尚無簡報。',
     'rdebt.title': '回歸測試與測試債探索器',
     'rdebt.desc': '敏捷的回歸套件每個 sprint 都在長大。若不照料，過時與 flaky 測試會堆積——維護成本攀升，而套件帶來的價值卻趨於平緩。兩條線交叉之處就是測試債。修剪、隔離與風險導向挑選能把交叉點往後推，或讓它消失。',
     'rdebt.strategies': '維護策略：',
