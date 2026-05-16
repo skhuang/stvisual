@@ -300,6 +300,10 @@ export const EXPLORER_TAGS = {
     level: ['meta'], technique: ['agile', 'process'], series: ['agile'],
     difficulty: 'intermediate', source: [TEXTBOOK],
   },
+  RegressionDebtExplorer: {
+    level: ['meta'], technique: ['agile', 'risk'], series: ['agile'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -367,6 +371,7 @@ export const SECTION_EXPLORERS = {
     'DefinitionGatesExplorer',
     'ExampleMappingExplorer',
     'ContinuousTestingPipelineExplorer',
+    'RegressionDebtExplorer',
   ],
 };
 

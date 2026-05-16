@@ -1,0 +1,61 @@
+.rdebt-wrap { display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0; }
+.rdebt-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.rdebt-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+/* ── Strategies ── */
+.rdebt-strategies { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.9rem; }
+.rdebt-strat-label { font-size: 0.8rem; font-weight: 700; color: #475569; }
+.rdebt-strat { display: flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; color: #374151; cursor: pointer; }
+
+/* ── Chart ── */
+.rdebt-chart-wrap { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.7rem; }
+.rdebt-chart { width: 100%; height: auto; display: block; }
+.rdebt-line { fill: none; stroke-width: 2.5; }
+.rdebt-line--value { stroke: #16a34a; }
+.rdebt-line--cost  { stroke: #dc2626; }
+.rdebt-crossline { stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.rdebt-xtick { font-size: 8px; fill: #94a3b8; }
+.rdebt-legend { display: flex; gap: 1rem; margin-top: 0.3rem; }
+.rdebt-legend-item { display: flex; align-items: center; gap: 0.3rem; font-size: 0.76rem; color: #475569; }
+.rdebt-swatch { width: 0.85rem; height: 0.2rem; border-radius: 2px; display: inline-block; }
+.rdebt-swatch--value { background: #16a34a; }
+.rdebt-swatch--cost  { background: #dc2626; }
+
+/* ── Summary ── */
+.rdebt-summary { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.85rem; }
+.rdebt-stats { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+.rdebt-stat {
+  font-size: 0.78rem; color: #475569; background: #f1f5f9;
+  border-radius: 5px; padding: 0.25rem 0.6rem;
+}
+.rdebt-stat b { color: #1f2a44; font-size: 0.9rem; }
+.rdebt-verdict { margin: 0; font-size: 0.85rem; font-weight: 700; border-radius: 5px; padding: 0.45rem 0.65rem; }
+.rdebt-verdict--debt { background: #fee2e2; color: #991b1b; }
+.rdebt-verdict--ok   { background: #dcfce7; color: #166534; }
+
+/* ── Bridges ── */
+.rdebt-bridges { display: flex; flex-wrap: wrap; gap: 6px; }
+.rdebt-bridge {
+  padding: 0.25rem 0.7rem; border: 1px solid #1d4ed8; border-radius: 999px;
+  background: #fff; color: #1d4ed8; font-size: 0.78rem; cursor: pointer;
+}
+.rdebt-bridge:hover { background: #1d4ed8; color: #fff; }
+
+/* ── Self-test ── */
+.rdebt-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.rdebt-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+.rdebt-quiz-start, .rdebt-lab-start {
+  padding: 0.35rem 0.9rem; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer; align-self: flex-start;
+}
+.rdebt-quiz-start:hover, .rdebt-lab-start:hover { background: #1e40af; }
+.rdebt-quiz-prompt { font-size: 0.88rem; font-weight: 600; margin: 0 0 0.5rem; color: #1f2a44; }
+.rdebt-quiz-option { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.3rem; cursor: pointer; color: #374151; }
+.rdebt-quiz-submit {
+  margin-top: 0.5rem; padding: 0.3rem 0.8rem;
+  background: #1d4ed8; color: #fff; border: none; border-radius: 5px; font-size: 0.82rem; cursor: pointer;
+}
+.rdebt-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.rdebt-quiz-result { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.rdebt-lab-prompt { font-size: 0.88rem; color: #374151; margin: 0 0 0.4rem; }
+.rdebt-lab-textarea { width: 100%; border: 1px solid #d0d7e2; border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }
