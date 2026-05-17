@@ -842,11 +842,15 @@ export const EXPLORER_TAGS = {
 
 **端到端流程**：選 pack chip → URL 變 `?pack=ai-assisted` → ⬇ Export Markdown → 下載 `.md`，每個 Explorer 都附 `https://demo/?explorer=<Component>` 可點連結，學生點下去落在正確 section + tab。
 
-### 延後項目
+### 延後項目（已完成 2026-05-17）
 
-- **`?lang=` URL 鎖定**：分享連結強制語言。i18n 已在處理 locale，需求出現再加。
-- **原生 `#anchor` 跳轉**：替代 `?section=`，給 section 加 `id` 屬性即可。
-- **CoursePack 自訂排序**：`order: [...]` 欄位允許 pack 內部 Explorer 排序，目前延用 `EXPLORER_TAGS` 鍵序已夠用。
+| 項目 | 說明 |
+| --- | --- |
+| **`?lang=` URL 鎖定** | 分享連結可帶 `?lang=en\|zh` 強制語言；session-only、不覆蓋訪客偏好；URL 與語言切換同步。 |
+| **原生 `#anchor` 跳轉** | 每個 section 有 `id`；`#section-<id>` 為 `?section=` 的替代進入路徑，query param 優先。 |
+| **CoursePack 自訂排序** | `order: [...]` 欄位排序 pack 內 Explorer；`foundations` pack 已套用教學順序。 |
+
+設計與計畫：`docs/superpowers/specs/2026-05-17-coursepack-url-customization-design.md`、`docs/superpowers/plans/2026-05-17-coursepack-url-customization.md`。
 
 ---
 
