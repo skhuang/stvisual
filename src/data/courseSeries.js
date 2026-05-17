@@ -79,7 +79,8 @@ export function getCoursePack(id) {
 export function applyPackOrder(matched, order) {
   if (!Array.isArray(order) || order.length === 0) return matched;
   const matchedSet = new Set(matched);
-  const pinned = order.filter((id) => matchedSet.has(id));
+  // Dedup `order` first so a repeated id cannot appear twice in the result.
+  const pinned = [...new Set(order)].filter((id) => matchedSet.has(id));
   const pinnedSet = new Set(pinned);
   return [...pinned, ...matched.filter((id) => !pinnedSet.has(id))];
 }

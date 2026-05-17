@@ -99,6 +99,10 @@ describe('K — course pack custom ordering', () => {
   it('applyPackOrder returns matched unchanged when order is absent or empty', () => {
     expect(applyPackOrder(['a', 'b'], undefined)).toEqual(['a', 'b']);
     expect(applyPackOrder(['a', 'b'], [])).toEqual(['a', 'b']);
+    expect(applyPackOrder([], ['a', 'b'])).toEqual([]);
+  });
+  it('applyPackOrder does not duplicate an id repeated in order', () => {
+    expect(applyPackOrder(['a', 'b', 'c'], ['b', 'b', 'a'])).toEqual(['b', 'a', 'c']);
   });
   it('the foundations pack honours its order field', () => {
     expect(getCoursePackExplorers('foundations')).toEqual([
