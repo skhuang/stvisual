@@ -332,13 +332,16 @@ In `src/app.js`, find the `popstate` listener (~line 1232, `globalThis.addEventL
 ```js
 
   // A deliberate `#section-<id>` hash navigation overrides any stale
-  // ?section= query. Reload from a search-free URL so boot re-applies
-  // state from the hash alone. Non-section hashes (skip-links) are left
-  // to the browser's native behaviour.
+  // ?section= query. Reload from a URL that keeps only ?lang= (so a
+  // language lock survives) so boot re-applies state from the hash alone.
+  // Non-section hashes (skip-links) are left to the browser's native
+  // behaviour.
   globalThis.addEventListener?.('hashchange', () => {
     const hash = globalThis.location?.hash ?? '';
     if (/^#section-[a-z0-9-]+$/.test(hash)) {
-      globalThis.location?.replace?.(`${globalThis.location.pathname}${hash}`);
+      const lang = new URLSearchParams(globalThis.location?.search ?? '').get('lang');
+      const qs = (lang === 'en' || lang === 'zh') ? `?lang=${lang}` : '';
+      globalThis.location?.replace?.(`${globalThis.location.pathname}${qs}${hash}`);
     }
   });
 ```
