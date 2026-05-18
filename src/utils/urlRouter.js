@@ -97,6 +97,7 @@ export const EXPLORER_TO_LOCATION = {
   RegressionDebtExplorer:      { section: 'agile', tab: 'regression' },
   ProgramSlicingExplorer:      { section: 'slicing', tab: 'program' },
   SliceDicingExplorer:         { section: 'slicing', tab: 'dicing' },
+  SliceCoverageExplorer:       { section: 'slicing', tab: 'coverage' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

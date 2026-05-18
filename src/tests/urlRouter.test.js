@@ -56,6 +56,11 @@ describe('K4 — urlRouter parse', () => {
       .toEqual({ explorer: 'SliceDicingExplorer', section: 'slicing', tab: 'dicing' });
   });
 
+  it('?explorer=SliceCoverageExplorer resolves to slicing section, coverage tab', () => {
+    expect(parseAppLocation('?explorer=SliceCoverageExplorer'))
+      .toEqual({ explorer: 'SliceCoverageExplorer', section: 'slicing', tab: 'coverage' });
+  });
+
   it('?pack= is captured', () => {
     expect(parseAppLocation('?pack=ai-assisted')).toEqual({ pack: 'ai-assisted' });
   });

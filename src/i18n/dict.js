@@ -642,6 +642,23 @@ export const messages = {
     'dicing.quiz.correct': 'Correct! Dicing discards statements that appear in a passing slice — what remains is the dice: statements unique to the failing execution path.',
     'dicing.quiz.wrong': 'Not quite. Dicing subtracts from the failing slice any statement also found in a passing slice, isolating the most suspicious region.',
 
+    // Slice Coverage Explorer (N3)
+    'coverage.title': 'Slice Coverage Explorer',
+    'coverage.desc': 'The backward slice of the output statement defines the coverage target. Toggle test traces and watch slice coverage beside plain statement coverage; uncovered slice statements are surfaced as gaps.',
+    'coverage.traceLabel': 'Traces',
+    'coverage.sliceCoverage': 'Slice coverage',
+    'coverage.stmtCoverage': 'Statement coverage',
+    'coverage.fullyCovered': 'All slice statements covered — the output is fully exercised.',
+    'coverage.outsideSlice': 'Executed but outside slice:',
+    'coverage.gapsTitle': 'Coverage Gaps',
+    'coverage.quiz.prompt': 'Which statement best describes slice-based coverage?',
+    'coverage.quiz.a': 'A. It measures the proportion of all statements executed by the test suite.',
+    'coverage.quiz.b': 'B. It measures only branch outcomes regardless of data flow.',
+    'coverage.quiz.c': 'C. It measures which statements in the backward slice of the criterion variable are executed.',
+    'coverage.quiz.d': 'D. It counts the number of distinct input values explored.',
+    'coverage.quiz.correct': 'Correct! Slice coverage counts executed statements within the backward slice — a finer target than plain statement coverage.',
+    'coverage.quiz.wrong': 'Not quite. Slice coverage focuses on the backward slice of the chosen criterion, not the entire program.',
+
     // Agile Testing Quadrants Explorer (M1)
     'agq.title': 'Agile Testing Quadrants Explorer',
     'agq.desc': "Brian Marick's quadrants, popularised by Crispin & Gregory, are the map of agile testing. Two axes — business-facing vs technology-facing, and supporting the team vs critiquing the product — sort every kind of test. Click a quadrant; most technique chips bridge to the Explorer that teaches it in depth.",
@@ -3496,6 +3513,23 @@ export const messages = {
     'dicing.quiz.d': 'D. 失敗執行從未執行到的陳述句。',
     'dicing.quiz.correct': '正確！切丁去除了也出現在通過切片中的陳述句——剩餘部分即為切丁：失敗執行路徑中獨有的陳述句。',
     'dicing.quiz.wrong': '不太對。切丁從失敗切片中減去也出現在通過切片的陳述句，從而隔離最可疑的區域。',
+
+    // 切片覆蓋探索器（N3）
+    'coverage.title': '切片覆蓋探索器',
+    'coverage.desc': '輸出陳述句的後向切片定義了覆蓋目標。切換測試軌跡，同時觀察切片覆蓋率與純陳述句覆蓋率；未被覆蓋的切片陳述句會被標示為缺口。',
+    'coverage.traceLabel': '執行軌跡',
+    'coverage.sliceCoverage': '切片覆蓋率',
+    'coverage.stmtCoverage': '陳述句覆蓋率',
+    'coverage.fullyCovered': '所有切片陳述句皆已覆蓋——輸出已被完整執行。',
+    'coverage.outsideSlice': '已執行但不在切片中：',
+    'coverage.gapsTitle': '覆蓋缺口',
+    'coverage.quiz.prompt': '下列哪一項最能描述以切片為基礎的覆蓋準則？',
+    'coverage.quiz.a': 'A. 測試套件執行的所有陳述句比例。',
+    'coverage.quiz.b': 'B. 僅衡量分支結果，與資料流無關。',
+    'coverage.quiz.c': 'C. 衡量條件變數後向切片中被執行的陳述句。',
+    'coverage.quiz.d': 'D. 計算探索的不同輸入值數量。',
+    'coverage.quiz.correct': '正確！切片覆蓋統計後向切片中已執行的陳述句——比純陳述句覆蓋更精細的目標。',
+    'coverage.quiz.wrong': '不太對。切片覆蓋聚焦於所選條件的後向切片，而非整個程式。',
 
     // BDD / Gherkin 探索器（J1）
     'bdd.title': 'BDD / Gherkin 探索器',

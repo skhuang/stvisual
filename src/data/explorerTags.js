@@ -322,6 +322,13 @@ export const EXPLORER_TAGS = {
     difficulty: 'intermediate',
     source: [TEXTBOOK],
   },
+  SliceCoverageExplorer: {
+    level: ['unit'],
+    technique: ['slicing'],
+    series: ['slicing'],
+    difficulty: 'intermediate',
+    source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -391,7 +398,7 @@ export const SECTION_EXPLORERS = {
     'ContinuousTestingPipelineExplorer',
     'RegressionDebtExplorer',
   ],
-  slicing: ['ProgramSlicingExplorer', 'SliceDicingExplorer'],
+  slicing: ['ProgramSlicingExplorer', 'SliceDicingExplorer', 'SliceCoverageExplorer'],
 };
 
 // ── Helpers ────────────────────────────────────────────────────────

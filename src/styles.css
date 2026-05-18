@@ -62,6 +62,7 @@
 @import url('./components/RegressionDebtExplorer.css');
 @import url('./components/ProgramSlicingExplorer.css');
 @import url('./components/SliceDicingExplorer.css');
+@import url('./components/SliceCoverageExplorer.css');
 @import url('./components/SlideViewer.css');
 @import url('./components/quiz.css');
 

@@ -52,6 +52,7 @@ import { createAgileQuadrantsExplorer } from './components/AgileQuadrantsExplore
 import { createSprintCadenceExplorer } from './components/SprintCadenceExplorer.js';
 import { createProgramSlicingExplorer } from './components/ProgramSlicingExplorer.js';
 import { createSliceDicingExplorer } from './components/SliceDicingExplorer.js';
+import { createSliceCoverageExplorer } from './components/SliceCoverageExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
@@ -364,6 +365,7 @@ export function renderApp(container) {
       sprintcadence: createSprintCadenceExplorer(),
       programslicing: createProgramSlicingExplorer(),
       dicing: createSliceDicingExplorer(),
+      coverage: createSliceCoverageExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
       ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -702,7 +704,7 @@ export function renderApp(container) {
     slicingPanels.className = 'syntax-tab-panels';
     slicingSlot.appendChild(slicingPanels);
 
-    // program / dicing panels get real components; coverage / regression are placeholders
+    // program / dicing / coverage panels get real components; regression is a placeholder
     const slicingTabDefs = ['program', 'dicing', 'coverage', 'regression'];
     for (const tabId of slicingTabDefs) {
       const panel = document.createElement('div');
@@ -712,6 +714,8 @@ export function renderApp(container) {
         panel.appendChild(components.programslicing);
       } else if (tabId === 'dicing') {
         panel.appendChild(components.dicing);
+      } else if (tabId === 'coverage') {
+        panel.appendChild(components.coverage);
       } else {
         const placeholder = document.createElement('p');
         placeholder.textContent = t('slicing.tab.comingSoon');
