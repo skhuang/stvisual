@@ -38,15 +38,22 @@ function buildLineIndex(statements) {
  * The source code as an <ol class="slice-code">; statements in `sliceSet`
  * get class `slice-stmt--in` and every statement line carries `data-stmt`.
  */
-export function renderSliceCodeListing(example, sliceSet) {
+export function renderSliceCodeListing(example, sliceSet, options = {}) {
+  const secondary = options.secondary || new Set();
   const lineIndex = buildLineIndex(example.statements);
   const items = example.source.map((rawLine, i) => {
     const lineNum = i + 1; // source is 0-indexed array, lines are 1-indexed
     const stmtId = lineIndex.get(lineNum);
     const escaped = escapeSourceLine(rawLine);
     if (stmtId) {
-      const inSlice = sliceSet.has(stmtId);
-      const cls = `slice-stmt${inSlice ? ' slice-stmt--in' : ''}`;
+      let cls;
+      if (sliceSet.has(stmtId)) {
+        cls = 'slice-stmt slice-stmt--in';
+      } else if (secondary.has(stmtId)) {
+        cls = 'slice-stmt slice-stmt--ctx';
+      } else {
+        cls = 'slice-stmt';
+      }
       // data-stmt must come before class so the regex /data-stmt="..."[^>]*slice-stmt--in/ matches
       return `<li data-stmt="${escapeAttr(stmtId)}" class="${cls}">${escaped}</li>`;
     }
@@ -88,6 +95,7 @@ function trimToCircle(from, to, radius) {
 export function renderSlicePdgGraph(example, sliceSet, options = {}) {
   const idPrefix = options.idPrefix || 'slice';
   const zoom = Number.isFinite(options.zoom) && options.zoom > 0 ? options.zoom : 1;
+  const secondary = options.secondary || new Set();
   const stmts = example.statements;
   const positions = new Map(stmts.map((s, i) => [s.id, nodePos(i)]));
 
@@ -128,11 +136,17 @@ export function renderSlicePdgGraph(example, sliceSet, options = {}) {
   // Nodes
   const nodes = stmts.map((stmt) => {
     const pos = positions.get(stmt.id);
-    const inSlice = sliceSet.has(stmt.id);
-    const cls = `pdg-node${inSlice ? ' pdg-node--in' : ''}`;
+    let cls;
+    if (sliceSet.has(stmt.id)) {
+      cls = 'pdg-node pdg-node--in';
+    } else if (secondary.has(stmt.id)) {
+      cls = 'pdg-node pdg-node--ctx';
+    } else {
+      cls = 'pdg-node';
+    }
     const label = escapeHtml(stmt.id);
     const title = `<title>${escapeHtml(stmt.text)}</title>`;
-    return `<g class="${cls}" data-pdg-node="${escapeAttr(stmt.id)}">${title}<circle cx="${pos.x}" cy="${pos.y}" r="${NODE_R}"></circle><text x="${pos.x}" y="${pos.y + 5}" text-anchor="middle">${label}</text></g>`;
+    return `<g data-pdg-node="${escapeAttr(stmt.id)}" class="${cls}">${title}<circle cx="${pos.x}" cy="${pos.y}" r="${NODE_R}"></circle><text x="${pos.x}" y="${pos.y + 5}" text-anchor="middle">${label}</text></g>`;
   }).join('');
 
   // At zoom=1 the svg fills 100% of its container; at zoom>1 it renders wider
@@ -169,7 +183,7 @@ export function renderSlicePdgGraph(example, sliceSet, options = {}) {
  * @returns {string}
  */
 export function renderSlicePdgView(example, sliceSet, options = {}) {
-  const listing = renderSliceCodeListing(example, sliceSet);
+  const listing = renderSliceCodeListing(example, sliceSet, options);
   const svg = renderSlicePdgGraph(example, sliceSet, options);
   return `<div class="slice-pdg-view">\n${listing}\n${svg}\n</div>`;
 }

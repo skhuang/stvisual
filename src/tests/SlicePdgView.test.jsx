@@ -52,3 +52,19 @@ describe('renderSlicePdgGraph', () => {
     expect(renderSlicePdgGraph(ex, new Set(), { zoom: 2 })).toContain('width:200%');
   });
 });
+
+describe('secondary highlight', () => {
+  it('renderSliceCodeListing marks secondary-only statements with --ctx', () => {
+    const html = renderSliceCodeListing(ex, new Set(['s2']), { secondary: new Set(['s3']) });
+    expect(html).toMatch(/data-stmt="s3"[^>]*slice-stmt--ctx/);
+    // a statement in the primary slice keeps --in, not --ctx
+    expect(html).toMatch(/data-stmt="s2"[^>]*slice-stmt--in/);
+  });
+  it('renderSlicePdgGraph marks secondary-only nodes with --ctx', () => {
+    const html = renderSlicePdgGraph(ex, new Set(['s2']), { secondary: new Set(['s3']) });
+    expect(html).toMatch(/data-pdg-node="s3"[^>]*pdg-node--ctx/);
+  });
+  it('omitting secondary leaves output unchanged (no --ctx)', () => {
+    expect(renderSliceCodeListing(ex, new Set(['s2']))).not.toContain('--ctx');
+  });
+});
