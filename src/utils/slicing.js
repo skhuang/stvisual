@@ -128,3 +128,19 @@ export function slicesIntersect(a, b) {
   }
   return false;
 }
+
+// Slice-based coverage. Given a slice (Set of statement ids) and the set of
+// statement ids executed by a test suite, report which slice statements were
+// covered, which were missed, and the coverage percentage. An empty slice is
+// vacuously 100% covered.
+export function sliceCoverage(slice, executed) {
+  const covered = new Set();
+  const uncovered = new Set();
+  for (const id of slice) {
+    if (executed.has(id)) covered.add(id);
+    else uncovered.add(id);
+  }
+  const total = slice.size;
+  const pct = total === 0 ? 100 : Math.round((covered.size / total) * 100);
+  return { covered, uncovered, pct };
+}

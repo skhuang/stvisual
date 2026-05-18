@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  backwardSlice, forwardSlice, dynamicSlice, programDice, slicesIntersect,
+  backwardSlice, forwardSlice, dynamicSlice, programDice, slicesIntersect, sliceCoverage,
 } from '../utils/slicing.js';
 
 // Minimal PDG:  s1: x=1   s2: y=2   s3: z=x+y   s4: return z
@@ -66,5 +66,31 @@ describe('slicesIntersect', () => {
   it('is true iff the slices share a statement', () => {
     expect(slicesIntersect(new Set(['a', 'b']), new Set(['b', 'c']))).toBe(true);
     expect(slicesIntersect(new Set(['a']), new Set(['z']))).toBe(false);
+  });
+});
+
+describe('sliceCoverage', () => {
+  it('reports full coverage when every slice statement is executed', () => {
+    const r = sliceCoverage(new Set(['a', 'b']), new Set(['a', 'b', 'c']));
+    expect([...r.covered].sort()).toEqual(['a', 'b']);
+    expect([...r.uncovered]).toEqual([]);
+    expect(r.pct).toBe(100);
+  });
+  it('splits covered vs uncovered on a partial suite', () => {
+    const r = sliceCoverage(new Set(['a', 'b', 'c']), new Set(['a', 'c']));
+    expect([...r.covered].sort()).toEqual(['a', 'c']);
+    expect([...r.uncovered]).toEqual(['b']);
+    expect(r.pct).toBe(67); // round(2/3 * 100)
+  });
+  it('reports 0% when nothing is executed', () => {
+    const r = sliceCoverage(new Set(['a', 'b']), new Set());
+    expect(r.pct).toBe(0);
+    expect([...r.uncovered].sort()).toEqual(['a', 'b']);
+  });
+  it('an empty slice is vacuously 100% covered', () => {
+    const r = sliceCoverage(new Set(), new Set(['a']));
+    expect(r.pct).toBe(100);
+    expect(r.covered.size).toBe(0);
+    expect(r.uncovered.size).toBe(0);
   });
 });
