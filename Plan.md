@@ -1203,6 +1203,30 @@ M1 = `{ level:['meta'], technique:['agile','process'], series:['agile'], difficu
 
 ---
 
+## N. Slice-Based Testing Explorer（規劃中）
+
+> **教學缺口**：課程已有資料流覆蓋（def-use），但未涵蓋**程式切片（program slicing）**——
+> 給定切片準則 ⟨敘述, 變數⟩，找出會影響（或被影響）該值的敘述子集。切片是程式理解、
+> 除錯與回歸測試選擇的基礎工具。
+
+新增 `slicing` section，四個分頁：
+
+| 分頁 | Explorer | 內容 | 狀態 |
+| --- | --- | --- | --- |
+| **N1** | Program Slicing | 後向／前向切片、靜態／動態、PDG（控制＋資料相依） | ✅ 已完成 2026-05-18 |
+| **N2** | Fault Localization / Dicing | 對失敗輸出切片，與通過執行做 program dicing 定位缺陷 | 待實作 |
+| **N3** | Slice-Based Coverage | 以切片作為測試充分性準則 | 待實作 |
+| **N4** | Regression Test Selection | 以切片相交判斷修改影響哪些測試需重跑 | 待實作 |
+
+切片引擎 `src/utils/slicing.js`（純函式：backward / forward / dynamic slice、dicing、相交）
+在 authored PDG（`src/data/slicingExamples.js`）上做圖可達性。N1 為基礎，附簡報 #58；
+N2–N4 各自獨立 plan / PR。
+
+設計與計畫：`docs/superpowers/specs/2026-05-18-slice-based-testing-design.md`、
+`docs/superpowers/plans/2026-05-18-slice-based-testing-n1.md`。
+
+---
+
 ## 技術棧備忘
 
 | 工具 | 用途 |
