@@ -41,6 +41,7 @@ export const TAG_TECHNIQUES = [
   'process',
   'model-based',
   'agile',
+  'slicing',
 ];
 
 export const TAG_SERIES = [
@@ -54,6 +55,7 @@ export const TAG_SERIES = [
   'acceptance-e2e',
   'model-based',
   'agile',
+  'slicing',
 ];
 
 export const TAG_DIFFICULTY = ['intro', 'intermediate', 'advanced', 'research'];
@@ -304,6 +306,15 @@ export const EXPLORER_TAGS = {
     level: ['meta'], technique: ['agile', 'risk'], series: ['agile'],
     difficulty: 'intermediate', source: [TEXTBOOK],
   },
+
+  // ── Slice-Based Testing ───────────────────────────────────────────
+  ProgramSlicingExplorer: {
+    level: ['unit'],
+    technique: ['slicing'],
+    series: ['slicing'],
+    difficulty: 'intermediate',
+    source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -373,6 +384,7 @@ export const SECTION_EXPLORERS = {
     'ContinuousTestingPipelineExplorer',
     'RegressionDebtExplorer',
   ],
+  slicing: ['ProgramSlicingExplorer'],
 };
 
 // ── Helpers ────────────────────────────────────────────────────────

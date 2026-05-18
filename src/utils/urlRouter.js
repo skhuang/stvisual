@@ -31,6 +31,9 @@ export const TAB_SECTIONS = {
   mbt: { tabs: ['workflow', 'fsmgen', 'wmethod', 'efsm', 'usage', 'modelmut'], default: 'workflow' },
   // M-series agile tabs — M1-M6 complete.
   agile: { tabs: ['quadrants', 'cadence', 'gates', 'examplemap', 'pipeline', 'regression'], default: 'quadrants' },
+  // Section N — slice-based testing. N1 ships 'program'; N2-N4 tabs are
+  // added to this list as their plans land.
+  slicing: { tabs: ['program', 'dicing', 'coverage', 'regression'], default: 'program' },
 };
 
 // ── ComponentName → { section, tab? } ────────────────────────────────
@@ -92,6 +95,7 @@ export const EXPLORER_TO_LOCATION = {
   ExampleMappingExplorer:      { section: 'agile', tab: 'examplemap' },
   ContinuousTestingPipelineExplorer: { section: 'agile', tab: 'pipeline' },
   RegressionDebtExplorer:      { section: 'agile', tab: 'regression' },
+  ProgramSlicingExplorer:      { section: 'slicing', tab: 'program' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

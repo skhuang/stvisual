@@ -46,6 +46,11 @@ describe('K4 — urlRouter parse', () => {
     expect(parseAppLocation('?explorer=NoSuch&section=fuzz')).toEqual({ section: 'fuzz' });
   });
 
+  it('?explorer=ProgramSlicingExplorer resolves to slicing section, program tab', () => {
+    expect(parseAppLocation('?explorer=ProgramSlicingExplorer'))
+      .toEqual({ explorer: 'ProgramSlicingExplorer', section: 'slicing', tab: 'program' });
+  });
+
   it('?pack= is captured', () => {
     expect(parseAppLocation('?pack=ai-assisted')).toEqual({ pack: 'ai-assisted' });
   });

@@ -50,6 +50,7 @@ import { createUsageModelStatisticalExplorer } from './components/UsageModelStat
 import { createModelMutationExplorer } from './components/ModelMutationExplorer.js';
 import { createAgileQuadrantsExplorer } from './components/AgileQuadrantsExplorer.js';
 import { createSprintCadenceExplorer } from './components/SprintCadenceExplorer.js';
+import { createProgramSlicingExplorer } from './components/ProgramSlicingExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
@@ -89,6 +90,7 @@ const learningSectionsConfig = [
   { id: 'acceptance', key: 'section.acceptance' },
   { id: 'mbt', key: 'section.mbt' },
   { id: 'agile', key: 'section.agile' },
+  { id: 'slicing', key: 'section.slicing' },
   { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -133,6 +135,10 @@ const overviewGroups = [
   {
     key: 'overview.group.agile',
     sectionIds: ['agile'],
+  },
+  {
+    key: 'overview.group.slicing',
+    sectionIds: ['slicing'],
   },
 ];
 
@@ -231,6 +237,7 @@ export function renderApp(container) {
           <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t('section.acceptance.title')}</h2><div data-slot="acceptance"></div></section>
           <section data-testid="section-mbt" tabindex="-1" aria-labelledby="section-mbt-title"><h2 id="section-mbt-title">${t('section.mbt.title')}</h2><div data-slot="mbt"></div></section>
           <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t('section.agile.title')}</h2><div data-slot="agile"></div></section>
+          <section data-testid="section-slicing" tabindex="-1" aria-labelledby="section-slicing-title"><h2 id="section-slicing-title">${t('section.slicing.title')}</h2><div data-slot="slicing"></div></section>
           <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -277,6 +284,7 @@ export function renderApp(container) {
       acceptance: main.querySelector('[data-testid="section-acceptance"]'),
       mbt: main.querySelector('[data-testid="section-mbt"]'),
       agile: main.querySelector('[data-testid="section-agile"]'),
+      slicing: main.querySelector('[data-testid="section-slicing"]'),
       blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -353,6 +361,7 @@ export function renderApp(container) {
       modelmut: createModelMutationExplorer(),
       agilequadrants: createAgileQuadrantsExplorer(),
       sprintcadence: createSprintCadenceExplorer(),
+      programslicing: createProgramSlicingExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
       ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -679,6 +688,77 @@ export function renderApp(container) {
     }
     renderAgileTabs();
     updateAgilePanels();
+
+    // --- Slice-Based Testing: tabbed (N1 Program Slicing; N2-N4 are placeholders) ---
+    const slicingSlot = container.querySelector('[data-slot="slicing"]');
+    const slicingTabBar = document.createElement('nav');
+    slicingTabBar.className = 'syntax-tab-row';
+    slicingTabBar.dataset.testid = 'slicing-tab-row';
+    slicingTabBar.setAttribute('role', 'tablist');
+    slicingSlot.appendChild(slicingTabBar);
+    const slicingPanels = document.createElement('div');
+    slicingPanels.className = 'syntax-tab-panels';
+    slicingSlot.appendChild(slicingPanels);
+
+    // program panel gets the real component; others get a placeholder
+    const slicingTabDefs = ['program', 'dicing', 'coverage', 'regression'];
+    for (const tabId of slicingTabDefs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.slicingPanel = tabId;
+      if (tabId === 'program') {
+        panel.appendChild(components.programslicing);
+      } else {
+        const placeholder = document.createElement('p');
+        placeholder.textContent = t('slicing.tab.comingSoon');
+        panel.appendChild(placeholder);
+      }
+      slicingPanels.appendChild(panel);
+    }
+
+    const SLICING_TAB_KEY = 'stvisual.slicingActiveTab';
+    let savedSlicingTab = null;
+    try { savedSlicingTab = globalThis.localStorage?.getItem(SLICING_TAB_KEY); } catch {}
+    let activeSlicingTab = resolveInitialTab({
+      sectionId: 'slicing',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedSlicingTab,
+    });
+
+    const slicingTabItems = [
+      { id: 'program',    key: 'slicing.tab.program' },
+      { id: 'dicing',     key: 'slicing.tab.dicing' },
+      { id: 'coverage',   key: 'slicing.tab.coverage' },
+      { id: 'regression', key: 'slicing.tab.regression' },
+    ];
+
+    function renderSlicingTabs() {
+      slicingTabBar.innerHTML = slicingTabItems.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeSlicingTab === tab.id ? ' active' : ''}"
+          data-slicing-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeSlicingTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      slicingTabBar.querySelectorAll('[data-slicing-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeSlicingTab = btn.dataset.slicingTab;
+          try { globalThis.localStorage?.setItem(SLICING_TAB_KEY, activeSlicingTab); } catch {}
+          renderSlicingTabs();
+          updateSlicingPanels();
+          if (activeSection === 'slicing') syncUrl();
+        });
+      });
+    }
+    function updateSlicingPanels() {
+      slicingPanels.querySelectorAll('[data-slicing-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.slicingPanel === activeSlicingTab ? '' : 'none';
+      });
+    }
+    renderSlicingTabs();
+    updateSlicingPanels();
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [
@@ -1009,6 +1089,7 @@ export function renderApp(container) {
         case 'acceptance': return activeAcceptanceTab;
         case 'mbt':        return activeMbtTab;
         case 'agile':      return activeAgileTab;
+        case 'slicing':    return activeSlicingTab;
         case 'flow':       return activeFlowTab;
         case 'types':      return activeTypesTab;
         default: return undefined;
