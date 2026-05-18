@@ -119,10 +119,13 @@ export const SLICING_EXAMPLES = [
       ['s3', 's6', 'count'], ['s6', 's6', 'count'], ['s6', 's8', 'count'],
       ['s8', 's9', 'avg'], ['s9', 's10', 'grade'],
     ],
+    // Traces are named by their input, not by an outcome: this program is
+    // buggy, so "pass"/"fail" would be misleading. N2 (dicing) will design
+    // proper passing/failing runs when it specs its fault scenarios.
     traces: [
-      { id: 'pass', inputLabel: 'scores=[80,90]', label: 'pass',
+      { id: 'in-80-90', inputLabel: 'scores=[80,90]', label: 'scores=[80,90]',
         steps: ['s2', 's3', 's4', 's5', 's6', 's4', 's5', 's6', 's4', 's8', 's9', 's10'] },
-      { id: 'fail', inputLabel: 'scores=[50]', label: 'fail',
+      { id: 'in-50', inputLabel: 'scores=[50]', label: 'scores=[50]',
         steps: ['s2', 's3', 's4', 's5', 's6', 's4', 's8', 's9', 's10'] },
     ],
   },

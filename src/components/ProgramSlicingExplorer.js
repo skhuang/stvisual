@@ -152,7 +152,7 @@ function renderQuiz() {
     const correct = state.quiz.answer === 'c';
     return `<div class="pse-quiz-result ${correct ? 'quiz-correct' : 'quiz-wrong'}" data-testid="slicing-quiz-result">
       <p>${correct ? t('slicing.quiz.correct') : t('slicing.quiz.wrong')}</p>
-      <button type="button" class="pse-quiz-close" data-testid="slicing-quiz-close">${t('quiz.close') || 'Close'}</button>
+      <button type="button" class="pse-quiz-close" data-testid="slicing-quiz-close">${t('quiz.close')}</button>
     </div>`;
   }
   return `<div class="pse-quiz" data-testid="slicing-quiz">
