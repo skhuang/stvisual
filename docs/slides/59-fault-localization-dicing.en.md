@@ -147,11 +147,11 @@ function fare(age, peak) {
 | Trace | Input | Expected | Actual | Outcome | Dynamic slice of `price` at s11 |
 |-------|-------|----------|--------|---------|----------------------------------|
 | A | age=30, peak=true | 12 | 14 | **fail** | {s2, s8, s9, s11} |
-| B | age=30, peak=false | 10 | 10 | pass | {s2, s8, s11} |
-| C | age=12, peak=false | 5 | 5 | pass | {s2, s3, s4, s8, s11} |
-| D | age=70, peak=false | 3 | 3 | pass | {s2, s3, s5, s6, s8, s11} |
+| B | age=30, peak=false | 10 | 10 | pass | {s2, s11} |
+| C | age=12, peak=false | 5 | 5 | pass | {s3, s4, s11} |
+| D | age=70, peak=false | 3 | 3 | pass | {s3, s5, s6, s11} |
 
-<!-- The three passing traces collectively exercise every age branch. Crucially, none of them exercises s9 because peak=false in all passing runs. -->
+<!-- The three passing traces collectively exercise every age branch. Crucially, none of them exercises s9 (peak=false in all passing runs), so s8 — the if(peak) guard — never becomes a control dependency of any sliced statement in passing traces. s8 appears in the failing trace's slice only because it controls s9. -->
 
 ---
 
@@ -159,15 +159,16 @@ function fare(age, peak) {
 
 **Failing dynamic slice** (trace A): {s2, s8, s9, s11}
 
-**Passing union** (traces B ∪ C ∪ D): {s2, s3, s4, s5, s6, s8, s11}
+**Passing union** (traces B ∪ C ∪ D): {s2, s3, s4, s5, s6, s11}
 
-**dice** = {s2, s8, s9, s11} − {s2, s3, s4, s5, s6, s8, s11} = **{s9}**
+**dice** = {s2, s8, s9, s11} − {s2, s3, s4, s5, s6, s11} = **{s8, s9}**
 
-The dice contains exactly one statement: `s9` (`price = price + 2 + 2`) — the buggy line.
+Dicing narrowed 8 executed statements down to **2 suspects**: the `if (peak)` guard `s8` and the buggy assignment `s9`. The bug is `s9`, and it is in the dice.
 
-Note: s2, s8, and s11 appear in passing traces and subtract out. The age branches (s3–s6) appear in passing traces and subtract out. Only s9 — the peak surcharge, exercised only by the failing trace — survives.
+- `s8` survives because the failing trace is the only run that takes the peak branch — `s8` controls `s9`, so it enters the failing slice as a control dependency, but no passing trace ever reaches `s9`, so `s8` never appears in any passing dynamic slice.
+- `s2` and `s11` subtract out (they appear in every passing trace's slice). The age branches `s3`–`s6` subtract out too.
 
-<!-- This is the power of dynamic dicing: the passing traces act as a "differential test" that fingers the exact statement responsible for the failure. In practice, more diverse passing traces give a smaller, more precise dice. -->
+<!-- The dice isolates the whole if(peak) block — both the guard and the buggy body. This is the honest teaching point: dicing narrows the search to a small suspect set (here just two statements), and the bug is guaranteed to be among them. In practice, more diverse passing traces give a smaller dice; here no passing trace exercises the peak branch, so the entire peak block remains. -->
 
 ---
 
@@ -181,7 +182,7 @@ In `/section-slicing`, open the **Dicing** tab (Slice Dicing Explorer):
 2. **Dynamic mode** — select the `fare` scenario.
    - All four traces are listed with their outcome badges.
    - The failing trace's dynamic slice and the passing union are shown in two tones.
-   - The dice ({s9}) is the only statement with the strongest highlight.
+   - The dice ({s8, s9}) — the two statements of the `if (peak)` block — are highlighted strongest.
 3. Notice the detail panel: dice size, confirmation that the bug statement is in the dice.
 4. Try the quiz: "which statement does the dice point at?"
 
