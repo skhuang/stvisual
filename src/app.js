@@ -691,7 +691,7 @@ export function renderApp(container) {
     renderAgileTabs();
     updateAgilePanels();
 
-    // --- Slice-Based Testing: tabbed (N1 Program Slicing; N2-N4 are placeholders) ---
+    // --- Slice-Based Testing: tabbed (N1 Program Slicing, N2 Dicing live; N3-N4 are placeholders) ---
     const slicingSlot = container.querySelector('[data-slot="slicing"]');
     const slicingTabBar = document.createElement('nav');
     slicingTabBar.className = 'syntax-tab-row';
