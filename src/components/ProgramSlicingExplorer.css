@@ -79,17 +79,18 @@
   color: #1f2a44;
 }
 
-/* Graph (left) | statements-in-slice (right), side by side. */
+/* Graph (left) | statements-in-slice (right) — always side by side, at
+   every width. The columns share min-width:0 so they shrink gracefully
+   in a narrow pane rather than wrapping or stacking. */
 .pse-graph-row {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 1rem;
   align-items: stretch;
 }
 .pse-graph { flex: 1 1 55%; min-width: 0; display: flex; flex-direction: column; }
 .pse-slice-list { flex: 1 1 45%; min-width: 0; }
-@media (max-width: 640px) {
-  .pse-graph-row { flex-direction: column; }
-}
 
 .pse-graph-head {
   display: flex;
