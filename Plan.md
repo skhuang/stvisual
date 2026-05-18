@@ -1214,7 +1214,7 @@ M1 = `{ level:['meta'], technique:['agile','process'], series:['agile'], difficu
 | 分頁 | Explorer | 內容 | 狀態 |
 | --- | --- | --- | --- |
 | **N1** | Program Slicing | 後向／前向切片、靜態／動態、PDG（控制＋資料相依） | ✅ 已完成 2026-05-18 |
-| **N2** | Fault Localization / Dicing | 對失敗輸出切片，與通過執行做 program dicing 定位缺陷 | 待實作 |
+| **N2** | Fault Localization / Dicing | 對失敗輸出切片，與通過執行做 program dicing 定位缺陷 | ✅ 已完成 2026-05-19 |
 | **N3** | Slice-Based Coverage | 以切片作為測試充分性準則 | 待實作 |
 | **N4** | Regression Test Selection | 以切片相交判斷修改影響哪些測試需重跑 | 待實作 |
 
