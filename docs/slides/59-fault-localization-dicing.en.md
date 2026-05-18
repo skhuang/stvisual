@@ -79,14 +79,14 @@ Compute slices for each output:
 
 | Output | Backward slice (static) |
 |--------|------------------------|
-| `total` | {s2, s4, s5, out-total} |
-| `mean` | {s2, s4, s5, s10, out-mean} |
-| `highest` | {s3, s4, s6, s7, out-highest} |
+| `total` | {out-total, s2, s4, s5} |
+| `mean` | {out-mean, s2, s4, s5, s10} |
+| `highest` | {out-highest, s2, s3, s4, s5, s6, s7} |
 
-**Innocent union** = slice(`total`) ∪ slice(`mean`) = {s2, s4, s5, s10, out-total, out-mean}
+**Innocent union** = slice(`total`) ∪ slice(`mean`) = {out-total, out-mean, s2, s4, s5, s10}
 
-**dice(`highest`)** = {s3, s4, s6, s7, out-highest} − {s2, s4, s5, s10, out-total, out-mean}
-= **{s3, s6, s7, out-highest}**
+**dice(`highest`)** = {out-highest, s2, s3, s4, s5, s6, s7} − {out-total, out-mean, s2, s4, s5, s10}
+= **{out-highest, s3, s6, s7}**
 
 Statement `s7` (`highest = total`) is in the dice — the exact bug location.
 
