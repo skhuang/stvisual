@@ -62,14 +62,107 @@
   color: #fff;
 }
 
-/* ── PDG + source view ── */
-.pse-pdg-wrap {
+/* ── Panels: source code, graph, slice list ── */
+.pse-code-wrap,
+.pse-graph,
+.pse-slice-list {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 0.85rem 1rem;
-  overflow: auto;
 }
+
+.pse-col-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #1f2a44;
+}
+
+/* Graph (left) | statements-in-slice (right), side by side. */
+.pse-graph-row {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+.pse-graph { flex: 1 1 55%; min-width: 0; display: flex; flex-direction: column; }
+.pse-slice-list { flex: 1 1 45%; min-width: 0; }
+@media (max-width: 640px) {
+  .pse-graph-row { flex-direction: column; }
+}
+
+.pse-graph-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.pse-graph-head .pse-col-title { margin: 0; }
+
+/* Zoom controls — mirrors the Graph Coverage explorer's CFG zoom. */
+.pse-zoom { display: flex; align-items: center; gap: 0.3rem; }
+.pse-zoom-btn {
+  width: 1.65rem;
+  height: 1.65rem;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #334155;
+}
+.pse-zoom-btn:hover:not(:disabled) { border-color: #1d4ed8; color: #1d4ed8; }
+.pse-zoom-btn:disabled { opacity: 0.4; cursor: default; }
+.pse-zoom-val {
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: #475569;
+  min-width: 2.8rem;
+  text-align: center;
+}
+
+/* The graph scrolls when zoomed past 100%. */
+.pse-graph-scroll {
+  flex: 1;
+  overflow: auto;
+  max-height: 26rem;
+}
+
+/* Statements-in-slice list */
+.pse-slice-count { color: #64748b; font-weight: 600; }
+.pse-slice-empty {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-style: italic;
+}
+.pse-slice-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.pse-slice-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.45rem;
+  background: #fef9c3;
+  border: 1px solid #fde68a;
+  border-radius: 4px;
+}
+.pse-slice-id {
+  flex: 0 0 auto;
+  font-family: monospace;
+  font-weight: 700;
+  color: #92400e;
+}
+.pse-slice-text { font-family: monospace; color: #1f2a44; }
 
 /* Source listing */
 .slice-code {
@@ -95,12 +188,11 @@
 }
 .slice-stmt--in:hover { background: #fde047; }
 
-/* PDG SVG */
+/* PDG SVG — width is set inline by the zoom factor; the scroll container
+   handles any overflow when zoomed past 100%. */
 .pdg-svg {
   display: block;
-  max-width: 100%;
   height: auto;
-  margin: 0 auto;
 }
 
 .pdg-node circle {

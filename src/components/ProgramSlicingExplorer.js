@@ -1,12 +1,17 @@
-import { t, getLocale, onLocaleChange } from '../i18n/index.js';
+import { t, onLocaleChange } from '../i18n/index.js';
 import { SLICING_EXAMPLES } from '../data/slicingExamples.js';
-import { renderSlicePdgView } from './SlicePdgView.js';
+import { renderSliceCodeListing, renderSlicePdgGraph } from './SlicePdgView.js';
 import { backwardSlice, forwardSlice, dynamicSlice } from '../utils/slicing.js';
 
 // N1 — Program Slicing Explorer.
 // Lets the learner pick a criterion (statement + variable), choose
 // backward/forward direction and static/dynamic mode, then sees the
-// resulting slice highlighted in the code listing and PDG.
+// resulting slice highlighted in the code listing, listed in a panel,
+// and drawn on the PDG.
+
+const ZOOM_MIN = 0.5;
+const ZOOM_MAX = 3;
+const ZOOM_STEP = 0.25;
 
 const state = {
   exampleId: SLICING_EXAMPLES[0].id,
@@ -15,10 +20,18 @@ const state = {
   selectedTraceId: null,     // trace id (dynamic mode)
   selectedStmtId: null,      // criterion statement
   selectedVar: null,         // criterion variable
+  pdgZoom: 1,                // PDG graph zoom factor
   quiz: { active: false, phase: 'idle', answer: '' },
 };
 
 let root;
+
+function esc(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
 
 function currentExample() {
   return SLICING_EXAMPLES.find((e) => e.id === state.exampleId) || SLICING_EXAMPLES[0];
@@ -30,8 +43,12 @@ function currentTrace() {
   return ex.traces.find((tr) => tr.id === state.selectedTraceId) || ex.traces[0] || null;
 }
 
+function hasCriterion() {
+  return Boolean(state.selectedStmtId && state.selectedVar);
+}
+
 function computeSlice() {
-  if (!state.selectedStmtId || !state.selectedVar) return new Set();
+  if (!hasCriterion()) return new Set();
   const ex = currentExample();
   const criterion = { stmtId: state.selectedStmtId, variable: state.selectedVar };
   if (state.mode === 'dynamic') {
@@ -44,7 +61,7 @@ function computeSlice() {
 }
 
 function computeStaticSliceForComparison() {
-  if (!state.selectedStmtId || !state.selectedVar) return new Set();
+  if (!hasCriterion()) return new Set();
   const ex = currentExample();
   const criterion = { stmtId: state.selectedStmtId, variable: state.selectedVar };
   if (state.direction === 'forward') return forwardSlice(ex, criterion);
@@ -127,15 +144,61 @@ function renderVarPicker() {
         class="pse-chip${state.selectedVar === v ? ' pse-chip--active' : ''}"
         data-testid="slicing-var-${v}"
         data-var-name="${v}">
-        ${v}
+        ${esc(v)}
       </button>`).join('')}
+  </div>`;
+}
+
+// The PDG graph panel — left column — with zoom controls.
+function renderGraphPanel(sliceSet) {
+  const ex = currentExample();
+  return `<div class="pse-graph" data-testid="slicing-graph">
+    <div class="pse-graph-head">
+      <h3 class="pse-col-title">${t('slicing.pdgTitle')}</h3>
+      <div class="pse-zoom" role="group" aria-label="${t('slicing.zoomLabel')}">
+        <button type="button" class="pse-zoom-btn" data-zoom="out"
+          data-testid="slicing-zoom-out" aria-label="${t('slicing.zoomOut')}"
+          ${state.pdgZoom <= ZOOM_MIN ? 'disabled' : ''}>&minus;</button>
+        <span class="pse-zoom-val" data-testid="slicing-zoom-val">${Math.round(state.pdgZoom * 100)}%</span>
+        <button type="button" class="pse-zoom-btn" data-zoom="in"
+          data-testid="slicing-zoom-in" aria-label="${t('slicing.zoomIn')}"
+          ${state.pdgZoom >= ZOOM_MAX ? 'disabled' : ''}>+</button>
+      </div>
+    </div>
+    <div class="pse-graph-scroll">
+      ${renderSlicePdgGraph(ex, sliceSet, { zoom: state.pdgZoom })}
+    </div>
+  </div>`;
+}
+
+// The "statements in slice" panel — right column.
+function renderSliceList(sliceSet) {
+  const ex = currentExample();
+  const inSlice = ex.statements.filter((s) => sliceSet.has(s.id));
+  let body;
+  if (!hasCriterion()) {
+    body = `<p class="pse-slice-empty">${t('slicing.sliceEmpty')}</p>`;
+  } else if (!inSlice.length) {
+    body = `<p class="pse-slice-empty">${t('slicing.sliceNone')}</p>`;
+  } else {
+    body = `<ul class="pse-slice-items">
+      ${inSlice.map((s) => `
+        <li class="pse-slice-item" data-testid="slicing-slice-item-${s.id}">
+          <code class="pse-slice-id">${esc(s.id)}</code>
+          <span class="pse-slice-text">${esc(s.text)}</span>
+        </li>`).join('')}
+    </ul>`;
+  }
+  return `<div class="pse-slice-list" data-testid="slicing-slice-list">
+    <h3 class="pse-col-title">${t('slicing.stmtsInSlice')} <span class="pse-slice-count">(${inSlice.length})</span></h3>
+    ${body}
   </div>`;
 }
 
 function renderDetail(sliceSet) {
   const count = sliceSet.size;
   let content = `<span>${t('slicing.stmtsInSlice')}: <b>${count}</b></span>`;
-  if (state.mode === 'dynamic' && state.selectedStmtId && state.selectedVar) {
+  if (state.mode === 'dynamic' && hasCriterion()) {
     const staticSet = computeStaticSliceForComparison();
     const delta = staticSet.size - count;
     const sign = delta >= 0 ? '+' : '';
@@ -168,7 +231,6 @@ function renderQuiz() {
 }
 
 function render() {
-  const ex = currentExample();
   const sliceSet = computeSlice();
 
   root.innerHTML = `
@@ -183,8 +245,14 @@ function render() {
         ${renderTracePicker()}
       </section>
 
-      <div class="pse-pdg-wrap">
-        ${renderSlicePdgView(ex, sliceSet)}
+      <div class="pse-code-wrap">
+        <h3 class="pse-col-title">${t('slicing.codeTitle')}</h3>
+        ${renderSliceCodeListing(currentExample(), sliceSet)}
+      </div>
+
+      <div class="pse-graph-row">
+        ${renderGraphPanel(sliceSet)}
+        ${renderSliceList(sliceSet)}
       </div>
 
       ${renderVarPicker()}
@@ -237,6 +305,15 @@ function bindEvents() {
     });
   });
 
+  // PDG zoom
+  root.querySelectorAll('[data-zoom]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const next = state.pdgZoom + (btn.dataset.zoom === 'in' ? ZOOM_STEP : -ZOOM_STEP);
+      state.pdgZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(next * 100) / 100));
+      render();
+    });
+  });
+
   // Statement selection (from the rendered source listing)
   root.querySelectorAll('[data-stmt]').forEach((li) => {
     li.addEventListener('click', () => {
@@ -279,6 +356,7 @@ export function createProgramSlicingExplorer() {
   state.selectedTraceId = null;
   state.selectedStmtId = null;
   state.selectedVar = null;
+  state.pdgZoom = 1;
   state.quiz = { active: false, phase: 'idle', answer: '' };
 
   root = document.createElement('div');

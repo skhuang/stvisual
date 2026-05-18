@@ -1,6 +1,7 @@
-// Pure render helper for the Program Dependence Graph view used by the
-// slice-based testing explorer. No DOM APIs — returns an HTML string.
-// Mirror the string-building style of renderCfgSvg in src/utils/pathToCfg.js.
+// Pure render helpers for the Program Dependence Graph view used by the
+// slice-based testing explorers. No DOM APIs — every function returns an
+// HTML string. Mirror the string-building style of renderCfgSvg in
+// src/utils/pathToCfg.js.
 
 function escapeHtml(value = '') {
   return String(value)
@@ -32,9 +33,13 @@ function buildLineIndex(statements) {
 
 // --- Source listing -----------------------------------------------------------
 
-function renderSourceListing(example, sliceSet) {
+/**
+ * renderSliceCodeListing(example, sliceSet)
+ * The source code as an <ol class="slice-code">; statements in `sliceSet`
+ * get class `slice-stmt--in` and every statement line carries `data-stmt`.
+ */
+export function renderSliceCodeListing(example, sliceSet) {
   const lineIndex = buildLineIndex(example.statements);
-  const stmtById = new Map(example.statements.map((s) => [s.id, s]));
   const items = example.source.map((rawLine, i) => {
     const lineNum = i + 1; // source is 0-indexed array, lines are 1-indexed
     const stmtId = lineIndex.get(lineNum);
@@ -69,11 +74,21 @@ function trimToCircle(from, to, radius) {
   return { x: to.x - (dx / len) * radius, y: to.y - (dy / len) * radius };
 }
 
-function renderPdgSvg(example, sliceSet, idPrefix) {
+/**
+ * renderSlicePdgGraph(example, sliceSet, options)
+ * Just the inline <svg> dependence graph. Each node carries `data-pdg-node`;
+ * nodes in `sliceSet` get class `pdg-node--in`. Control-dep edges are solid,
+ * data-dep edges dashed.
+ *
+ * @param {object} [options]
+ * @param {string} [options.idPrefix='slice'] - Namespace for SVG marker ids
+ * @param {number} [options.zoom=1] - Width multiplier; at zoom>1 the svg
+ *   overflows its container (which should scroll), mirroring renderCfgSvg.
+ */
+export function renderSlicePdgGraph(example, sliceSet, options = {}) {
+  const idPrefix = options.idPrefix || 'slice';
+  const zoom = Number.isFinite(options.zoom) && options.zoom > 0 ? options.zoom : 1;
   const stmts = example.statements;
-  const indexById = new Map(stmts.map((s, i) => [s.id, i]));
-
-  // Pre-compute positions
   const positions = new Map(stmts.map((s, i) => [s.id, nodePos(i)]));
 
   const svgWidth = SVG_X * 2 + SVG_PAD;
@@ -84,13 +99,10 @@ function renderPdgSvg(example, sliceSet, idPrefix) {
     const fPos = positions.get(from);
     const tPos = positions.get(to);
     if (!fPos || !tPos) return '';
-    // Use a slight horizontal offset so edges don't overlap node circles
     const ARROW_GAP = 4;
-    // For a straight line between same-x nodes, offset x by a small amount
     const offsetX = 30;
     const cpX = SVG_X + offsetX;
     const cpY = (fPos.y + tPos.y) / 2;
-    // Quadratic bezier start/end trimmed to circle border
     const startTrimmed = trimToCircle({ x: cpX, y: cpY }, fPos, NODE_R);
     const endTrimmed = trimToCircle({ x: cpX, y: cpY }, tPos, NODE_R + ARROW_GAP);
     const marker = `url(#pdg-arrow-ctrl-${escapeAttr(idPrefix)})`;
@@ -123,7 +135,11 @@ function renderPdgSvg(example, sliceSet, idPrefix) {
     return `<g class="${cls}" data-pdg-node="${escapeAttr(stmt.id)}">${title}<circle cx="${pos.x}" cy="${pos.y}" r="${NODE_R}"></circle><text x="${pos.x}" y="${pos.y + 5}" text-anchor="middle">${label}</text></g>`;
   }).join('');
 
-  return `<svg class="pdg-svg" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Program dependence graph">
+  // At zoom=1 the svg fills 100% of its container; at zoom>1 it renders wider
+  // so the container scrolls — same approach as renderCfgSvg.
+  const widthStyle = `width:${Math.round(zoom * 100)}%;height:auto;`;
+
+  return `<svg class="pdg-svg" style="${widthStyle}" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Program dependence graph">
   <defs>
     <marker id="pdg-arrow-ctrl-${escapeAttr(idPrefix)}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0,0 L7,3.5 L0,7 z" fill="#64748b"></path>
@@ -143,21 +159,17 @@ function renderPdgSvg(example, sliceSet, idPrefix) {
 /**
  * renderSlicePdgView(example, sliceSet, options)
  *
- * Returns an HTML string containing:
- *   1. An <ol class="slice-code"> with the source listing; statements in
- *      `sliceSet` get class `slice-stmt--in` and a `data-stmt` attribute.
- *   2. An inline <svg> PDG where each node carries `data-pdg-node`; nodes in
- *      `sliceSet` get class `pdg-node--in`.
+ * Convenience wrapper: the source listing followed by the PDG graph, inside a
+ * single `slice-pdg-view` container. Kept for callers that want both pieces
+ * together; the explorer composes the pieces itself for a custom layout.
  *
  * @param {object}  example   - A SLICING_EXAMPLES entry
  * @param {Set}     sliceSet  - Set of statement ids currently in the slice
- * @param {object}  [options]
- * @param {string}  [options.idPrefix='slice'] - Namespace for SVG marker ids
+ * @param {object}  [options] - Passed through to renderSlicePdgGraph
  * @returns {string}
  */
 export function renderSlicePdgView(example, sliceSet, options = {}) {
-  const idPrefix = options.idPrefix || 'slice';
-  const listing = renderSourceListing(example, sliceSet);
-  const svg = renderPdgSvg(example, sliceSet, idPrefix);
+  const listing = renderSliceCodeListing(example, sliceSet);
+  const svg = renderSlicePdgGraph(example, sliceSet, options);
   return `<div class="slice-pdg-view">\n${listing}\n${svg}\n</div>`;
 }

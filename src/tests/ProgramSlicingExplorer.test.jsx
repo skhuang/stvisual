@@ -25,4 +25,33 @@ describe('ProgramSlicingExplorer', () => {
     root.querySelector('[data-testid="slicing-mode-dynamic"]').click();
     expect(root.querySelector('[data-testid^="slicing-trace-"]')).toBeTruthy();
   });
+
+  it('lays the PDG graph and the statements-in-slice panel side by side', () => {
+    const row = root.querySelector('.pse-graph-row');
+    expect(row).toBeTruthy();
+    const graph = row.querySelector('[data-testid="slicing-graph"]');
+    const list = row.querySelector('[data-testid="slicing-slice-list"]');
+    expect(graph).toBeTruthy();
+    expect(list).toBeTruthy();
+    // graph before slice-list → graph on the left
+    expect(graph.compareDocumentPosition(list) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy();
+  });
+
+  it('lists each sliced statement in the statements-in-slice panel', () => {
+    root.querySelector('[data-stmt]').click();
+    root.querySelector('[data-testid^="slicing-var-"]').click();
+    const items = root.querySelectorAll('[data-testid^="slicing-slice-item-"]');
+    expect(items.length).toBeGreaterThan(0);
+  });
+
+  it('zooms the PDG graph in and out', () => {
+    const val = () => root.querySelector('[data-testid="slicing-zoom-val"]').textContent.trim();
+    expect(val()).toBe('100%');
+    root.querySelector('[data-testid="slicing-zoom-in"]').click();
+    expect(val()).toBe('125%');
+    root.querySelector('[data-testid="slicing-zoom-out"]').click();
+    root.querySelector('[data-testid="slicing-zoom-out"]').click();
+    expect(val()).toBe('75%');
+  });
 });

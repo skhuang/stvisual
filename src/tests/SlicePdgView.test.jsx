@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { renderSlicePdgView } from '../components/SlicePdgView.js';
+import {
+  renderSlicePdgView,
+  renderSliceCodeListing,
+  renderSlicePdgGraph,
+} from '../components/SlicePdgView.js';
 import { SLICING_EXAMPLES } from '../data/slicingExamples.js';
 
 const ex = SLICING_EXAMPLES.find((e) => e.id === 'grade-average');
@@ -23,5 +27,28 @@ describe('renderSlicePdgView', () => {
   it('highlights sliced nodes in the svg', () => {
     const html = renderSlicePdgView(ex, new Set(['s2']));
     expect(html).toMatch(/data-pdg-node="s2"[^>]*pdg-node--in|pdg-node--in[^>]*data-pdg-node="s2"/);
+  });
+});
+
+describe('renderSliceCodeListing', () => {
+  it('returns just the <ol> source listing', () => {
+    const html = renderSliceCodeListing(ex, new Set(['s2']));
+    expect(html.trimStart().startsWith('<ol class="slice-code"')).toBe(true);
+    expect(html).not.toContain('<svg');
+    expect(html).toMatch(/data-stmt="s2"[^>]*slice-stmt--in/);
+  });
+});
+
+describe('renderSlicePdgGraph', () => {
+  it('returns just the <svg> graph', () => {
+    const html = renderSlicePdgGraph(ex, new Set());
+    expect(html.trimStart().startsWith('<svg')).toBe(true);
+    expect(html).toContain('data-pdg-node="s2"');
+  });
+  it('defaults to 100% width when no zoom is given', () => {
+    expect(renderSlicePdgGraph(ex, new Set())).toContain('width:100%');
+  });
+  it('scales the svg width by the zoom option', () => {
+    expect(renderSlicePdgGraph(ex, new Set(), { zoom: 2 })).toContain('width:200%');
   });
 });
