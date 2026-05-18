@@ -45,9 +45,15 @@ function outputStatement(example) {
 // Backward slice from the output statement (target coverage criterion).
 function computeSlice(example) {
   const outStmt = outputStatement(example);
-  if (!outStmt) return new Set();
+  if (!outStmt) {
+    console.warn(`[SliceCoverageExplorer] example "${example.id}" has no output statement — slice will be empty`);
+    return new Set();
+  }
   const variable = outStmt.uses[0];
-  if (!variable) return new Set();
+  if (!variable) {
+    console.warn(`[SliceCoverageExplorer] example "${example.id}" output statement has no uses — slice will be empty`);
+    return new Set();
+  }
   return backwardSlice(example, { stmtId: outStmt.id, variable });
 }
 

@@ -30,4 +30,40 @@ describe('SliceCoverageExplorer', () => {
     expect(root.querySelector('[data-testid="coverage-gaps"]').textContent)
       .toContain('s8');
   });
+
+  it('zoom-in increases the PDG svg width and zoom-out clamps at the minimum', () => {
+    const svgWidth = () => root.querySelector('.pdg-svg').style.width;
+
+    // default zoom is 100%
+    expect(svgWidth()).toBe('100%');
+
+    // zoom in once → 125%
+    root.querySelector('[data-testid="coverage-zoom-in"]').click();
+    expect(svgWidth()).toBe('125%');
+
+    // zoom out many times to reach the floor (ZOOM_MIN = 0.5 → 50%)
+    for (let i = 0; i < 10; i++) {
+      root.querySelector('[data-testid="coverage-zoom-out"]').click();
+    }
+    expect(svgWidth()).toBe('50%');
+  });
+
+  it('switching examples resets all trace chips to active', () => {
+    // start on the default example (grade-average), toggle a trace off
+    root.querySelector('[data-testid="coverage-trace-fail"]').click();
+    expect(root.querySelector('[data-testid="coverage-trace-fail"]').classList.contains('sce-chip--active'))
+      .toBe(false);
+
+    // switch to the classify example
+    root.querySelector('[data-testid="coverage-example-classify"]').click();
+
+    // all three classify traces should now be active
+    const traceIds = ['pos', 'neg', 'zero'];
+    for (const id of traceIds) {
+      const chip = root.querySelector(`[data-testid="coverage-trace-${id}"]`);
+      expect(chip, `trace chip "${id}" should exist`).toBeTruthy();
+      expect(chip.classList.contains('sce-chip--active'),
+        `trace chip "${id}" should be active after example switch`).toBe(true);
+    }
+  });
 });
