@@ -74,6 +74,7 @@ const DECKS = [
   { base: '56-continuous-testing',           id: 'continuous-testing',  num: 56, section: 'agile' },
   { base: '57-regression-debt',              id: 'regression-debt',     num: 57, section: 'agile' },
   { base: '58-program-slicing',              id: 'program-slicing',     num: 58, section: 'slicing' },
+  { base: '59-fault-localization-dicing',    id: 'fault-localization-dicing', num: 59, section: 'slicing' },
 ];
 
 function frontMatterTitle(md) {
