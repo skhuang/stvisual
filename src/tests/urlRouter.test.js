@@ -51,6 +51,11 @@ describe('K4 — urlRouter parse', () => {
       .toEqual({ explorer: 'ProgramSlicingExplorer', section: 'slicing', tab: 'program' });
   });
 
+  it('?explorer=SliceDicingExplorer resolves to slicing section, dicing tab', () => {
+    expect(parseAppLocation('?explorer=SliceDicingExplorer'))
+      .toEqual({ explorer: 'SliceDicingExplorer', section: 'slicing', tab: 'dicing' });
+  });
+
   it('?pack= is captured', () => {
     expect(parseAppLocation('?pack=ai-assisted')).toEqual({ pack: 'ai-assisted' });
   });

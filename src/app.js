@@ -51,6 +51,7 @@ import { createModelMutationExplorer } from './components/ModelMutationExplorer.
 import { createAgileQuadrantsExplorer } from './components/AgileQuadrantsExplorer.js';
 import { createSprintCadenceExplorer } from './components/SprintCadenceExplorer.js';
 import { createProgramSlicingExplorer } from './components/ProgramSlicingExplorer.js';
+import { createSliceDicingExplorer } from './components/SliceDicingExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
@@ -362,6 +363,7 @@ export function renderApp(container) {
       agilequadrants: createAgileQuadrantsExplorer(),
       sprintcadence: createSprintCadenceExplorer(),
       programslicing: createProgramSlicingExplorer(),
+      dicing: createSliceDicingExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
       ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -700,7 +702,7 @@ export function renderApp(container) {
     slicingPanels.className = 'syntax-tab-panels';
     slicingSlot.appendChild(slicingPanels);
 
-    // program panel gets the real component; others get a placeholder
+    // program / dicing panels get real components; coverage / regression are placeholders
     const slicingTabDefs = ['program', 'dicing', 'coverage', 'regression'];
     for (const tabId of slicingTabDefs) {
       const panel = document.createElement('div');
@@ -708,6 +710,8 @@ export function renderApp(container) {
       panel.dataset.slicingPanel = tabId;
       if (tabId === 'program') {
         panel.appendChild(components.programslicing);
+      } else if (tabId === 'dicing') {
+        panel.appendChild(components.dicing);
       } else {
         const placeholder = document.createElement('p');
         placeholder.textContent = t('slicing.tab.comingSoon');

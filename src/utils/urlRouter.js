@@ -96,6 +96,7 @@ export const EXPLORER_TO_LOCATION = {
   ContinuousTestingPipelineExplorer: { section: 'agile', tab: 'pipeline' },
   RegressionDebtExplorer:      { section: 'agile', tab: 'regression' },
   ProgramSlicingExplorer:      { section: 'slicing', tab: 'program' },
+  SliceDicingExplorer:         { section: 'slicing', tab: 'dicing' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];
