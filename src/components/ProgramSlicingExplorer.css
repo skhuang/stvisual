@@ -1,0 +1,209 @@
+/* ── Program Slicing Explorer ── */
+.pse-wrap { display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0; }
+.pse-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.pse-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+/* ── Controls ── */
+.pse-controls { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.pse-chip-bar,
+.pse-trace-bar,
+.pse-var-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.pse-chip {
+  font-size: 0.79rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  cursor: pointer;
+}
+.pse-chip:hover { border-color: #1d4ed8; color: #1d4ed8; }
+.pse-chip--active {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+}
+
+/* ── Toggle rows ── */
+.pse-toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.pse-toggle-label {
+  font-size: 0.79rem;
+  font-weight: 700;
+  color: #374151;
+  margin-right: 0.2rem;
+}
+
+.pse-toggle-btn {
+  font-size: 0.79rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  cursor: pointer;
+}
+.pse-toggle-btn:hover { border-color: #1d4ed8; color: #1d4ed8; }
+.pse-toggle-btn--active {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+}
+
+/* ── PDG + source view ── */
+.pse-pdg-wrap {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  overflow: auto;
+}
+
+/* Source listing */
+.slice-code {
+  font-family: monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  margin: 0 0 1rem;
+  padding-left: 2.5rem;
+  color: #1f2a44;
+}
+
+.slice-stmt {
+  padding: 0 0.25rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.slice-stmt:hover { background: #e0f2fe; }
+
+.slice-stmt--in {
+  background: #fef08a;
+  font-weight: 700;
+}
+.slice-stmt--in:hover { background: #fde047; }
+
+/* PDG SVG */
+.pdg-svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.pdg-node circle {
+  fill: #f1f5f9;
+  stroke: #94a3b8;
+  stroke-width: 2;
+}
+.pdg-node text {
+  font-family: monospace;
+  font-size: 0.72rem;
+  fill: #334155;
+  font-weight: 700;
+}
+
+.pdg-node--in circle {
+  fill: #fef08a;
+  stroke: #ca8a04;
+  stroke-width: 2;
+}
+.pdg-node--in text { fill: #1f2a44; }
+
+.pdg-edge { fill: none; stroke-width: 1.5; }
+.pdg-edge--control { stroke: #64748b; }
+.pdg-edge--data    { stroke: #0ea5e9; }
+
+/* ── Var bar ── */
+.pse-var-bar { margin-top: 0.25rem; }
+
+/* ── Detail panel ── */
+.pse-detail {
+  font-size: 0.83rem;
+  color: #374151;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.5rem 0.85rem;
+}
+.pse-delta { color: #64748b; margin-left: 0.5rem; }
+
+.pse-hint {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* ── Self-test / Quiz ── */
+.pse-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.pse-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+
+.pse-quiz-start {
+  padding: 0.35rem 0.9rem;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.pse-quiz-start:hover { background: #1e40af; }
+
+.pse-quiz-prompt {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: #1f2a44;
+}
+.pse-quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  color: #374151;
+}
+.pse-quiz-submit {
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.pse-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.pse-quiz-result {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.quiz-correct { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+.quiz-wrong   { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+
+.pse-quiz-close {
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid #94a3b8;
+  background: transparent;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #475569;
+}
+.pse-quiz-close:hover { border-color: #1d4ed8; color: #1d4ed8; }
