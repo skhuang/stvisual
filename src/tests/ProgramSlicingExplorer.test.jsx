@@ -45,6 +45,18 @@ describe('ProgramSlicingExplorer', () => {
     expect(items.length).toBeGreaterThan(0);
   });
 
+  it('renders the variable picker at the top of the right-hand panel', () => {
+    root.querySelector('[data-stmt]').click();
+    const panel = root.querySelector('[data-testid="slicing-slice-list"]');
+    const varBtn = panel.querySelector('[data-testid^="slicing-var-"]');
+    // the variable picker lives inside the right panel...
+    expect(varBtn).toBeTruthy();
+    // ...above the statements-in-slice heading
+    const title = panel.querySelector('.pse-col-title');
+    expect(varBtn.compareDocumentPosition(title) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy();
+  });
+
   it('zooms the PDG graph in and out', () => {
     const val = () => root.querySelector('[data-testid="slicing-zoom-val"]').textContent.trim();
     expect(val()).toBe('100%');

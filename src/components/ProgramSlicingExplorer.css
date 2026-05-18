@@ -131,6 +131,14 @@
   max-height: 26rem;
 }
 
+/* Variable picker — sits at the top of the right panel, above the list. */
+.pse-slice-var {
+  margin-bottom: 0.7rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+.pse-slice-var .pse-var-bar { margin-top: 0; }
+
 /* Statements-in-slice list */
 .pse-slice-count { color: #64748b; font-weight: 600; }
 .pse-slice-empty {

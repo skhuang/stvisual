@@ -171,7 +171,8 @@ function renderGraphPanel(sliceSet) {
   </div>`;
 }
 
-// The "statements in slice" panel — right column.
+// The right column: the variable picker on top, then the
+// "statements in slice" list.
 function renderSliceList(sliceSet) {
   const ex = currentExample();
   const inSlice = ex.statements.filter((s) => sliceSet.has(s.id));
@@ -189,7 +190,10 @@ function renderSliceList(sliceSet) {
         </li>`).join('')}
     </ul>`;
   }
+  const varPicker = renderVarPicker();
+  const varBlock = varPicker ? `<div class="pse-slice-var">${varPicker}</div>` : '';
   return `<div class="pse-slice-list" data-testid="slicing-slice-list">
+    ${varBlock}
     <h3 class="pse-col-title">${t('slicing.stmtsInSlice')} <span class="pse-slice-count">(${inSlice.length})</span></h3>
     ${body}
   </div>`;
@@ -255,7 +259,6 @@ function render() {
         ${renderSliceList(sliceSet)}
       </div>
 
-      ${renderVarPicker()}
       ${renderDetail(sliceSet)}
 
       <section class="pse-self-test">
