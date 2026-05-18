@@ -184,7 +184,7 @@ In `/section-slicing`, open the **Dicing** tab (Slice Dicing Explorer):
    - The failing trace's dynamic slice and the passing union are shown in two tones.
    - The dice ({s8, s9}) — the two statements of the `if (peak)` block — are highlighted strongest.
 3. Notice the detail panel: dice size, confirmation that the bug statement is in the dice.
-4. Try the quiz: "which statement does the dice point at?"
+4. Try the quiz: "what does dicing remove from the failing slice?"
 
 ---
 
