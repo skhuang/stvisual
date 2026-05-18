@@ -1,0 +1,314 @@
+/* ── Slice Coverage Explorer (N3) ── */
+.sce-wrap { display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0; }
+.sce-title { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1f2a44; }
+.sce-desc  { margin: 0; color: #475569; font-size: 0.9rem; }
+
+/* ── Controls ── */
+.sce-controls { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.sce-chip-bar,
+.sce-trace-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.sce-chip {
+  font-size: 0.79rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  cursor: pointer;
+}
+.sce-chip:hover { border-color: #1d4ed8; color: #1d4ed8; }
+.sce-chip--active {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+}
+
+/* Inactive trace chip — greyed out to show it is excluded */
+.sce-trace-bar .sce-chip:not(.sce-chip--active) {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+}
+.sce-trace-bar .sce-chip:not(.sce-chip--active):hover {
+  border-color: #1d4ed8;
+  color: #1d4ed8;
+}
+
+/* ── Toggle label ── */
+.sce-toggle-label {
+  font-size: 0.79rem;
+  font-weight: 700;
+  color: #374151;
+  margin-right: 0.2rem;
+}
+
+/* ── Coverage meter bars ── */
+.sce-metrics {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.sce-metric-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+}
+
+.sce-metric-label {
+  flex: 0 0 10rem;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.sce-meter {
+  flex: 1 1 auto;
+  height: 0.65rem;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.sce-meter-fill {
+  height: 100%;
+  background: #1d4ed8;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+.sce-meter-fill--stmt { background: #0ea5e9; }
+
+.sce-metric-pct {
+  flex: 0 0 3rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: #1f2a44;
+}
+
+.sce-metric-detail {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  color: #64748b;
+  min-width: 4rem;
+}
+
+/* ── Code panel ── */
+.sce-code-wrap {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+
+.sce-col-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #1f2a44;
+}
+
+/* ── Graph (left) | gaps panel (right) ── */
+.sce-graph-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  align-items: stretch;
+}
+.sce-graph {
+  flex: 1 1 55%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+.sce-gaps {
+  flex: 1 1 45%;
+  min-width: 0;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+
+.sce-graph-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.sce-graph-head .sce-col-title { margin: 0; }
+
+/* Zoom controls */
+.sce-zoom { display: flex; align-items: center; gap: 0.3rem; }
+.sce-zoom-btn {
+  width: 1.65rem;
+  height: 1.65rem;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #334155;
+}
+.sce-zoom-btn:hover:not(:disabled) { border-color: #1d4ed8; color: #1d4ed8; }
+.sce-zoom-btn:disabled { opacity: 0.4; cursor: default; }
+.sce-zoom-val {
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: #475569;
+  min-width: 2.8rem;
+  text-align: center;
+}
+
+.sce-graph-scroll {
+  flex: 1;
+  overflow: auto;
+  max-height: 26rem;
+}
+
+/* ── Gap list ── */
+.sce-gaps-ok {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #15803d;
+  font-weight: 600;
+}
+
+.sce-gap-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.sce-gap-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.45rem;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 4px;
+}
+
+.sce-gap-id {
+  flex: 0 0 auto;
+  font-family: monospace;
+  font-weight: 700;
+  color: #991b1b;
+}
+
+.sce-gap-text { font-family: monospace; color: #1f2a44; }
+
+/* Outside-slice contrast line */
+.sce-outside {
+  margin-top: 0.8rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.78rem;
+  color: #64748b;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.sce-outside-label {
+  font-weight: 600;
+  color: #475569;
+  margin-right: 0.2rem;
+}
+
+.sce-outside-id {
+  font-family: monospace;
+  font-size: 0.78rem;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 3px;
+  padding: 0.1rem 0.3rem;
+  color: #334155;
+}
+
+/* ── Self-test / Quiz ── */
+.sce-self-test { display: flex; flex-direction: column; gap: 0.7rem; }
+.sce-self-test h3 { margin: 0; font-size: 0.95rem; color: #1f2a44; }
+
+.sce-quiz-start {
+  padding: 0.35rem 0.9rem;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.sce-quiz-start:hover { background: #1e40af; }
+
+.sce-quiz-prompt {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: #1f2a44;
+}
+.sce-quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  color: #374151;
+}
+.sce-quiz-submit {
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.sce-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+.sce-quiz-result {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.quiz-correct { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+.quiz-wrong   { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+
+.sce-quiz-close {
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid #94a3b8;
+  background: transparent;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #475569;
+}
+.sce-quiz-close:hover { border-color: #1d4ed8; color: #1d4ed8; }
