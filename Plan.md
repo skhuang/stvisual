@@ -1227,6 +1227,21 @@ N2–N4 各自獨立 plan / PR。
 
 ---
 
+## O. Test-Driven Development Explorer（全部完成 2026-05-20）
+
+| 分頁 | Explorer | 內容 | 狀態 |
+| --- | --- | --- | --- |
+| **O1 cycle** | TDD Cycle Explorer | 走訪 authored TDD kata：測試清單／程式碼／套件狀態三面板，紅綠重構環，predict mode 自我測驗 | ✅ 已完成 2026-05-20 |
+| **O2 rules** | TDD Rules Explorer | 紅綠重構規則狀態機：嘗試動作，違規即擋下並說明違反的紀律規則 | ✅ 已完成 2026-05-20 |
+
+純規則引擎 `src/utils/tddRules.js`（`initialTddState` / `legalActions` / `applyAction`）
+＋ authored katas `src/data/tddKatas.js`（FizzBuzz、Stack）。附簡報 #62。
+
+設計與計畫：`docs/superpowers/specs/2026-05-19-tdd-visualization-design.md`、
+`docs/superpowers/plans/2026-05-19-tdd-visualization.md`。
+
+---
+
 ## 技術棧備忘
 
 | 工具 | 用途 |
