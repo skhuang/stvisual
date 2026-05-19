@@ -144,13 +144,7 @@ function renderMetric(example, affected, safe) {
   const N = example.traces.length;
   const A = affected.size;
   const X = N === 0 ? 0 : Math.round(safe.size / N * 100);
-  // Always embed A/N/X so the metric text differs between static and dynamic
-  // even before the regression.metric i18n key is added in Task 3.
-  const label = t('regression.metric', { A, N, X });
-  const text = label === 'regression.metric'
-    ? `re-run ${A} of ${N} — ${X}% skipped`
-    : label;
-  return `<div class="sre-metric" data-testid="regression-metric">${text}</div>`;
+  return `<div class="sre-metric" data-testid="regression-metric">${t('regression.metric', { A, N, X })}</div>`;
 }
 
 function renderQuiz() {

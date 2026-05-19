@@ -645,11 +645,11 @@ export const messages = {
     // Slice Regression Explorer (N4)
     'regression.title': 'Regression Test Selection Explorer',
     'regression.desc': 'Mark a statement as changed and see which tests must be re-run. Toggle between the conservative static criterion (backward slice) and the precise dynamic criterion (trace-aware impact) to compare how each classifies your test suite.',
-    'regression.modeLabel': 'Criterion:',
+    'regression.modeLabel': 'Mode:',
     'regression.static': 'Static',
     'regression.dynamic': 'Dynamic',
     'regression.criterionLabel': 'Output criterion:',
-    'regression.pickPrompt': 'Click a statement in the code listing or PDG to mark it as the edited statement.',
+    'regression.pickPrompt': 'Click a statement in the code listing or PDG to mark it as the changed statement.',
     'regression.pickStmtHint': 'Click any statement to mark it as the changed statement.',
     'regression.testSuiteTitle': 'Test Suite',
     'regression.mustRerun': 'Must Re-run',
@@ -3538,7 +3538,7 @@ export const messages = {
     // 回歸測試選擇探索器（N4）
     'regression.title': '回歸測試選擇探索器',
     'regression.desc': '標記一個陳述句為已修改，並查看哪些測試必須重新執行。在保守的靜態準則（後向切片）與精確的動態準則（執行軌跡感知影響）之間切換，比較各自對測試套件的分類方式。',
-    'regression.modeLabel': '準則：',
+    'regression.modeLabel': '模式：',
     'regression.static': '靜態',
     'regression.dynamic': '動態',
     'regression.criterionLabel': '輸出條件：',
