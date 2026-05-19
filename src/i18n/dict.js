@@ -644,7 +644,7 @@ export const messages = {
 
     // Slice Regression Explorer (N4)
     'regression.title': 'Regression Test Selection Explorer',
-    'regression.desc': 'Mark a statement as changed and see which tests must be re-run. Toggle between the conservative static criterion (backward slice) and the precise dynamic criterion (trace-aware impact) to compare how each classifies your test suite.',
+    'regression.desc': 'Mark a statement as changed and see which tests must be re-run. Toggle between the conservative static criterion (forward slice / impact set of the changed statement) and the precise dynamic criterion (trace-aware backward slice from the output) to compare how each classifies your test suite.',
     'regression.modeLabel': 'Mode:',
     'regression.static': 'Static',
     'regression.dynamic': 'Dynamic',
@@ -658,10 +658,10 @@ export const messages = {
     'regression.quiz.prompt': 'Under the static slice-based criterion, which tests must be re-run after changing a statement S?',
     'regression.quiz.a': 'A. Only tests whose recorded trace passes through S.',
     'regression.quiz.b': 'B. All tests in the suite, regardless of the change.',
-    'regression.quiz.c': 'C. All tests that exercise any statement in the backward slice of the output criterion containing S.',
+    'regression.quiz.c': 'C. All tests that execute at least one statement in the forward slice (impact set) of the changed statement S.',
     'regression.quiz.d': 'D. Tests that are closest in source-line distance to S.',
-    'regression.quiz.correct': 'Correct! The static criterion selects every test that exercises a statement in the backward slice containing the changed statement — a safe but potentially over-approximate set.',
-    'regression.quiz.wrong': 'Not quite. The static criterion uses the backward slice of the output criterion: any test touching that slice must be re-run to ensure correctness.',
+    'regression.quiz.correct': 'Correct! The static criterion selects every test that executed at least one statement in the forward slice (impact set) of the changed statement — covering everything the edit can possibly affect.',
+    'regression.quiz.wrong': 'Not quite. Think about which statements the edit can reach — the static criterion re-runs any test that executed a statement in that forward-slice impact set of the changed statement.',
 
     // Slice Coverage Explorer (N3)
     'coverage.title': 'Slice Coverage Explorer',
@@ -3537,7 +3537,7 @@ export const messages = {
 
     // 回歸測試選擇探索器（N4）
     'regression.title': '回歸測試選擇探索器',
-    'regression.desc': '標記一個陳述句為已修改，並查看哪些測試必須重新執行。在保守的靜態準則（後向切片）與精確的動態準則（執行軌跡感知影響）之間切換，比較各自對測試套件的分類方式。',
+    'regression.desc': '標記一個陳述句為已修改，並查看哪些測試必須重新執行。在保守的靜態準則（已修改陳述句的前向切片／影響集合）與精確的動態準則（以執行軌跡為基礎的輸出向後切片）之間切換，比較各自對測試套件的分類方式。',
     'regression.modeLabel': '模式：',
     'regression.static': '靜態',
     'regression.dynamic': '動態',
@@ -3551,10 +3551,10 @@ export const messages = {
     'regression.quiz.prompt': '在靜態切片準則下，修改陳述句 S 後，哪些測試必須重新執行？',
     'regression.quiz.a': 'A. 僅有執行軌跡通過 S 的測試。',
     'regression.quiz.b': 'B. 套件中所有測試，無論修改為何。',
-    'regression.quiz.c': 'C. 所有執行到包含 S 之輸出條件後向切片中任一陳述句的測試。',
+    'regression.quiz.c': 'C. 所有執行到已修改陳述句 S 之前向切片（影響集合）中至少一個陳述句的測試。',
     'regression.quiz.d': 'D. 在原始碼行距上最接近 S 的測試。',
-    'regression.quiz.correct': '正確！靜態準則選取所有執行到包含已修改陳述句之後向切片的測試——這是一個安全但可能過度保守的集合。',
-    'regression.quiz.wrong': '不太對。靜態準則使用輸出條件的後向切片：任何觸及該切片的測試都必須重新執行以確保正確性。',
+    'regression.quiz.correct': '正確！靜態準則選取所有曾執行已修改陳述句之前向切片（影響集合）中至少一個陳述句的測試——涵蓋該修改可能影響到的所有路徑。',
+    'regression.quiz.wrong': '不太對。想想修改可以影響到哪些陳述句——靜態準則會重新執行所有曾執行已修改陳述句之前向切片（影響集合）中任一陳述句的測試。',
 
     // 切片覆蓋探索器（N3）
     'coverage.title': '切片覆蓋探索器',
