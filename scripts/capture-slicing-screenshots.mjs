@@ -79,135 +79,136 @@ async function main() {
     } catch { /* ignore */ }
   }, SLIDE_LOCALE);
 
-  // ── N1: ProgramSlicingExplorer ────────────────────────────────────────────────
-  // Two shots: backward-static on s11/label (classify), then dynamic on pos trace.
-  // The classify example gives a visible shrink: 6 statements static vs 3 dynamic.
+  try {
+    // ── N1: ProgramSlicingExplorer ────────────────────────────────────────────────
+    // Two shots: backward-static on s11/label (classify), then dynamic on pos trace.
+    // The classify example gives a visible shrink: 6 statements static vs 3 dynamic.
 
-  const pse = await ctx.newPage();
-  await pse.goto(`${BASE_URL}?explorer=ProgramSlicingExplorer`, { waitUntil: 'networkidle' });
-  await pse.getByTestId('program-slicing-explorer').waitFor();
-  const pseRoot = pse.getByTestId('program-slicing-explorer');
+    const pse = await ctx.newPage();
+    await pse.goto(`${BASE_URL}?explorer=ProgramSlicingExplorer`, { waitUntil: 'networkidle' });
+    await pse.getByTestId('program-slicing-explorer').waitFor();
+    const pseRoot = pse.getByTestId('program-slicing-explorer');
 
-  // Select the classify example.
-  await pse.getByTestId('slicing-example-classify').click();
+    // Select the classify example.
+    await pse.getByTestId('slicing-example-classify').click();
 
-  // Ensure backward + static are active.
-  await pse.getByTestId('slicing-dir-backward').click();
-  await pse.getByTestId('slicing-mode-static').click();
+    // Ensure backward + static are active.
+    await pse.getByTestId('slicing-dir-backward').click();
+    await pse.getByTestId('slicing-mode-static').click();
 
-  // Select the criterion: click statement s11 (return label), then variable chip.
-  // Scope to the explorer root so strict-mode doesn't complain about duplicate
-  // data-stmt elements that live in other explorers pre-rendered on the same DOM.
-  await pseRoot.locator('[data-stmt="s11"]').click();
-  await pse.getByTestId('slicing-var-label').click();
-  await sleep(250);
+    // Select the criterion: click statement s11 (return label), then variable chip.
+    // Scope to the explorer root so strict-mode doesn't complain about duplicate
+    // data-stmt elements that live in other explorers pre-rendered on the same DOM.
+    await pseRoot.locator('[data-stmt="s11"]').click();
+    await pse.getByTestId('slicing-var-label').click();
+    await sleep(250);
 
-  // Shot 1 — slice-program-backward (6 statements highlighted)
-  await pseRoot.screenshot({ path: shot('slice-program-backward') });
-  console.log('[capture] saved', shot('slice-program-backward'));
+    // Shot 1 — slice-program-backward (6 statements highlighted)
+    await pseRoot.screenshot({ path: shot('slice-program-backward') });
+    console.log('[capture] saved', shot('slice-program-backward'));
 
-  // Shot 2 — slice-program-dynamic: switch to dynamic, pick the pos trace.
-  // Dynamic slice of label for pos (n=5) is only 3 statements — the contrast
-  // deck #58 needs.
-  await pse.getByTestId('slicing-mode-dynamic').click();
-  await pse.getByTestId('slicing-trace-pos').click();
-  await sleep(250);
+    // Shot 2 — slice-program-dynamic: switch to dynamic, pick the pos trace.
+    // Dynamic slice of label for pos (n=5) is only 3 statements — the contrast
+    // deck #58 needs.
+    await pse.getByTestId('slicing-mode-dynamic').click();
+    await pse.getByTestId('slicing-trace-pos').click();
+    await sleep(250);
 
-  await pseRoot.screenshot({ path: shot('slice-program-dynamic') });
-  console.log('[capture] saved', shot('slice-program-dynamic'));
+    await pseRoot.screenshot({ path: shot('slice-program-dynamic') });
+    console.log('[capture] saved', shot('slice-program-dynamic'));
 
-  await pse.close();
+    await pse.close();
 
-  // ── N2: SliceDicingExplorer ───────────────────────────────────────────────────
-  // Two shots: static / summary-stats scenario, then dynamic / fare scenario.
+    // ── N2: SliceDicingExplorer ───────────────────────────────────────────────────
+    // Two shots: static / summary-stats scenario, then dynamic / fare scenario.
 
-  const sde = await ctx.newPage();
-  await sde.goto(`${BASE_URL}?explorer=SliceDicingExplorer`, { waitUntil: 'networkidle' });
-  await sde.getByTestId('slice-dicing-explorer').waitFor();
-  const sdeRoot = sde.getByTestId('slice-dicing-explorer');
+    const sde = await ctx.newPage();
+    await sde.goto(`${BASE_URL}?explorer=SliceDicingExplorer`, { waitUntil: 'networkidle' });
+    await sde.getByTestId('slice-dicing-explorer').waitFor();
+    const sdeRoot = sde.getByTestId('slice-dicing-explorer');
 
-  // Shot 3 — slice-dicing-static
-  await sde.getByTestId('dicing-mode-static').click();
-  await sde.getByTestId('dicing-scenario-summary-stats').click();
-  await sleep(250);
+    // Shot 3 — slice-dicing-static
+    await sde.getByTestId('dicing-mode-static').click();
+    await sde.getByTestId('dicing-scenario-summary-stats').click();
+    await sleep(250);
 
-  await sdeRoot.screenshot({ path: shot('slice-dicing-static') });
-  console.log('[capture] saved', shot('slice-dicing-static'));
+    await sdeRoot.screenshot({ path: shot('slice-dicing-static') });
+    console.log('[capture] saved', shot('slice-dicing-static'));
 
-  // Shot 4 — slice-dicing-dynamic
-  await sde.getByTestId('dicing-mode-dynamic').click();
-  await sde.getByTestId('dicing-scenario-fare').click();
-  await sleep(250);
+    // Shot 4 — slice-dicing-dynamic
+    await sde.getByTestId('dicing-mode-dynamic').click();
+    await sde.getByTestId('dicing-scenario-fare').click();
+    await sleep(250);
 
-  await sdeRoot.screenshot({ path: shot('slice-dicing-dynamic') });
-  console.log('[capture] saved', shot('slice-dicing-dynamic'));
+    await sdeRoot.screenshot({ path: shot('slice-dicing-dynamic') });
+    console.log('[capture] saved', shot('slice-dicing-dynamic'));
 
-  await sde.close();
+    await sde.close();
 
-  // ── N3: SliceCoverageExplorer ─────────────────────────────────────────────────
-  // Two shots: classify example (all traces on = 100%), then drop neg trace (83%).
+    // ── N3: SliceCoverageExplorer ─────────────────────────────────────────────────
+    // Two shots: classify example (all traces on = 100%), then drop neg trace (83%).
 
-  const sce = await ctx.newPage();
-  await sce.goto(`${BASE_URL}?explorer=SliceCoverageExplorer`, { waitUntil: 'networkidle' });
-  await sce.getByTestId('slice-coverage-explorer').waitFor();
-  const sceRoot = sce.getByTestId('slice-coverage-explorer');
+    const sce = await ctx.newPage();
+    await sce.goto(`${BASE_URL}?explorer=SliceCoverageExplorer`, { waitUntil: 'networkidle' });
+    await sce.getByTestId('slice-coverage-explorer').waitFor();
+    const sceRoot = sce.getByTestId('slice-coverage-explorer');
 
-  // Click the classify example chip — resets traces to all-on.
-  await sce.getByTestId('coverage-example-classify').click();
-  await sleep(250);
+    // Click the classify example chip — resets traces to all-on.
+    await sce.getByTestId('coverage-example-classify').click();
+    await sleep(250);
 
-  // Shot 5 — slice-coverage-full (100%, all traces active)
-  await sceRoot.screenshot({ path: shot('slice-coverage-full') });
-  console.log('[capture] saved', shot('slice-coverage-full'));
+    // Shot 5 — slice-coverage-full (100%, all traces active)
+    await sceRoot.screenshot({ path: shot('slice-coverage-full') });
+    console.log('[capture] saved', shot('slice-coverage-full'));
 
-  // Shot 6 — slice-coverage-gap: drop the neg trace to reveal the s8 gap.
-  await sce.getByTestId('coverage-trace-neg').click();
-  await sleep(250);
+    // Shot 6 — slice-coverage-gap: drop the neg trace to reveal the s8 gap.
+    await sce.getByTestId('coverage-trace-neg').click();
+    await sleep(250);
 
-  await sceRoot.screenshot({ path: shot('slice-coverage-gap') });
-  console.log('[capture] saved', shot('slice-coverage-gap'));
+    await sceRoot.screenshot({ path: shot('slice-coverage-gap') });
+    console.log('[capture] saved', shot('slice-coverage-gap'));
 
-  await sce.close();
+    await sce.close();
 
-  // ── N4: SliceRegressionExplorer ───────────────────────────────────────────────
-  // Two shots: static mode (classify / s3 edited), then dynamic mode.
+    // ── N4: SliceRegressionExplorer ───────────────────────────────────────────────
+    // Two shots: static mode (classify / s3 edited), then dynamic mode.
 
-  const sre = await ctx.newPage();
-  await sre.goto(`${BASE_URL}?explorer=SliceRegressionExplorer`, { waitUntil: 'networkidle' });
-  await sre.getByTestId('slice-regression-explorer').waitFor();
-  const sreRoot = sre.getByTestId('slice-regression-explorer');
+    const sre = await ctx.newPage();
+    await sre.goto(`${BASE_URL}?explorer=SliceRegressionExplorer`, { waitUntil: 'networkidle' });
+    await sre.getByTestId('slice-regression-explorer').waitFor();
+    const sreRoot = sre.getByTestId('slice-regression-explorer');
 
-  // Select the classify example, mark s3 as the edited statement.
-  // Scope to the explorer root to avoid strict-mode violations from duplicate
-  // data-stmt elements in other explorers pre-rendered on the same DOM.
-  await sre.getByTestId('regression-example-classify').click();
-  await sreRoot.locator('[data-stmt="s3"]').click();
+    // Select the classify example, mark s3 as the edited statement.
+    // Scope to the explorer root to avoid strict-mode violations from duplicate
+    // data-stmt elements in other explorers pre-rendered on the same DOM.
+    await sre.getByTestId('regression-example-classify').click();
+    await sreRoot.locator('[data-stmt="s3"]').click();
 
-  // Shot 7 — slice-regression-static
-  await sre.getByTestId('regression-mode-static').click();
-  await sleep(250);
+    // Shot 7 — slice-regression-static
+    await sre.getByTestId('regression-mode-static').click();
+    await sleep(250);
 
-  await sreRoot.screenshot({ path: shot('slice-regression-static') });
-  console.log('[capture] saved', shot('slice-regression-static'));
+    await sreRoot.screenshot({ path: shot('slice-regression-static') });
+    console.log('[capture] saved', shot('slice-regression-static'));
 
-  // Shot 8 — slice-regression-dynamic (state continues from shot 7)
-  await sre.getByTestId('regression-mode-dynamic').click();
-  await sleep(250);
+    // Shot 8 — slice-regression-dynamic (state continues from shot 7)
+    await sre.getByTestId('regression-mode-dynamic').click();
+    await sleep(250);
 
-  await sreRoot.screenshot({ path: shot('slice-regression-dynamic') });
-  console.log('[capture] saved', shot('slice-regression-dynamic'));
+    await sreRoot.screenshot({ path: shot('slice-regression-dynamic') });
+    console.log('[capture] saved', shot('slice-regression-dynamic'));
 
-  await sre.close();
+    await sre.close();
 
-  // ── Teardown ──────────────────────────────────────────────────────────────────
-
-  await browser.close();
-  if (serverChild) {
-    serverChild.kill();
-    console.log('[capture] stopped http.server');
+    console.log(`[capture] done — 8 PNGs written to ${OUT_DIR}`);
+  } finally {
+    // ── Teardown ──────────────────────────────────────────────────────────────────
+    await browser.close();
+    if (serverChild) {
+      serverChild.kill();
+      console.log('[capture] stopped http.server');
+    }
   }
-
-  console.log(`[capture] done — 8 PNGs written to ${OUT_DIR}`);
 }
 
 main().catch((err) => {
