@@ -107,28 +107,27 @@ Conversely, a statement can be **inside the slice but never executed** — it is
 ## Worked example — `classify`
 
 ```javascript
-function classify(x) {
-  let label;                // s1
-  if (x > 0) {             // s2
-    label = 'pos';          // s3
-  } else if (x < 0) {      // s4
-    label = 'neg';          // s5
-  } else {
-    label = 'zero';         // s6
+function classify(n) {
+  let label = "zero";       // s2
+  let sign = 0;             // s3
+  if (n > 0) {              // s4
+    label = "positive";     // s5
+    sign = 1;               // s6
+  } else if (n < 0) {       // s7
+    label = "negative";     // s8
+    sign = -1;              // s9
   }
-  const abs = Math.abs(x);  // s7  — computes abs, not used by label
-  const tag = label + '!';  // s8
-  return tag;               // s9
+  return label;             // s11
 }
 ```
 
-Output: `tag` at `s9`.
+Output: `label` at `s11`.
 
-**Backward slice** of `tag` at `s9`: {s1, s2, s3, s4, s5, s6, s8, s9} — 8 statements.
+**Backward slice** of `label` at `s11`: {s2, s4, s5, s7, s8, s11} — **6 statements**.
 
-`s7` (`abs`) is **not** in the slice: `abs` has no path to `tag`.
+`s3`, `s6`, `s9` (`sign`) are **not** in the slice: `sign` has no path to `label`.
 
-<!-- s7 defines `abs` but `abs` is never used in any computation that reaches `tag`. It is data-independent of the slice. Statement coverage would count s7 as "covered" when any test runs through it; slice coverage of `tag` correctly excludes it from the denominator. -->
+<!-- s3 defines `sign`; s6 and s9 update it. But `sign` is never used in any computation that reaches `label`. Statement coverage counts s3/s6/s9 as "covered" whenever a test runs through them; slice coverage of `label` correctly excludes them from the denominator. Note: s7 IS in the slice because it is a control node (else if) whose branch determines whether s8 executes, and s8 data-depends label at s11. -->
 
 ---
 
@@ -136,17 +135,17 @@ Output: `tag` at `s9`.
 
 | Test | Input | Executes | Slice statements executed |
 |---|---|---|---|
-| `pos` | x=5 | s1, s2, s3, s7, s8, s9 | s1, s2, s3, s8, s9 |
-| `neg` | x=−3 | s1, s2, s4, s5, s7, s8, s9 | s1, s2, s4, s5, s8, s9 |
-| `zero` | x=0 | s1, s2, s4, s6, s7, s8, s9 | s1, s2, s4, s6, s8, s9 |
+| `pos` | n=5 | s2, s3, s4, s5, s6, s11 | s2, s4, s5, s11 |
+| `neg` | n=−3 | s2, s3, s4, s7, s8, s9, s11 | s2, s4, s7, s8, s11 |
+| `zero` | n=0 | s2, s3, s4, s7, s11 | s2, s4, s7, s11 |
 
-Slice = {s1, s2, s3, s4, s5, s6, s8, s9}
+Slice = {s2, s4, s5, s7, s8, s11}
 
-With all three tests: every slice statement is covered → **slice coverage = 8/8 = 100%**.
+With all three tests: every slice statement is covered → **slice coverage = 6/6 = 100%**.
 
-Statement coverage is also 100% — but note: `s7` appears as "covered" in statement coverage even though it contributes nothing to slice coverage of `tag`.
+Statement coverage is also 100% — but note: `s3`, `s6`, `s9` appear as "covered" in statement coverage even though they contribute nothing to slice coverage of `label`.
 
-<!-- Each test covers a different branch of the if-else chain and thus a different subset of slice statements. Together the three tests saturate the slice. s7 is executed by every test but it never enters the slice denominator — it is "extra" coverage that does not strengthen our confidence in tag's correctness. -->
+<!-- Each test covers a different branch of the if-else chain and thus a different subset of slice statements. Together the three tests saturate the 6-statement slice. s3/s6/s9 (the sign assignments) are executed by various tests but never enter the slice denominator — they are "extra" coverage that does not strengthen our confidence in label's correctness. -->
 
 ---
 
@@ -156,21 +155,19 @@ With only `pos` and `zero`:
 
 | Slice statement | Covered? |
 |---|---|
-| s1 | yes |
 | s2 | yes |
-| s3 | yes (by `pos`) |
-| s4 | yes (by `zero`) |
-| s5 | **no** — only `neg` exercises this branch |
-| s6 | yes (by `zero`) |
-| s8 | yes |
-| s9 | yes |
+| s4 | yes |
+| s5 | yes (by `pos`) |
+| s7 | yes (by `zero`) |
+| s8 | **no** — only `neg` exercises this branch |
+| s11 | yes |
 
-**Slice coverage = 7/8 = 87.5%** — the gap at `s5` (`label = 'neg'`) is visible.
+**Slice coverage = 5/6 = 83%** — the gap at `s8` (`label = "negative"`) is visible.
 
-Statement coverage without `neg`: `s5` is uncovered, `s7` is covered.
-Slice coverage correctly focuses attention on the output-relevant gap at `s5`, not the irrelevant execution of `s7`.
+Statement coverage without `neg`: `s8` and `s9` are uncovered, `s3`/`s6` are covered.
+Slice coverage correctly focuses attention on the output-relevant gap at `s8`, not the irrelevant execution of `s3`/`s6`.
 
-<!-- This is the teaching point: statement coverage would show s7 as "bonus covered" and report only s5 as missing. Slice coverage shows the same missing statement (s5) but does not count s7 at all — the denominator correctly excludes it. The result is a cleaner signal about what matters for output correctness. -->
+<!-- This is the teaching point: statement coverage would show s3 and s6 as "bonus covered" and report s8 and s9 as missing. Slice coverage shows only s8 as missing (s9 is outside the slice) and does not count s3/s6 at all — the denominator correctly excludes them. The result is a cleaner signal about what matters for output correctness. -->
 
 ---
 
@@ -179,14 +176,14 @@ Slice coverage correctly focuses attention on the output-relevant gap at `s5`, n
 In `/section-slicing`, open the **Coverage** tab (Slice Coverage Explorer):
 
 1. Select the `classify` scenario.
-   - The backward slice of `tag` is highlighted in the PDG on the left.
-   - `s7` is shown as outside the slice (greyed out in the denominator panel).
-2. Enable all three traces (`pos`, `neg`, `zero`) — observe 100% slice coverage.
-3. Disable the `neg` trace — watch the coverage meter drop to 87.5% and `s5` turn red.
+   - The backward slice of `label` is highlighted in the PDG on the left (6 statements: s2, s4, s5, s7, s8, s11).
+   - `s3`, `s6`, `s9` are shown as outside the slice (greyed out in the denominator panel).
+2. Enable all three traces (`pos`, `neg`, `zero`) — observe 100% slice coverage (6/6).
+3. Disable the `neg` trace — watch the coverage meter drop to 83% and `s8` turn red.
 4. Compare the **Slice coverage** bar with the **Statement coverage** bar:
-   - Statement coverage: `s7` appears covered, giving a falsely optimistic view.
-   - Slice coverage: `s7` is excluded; the uncovered `s5` is the only gap.
-5. Try the quiz: "which statement is covered by every test but contributes nothing to slice coverage of `tag`?"
+   - Statement coverage: `s3`/`s6` appear covered, giving a falsely optimistic view.
+   - Slice coverage: `s3`/`s6`/`s9` are excluded; the uncovered `s8` is the only gap.
+5. Try the quiz: "which statement is covered by every test but contributes nothing to slice coverage of `label`?"
 
 ---
 
