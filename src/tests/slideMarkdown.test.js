@@ -32,6 +32,19 @@ describe('renderMarkdown', () => {
       + '<span class="tex-frac-den">b</span></span></div>',
     );
   });
+  it('renders a single-line $$…$$ as a math block', () => {
+    const html = renderMarkdown('$$\\text{a} = b$$');
+    expect(html).toBe(
+      '<div class="slide-math-block"><span class="tex-text">a</span> = b</div>',
+    );
+  });
+  it('renders a single-line $$…$$ that follows prose without a blank line', () => {
+    const html = renderMarkdown('intro line\n$$\\text{a} = b$$');
+    expect(html).toBe(
+      '<p>intro line</p>'
+      + '<div class="slide-math-block"><span class="tex-text">a</span> = b</div>',
+    );
+  });
   it('renders inline $…$ math with a superscript', () => {
     expect(renderMarkdown('all $2^n$ rows'))
       .toBe('<p>all <span class="slide-math">2<sup>n</sup></span> rows</p>');
@@ -39,6 +52,22 @@ describe('renderMarkdown', () => {
   it('converts LaTeX symbol commands inside math', () => {
     expect(renderMarkdown('$a \\le b$'))
       .toBe('<p><span class="slide-math">a ≤ b</span></p>');
+  });
+  it('converts \\setminus, \\bigcup and \\mid symbols', () => {
+    expect(renderMarkdown('$A \\setminus B$'))
+      .toBe('<p><span class="slide-math">A ∖ B</span></p>');
+    expect(renderMarkdown('$\\bigcup S$'))
+      .toBe('<p><span class="slide-math">⋃ S</span></p>');
+    expect(renderMarkdown('$x \\mid y$'))
+      .toBe('<p><span class="slide-math">x ∣ y</span></p>');
+  });
+  it('drops \\bigl/\\bigr delimiter sizing, keeping the bracket', () => {
+    expect(renderMarkdown('$\\bigl(a\\bigr)$'))
+      .toBe('<p><span class="slide-math">(a)</span></p>');
+  });
+  it('renders \\; (and \\, \\:) as a space', () => {
+    expect(renderMarkdown('$a\\;b$'))
+      .toBe('<p><span class="slide-math">a b</span></p>');
   });
   it('treats an escaped \\$ as a literal dollar sign', () => {
     expect(renderMarkdown('costs \\$50 today')).toBe('<p>costs $50 today</p>');

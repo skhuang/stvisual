@@ -12,8 +12,16 @@ const TEX_SYMBOLS = {
   sum: '∑', prod: '∏', in: '∈', notin: '∉', approx: '≈', equiv: '≡',
   pm: '±', infty: '∞', ldots: '…', cdots: '⋯', land: '∧', lor: '∨',
   lnot: '¬', forall: '∀', exists: '∃', emptyset: '∅', subseteq: '⊆',
+  setminus: '∖', bigcup: '⋃', bigcap: '⋂', mid: '∣',
   alpha: 'α', beta: 'β', lambda: 'λ', mu: 'μ', sigma: 'σ', theta: 'θ',
 };
+
+// Delimiter-sizing prefixes (\left \right \bigl …): the renderer ignores the
+// sizing and keeps the bracket character that follows.
+const TEX_DELIM_SIZING = new Set([
+  'left', 'right', 'big', 'Big', 'bigg', 'Bigg', 'bigl', 'bigr',
+  'Bigl', 'Bigr', 'biggl', 'biggr',
+]);
 
 // Minimal, dependency-free LaTeX-math → HTML converter for the small subset
 // the docs/slides decks use: \frac, \text, super/subscripts and the symbols
@@ -29,7 +37,16 @@ function texToHtml(tex) {
       if (c === '\\') {
         i++;
         const m = /^[a-zA-Z]+/.exec(tex.slice(i));
-        if (!m) { html += escapeHtml(tex[i] || ''); i++; continue; }
+        if (!m) {
+          // \<non-letter>: TeX spacing commands (\, \: \; and backslash-space)
+          // become a space, \! is a negative thin space (nothing), and any
+          // other \<char> stays literal (\{ \} \% …).
+          const ch = tex[i] || '';
+          if (ch === ',' || ch === ':' || ch === ';' || ch === ' ') html += ' ';
+          else if (ch !== '!') html += escapeHtml(ch);
+          i++;
+          continue;
+        }
         const cmd = m[0];
         i += cmd.length;
         if (cmd === 'frac' || cmd === 'tfrac' || cmd === 'dfrac') {
@@ -39,7 +56,7 @@ function texToHtml(tex) {
             + `<span class="tex-frac-den">${den}</span></span>`;
         } else if (cmd === 'text' || cmd === 'mathrm' || cmd === 'operatorname' || cmd === 'mathit') {
           html += `<span class="tex-text">${arg()}</span>`;
-        } else if (cmd === 'left' || cmd === 'right') {
+        } else if (TEX_DELIM_SIZING.has(cmd)) {
           /* delimiter sizing — ignore; the bracket char itself follows */
         } else if (TEX_SYMBOLS[cmd]) {
           html += TEX_SYMBOLS[cmd];
@@ -107,9 +124,16 @@ function splitRow(line) {
   return line.replace(/^\s*\|?/, '').replace(/\|?\s*$/, '').split('|').map((c) => c.trim());
 }
 
+// A line that is a complete `$$…$$` display-math formula on its own.
+function isSingleLineDisplayMath(line) {
+  const t = line.trim();
+  return t.length > 4 && t.startsWith('$$') && t.endsWith('$$');
+}
+
 function isBlockStart(line) {
   return /^(#{1,6}\s|>|\s*([-*+]|\d+\.)\s|```)/.test(line)
-    || line.includes('|') || line.trim() === '$$';
+    || line.includes('|') || line.trim() === '$$'
+    || isSingleLineDisplayMath(line);
 }
 
 export function renderMarkdown(md) {
@@ -129,13 +153,20 @@ export function renderMarkdown(md) {
       continue;
     }
 
-    // Display math: a `$$` line, its TeX body, then a closing `$$` line.
+    // Display math, multi-line: a `$$` line, its TeX body, a closing `$$` line.
     if (line.trim() === '$$') {
       const tex = [];
       i++;
       while (i < lines.length && lines[i].trim() !== '$$') { tex.push(lines[i]); i++; }
       i++;
       out.push(`<div class="slide-math-block">${texToHtml(tex.join(' '))}</div>`);
+      continue;
+    }
+
+    // Display math, single-line: the whole formula on one `$$…$$` line.
+    if (isSingleLineDisplayMath(line)) {
+      out.push(`<div class="slide-math-block">${texToHtml(line.trim().slice(2, -2))}</div>`);
+      i++;
       continue;
     }
 
