@@ -89,7 +89,7 @@ But executing a statement in `FS(s)` does not mean the edit's value actually *re
 
 **Dynamic selection uses the backward dynamic slice:**
 - A test `T_i` is affected iff the changed statement `s` is in the **dynamic backward slice** of the output criterion for `T_i`.
-- The dynamic slice only contains statements whose values actually flowed to the output on that specific execution — not just any statement that could do so in theory.
+- The dynamic slice only contains statements whose **values or control decisions** actually flowed to the output on that specific execution — not just any statement that could do so in theory.
 
 **Result:** dynamic selection is a strict subset of static selection.
 
@@ -169,7 +169,6 @@ A trace is affected iff `s3` appears in its dynamic backward slice.
 
 | Property | Static | Dynamic |
 |---|---|---|
-| Impact set | Forward slice `FS(s)` — structural | Forward slice `FS(s)` — structural |
 | Selection criterion | Trace executes any statement in `FS(s)` | Changed statement is in trace's dynamic backward slice |
 | Safety | Always safe (conservative) | Always safe (precise) |
 | False positives | Possible — may select unaffected tests | None — only truly affected tests selected |
@@ -187,7 +186,7 @@ Dynamic-affected ⊆ Static-affected ⊆ All tests.
 In `/section-slicing`, open the **Regression** tab (Slice Regression Explorer):
 
 1. Select the `classify` scenario.
-   - The PDG is shown with the current output criterion (`label` at `s11`).
+   - The PDG is shown on the left with the current output criterion (`label` at `s11`).
 2. Click on statement `s3` (`sign = 0`) to mark it as the changed statement.
    - The forward-slice impact set `{s3}` is highlighted.
 3. Switch to **Static** mode — all three traces (`pos`, `neg`, `zero`) are marked as affected (red).
