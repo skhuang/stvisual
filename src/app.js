@@ -146,6 +146,10 @@ const overviewGroups = [
     key: 'overview.group.slicing',
     sectionIds: ['slicing'],
   },
+  {
+    key: 'overview.group.tdd',
+    sectionIds: ['tdd'],
+  },
 ];
 
 function loadSavedSection(urlSection) {
@@ -1174,6 +1178,7 @@ export function renderApp(container) {
         case 'mbt':        return activeMbtTab;
         case 'agile':      return activeAgileTab;
         case 'slicing':    return activeSlicingTab;
+        case 'tdd':        return activeTddTab;
         case 'flow':       return activeFlowTab;
         case 'types':      return activeTypesTab;
         default: return undefined;
