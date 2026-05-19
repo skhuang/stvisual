@@ -153,9 +153,9 @@ A trace is affected iff `s3` appears in its dynamic backward slice.
 
 | Trace | Dynamic backward slice of label@s11 | Contains s3? | Dynamic verdict |
 |---|---|---|---|
-| `pos` | s2, s4, s5, s11 | no | **safe to skip** |
-| `neg` | s2, s4, s7, s8, s11 | no | **safe to skip** |
-| `zero` | s2, s4, s7, s11 | no | **safe to skip** |
+| `pos` | s4, s5, s11 | no | **safe to skip** |
+| `neg` | s4, s7, s8, s11 | no | **safe to skip** |
+| `zero` | s2, s11 | no | **safe to skip** |
 
 **Dynamic: re-run 0 / 3 tests (all 3 safe to skip).**
 
