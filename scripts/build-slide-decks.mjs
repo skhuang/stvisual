@@ -77,6 +77,7 @@ const DECKS = [
   { base: '59-fault-localization-dicing',    id: 'fault-localization-dicing', num: 59, section: 'slicing' },
   { base: '60-slice-based-coverage',         id: 'slice-based-coverage',      num: 60, section: 'slicing' },
   { base: '61-regression-test-selection',   id: 'regression-test-selection', num: 61, section: 'slicing' },
+  { base: '62-test-driven-development', id: 'test-driven-development', num: 62, section: 'tdd' },
 ];
 
 function frontMatterTitle(md) {
