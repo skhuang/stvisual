@@ -34,6 +34,8 @@ export const TAB_SECTIONS = {
   // Section N — slice-based testing. N1 ships 'program'; N2-N4 tabs are
   // added to this list as their plans land.
   slicing: { tabs: ['program', 'dicing', 'coverage', 'regression'], default: 'program' },
+  // Section O — TDD. O1 ships 'cycle'; O2 ships 'rules'.
+  tdd: { tabs: ['cycle', 'rules'], default: 'cycle' },
 };
 
 // ── ComponentName → { section, tab? } ────────────────────────────────
@@ -99,6 +101,8 @@ export const EXPLORER_TO_LOCATION = {
   SliceDicingExplorer:         { section: 'slicing', tab: 'dicing' },
   SliceCoverageExplorer:       { section: 'slicing', tab: 'coverage' },
   SliceRegressionExplorer:     { section: 'slicing', tab: 'regression' },
+  TddCycleExplorer:            { section: 'tdd', tab: 'cycle' },
+  TddRulesExplorer:            { section: 'tdd', tab: 'rules' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

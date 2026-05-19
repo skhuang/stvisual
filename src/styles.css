@@ -64,6 +64,8 @@
 @import url('./components/SliceDicingExplorer.css');
 @import url('./components/SliceCoverageExplorer.css');
 @import url('./components/SliceRegressionExplorer.css');
+@import url('./components/TddCycleExplorer.css');
+@import url('./components/TddRulesExplorer.css');
 @import url('./components/SlideViewer.css');
 @import url('./components/quiz.css');
 

@@ -66,6 +66,16 @@ describe('K4 — urlRouter parse', () => {
       .toEqual({ explorer: 'SliceRegressionExplorer', section: 'slicing', tab: 'regression' });
   });
 
+  it('?explorer=TddCycleExplorer resolves to tdd section, cycle tab', () => {
+    expect(parseAppLocation('?explorer=TddCycleExplorer'))
+      .toEqual({ explorer: 'TddCycleExplorer', section: 'tdd', tab: 'cycle' });
+  });
+
+  it('?explorer=TddRulesExplorer resolves to tdd section, rules tab', () => {
+    expect(parseAppLocation('?explorer=TddRulesExplorer'))
+      .toEqual({ explorer: 'TddRulesExplorer', section: 'tdd', tab: 'rules' });
+  });
+
   it('?pack= is captured', () => {
     expect(parseAppLocation('?pack=ai-assisted')).toEqual({ pack: 'ai-assisted' });
   });

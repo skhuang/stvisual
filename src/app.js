@@ -54,6 +54,8 @@ import { createProgramSlicingExplorer } from './components/ProgramSlicingExplore
 import { createSliceDicingExplorer } from './components/SliceDicingExplorer.js';
 import { createSliceCoverageExplorer } from './components/SliceCoverageExplorer.js';
 import { createSliceRegressionExplorer } from './components/SliceRegressionExplorer.js';
+import { createTddCycleExplorer } from './components/TddCycleExplorer.js';
+import { createTddRulesExplorer } from './components/TddRulesExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
@@ -94,6 +96,7 @@ const learningSectionsConfig = [
   { id: 'mbt', key: 'section.mbt' },
   { id: 'agile', key: 'section.agile' },
   { id: 'slicing', key: 'section.slicing' },
+  { id: 'tdd', key: 'section.tdd' },
   { id: 'blackbox', key: 'section.blackbox' },
   { id: 'flow', key: 'section.flow' },
   { id: 'types', key: 'section.types' },
@@ -241,6 +244,7 @@ export function renderApp(container) {
           <section data-testid="section-mbt" tabindex="-1" aria-labelledby="section-mbt-title"><h2 id="section-mbt-title">${t('section.mbt.title')}</h2><div data-slot="mbt"></div></section>
           <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t('section.agile.title')}</h2><div data-slot="agile"></div></section>
           <section data-testid="section-slicing" tabindex="-1" aria-labelledby="section-slicing-title"><h2 id="section-slicing-title">${t('section.slicing.title')}</h2><div data-slot="slicing"></div></section>
+          <section data-testid="section-tdd" tabindex="-1" aria-labelledby="section-tdd-title"><h2 id="section-tdd-title">${t('section.tdd.title')}</h2><div data-slot="tdd"></div></section>
           <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
           <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
           <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
@@ -288,6 +292,7 @@ export function renderApp(container) {
       mbt: main.querySelector('[data-testid="section-mbt"]'),
       agile: main.querySelector('[data-testid="section-agile"]'),
       slicing: main.querySelector('[data-testid="section-slicing"]'),
+      tdd: main.querySelector('[data-testid="section-tdd"]'),
       blackbox: main.querySelector('[data-testid="section-blackbox"]'),
       flow: main.querySelector('[data-testid="section-flow"]'),
       types: main.querySelector('[data-testid="section-types"]'),
@@ -368,6 +373,8 @@ export function renderApp(container) {
       dicing: createSliceDicingExplorer(),
       coverage: createSliceCoverageExplorer(),
       regression: createSliceRegressionExplorer(),
+      tddcycle: createTddCycleExplorer(),
+      tddrules: createTddRulesExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
       ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -770,6 +777,72 @@ export function renderApp(container) {
     }
     renderSlicingTabs();
     updateSlicingPanels();
+
+    // --- Test-Driven Development: tabbed (O1 cycle / O2 rules — both live) ---
+    const tddSlot = container.querySelector('[data-slot="tdd"]');
+    const tddTabBar = document.createElement('nav');
+    tddTabBar.className = 'syntax-tab-row';
+    tddTabBar.dataset.testid = 'tdd-tab-row';
+    tddTabBar.setAttribute('role', 'tablist');
+    tddSlot.appendChild(tddTabBar);
+    const tddPanels = document.createElement('div');
+    tddPanels.className = 'syntax-tab-panels';
+    tddSlot.appendChild(tddPanels);
+
+    const tddTabDefs = ['cycle', 'rules'];
+    for (const tabId of tddTabDefs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.tddPanel = tabId;
+      if (tabId === 'cycle') {
+        panel.appendChild(components.tddcycle);
+      } else if (tabId === 'rules') {
+        panel.appendChild(components.tddrules);
+      }
+      tddPanels.appendChild(panel);
+    }
+
+    const TDD_TAB_KEY = 'stvisual.tddActiveTab';
+    let savedTddTab = null;
+    try { savedTddTab = globalThis.localStorage?.getItem(TDD_TAB_KEY); } catch {}
+    let activeTddTab = resolveInitialTab({
+      sectionId: 'tdd',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedTddTab,
+    });
+
+    const tddTabItems = [
+      { id: 'cycle', key: 'tdd.tab.cycle' },
+      { id: 'rules', key: 'tdd.tab.rules' },
+    ];
+
+    function renderTddTabs() {
+      tddTabBar.innerHTML = tddTabItems.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeTddTab === tab.id ? ' active' : ''}"
+          data-tdd-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeTddTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      tddTabBar.querySelectorAll('[data-tdd-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeTddTab = btn.dataset.tddTab;
+          try { globalThis.localStorage?.setItem(TDD_TAB_KEY, activeTddTab); } catch {}
+          renderTddTabs();
+          updateTddPanels();
+          if (activeSection === 'tdd') syncUrl();
+        });
+      });
+    }
+    function updateTddPanels() {
+      tddPanels.querySelectorAll('[data-tdd-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.tddPanel === activeTddTab ? '' : 'none';
+      });
+    }
+    renderTddTabs();
+    updateTddPanels();
 
     // --- Syntax-Based Testing: tabbed submenu over three sub-modules ---
     const syntaxTabs = [

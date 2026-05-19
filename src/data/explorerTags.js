@@ -42,6 +42,7 @@ export const TAG_TECHNIQUES = [
   'model-based',
   'agile',
   'slicing',
+  'tdd',
 ];
 
 export const TAG_SERIES = [
@@ -56,6 +57,7 @@ export const TAG_SERIES = [
   'model-based',
   'agile',
   'slicing',
+  'tdd',
 ];
 
 export const TAG_DIFFICULTY = ['intro', 'intermediate', 'advanced', 'research'];
@@ -336,6 +338,16 @@ export const EXPLORER_TAGS = {
     difficulty: 'intermediate',
     source: [TEXTBOOK],
   },
+
+  // ── Test-Driven Development (O-series) ───────────────────────────────
+  TddCycleExplorer: {
+    level: ['unit'], technique: ['tdd'], series: ['tdd'],
+    difficulty: 'intro', source: [TEXTBOOK],
+  },
+  TddRulesExplorer: {
+    level: ['unit'], technique: ['tdd'], series: ['tdd'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -406,6 +418,7 @@ export const SECTION_EXPLORERS = {
     'RegressionDebtExplorer',
   ],
   slicing: ['ProgramSlicingExplorer', 'SliceDicingExplorer', 'SliceCoverageExplorer', 'SliceRegressionExplorer'],
+  tdd: ['TddCycleExplorer', 'TddRulesExplorer'],
 };
 
 // ── Helpers ────────────────────────────────────────────────────────
