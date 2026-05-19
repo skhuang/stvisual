@@ -98,6 +98,7 @@ export const EXPLORER_TO_LOCATION = {
   ProgramSlicingExplorer:      { section: 'slicing', tab: 'program' },
   SliceDicingExplorer:         { section: 'slicing', tab: 'dicing' },
   SliceCoverageExplorer:       { section: 'slicing', tab: 'coverage' },
+  SliceRegressionExplorer:     { section: 'slicing', tab: 'regression' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

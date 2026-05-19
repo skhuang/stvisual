@@ -108,6 +108,6 @@ describe('SliceRegressionExplorer', () => {
 
     // The pick-a-statement prompt should reappear
     const testsPanel = root.querySelector('[data-testid="regression-tests"]');
-    expect(testsPanel.textContent).toContain('pick');
+    expect(testsPanel.querySelector('.sre-pick-prompt'), 'pick-prompt element should reappear').toBeTruthy();
   });
 });

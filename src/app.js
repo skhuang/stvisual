@@ -53,6 +53,7 @@ import { createSprintCadenceExplorer } from './components/SprintCadenceExplorer.
 import { createProgramSlicingExplorer } from './components/ProgramSlicingExplorer.js';
 import { createSliceDicingExplorer } from './components/SliceDicingExplorer.js';
 import { createSliceCoverageExplorer } from './components/SliceCoverageExplorer.js';
+import { createSliceRegressionExplorer } from './components/SliceRegressionExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
@@ -366,6 +367,7 @@ export function renderApp(container) {
       programslicing: createProgramSlicingExplorer(),
       dicing: createSliceDicingExplorer(),
       coverage: createSliceCoverageExplorer(),
+      regression: createSliceRegressionExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
       ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -693,7 +695,7 @@ export function renderApp(container) {
     renderAgileTabs();
     updateAgilePanels();
 
-    // --- Slice-Based Testing: tabbed (N1 Program Slicing, N2 Dicing live; N3-N4 are placeholders) ---
+    // --- Slice-Based Testing: tabbed (N1–N4 all live: program / dicing / coverage / regression) ---
     const slicingSlot = container.querySelector('[data-slot="slicing"]');
     const slicingTabBar = document.createElement('nav');
     slicingTabBar.className = 'syntax-tab-row';
@@ -704,7 +706,6 @@ export function renderApp(container) {
     slicingPanels.className = 'syntax-tab-panels';
     slicingSlot.appendChild(slicingPanels);
 
-    // program / dicing / coverage panels get real components; regression is a placeholder
     const slicingTabDefs = ['program', 'dicing', 'coverage', 'regression'];
     for (const tabId of slicingTabDefs) {
       const panel = document.createElement('div');
@@ -716,6 +717,8 @@ export function renderApp(container) {
         panel.appendChild(components.dicing);
       } else if (tabId === 'coverage') {
         panel.appendChild(components.coverage);
+      } else if (tabId === 'regression') {
+        panel.appendChild(components.regression);
       } else {
         const placeholder = document.createElement('p');
         placeholder.textContent = t('slicing.tab.comingSoon');
