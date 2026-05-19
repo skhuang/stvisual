@@ -154,9 +154,10 @@ function gradeAverage(scores) {
 
 In `/section-slicing`, open the **Program Slicing Explorer**:
 
-1. Select the `gradeAverage` example — read the source and PDG side by side.
-2. Click a statement (e.g. `return grade` at line 10) and choose a variable.
-3. Toggle **Backward / Forward** — watch the highlighted set change.
+1. Select the `classify` example — read the source and PDG side by side.
+2. Click the output statement `return label` (`s11`) and choose the variable `label`.
+3. With **Backward** direction and **Static** mode, the slice highlights 6 statements (`s2, s4, s5, s7, s8, s11`).
+4. Try the quiz: which of the following is always true of a backward static slice on variable `v` at statement `s`?
 
 ---
 
@@ -164,9 +165,10 @@ In `/section-slicing`, open the **Program Slicing Explorer**:
 
 ![w:1000](../assets/slides/slice-program-dynamic-en.png)
 
-4. Switch to **Dynamic** mode; pick a trace — observe the slice shrink.
-5. Check the detail panel: slice size, statement list, static-vs-dynamic delta.
-6. Try the quiz: "which statements are in the backward slice of ⟨s10, grade⟩?"
+1. Switch to **Dynamic** mode and pick the `pos` trace.
+2. The slice shrinks to 3 statements (`s4, s5, s11`) — only what that run actually exercised.
+3. Check the detail panel: slice size and the static-vs-dynamic delta (6 → 3).
+4. Try the other traces (`neg`, `zero`) — each yields a different, smaller dynamic slice.
 
 ---
 
