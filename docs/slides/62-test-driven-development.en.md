@@ -111,10 +111,10 @@ Before starting any kata or feature, write a **test list** — a bullet list of 
 
 ```
 fizzbuzz test list (initial):
-  ✓ fizzbuzz(1)  → "1"      (plain number)
-  ✓ fizzbuzz(3)  → "Fizz"   (multiple of 3)
-  ✓ fizzbuzz(5)  → "Buzz"   (multiple of 5)
-  ✓ fizzbuzz(15) → "FizzBuzz" (multiple of both)
+  - fizzbuzz(1)  → "1"      (plain number)
+  - fizzbuzz(3)  → "Fizz"   (multiple of 3)
+  - fizzbuzz(5)  → "Buzz"   (multiple of 5)
+  - fizzbuzz(15) → "FizzBuzz" (multiple of both)
 ```
 
 Rules for the test list:
@@ -214,7 +214,7 @@ Suite stays green: 4 passing, 0 failing. The `%15` case works for free: `"Fizz" 
 **What test-first buys:** design pressure, always-runnable suite, small provable steps.
 **What it costs:** discipline, initial unfamiliarity, slightly slower on obvious code.
 
-<!-- The comparison is not meant to demonize test-after — well-written test-after tests are far better than no tests. The point is that test-first provides structural guarantees that test-after cannot: if you followed the three rules, coverage is 100% by construction, because no production line exists without a failing test that demanded it. This is a stronger claim than "we wrote tests for everything we could think of after the fact." -->
+<!-- The comparison is not meant to demonize test-after — well-written test-after tests are far better than no tests. The point is that test-first provides structural guarantees that test-after cannot: if you followed the three rules, coverage is 100% by construction, because no line of production code exists without a failing test that demanded it. This is a stronger claim than "we wrote tests for everything we could think of after the fact." -->
 
 ---
 
@@ -268,8 +268,8 @@ In `/section-tdd`, open the **Rules** tab (TDD Rules Explorer):
 
 ## Further reading
 
-- Course specification — TDD visualization design ([PLAN_group_theory_testing.md](../../PLAN_group_theory_testing.md))
-- Beck, K. (2002). *Test-Driven Development: By Example*. Addison-Wesley. — The canonical reference; FizzBuzz and Stack katas appear here.
+- Course specification — TDD visualization design ([2026-05-19-tdd-visualization-design.md](../superpowers/specs/2026-05-19-tdd-visualization-design.md))
+- Beck, K. (2002). *Test-Driven Development: By Example*. Addison-Wesley. — The canonical reference; introduces TDD through the Money (currency conversion) and xUnit (test framework) examples.
 - Martin, R. C. (2014). "The Three Rules of TDD." — Concise formulation of the three discipline rules.
 - Tool source: [TddCycleExplorer.js](../../src/components/TddCycleExplorer.js), [TddRulesExplorer.js](../../src/components/TddRulesExplorer.js), [tddKatas.js](../../src/data/tddKatas.js)
 - FizzBuzz kata data: [tddKatas.js](../../src/data/tddKatas.js) — 9 steps, each a full snapshot of phase, test list, code, and suite state.

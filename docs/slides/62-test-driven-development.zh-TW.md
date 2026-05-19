@@ -111,10 +111,10 @@ function fizzbuzz(n) {
 
 ```
 fizzbuzz 測試清單（初始）：
-  ✓ fizzbuzz(1)  → "1"        （普通數字）
-  ✓ fizzbuzz(3)  → "Fizz"     （3 的倍數）
-  ✓ fizzbuzz(5)  → "Buzz"     （5 的倍數）
-  ✓ fizzbuzz(15) → "FizzBuzz" （兩者的倍數）
+  - fizzbuzz(1)  → "1"        （普通數字）
+  - fizzbuzz(3)  → "Fizz"     （3 的倍數）
+  - fizzbuzz(5)  → "Buzz"     （5 的倍數）
+  - fizzbuzz(15) → "FizzBuzz" （兩者的倍數）
 ```
 
 測試清單的規則：
@@ -214,7 +214,7 @@ function fizzbuzz(n) {
 **先寫測試的收穫：** 設計壓力、永遠可執行的套件、小而可證明的步驟。
 **代價：** 紀律、初始的不熟悉感、在顯然的程式碼上稍慢。
 
-<!-- 此比較並非要否定後測試——寫得好的後測試遠優於沒有測試。重點是先寫測試提供了後測試無法給予的結構性保證：如果你遵守了三條規則，覆蓋率在構造上就是 100%，因為沒有任何生產行不存在要求它的失敗測試。這比「我們事後盡可能想到的都寫了測試」是更強的聲明。 -->
+<!-- 此比較並非要否定後測試——寫得好的後測試遠優於沒有測試。重點是先寫測試提供了後測試無法給予的結構性保證：如果你遵守了三條規則，覆蓋率在構造上就是 100%，因為每一行正式程式碼，背後都必須有一個失敗的測試在驅動它。這比「我們事後盡可能想到的都寫了測試」是更強的聲明。 -->
 
 ---
 
@@ -268,8 +268,8 @@ function fizzbuzz(n) {
 
 ## 延伸閱讀
 
-- 課程規格 —— TDD 視覺化設計（[PLAN_group_theory_testing.md](../../PLAN_group_theory_testing.md)）
-- Beck, K.（2002）。*Test-Driven Development: By Example*。Addison-Wesley。—— 標準參考資料；FizzBuzz 和 Stack kata 出現在此書中。
+- 課程規格 —— TDD 視覺化設計（[2026-05-19-tdd-visualization-design.md](../superpowers/specs/2026-05-19-tdd-visualization-design.md)）
+- Beck, K.（2002）。*Test-Driven Development: By Example*。Addison-Wesley。—— TDD 的經典教材；以 Money（貨幣轉換）與 xUnit（測試框架）兩個案例貫穿教學。
 - Martin, R. C.（2014）。〈The Three Rules of TDD〉。—— 三條紀律規則的簡潔表述。
 - 工具原始碼：[TddCycleExplorer.js](../../src/components/TddCycleExplorer.js)、[TddRulesExplorer.js](../../src/components/TddRulesExplorer.js)、[tddKatas.js](../../src/data/tddKatas.js)
 - FizzBuzz kata 資料：[tddKatas.js](../../src/data/tddKatas.js) —— 9 個步驟，每個步驟都是階段、測試清單、程式碼和套件狀態的完整快照。
