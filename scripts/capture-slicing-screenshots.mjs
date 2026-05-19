@@ -80,32 +80,37 @@ async function main() {
   }, SLIDE_LOCALE);
 
   // ── N1: ProgramSlicingExplorer ────────────────────────────────────────────────
-  // Two shots: backward-static on s10/grade, then dynamic on pass trace.
+  // Two shots: backward-static on s11/label (classify), then dynamic on pos trace.
+  // The classify example gives a visible shrink: 6 statements static vs 3 dynamic.
 
   const pse = await ctx.newPage();
   await pse.goto(`${BASE_URL}?explorer=ProgramSlicingExplorer`, { waitUntil: 'networkidle' });
   await pse.getByTestId('program-slicing-explorer').waitFor();
   const pseRoot = pse.getByTestId('program-slicing-explorer');
 
-  // Ensure static + backward are active (they are the defaults, but click to
-  // be explicit so the shot is guaranteed to show the right state).
+  // Select the classify example.
+  await pse.getByTestId('slicing-example-classify').click();
+
+  // Ensure backward + static are active.
   await pse.getByTestId('slicing-dir-backward').click();
   await pse.getByTestId('slicing-mode-static').click();
 
-  // Select the criterion: click statement s10 (return grade), then variable chip.
+  // Select the criterion: click statement s11 (return label), then variable chip.
   // Scope to the explorer root so strict-mode doesn't complain about duplicate
   // data-stmt elements that live in other explorers pre-rendered on the same DOM.
-  await pseRoot.locator('[data-stmt="s10"]').click();
-  await pse.getByTestId('slicing-var-grade').click();
+  await pseRoot.locator('[data-stmt="s11"]').click();
+  await pse.getByTestId('slicing-var-label').click();
   await sleep(250);
 
-  // Shot 1 — slice-program-backward
+  // Shot 1 — slice-program-backward (6 statements highlighted)
   await pseRoot.screenshot({ path: shot('slice-program-backward') });
   console.log('[capture] saved', shot('slice-program-backward'));
 
-  // Shot 2 — slice-program-dynamic: switch to dynamic, pick the pass trace.
+  // Shot 2 — slice-program-dynamic: switch to dynamic, pick the pos trace.
+  // Dynamic slice of label for pos (n=5) is only 3 statements — the contrast
+  // deck #58 needs.
   await pse.getByTestId('slicing-mode-dynamic').click();
-  await pse.getByTestId('slicing-trace-pass').click();
+  await pse.getByTestId('slicing-trace-pos').click();
   await sleep(250);
 
   await pseRoot.screenshot({ path: shot('slice-program-dynamic') });
