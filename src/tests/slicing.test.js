@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  backwardSlice, forwardSlice, dynamicSlice, programDice, slicesIntersect, sliceCoverage,
+  backwardSlice, forwardSlice, dynamicSlice, programDice, slicesIntersect, sliceCoverage, affectedTests,
 } from '../utils/slicing.js';
 
 // Minimal PDG:  s1: x=1   s2: y=2   s3: z=x+y   s4: return z
@@ -92,5 +92,49 @@ describe('sliceCoverage', () => {
     expect(r.pct).toBe(100);
     expect(r.covered.size).toBe(0);
     expect(r.uncovered.size).toBe(0);
+  });
+});
+
+describe('affectedTests', () => {
+  // s1: label="zero"  s2: sign=0  s3: if(n>0)[control]  s4: label="pos"
+  // s5: return label[output].  sign is defined but never used.
+  const branchy = {
+    statements: [
+      { id: 's1', line: 1, text: 'label="zero"', defs: ['label'], uses: [] },
+      { id: 's2', line: 2, text: 'sign=0', defs: ['sign'], uses: [] },
+      { id: 's3', line: 3, text: 'if(n>0)', defs: [], uses: ['n'], kind: 'control' },
+      { id: 's4', line: 4, text: 'label="pos"', defs: ['label'], uses: [] },
+      { id: 's5', line: 5, text: 'return label', defs: [], uses: ['label'], kind: 'output' },
+    ],
+    controlDeps: [['s3', 's4']],
+    dataDeps: [['s1', 's5', 'label'], ['s4', 's5', 'label']],
+    traces: [
+      { id: 'pos', steps: ['s1', 's2', 's3', 's4', 's5'] },
+      { id: 'zero', steps: ['s1', 's2', 's3', 's5'] },
+    ],
+  };
+  const outCrit = { stmtId: 's5', variable: 'label' };
+
+  it('static: editing dead-output code (s2) still re-runs every trace that ran it', () => {
+    const r = affectedTests(branchy, outCrit, 's2', 'static');
+    expect([...r.affected].sort()).toEqual(['pos', 'zero']);
+    expect([...r.safe]).toEqual([]);
+  });
+  it('dynamic: editing dead-output code (s2) re-runs nothing', () => {
+    const r = affectedTests(branchy, outCrit, 's2', 'dynamic');
+    expect([...r.affected]).toEqual([]);
+    expect([...r.safe].sort()).toEqual(['pos', 'zero']);
+  });
+  it('dynamic: editing the positive branch (s4) re-runs only the trace it reaches', () => {
+    const r = affectedTests(branchy, outCrit, 's4', 'dynamic');
+    expect([...r.affected]).toEqual(['pos']);
+    expect([...r.safe]).toEqual(['zero']);
+  });
+  it('impact always contains the changed statement itself', () => {
+    const r = affectedTests(branchy, outCrit, 's2', 'static');
+    expect(r.impact.has('s2')).toBe(true);
+  });
+  it('an unknown changed statement id does not throw', () => {
+    expect(() => affectedTests(branchy, outCrit, 'nope', 'static')).not.toThrow();
   });
 });

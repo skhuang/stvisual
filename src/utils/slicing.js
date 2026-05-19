@@ -144,3 +144,38 @@ export function sliceCoverage(slice, executed) {
   const pct = total === 0 ? 100 : Math.round((covered.size / total) * 100);
   return { covered, uncovered, pct };
 }
+
+// Regression test selection. Given a PDG, its output criterion, the id of the
+// changed statement, and a mode ('static' | 'dynamic'), classify every trace
+// in `pdg.traces` as affected (must re-run) or safe (can skip).
+//
+// impact  = the forward slice of the changed statement — every statement the
+//           edit can reach. Computed over each variable the statement defines
+//           (or, for a def-less statement, a single variable-less pass so
+//           control-dependent children are still reached).
+// static  : a trace is affected iff the statements it executed intersect
+//           `impact`.
+// dynamic : a trace is affected iff `changedStmtId` is in that trace's
+//           dynamic backward slice from `criterion`.
+export function affectedTests(pdg, criterion, changedStmtId, mode) {
+  const changed = pdg.statements.find((s) => s.id === changedStmtId);
+  const impact = new Set();
+  const vars = changed && changed.defs.length ? changed.defs : [undefined];
+  for (const v of vars) {
+    for (const id of forwardSlice(pdg, { stmtId: changedStmtId, variable: v })) {
+      impact.add(id);
+    }
+  }
+  const affected = new Set();
+  const safe = new Set();
+  for (const trace of pdg.traces || []) {
+    let hit;
+    if (mode === 'dynamic') {
+      hit = dynamicSlice(pdg, trace, criterion).has(changedStmtId);
+    } else {
+      hit = slicesIntersect(impact, new Set(trace.steps));
+    }
+    (hit ? affected : safe).add(trace.id);
+  }
+  return { affected, safe, impact };
+}
