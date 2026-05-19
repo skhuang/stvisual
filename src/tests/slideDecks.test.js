@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { SLIDE_DECKS } from '../data/slideDecks.generated.js';
 
 describe('slide deck data', () => {
-  it('ships 59 decks, each with both languages and a title', () => {
-    expect(SLIDE_DECKS).toHaveLength(59);
+  it('ships 60 decks, each with both languages and a title', () => {
+    expect(SLIDE_DECKS).toHaveLength(60);
     for (const d of SLIDE_DECKS) {
       expect(d.en.length, d.id).toBeGreaterThan(0);
       expect(d.zh.length, d.id).toBeGreaterThan(0);
