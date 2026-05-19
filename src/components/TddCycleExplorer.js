@@ -110,12 +110,13 @@ function renderPredictControls(kata, step) {
       ${state.predictResult === 'correct' ? t('tdd.correct') : t('tdd.incorrect')}
     </div>` : '';
 
+  const nextDisabled = isLast || (state.predict && state.prediction === null);
   const stepCount = kata.steps.length;
   return `<div class="tdc-step-controls">
     <span class="tdc-step-counter">${state.stepIndex + 1} / ${stepCount}</span>
     <button type="button" class="tdc-btn tdc-btn--reset" data-testid="tdd-reset">${t('tdd.reset')}</button>
     <button type="button" class="tdc-btn tdc-btn--next" data-testid="tdd-next-step"
-      ${isLast ? 'disabled' : ''}>${t('tdd.nextStep')}</button>
+      ${nextDisabled ? 'disabled' : ''}>${t('tdd.nextStep')}</button>
     <label class="tdc-predict-toggle-label">
       <input type="checkbox" data-testid="tdd-predict-toggle" ${state.predict ? 'checked' : ''}>
       ${t('tdd.predictMode')}
@@ -186,6 +187,7 @@ function bindEvents() {
   root.querySelectorAll('[data-tdc-kata-id]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const newId = btn.dataset.tdcKataId;
+      if (newId === state.kataId) return;
       state.kataId = newId;
       state.stepIndex = 0;
       state.prediction = null;
