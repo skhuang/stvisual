@@ -181,7 +181,9 @@ Dynamic-affected ⊆ Static-affected ⊆ All tests.
 
 ---
 
-## Tool demonstration
+## Tool demonstration — static selection
+
+![w:1000](../assets/slides/slice-regression-static-en.png)
 
 In `/section-slicing`, open the **Regression** tab (Slice Regression Explorer):
 
@@ -190,6 +192,13 @@ In `/section-slicing`, open the **Regression** tab (Slice Regression Explorer):
 2. Click on statement `s3` (`sign = 0`) to mark it as the changed statement.
    - The forward-slice impact set `{s3}` is highlighted.
 3. Switch to **Static** mode — all three traces (`pos`, `neg`, `zero`) are marked as affected (red).
+
+---
+
+## Tool demonstration — dynamic selection
+
+![w:1000](../assets/slides/slice-regression-dynamic-en.png)
+
 4. Switch to **Dynamic** mode — all three traces are marked safe (green); the dynamic backward slice of each trace does not contain `s3`.
 5. Try a different edit: click `s2` (`label = "zero"`) — observe that both static and dynamic now select all traces (because `s2` is in every trace's dynamic backward slice of `label`).
 

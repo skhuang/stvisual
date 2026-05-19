@@ -181,7 +181,9 @@ function classify(n) {
 
 ---
 
-## 工具演示
+## 工具演示 — 靜態選擇
+
+![w:1000](../assets/slides/slice-regression-static.png)
 
 在 `/section-slicing` 開啟**回歸**分頁（切片回歸探索器）：
 
@@ -190,6 +192,13 @@ function classify(n) {
 2. 點擊陳述式 `s3`（`sign = 0`）以標記為已變更的陳述式。
    - 前向切片影響集合 `{s3}` 被高亮顯示。
 3. 切換至**靜態**模式——三條軌跡（`pos`、`neg`、`zero`）全部標記為受影響（紅色）。
+
+---
+
+## 工具演示 — 動態選擇
+
+![w:1000](../assets/slides/slice-regression-dynamic.png)
+
 4. 切換至**動態**模式——三條軌跡全部標記為安全（綠色）；每條軌跡的動態向後切片都不包含 `s3`。
 5. 嘗試不同的編輯：點擊 `s2`（`label = "zero"`）——觀察靜態和動態現在都選擇所有軌跡（因為 `s2` 出現在每條軌跡的 `label` 動態向後切片中）。
 

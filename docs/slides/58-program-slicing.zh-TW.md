@@ -148,13 +148,22 @@ function gradeAverage(scores) {
 
 ---
 
-## 工具演示
+## 工具演示 — 向後靜態切片
+
+![w:1000](../assets/slides/slice-program-backward.png)
 
 在 `/section-slicing` 開啟**程式切片探索器**：
 
 1. 選取 `gradeAverage` 範例 —— 並排閱讀原始碼與 PDG。
 2. 點選一個陳述式（例如第 10 行的 `return grade`）並選擇一個變數。
 3. 切換**向後／向前** —— 觀察高亮集合的變化。
+
+---
+
+## 工具演示 — 動態切片
+
+![w:1000](../assets/slides/slice-program-dynamic.png)
+
 4. 切換到**動態**模式；選一條軌跡 —— 觀察切片縮小。
 5. 查看詳細面板：切片大小、陳述式清單、靜態與動態的差值。
 6. 嘗試小測驗：「⟨s10, grade⟩ 的向後切片包含哪些陳述式？」

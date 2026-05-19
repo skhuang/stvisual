@@ -172,13 +172,22 @@ Dicing narrowed 8 executed statements down to **2 suspects**: the `if (peak)` gu
 
 ---
 
-## Tool demonstration
+## Tool demonstration — static dicing
+
+![w:1000](../assets/slides/slice-dicing-static-en.png)
 
 In `/section-slicing`, open the **Dicing** tab (Slice Dicing Explorer):
 
 1. **Static mode** — select the `summaryStats` scenario.
    - See the three output variable slices highlighted in the PDG.
    - The dice of `highest` (the wrong output) is shown with the strongest highlight — observe that `s7` is isolated.
+
+---
+
+## Tool demonstration — dynamic dicing
+
+![w:1000](../assets/slides/slice-dicing-dynamic-en.png)
+
 2. **Dynamic mode** — select the `fare` scenario.
    - All four traces are listed with their outcome badges.
    - The failing trace's dynamic slice and the passing union are shown in two tones.

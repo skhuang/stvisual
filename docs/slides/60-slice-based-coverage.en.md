@@ -171,7 +171,9 @@ Slice coverage correctly focuses attention on the output-relevant gap at `s8`, n
 
 ---
 
-## Tool demonstration
+## Tool demonstration — full coverage
+
+![w:1000](../assets/slides/slice-coverage-full-en.png)
 
 In `/section-slicing`, open the **Coverage** tab (Slice Coverage Explorer):
 
@@ -179,6 +181,13 @@ In `/section-slicing`, open the **Coverage** tab (Slice Coverage Explorer):
    - The backward slice of `label` is highlighted in the PDG on the left (6 statements: s2, s4, s5, s7, s8, s11).
    - `s3`, `s6`, `s9` are shown as outside the slice (greyed out in the denominator panel).
 2. Enable all three traces (`pos`, `neg`, `zero`) — observe 100% slice coverage (6/6).
+
+---
+
+## Tool demonstration — the coverage gap
+
+![w:1000](../assets/slides/slice-coverage-gap-en.png)
+
 3. Disable the `neg` trace — watch the coverage meter drop to 83% and `s8` turn red.
 4. Compare the **Slice coverage** bar with the **Statement coverage** bar:
    - Statement coverage: `s3`/`s6` appear covered, giving a falsely optimistic view.

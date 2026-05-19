@@ -148,13 +148,22 @@ function gradeAverage(scores) {
 
 ---
 
-## Tool demonstration
+## Tool demonstration — backward static slice
+
+![w:1000](../assets/slides/slice-program-backward-en.png)
 
 In `/section-slicing`, open the **Program Slicing Explorer**:
 
 1. Select the `gradeAverage` example — read the source and PDG side by side.
 2. Click a statement (e.g. `return grade` at line 10) and choose a variable.
 3. Toggle **Backward / Forward** — watch the highlighted set change.
+
+---
+
+## Tool demonstration — dynamic slice
+
+![w:1000](../assets/slides/slice-program-dynamic-en.png)
+
 4. Switch to **Dynamic** mode; pick a trace — observe the slice shrink.
 5. Check the detail panel: slice size, statement list, static-vs-dynamic delta.
 6. Try the quiz: "which statements are in the backward slice of ⟨s10, grade⟩?"

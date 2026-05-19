@@ -172,13 +172,22 @@ function fare(age, peak) {
 
 ---
 
-## 工具演示
+## 工具演示 — 靜態切丁
+
+![w:1000](../assets/slides/slice-dicing-static.png)
 
 在 `/section-slicing` 開啟**切丁**分頁（切丁探索器）：
 
 1. **靜態模式** —— 選取 `summaryStats` 場景。
    - 在 PDG 中看到三個輸出變數的切片高亮顯示。
    - `highest`（錯誤輸出）的切丁以最強的高亮顯示 —— 觀察 `s7` 被隔離出來。
+
+---
+
+## 工具演示 — 動態切丁
+
+![w:1000](../assets/slides/slice-dicing-dynamic.png)
+
 2. **動態模式** —— 選取 `fare` 場景。
    - 四條軌跡都列出，並附有執行結果標籤。
    - 失敗軌跡的動態切片與通過聯集以兩種色調顯示。
