@@ -76,6 +76,7 @@ const DECKS = [
   { base: '58-program-slicing',              id: 'program-slicing',     num: 58, section: 'slicing' },
   { base: '59-fault-localization-dicing',    id: 'fault-localization-dicing', num: 59, section: 'slicing' },
   { base: '60-slice-based-coverage',         id: 'slice-based-coverage',      num: 60, section: 'slicing' },
+  { base: '61-regression-test-selection',   id: 'regression-test-selection', num: 61, section: 'slicing' },
 ];
 
 function frontMatterTitle(md) {
