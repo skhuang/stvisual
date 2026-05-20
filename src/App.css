@@ -181,7 +181,7 @@ textarea:focus-visible {
   border: 1px solid var(--app-border);
   border-radius: 999px;
   background: transparent;
-  color: var(--app-primary-strong);
+  color: var(--app-text-muted);
   cursor: pointer;
   font-size: 0.82rem;
   font-family: inherit;
@@ -192,6 +192,7 @@ textarea:focus-visible {
 .nav-btn:hover {
   background: rgba(52, 152, 219, 0.1);
   border-color: var(--app-primary);
+  color: var(--app-primary-strong);
 }
 .nav-btn.active {
   background: var(--app-primary-strong);

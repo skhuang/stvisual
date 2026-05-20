@@ -73,17 +73,21 @@
   flex: 0 0 auto;
   margin-top: 2px;
   padding: 0.42rem 0.78rem;
-  border: 1px solid var(--app-primary-strong);
+  border: 1px solid var(--app-border);
   border-radius: var(--app-radius-md);
   background: var(--app-surface);
-  color: var(--app-primary-strong);
+  color: var(--app-text-muted);
   font: inherit;
   font-size: 0.82rem;
   font-weight: 800;
   cursor: pointer;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
-.section-slides-btn:hover { background: var(--app-primary-strong); color: #fff; }
+.section-slides-btn:hover {
+  border-color: var(--app-primary);
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--app-primary-strong);
+}
 
 @media (max-width: 680px) {
   .section-slides-btn {
