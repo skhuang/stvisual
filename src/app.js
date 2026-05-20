@@ -1177,7 +1177,7 @@ export function renderApp(container) {
             ${t('section.all')}
           </button>
           ${SECTION_TAXONOMY.map((cat) => `
-            <div class="nav-category" data-testid="nav-category-${cat.id}">${t(cat.labelKey)}</div>
+            <div class="nav-category" data-testid="nav-category-${cat.id}" aria-hidden="true">${t(cat.labelKey)}</div>
             ${cat.sectionIds.map((sectionId) => `
               <button
                 class="nav-btn${activeSection === sectionId ? ' active' : ''}"
