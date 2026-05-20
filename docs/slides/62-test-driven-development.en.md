@@ -250,7 +250,7 @@ The second test forces generalisation: `return "1"` is replaced by `String(n)` w
 
 ![w:1000](../assets/slides/tdd-cycle-fb-refactor-en.png)
 
-Continue stepping through s5–s9 — observe phase transitions: RED → GREEN → RED → GREEN → RED → GREEN → RED → GREEN → REFACTOR.
+Continue stepping through s5–s9 — observe phase transitions: RED → GREEN → RED → GREEN → REFACTOR.
 
 At each RED step, **predict** which test will fail before clicking Next — check your prediction against the suite counter.
 
