@@ -20,15 +20,6 @@ export const messages = {
 
     // Sections
     'section.all': 'Overview',
-    'overview.group.foundations': 'Foundations',
-    'overview.group.coverage': 'Coverage Criteria',
-    'overview.group.execution': 'Execution & Test Generation',
-    'overview.group.blackbox': 'Black-Box Test Design',
-    'overview.group.advanced': 'AI-Assisted Testing (Research)',
-    'overview.group.acceptance': 'System / E2E / Acceptance',
-    'overview.group.mbt': 'Model-Based Testing',
-    'overview.group.agile': 'Agile Testing',
-    'overview.group.slicing': 'Slice-Based Testing',
     'taxonomy.foundations':  'Foundations',
     'taxonomy.input-space':  'Input Space (Black-box)',
     'taxonomy.graph-model':  'Graph, Model & Dependence Coverage',
@@ -693,7 +684,6 @@ export const messages = {
     'section.tdd.title': 'Test-Driven Development',
     'section.tdd.blurb': 'Practice the red-green-refactor cycle and learn the discipline rules that keep TDD productive.',
     'overview.desc.tdd': 'Work through TDD katas step by step — watch the test list, code, and suite panel change each cycle — then internalize the three discipline rules by attempting actions in the rules explorer.',
-    'overview.group.tdd': 'Test-Driven Development',
     'tdd.tab.cycle': 'TDD Cycle',
     'tdd.tab.rules': 'TDD Rules',
     // TDD Cycle Explorer
@@ -2718,15 +2708,6 @@ export const messages = {
     'explorer.mobileNav': 'Explorer 區塊',
 
     'section.all': '全覽',
-    'overview.group.foundations': '基礎概念',
-    'overview.group.coverage': '覆蓋準則',
-    'overview.group.execution': '執行與測試生成',
-    'overview.group.blackbox': '黑盒測試設計',
-    'overview.group.advanced': 'AI 輔助測試（研究前沿）',
-    'overview.group.acceptance': '系統 / E2E / 驗收',
-    'overview.group.mbt': '模型驅動測試',
-    'overview.group.agile': '敏捷測試',
-    'overview.group.slicing': '切片測試',
     'taxonomy.foundations':  '基礎',
     'taxonomy.input-space':  '輸入空間（黑盒）',
     'taxonomy.graph-model':  '圖形／模型／相依性覆蓋',
@@ -3671,7 +3652,6 @@ export const messages = {
     'section.tdd.title': '測試驅動開發',
     'section.tdd.blurb': '練習紅燈／綠燈／重構循環，並學習讓 TDD 保持高效的紀律規則。',
     'overview.desc.tdd': '一步一步走過 TDD 範例——觀察測試清單、程式碼與測試套件面板在每個循環中的變化——再透過規則探索器嘗試各種操作，內化三條紀律規則。',
-    'overview.group.tdd': '測試驅動開發',
     'tdd.tab.cycle': 'TDD 循環',
     'tdd.tab.rules': 'TDD 規則',
     // TDD 循環探索器
