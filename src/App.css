@@ -155,9 +155,9 @@ textarea:focus-visible {
 .app-nav {
   display: grid;
   grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
-  align-items: end;
-  gap: 12px;
-  padding: 10px 20px;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
   background: var(--app-surface);
   box-shadow: var(--app-shadow-sm);
 }
@@ -167,25 +167,14 @@ textarea:focus-visible {
 }
 .app-nav__buttons {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-start;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
-  padding: 2px 2px 8px;
-}
-.nav-category {
-  flex-basis: 100%;
-  font-size: 0.72rem;
-  color: var(--app-text-subtle);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 800;
-  padding: 6px 0 2px;
-  margin-top: 4px;
-}
-.nav-category:first-of-type {
-  margin-top: 0;
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  scrollbar-width: thin;
 }
 .nav-btn {
   flex: 0 0 auto;

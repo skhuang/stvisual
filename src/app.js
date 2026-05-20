@@ -1176,19 +1176,16 @@ export function renderApp(container) {
           >
             ${t('section.all')}
           </button>
-          ${SECTION_TAXONOMY.map((cat) => `
-            <div class="nav-category" data-testid="nav-category-${cat.id}" aria-hidden="true">${t(cat.labelKey)}</div>
-            ${cat.sectionIds.map((sectionId) => `
-              <button
-                class="nav-btn${activeSection === sectionId ? ' active' : ''}"
-                data-testid="nav-btn-${sectionId}"
-                data-section="${sectionId}"
-                type="button"
-                aria-current="${activeSection === sectionId ? 'page' : 'false'}"
-              >
-                ${t(`section.${sectionId}`)}
-              </button>
-            `).join('')}
+          ${SECTION_ORDER.map((sectionId) => `
+            <button
+              class="nav-btn${activeSection === sectionId ? ' active' : ''}"
+              data-testid="nav-btn-${sectionId}"
+              data-section="${sectionId}"
+              type="button"
+              aria-current="${activeSection === sectionId ? 'page' : 'false'}"
+            >
+              ${t(`section.${sectionId}`)}
+            </button>
           `).join('')}
         </div>
       `;
