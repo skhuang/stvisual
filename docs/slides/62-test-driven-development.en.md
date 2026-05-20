@@ -250,7 +250,7 @@ The second test forces generalisation: `return "1"` is replaced by `String(n)` w
 
 ![w:1000](../assets/slides/tdd-cycle-fb-refactor-en.png)
 
-Continue stepping through s3–s9 — observe phase transitions: RED → GREEN → RED → GREEN → RED → GREEN → RED → GREEN → REFACTOR.
+Continue stepping through s5–s9 — observe phase transitions: RED → GREEN → RED → GREEN → RED → GREEN → RED → GREEN → REFACTOR.
 
 At each RED step, **predict** which test will fail before clicking Next — check your prediction against the suite counter.
 
@@ -280,7 +280,7 @@ The explorer shows the three TDD rules and a simulated code editor. Try **writin
 
 ![w:1000](../assets/slides/tdd-rules-block-r3-en.png)
 
-With one failing test, try to **refactor** — the tool blocks with "A test is failing — get to GREEN before refactoring", highlighting **Rule 3**. You must reach green before restructuring code.
+With one failing test, try to **refactor** — the tool blocks with "A test is failing — get to GREEN before refactoring", a discipline cousin of **Rule 3**. Rule 3 itself says "write only enough production code to pass the failing test"; the engine generalises that principle: any work not demanded by the failing test — including a refactor — is premature. You must reach green before restructuring code.
 
 ---
 
