@@ -160,9 +160,6 @@ textarea:focus-visible {
   padding: 10px 20px;
   background: var(--app-surface);
   box-shadow: var(--app-shadow-sm);
-  position: sticky;
-  top: 0;
-  z-index: 100;
 }
 .app-nav__selector {
   display: grid;
@@ -240,7 +237,7 @@ textarea:focus-visible {
 }
 
 .app-main > section {
-  scroll-margin-top: 152px;
+  scroll-margin-top: 24px;
 }
 
 .app-main section h2 {
