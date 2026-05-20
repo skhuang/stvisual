@@ -1,6 +1,5 @@
 import { t, onLocaleChange } from '../i18n/index.js';
 import { TDD_KATAS } from '../data/tddKatas.js';
-import './TddCycleExplorer.css';
 
 // N? — TDD Cycle Explorer.
 // Steps through an authored TDD kata — test list, code and suite panels

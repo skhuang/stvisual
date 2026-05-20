@@ -1,6 +1,5 @@
 import { t, onLocaleChange } from '../i18n/index.js';
 import { initialTddState, legalActions, applyAction } from '../utils/tddRules.js';
-import './TddRulesExplorer.css';
 
 // TDD Rules Explorer.
 // The learner attempts TDD actions; illegal moves are blocked with
