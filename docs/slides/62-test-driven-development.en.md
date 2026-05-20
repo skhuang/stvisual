@@ -218,37 +218,77 @@ Suite stays green: 4 passing, 0 failing. The `%15` case works for free: `"Fizz" 
 
 ---
 
-## Tool demonstration — Cycle tab
-
-In `/section-tdd`, open the **Cycle** tab (TDD Cycle Explorer):
-
-1. Select the **FizzBuzz** kata from the kata picker.
-   - The test list panel shows the initial failing test (`fizzbuzz(1) === "1"`).
-   - The phase indicator shows **RED**.
-2. Click **Next Step** — the code panel fills with `function fizzbuzz(n) { return "1"; }`.
-   - Phase changes to **GREEN**; the suite counter shows 1 passing, 0 failing.
-3. Continue stepping through s3–s9 — observe phase transitions: RED → GREEN → RED → GREEN → RED → GREEN → RED → GREEN → REFACTOR.
-4. At each RED step, **predict** which test will fail before clicking Next — check your prediction against the suite counter.
-5. Switch to the **Stack** kata and repeat — notice how isEmpty/push/pop are introduced one behavior at a time.
+## Tool demonstration — Cycle tab · start
 
 <!-- The Cycle tab is designed so that students can pause at each step and predict the outcome before advancing. The phase color coding (red background / green background / yellow for refactor) makes the rhythm visceral. The test list panel shows items being added and crossed off in real time. Encourage students to use the kata as a template for their own TDD sessions. -->
 
+In `/section-tdd`, open the **Cycle** tab (TDD Cycle Explorer).
+
+![w:1000](../assets/slides/tdd-cycle-fb-start-en.png)
+
+Select the **FizzBuzz** kata from the kata picker. The test list panel shows the initial failing test (`fizzbuzz(1) === "1"`) and the phase indicator shows **RED** — no production code exists yet.
+
 ---
 
-## Tool demonstration — Rules tab
+## Tool demonstration — Cycle tab · fake it
 
-In `/section-tdd`, open the **Rules** tab (TDD Rules Explorer):
+![w:1000](../assets/slides/tdd-cycle-fb-fake-en.png)
 
-1. The explorer shows the three TDD rules and a simulated code editor.
-2. Try **writing production code** when the suite is green and no failing test exists.
-   - The tool blocks the action and highlights **Rule 1**: "no production code without a failing test."
-3. Write a failing test, then try **writing two tests at once** (adding a second `it()` block before the first passes).
-   - The tool blocks and highlights **Rule 2**: "write only enough test to have one failing test."
-4. With one failing test, try **writing more code than needed** — a second function, an extra branch not demanded by the failing test.
-   - The tool blocks and highlights **Rule 3**: "write only enough production code to pass the failing test."
-5. Follow all three rules through a complete red-green-refactor cycle — observe that the suite stays clean throughout.
+After adding the next test (`fizzbuzz(3) === "Fizz"`), the fake `return "1"` still passes the first test but fails the second — phase is back to **RED**, suite shows 1 passing, 1 failing.
+
+---
+
+## Tool demonstration — Cycle tab · triangulate
+
+![w:1000](../assets/slides/tdd-cycle-fb-triangulate-en.png)
+
+The second test forces generalisation: `return "1"` is replaced by `String(n)` with the Fizz branch added — the s3 → s4 triangulation move. Both tests pass; phase returns to **GREEN**.
+
+---
+
+## Tool demonstration — Cycle tab · refactor
+
+![w:1000](../assets/slides/tdd-cycle-fb-refactor-en.png)
+
+Continue stepping through s3–s9 — observe phase transitions: RED → GREEN → RED → GREEN → RED → GREEN → RED → GREEN → REFACTOR.
+
+At each RED step, **predict** which test will fail before clicking Next — check your prediction against the suite counter.
+
+---
+
+## Tool demonstration — Cycle tab · different kata
+
+![w:1000](../assets/slides/tdd-cycle-stack-start-en.png)
+
+Switch to the **Stack** kata and repeat — notice how isEmpty/push/pop are introduced one behavior at a time, following the same red-green-refactor rhythm.
+
+---
+
+## Tool demonstration — Rules tab · Rule 1
 
 <!-- The Rules tab gives students a way to experience the discipline by attempting to break it and seeing the guard rail activate. This is more memorable than reading the rules. The key insight students report: Rule 3 ("write only enough code") is the hardest to follow — the temptation to write the "obvious" next piece of code is strong, but the rule says to stop at green. -->
+
+In `/section-tdd`, open the **Rules** tab (TDD Rules Explorer).
+
+![w:1000](../assets/slides/tdd-rules-block-r1-en.png)
+
+The explorer shows the three TDD rules and a simulated code editor. Try **writing production code** when the suite is green and no failing test exists — the tool blocks the action and highlights **Rule 1**: "no production code without a failing test." Rule 2 fires similarly if you try to add a second failing test before the first passes.
+
+---
+
+## Tool demonstration — Rules tab · Rule 3
+
+![w:1000](../assets/slides/tdd-rules-block-r3-en.png)
+
+With one failing test, try to **refactor** — the tool blocks with "A test is failing — get to GREEN before refactoring", highlighting **Rule 3**. You must reach green before restructuring code.
+
+---
+
+## Tool demonstration — Rules tab · clean cycle
+
+![w:1000](../assets/slides/tdd-rules-cycle-done-en.png)
+
+Follow all three rules through a complete red-green-refactor cycle — observe that the suite stays clean throughout and the cycleCount advances to 1.
 
 ---
 
