@@ -75,31 +75,11 @@ import { createResultViewer } from './components/ResultViewer.js';
 import { createTeacherDashboard } from './components/TeacherDashboard.js';
 import { buildShareUrl } from './utils/resultExporter.js';
 import { t, getLocale, setLocale, onLocaleChange } from './i18n/index.js';
+import { SECTION_TAXONOMY, SECTION_ORDER } from './data/sectionTaxonomy.js';
 
 const learningSectionsConfig = [
   { id: 'all', key: 'section.all' },
-  { id: 'methods', key: 'section.methods' },
-  { id: 'graph', key: 'section.graph' },
-  { id: 'logic', key: 'section.logic' },
-  { id: 'syntax', key: 'section.syntax' },
-  { id: 'codecov', key: 'section.codecov' },
-  { id: 'groupth', key: 'section.groupth' },
-  { id: 'symbex', key: 'section.symbex' },
-  { id: 'concolic', key: 'section.concolic' },
-  { id: 'fuzz', key: 'section.fuzz' },
-  { id: 'testgen', key: 'section.testgen' },
-  { id: 'pbt', key: 'section.pbt' },
-  { id: 'inttest', key: 'section.inttest' },
-  { id: 'rbt', key: 'section.rbt' },
-  { id: 'advanced', key: 'section.advanced' },
-  { id: 'acceptance', key: 'section.acceptance' },
-  { id: 'mbt', key: 'section.mbt' },
-  { id: 'agile', key: 'section.agile' },
-  { id: 'slicing', key: 'section.slicing' },
-  { id: 'tdd', key: 'section.tdd' },
-  { id: 'blackbox', key: 'section.blackbox' },
-  { id: 'flow', key: 'section.flow' },
-  { id: 'types', key: 'section.types' },
+  ...SECTION_ORDER.map((id) => ({ id, key: `section.${id}` })),
 ];
 
 const utilitySectionsConfig = [
@@ -109,48 +89,10 @@ const utilitySectionsConfig = [
 const sectionSelectConfig = [...learningSectionsConfig, ...utilitySectionsConfig];
 const ACTIVE_SECTION_KEY = 'stvisual.activeSection';
 
-const overviewGroups = [
-  {
-    key: 'overview.group.foundations',
-    sectionIds: ['methods', 'flow', 'types'],
-  },
-  {
-    key: 'overview.group.coverage',
-    sectionIds: ['graph', 'logic', 'syntax', 'codecov', 'groupth'],
-  },
-  {
-    key: 'overview.group.execution',
-    sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen', 'pbt', 'inttest', 'rbt'],
-  },
-  {
-    key: 'overview.group.blackbox',
-    sectionIds: ['blackbox'],
-  },
-  {
-    key: 'overview.group.advanced',
-    sectionIds: ['advanced'],
-  },
-  {
-    key: 'overview.group.acceptance',
-    sectionIds: ['acceptance'],
-  },
-  {
-    key: 'overview.group.mbt',
-    sectionIds: ['mbt'],
-  },
-  {
-    key: 'overview.group.agile',
-    sectionIds: ['agile'],
-  },
-  {
-    key: 'overview.group.slicing',
-    sectionIds: ['slicing'],
-  },
-  {
-    key: 'overview.group.tdd',
-    sectionIds: ['tdd'],
-  },
-];
+const overviewGroups = SECTION_TAXONOMY.map((cat) => ({
+  key: cat.labelKey,
+  sectionIds: cat.sectionIds,
+}));
 
 function loadSavedSection(urlSection) {
   // URL > localStorage > default.
@@ -231,27 +173,27 @@ export function renderApp(container) {
             <div class="overview-grid" data-testid="overview-grid"></div>
           </section>
           <section data-testid="section-methods" tabindex="-1" aria-labelledby="section-methods-title"><h2 id="section-methods-title">${t('section.methods.title')}</h2><div data-slot="methods"></div></section>
-          <section data-testid="section-graph" tabindex="-1" aria-labelledby="section-graph-title"><h2 id="section-graph-title">${t('section.graph.title')}</h2><div data-slot="graph"></div></section>
-          <section data-testid="section-logic" tabindex="-1" aria-labelledby="section-logic-title"><h2 id="section-logic-title">${t('section.logic.title')}</h2><div data-slot="logic"></div></section>
-          <section data-testid="section-syntax" tabindex="-1" aria-labelledby="section-syntax-title"><h2 id="section-syntax-title">${t('section.syntax.title')}</h2><div data-slot="syntax"></div></section>
+          <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
+          <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
           <section data-testid="section-codecov" tabindex="-1" aria-labelledby="section-codecov-title"><h2 id="section-codecov-title">${t('section.codecov.title')}</h2><div data-slot="codecov"></div></section>
+          <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
+          <section data-testid="section-pbt" tabindex="-1" aria-labelledby="section-pbt-title"><h2 id="section-pbt-title">${t('section.pbt.title')}</h2><div data-slot="pbt"></div></section>
+          <section data-testid="section-graph" tabindex="-1" aria-labelledby="section-graph-title"><h2 id="section-graph-title">${t('section.graph.title')}</h2><div data-slot="graph"></div></section>
+          <section data-testid="section-mbt" tabindex="-1" aria-labelledby="section-mbt-title"><h2 id="section-mbt-title">${t('section.mbt.title')}</h2><div data-slot="mbt"></div></section>
+          <section data-testid="section-slicing" tabindex="-1" aria-labelledby="section-slicing-title"><h2 id="section-slicing-title">${t('section.slicing.title')}</h2><div data-slot="slicing"></div></section>
+          <section data-testid="section-logic" tabindex="-1" aria-labelledby="section-logic-title"><h2 id="section-logic-title">${t('section.logic.title')}</h2><div data-slot="logic"></div></section>
           <section data-testid="section-groupth" tabindex="-1" aria-labelledby="section-groupth-title"><h2 id="section-groupth-title">${t('section.groupth.title')}</h2><div data-slot="groupth"></div></section>
+          <section data-testid="section-syntax" tabindex="-1" aria-labelledby="section-syntax-title"><h2 id="section-syntax-title">${t('section.syntax.title')}</h2><div data-slot="syntax"></div></section>
           <section data-testid="section-symbex" tabindex="-1" aria-labelledby="section-symbex-title"><h2 id="section-symbex-title">${t('section.symbex.title')}</h2><div data-slot="symbex"></div></section>
           <section data-testid="section-concolic" tabindex="-1" aria-labelledby="section-concolic-title"><h2 id="section-concolic-title">${t('section.concolic.title')}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t('section.fuzz.title')}</h2><div data-slot="fuzz"></div></section>
           <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t('section.testgen.title')}</h2><div data-slot="testgen"></div></section>
-          <section data-testid="section-pbt" tabindex="-1" aria-labelledby="section-pbt-title"><h2 id="section-pbt-title">${t('section.pbt.title')}</h2><div data-slot="pbt"></div></section>
-          <section data-testid="section-inttest" tabindex="-1" aria-labelledby="section-inttest-title"><h2 id="section-inttest-title">${t('section.inttest.title')}</h2><div data-slot="inttest"></div></section>
-          <section data-testid="section-rbt" tabindex="-1" aria-labelledby="section-rbt-title"><h2 id="section-rbt-title">${t('section.rbt.title')}</h2><div data-slot="rbt"></div></section>
-          <section data-testid="section-advanced" tabindex="-1" aria-labelledby="section-advanced-title"><h2 id="section-advanced-title">${t('section.advanced.title')}</h2><div data-slot="advanced"></div></section>
-          <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t('section.acceptance.title')}</h2><div data-slot="acceptance"></div></section>
-          <section data-testid="section-mbt" tabindex="-1" aria-labelledby="section-mbt-title"><h2 id="section-mbt-title">${t('section.mbt.title')}</h2><div data-slot="mbt"></div></section>
-          <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t('section.agile.title')}</h2><div data-slot="agile"></div></section>
-          <section data-testid="section-slicing" tabindex="-1" aria-labelledby="section-slicing-title"><h2 id="section-slicing-title">${t('section.slicing.title')}</h2><div data-slot="slicing"></div></section>
           <section data-testid="section-tdd" tabindex="-1" aria-labelledby="section-tdd-title"><h2 id="section-tdd-title">${t('section.tdd.title')}</h2><div data-slot="tdd"></div></section>
-          <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t('section.blackbox.title')}</h2><div data-slot="blackbox"></div></section>
-          <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t('section.flow.title')}</h2><div data-slot="flow"></div></section>
-          <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t('section.types.title')}</h2><div data-slot="types"></div></section>
+          <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t('section.acceptance.title')}</h2><div data-slot="acceptance"></div></section>
+          <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t('section.agile.title')}</h2><div data-slot="agile"></div></section>
+          <section data-testid="section-inttest" tabindex="-1" aria-labelledby="section-inttest-title"><h2 id="section-inttest-title">${t('section.inttest.title')}</h2><div data-slot="inttest"></div></section>
+          <section data-testid="section-advanced" tabindex="-1" aria-labelledby="section-advanced-title"><h2 id="section-advanced-title">${t('section.advanced.title')}</h2><div data-slot="advanced"></div></section>
+          <section data-testid="section-rbt" tabindex="-1" aria-labelledby="section-rbt-title"><h2 id="section-rbt-title">${t('section.rbt.title')}</h2><div data-slot="rbt"></div></section>
         </main>
 
         <div class="cloud-drawer" data-testid="cloud-settings-drawer" hidden>
@@ -279,27 +221,27 @@ export function renderApp(container) {
     const sections = {
       overview: main.querySelector('[data-testid="section-overview"]'),
       methods: main.querySelector('[data-testid="section-methods"]'),
-      graph: main.querySelector('[data-testid="section-graph"]'),
-      logic: main.querySelector('[data-testid="section-logic"]'),
-      syntax: main.querySelector('[data-testid="section-syntax"]'),
+      flow: main.querySelector('[data-testid="section-flow"]'),
+      types: main.querySelector('[data-testid="section-types"]'),
       codecov: main.querySelector('[data-testid="section-codecov"]'),
+      blackbox: main.querySelector('[data-testid="section-blackbox"]'),
+      pbt: main.querySelector('[data-testid="section-pbt"]'),
+      graph: main.querySelector('[data-testid="section-graph"]'),
+      mbt: main.querySelector('[data-testid="section-mbt"]'),
+      slicing: main.querySelector('[data-testid="section-slicing"]'),
+      logic: main.querySelector('[data-testid="section-logic"]'),
       groupth: main.querySelector('[data-testid="section-groupth"]'),
+      syntax: main.querySelector('[data-testid="section-syntax"]'),
       symbex: main.querySelector('[data-testid="section-symbex"]'),
       concolic: main.querySelector('[data-testid="section-concolic"]'),
       fuzz: main.querySelector('[data-testid="section-fuzz"]'),
       testgen: main.querySelector('[data-testid="section-testgen"]'),
-      pbt: main.querySelector('[data-testid="section-pbt"]'),
-      inttest: main.querySelector('[data-testid="section-inttest"]'),
-      rbt: main.querySelector('[data-testid="section-rbt"]'),
-      advanced: main.querySelector('[data-testid="section-advanced"]'),
-      acceptance: main.querySelector('[data-testid="section-acceptance"]'),
-      mbt: main.querySelector('[data-testid="section-mbt"]'),
-      agile: main.querySelector('[data-testid="section-agile"]'),
-      slicing: main.querySelector('[data-testid="section-slicing"]'),
       tdd: main.querySelector('[data-testid="section-tdd"]'),
-      blackbox: main.querySelector('[data-testid="section-blackbox"]'),
-      flow: main.querySelector('[data-testid="section-flow"]'),
-      types: main.querySelector('[data-testid="section-types"]'),
+      acceptance: main.querySelector('[data-testid="section-acceptance"]'),
+      agile: main.querySelector('[data-testid="section-agile"]'),
+      inttest: main.querySelector('[data-testid="section-inttest"]'),
+      advanced: main.querySelector('[data-testid="section-advanced"]'),
+      rbt: main.querySelector('[data-testid="section-rbt"]'),
     };
 
     // A stable `id` per section so a `#section-<id>` hash can deep-link to it.
