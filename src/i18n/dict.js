@@ -2731,7 +2731,7 @@ export const messages = {
     'taxonomy.input-space':  '輸入空間（黑盒）',
     'taxonomy.graph-model':  '圖形／模型／相依性覆蓋',
     'taxonomy.logic':        '邏輯覆蓋',
-    'taxonomy.syntax':       '語法基測試',
+    'taxonomy.syntax':       '語法基礎測試',
     'taxonomy.generation':   '測試生成',
     'taxonomy.process':      '流程與紀律',
     'taxonomy.strategy':     '策略與品質',
