@@ -218,31 +218,12 @@ export function renderApp(container) {
 
     const nav = container.querySelector('.app-nav');
     const main = container.querySelector('.app-main');
-    const sections = {
-      overview: main.querySelector('[data-testid="section-overview"]'),
-      methods: main.querySelector('[data-testid="section-methods"]'),
-      flow: main.querySelector('[data-testid="section-flow"]'),
-      types: main.querySelector('[data-testid="section-types"]'),
-      codecov: main.querySelector('[data-testid="section-codecov"]'),
-      blackbox: main.querySelector('[data-testid="section-blackbox"]'),
-      pbt: main.querySelector('[data-testid="section-pbt"]'),
-      graph: main.querySelector('[data-testid="section-graph"]'),
-      mbt: main.querySelector('[data-testid="section-mbt"]'),
-      slicing: main.querySelector('[data-testid="section-slicing"]'),
-      logic: main.querySelector('[data-testid="section-logic"]'),
-      groupth: main.querySelector('[data-testid="section-groupth"]'),
-      syntax: main.querySelector('[data-testid="section-syntax"]'),
-      symbex: main.querySelector('[data-testid="section-symbex"]'),
-      concolic: main.querySelector('[data-testid="section-concolic"]'),
-      fuzz: main.querySelector('[data-testid="section-fuzz"]'),
-      testgen: main.querySelector('[data-testid="section-testgen"]'),
-      tdd: main.querySelector('[data-testid="section-tdd"]'),
-      acceptance: main.querySelector('[data-testid="section-acceptance"]'),
-      agile: main.querySelector('[data-testid="section-agile"]'),
-      inttest: main.querySelector('[data-testid="section-inttest"]'),
-      advanced: main.querySelector('[data-testid="section-advanced"]'),
-      rbt: main.querySelector('[data-testid="section-rbt"]'),
-    };
+    const sections = Object.fromEntries(
+      ['overview', ...SECTION_ORDER].map((id) => [
+        id,
+        main.querySelector(`[data-testid="section-${id}"]`),
+      ]),
+    );
 
     // A stable `id` per section so a `#section-<id>` hash can deep-link to it.
     for (const [sectionId, el] of Object.entries(sections)) {
