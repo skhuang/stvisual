@@ -1167,16 +1167,28 @@ export function renderApp(container) {
           </select>
         </div>
         <div class="app-nav__buttons">
-          ${learningSectionsConfig.map((section) => `
-            <button
-              class="nav-btn${activeSection === section.id ? ' active' : ''}"
-              data-testid="nav-btn-${section.id}"
-              data-section="${section.id}"
-              type="button"
-              aria-current="${activeSection === section.id ? 'page' : 'false'}"
-            >
-              ${t(section.key)}
-            </button>
+          <button
+            class="nav-btn${activeSection === 'all' ? ' active' : ''}"
+            data-testid="nav-btn-all"
+            data-section="all"
+            type="button"
+            aria-current="${activeSection === 'all' ? 'page' : 'false'}"
+          >
+            ${t('section.all')}
+          </button>
+          ${SECTION_TAXONOMY.map((cat) => `
+            <div class="nav-category" data-testid="nav-category-${cat.id}">${t(cat.labelKey)}</div>
+            ${cat.sectionIds.map((sectionId) => `
+              <button
+                class="nav-btn${activeSection === sectionId ? ' active' : ''}"
+                data-testid="nav-btn-${sectionId}"
+                data-section="${sectionId}"
+                type="button"
+                aria-current="${activeSection === sectionId ? 'page' : 'false'}"
+              >
+                ${t(`section.${sectionId}`)}
+              </button>
+            `).join('')}
           `).join('')}
         </div>
       `;
