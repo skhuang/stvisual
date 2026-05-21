@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { makeRng, rngInt, branchDistance, normalize } from '../utils/searchBasedTesting.js';
+import { trace, evaluate } from '../utils/searchBasedTesting.js';
+import { SBST_EXAMPLES } from '../data/sbstExamples.js';
 
 describe('makeRng', () => {
   it('is deterministic for a given seed', () => {
@@ -50,5 +52,48 @@ describe('normalize', () => {
     expect(normalize(1)).toBeCloseTo(0.5);
     expect(normalize(1e9)).toBeLessThan(1);
     expect(normalize(10)).toBeGreaterThan(normalize(3));
+  });
+});
+
+const nested = SBST_EXAMPLES.find((e) => e.id === 'nested-guard');
+
+describe('trace', () => {
+  it('records every probed decision in execution order', () => {
+    const events = trace(nested, [17, 50]);
+    expect(events.map((e) => e.branchId)).toEqual(['b1', 'b2']);
+    expect(events[0].outcome).toBe(true);   // x === 17
+    expect(events[1].outcome).toBe(false);  // 50 > 100 is false
+  });
+  it('stops at an unsatisfied outer guard', () => {
+    const events = trace(nested, [3, 150]);
+    expect(events.map((e) => e.branchId)).toEqual(['b1']);  // x !== 17 → b2 unreached
+  });
+});
+
+describe('evaluate', () => {
+  it('reports cost 0 and covered when the target branch is taken', () => {
+    const r = evaluate(nested, [17, 150]);
+    expect(r.covered).toBe(true);
+    expect(r.cost).toBe(0);
+  });
+  it('charges approach level 1 when the outer guard diverges', () => {
+    const r = evaluate(nested, [10, 150]);   // x !== 17 → diverge at b1
+    expect(r.covered).toBe(false);
+    expect(r.approachLevel).toBe(1);          // b2 still ahead
+    // branch distance at b1: |10 - 17| = 7 → normalize(7) = 7/8
+    expect(r.branchDistance).toBeCloseTo(7 / 8);
+    expect(r.cost).toBeCloseTo(1 + 7 / 8);
+  });
+  it('charges approach level 0 when only the target predicate misses', () => {
+    const r = evaluate(nested, [17, 90]);     // reached b2, 90 > 100 false
+    expect(r.covered).toBe(false);
+    expect(r.approachLevel).toBe(0);
+    // distance to make 90 > 100 true: branchDistance('>',90,100) = (100-90)+1 = 11
+    expect(r.branchDistance).toBeCloseTo(11 / 12);
+    expect(r.cost).toBeCloseTo(11 / 12);
+  });
+  it('a lower cost means closer to covering the target', () => {
+    expect(evaluate(nested, [17, 99]).cost).toBeLessThan(evaluate(nested, [17, 10]).cost);
+    expect(evaluate(nested, [16, 150]).cost).toBeLessThan(evaluate(nested, [0, 150]).cost);
   });
 });

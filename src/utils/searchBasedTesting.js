@@ -44,3 +44,37 @@ export function normalize(d) {
 
 // Operator that is true exactly when the given operator is false.
 export const NEGATE = { '==': '!=', '!=': '==', '<': '>=', '>=': '<', '<=': '>', '>': '<=' };
+
+// ── Fitness ─────────────────────────────────────────────────────────────────
+// Run an example's instrumented function and collect the decision trace.
+export function trace(example, inputs) {
+  const events = [];
+  example.run(inputs, (branchId, op, lhs, rhs, outcome) =>
+    events.push({ branchId, op, lhs, rhs, outcome }));
+  return events;
+}
+
+// Evaluate an input vector against the example's target branch.
+// Returns { covered, approachLevel, branchDistance, cost }. cost === 0 ⇔ covered.
+// cost = approachLevel + normalised branch distance at the first divergence.
+export function evaluate(example, inputs) {
+  const events = trace(example, inputs);
+  const branch = example.branches.find((b) => b.id === example.target.branchId);
+  const required = [...branch.requires, { branchId: example.target.branchId, outcome: example.target.outcome }];
+  for (let i = 0; i < required.length; i++) {
+    const req = required[i];
+    const ev = events.find((e) => e.branchId === req.branchId);
+    if (ev && ev.outcome === req.outcome) continue;   // satisfied — descend
+    const approachLevel = required.length - i - 1;
+    let raw;
+    if (ev) {
+      const op = req.outcome ? ev.op : NEGATE[ev.op];
+      raw = branchDistance(op, ev.lhs, ev.rhs);
+    } else {
+      raw = Infinity;   // decision never reached — no operands available
+    }
+    const bd = raw === Infinity ? 1 : normalize(raw);
+    return { covered: false, approachLevel, branchDistance: bd, cost: approachLevel + bd };
+  }
+  return { covered: true, approachLevel: 0, branchDistance: 0, cost: 0 };
+}
