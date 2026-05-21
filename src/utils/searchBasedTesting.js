@@ -78,3 +78,109 @@ export function evaluate(example, inputs) {
   }
   return { covered: true, approachLevel: 0, branchDistance: 0, cost: 0 };
 }
+
+// ── Search drivers ──────────────────────────────────────────────────────────
+function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+function randomIndividual(rng, schema) { return schema.map((s) => rngInt(rng, s.min, s.max)); }
+
+// Random search — sample input vectors uniformly; keep the best seen.
+export function randomSearch(example, { seed, budget }) {
+  const rng = makeRng(seed);
+  const history = [];
+  let bestCost = Infinity, bestIndividual = null;
+  for (let i = 0; i < budget; i++) {
+    const ind = randomIndividual(rng, example.inputSchema);
+    const cost = evaluate(example, ind).cost;
+    if (cost < bestCost) { bestCost = cost; bestIndividual = ind; }
+    history.push({ evaluation: i + 1, bestCost, bestIndividual, covered: bestCost === 0 });
+    if (bestCost === 0) break;
+  }
+  return { strategy: 'random', history, covered: bestCost === 0, bestIndividual, bestCost };
+}
+
+// Hill climbing — from one random start, repeatedly move to the best improving
+// ±1 neighbour. Stops when no neighbour improves (a local optimum) or budget runs out.
+export function hillClimb(example, { seed, budget }) {
+  const rng = makeRng(seed);
+  const schema = example.inputSchema;
+  let current = randomIndividual(rng, schema);
+  let currentCost = evaluate(example, current).cost;
+  const history = [{ evaluation: 1, bestCost: currentCost, bestIndividual: current, covered: currentCost === 0 }];
+  let evals = 1;
+  while (evals < budget && currentCost > 0) {
+    let bestNeighbour = null, bestNeighbourCost = currentCost;
+    for (let d = 0; d < schema.length; d++) {
+      for (const delta of [-1, 1]) {
+        if (evals >= budget) break;
+        const n = current.slice();
+        n[d] = clamp(n[d] + delta, schema[d].min, schema[d].max);
+        const cost = evaluate(example, n).cost;
+        evals++;
+        history.push({ evaluation: evals, bestCost: Math.min(currentCost, bestNeighbourCost, cost),
+          bestIndividual: cost < bestNeighbourCost ? n : (bestNeighbour || current), covered: cost === 0 });
+        if (cost < bestNeighbourCost) { bestNeighbourCost = cost; bestNeighbour = n; }
+      }
+    }
+    if (bestNeighbour && bestNeighbourCost < currentCost) {
+      current = bestNeighbour; currentCost = bestNeighbourCost;
+    } else {
+      break;   // local optimum — no improving neighbour
+    }
+  }
+  return { strategy: 'hillClimb', history, covered: currentCost === 0,
+    bestIndividual: current, bestCost: currentCost, stuck: currentCost > 0 };
+}
+
+// Genetic algorithm — a population of input vectors evolved with tournament
+// selection, one-point crossover, per-component mutation, and elitism.
+export function geneticAlgorithm(example, { seed, budget, populationSize = 20 }) {
+  const rng = makeRng(seed);
+  const schema = example.inputSchema;
+  const history = [];
+  let evals = 0;
+  let gen = 0;
+  let bestCost = Infinity, bestIndividual = null;
+
+  function score(ind) {
+    const cost = evaluate(example, ind).cost;
+    evals++;
+    if (cost < bestCost) { bestCost = cost; bestIndividual = ind; }
+    history.push({ evaluation: evals, generation: gen, bestCost, bestIndividual, covered: bestCost === 0 });
+    return cost;
+  }
+  function tournament(pop, costs) {
+    const a = Math.floor(rng() * pop.length);
+    const b = Math.floor(rng() * pop.length);
+    return costs[a] <= costs[b] ? pop[a] : pop[b];
+  }
+  function crossover(p1, p2) {
+    if (schema.length === 1) return p1.slice();
+    const cut = 1 + Math.floor(rng() * (schema.length - 1));
+    return p1.slice(0, cut).concat(p2.slice(cut));
+  }
+  function mutate(ind) {
+    return ind.map((v, d) => {
+      if (rng() < 1 / schema.length) {
+        const span = Math.max(1, Math.round((schema[d].max - schema[d].min) * 0.1));
+        return clamp(v + rngInt(rng, -span, span), schema[d].min, schema[d].max);
+      }
+      return v;
+    });
+  }
+
+  let population = Array.from({ length: populationSize }, () => randomIndividual(rng, schema));
+  let costs = population.map(score);                // generation 0
+  while (evals < budget && bestCost > 0) {
+    gen++;
+    const eliteIdx = costs.indexOf(Math.min(...costs));
+    const next = [population[eliteIdx]];   // elitism — carry the best forward
+    while (next.length < populationSize) {
+      const child = mutate(crossover(tournament(population, costs), tournament(population, costs)));
+      next.push(child);
+    }
+    population = next;
+    costs = [costs[eliteIdx], ...population.slice(1).map(score)];
+    if (bestCost === 0) break;
+  }
+  return { strategy: 'genetic', history, covered: bestCost === 0, bestIndividual, bestCost };
+}

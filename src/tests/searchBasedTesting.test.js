@@ -97,3 +97,62 @@ describe('evaluate', () => {
     expect(evaluate(nested, [16, 150]).cost).toBeLessThan(evaluate(nested, [0, 150]).cost);
   });
 });
+
+import { randomSearch, hillClimb, geneticAlgorithm } from '../utils/searchBasedTesting.js';
+
+describe('randomSearch', () => {
+  it('is deterministic for a fixed seed', () => {
+    const a = randomSearch(nested, { seed: 1, budget: 200 });
+    const b = randomSearch(nested, { seed: 1, budget: 200 });
+    expect(a.bestCost).toEqual(b.bestCost);
+    expect(a.history.length).toEqual(b.history.length);
+  });
+  it('records non-increasing bestCost over the history', () => {
+    const { history } = randomSearch(nested, { seed: 5, budget: 300 });
+    for (let i = 1; i < history.length; i++) {
+      expect(history[i].bestCost).toBeLessThanOrEqual(history[i - 1].bestCost);
+    }
+  });
+});
+
+describe('geneticAlgorithm', () => {
+  it('covers the nested-guard target within budget', () => {
+    const r = geneticAlgorithm(nested, { seed: 1, budget: 2000, populationSize: 20 });
+    expect(r.covered).toBe(true);
+    expect(r.bestCost).toBe(0);
+  });
+  it('is deterministic for a fixed seed', () => {
+    const a = geneticAlgorithm(nested, { seed: 3, budget: 2000, populationSize: 20 });
+    const b = geneticAlgorithm(nested, { seed: 3, budget: 2000, populationSize: 20 });
+    expect(a.bestCost).toEqual(b.bestCost);
+    expect(a.history.length).toEqual(b.history.length);
+  });
+});
+
+describe('hillClimb', () => {
+  it('is deterministic for a fixed seed', () => {
+    const a = hillClimb(nested, { seed: 2, budget: 2000 });
+    const b = hillClimb(nested, { seed: 2, budget: 2000 });
+    expect(a.bestCost).toEqual(b.bestCost);
+  });
+});
+
+describe('strategy comparison', () => {
+  it('the genetic algorithm covers every example within budget', () => {
+    for (const ex of SBST_EXAMPLES) {
+      const r = geneticAlgorithm(ex, { seed: 1, budget: 8000, populationSize: 24 });
+      expect(r.covered, ex.id).toBe(true);
+    }
+  });
+  it('hill climbing can get trapped below full coverage on the multimodal example', () => {
+    // The modulo creates non-covering local optima (e.g. x = 47); a single
+    // trajectory can settle there. At least one seed must exhibit the trap.
+    const multimodal = SBST_EXAMPLES.find((e) => e.id === 'multimodal');
+    let sawTrap = false;
+    for (let seed = 1; seed <= 30 && !sawTrap; seed++) {
+      const hc = hillClimb(multimodal, { seed, budget: 4000 });
+      if (hc.stuck && !hc.covered) sawTrap = true;
+    }
+    expect(sawTrap).toBe(true);
+  });
+});
