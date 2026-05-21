@@ -1,7 +1,10 @@
 // Generates src/data/slideDecks.generated.js from the docs/slides Marp decks
 // and copies the screenshots they reference into public/slide-assets/.
 // Run via `npm run build:slide-decks`.
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
+import {
+  readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync,
+  symlinkSync, lstatSync,
+} from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, posix } from 'node:path';
 
@@ -109,8 +112,25 @@ function rewriteLinks(md) {
   });
 }
 
+// Decks reference screenshots as ./slide-assets/X — a path that resolves only
+// when public/ is the web root (Vite dev, the deployed GitHub Pages site).
+// When the app is served straight from the repo root instead (`npm run serve`,
+// or opening index.html as a file://), ./slide-assets/ would 404. A repo-root
+// `slide-assets` symlink into public/slide-assets/ makes the path resolve in
+// every serving mode. The symlink is committed; this just self-heals it.
+function ensureRepoRootSymlink() {
+  const link = join(ROOT, 'slide-assets');
+  try {
+    lstatSync(link);
+    return; // already present — leave it
+  } catch { /* missing — create below */ }
+  symlinkSync('public/slide-assets', link);
+  console.log('slideDecks: created repo-root slide-assets symlink');
+}
+
 mkdirSync(ASSETS_OUT, { recursive: true });
 mkdirSync(join(ROOT, 'src/data'), { recursive: true });
+ensureRepoRootSymlink();
 
 const records = DECKS.map((d) => {
   const enRaw = readFileSync(join(SLIDES_DIR, `${d.base}.en.md`), 'utf8');
