@@ -11,7 +11,7 @@ const EXPECTED_SECTION_IDS = [
   'graph', 'mbt', 'slicing',
   'logic', 'groupth',
   'syntax',
-  'symbex', 'concolic', 'fuzz', 'testgen',
+  'symbex', 'concolic', 'fuzz', 'testgen', 'exploit',
   'tdd', 'acceptance', 'agile', 'inttest',
   'advanced', 'rbt',
 ];

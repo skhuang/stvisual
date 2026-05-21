@@ -76,6 +76,22 @@ describe('K4 — urlRouter parse', () => {
       .toEqual({ explorer: 'TddRulesExplorer', section: 'tdd', tab: 'rules' });
   });
 
+  it('routes ?explorer=ExploitOverflowExplorer to section=exploit tab=overflow', () => {
+    const out = parseAppLocation('?explorer=ExploitOverflowExplorer', '');
+    expect(out.section).toBe('exploit');
+    expect(out.tab).toBe('overflow');
+  });
+  it('routes ?explorer=ExploitSqliExplorer to section=exploit tab=sqli', () => {
+    const out = parseAppLocation('?explorer=ExploitSqliExplorer', '');
+    expect(out.section).toBe('exploit');
+    expect(out.tab).toBe('sqli');
+  });
+  it('routes ?explorer=ExploitCmdiExplorer to section=exploit tab=cmdi', () => {
+    const out = parseAppLocation('?explorer=ExploitCmdiExplorer', '');
+    expect(out.section).toBe('exploit');
+    expect(out.tab).toBe('cmdi');
+  });
+
   it('?pack= is captured', () => {
     expect(parseAppLocation('?pack=ai-assisted')).toEqual({ pack: 'ai-assisted' });
   });

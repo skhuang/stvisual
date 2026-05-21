@@ -56,6 +56,9 @@ import { createSliceCoverageExplorer } from './components/SliceCoverageExplorer.
 import { createSliceRegressionExplorer } from './components/SliceRegressionExplorer.js';
 import { createTddCycleExplorer } from './components/TddCycleExplorer.js';
 import { createTddRulesExplorer } from './components/TddRulesExplorer.js';
+import { createExploitOverflowExplorer } from './components/ExploitOverflowExplorer.js';
+import { createExploitSqliExplorer }     from './components/ExploitSqliExplorer.js';
+import { createExploitCmdiExplorer }     from './components/ExploitCmdiExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
@@ -188,6 +191,7 @@ export function renderApp(container) {
           <section data-testid="section-concolic" tabindex="-1" aria-labelledby="section-concolic-title"><h2 id="section-concolic-title">${t('section.concolic.title')}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t('section.fuzz.title')}</h2><div data-slot="fuzz"></div></section>
           <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t('section.testgen.title')}</h2><div data-slot="testgen"></div></section>
+          <section data-testid="section-exploit" tabindex="-1" aria-labelledby="section-exploit-title"><h2 id="section-exploit-title">${t('section.exploit.title')}</h2><div data-slot="exploit"></div></section>
           <section data-testid="section-tdd" tabindex="-1" aria-labelledby="section-tdd-title"><h2 id="section-tdd-title">${t('section.tdd.title')}</h2><div data-slot="tdd"></div></section>
           <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t('section.acceptance.title')}</h2><div data-slot="acceptance"></div></section>
           <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t('section.agile.title')}</h2><div data-slot="agile"></div></section>
@@ -302,6 +306,9 @@ export function renderApp(container) {
       regression: createSliceRegressionExplorer(),
       tddcycle: createTddCycleExplorer(),
       tddrules: createTddRulesExplorer(),
+      exploitoverflow: createExploitOverflowExplorer(),
+      exploitsqli:     createExploitSqliExplorer(),
+      exploitcmdi:     createExploitCmdiExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
       ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -705,6 +712,75 @@ export function renderApp(container) {
     renderSlicingTabs();
     updateSlicingPanels();
 
+    // --- Exploit Generation: tabbed (overflow / sqli / cmdi) ---
+    const exploitSlot = container.querySelector('[data-slot="exploit"]');
+    const exploitTabBar = document.createElement('nav');
+    exploitTabBar.className = 'syntax-tab-row';
+    exploitTabBar.dataset.testid = 'exploit-tab-row';
+    exploitTabBar.setAttribute('role', 'tablist');
+    exploitSlot.appendChild(exploitTabBar);
+    const exploitPanels = document.createElement('div');
+    exploitPanels.className = 'syntax-tab-panels';
+    exploitSlot.appendChild(exploitPanels);
+
+    const exploitTabDefs = ['overflow', 'sqli', 'cmdi'];
+    for (const tabId of exploitTabDefs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.exploitPanel = tabId;
+      if (tabId === 'overflow') {
+        panel.appendChild(components.exploitoverflow);
+      } else if (tabId === 'sqli') {
+        panel.appendChild(components.exploitsqli);
+      } else if (tabId === 'cmdi') {
+        panel.appendChild(components.exploitcmdi);
+      }
+      exploitPanels.appendChild(panel);
+    }
+
+    const EXPLOIT_TAB_KEY = 'stvisual.exploitActiveTab';
+    let savedExploitTab = null;
+    try { savedExploitTab = globalThis.localStorage?.getItem(EXPLOIT_TAB_KEY); } catch {}
+    let activeExploitTab = resolveInitialTab({
+      sectionId: 'exploit',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedExploitTab,
+    });
+
+    const exploitTabItems = [
+      { id: 'overflow', key: 'exploit.tab.overflow' },
+      { id: 'sqli',     key: 'exploit.tab.sqli' },
+      { id: 'cmdi',     key: 'exploit.tab.cmdi' },
+    ];
+
+    function renderExploitTabs() {
+      exploitTabBar.innerHTML = exploitTabItems.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeExploitTab === tab.id ? ' active' : ''}"
+          data-exploit-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeExploitTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      exploitTabBar.querySelectorAll('[data-exploit-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeExploitTab = btn.dataset.exploitTab;
+          try { globalThis.localStorage?.setItem(EXPLOIT_TAB_KEY, activeExploitTab); } catch {}
+          renderExploitTabs();
+          updateExploitPanels();
+          if (activeSection === 'exploit') syncUrl();
+        });
+      });
+    }
+    function updateExploitPanels() {
+      exploitPanels.querySelectorAll('[data-exploit-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.exploitPanel === activeExploitTab ? '' : 'none';
+      });
+    }
+    renderExploitTabs();
+    updateExploitPanels();
+
     // --- Test-Driven Development: tabbed (O1 cycle / O2 rules — both live) ---
     const tddSlot = container.querySelector('[data-slot="tdd"]');
     const tddTabBar = document.createElement('nav');
@@ -1102,6 +1178,7 @@ export function renderApp(container) {
         case 'agile':      return activeAgileTab;
         case 'slicing':    return activeSlicingTab;
         case 'tdd':        return activeTddTab;
+        case 'exploit':    return activeExploitTab;
         case 'flow':       return activeFlowTab;
         case 'types':      return activeTypesTab;
         default: return undefined;

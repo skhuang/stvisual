@@ -18,7 +18,7 @@ export const SECTION_TAXONOMY = [
   { id: 'syntax',       labelKey: 'taxonomy.syntax',
     sectionIds: ['syntax'] },
   { id: 'generation',   labelKey: 'taxonomy.generation',
-    sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen'] },
+    sectionIds: ['symbex', 'concolic', 'fuzz', 'testgen', 'exploit'] },
   { id: 'process',      labelKey: 'taxonomy.process',
     sectionIds: ['tdd', 'acceptance', 'agile', 'inttest'] },
   { id: 'strategy',     labelKey: 'taxonomy.strategy',
