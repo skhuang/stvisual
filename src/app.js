@@ -13,6 +13,7 @@ import { createFuzzTestingExplorer } from './components/FuzzTestingExplorer.js';
 import { createTestGenerationExplorer } from './components/TestGenerationExplorer.js';
 import { createBoundaryValueExplorer } from './components/BoundaryValueExplorer.js';
 import { createEquivalenceClassExplorer } from './components/EquivalenceClassExplorer.js';
+import { createInputSpacePartitioningExplorer } from './components/InputSpacePartitioningExplorer.js';
 import { createDecisionTableExplorer } from './components/DecisionTableExplorer.js';
 import { createStateTransitionExplorer } from './components/StateTransitionExplorer.js';
 import { createMetamorphicTestingExplorer } from './components/MetamorphicTestingExplorer.js';
@@ -267,6 +268,7 @@ export function renderApp(container) {
       testgen: createTestGenerationExplorer(),
       bva: createBoundaryValueExplorer(),
       ec: createEquivalenceClassExplorer(),
+      isp: createInputSpacePartitioningExplorer(),
       dt: createDecisionTableExplorer(),
       st: createStateTransitionExplorer(),
       mt: createMetamorphicTestingExplorer(),
@@ -914,6 +916,7 @@ export function renderApp(container) {
     const blackboxTabs = [
       { id: 'bva', key: 'blackboxTab.bva', component: components.bva },
       { id: 'ec',  key: 'blackboxTab.ec',  component: components.ec },
+      { id: 'isp', key: 'blackboxTab.isp', component: components.isp },
       { id: 'dt',  key: 'blackboxTab.dt',  component: components.dt },
       { id: 'st',  key: 'blackboxTab.st',  component: components.st },
       { id: 'mt',  key: 'blackboxTab.mt',  component: components.mt },

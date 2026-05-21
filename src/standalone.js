@@ -972,6 +972,39 @@
       "quiz.pairwise.answer": "Answer: {count} test case(s).",
       "lab.metric.pairwise.label": "Pairwise coverage: {pct}% \xB7 {n} test cases",
       "overview.desc.pairwise": "Generate the minimum test set that covers every two-way parameter value combination.",
+      // Input Space Partitioning
+      "blackboxTab.isp": "Input Space Partitioning",
+      "isp.example.findElement": "findElement(list, target)",
+      "isp.example.password": "Password validator",
+      "isp.example.date": "Date validity",
+      "isp.idmTitle": "Input Domain Model",
+      "isp.addCharacteristic": "+ characteristic",
+      "isp.addBlock": "+ block",
+      "isp.removeCharacteristic": "Remove characteristic",
+      "isp.baseHint": "When BCC or MBCC is selected, click a block to mark it as a base choice.",
+      "isp.criterionTitle": "Coverage criterion",
+      "isp.criterion.acoc": "All Combinations (ACoC)",
+      "isp.criterion.twc": "T-Wise (TWC)",
+      "isp.criterion.pwc": "Pair-Wise (PWC)",
+      "isp.criterion.ecc": "Each Choice (ECC)",
+      "isp.criterion.bcc": "Base Choice (BCC)",
+      "isp.criterion.mbcc": "Multiple Base Choice (MBCC)",
+      "isp.twiseT": "t =",
+      "isp.testSetTitle": "Test set",
+      "isp.testCountUnit": "tests",
+      "isp.countComparison": "Test-count comparison",
+      "isp.subsumption": "Subsumption",
+      "isp.subsumptionHint": "A stronger criterion (above) subsumes the weaker ones it points to.",
+      "isp.capNote": "\u2026 and more (table capped)",
+      "isp.invalidIDM": "Each characteristic needs at least one block.",
+      "isp.invalidBCC": "BCC needs exactly one base block per characteristic.",
+      "isp.invalidMBCC": "MBCC needs at least one base block per characteristic.",
+      "isp.tooLarge": "This criterion produces too many tests to enumerate \u2014 showing the count only.",
+      "isp.quiz.prompt": "A test set that satisfies All Combinations Coverage (ACoC) automatically satisfies which of these?",
+      "isp.quiz.a": "None \u2014 each criterion is independent",
+      "isp.quiz.b": "Only ECC",
+      "isp.quiz.c": "TWC, PWC, and ECC \u2014 ACoC subsumes them all",
+      "isp.quiz.d": "BCC and MBCC",
       // Cause-Effect Graphing
       "blackboxTab.ceg": "Cause-Effect Graph",
       "section.ceg": "Cause-Effect Graphing",
@@ -2851,6 +2884,8 @@
       "quiz.title": "Self-Test",
       "quiz.submit": "Submit Answer",
       "quiz.retry": "Try Again",
+      "quiz.correct": "Correct!",
+      "quiz.wrong": "Not quite.",
       "lab.start": "Lab Reflect",
       "quiz.bva.title": "Boundary Value Self-Test",
       "quiz.bva.prompt": 'Parameter "{name}" has range [{min}, {max}]. Enter the 5 standard BVA boundary values:',
@@ -3663,6 +3698,39 @@
       "quiz.pairwise.answer": "\u7B54\u6848\uFF1A{count} \u500B\u6E2C\u8A66\u6848\u4F8B\u3002",
       "lab.metric.pairwise.label": "\u914D\u5C0D\u8986\u84CB\u7387\uFF1A{pct}% \xB7 {n} \u500B\u6E2C\u8A66\u6848\u4F8B",
       "overview.desc.pairwise": "\u7522\u751F\u8986\u84CB\u6240\u6709\u5169\u5169\u53C3\u6578\u503C\u7D44\u5408\u7684\u6700\u5C0F\u6E2C\u8A66\u96C6\u5408\u3002",
+      // Input Space Partitioning
+      "blackboxTab.isp": "\u8F38\u5165\u7A7A\u9593\u5283\u5206",
+      "isp.example.findElement": "findElement(list, target)",
+      "isp.example.password": "\u5BC6\u78BC\u9A57\u8B49\u5668",
+      "isp.example.date": "\u65E5\u671F\u6709\u6548\u6027",
+      "isp.idmTitle": "\u8F38\u5165\u57DF\u6A21\u578B",
+      "isp.addCharacteristic": "+ \u7279\u5FB5",
+      "isp.addBlock": "+ \u5340\u584A",
+      "isp.removeCharacteristic": "\u79FB\u9664\u7279\u5FB5",
+      "isp.baseHint": "\u9078\u64C7 BCC \u6216 MBCC \u6642\uFF0C\u9EDE\u64CA\u5340\u584A\u53EF\u5C07\u5176\u6A19\u8A18\u70BA\u57FA\u6E96\u9078\u64C7\u3002",
+      "isp.criterionTitle": "\u8986\u84CB\u6E96\u5247",
+      "isp.criterion.acoc": "\u5168\u7D44\u5408\uFF08ACoC\uFF09",
+      "isp.criterion.twc": "T \u7DAD\uFF08TWC\uFF09",
+      "isp.criterion.pwc": "\u6210\u5C0D\uFF08PWC\uFF09",
+      "isp.criterion.ecc": "\u5404\u9078\u64C7\uFF08ECC\uFF09",
+      "isp.criterion.bcc": "\u57FA\u6E96\u9078\u64C7\uFF08BCC\uFF09",
+      "isp.criterion.mbcc": "\u591A\u91CD\u57FA\u6E96\u9078\u64C7\uFF08MBCC\uFF09",
+      "isp.twiseT": "t =",
+      "isp.testSetTitle": "\u6E2C\u8A66\u96C6\u5408",
+      "isp.testCountUnit": "\u500B\u6E2C\u8A66",
+      "isp.countComparison": "\u6E2C\u8A66\u6578\u6BD4\u8F03",
+      "isp.subsumption": "\u5305\u542B\u95DC\u4FC2",
+      "isp.subsumptionHint": "\u8F03\u5F37\u7684\u6E96\u5247\uFF08\u4E0A\u65B9\uFF09\u5305\u542B\u5B83\u6240\u6307\u5411\u7684\u8F03\u5F31\u6E96\u5247\u3002",
+      "isp.capNote": "\u2026\u2026\u9084\u6709\u66F4\u591A\uFF08\u8868\u683C\u5DF2\u622A\u65B7\uFF09",
+      "isp.invalidIDM": "\u6BCF\u500B\u7279\u5FB5\u81F3\u5C11\u9700\u8981\u4E00\u500B\u5340\u584A\u3002",
+      "isp.invalidBCC": "BCC \u6BCF\u500B\u7279\u5FB5\u9700\u8981\u525B\u597D\u4E00\u500B\u57FA\u6E96\u5340\u584A\u3002",
+      "isp.invalidMBCC": "MBCC \u6BCF\u500B\u7279\u5FB5\u81F3\u5C11\u9700\u8981\u4E00\u500B\u57FA\u6E96\u5340\u584A\u3002",
+      "isp.tooLarge": "\u6B64\u6E96\u5247\u7522\u751F\u7684\u6E2C\u8A66\u904E\u591A\uFF0C\u7121\u6CD5\u9010\u4E00\u5217\u51FA\u2014\u2014\u50C5\u986F\u793A\u6578\u91CF\u3002",
+      "isp.quiz.prompt": "\u6EFF\u8DB3\u5168\u7D44\u5408\u8986\u84CB\uFF08ACoC\uFF09\u7684\u6E2C\u8A66\u96C6\u5408\uFF0C\u6703\u81EA\u52D5\u6EFF\u8DB3\u4E0B\u5217\u54EA\u4E00\u9805\uFF1F",
+      "isp.quiz.a": "\u90FD\u4E0D\u6703\u2014\u2014\u6BCF\u500B\u6E96\u5247\u5F7C\u6B64\u7368\u7ACB",
+      "isp.quiz.b": "\u53EA\u6709 ECC",
+      "isp.quiz.c": "TWC\u3001PWC \u8207 ECC\u2014\u2014ACoC \u5305\u542B\u5B83\u5011\u5168\u90E8",
+      "isp.quiz.d": "BCC \u8207 MBCC",
       // Cause-Effect Graphing
       "blackboxTab.ceg": "\u56E0\u679C\u5716",
       "section.ceg": "\u56E0\u679C\u5716\uFF08Cause-Effect Graph\uFF09",
@@ -5544,6 +5612,8 @@
       "quiz.title": "\u81EA\u6211\u6E2C\u9A57",
       "quiz.submit": "\u9001\u51FA\u7B54\u6848",
       "quiz.retry": "\u518D\u8A66\u4E00\u6B21",
+      "quiz.correct": "\u6B63\u78BA\uFF01",
+      "quiz.wrong": "\u4E0D\u592A\u5C0D\u3002",
       "lab.start": "Lab \u53CD\u601D",
       "quiz.bva.title": "\u908A\u754C\u503C\u81EA\u6211\u6E2C\u9A57",
       "quiz.bva.prompt": "\u53C3\u6578\u300C{name}\u300D\u7684\u7BC4\u570D\u662F [{min}, {max}]\u3002\u8ACB\u586B\u5165 5 \u500B\u6A19\u6E96 BVA \u908A\u754C\u503C\uFF1A",
@@ -10138,13 +10208,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         return response.text();
       },
       // ── F-B result storage ────────────────────────────────────────────────────
-      async saveResult(uid5, displayName, email, classCode, payload) {
+      async saveResult(uid6, displayName, email, classCode, payload) {
         if (!classCode || !classCode.trim()) throw new Error(t("cloud.err.noClassCode"));
         const code = classCode.trim().toUpperCase();
         const ts = payload.ts || Date.now();
-        const docId = `${uid5}_${ts}`;
+        const docId = `${uid6}_${ts}`;
         await db.collection("courses").doc(code).collection("results").doc(docId).set({
-          uid: uid5,
+          uid: uid6,
           displayName: displayName || "",
           email: email || "",
           explorer: payload.explorer || "",
@@ -18707,14 +18777,14 @@ ${cases}
   }
   function generateSectTests(params, maxTests = 50) {
     if (!params.length) return [];
-    function* cartesian2(lists) {
+    function* cartesian3(lists) {
       if (!lists.length) {
         yield [];
         return;
       }
       const [first, ...rest] = lists;
       for (const item of first) {
-        for (const combo of cartesian2(rest)) {
+        for (const combo of cartesian3(rest)) {
           yield [item, ...combo];
         }
       }
@@ -18722,7 +18792,7 @@ ${cases}
     const allClasses = params.map((p) => p.classes.map((c) => ({ param: p.name, cls: c })));
     const tests = [];
     let idx = 0;
-    for (const combo of cartesian2(allClasses)) {
+    for (const combo of cartesian3(allClasses)) {
       if (tests.length >= maxTests) break;
       const values = {};
       const coverage = [];
@@ -19562,6 +19632,621 @@ ${cases}
     return root38;
   }
 
+  // src/data/ispExamples.js
+  var ISP_EXAMPLES = [
+    {
+      id: "find-element",
+      nameKey: "isp.example.findElement",
+      characteristics: [
+        { name: "list length", blocks: ["0", "1", "\u22652"], baseIndex: 1 },
+        { name: "target found", blocks: ["absent", "once", "many"], baseIndex: 1 },
+        { name: "position", blocks: ["first", "middle", "last"], baseIndex: 0 }
+      ]
+    },
+    {
+      id: "password",
+      nameKey: "isp.example.password",
+      characteristics: [
+        { name: "length", blocks: ["<8", "8\u201316", ">16"], baseIndex: 1 },
+        { name: "digit", blocks: ["yes", "no"], baseIndex: 0 },
+        { name: "symbol", blocks: ["yes", "no"], baseIndex: 0 }
+      ]
+    },
+    {
+      id: "date",
+      nameKey: "isp.example.date",
+      characteristics: [
+        { name: "month", blocks: ["31-day", "30-day", "Feb"], baseIndex: 0 },
+        { name: "day", blocks: ["1\u201328", "29", "30", "31"], baseIndex: 0 },
+        { name: "leap year", blocks: ["yes", "no"], baseIndex: 1 }
+      ]
+    }
+  ];
+
+  // src/utils/pairwise.js
+  function pairKey(pi, vi, pj, vj) {
+    return pi <= pj ? `${pi}\0${vi}\0${pj}\0${vj}` : `${pj}\0${vj}\0${pi}\0${vi}`;
+  }
+  function generatePairwise(params) {
+    const valid = params.filter((p) => p.name.trim() && p.values.length >= 1);
+    if (valid.length < 2) return [];
+    const uncovered = /* @__PURE__ */ new Set();
+    for (let i = 0; i < valid.length - 1; i++) {
+      for (let j = i + 1; j < valid.length; j++) {
+        for (const vi of valid[i].values) {
+          for (const vj of valid[j].values) {
+            uncovered.add(pairKey(i, vi, j, vj));
+          }
+        }
+      }
+    }
+    const tests = [];
+    for (const v0 of valid[0].values) {
+      for (const v1 of valid[1].values) {
+        const row = new Array(valid.length).fill(null);
+        row[0] = v0;
+        row[1] = v1;
+        tests.push(row);
+        uncovered.delete(pairKey(0, v0, 1, v1));
+      }
+    }
+    for (let k = 2; k < valid.length; k++) {
+      const pk = valid[k];
+      for (const row of tests) {
+        let bestVal = pk.values[0];
+        let bestCount = -1;
+        for (const vk of pk.values) {
+          let count = 0;
+          for (let i = 0; i < k; i++) {
+            if (row[i] !== null && uncovered.has(pairKey(i, row[i], k, vk))) count++;
+          }
+          if (count > bestCount) {
+            bestCount = count;
+            bestVal = vk;
+          }
+        }
+        row[k] = bestVal;
+        for (let i = 0; i < k; i++) {
+          if (row[i] !== null) uncovered.delete(pairKey(i, row[i], k, bestVal));
+        }
+      }
+      let guard = 0;
+      while (guard++ < 1e3) {
+        let target = null;
+        for (const key of uncovered) {
+          const parts2 = key.split("\0");
+          if (parseInt(parts2[0]) === k || parseInt(parts2[2]) === k) {
+            target = key;
+            break;
+          }
+        }
+        if (!target) break;
+        const row = new Array(valid.length).fill(null);
+        const parts = target.split("\0");
+        row[parseInt(parts[0])] = parts[1];
+        row[parseInt(parts[2])] = parts[3];
+        for (let m = 0; m <= k; m++) {
+          if (row[m] !== null) continue;
+          let bestVal = valid[m].values[0];
+          let bestCount = -1;
+          for (const vm of valid[m].values) {
+            let count = 0;
+            for (let n = 0; n <= k; n++) {
+              if (n !== m && row[n] !== null && uncovered.has(pairKey(m, vm, n, row[n]))) count++;
+            }
+            if (count > bestCount) {
+              bestCount = count;
+              bestVal = vm;
+            }
+          }
+          row[m] = bestVal;
+        }
+        tests.push(row);
+        for (let i = 0; i <= k; i++) {
+          for (let j = i + 1; j <= k; j++) {
+            if (row[i] !== null && row[j] !== null) uncovered.delete(pairKey(i, row[i], j, row[j]));
+          }
+        }
+      }
+    }
+    return tests.map((row) => {
+      const obj = {};
+      valid.forEach((p, i) => {
+        var _a;
+        obj[p.name] = (_a = row[i]) != null ? _a : p.values[0];
+      });
+      return obj;
+    });
+  }
+  function exhaustiveCount(params) {
+    const valid = params.filter((p) => p.name.trim() && p.values.length >= 1);
+    return valid.reduce((acc, p) => acc * p.values.length, 1);
+  }
+  function totalPairCount(params) {
+    const valid = params.filter((p) => p.name.trim() && p.values.length >= 1);
+    let total = 0;
+    for (let i = 0; i < valid.length - 1; i++) {
+      for (let j = i + 1; j < valid.length; j++) {
+        total += valid[i].values.length * valid[j].values.length;
+      }
+    }
+    return total;
+  }
+
+  // src/utils/inputSpacePartition.js
+  function cartesian2(lists) {
+    let out = [[]];
+    for (const list of lists) {
+      const next = [];
+      for (const prefix of out) for (const item of list) next.push([...prefix, item]);
+      out = next;
+    }
+    return out;
+  }
+  function combinations(arr, k) {
+    if (k === 0) return [[]];
+    if (k > arr.length) return [];
+    const [head, ...rest] = arr;
+    return [
+      ...combinations(rest, k - 1).map((c) => [head, ...c]),
+      ...combinations(rest, k)
+    ];
+  }
+  function baseListOf(c) {
+    return c.baseBlockIds && c.baseBlockIds.length > 0 ? c.baseBlockIds : [c.blocks[0].id];
+  }
+  function allCombinations(characteristics) {
+    if (characteristics.length === 0) return [];
+    const blockLists = characteristics.map((c) => c.blocks.map((b) => b.id));
+    return cartesian2(blockLists).map((combo) => {
+      const test = {};
+      characteristics.forEach((c, i) => {
+        test[c.id] = combo[i];
+      });
+      return test;
+    });
+  }
+  function eachChoice(characteristics) {
+    if (characteristics.length === 0) return [];
+    const maxBlocks = Math.max(...characteristics.map((c) => c.blocks.length));
+    const tests = [];
+    for (let j = 0; j < maxBlocks; j += 1) {
+      const test = {};
+      for (const c of characteristics) {
+        test[c.id] = c.blocks[j % c.blocks.length].id;
+      }
+      tests.push(test);
+    }
+    return tests;
+  }
+  function pairWise(characteristics) {
+    if (characteristics.length === 0) return [];
+    if (characteristics.length === 1) return eachChoice(characteristics);
+    const params = characteristics.map((c) => ({
+      name: c.id,
+      values: c.blocks.map((b) => b.id)
+    }));
+    return generatePairwise(params);
+  }
+  function tWise(characteristics, t2) {
+    const n = characteristics.length;
+    if (n === 0) return [];
+    const tt = Math.max(2, Math.min(t2, n));
+    if (tt >= n) return allCombinations(characteristics);
+    if (tt === 2) return pairWise(characteristics);
+    const indexCombos = combinations([...Array(n).keys()], tt);
+    const tupleKey = (combo, blockIds) => combo.map((ci, k) => `${ci}=${blockIds[k]}`).join("&");
+    const uncovered = /* @__PURE__ */ new Set();
+    for (const combo of indexCombos) {
+      const blockLists = combo.map((ci) => characteristics[ci].blocks.map((b) => b.id));
+      for (const blockIds of cartesian2(blockLists)) {
+        uncovered.add(tupleKey(combo, blockIds));
+      }
+    }
+    const tests = [];
+    let guard = 1e5;
+    while (uncovered.size > 0 && guard > 0) {
+      guard -= 1;
+      const test = {};
+      for (let ci = 0; ci < n; ci += 1) {
+        const c = characteristics[ci];
+        let bestBlock = c.blocks[0].id;
+        let bestGain = -1;
+        for (const b of c.blocks) {
+          const trial = { ...test, [c.id]: b.id };
+          let gain = 0;
+          for (const combo of indexCombos) {
+            if (!combo.every((idx) => trial[characteristics[idx].id] !== void 0)) continue;
+            const key = tupleKey(combo, combo.map((idx) => trial[characteristics[idx].id]));
+            if (uncovered.has(key)) gain += 1;
+          }
+          if (gain > bestGain) {
+            bestGain = gain;
+            bestBlock = b.id;
+          }
+        }
+        test[c.id] = bestBlock;
+      }
+      for (const combo of indexCombos) {
+        uncovered.delete(tupleKey(combo, combo.map((idx) => test[characteristics[idx].id])));
+      }
+      tests.push(test);
+    }
+    if (guard <= 0) throw new Error("tWise: guard exhausted \u2014 possible infinite loop");
+    return tests;
+  }
+  function baseChoice(characteristics) {
+    if (characteristics.length === 0) return [];
+    const baseOf = (c) => baseListOf(c)[0];
+    const baseTest = {};
+    for (const c of characteristics) baseTest[c.id] = baseOf(c);
+    const tests = [{ ...baseTest }];
+    for (const c of characteristics) {
+      for (const b of c.blocks) {
+        if (b.id === baseOf(c)) continue;
+        tests.push({ ...baseTest, [c.id]: b.id });
+      }
+    }
+    return tests;
+  }
+  function multipleBaseChoice(characteristics) {
+    if (characteristics.length === 0) return [];
+    const baseCombos = cartesian2(characteristics.map(baseListOf));
+    const tests = [];
+    const seen = /* @__PURE__ */ new Set();
+    const keyOf = (test) => characteristics.map((c) => test[c.id]).join("|");
+    const add = (test) => {
+      const k = keyOf(test);
+      if (!seen.has(k)) {
+        seen.add(k);
+        tests.push(test);
+      }
+    };
+    for (const combo of baseCombos) {
+      const baseTest = {};
+      characteristics.forEach((c, i) => {
+        baseTest[c.id] = combo[i];
+      });
+      add({ ...baseTest });
+      for (const c of characteristics) {
+        const bases = baseListOf(c);
+        for (const b of c.blocks) {
+          if (bases.includes(b.id)) continue;
+          add({ ...baseTest, [c.id]: b.id });
+        }
+      }
+    }
+    return tests;
+  }
+
+  // src/components/InputSpacePartitioningExplorer.js
+  var CRITERIA2 = ["acoc", "twc", "pwc", "ecc", "bcc", "mbcc"];
+  var MAX_ENUMERATE = 500;
+  var MAX_ROWS = 100;
+  var _uid = 0;
+  function uid() {
+    _uid += 1;
+    return `i${_uid}`;
+  }
+  function esc(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+  }
+  function idmFromExample(ex) {
+    return ex.characteristics.map((c) => {
+      const blocks = c.blocks.map((label) => ({ id: uid(), label }));
+      return { id: uid(), name: c.name, blocks, baseBlockIds: [blocks[c.baseIndex].id] };
+    });
+  }
+  function createInputSpacePartitioningExplorer() {
+    const root38 = document.createElement("div");
+    root38.className = "isp-explorer";
+    root38.dataset.testid = "isp-explorer";
+    let exampleId = ISP_EXAMPLES[0].id;
+    let idm = idmFromExample(ISP_EXAMPLES[0]);
+    let criterion = "acoc";
+    let twiseTVal = 2;
+    const blockDraft = {};
+    const quiz = { active: false, phase: "idle", answer: "" };
+    function generate(crit) {
+      switch (crit) {
+        case "acoc":
+          return allCombinations(idm);
+        case "twc":
+          return tWise(idm, twiseTVal);
+        case "pwc":
+          return pairWise(idm);
+        case "ecc":
+          return eachChoice(idm);
+        case "bcc":
+          return baseChoice(idm);
+        case "mbcc":
+          return multipleBaseChoice(idm);
+        default:
+          return [];
+      }
+    }
+    function countFor(crit) {
+      if (crit === "acoc") return idm.length === 0 ? 0 : idm.reduce((n, c) => n * c.blocks.length, 1);
+      if (crit === "ecc") return idm.length === 0 ? 0 : Math.max(...idm.map((c) => c.blocks.length));
+      if (crit === "bcc") return idm.length === 0 ? 0 : 1 + idm.reduce((n, c) => n + c.blocks.length - 1, 0);
+      return generate(crit).length;
+    }
+    function idmError() {
+      if (idm.some((c) => c.blocks.length < 1)) return "isp.invalidIDM";
+      if (criterion === "bcc" && idm.some((c) => c.baseBlockIds.length !== 1)) return "isp.invalidBCC";
+      if (criterion === "mbcc" && idm.some((c) => c.baseBlockIds.length < 1)) return "isp.invalidMBCC";
+      return null;
+    }
+    function renderExampleChips5() {
+      return `<div class="isp-chip-bar" data-testid="isp-examples">
+      ${ISP_EXAMPLES.map((ex) => `
+        <button type="button"
+          class="isp-chip${exampleId === ex.id ? " isp-chip--active" : ""}"
+          data-testid="isp-example-${esc(ex.id)}" data-isp-example="${esc(ex.id)}">
+          ${esc(t(ex.nameKey))}
+        </button>`).join("")}
+    </div>`;
+    }
+    function renderIdm() {
+      const baseInteractive = criterion === "bcc" || criterion === "mbcc";
+      const rows = idm.map((c, ci) => `
+      <div class="isp-char-row" data-testid="isp-characteristic-${ci}">
+        <input class="isp-char-name" data-isp-char-name="${esc(c.id)}" value="${esc(c.name)}" />
+        <div class="isp-block-bar">
+          ${c.blocks.map((b) => `
+            <span class="isp-block${c.baseBlockIds.includes(b.id) ? " isp-block--base" : ""}${baseInteractive ? " isp-block--base-interactive" : ""}"
+              data-testid="isp-block-${esc(c.id)}-${esc(b.id)}"
+              data-isp-block="${esc(c.id)}:${esc(b.id)}">
+              ${esc(b.label)}
+              <button type="button" class="isp-block-x" data-isp-block-remove="${esc(c.id)}:${esc(b.id)}">\xD7</button>
+            </span>`).join("")}
+          <input class="isp-add-block" data-testid="isp-add-block-${ci}" data-isp-add-block="${esc(c.id)}"
+            placeholder="${esc(t("isp.addBlock"))}" value="${esc(blockDraft[c.id] || "")}" />
+        </div>
+        <button type="button" class="isp-char-x" data-isp-char-remove="${esc(c.id)}"
+          title="${esc(t("isp.removeCharacteristic"))}">\xD7</button>
+      </div>`).join("");
+      return `<div class="isp-idm" data-testid="isp-idm">
+      <div class="isp-idm-head">
+        <h3>${esc(t("isp.idmTitle"))}</h3>
+        <button type="button" class="isp-add-char" data-testid="isp-add-characteristic" data-isp-add-char>
+          ${esc(t("isp.addCharacteristic"))}
+        </button>
+      </div>
+      ${rows}
+      ${baseInteractive ? `<p class="isp-hint">${esc(t("isp.baseHint"))}</p>` : ""}
+    </div>`;
+    }
+    function renderCriterionSelector() {
+      const btns = CRITERIA2.map((c) => `
+      <button type="button"
+        class="isp-criterion-btn${criterion === c ? " isp-criterion-btn--active" : ""}"
+        data-testid="isp-criterion-${c}" data-isp-criterion="${c}">
+        ${esc(t(`isp.criterion.${c}`))}
+      </button>`).join("");
+      const tStep = criterion === "twc" ? `
+      <label class="isp-twise-t">${esc(t("isp.twiseT"))}
+        <input type="number" min="2" max="${idm.length}" value="${twiseTVal}"
+          data-testid="isp-twise-t" data-isp-twise-t />
+      </label>` : "";
+      return `<div class="isp-criterion-bar">
+      <span class="isp-criterion-title">${esc(t("isp.criterionTitle"))}</span>
+      ${btns}${tStep}
+    </div>`;
+    }
+    function renderTestSet() {
+      const err = idmError();
+      if (err) {
+        return `<div class="isp-test-set" data-testid="isp-test-set">
+        <p class="isp-invalid">${esc(t(err))}</p></div>`;
+      }
+      if (criterion === "acoc") {
+        const acocCount = countFor("acoc");
+        if (acocCount > MAX_ENUMERATE) {
+          return `<div class="isp-test-set" data-testid="isp-test-set">
+          <h3>${esc(t("isp.testSetTitle"))} \u2014 ${acocCount} ${esc(t("isp.testCountUnit"))}</h3>
+          <p class="isp-invalid">${esc(t("isp.tooLarge"))}</p></div>`;
+        }
+      }
+      const tests = generate(criterion);
+      const shown = tests.slice(0, MAX_ROWS);
+      const header = idm.map((c) => `<th>${esc(c.name)}</th>`).join("");
+      const rows = shown.map((test, ri) => `
+      <tr data-testid="isp-test-row-${ri}">
+        <td>${ri + 1}</td>
+        ${idm.map((c) => {
+        const block = c.blocks.find((b) => b.id === test[c.id]);
+        return `<td>${esc(block ? block.label : "")}</td>`;
+      }).join("")}
+      </tr>`).join("");
+      const capNote = tests.length > MAX_ROWS ? `<p class="isp-cap-note">${esc(t("isp.capNote"))}</p>` : "";
+      return `<div class="isp-test-set" data-testid="isp-test-set">
+      <h3>${esc(t("isp.testSetTitle"))} \u2014 ${tests.length} ${esc(t("isp.testCountUnit"))}</h3>
+      <table class="isp-test-table">
+        <thead><tr><th>#</th>${header}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      ${capNote}
+    </div>`;
+    }
+    function renderCountComparison() {
+      const counts = CRITERIA2.map((c) => ({ c, n: countFor(c) }));
+      const max = Math.max(1, ...counts.map((x) => x.n));
+      return `<div class="isp-count" data-testid="isp-count">
+      <h3>${esc(t("isp.countComparison"))}</h3>
+      ${counts.map(({ c, n }) => `
+        <div class="isp-count-row${criterion === c ? " isp-count-row--active" : ""}">
+          <span class="isp-count-label">${esc(t(`isp.criterion.${c}`))}</span>
+          <span class="isp-count-bar" data-testid="isp-count-bar-${c}"
+            style="width:${Math.round(n / max * 100)}%"></span>
+          <span class="isp-count-n">${n}</span>
+        </div>`).join("")}
+    </div>`;
+    }
+    function renderLattice() {
+      return `<div class="isp-lattice" data-testid="isp-lattice">
+      <h3>${esc(t("isp.subsumption"))}</h3>
+      <div class="isp-lattice-graph">
+        ${CRITERIA2.map((c) => `
+          <span class="isp-lattice-node isp-lattice-node--${c}${criterion === c ? " isp-lattice-node--active" : ""}"
+            data-testid="isp-lattice-node-${c}">${esc(t(`isp.criterion.${c}`))}</span>`).join("")}
+      </div>
+      <p class="isp-hint">${esc(t("isp.subsumptionHint"))}</p>
+    </div>`;
+    }
+    function renderQuiz37() {
+      if (!quiz.active) {
+        return `<button type="button" class="isp-quiz-start" data-testid="isp-quiz-start">${esc(t("quiz.start"))}</button>`;
+      }
+      if (quiz.phase === "done") {
+        const correct = quiz.answer === "c";
+        return `<div class="isp-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="isp-quiz-result">
+        <p>${correct ? esc(t("quiz.correct")) : esc(t("quiz.wrong"))}</p>
+        <button type="button" data-testid="isp-quiz-close">${esc(t("quiz.close"))}</button>
+      </div>`;
+      }
+      return `<div class="isp-quiz" data-testid="isp-quiz">
+      <p>${esc(t("isp.quiz.prompt"))}</p>
+      ${["a", "b", "c", "d"].map((k) => `
+        <label class="isp-quiz-option">
+          <input type="radio" name="isp-quiz" value="${k}" ${quiz.answer === k ? "checked" : ""} />
+          ${esc(t(`isp.quiz.${k}`))}
+        </label>`).join("")}
+      <button type="button" data-testid="isp-quiz-submit" ${!quiz.answer ? "disabled" : ""}>${esc(t("quiz.submit"))}</button>
+    </div>`;
+    }
+    function render37() {
+      root38.innerHTML = `
+      <div class="isp-wrap">
+        ${renderExampleChips5()}
+        ${renderIdm()}
+        ${renderCriterionSelector()}
+        <div class="isp-panels-row">
+          ${renderTestSet()}
+          ${renderCountComparison()}
+        </div>
+        ${renderLattice()}
+        <section class="isp-self-test">
+          <h3>${esc(t("quiz.title"))}</h3>
+          ${renderQuiz37()}
+        </section>
+      </div>`;
+      bindEvents37();
+    }
+    function findChar(cid) {
+      return idm.find((c) => c.id === cid);
+    }
+    function bindEvents37() {
+      var _a, _b, _c, _d, _e;
+      root38.querySelectorAll("[data-isp-example]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const ex = ISP_EXAMPLES.find((e) => e.id === btn.dataset.ispExample);
+          if (!ex || ex.id === exampleId) return;
+          exampleId = ex.id;
+          idm = idmFromExample(ex);
+          render37();
+        });
+      });
+      root38.querySelectorAll("[data-isp-criterion]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          criterion = btn.dataset.ispCriterion;
+          render37();
+        });
+      });
+      (_a = root38.querySelector("[data-isp-twise-t]")) == null ? void 0 : _a.addEventListener("change", (e) => {
+        const v = parseInt(e.target.value, 10);
+        twiseTVal = Number.isFinite(v) ? Math.max(2, Math.min(v, idm.length)) : 2;
+        render37();
+      });
+      root38.querySelectorAll("[data-isp-char-name]").forEach((inp) => {
+        inp.addEventListener("change", () => {
+          const c = findChar(inp.dataset.ispCharName);
+          if (c) {
+            c.name = inp.value;
+            render37();
+          }
+        });
+      });
+      (_b = root38.querySelector("[data-isp-add-char]")) == null ? void 0 : _b.addEventListener("click", () => {
+        const b1 = { id: uid(), label: "block 1" };
+        const b2 = { id: uid(), label: "block 2" };
+        idm.push({ id: uid(), name: "new characteristic", blocks: [b1, b2], baseBlockIds: [b1.id] });
+        render37();
+      });
+      root38.querySelectorAll("[data-isp-char-remove]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          idm = idm.filter((c) => c.id !== btn.dataset.ispCharRemove);
+          render37();
+        });
+      });
+      root38.querySelectorAll("[data-isp-add-block]").forEach((inp) => {
+        inp.addEventListener("change", () => {
+          const cid = inp.dataset.ispAddBlock;
+          const label = inp.value.trim();
+          const c = findChar(cid);
+          if (c && label) {
+            c.blocks.push({ id: uid(), label });
+            blockDraft[cid] = "";
+          } else {
+            blockDraft[cid] = inp.value;
+          }
+          render37();
+        });
+      });
+      root38.querySelectorAll("[data-isp-block-remove]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const [cid, bid] = btn.dataset.ispBlockRemove.split(":");
+          const c = findChar(cid);
+          if (!c || c.blocks.length <= 1) return;
+          c.blocks = c.blocks.filter((b) => b.id !== bid);
+          c.baseBlockIds = c.baseBlockIds.filter((id) => id !== bid);
+          if (c.baseBlockIds.length === 0) c.baseBlockIds = [c.blocks[0].id];
+          render37();
+        });
+      });
+      root38.querySelectorAll(".isp-block--base-interactive").forEach((span) => {
+        span.addEventListener("click", () => {
+          const [cid, bid] = span.dataset.ispBlock.split(":");
+          const c = findChar(cid);
+          if (!c) return;
+          if (criterion === "bcc") {
+            c.baseBlockIds = [bid];
+          } else {
+            c.baseBlockIds = c.baseBlockIds.includes(bid) ? c.baseBlockIds.filter((id) => id !== bid) : [...c.baseBlockIds, bid];
+            if (c.baseBlockIds.length === 0) c.baseBlockIds = [bid];
+          }
+          render37();
+        });
+      });
+      (_c = root38.querySelector('[data-testid="isp-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+        quiz.active = true;
+        quiz.phase = "question";
+        quiz.answer = "";
+        render37();
+      });
+      root38.querySelectorAll('input[name="isp-quiz"]').forEach((inp) => {
+        inp.addEventListener("change", () => {
+          quiz.answer = inp.value;
+          render37();
+        });
+      });
+      (_d = root38.querySelector('[data-testid="isp-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+        quiz.phase = "done";
+        render37();
+      });
+      (_e = root38.querySelector('[data-testid="isp-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+        quiz.active = false;
+        quiz.phase = "idle";
+        quiz.answer = "";
+        render37();
+      });
+    }
+    onLocaleChange(() => render37());
+    render37();
+    return root38;
+  }
+
   // src/components/DecisionTableExplorer.js
   var STORAGE_KEY11 = "stvisual.dt.v1";
   var EXAMPLES3 = [
@@ -19634,7 +20319,7 @@ ${cases}
       ]
     }
   ];
-  function esc(v = "") {
+  function esc2(v = "") {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function deepClone(obj) {
@@ -19691,13 +20376,13 @@ ${cases}
             <span>${t("quiz.dt.label.covered")}</span>
             <input type="number" min="0"
               class="quiz-bva-input${isGraded ? covCorrect ? " quiz-input-correct" : " quiz-input-wrong" : ""}"
-              data-testid="dt-quiz-covered" value="${esc(dtQuiz.ansCovered)}" ${isGraded ? "readonly" : ""}>
+              data-testid="dt-quiz-covered" value="${esc2(dtQuiz.ansCovered)}" ${isGraded ? "readonly" : ""}>
           </label>
           <label class="quiz-bva-field">
             <span>${t("quiz.dt.label.dup")}</span>
             <input type="number" min="0"
               class="quiz-bva-input${isGraded ? dupCorrect ? " quiz-input-correct" : " quiz-input-wrong" : ""}"
-              data-testid="dt-quiz-dup" value="${esc(dtQuiz.ansDup)}" ${isGraded ? "readonly" : ""}>
+              data-testid="dt-quiz-dup" value="${esc2(dtQuiz.ansDup)}" ${isGraded ? "readonly" : ""}>
           </label>
         </div>
         ${isGraded ? `
@@ -19715,22 +20400,22 @@ ${cases}
     function renderTable() {
       const tests = generateDecisionTableTests(state37.conditions, state37.actions, state37.rules);
       const validation = validateDecisionTable(state37.conditions, state37.rules);
-      const condHead = state37.conditions.map((c) => `<th class="dt-cond-head">${esc(c.name)}</th>`).join("");
-      const actHead = state37.actions.map((a) => `<th class="dt-act-head">${esc(a.name)}</th>`).join("");
+      const condHead = state37.conditions.map((c) => `<th class="dt-cond-head">${esc2(c.name)}</th>`).join("");
+      const actHead = state37.actions.map((a) => `<th class="dt-act-head">${esc2(a.name)}</th>`).join("");
       const rows = tests.map((tc, i) => {
         const rule = state37.rules[i];
         const condCells = state37.conditions.map((c) => {
           var _a2;
           const val = (_a2 = tc.conditions[c.id]) != null ? _a2 : "\u2013";
           const cls = val === "T" || val === "Y" ? " dt-val-true" : val === "F" || val === "N" ? " dt-val-false" : " dt-val-dc";
-          return `<td class="dt-cell${cls}">${esc(val)}</td>`;
+          return `<td class="dt-cell${cls}">${esc2(val)}</td>`;
         }).join("");
         const actCells = state37.actions.map((a) => {
           const fires = tc.actions.includes(a.id);
           return `<td class="dt-cell${fires ? " dt-act-fire" : ""}">${fires ? "\u2713" : ""}</td>`;
         }).join("");
         return `<tr class="dt-row" data-testid="dt-row-${i}">
-        <td class="dt-rule-label">${esc(tc.label)}</td>
+        <td class="dt-rule-label">${esc2(tc.label)}</td>
         ${condCells}
         <td class="dt-separator"></td>
         ${actCells}
@@ -19765,7 +20450,7 @@ ${cases}
     function renderConditions() {
       return state37.conditions.map((c, i) => `
       <div class="dt-cond-block" data-testid="dt-cond-${i}">
-        <input class="dt-cond-name" data-cidx="${i}" value="${esc(c.name)}"
+        <input class="dt-cond-name" data-cidx="${i}" value="${esc2(c.name)}"
           placeholder="${t("dt.condition.name")}" data-testid="dt-cond-name-${i}"/>
         <button class="dt-del-cond-btn" data-del-cond="${i}" aria-label="${t("common.remove")}"
           ${state37.conditions.length <= 1 ? "disabled" : ""} data-testid="dt-del-cond-${i}">\xD7</button>
@@ -19775,7 +20460,7 @@ ${cases}
     function renderActions() {
       return state37.actions.map((a, i) => `
       <div class="dt-act-block" data-testid="dt-action-${i}">
-        <input class="dt-act-name" data-aidx="${i}" value="${esc(a.name)}"
+        <input class="dt-act-name" data-aidx="${i}" value="${esc2(a.name)}"
           placeholder="${t("dt.action.name")}" data-testid="dt-act-name-${i}"/>
         <button class="dt-del-act-btn" data-del-act="${i}" aria-label="${t("common.remove")}"
           ${state37.actions.length <= 1 ? "disabled" : ""} data-testid="dt-del-act-${i}">\xD7</button>
@@ -19785,7 +20470,7 @@ ${cases}
     function render37() {
       const exBtns = EXAMPLES3.map((ex) => `
       <button type="button" class="dt-example-btn${state37.exampleId === ex.id ? " active" : ""}"
-        data-dt-example="${ex.id}" data-testid="dt-example-${ex.id}">${esc(ex.name)}</button>
+        data-dt-example="${ex.id}" data-testid="dt-example-${ex.id}">${esc2(ex.name)}</button>
     `).join("");
       root38.innerHTML = `
       <div class="dt-panel">
@@ -20061,7 +20746,7 @@ ${cases}
       ]
     }
   ];
-  function esc2(v = "") {
+  function esc3(v = "") {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function deepClone2(o) {
@@ -20112,13 +20797,13 @@ ${cases}
           <h4>${t("quiz.st.title")}</h4>
           <button type="button" class="quiz-close-btn" data-testid="st-quiz-close">${t("quiz.close")}</button>
         </div>
-        <p class="quiz-prompt">${t("quiz.st.prompt").replace("{mode}", esc2(modeLabel))}</p>
+        <p class="quiz-prompt">${t("quiz.st.prompt").replace("{mode}", esc3(modeLabel))}</p>
         <div class="quiz-bva-inputs">
           <label class="quiz-bva-field">
             <span>${t("quiz.st.label")}</span>
             <input type="number" min="0"
               class="quiz-bva-input${isGraded ? correct ? " quiz-input-correct" : " quiz-input-wrong" : ""}"
-              data-testid="st-quiz-answer" value="${esc2(stQuiz.answer)}" ${isGraded ? "readonly" : ""}>
+              data-testid="st-quiz-answer" value="${esc3(stQuiz.answer)}" ${isGraded ? "readonly" : ""}>
           </label>
         </div>
         ${isGraded ? `
@@ -20160,7 +20845,7 @@ ${cases}
           const mx = from.x, my = from.y - R - 20;
           return `<path d="M${from.x - 12},${from.y - R} Q${mx - 30},${my - 30} ${from.x + 12},${from.y - R}"
           fill="none" stroke="#6366f1" stroke-width="1.5" marker-end="url(#${arrowId})"/>
-          <text x="${mx}" y="${my - 12}" text-anchor="middle" font-size="10" fill="#374151">${esc2(tr.event)}</text>`;
+          <text x="${mx}" y="${my - 12}" text-anchor="middle" font-size="10" fill="#374151">${esc3(tr.event)}</text>`;
         }
         const dx = to.x - from.x, dy = to.y - from.y;
         const len = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -20171,7 +20856,7 @@ ${cases}
         const mx2 = (x1 + x2) / 2 + perpX, my2 = (y1 + y2) / 2 + perpY;
         return `<path d="M${x1},${y1} Q${mx2},${my2} ${x2},${y2}"
         fill="none" stroke="#6366f1" stroke-width="1.5" marker-end="url(#${arrowId})"/>
-        <text x="${mx2}" y="${my2 - 4}" text-anchor="middle" font-size="10" fill="#374151">${esc2(tr.event)}</text>`;
+        <text x="${mx2}" y="${my2 - 4}" text-anchor="middle" font-size="10" fill="#374151">${esc3(tr.event)}</text>`;
       }).join("");
       const nodes = state37.states.map((s) => {
         const p = pos[s.id];
@@ -20179,7 +20864,7 @@ ${cases}
         const stroke = s.initial ? "#0f4c81" : "#9ca3af";
         const sw = s.initial ? 2.5 : 1.5;
         return `<circle cx="${p.x}" cy="${p.y}" r="${R}" fill="#f8fafc" stroke="${stroke}" stroke-width="${sw}"/>
-        <text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="11" fill="#1f2a44" font-weight="600">${esc2(s.name)}</text>`;
+        <text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="11" fill="#1f2a44" font-weight="600">${esc3(s.name)}</text>`;
       }).join("");
       return `<svg viewBox="0 0 ${W} ${H}" class="st-diagram" data-testid="st-diagram"
       xmlns="http://www.w3.org/2000/svg" aria-label="${t("st.diagram.aria")}">
@@ -20190,7 +20875,7 @@ ${cases}
       return state37.states.map((s, i) => `
       <div class="st-state-row" data-testid="st-state-${i}">
         ${s.initial ? `<span class="st-initial-dot" title="${t("st.initial")}">\u25CF</span>` : `<span class="st-initial-dot st-initial-dot--empty" title="${t("st.set.initial")}" data-set-initial="${i}">\u25CB</span>`}
-        <input class="st-state-name" data-sidx="${i}" value="${esc2(s.name)}"
+        <input class="st-state-name" data-sidx="${i}" value="${esc3(s.name)}"
           placeholder="${t("st.state.name")}" data-testid="st-state-name-${i}"/>
         <button class="st-del-btn" data-del-state="${i}" aria-label="${t("common.remove")}"
           ${state37.states.length <= 1 ? "disabled" : ""} data-testid="st-del-state-${i}">\xD7</button>
@@ -20200,15 +20885,15 @@ ${cases}
     function renderTransitionList() {
       return state37.transitions.map((tr, i) => {
         var _a2;
-        const fromNames = state37.states.map((s) => `<option value="${esc2(s.id)}"${tr.from === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
-        const toNames = state37.states.map((s) => `<option value="${esc2(s.id)}"${tr.to === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
+        const fromNames = state37.states.map((s) => `<option value="${esc3(s.id)}"${tr.from === s.id ? " selected" : ""}>${esc3(s.name)}</option>`).join("");
+        const toNames = state37.states.map((s) => `<option value="${esc3(s.id)}"${tr.to === s.id ? " selected" : ""}>${esc3(s.name)}</option>`).join("");
         return `<tr class="st-tr-row" data-testid="st-transition-${i}">
         <td><select class="st-from-sel" data-tidx="${i}" data-testid="st-from-${i}">${fromNames}</select></td>
         <td>\u2192</td>
         <td><select class="st-to-sel" data-tidx="${i}" data-testid="st-to-${i}">${toNames}</select></td>
-        <td><input class="st-event-inp" data-tidx="${i}" value="${esc2(tr.event)}"
+        <td><input class="st-event-inp" data-tidx="${i}" value="${esc3(tr.event)}"
           placeholder="${t("st.transition.event")}" data-testid="st-event-${i}"/></td>
-        <td><input class="st-action-inp" data-tidx="${i}" value="${esc2((_a2 = tr.action) != null ? _a2 : "")}"
+        <td><input class="st-action-inp" data-tidx="${i}" value="${esc3((_a2 = tr.action) != null ? _a2 : "")}"
           placeholder="${t("st.transition.action")}" data-testid="st-action-${i}"/></td>
         <td><button class="st-del-btn" data-del-tr="${i}" aria-label="${t("common.remove")}"
           ${state37.transitions.length <= 1 ? "disabled" : ""} data-testid="st-del-tr-${i}">\xD7</button></td>
@@ -20220,9 +20905,9 @@ ${cases}
       if (state37.mode === "sequence") {
         const rows2 = tests.map((tc) => `
         <tr class="st-test-row" data-testid="st-test-${tc.id}">
-          <td class="st-test-label">${esc2(tc.label)}</td>
-          <td class="st-test-seq">${tc.sequence.map(esc2).join(" \u2192 ")}</td>
-          <td class="st-test-events">${tc.events.map((e) => `<span class="st-event-chip">${esc2(e)}</span>`).join("")}</td>
+          <td class="st-test-label">${esc3(tc.label)}</td>
+          <td class="st-test-seq">${tc.sequence.map(esc3).join(" \u2192 ")}</td>
+          <td class="st-test-events">${tc.events.map((e) => `<span class="st-event-chip">${esc3(e)}</span>`).join("")}</td>
         </tr>
       `).join("");
         return `<table class="st-table" data-testid="st-table">
@@ -20236,11 +20921,11 @@ ${cases}
       }
       const rows = tests.map((tc) => `
       <tr class="st-test-row" data-testid="st-test-${tc.id}">
-        <td class="st-test-label">${esc2(tc.label)}</td>
-        <td>${esc2(tc.from)}</td>
-        <td class="st-event-col"><span class="st-event-chip">${esc2(tc.event)}</span></td>
-        <td>${esc2(tc.to)}</td>
-        <td class="st-action-col">${tc.action ? `<em>${esc2(tc.action)}</em>` : ""}</td>
+        <td class="st-test-label">${esc3(tc.label)}</td>
+        <td>${esc3(tc.from)}</td>
+        <td class="st-event-col"><span class="st-event-chip">${esc3(tc.event)}</span></td>
+        <td>${esc3(tc.to)}</td>
+        <td class="st-action-col">${tc.action ? `<em>${esc3(tc.action)}</em>` : ""}</td>
       </tr>
     `).join("");
       return `<table class="st-table" data-testid="st-table">
@@ -20258,7 +20943,7 @@ ${cases}
       const tests = getTests();
       const exBtns = EXAMPLES4.map((ex) => `
       <button type="button" class="st-example-btn${state37.exampleId === ex.id ? " active" : ""}"
-        data-st-example="${ex.id}" data-testid="st-example-${ex.id}">${esc2(ex.name)}</button>
+        data-st-example="${ex.id}" data-testid="st-example-${ex.id}">${esc3(ex.name)}</button>
     `).join("");
       root38.innerHTML = `
       <div class="st-panel">
@@ -22817,120 +23502,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return root38;
   }
 
-  // src/utils/pairwise.js
-  function pairKey(pi, vi, pj, vj) {
-    return pi <= pj ? `${pi}\0${vi}\0${pj}\0${vj}` : `${pj}\0${vj}\0${pi}\0${vi}`;
-  }
-  function generatePairwise(params) {
-    const valid = params.filter((p) => p.name.trim() && p.values.length >= 1);
-    if (valid.length < 2) return [];
-    const uncovered = /* @__PURE__ */ new Set();
-    for (let i = 0; i < valid.length - 1; i++) {
-      for (let j = i + 1; j < valid.length; j++) {
-        for (const vi of valid[i].values) {
-          for (const vj of valid[j].values) {
-            uncovered.add(pairKey(i, vi, j, vj));
-          }
-        }
-      }
-    }
-    const tests = [];
-    for (const v0 of valid[0].values) {
-      for (const v1 of valid[1].values) {
-        const row = new Array(valid.length).fill(null);
-        row[0] = v0;
-        row[1] = v1;
-        tests.push(row);
-        uncovered.delete(pairKey(0, v0, 1, v1));
-      }
-    }
-    for (let k = 2; k < valid.length; k++) {
-      const pk = valid[k];
-      for (const row of tests) {
-        let bestVal = pk.values[0];
-        let bestCount = -1;
-        for (const vk of pk.values) {
-          let count = 0;
-          for (let i = 0; i < k; i++) {
-            if (row[i] !== null && uncovered.has(pairKey(i, row[i], k, vk))) count++;
-          }
-          if (count > bestCount) {
-            bestCount = count;
-            bestVal = vk;
-          }
-        }
-        row[k] = bestVal;
-        for (let i = 0; i < k; i++) {
-          if (row[i] !== null) uncovered.delete(pairKey(i, row[i], k, bestVal));
-        }
-      }
-      let guard = 0;
-      while (guard++ < 1e3) {
-        let target = null;
-        for (const key of uncovered) {
-          const parts2 = key.split("\0");
-          if (parseInt(parts2[0]) === k || parseInt(parts2[2]) === k) {
-            target = key;
-            break;
-          }
-        }
-        if (!target) break;
-        const row = new Array(valid.length).fill(null);
-        const parts = target.split("\0");
-        row[parseInt(parts[0])] = parts[1];
-        row[parseInt(parts[2])] = parts[3];
-        for (let m = 0; m <= k; m++) {
-          if (row[m] !== null) continue;
-          let bestVal = valid[m].values[0];
-          let bestCount = -1;
-          for (const vm of valid[m].values) {
-            let count = 0;
-            for (let n = 0; n <= k; n++) {
-              if (n !== m && row[n] !== null && uncovered.has(pairKey(m, vm, n, row[n]))) count++;
-            }
-            if (count > bestCount) {
-              bestCount = count;
-              bestVal = vm;
-            }
-          }
-          row[m] = bestVal;
-        }
-        tests.push(row);
-        for (let i = 0; i <= k; i++) {
-          for (let j = i + 1; j <= k; j++) {
-            if (row[i] !== null && row[j] !== null) uncovered.delete(pairKey(i, row[i], j, row[j]));
-          }
-        }
-      }
-    }
-    return tests.map((row) => {
-      const obj = {};
-      valid.forEach((p, i) => {
-        var _a;
-        obj[p.name] = (_a = row[i]) != null ? _a : p.values[0];
-      });
-      return obj;
-    });
-  }
-  function exhaustiveCount(params) {
-    const valid = params.filter((p) => p.name.trim() && p.values.length >= 1);
-    return valid.reduce((acc, p) => acc * p.values.length, 1);
-  }
-  function totalPairCount(params) {
-    const valid = params.filter((p) => p.name.trim() && p.values.length >= 1);
-    let total = 0;
-    for (let i = 0; i < valid.length - 1; i++) {
-      for (let j = i + 1; j < valid.length; j++) {
-        total += valid[i].values.length * valid[j].values.length;
-      }
-    }
-    return total;
-  }
-
   // src/components/PairwiseExplorer.js
-  var _uid = 0;
-  function uid() {
-    return `p${++_uid}`;
+  var _uid2 = 0;
+  function uid2() {
+    return `p${++_uid2}`;
   }
   function escapeHtml18(v = "") {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
@@ -22962,7 +23537,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     }
   ];
   function freshParams(preset) {
-    return preset.params.map((p) => ({ id: uid(), name: p.name, values: [...p.values] }));
+    return preset.params.map((p) => ({ id: uid2(), name: p.name, values: [...p.values] }));
   }
   function createPairwiseExplorer() {
     const root38 = document.createElement("div");
@@ -23135,7 +23710,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         });
       });
       root38.querySelector('[data-testid="pairwise-add-param"]').addEventListener("click", () => {
-        params.push({ id: uid(), name: "", values: ["A", "B"] });
+        params.push({ id: uid2(), name: "", values: ["A", "B"] });
         render37();
       });
       root38.querySelectorAll("[data-remove-param]").forEach((btn) => {
@@ -23220,9 +23795,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
   }
 
   // src/components/CauseEffectExplorer.js
-  var _uid2 = 0;
-  function uid2() {
-    return `ce${++_uid2}`;
+  var _uid3 = 0;
+  function uid3() {
+    return `ce${++_uid3}`;
   }
   function escapeHtml19(v = "") {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
@@ -23232,14 +23807,14 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     root38.className = "ceg-explorer";
     root38.dataset.testid = "ceg-explorer";
     let causes = [
-      { id: uid2(), name: "C1", label: "User logged in" },
-      { id: uid2(), name: "C2", label: "Cart not empty" },
-      { id: uid2(), name: "C3", label: "Payment valid" }
+      { id: uid3(), name: "C1", label: "User logged in" },
+      { id: uid3(), name: "C2", label: "Cart not empty" },
+      { id: uid3(), name: "C3", label: "Payment valid" }
     ];
     let effects = [
-      { id: uid2(), name: "E1", label: "Show checkout", formula: "C1 AND C2" },
-      { id: uid2(), name: "E2", label: "Process order", formula: "C1 AND C2 AND C3" },
-      { id: uid2(), name: "E3", label: "Show error", formula: "C1 AND C2 AND NOT C3" }
+      { id: uid3(), name: "E1", label: "Show checkout", formula: "C1 AND C2" },
+      { id: uid3(), name: "E2", label: "Process order", formula: "C1 AND C2 AND C3" },
+      { id: uid3(), name: "E3", label: "Show error", formula: "C1 AND C2 AND NOT C3" }
     ];
     const cegLabReflect = { active: false, a1: "", a2: "" };
     const cegQuiz = { active: false, phase: "question", answer: "" };
@@ -23495,7 +24070,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     function bindEvents37() {
       root38.querySelector('[data-testid="ceg-cause-add"]').addEventListener("click", () => {
         const n = causes.length + 1;
-        causes.push({ id: uid2(), name: `C${n}`, label: "" });
+        causes.push({ id: uid3(), name: `C${n}`, label: "" });
         render37();
       });
       root38.querySelectorAll("[data-remove-cause]").forEach((btn) => {
@@ -23515,7 +24090,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       });
       root38.querySelector('[data-testid="ceg-effect-add"]').addEventListener("click", () => {
         const n = effects.length + 1;
-        effects.push({ id: uid2(), name: `E${n}`, label: "", formula: "" });
+        effects.push({ id: uid3(), name: `E${n}`, label: "", formula: "" });
         render37();
       });
       root38.querySelectorAll("[data-remove-effect]").forEach((btn) => {
@@ -23934,9 +24509,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
   }
 
   // src/components/CodeCoverageExplorer.js
-  var _uid3 = 0;
-  function uid3() {
-    return `cc${++_uid3}`;
+  var _uid4 = 0;
+  function uid4() {
+    return `cc${++_uid4}`;
   }
   function escapeHtml20(v = "") {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
@@ -23952,7 +24527,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     root38.className = "codecov-explorer";
     root38.dataset.testid = "codecov-explorer";
     let activePresetId = COVERAGE_PRESETS[0].id;
-    let testCases = DEFAULT_TESTS_BY_PRESET[activePresetId].map((args) => ({ id: uid3(), args: [...args], active: true }));
+    let testCases = DEFAULT_TESTS_BY_PRESET[activePresetId].map((args) => ({ id: uid4(), args: [...args], active: true }));
     let activeCriterion = "stmt";
     const codecovQuiz = { active: false, phase: "question", answer: "" };
     const codecovLabReflect = { active: false, a1: "", a2: "" };
@@ -24196,7 +24771,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       root38.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePresetId = btn.dataset.preset;
-          testCases = (DEFAULT_TESTS_BY_PRESET[activePresetId] || [["0"]]).map((args) => ({ id: uid3(), args: [...args], active: true }));
+          testCases = (DEFAULT_TESTS_BY_PRESET[activePresetId] || [["0"]]).map((args) => ({ id: uid4(), args: [...args], active: true }));
           codecovQuiz.active = false;
           codecovLabReflect.active = false;
           render37();
@@ -24219,7 +24794,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       });
       root38.querySelector('[data-testid="codecov-add-test"]').addEventListener("click", () => {
         const p = preset();
-        testCases.push({ id: uid3(), args: p.params.map(() => "0"), active: true });
+        testCases.push({ id: uid4(), args: p.params.map(() => "0"), active: true });
         render37();
       });
       const qStart = root38.querySelector('[data-testid="codecov-quiz-start"]');
@@ -25365,9 +25940,9 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
   }
 
   // src/components/RiskBasedTestingExplorer.js
-  var _uid4 = 0;
-  function uid4() {
-    return `rb${++_uid4}`;
+  var _uid5 = 0;
+  function uid5() {
+    return `rb${++_uid5}`;
   }
   function escapeHtml23(v = "") {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
@@ -25385,14 +25960,14 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     root38.className = "rbt-explorer";
     root38.dataset.testid = "rbt-explorer";
     let modules = [
-      { id: uid4(), name: "Login", likelihood: 5, impact: 5 },
-      { id: uid4(), name: "Payment", likelihood: 4, impact: 5 },
-      { id: uid4(), name: "API Gateway", likelihood: 3, impact: 5 },
-      { id: uid4(), name: "Admin Panel", likelihood: 2, impact: 4 },
-      { id: uid4(), name: "Search", likelihood: 3, impact: 3 },
-      { id: uid4(), name: "Notifications", likelihood: 4, impact: 2 },
-      { id: uid4(), name: "File Upload", likelihood: 3, impact: 3 },
-      { id: uid4(), name: "Profile", likelihood: 2, impact: 2 }
+      { id: uid5(), name: "Login", likelihood: 5, impact: 5 },
+      { id: uid5(), name: "Payment", likelihood: 4, impact: 5 },
+      { id: uid5(), name: "API Gateway", likelihood: 3, impact: 5 },
+      { id: uid5(), name: "Admin Panel", likelihood: 2, impact: 4 },
+      { id: uid5(), name: "Search", likelihood: 3, impact: 3 },
+      { id: uid5(), name: "Notifications", likelihood: 4, impact: 2 },
+      { id: uid5(), name: "File Upload", likelihood: 3, impact: 3 },
+      { id: uid5(), name: "Profile", likelihood: 2, impact: 2 }
     ];
     let filter = "all";
     const rbtQuiz = { active: false, phase: "question", answer: "" };
@@ -25599,7 +26174,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     }
     function bindEvents37() {
       root38.querySelector('[data-testid="rbt-add-module"]').addEventListener("click", () => {
-        modules.push({ id: uid4(), name: `Module${modules.length + 1}`, likelihood: 3, impact: 3 });
+        modules.push({ id: uid5(), name: `Module${modules.length + 1}`, likelihood: 3, impact: 3 });
         render37();
       });
       root38.querySelectorAll("[data-remove-module]").forEach((btn) => {
@@ -26490,7 +27065,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     const recall = tp + fn > 0 ? (tp / (tp + fn)).toFixed(2) : "\u2014";
     return { tp, fp, fn, tn, precision, recall };
   }
-  function esc3(s) {
+  function esc4(s) {
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function renderPaperCite() {
@@ -26563,7 +27138,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
       <div class="emx-code-diff" data-testid="emx-code-diff">
         <div class="emx-diff-label">${t("emx.diff.label")}</div>
         <pre class="emx-diff-pre">${diff.map((line) => {
-      const text = esc3(line.text);
+      const text = esc4(line.text);
       if (line.type === "add") return `<span class="emx-diff-add">+ ${text}</span>`;
       if (line.type === "del") return `<span class="emx-diff-del">- ${text}</span>`;
       return `<span class="emx-diff-ctx">  ${text}</span>`;
@@ -31346,7 +31921,7 @@ VERDICT: pass  (conformance holds)`,
       ]
     }
   ];
-  var CRITERIA2 = [
+  var CRITERIA3 = [
     { id: "state", colorClass: "fsmgen-crit--amber" },
     { id: "transition", colorClass: "fsmgen-crit--blue" },
     { id: "pair", colorClass: "fsmgen-crit--purple" },
@@ -31613,11 +32188,11 @@ VERDICT: pass  (conformance holds)`,
   function currentFsm() {
     return FSMS.find((f) => f.id === state16.fsmId) || FSMS[0];
   }
-  function esc4(v = "") {
+  function esc5(v = "") {
     return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function eventSeq(fsm, test) {
-    return test.map((tr) => esc4(tr.event)).join(" \xB7 ") || "\u2205";
+    return test.map((tr) => esc5(tr.event)).join(" \xB7 ") || "\u2205";
   }
   function renderFsmPicker() {
     return `
@@ -31637,7 +32212,7 @@ VERDICT: pass  (conformance holds)`,
       <div class="fsmgen-states">
         ${fsm.states.map((s) => `
           <span class="fsmgen-state-chip ${s.initial ? "fsmgen-state-chip--init" : ""}">
-            ${esc4(s.name)}${s.initial ? " \u25B6" : ""}
+            ${esc5(s.name)}${s.initial ? " \u25B6" : ""}
           </span>`).join("")}
       </div>
       <table class="fsmgen-trans-table">
@@ -31648,9 +32223,9 @@ VERDICT: pass  (conformance holds)`,
           ${fsm.transitions.map((tr, i) => `
             <tr>
               <td>${i + 1}</td>
-              <td>${esc4(stateName(fsm, tr.from))}</td>
-              <td class="fsmgen-evt">${esc4(tr.event)}</td>
-              <td>${esc4(stateName(fsm, tr.to))}</td>
+              <td>${esc5(stateName(fsm, tr.from))}</td>
+              <td class="fsmgen-evt">${esc5(tr.event)}</td>
+              <td>${esc5(stateName(fsm, tr.to))}</td>
             </tr>`).join("")}
         </tbody>
       </table>
@@ -31659,7 +32234,7 @@ VERDICT: pass  (conformance holds)`,
   function renderCriteriaTabs() {
     return `
     <div class="fsmgen-crit-row" data-testid="fsmgen-crit-row">
-      ${CRITERIA2.map((c) => `
+      ${CRITERIA3.map((c) => `
         <button type="button"
           class="fsmgen-crit-card ${c.colorClass} ${state16.criterion === c.id ? "fsmgen-crit--active" : ""}"
           data-criterion="${c.id}" data-testid="fsmgen-crit-${c.id}">
@@ -31687,7 +32262,7 @@ VERDICT: pass  (conformance holds)`,
   }
   function renderCompare() {
     const fsm = currentFsm();
-    const rows = CRITERIA2.map((c) => {
+    const rows = CRITERIA3.map((c) => {
       const result = GENERATORS[c.id](fsm);
       const totalLen = result.tests.reduce((sum, test) => sum + test.length, 0);
       return { id: c.id, obligations: result.obligations, tests: result.tests.length, len: totalLen };
@@ -31783,7 +32358,7 @@ VERDICT: pass  (conformance holds)`,
     <div class="fsmgen-lab" data-testid="fsmgen-lab">
       <p class="fsmgen-lab-prompt">${t("fsmgen.lab.prompt")}</p>
       <textarea class="fsmgen-lab-textarea" data-testid="fsmgen-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${esc4(state16.lab.text)}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${esc5(state16.lab.text)}</textarea>
     </div>`;
   }
   function render16() {
@@ -32320,14 +32895,14 @@ VERDICT: pass  (conformance holds)`,
     lab: { active: false, text: "" }
   };
   var root18;
-  function esc5(v = "") {
+  function esc6(v = "") {
     return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function stateName2(id) {
     return (EFSM.states.find((s) => s.id === id) || {}).name || id;
   }
   function eventSeq2(path) {
-    return path.trans.map((id) => esc5(transById(id).event)).join(" \xB7 ");
+    return path.trans.map((id) => esc6(transById(id).event)).join(" \xB7 ");
   }
   function renderModel() {
     return `
@@ -32341,10 +32916,10 @@ VERDICT: pass  (conformance holds)`,
         <tbody>
           ${EFSM.transitions.map((tr) => `
             <tr>
-              <td>${esc5(stateName2(tr.from))}</td>
-              <td class="efsm-evt">${esc5(tr.event)}</td>
-              <td class="efsm-guard">${tr.guard === "true" ? "\u2014" : esc5(tr.guard)}</td>
-              <td>${esc5(stateName2(tr.to))}</td>
+              <td>${esc6(stateName2(tr.from))}</td>
+              <td class="efsm-evt">${esc6(tr.event)}</td>
+              <td class="efsm-guard">${tr.guard === "true" ? "\u2014" : esc6(tr.guard)}</td>
+              <td>${esc6(stateName2(tr.to))}</td>
             </tr>`).join("")}
         </tbody>
       </table>
@@ -32378,12 +32953,12 @@ VERDICT: pass  (conformance holds)`,
         ${path.trans.map((id) => {
       const tr = transById(id);
       return `<li>
-            <span class="efsm-gl-evt">${esc5(tr.event)}</span>
-            <span class="efsm-gl-guard">${tr.guard === "true" ? t("efsm.guard.none") : esc5(tr.guard)}</span>
+            <span class="efsm-gl-evt">${esc6(tr.event)}</span>
+            <span class="efsm-gl-guard">${tr.guard === "true" ? t("efsm.guard.none") : esc6(tr.guard)}</span>
           </li>`;
     }).join("")}
       </ol>
-      <p class="efsm-conjunction">${t("efsm.conjunction")}: <code>${esc5(res.conjunction)}</code></p>
+      <p class="efsm-conjunction">${t("efsm.conjunction")}: <code>${esc6(res.conjunction)}</code></p>
       ${res.feasible ? `<p class="efsm-verdict efsm-verdict--feasible" data-testid="efsm-verdict">
              \u2705 ${t("efsm.feasible")} \u2014 ${t("efsm.solved", { val: (_a = res.witness.amount) != null ? _a : "\u2014" })}
            </p>` : `<p class="efsm-verdict efsm-verdict--infeasible" data-testid="efsm-verdict">
@@ -32466,7 +33041,7 @@ VERDICT: pass  (conformance holds)`,
     <div class="efsm-lab" data-testid="efsm-lab">
       <p class="efsm-lab-prompt">${t("efsm.lab.prompt")}</p>
       <textarea class="efsm-lab-textarea" data-testid="efsm-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${esc5(state18.lab.text)}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${esc6(state18.lab.text)}</textarea>
     </div>`;
   }
   function render18() {
@@ -32651,14 +33226,14 @@ VERDICT: pass  (conformance holds)`,
     lab: { active: false, text: "" }
   };
   var root19;
-  function esc6(v = "") {
+  function esc7(v = "") {
     return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function pct(x) {
     return (x * 100).toFixed(1) + "%";
   }
   function walkEvents(walk) {
-    return walk.map((tr) => esc6(tr.event)).join(" \xB7 ") || "\u2205";
+    return walk.map((tr) => esc7(tr.event)).join(" \xB7 ") || "\u2205";
   }
   function renderModel2() {
     return `
@@ -32671,10 +33246,10 @@ VERDICT: pass  (conformance holds)`,
         <tbody>
           ${USAGE_MODEL.transitions.map((tr) => `
             <tr class="${tr.p < RARE_THRESHOLD ? "usage-row--rare" : ""}">
-              <td>${esc6(stateName3(USAGE_MODEL, tr.from))}</td>
-              <td class="usage-evt">${esc6(tr.event)}</td>
+              <td>${esc7(stateName3(USAGE_MODEL, tr.from))}</td>
+              <td class="usage-evt">${esc7(tr.event)}</td>
               <td class="usage-prob">${tr.p.toFixed(2)}${tr.p < RARE_THRESHOLD ? " \u26A0" : ""}</td>
-              <td>${esc6(stateName3(USAGE_MODEL, tr.to))}</td>
+              <td>${esc7(stateName3(USAGE_MODEL, tr.to))}</td>
             </tr>`).join("")}
         </tbody>
       </table>
@@ -32713,7 +33288,7 @@ VERDICT: pass  (conformance holds)`,
       return `
             <div class="usage-cov-row">
               <span class="usage-cov-label ${tr.id === BUGGY_TRANSITION ? "usage-cov-label--bug" : ""}">
-                ${esc6(tr.event)}${tr.id === BUGGY_TRANSITION ? " \u{1F41E}" : ""}
+                ${esc7(tr.event)}${tr.id === BUGGY_TRANSITION ? " \u{1F41E}" : ""}
               </span>
               <span class="usage-cov-bar-wrap">
                 <span class="usage-cov-bar" style="width:${c / maxCount * 100}%"></span>
@@ -32736,9 +33311,9 @@ VERDICT: pass  (conformance holds)`,
       <p class="usage-rare-desc">${t("usage.rare.desc")}</p>
       <ul class="usage-rare-list">
         ${rare.map((tr) => `
-          <li><code>${esc6(tr.event)}</code> (p = ${tr.p.toFixed(2)}) \u2014 ${t("usage.rare.item", {
-      from: esc6(stateName3(USAGE_MODEL, tr.from)),
-      to: esc6(stateName3(USAGE_MODEL, tr.to))
+          <li><code>${esc7(tr.event)}</code> (p = ${tr.p.toFixed(2)}) \u2014 ${t("usage.rare.item", {
+      from: esc7(stateName3(USAGE_MODEL, tr.from)),
+      to: esc7(stateName3(USAGE_MODEL, tr.to))
     })}</li>`).join("")}
       </ul>
     </div>`;
@@ -32799,7 +33374,7 @@ VERDICT: pass  (conformance holds)`,
     <div class="usage-lab" data-testid="usage-lab">
       <p class="usage-lab-prompt">${t("usage.lab.prompt")}</p>
       <textarea class="usage-lab-textarea" data-testid="usage-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${esc6(state19.lab.text)}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${esc7(state19.lab.text)}</textarea>
     </div>`;
   }
   function render19() {
@@ -32956,7 +33531,7 @@ VERDICT: pass  (conformance holds)`,
     lab: { active: false, text: "" }
   };
   var root20;
-  function esc7(v = "") {
+  function esc8(v = "") {
     return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function mutantDesc(m) {
@@ -32981,7 +33556,7 @@ VERDICT: pass  (conformance holds)`,
         </tbody>
       </table>
       <p class="modelmut-suite">${t("modelmut.suite.label")}:
-        ${SUITE.map((s) => `<code>${esc7(s)}</code>`).join(" ")}</p>
+        ${SUITE.map((s) => `<code>${esc8(s)}</code>`).join(" ")}</p>
     </div>`;
   }
   function renderMutants() {
@@ -33006,8 +33581,8 @@ VERDICT: pass  (conformance holds)`,
       <p class="modelmut-detail-op"><b>${mutant.id}</b> \u2014 ${mutantDesc(mutant)}</p>
       ${res.killed ? `<p class="modelmut-verdict modelmut-verdict--killed" data-testid="modelmut-verdict">
              \u{1F480} ${t("modelmut.killed.by", { test: res.killedBy })}<br>
-             <span class="modelmut-trace">${t("modelmut.trace.base")}: <code>${esc7(res.baseTrace)}</code>
-             \xB7 ${t("modelmut.trace.mut")}: <code>${esc7(res.mutTrace)}</code></span>
+             <span class="modelmut-trace">${t("modelmut.trace.base")}: <code>${esc8(res.baseTrace)}</code>
+             \xB7 ${t("modelmut.trace.mut")}: <code>${esc8(res.mutTrace)}</code></span>
            </p>` : `<p class="modelmut-verdict modelmut-verdict--survived" data-testid="modelmut-verdict">
              \u{1F7E2} ${t("modelmut.survived.note")}
            </p>`}
@@ -33086,7 +33661,7 @@ VERDICT: pass  (conformance holds)`,
     <div class="modelmut-lab" data-testid="modelmut-lab">
       <p class="modelmut-lab-prompt">${t("modelmut.lab.prompt")}</p>
       <textarea class="modelmut-lab-textarea" data-testid="modelmut-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${esc7(state20.lab.text)}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${esc8(state20.lab.text)}</textarea>
     </div>`;
   }
   function render20() {
@@ -33402,7 +33977,7 @@ VERDICT: pass  (conformance holds)`,
     lab: { active: false, text: "" }
   };
   var root22;
-  function esc8(v = "") {
+  function esc9(v = "") {
     return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   var TESTED_ICON = { full: "\u{1F7E2}", meta: "\u{1F501}", none: "\u26AA" };
@@ -33528,7 +34103,7 @@ VERDICT: pass  (conformance holds)`,
     <div class="cadence-lab" data-testid="cadence-lab">
       <p class="cadence-lab-prompt">${t("cadence.lab.prompt")}</p>
       <textarea class="cadence-lab-textarea" data-testid="cadence-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${esc8(state22.lab.text)}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${esc9(state22.lab.text)}</textarea>
     </div>`;
   }
   function render22() {
@@ -34083,7 +34658,7 @@ ${items.join("\n")}
     quiz: { active: false, phase: "idle", answer: "" }
   };
   var root23;
-  function esc9(value = "") {
+  function esc10(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function currentExample() {
@@ -34186,7 +34761,7 @@ ${items.join("\n")}
         class="pse-chip${state23.selectedVar === v ? " pse-chip--active" : ""}"
         data-testid="slicing-var-${v}"
         data-var-name="${v}">
-        ${esc9(v)}
+        ${esc10(v)}
       </button>`).join("")}
   </div>`;
   }
@@ -34222,8 +34797,8 @@ ${items.join("\n")}
       body = `<ul class="pse-slice-items">
       ${inSlice.map((s) => `
         <li class="pse-slice-item" data-testid="slicing-slice-item-${s.id}">
-          <code class="pse-slice-id">${esc9(s.id)}</code>
-          <span class="pse-slice-text">${esc9(s.text)}</span>
+          <code class="pse-slice-id">${esc10(s.id)}</code>
+          <span class="pse-slice-text">${esc10(s.text)}</span>
         </li>`).join("")}
     </ul>`;
     }
@@ -34546,7 +35121,7 @@ ${items.join("\n")}
     quiz: { active: false, phase: "idle", answer: "" }
   };
   var root24;
-  function esc10(value = "") {
+  function esc11(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function scenariosForMode(mode) {
@@ -34616,7 +35191,7 @@ ${items.join("\n")}
         class="sde-chip${activeVar === o.variable ? " sde-chip--active sde-chip--wrong" : ""}"
         data-testid="dicing-output-${o.variable}"
         data-output-var="${o.variable}">
-        ${esc10(o.variable)}
+        ${esc11(o.variable)}
       </button>`).join("")}
   </div>`;
   }
@@ -34626,7 +35201,7 @@ ${items.join("\n")}
     <span class="sde-toggle-label">${t("dicing.tracesLabel")}</span>
     ${scenario.traces.map((tr) => `
       <div class="sde-trace-row" data-testid="dicing-trace-${tr.id}">
-        <span class="sde-trace-label">${esc10(tr.inputLabel || tr.id)}</span>
+        <span class="sde-trace-label">${esc11(tr.inputLabel || tr.id)}</span>
         <span class="sde-outcome-badge sde-outcome-badge--${tr.outcome}">
           ${t(tr.outcome === "fail" ? "dicing.fail" : "dicing.pass")}
           ${tr.outcome === "fail" ? ` (${t("dicing.expected")}: ${tr.expected}, ${t("dicing.actual")}: ${tr.actual})` : ""}
@@ -34662,8 +35237,8 @@ ${items.join("\n")}
       body = `<ul class="sde-slice-items">
       ${inDice.map((s) => `
         <li class="sde-slice-item">
-          <code class="sde-slice-id">${esc10(s.id)}</code>
-          <span class="sde-slice-text">${esc10(s.text)}</span>
+          <code class="sde-slice-id">${esc11(s.id)}</code>
+          <span class="sde-slice-text">${esc11(s.text)}</span>
         </li>`).join("")}
     </ul>`;
     }
@@ -34677,7 +35252,7 @@ ${items.join("\n")}
     const bugInDice = dice.dice.has(scenario.bug.stmtId);
     let content = `<span>${t("dicing.diceCount")}: <b>${count}</b></span>`;
     if (bugInDice) {
-      content += ` <span class="sde-bug-caught">${t("dicing.bugCaught")} (${esc10(scenario.bug.stmtId)}: ${esc10(scenario.bug.note)})</span>`;
+      content += ` <span class="sde-bug-caught">${t("dicing.bugCaught")} (${esc11(scenario.bug.stmtId)}: ${esc11(scenario.bug.note)})</span>`;
     }
     if (scenario.mode === "dynamic") {
       content += ` <span class="sde-dicing-note">${t("dicing.dynamicNote")}</span>`;
@@ -34821,7 +35396,7 @@ ${items.join("\n")}
     quiz: { active: false, phase: "idle", answer: "" }
   };
   var root25;
-  function esc11(value = "") {
+  function esc12(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function currentExample2() {
@@ -34871,7 +35446,7 @@ ${items.join("\n")}
     <span class="sce-toggle-label">${t("coverage.traceLabel")}</span>
     ${example5.traces.map((tr) => {
       const active = state25.activeTraceIds.has(tr.id);
-      const label = esc11(tr.inputLabel || tr.label || tr.id);
+      const label = esc12(tr.inputLabel || tr.label || tr.id);
       return `<button type="button"
         class="sce-chip${active ? " sce-chip--active" : ""}"
         data-testid="coverage-trace-${tr.id}"
@@ -34914,8 +35489,8 @@ ${items.join("\n")}
       gapBody = `<ul class="sce-gap-items">
       ${uncoveredStmts.map((s) => `
         <li class="sce-gap-item">
-          <code class="sce-gap-id">${esc11(s.id)}</code>
-          <span class="sce-gap-text">${esc11(s.text)}</span>
+          <code class="sce-gap-id">${esc12(s.id)}</code>
+          <span class="sce-gap-text">${esc12(s.text)}</span>
         </li>`).join("")}
     </ul>`;
     }
@@ -34923,7 +35498,7 @@ ${items.join("\n")}
     if (outsideSlice.length) {
       outsideBody = `<div class="sce-outside">
       <span class="sce-outside-label">${t("coverage.outsideSlice")}</span>
-      ${outsideSlice.map((s) => `<code class="sce-outside-id">${esc11(s.id)}</code>`).join(" ")}
+      ${outsideSlice.map((s) => `<code class="sce-outside-id">${esc12(s.id)}</code>`).join(" ")}
     </div>`;
     }
     return `<div class="sce-gaps" data-testid="coverage-gaps">
@@ -35082,7 +35657,7 @@ ${items.join("\n")}
     quiz: { active: false, phase: "idle", answer: "" }
   };
   var root26;
-  function esc12(value = "") {
+  function esc13(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function currentExample3() {
@@ -35131,9 +35706,9 @@ ${items.join("\n")}
     if (!criterion) return "";
     return `<div class="sre-criterion">
     <span class="sre-criterion-label">${t("regression.criterionLabel")}</span>
-    <code class="sre-criterion-val">${esc12(criterion.stmtId)}</code>
+    <code class="sre-criterion-val">${esc13(criterion.stmtId)}</code>
     <span class="sre-criterion-sep">&rarr;</span>
-    <code class="sre-criterion-val">${esc12(criterion.variable)}</code>
+    <code class="sre-criterion-val">${esc13(criterion.variable)}</code>
   </div>`;
   }
   function renderGraphPanel4(example5, sliceSet, impact) {
@@ -35162,14 +35737,14 @@ ${items.join("\n")}
     } else {
       body = `<ul class="sre-test-list">
       ${example5.traces.map((tr) => {
-        const label = esc12(tr.inputLabel || tr.label || tr.id);
+        const label = esc13(tr.inputLabel || tr.label || tr.id);
         let badge = "";
         if (affected.has(tr.id)) {
           badge = `<span class="sre-badge sre-badge--rerun">${t("regression.mustRerun")}</span>`;
         } else if (safe.has(tr.id)) {
           badge = `<span class="sre-badge sre-badge--safe">${t("regression.safe")}</span>`;
         }
-        return `<li class="sre-test-row" data-testid="regression-test-${esc12(tr.id)}">
+        return `<li class="sre-test-row" data-testid="regression-test-${esc13(tr.id)}">
           <span class="sre-test-label">${label}</span>
           ${badge}
         </li>`;
@@ -35527,7 +36102,7 @@ ${items.join("\n")}
     quiz: { active: false, phase: "idle", answer: "" }
   };
   var root27;
-  function esc13(value = "") {
+  function esc14(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function currentKata() {
@@ -35538,8 +36113,8 @@ ${items.join("\n")}
     ${TDD_KATAS.map((kata) => `
       <button type="button"
         class="tdc-chip${state27.kataId === kata.id ? " tdc-chip--active" : ""}"
-        data-testid="tdd-kata-${esc13(kata.id)}"
-        data-tdc-kata-id="${esc13(kata.id)}">
+        data-testid="tdd-kata-${esc14(kata.id)}"
+        data-tdc-kata-id="${esc14(kata.id)}">
         ${t(kata.titleKey)}
       </button>`).join("")}
   </div>`;
@@ -35550,15 +36125,15 @@ ${items.join("\n")}
     ${phases.map((ph) => `
       <div class="tdc-phase-node tdc-phase-node--${ph}${step2.phase === ph ? " tdc-phase-node--active" : ""}"
         data-testid="tdd-phase-${ph}">
-        ${esc13(ph)}
+        ${esc14(ph)}
       </div>`).join("")}
   </div>`;
   }
   function renderTestList2(step2) {
     const rows = step2.testList.map((test) => `
-    <div class="tdc-test-row tdc-test-row--${esc13(test.status)}">
-      <span class="tdc-test-name">${esc13(test.name)}</span>
-      <span class="tdc-test-status tdc-test-status--${esc13(test.status)}">${esc13(test.status)}</span>
+    <div class="tdc-test-row tdc-test-row--${esc14(test.status)}">
+      <span class="tdc-test-name">${esc14(test.name)}</span>
+      <span class="tdc-test-status tdc-test-status--${esc14(test.status)}">${esc14(test.status)}</span>
     </div>`).join("");
     return `<div class="tdc-test-list" data-testid="tdd-test-list">
     <h3 class="tdc-col-title">${t("tdd.testList")}</h3>
@@ -35568,7 +36143,7 @@ ${items.join("\n")}
   function renderCodePanel(step2) {
     return `<div class="tdc-code-panel" data-testid="tdd-code">
     <h3 class="tdc-col-title">${t("tdd.code")}</h3>
-    <pre class="tdc-code-pre">${esc13(step2.code) || '<em class="tdc-code-empty">' + esc13(t("tdd.noCode")) + "</em>"}</pre>
+    <pre class="tdc-code-pre">${esc14(step2.code) || '<em class="tdc-code-empty">' + esc14(t("tdd.noCode")) + "</em>"}</pre>
   </div>`;
   }
   function renderSuiteBar(step2) {
@@ -35596,11 +36171,11 @@ ${items.join("\n")}
           class="tdc-predict-btn tdc-predict-btn--${ph}${state27.prediction === ph ? " tdc-predict-btn--selected" : ""}"
           data-testid="tdd-predict-${ph}"
           data-tdc-predict="${ph}">
-          ${esc13(ph)}
+          ${esc14(ph)}
         </button>`).join("")}
     </div>` : "";
     const predictResult = state27.predictResult ? `
-    <div class="tdc-predict-result tdc-predict-result--${esc13(state27.predictResult)}"
+    <div class="tdc-predict-result tdc-predict-result--${esc14(state27.predictResult)}"
       data-testid="tdd-predict-result">
       ${state27.predictResult === "correct" ? t("tdd.correct") : t("tdd.incorrect")}
     </div>` : "";
@@ -36071,7 +36646,7 @@ ${items.join("\n")}
     quiz: { active: false, phase: "idle", answer: "" }
   };
   var root29;
-  function esc14(value = "") {
+  function esc15(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function example() {
@@ -36096,7 +36671,7 @@ ${items.join("\n")}
     ${PHASES3.map((ph) => `
       <div class="eog-phase-node eog-phase-node--${ph}${cur === ph ? " eog-phase-node--active" : ""}"
         data-testid="exploit-phase-${ph}">
-        ${esc14(t(`exploit.phase.${ph}`))}
+        ${esc15(t(`exploit.phase.${ph}`))}
       </div>`).join("")}
   </div>`;
   }
@@ -36105,10 +36680,10 @@ ${items.join("\n")}
     const lines = ex.code.split("\n").map((line, i) => {
       const n = i + 1;
       const cls = n === ex.buggyLine ? "eog-code-line eog-code-line--bug" : "eog-code-line";
-      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc14(line)}</span>`;
+      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc15(line)}</span>`;
     }).join("\n");
     return `<div class="eog-code-panel" data-testid="exploit-code">
-    <h3 class="eog-col-title">${esc14(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc14(t(ex.cweKey))}</span></h3>
+    <h3 class="eog-col-title">${esc15(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc15(t(ex.cweKey))}</span></h3>
     <pre class="eog-code-pre">${lines}</pre>
   </div>`;
   }
@@ -36116,30 +36691,30 @@ ${items.join("\n")}
     const ex = example();
     if (!phaseShown("payload")) {
       return `<div class="eog-stack-panel" data-testid="exploit-stack">
-      <h3 class="eog-col-title">${esc14(t("exploit.stackTitle"))}</h3>
+      <h3 class="eog-col-title">${esc15(t("exploit.stackTitle"))}</h3>
       ${ex.stack.map((slot) => `
-        <div class="eog-stack-slot" data-stack-slot="${esc14(slot.id)}">
-          <span class="eog-stack-slot__bytes">${esc14(String(slot.bytes))}B</span>
-          <span class="eog-stack-slot__label">${esc14(slot.label)}</span>
+        <div class="eog-stack-slot" data-stack-slot="${esc15(slot.id)}">
+          <span class="eog-stack-slot__bytes">${esc15(String(slot.bytes))}B</span>
+          <span class="eog-stack-slot__label">${esc15(slot.label)}</span>
         </div>`).join("")}
     </div>`;
     }
     const regions = ex.payload.regions;
     const slotsByKind = { padding: "buf", savedBp: "savedBp", retAddr: "retAddr" };
     return `<div class="eog-stack-panel eog-stack-panel--colored" data-testid="exploit-stack">
-    <h3 class="eog-col-title">${esc14(t("exploit.payloadTitle"))}</h3>
+    <h3 class="eog-col-title">${esc15(t("exploit.payloadTitle"))}</h3>
     ${ex.stack.map((slot) => {
       const region = regions.find((r) => slotsByKind[r.kind] === slot.id);
-      const kindClass = region ? ` eog-stack-slot--${esc14(region.kind)}` : "";
-      const annotation = region ? `<span class="eog-stack-slot__payload">${esc14(region.label)}</span>` : "";
-      return `<div class="eog-stack-slot${kindClass}" data-stack-slot="${esc14(slot.id)}">
-        <span class="eog-stack-slot__bytes">${esc14(String(slot.bytes))}B</span>
-        <span class="eog-stack-slot__label">${esc14(slot.label)}</span>
+      const kindClass = region ? ` eog-stack-slot--${esc15(region.kind)}` : "";
+      const annotation = region ? `<span class="eog-stack-slot__payload">${esc15(region.label)}</span>` : "";
+      return `<div class="eog-stack-slot${kindClass}" data-stack-slot="${esc15(slot.id)}">
+        <span class="eog-stack-slot__bytes">${esc15(String(slot.bytes))}B</span>
+        <span class="eog-stack-slot__label">${esc15(slot.label)}</span>
         ${annotation}
       </div>`;
     }).join("")}
     <div class="eog-shellcode" data-testid="exploit-shellcode">
-      ${esc14(regions.find((r) => r.kind === "shellcode").label)}
+      ${esc15(regions.find((r) => r.kind === "shellcode").label)}
     </div>
   </div>`;
   }
@@ -36147,25 +36722,25 @@ ${items.join("\n")}
     if (!phaseShown("constraint")) return "";
     const ex = example();
     return `<div class="eog-constraint" data-testid="exploit-constraint">
-    <h3 class="eog-col-title">${esc14(t("exploit.constraintTitle"))}</h3>
-    <p class="eog-constraint__math"><code>${esc14(ex.constraint.math)}</code></p>
-    <p class="eog-constraint__text">${esc14(t(ex.constraint.textKey))}</p>
+    <h3 class="eog-col-title">${esc15(t("exploit.constraintTitle"))}</h3>
+    <p class="eog-constraint__math"><code>${esc15(ex.constraint.math)}</code></p>
+    <p class="eog-constraint__text">${esc15(t(ex.constraint.textKey))}</p>
   </div>`;
   }
   function renderDefensePanel() {
     if (!phaseShown("defense")) return "";
     const ex = example();
     return `<div class="eog-defense" data-testid="exploit-defense">
-    <h3 class="eog-col-title">${esc14(t("exploit.defenseTitle"))}</h3>
+    <h3 class="eog-col-title">${esc15(t("exploit.defenseTitle"))}</h3>
     ${ex.defenses.map((d) => `
       <label class="eog-defense-row${d.id === ex.primaryDefenseId ? " eog-defense-row--primary" : ""}">
-        <input type="checkbox" data-testid="exploit-mit-${esc14(d.id)}"
-          data-eog-defense-id="${esc14(d.id)}"
+        <input type="checkbox" data-testid="exploit-mit-${esc15(d.id)}"
+          data-eog-defense-id="${esc15(d.id)}"
           ${state29.defenses[d.id] ? "checked" : ""}>
-        <span class="eog-defense-label">${esc14(t(d.labelKey))}</span>
+        <span class="eog-defense-label">${esc15(t(d.labelKey))}</span>
       </label>`).join("")}
     <div class="eog-payload-status" data-testid="exploit-payload-status">
-      ${esc14(t(payloadStatusKey()))}
+      ${esc15(t(payloadStatusKey()))}
     </div>
   </div>`;
   }
@@ -36174,29 +36749,29 @@ ${items.join("\n")}
     const showButtons = state29.predict && state29.phaseIndex === PREDICT_PHASE_INDEX;
     const buttons = showButtons ? `
     <div class="eog-predict-btns" data-testid="exploit-predict-buttons">
-      <span class="eog-predict-label">${esc14(t("exploit.predictPrompt"))}</span>
+      <span class="eog-predict-label">${esc15(t("exploit.predictPrompt"))}</span>
       ${ex.defenses.map((d) => `
         <button type="button"
           class="eog-predict-btn${state29.prediction === d.id ? " eog-predict-btn--selected" : ""}"
-          data-testid="exploit-predict-${esc14(d.id)}"
-          data-eog-predict="${esc14(d.id)}">
-          ${esc14(t(d.labelKey))}
+          data-testid="exploit-predict-${esc15(d.id)}"
+          data-eog-predict="${esc15(d.id)}">
+          ${esc15(t(d.labelKey))}
         </button>`).join("")}
     </div>` : "";
     const result = state29.predictResult ? `
-    <div class="eog-predict-result eog-predict-result--${esc14(state29.predictResult)}"
+    <div class="eog-predict-result eog-predict-result--${esc15(state29.predictResult)}"
       data-testid="exploit-predict-result">
-      ${state29.predictResult === "correct" ? esc14(t("exploit.predictCorrect")) : esc14(t("exploit.predictIncorrect"))}
+      ${state29.predictResult === "correct" ? esc15(t("exploit.predictCorrect")) : esc15(t("exploit.predictIncorrect"))}
     </div>` : "";
     const isLast = state29.phaseIndex >= PHASES3.length - 1;
     return `<div class="eog-step-controls">
     <span class="eog-step-counter">${state29.phaseIndex + 1} / ${PHASES3.length}</span>
-    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc14(t("exploit.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc15(t("exploit.reset"))}</button>
     <button type="button" class="eog-btn eog-btn--next" data-testid="exploit-next-phase"
-      ${isLast ? "disabled" : ""}>${esc14(t("exploit.nextPhase"))}</button>
+      ${isLast ? "disabled" : ""}>${esc15(t("exploit.nextPhase"))}</button>
     <label class="eog-predict-toggle-label">
       <input type="checkbox" data-testid="exploit-predict-toggle" ${state29.predict ? "checked" : ""}>
-      ${esc14(t("exploit.predictMode"))}
+      ${esc15(t("exploit.predictMode"))}
     </label>
     ${buttons}
     ${result}
@@ -36205,30 +36780,30 @@ ${items.join("\n")}
   function renderQuiz29() {
     const ex = example();
     if (!state29.quiz.active) {
-      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY}-quiz-start">${esc14(t("quiz.start"))}</button>`;
+      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY}-quiz-start">${esc15(t("quiz.start"))}</button>`;
     }
     if (state29.quiz.phase === "done") {
       const correct = state29.quiz.answer === ex.quiz.answer;
       return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="exploit-${FAMILY}-quiz-result">
-      <p>${correct ? esc14(t("quiz.correct")) : esc14(t("quiz.wrong"))}</p>
-      <button type="button" data-testid="exploit-${FAMILY}-quiz-close">${esc14(t("quiz.close"))}</button>
+      <p>${correct ? esc15(t("quiz.correct")) : esc15(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="exploit-${FAMILY}-quiz-close">${esc15(t("quiz.close"))}</button>
     </div>`;
     }
     return `<div class="eog-quiz" data-testid="exploit-${FAMILY}-quiz">
-    <p class="eog-quiz-prompt">${esc14(t(ex.quiz.promptKey))}</p>
+    <p class="eog-quiz-prompt">${esc15(t(ex.quiz.promptKey))}</p>
     ${ex.quiz.optionKeys.map((k) => `
       <label class="eog-quiz-option">
-        <input type="radio" name="eog-quiz" value="${esc14(k)}" ${state29.quiz.answer === k ? "checked" : ""}>
-        ${esc14(t(`exploit.${FAMILY}.quiz.${k}`))}
+        <input type="radio" name="eog-quiz" value="${esc15(k)}" ${state29.quiz.answer === k ? "checked" : ""}>
+        ${esc15(t(`exploit.${FAMILY}.quiz.${k}`))}
       </label>`).join("")}
     <button type="button" data-testid="exploit-${FAMILY}-quiz-submit"
-      ${!state29.quiz.answer ? "disabled" : ""}>${esc14(t("quiz.submit"))}</button>
+      ${!state29.quiz.answer ? "disabled" : ""}>${esc15(t("quiz.submit"))}</button>
   </div>`;
   }
   function render29() {
     root29.innerHTML = `
     <div class="eog-wrap">
-      <h2 class="eog-title">${esc14(t("section.exploit.title"))}</h2>
+      <h2 class="eog-title">${esc15(t("section.exploit.title"))}</h2>
       ${renderPhaseRing3()}
       <div class="eog-panels-row">
         ${renderCodePanel2()}
@@ -36238,7 +36813,7 @@ ${items.join("\n")}
       ${renderDefensePanel()}
       ${renderPredictControls2()}
       <section class="eog-self-test">
-        <h3>${esc14(t("quiz.title"))}</h3>
+        <h3>${esc15(t("quiz.title"))}</h3>
         ${renderQuiz29()}
       </section>
     </div>`;
@@ -36327,7 +36902,7 @@ ${items.join("\n")}
     quiz: { active: false, phase: "idle", answer: "" }
   };
   var root30;
-  function esc15(value = "") {
+  function esc16(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function example2() {
@@ -36352,7 +36927,7 @@ ${items.join("\n")}
     ${PHASES4.map((ph) => `
       <div class="eog-phase-node eog-phase-node--${ph}${cur === ph ? " eog-phase-node--active" : ""}"
         data-testid="exploit-phase-${ph}">
-        ${esc15(t(`exploit.phase.${ph}`))}
+        ${esc16(t(`exploit.phase.${ph}`))}
       </div>`).join("")}
   </div>`;
   }
@@ -36361,10 +36936,10 @@ ${items.join("\n")}
     const lines = ex.code.split("\n").map((line, i) => {
       const n = i + 1;
       const cls = n === ex.buggyLine ? "eog-code-line eog-code-line--bug" : "eog-code-line";
-      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc15(line)}</span>`;
+      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc16(line)}</span>`;
     }).join("\n");
     return `<div class="eog-code-panel" data-testid="exploit-code">
-    <h3 class="eog-col-title">${esc15(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc15(t(ex.cweKey))}</span></h3>
+    <h3 class="eog-col-title">${esc16(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc16(t(ex.cweKey))}</span></h3>
     <pre class="eog-code-pre">${lines}</pre>
   </div>`;
   }
@@ -36372,8 +36947,8 @@ ${items.join("\n")}
     const ex = example2();
     if (!phaseShown2("payload")) {
       return `<div class="eog-sql-panel" data-testid="exploit-query">
-      <h3 class="eog-col-title">${esc15(t("exploit.queryTitle"))}</h3>
-      <pre class="eog-sql-pre">${esc15(ex.query)}</pre>
+      <h3 class="eog-col-title">${esc16(t("exploit.queryTitle"))}</h3>
+      <pre class="eog-sql-pre">${esc16(ex.query)}</pre>
     </div>`;
     }
     const payload = ex.payload.string;
@@ -36381,15 +36956,15 @@ ${items.join("\n")}
     const before = ex.query.split("<input>")[0];
     const after = ex.query.split("<input>")[1] || "";
     const payloadHtml = regions.map(
-      (r) => `<span class="eog-sql-region eog-sql-region--${esc15(r.kind)}"
-       data-testid="exploit-payload-region-${esc15(r.kind)}"
-       title="${esc15(r.label)}">${esc15(payload.slice(r.range[0], r.range[1]))}</span>`
+      (r) => `<span class="eog-sql-region eog-sql-region--${esc16(r.kind)}"
+       data-testid="exploit-payload-region-${esc16(r.kind)}"
+       title="${esc16(r.label)}">${esc16(payload.slice(r.range[0], r.range[1]))}</span>`
     ).join("");
     return `<div class="eog-sql-panel eog-sql-panel--substituted" data-testid="exploit-query">
-    <h3 class="eog-col-title">${esc15(t("exploit.payloadTitle"))}</h3>
-    <pre class="eog-sql-pre">${esc15(before)}<span class="eog-sql-payload">${payloadHtml}</span>${esc15(after)}</pre>
+    <h3 class="eog-col-title">${esc16(t("exploit.payloadTitle"))}</h3>
+    <pre class="eog-sql-pre">${esc16(before)}<span class="eog-sql-payload">${payloadHtml}</span>${esc16(after)}</pre>
     <ul class="eog-sql-legend">
-      ${regions.map((r) => `<li class="eog-sql-legend-item eog-sql-legend-item--${esc15(r.kind)}">${esc15(r.label)}</li>`).join("")}
+      ${regions.map((r) => `<li class="eog-sql-legend-item eog-sql-legend-item--${esc16(r.kind)}">${esc16(r.label)}</li>`).join("")}
     </ul>
   </div>`;
   }
@@ -36397,25 +36972,25 @@ ${items.join("\n")}
     if (!phaseShown2("constraint")) return "";
     const ex = example2();
     return `<div class="eog-constraint" data-testid="exploit-constraint">
-    <h3 class="eog-col-title">${esc15(t("exploit.constraintTitle"))}</h3>
-    <p class="eog-constraint__math"><code>${esc15(ex.constraint.math)}</code></p>
-    <p class="eog-constraint__text">${esc15(t(ex.constraint.textKey))}</p>
+    <h3 class="eog-col-title">${esc16(t("exploit.constraintTitle"))}</h3>
+    <p class="eog-constraint__math"><code>${esc16(ex.constraint.math)}</code></p>
+    <p class="eog-constraint__text">${esc16(t(ex.constraint.textKey))}</p>
   </div>`;
   }
   function renderDefensePanel2() {
     if (!phaseShown2("defense")) return "";
     const ex = example2();
     return `<div class="eog-defense" data-testid="exploit-defense">
-    <h3 class="eog-col-title">${esc15(t("exploit.defenseTitle"))}</h3>
+    <h3 class="eog-col-title">${esc16(t("exploit.defenseTitle"))}</h3>
     ${ex.defenses.map((d) => `
       <label class="eog-defense-row${d.id === ex.primaryDefenseId ? " eog-defense-row--primary" : ""}">
-        <input type="checkbox" data-testid="exploit-mit-${esc15(d.id)}"
-          data-eog-defense-id="${esc15(d.id)}"
+        <input type="checkbox" data-testid="exploit-mit-${esc16(d.id)}"
+          data-eog-defense-id="${esc16(d.id)}"
           ${state30.defenses[d.id] ? "checked" : ""}>
-        <span class="eog-defense-label">${esc15(t(d.labelKey))}</span>
+        <span class="eog-defense-label">${esc16(t(d.labelKey))}</span>
       </label>`).join("")}
     <div class="eog-payload-status" data-testid="exploit-payload-status">
-      ${esc15(t(payloadStatusKey2()))}
+      ${esc16(t(payloadStatusKey2()))}
     </div>
   </div>`;
   }
@@ -36424,29 +36999,29 @@ ${items.join("\n")}
     const showButtons = state30.predict && state30.phaseIndex === PREDICT_PHASE_INDEX2;
     const buttons = showButtons ? `
     <div class="eog-predict-btns" data-testid="exploit-predict-buttons">
-      <span class="eog-predict-label">${esc15(t("exploit.predictPrompt"))}</span>
+      <span class="eog-predict-label">${esc16(t("exploit.predictPrompt"))}</span>
       ${ex.defenses.map((d) => `
         <button type="button"
           class="eog-predict-btn${state30.prediction === d.id ? " eog-predict-btn--selected" : ""}"
-          data-testid="exploit-predict-${esc15(d.id)}"
-          data-eog-predict="${esc15(d.id)}">
-          ${esc15(t(d.labelKey))}
+          data-testid="exploit-predict-${esc16(d.id)}"
+          data-eog-predict="${esc16(d.id)}">
+          ${esc16(t(d.labelKey))}
         </button>`).join("")}
     </div>` : "";
     const result = state30.predictResult ? `
-    <div class="eog-predict-result eog-predict-result--${esc15(state30.predictResult)}"
+    <div class="eog-predict-result eog-predict-result--${esc16(state30.predictResult)}"
       data-testid="exploit-predict-result">
-      ${state30.predictResult === "correct" ? esc15(t("exploit.predictCorrect")) : esc15(t("exploit.predictIncorrect"))}
+      ${state30.predictResult === "correct" ? esc16(t("exploit.predictCorrect")) : esc16(t("exploit.predictIncorrect"))}
     </div>` : "";
     const isLast = state30.phaseIndex >= PHASES4.length - 1;
     return `<div class="eog-step-controls">
     <span class="eog-step-counter">${state30.phaseIndex + 1} / ${PHASES4.length}</span>
-    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc15(t("exploit.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc16(t("exploit.reset"))}</button>
     <button type="button" class="eog-btn eog-btn--next" data-testid="exploit-next-phase"
-      ${isLast ? "disabled" : ""}>${esc15(t("exploit.nextPhase"))}</button>
+      ${isLast ? "disabled" : ""}>${esc16(t("exploit.nextPhase"))}</button>
     <label class="eog-predict-toggle-label">
       <input type="checkbox" data-testid="exploit-predict-toggle" ${state30.predict ? "checked" : ""}>
-      ${esc15(t("exploit.predictMode"))}
+      ${esc16(t("exploit.predictMode"))}
     </label>
     ${buttons}
     ${result}
@@ -36455,30 +37030,30 @@ ${items.join("\n")}
   function renderQuiz30() {
     const ex = example2();
     if (!state30.quiz.active) {
-      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY2}-quiz-start">${esc15(t("quiz.start"))}</button>`;
+      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY2}-quiz-start">${esc16(t("quiz.start"))}</button>`;
     }
     if (state30.quiz.phase === "done") {
       const correct = state30.quiz.answer === ex.quiz.answer;
       return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="exploit-${FAMILY2}-quiz-result">
-      <p>${correct ? esc15(t("quiz.correct")) : esc15(t("quiz.wrong"))}</p>
-      <button type="button" data-testid="exploit-${FAMILY2}-quiz-close">${esc15(t("quiz.close"))}</button>
+      <p>${correct ? esc16(t("quiz.correct")) : esc16(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="exploit-${FAMILY2}-quiz-close">${esc16(t("quiz.close"))}</button>
     </div>`;
     }
     return `<div class="eog-quiz" data-testid="exploit-${FAMILY2}-quiz">
-    <p class="eog-quiz-prompt">${esc15(t(ex.quiz.promptKey))}</p>
+    <p class="eog-quiz-prompt">${esc16(t(ex.quiz.promptKey))}</p>
     ${ex.quiz.optionKeys.map((k) => `
       <label class="eog-quiz-option">
-        <input type="radio" name="eog-quiz" value="${esc15(k)}" ${state30.quiz.answer === k ? "checked" : ""}>
-        ${esc15(t(`exploit.${FAMILY2}.quiz.${k}`))}
+        <input type="radio" name="eog-quiz" value="${esc16(k)}" ${state30.quiz.answer === k ? "checked" : ""}>
+        ${esc16(t(`exploit.${FAMILY2}.quiz.${k}`))}
       </label>`).join("")}
     <button type="button" data-testid="exploit-${FAMILY2}-quiz-submit"
-      ${!state30.quiz.answer ? "disabled" : ""}>${esc15(t("quiz.submit"))}</button>
+      ${!state30.quiz.answer ? "disabled" : ""}>${esc16(t("quiz.submit"))}</button>
   </div>`;
   }
   function render30() {
     root30.innerHTML = `
     <div class="eog-wrap">
-      <h2 class="eog-title">${esc15(t("section.exploit.title"))}</h2>
+      <h2 class="eog-title">${esc16(t("section.exploit.title"))}</h2>
       ${renderPhaseRing4()}
       <div class="eog-panels-row">
         ${renderCodePanel3()}
@@ -36488,7 +37063,7 @@ ${items.join("\n")}
       ${renderDefensePanel2()}
       ${renderPredictControls3()}
       <section class="eog-self-test">
-        <h3>${esc15(t("quiz.title"))}</h3>
+        <h3>${esc16(t("quiz.title"))}</h3>
         ${renderQuiz30()}
       </section>
     </div>`;
@@ -36577,7 +37152,7 @@ ${items.join("\n")}
     quiz: { active: false, phase: "idle", answer: "" }
   };
   var root31;
-  function esc16(value = "") {
+  function esc17(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function example3() {
@@ -36602,7 +37177,7 @@ ${items.join("\n")}
     ${PHASES5.map((ph) => `
       <div class="eog-phase-node eog-phase-node--${ph}${cur === ph ? " eog-phase-node--active" : ""}"
         data-testid="exploit-phase-${ph}">
-        ${esc16(t(`exploit.phase.${ph}`))}
+        ${esc17(t(`exploit.phase.${ph}`))}
       </div>`).join("")}
   </div>`;
   }
@@ -36611,10 +37186,10 @@ ${items.join("\n")}
     const lines = ex.code.split("\n").map((line, i) => {
       const n = i + 1;
       const cls = n === ex.buggyLine ? "eog-code-line eog-code-line--bug" : "eog-code-line";
-      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc16(line)}</span>`;
+      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc17(line)}</span>`;
     }).join("\n");
     return `<div class="eog-code-panel" data-testid="exploit-code">
-    <h3 class="eog-col-title">${esc16(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc16(t(ex.cweKey))}</span></h3>
+    <h3 class="eog-col-title">${esc17(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc17(t(ex.cweKey))}</span></h3>
     <pre class="eog-code-pre">${lines}</pre>
   </div>`;
   }
@@ -36622,8 +37197,8 @@ ${items.join("\n")}
     const ex = example3();
     if (!phaseShown3("payload")) {
       return `<div class="eog-shell-panel" data-testid="exploit-command">
-      <h3 class="eog-col-title">${esc16(t("exploit.commandTitle"))}</h3>
-      <pre class="eog-shell-pre">${esc16(ex.command)}</pre>
+      <h3 class="eog-col-title">${esc17(t("exploit.commandTitle"))}</h3>
+      <pre class="eog-shell-pre">${esc17(ex.command)}</pre>
     </div>`;
     }
     const payload = ex.payload.string;
@@ -36631,15 +37206,15 @@ ${items.join("\n")}
     const before = ex.command.split("<input>")[0];
     const after = ex.command.split("<input>")[1] || "";
     const payloadHtml = regions.map(
-      (r) => `<span class="eog-shell-region eog-shell-region--${esc16(r.kind)}"
-       data-testid="exploit-payload-region-${esc16(r.kind)}"
-       title="${esc16(r.label)}">${esc16(payload.slice(r.range[0], r.range[1]))}</span>`
+      (r) => `<span class="eog-shell-region eog-shell-region--${esc17(r.kind)}"
+       data-testid="exploit-payload-region-${esc17(r.kind)}"
+       title="${esc17(r.label)}">${esc17(payload.slice(r.range[0], r.range[1]))}</span>`
     ).join("");
     return `<div class="eog-shell-panel eog-shell-panel--substituted" data-testid="exploit-command">
-    <h3 class="eog-col-title">${esc16(t("exploit.payloadTitle"))}</h3>
-    <pre class="eog-shell-pre">${esc16(before)}<span class="eog-shell-payload">${payloadHtml}</span>${esc16(after)}</pre>
+    <h3 class="eog-col-title">${esc17(t("exploit.payloadTitle"))}</h3>
+    <pre class="eog-shell-pre">${esc17(before)}<span class="eog-shell-payload">${payloadHtml}</span>${esc17(after)}</pre>
     <ul class="eog-shell-legend">
-      ${regions.map((r) => `<li class="eog-shell-legend-item eog-shell-legend-item--${esc16(r.kind)}">${esc16(r.label)}</li>`).join("")}
+      ${regions.map((r) => `<li class="eog-shell-legend-item eog-shell-legend-item--${esc17(r.kind)}">${esc17(r.label)}</li>`).join("")}
     </ul>
   </div>`;
   }
@@ -36647,25 +37222,25 @@ ${items.join("\n")}
     if (!phaseShown3("constraint")) return "";
     const ex = example3();
     return `<div class="eog-constraint" data-testid="exploit-constraint">
-    <h3 class="eog-col-title">${esc16(t("exploit.constraintTitle"))}</h3>
-    <p class="eog-constraint__math"><code>${esc16(ex.constraint.math)}</code></p>
-    <p class="eog-constraint__text">${esc16(t(ex.constraint.textKey))}</p>
+    <h3 class="eog-col-title">${esc17(t("exploit.constraintTitle"))}</h3>
+    <p class="eog-constraint__math"><code>${esc17(ex.constraint.math)}</code></p>
+    <p class="eog-constraint__text">${esc17(t(ex.constraint.textKey))}</p>
   </div>`;
   }
   function renderDefensePanel3() {
     if (!phaseShown3("defense")) return "";
     const ex = example3();
     return `<div class="eog-defense" data-testid="exploit-defense">
-    <h3 class="eog-col-title">${esc16(t("exploit.defenseTitle"))}</h3>
+    <h3 class="eog-col-title">${esc17(t("exploit.defenseTitle"))}</h3>
     ${ex.defenses.map((d) => `
       <label class="eog-defense-row${d.id === ex.primaryDefenseId ? " eog-defense-row--primary" : ""}">
-        <input type="checkbox" data-testid="exploit-mit-${esc16(d.id)}"
-          data-eog-defense-id="${esc16(d.id)}"
+        <input type="checkbox" data-testid="exploit-mit-${esc17(d.id)}"
+          data-eog-defense-id="${esc17(d.id)}"
           ${state31.defenses[d.id] ? "checked" : ""}>
-        <span class="eog-defense-label">${esc16(t(d.labelKey))}</span>
+        <span class="eog-defense-label">${esc17(t(d.labelKey))}</span>
       </label>`).join("")}
     <div class="eog-payload-status" data-testid="exploit-payload-status">
-      ${esc16(t(payloadStatusKey3()))}
+      ${esc17(t(payloadStatusKey3()))}
     </div>
   </div>`;
   }
@@ -36674,29 +37249,29 @@ ${items.join("\n")}
     const showButtons = state31.predict && state31.phaseIndex === PREDICT_PHASE_INDEX3;
     const buttons = showButtons ? `
     <div class="eog-predict-btns" data-testid="exploit-predict-buttons">
-      <span class="eog-predict-label">${esc16(t("exploit.predictPrompt"))}</span>
+      <span class="eog-predict-label">${esc17(t("exploit.predictPrompt"))}</span>
       ${ex.defenses.map((d) => `
         <button type="button"
           class="eog-predict-btn${state31.prediction === d.id ? " eog-predict-btn--selected" : ""}"
-          data-testid="exploit-predict-${esc16(d.id)}"
-          data-eog-predict="${esc16(d.id)}">
-          ${esc16(t(d.labelKey))}
+          data-testid="exploit-predict-${esc17(d.id)}"
+          data-eog-predict="${esc17(d.id)}">
+          ${esc17(t(d.labelKey))}
         </button>`).join("")}
     </div>` : "";
     const result = state31.predictResult ? `
-    <div class="eog-predict-result eog-predict-result--${esc16(state31.predictResult)}"
+    <div class="eog-predict-result eog-predict-result--${esc17(state31.predictResult)}"
       data-testid="exploit-predict-result">
-      ${state31.predictResult === "correct" ? esc16(t("exploit.predictCorrect")) : esc16(t("exploit.predictIncorrect"))}
+      ${state31.predictResult === "correct" ? esc17(t("exploit.predictCorrect")) : esc17(t("exploit.predictIncorrect"))}
     </div>` : "";
     const isLast = state31.phaseIndex >= PHASES5.length - 1;
     return `<div class="eog-step-controls">
     <span class="eog-step-counter">${state31.phaseIndex + 1} / ${PHASES5.length}</span>
-    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc16(t("exploit.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc17(t("exploit.reset"))}</button>
     <button type="button" class="eog-btn eog-btn--next" data-testid="exploit-next-phase"
-      ${isLast ? "disabled" : ""}>${esc16(t("exploit.nextPhase"))}</button>
+      ${isLast ? "disabled" : ""}>${esc17(t("exploit.nextPhase"))}</button>
     <label class="eog-predict-toggle-label">
       <input type="checkbox" data-testid="exploit-predict-toggle" ${state31.predict ? "checked" : ""}>
-      ${esc16(t("exploit.predictMode"))}
+      ${esc17(t("exploit.predictMode"))}
     </label>
     ${buttons}
     ${result}
@@ -36705,30 +37280,30 @@ ${items.join("\n")}
   function renderQuiz31() {
     const ex = example3();
     if (!state31.quiz.active) {
-      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY3}-quiz-start">${esc16(t("quiz.start"))}</button>`;
+      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY3}-quiz-start">${esc17(t("quiz.start"))}</button>`;
     }
     if (state31.quiz.phase === "done") {
       const correct = state31.quiz.answer === ex.quiz.answer;
       return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="exploit-${FAMILY3}-quiz-result">
-      <p>${correct ? esc16(t("quiz.correct")) : esc16(t("quiz.wrong"))}</p>
-      <button type="button" data-testid="exploit-${FAMILY3}-quiz-close">${esc16(t("quiz.close"))}</button>
+      <p>${correct ? esc17(t("quiz.correct")) : esc17(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="exploit-${FAMILY3}-quiz-close">${esc17(t("quiz.close"))}</button>
     </div>`;
     }
     return `<div class="eog-quiz" data-testid="exploit-${FAMILY3}-quiz">
-    <p class="eog-quiz-prompt">${esc16(t(ex.quiz.promptKey))}</p>
+    <p class="eog-quiz-prompt">${esc17(t(ex.quiz.promptKey))}</p>
     ${ex.quiz.optionKeys.map((k) => `
       <label class="eog-quiz-option">
-        <input type="radio" name="eog-quiz" value="${esc16(k)}" ${state31.quiz.answer === k ? "checked" : ""}>
-        ${esc16(t(`exploit.${FAMILY3}.quiz.${k}`))}
+        <input type="radio" name="eog-quiz" value="${esc17(k)}" ${state31.quiz.answer === k ? "checked" : ""}>
+        ${esc17(t(`exploit.${FAMILY3}.quiz.${k}`))}
       </label>`).join("")}
     <button type="button" data-testid="exploit-${FAMILY3}-quiz-submit"
-      ${!state31.quiz.answer ? "disabled" : ""}>${esc16(t("quiz.submit"))}</button>
+      ${!state31.quiz.answer ? "disabled" : ""}>${esc17(t("quiz.submit"))}</button>
   </div>`;
   }
   function render31() {
     root31.innerHTML = `
     <div class="eog-wrap">
-      <h2 class="eog-title">${esc16(t("section.exploit.title"))}</h2>
+      <h2 class="eog-title">${esc17(t("section.exploit.title"))}</h2>
       ${renderPhaseRing5()}
       <div class="eog-panels-row">
         ${renderCodePanel4()}
@@ -36738,7 +37313,7 @@ ${items.join("\n")}
       ${renderDefensePanel3()}
       ${renderPredictControls4()}
       <section class="eog-self-test">
-        <h3>${esc16(t("quiz.title"))}</h3>
+        <h3>${esc17(t("quiz.title"))}</h3>
         ${renderQuiz31()}
       </section>
     </div>`;
@@ -36939,7 +37514,7 @@ ${items.join("\n")}
     // exampleId -> concolicExecute result, cached
   };
   var root32;
-  function esc17(value = "") {
+  function esc18(value = "") {
     return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
   function example4() {
@@ -36978,9 +37553,9 @@ ${items.join("\n")}
     ${EXAMPLE_IDS.map((id) => `
       <button type="button"
         class="eog-chip${state32.exampleId === id ? " eog-chip--active" : ""}"
-        data-testid="exploit-path-example-${esc17(id)}"
-        data-eog-example="${esc17(id)}">
-        ${esc17(t(EXPLOIT_PATH_EXAMPLES[id].titleKey))}
+        data-testid="exploit-path-example-${esc18(id)}"
+        data-eog-example="${esc18(id)}">
+        ${esc18(t(EXPLOIT_PATH_EXAMPLES[id].titleKey))}
       </button>`).join("")}
   </div>`;
   }
@@ -36990,7 +37565,7 @@ ${items.join("\n")}
     ${PHASES6.map((ph) => `
       <div class="eog-phase-node eog-phase-node--${ph}${cur === ph ? " eog-phase-node--active" : ""}"
         data-testid="exploit-phase-${ph}">
-        ${esc17(t(`exploit.phase.${ph}`))}
+        ${esc18(t(`exploit.phase.${ph}`))}
       </div>`).join("")}
   </div>`;
   }
@@ -36999,10 +37574,10 @@ ${items.join("\n")}
     const lines = ex.source.split("\n").map((line, i) => {
       const n = i + 1;
       const cls = n === ex.buggyLine ? "eog-code-line eog-code-line--bug" : "eog-code-line";
-      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc17(line)}</span>`;
+      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc18(line)}</span>`;
     }).join("\n");
     return `<div class="eog-code-panel" data-testid="exploit-code">
-    <h3 class="eog-col-title">${esc17(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc17(t(ex.cweKey))}</span></h3>
+    <h3 class="eog-col-title">${esc18(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc18(t(ex.cweKey))}</span></h3>
     <pre class="eog-code-pre">${lines}</pre>
   </div>`;
   }
@@ -37016,24 +37591,24 @@ ${items.join("\n")}
       const inputStr = Object.entries(it.inputs).map(([k, v]) => `${k}=${v}`).join(", ");
       return `<tr class="eog-path-row${isVuln ? " eog-path-row--vuln" : ""}" data-testid="exploit-path-iteration-${idx}">
       <td>${idx + 1}</td>
-      <td><code>${esc17(inputStr)}</code></td>
-      <td><code>${esc17(String(it.returnValue))}</code></td>
-      <td>${isVuln ? esc17(t("exploit.path.exploitPathLabel")) : ""}</td>
+      <td><code>${esc18(inputStr)}</code></td>
+      <td><code>${esc18(String(it.returnValue))}</code></td>
+      <td>${isVuln ? esc18(t("exploit.path.exploitPathLabel")) : ""}</td>
     </tr>`;
     }).join("");
     const constraint = vuln ? vuln.pathCondition.join("  \u2227  ") : "";
     return `<div class="eog-path-panel" data-testid="exploit-path">
-    <h3 class="eog-col-title">${esc17(t("exploit.path.iterationsTitle"))}</h3>
+    <h3 class="eog-col-title">${esc18(t("exploit.path.iterationsTitle"))}</h3>
     <table class="eog-path-table">
       <thead><tr>
-        <th>#</th><th>${esc17(t("exploit.path.colInput"))}</th>
-        <th>${esc17(t("exploit.path.colReturn"))}</th><th></th>
+        <th>#</th><th>${esc18(t("exploit.path.colInput"))}</th>
+        <th>${esc18(t("exploit.path.colReturn"))}</th><th></th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>
     <div class="eog-path-constraint" data-testid="exploit-path-constraint">
-      <span class="eog-path-constraint__label">${esc17(t("exploit.path.constraintLabel"))}</span>
-      <code>${esc17(constraint)}</code>
+      <span class="eog-path-constraint__label">${esc18(t("exploit.path.constraintLabel"))}</span>
+      <code>${esc18(constraint)}</code>
     </div>
   </div>`;
   }
@@ -37041,11 +37616,11 @@ ${items.join("\n")}
     if (!phaseShown4("payload")) return "";
     const ex = example4();
     return `<div class="eog-payload-panel" data-testid="exploit-path-payload">
-    <h3 class="eog-col-title">${esc17(t("exploit.payloadTitle"))}</h3>
-    <p class="eog-payload-note">${esc17(t(ex.payloadNoteKey))}</p>
+    <h3 class="eog-col-title">${esc18(t("exploit.payloadTitle"))}</h3>
+    <p class="eog-payload-note">${esc18(t(ex.payloadNoteKey))}</p>
     <div class="eog-exploit-input">
-      <span class="eog-exploit-input__label">${esc17(t("exploit.path.exploitInputLabel"))}</span>
-      <code>${esc17(ex.exploitInput)}</code>
+      <span class="eog-exploit-input__label">${esc18(t("exploit.path.exploitInputLabel"))}</span>
+      <code>${esc18(ex.exploitInput)}</code>
     </div>
   </div>`;
   }
@@ -37053,16 +37628,16 @@ ${items.join("\n")}
     if (!phaseShown4("defense")) return "";
     const ex = example4();
     return `<div class="eog-defense" data-testid="exploit-defense">
-    <h3 class="eog-col-title">${esc17(t("exploit.defenseTitle"))}</h3>
+    <h3 class="eog-col-title">${esc18(t("exploit.defenseTitle"))}</h3>
     ${ex.defenses.map((d) => `
       <label class="eog-defense-row${d.id === ex.primaryDefenseId ? " eog-defense-row--primary" : ""}">
-        <input type="checkbox" data-testid="exploit-mit-${esc17(d.id)}"
-          data-eog-defense-id="${esc17(d.id)}"
+        <input type="checkbox" data-testid="exploit-mit-${esc18(d.id)}"
+          data-eog-defense-id="${esc18(d.id)}"
           ${state32.defenses[d.id] ? "checked" : ""}>
-        <span class="eog-defense-label">${esc17(t(d.labelKey))}</span>
+        <span class="eog-defense-label">${esc18(t(d.labelKey))}</span>
       </label>`).join("")}
     <div class="eog-payload-status" data-testid="exploit-payload-status">
-      ${esc17(t(payloadStatusKey4()))}
+      ${esc18(t(payloadStatusKey4()))}
     </div>
   </div>`;
   }
@@ -37071,29 +37646,29 @@ ${items.join("\n")}
     const showButtons = state32.predict && state32.phaseIndex === PREDICT_PHASE_INDEX4;
     const buttons = showButtons ? `
     <div class="eog-predict-btns" data-testid="exploit-predict-buttons">
-      <span class="eog-predict-label">${esc17(t("exploit.predictPrompt"))}</span>
+      <span class="eog-predict-label">${esc18(t("exploit.predictPrompt"))}</span>
       ${ex.defenses.map((d) => `
         <button type="button"
           class="eog-predict-btn${state32.prediction === d.id ? " eog-predict-btn--selected" : ""}"
-          data-testid="exploit-predict-${esc17(d.id)}"
-          data-eog-predict="${esc17(d.id)}">
-          ${esc17(t(d.labelKey))}
+          data-testid="exploit-predict-${esc18(d.id)}"
+          data-eog-predict="${esc18(d.id)}">
+          ${esc18(t(d.labelKey))}
         </button>`).join("")}
     </div>` : "";
     const result = state32.predictResult ? `
-    <div class="eog-predict-result eog-predict-result--${esc17(state32.predictResult)}"
+    <div class="eog-predict-result eog-predict-result--${esc18(state32.predictResult)}"
       data-testid="exploit-predict-result">
-      ${state32.predictResult === "correct" ? esc17(t("exploit.predictCorrect")) : esc17(t("exploit.predictIncorrect"))}
+      ${state32.predictResult === "correct" ? esc18(t("exploit.predictCorrect")) : esc18(t("exploit.predictIncorrect"))}
     </div>` : "";
     const isLast = state32.phaseIndex >= PHASES6.length - 1;
     return `<div class="eog-step-controls">
     <span class="eog-step-counter">${state32.phaseIndex + 1} / ${PHASES6.length}</span>
-    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc17(t("exploit.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc18(t("exploit.reset"))}</button>
     <button type="button" class="eog-btn eog-btn--next" data-testid="exploit-next-phase"
-      ${isLast ? "disabled" : ""}>${esc17(t("exploit.nextPhase"))}</button>
+      ${isLast ? "disabled" : ""}>${esc18(t("exploit.nextPhase"))}</button>
     <label class="eog-predict-toggle-label">
       <input type="checkbox" data-testid="exploit-predict-toggle" ${state32.predict ? "checked" : ""}>
-      ${esc17(t("exploit.predictMode"))}
+      ${esc18(t("exploit.predictMode"))}
     </label>
     ${buttons}
     ${result}
@@ -37102,30 +37677,30 @@ ${items.join("\n")}
   function renderQuiz32() {
     const ex = example4();
     if (!state32.quiz.active) {
-      return `<button type="button" class="eog-quiz-start" data-testid="exploit-path-quiz-start">${esc17(t("quiz.start"))}</button>`;
+      return `<button type="button" class="eog-quiz-start" data-testid="exploit-path-quiz-start">${esc18(t("quiz.start"))}</button>`;
     }
     if (state32.quiz.phase === "done") {
       const correct = state32.quiz.answer === ex.quiz.answer;
       return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="exploit-path-quiz-result">
-      <p>${correct ? esc17(t("quiz.correct")) : esc17(t("quiz.wrong"))}</p>
-      <button type="button" data-testid="exploit-path-quiz-close">${esc17(t("quiz.close"))}</button>
+      <p>${correct ? esc18(t("quiz.correct")) : esc18(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="exploit-path-quiz-close">${esc18(t("quiz.close"))}</button>
     </div>`;
     }
     return `<div class="eog-quiz" data-testid="exploit-path-quiz">
-    <p class="eog-quiz-prompt">${esc17(t(ex.quiz.promptKey))}</p>
+    <p class="eog-quiz-prompt">${esc18(t(ex.quiz.promptKey))}</p>
     ${ex.quiz.optionKeys.map((k) => `
       <label class="eog-quiz-option">
-        <input type="radio" name="eog-quiz" value="${esc17(k)}" ${state32.quiz.answer === k ? "checked" : ""}>
-        ${esc17(t(`exploit.path.${state32.exampleId}.quiz.${k}`))}
+        <input type="radio" name="eog-quiz" value="${esc18(k)}" ${state32.quiz.answer === k ? "checked" : ""}>
+        ${esc18(t(`exploit.path.${state32.exampleId}.quiz.${k}`))}
       </label>`).join("")}
     <button type="button" data-testid="exploit-path-quiz-submit"
-      ${!state32.quiz.answer ? "disabled" : ""}>${esc17(t("quiz.submit"))}</button>
+      ${!state32.quiz.answer ? "disabled" : ""}>${esc18(t("quiz.submit"))}</button>
   </div>`;
   }
   function render32() {
     root32.innerHTML = `
     <div class="eog-wrap">
-      <h2 class="eog-title">${esc17(t("section.exploit.title"))}</h2>
+      <h2 class="eog-title">${esc18(t("section.exploit.title"))}</h2>
       ${renderExampleChips4()}
       ${renderPhaseRing6()}
       ${renderCodePanel5()}
@@ -37134,7 +37709,7 @@ ${items.join("\n")}
       ${renderDefensePanel4()}
       ${renderPredictControls5()}
       <section class="eog-self-test">
-        <h3>${esc17(t("quiz.title"))}</h3>
+        <h3>${esc18(t("quiz.title"))}</h3>
         ${renderQuiz32()}
       </section>
     </div>`;
@@ -37223,7 +37798,7 @@ ${items.join("\n")}
   }
 
   // src/components/DefinitionGatesExplorer.js
-  var CRITERIA3 = [
+  var CRITERIA4 = [
     { id: "dor-criteria", gate: "dor" },
     { id: "dor-data", gate: "dor" },
     { id: "dor-deps", gate: "dor" },
@@ -37254,13 +37829,13 @@ ${items.join("\n")}
   }
   var state33 = {
     // Start with two criteria off, so a leak is visible immediately.
-    enabled: new Set(CRITERIA3.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review")),
+    enabled: new Set(CRITERIA4.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review")),
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
   var root33;
   function renderGate(gate) {
-    const crits = CRITERIA3.filter((c) => c.gate === gate);
+    const crits = CRITERIA4.filter((c) => c.gate === gate);
     return `
     <div class="gate-panel gate-panel--${gate}" data-testid="gate-panel-${gate}">
       <h3>${t("gate." + gate + ".title")}</h3>
@@ -37424,7 +37999,7 @@ ${items.join("\n")}
     });
   }
   function createDefinitionGatesExplorer() {
-    state33.enabled = new Set(CRITERIA3.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review"));
+    state33.enabled = new Set(CRITERIA4.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review"));
     state33.quiz = { active: false, phase: "idle", answer: "" };
     state33.lab = { active: false, text: "" };
     root33 = document.createElement("div");
@@ -39362,6 +39937,13 @@ ${items.join("\n")}
       difficulty: "intro",
       source: [TEXTBOOK]
     },
+    InputSpacePartitioningExplorer: {
+      level: ["unit"],
+      technique: ["equivalence", "pairwise"],
+      series: ["blackbox"],
+      difficulty: "intermediate",
+      source: [TEXTBOOK]
+    },
     DecisionTableExplorer: {
       level: ["unit"],
       technique: ["decision-table"],
@@ -39698,6 +40280,7 @@ ${items.join("\n")}
     blackbox: [
       "BoundaryValueExplorer",
       "EquivalenceClassExplorer",
+      "InputSpacePartitioningExplorer",
       "DecisionTableExplorer",
       "StateTransitionExplorer",
       "PairwiseExplorer",
@@ -39955,7 +40538,7 @@ ${items.join("\n")}
   // src/utils/urlRouter.js
   var TAB_SECTIONS = {
     syntax: { tabs: ["mutation", "grammar", "spec"], default: "mutation" },
-    blackbox: { tabs: ["bva", "ec", "dt", "st", "mt", "et", "td", "pairwise", "ceg"], default: "bva" },
+    blackbox: { tabs: ["bva", "ec", "isp", "dt", "st", "mt", "et", "td", "pairwise", "ceg"], default: "bva" },
     advanced: { tabs: ["equivmutant", "mutationscore", "llmpipeline", "testquality", "faultdirected", "sailor"], default: "equivmutant" },
     flow: { tabs: ["flow", "defectCost", "vmodel"], default: "flow" },
     types: { tabs: ["pyramid", "adjuster"], default: "pyramid" },
@@ -39995,6 +40578,7 @@ ${items.join("\n")}
     RiskBasedTestingExplorer: { section: "rbt" },
     BoundaryValueExplorer: { section: "blackbox", tab: "bva" },
     EquivalenceClassExplorer: { section: "blackbox", tab: "ec" },
+    InputSpacePartitioningExplorer: { section: "blackbox", tab: "isp" },
     DecisionTableExplorer: { section: "blackbox", tab: "dt" },
     StateTransitionExplorer: { section: "blackbox", tab: "st" },
     PairwiseExplorer: { section: "blackbox", tab: "pairwise" },
@@ -40727,6 +41311,7 @@ ${items.join("\n")}
         testgen: createTestGenerationExplorer(),
         bva: createBoundaryValueExplorer(),
         ec: createEquivalenceClassExplorer(),
+        isp: createInputSpacePartitioningExplorer(),
         dt: createDecisionTableExplorer(),
         st: createStateTransitionExplorer(),
         mt: createMetamorphicTestingExplorer(),
@@ -41390,6 +41975,7 @@ ${items.join("\n")}
       const blackboxTabs = [
         { id: "bva", key: "blackboxTab.bva", component: components.bva },
         { id: "ec", key: "blackboxTab.ec", component: components.ec },
+        { id: "isp", key: "blackboxTab.isp", component: components.isp },
         { id: "dt", key: "blackboxTab.dt", component: components.dt },
         { id: "st", key: "blackboxTab.st", component: components.st },
         { id: "mt", key: "blackboxTab.mt", component: components.mt },

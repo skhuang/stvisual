@@ -96,6 +96,11 @@ describe('K4 — urlRouter parse', () => {
     expect(out.section).toBe('exploit');
     expect(out.tab).toBe('path');
   });
+  it('routes ?explorer=InputSpacePartitioningExplorer to section=blackbox tab=isp', () => {
+    const out = parseAppLocation('?explorer=InputSpacePartitioningExplorer', '');
+    expect(out.section).toBe('blackbox');
+    expect(out.tab).toBe('isp');
+  });
 
   it('?pack= is captured', () => {
     expect(parseAppLocation('?pack=ai-assisted')).toEqual({ pack: 'ai-assisted' });
