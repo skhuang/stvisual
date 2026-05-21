@@ -59,6 +59,7 @@ import { createTddRulesExplorer } from './components/TddRulesExplorer.js';
 import { createExploitOverflowExplorer } from './components/ExploitOverflowExplorer.js';
 import { createExploitSqliExplorer }     from './components/ExploitSqliExplorer.js';
 import { createExploitCmdiExplorer }     from './components/ExploitCmdiExplorer.js';
+import { createExploitPathExplorer }     from './components/ExploitPathExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
@@ -309,6 +310,7 @@ export function renderApp(container) {
       exploitoverflow: createExploitOverflowExplorer(),
       exploitsqli:     createExploitSqliExplorer(),
       exploitcmdi:     createExploitCmdiExplorer(),
+      exploitpath:     createExploitPathExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
       ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -723,7 +725,7 @@ export function renderApp(container) {
     exploitPanels.className = 'syntax-tab-panels';
     exploitSlot.appendChild(exploitPanels);
 
-    const exploitTabDefs = ['overflow', 'sqli', 'cmdi'];
+    const exploitTabDefs = ['overflow', 'sqli', 'cmdi', 'path'];
     for (const tabId of exploitTabDefs) {
       const panel = document.createElement('div');
       panel.className = 'syntax-tab-panel';
@@ -734,6 +736,8 @@ export function renderApp(container) {
         panel.appendChild(components.exploitsqli);
       } else if (tabId === 'cmdi') {
         panel.appendChild(components.exploitcmdi);
+      } else if (tabId === 'path') {
+        panel.appendChild(components.exploitpath);
       }
       exploitPanels.appendChild(panel);
     }
@@ -752,6 +756,7 @@ export function renderApp(container) {
       { id: 'overflow', key: 'exploit.tab.overflow' },
       { id: 'sqli',     key: 'exploit.tab.sqli' },
       { id: 'cmdi',     key: 'exploit.tab.cmdi' },
+      { id: 'path',     key: 'exploit.tab.path' },
     ];
 
     function renderExploitTabs() {

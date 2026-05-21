@@ -91,6 +91,11 @@ describe('K4 — urlRouter parse', () => {
     expect(out.section).toBe('exploit');
     expect(out.tab).toBe('cmdi');
   });
+  it('routes ?explorer=ExploitPathExplorer to section=exploit tab=path', () => {
+    const out = parseAppLocation('?explorer=ExploitPathExplorer', '');
+    expect(out.section).toBe('exploit');
+    expect(out.tab).toBe('path');
+  });
 
   it('?pack= is captured', () => {
     expect(parseAppLocation('?pack=ai-assisted')).toEqual({ pack: 'ai-assisted' });
