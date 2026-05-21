@@ -44,6 +44,7 @@ export const TAG_TECHNIQUES = [
   'slicing',
   'tdd',
   'security',
+  'search-based',
 ];
 
 export const TAG_SERIES = [
@@ -60,6 +61,7 @@ export const TAG_SERIES = [
   'slicing',
   'tdd',
   'exploit',
+  'sbst',
 ];
 
 export const TAG_DIFFICULTY = ['intro', 'intermediate', 'advanced', 'research'];
@@ -372,6 +374,20 @@ export const EXPLORER_TAGS = {
     level: ['unit'], technique: ['security'], series: ['exploit'],
     difficulty: 'advanced', source: [TEXTBOOK],
   },
+
+  // ── Search-Based Software Testing ────────────────────────────────
+  SbstBranchExplorer: {
+    level: ['unit'], technique: ['search-based'], series: ['sbst'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
+  SbstCompareExplorer: {
+    level: ['unit'], technique: ['search-based'], series: ['sbst'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
+  SbstSuiteExplorer: {
+    level: ['unit'], technique: ['search-based'], series: ['sbst'],
+    difficulty: 'advanced', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -445,6 +461,7 @@ export const SECTION_EXPLORERS = {
   slicing: ['ProgramSlicingExplorer', 'SliceDicingExplorer', 'SliceCoverageExplorer', 'SliceRegressionExplorer'],
   tdd: ['TddCycleExplorer', 'TddRulesExplorer'],
   exploit: ['ExploitOverflowExplorer', 'ExploitSqliExplorer', 'ExploitCmdiExplorer', 'ExploitPathExplorer'],
+  sbst: ['SbstBranchExplorer', 'SbstCompareExplorer', 'SbstSuiteExplorer'],
 };
 
 // ── Helpers ────────────────────────────────────────────────────────

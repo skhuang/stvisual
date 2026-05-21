@@ -1682,6 +1682,54 @@
       "exploit.cmdi.quiz.b": "Input allowlist",
       "exploit.cmdi.quiz.c": "execv() with arg vector \u2014 no shell is invoked, so metachars are literal",
       "exploit.cmdi.quiz.d": "WAF rules",
+      // ── Search-Based Software Testing (Q-series) ──
+      "section.sbst": "Search-Based Testing",
+      "section.sbst.title": "Search-Based Software Testing",
+      "sbst.tab.branch": "GA Branch Search",
+      "sbst.tab.compare": "Metaheuristic Comparison",
+      "sbst.tab.suite": "Whole-Suite Evolution",
+      "sbst.example.nestedGuard": "Nested guard",
+      "sbst.example.triangle": "Triangle classifier",
+      "sbst.example.multimodal": "Multimodal (mod 20)",
+      // SbstBranchExplorer
+      "sbst.branch.codeTitle": "Target function",
+      "sbst.branch.covered": "Branch covered",
+      "sbst.branch.cost": "Cost",
+      "sbst.branch.populationTitle": "Population",
+      "sbst.branch.sparklineTitle": "Fitness history",
+      "sbst.branch.randomTitle": "Random baseline",
+      "sbst.branch.bestCost": "Best cost",
+      "sbst.branch.reset": "Reset",
+      "sbst.branch.next": "Next generation",
+      "sbst.branch.run": "Run to end",
+      // SbstCompareExplorer
+      "sbst.compare.noResult": "\u2014",
+      "sbst.compare.covered": "Covered",
+      "sbst.compare.evaluations": "evals",
+      "sbst.compare.budgetExhausted": "Budget exhausted",
+      "sbst.compare.stuck": "Stuck",
+      "sbst.compare.bestCost": "Best cost",
+      "sbst.compare.chartTitle": "Convergence chart",
+      "sbst.compare.legendRandom": "Random",
+      "sbst.compare.legendHillClimb": "Hill climb",
+      "sbst.compare.legendGenetic": "Genetic",
+      "sbst.compare.takeaway": "Genetic algorithms consistently find coverage goals that hill climbing misses on multimodal landscapes.",
+      "sbst.compare.run": "Run all",
+      "sbst.compare.reset": "Reset",
+      // SbstSuiteExplorer
+      "sbst.suite.codeTitle": "Target function",
+      "sbst.suite.coverage": "Branch coverage",
+      "sbst.suite.test": "Test",
+      "sbst.suite.covered": "Covered",
+      "sbst.suite.goals": "goals",
+      "sbst.suite.suiteTitle": "Evolved suite",
+      "sbst.suite.fullCoverage": "Full branch coverage achieved.",
+      "sbst.suite.minimisedTitle": "Minimised suite",
+      "sbst.suite.minimisedDesc": "Redundant tests removed",
+      "sbst.suite.tests": "tests",
+      "sbst.suite.reset": "Reset",
+      "sbst.suite.next": "Next generation",
+      "sbst.suite.run": "Run to end",
       // ── Test-Driven Development (O-series) ──
       "section.tdd": "TDD",
       "section.tdd.title": "Test-Driven Development",
@@ -3198,6 +3246,7 @@
       "tag.technique.slicing": "Slicing",
       "tag.technique.tdd": "Test-Driven Development",
       "tag.technique.security": "Security",
+      "tag.technique.search-based": "Search-based",
       "tag.series.foundations": "Foundations",
       "tag.series.coverage-criteria": "Coverage Criteria",
       "tag.series.execution": "Execution & Test Generation",
@@ -3211,6 +3260,7 @@
       "tag.series.slicing": "Slice-Based Testing",
       "tag.series.tdd": "Test-Driven Development",
       "tag.series.exploit": "Exploit Generation",
+      "tag.series.sbst": "Search-Based Testing",
       "tag.difficulty.intro": "Intro",
       "tag.difficulty.intermediate": "Intermediate",
       "tag.difficulty.advanced": "Advanced",
@@ -4683,6 +4733,54 @@
       "exploit.cmdi.quiz.b": "\u8F38\u5165\u767D\u540D\u55AE",
       "exploit.cmdi.quiz.c": "execv() \u4EE5\u53C3\u6578\u5411\u91CF\u547C\u53EB\u2014\u2014\u4E0D\u6703\u547C\u53EB shell\uFF0C\u5143\u5B57\u5143\u8B8A\u6210\u5B57\u9762\u503C",
       "exploit.cmdi.quiz.d": "WAF \u898F\u5247",
+      // ── 搜尋式軟體測試（Q 系列）──
+      "section.sbst": "\u641C\u5C0B\u5F0F\u6E2C\u8A66",
+      "section.sbst.title": "\u641C\u5C0B\u5F0F\u8EDF\u9AD4\u6E2C\u8A66",
+      "sbst.tab.branch": "GA \u5206\u652F\u641C\u5C0B",
+      "sbst.tab.compare": "\u5143\u555F\u767C\u5F0F\u6BD4\u8F03",
+      "sbst.tab.suite": "\u6574\u9AD4\u6E2C\u8A66\u5957\u4EF6\u6F14\u5316",
+      "sbst.example.nestedGuard": "\u5DE2\u72C0\u689D\u4EF6\u5B88\u885B",
+      "sbst.example.triangle": "\u4E09\u89D2\u5F62\u5206\u985E\u5668",
+      "sbst.example.multimodal": "\u591A\u5CF0\u51FD\u6578\uFF08mod 20\uFF09",
+      // SbstBranchExplorer
+      "sbst.branch.codeTitle": "\u76EE\u6A19\u51FD\u6578",
+      "sbst.branch.covered": "\u5206\u652F\u5DF2\u8986\u84CB",
+      "sbst.branch.cost": "\u6210\u672C",
+      "sbst.branch.populationTitle": "\u65CF\u7FA4",
+      "sbst.branch.sparklineTitle": "\u9069\u61C9\u5EA6\u6B77\u7A0B",
+      "sbst.branch.randomTitle": "\u96A8\u6A5F\u57FA\u6E96",
+      "sbst.branch.bestCost": "\u6700\u4F73\u6210\u672C",
+      "sbst.branch.reset": "\u91CD\u8A2D",
+      "sbst.branch.next": "\u4E0B\u4E00\u4EE3",
+      "sbst.branch.run": "\u57F7\u884C\u81F3\u7D50\u675F",
+      // SbstCompareExplorer
+      "sbst.compare.noResult": "\u2014",
+      "sbst.compare.covered": "\u5DF2\u8986\u84CB",
+      "sbst.compare.evaluations": "\u6B21\u8A55\u4F30",
+      "sbst.compare.budgetExhausted": "\u9810\u7B97\u8017\u76E1",
+      "sbst.compare.stuck": "\u9677\u5165\u5C40\u90E8\u6700\u512A",
+      "sbst.compare.bestCost": "\u6700\u4F73\u6210\u672C",
+      "sbst.compare.chartTitle": "\u6536\u6582\u5716",
+      "sbst.compare.legendRandom": "\u96A8\u6A5F",
+      "sbst.compare.legendHillClimb": "\u722C\u5C71\u6CD5",
+      "sbst.compare.legendGenetic": "\u907A\u50B3\u6F14\u7B97\u6CD5",
+      "sbst.compare.takeaway": "\u5728\u591A\u5CF0\u9069\u61C9\u5EA6\u5730\u5F62\u4E0A\uFF0C\u907A\u50B3\u6F14\u7B97\u6CD5\u80FD\u6301\u7E8C\u627E\u5230\u722C\u5C71\u6CD5\u6240\u907A\u6F0F\u7684\u8986\u84CB\u76EE\u6A19\u3002",
+      "sbst.compare.run": "\u5168\u90E8\u57F7\u884C",
+      "sbst.compare.reset": "\u91CD\u8A2D",
+      // SbstSuiteExplorer
+      "sbst.suite.codeTitle": "\u76EE\u6A19\u51FD\u6578",
+      "sbst.suite.coverage": "\u5206\u652F\u8986\u84CB\u7387",
+      "sbst.suite.test": "\u6E2C\u8A66",
+      "sbst.suite.covered": "\u5DF2\u8986\u84CB",
+      "sbst.suite.goals": "\u500B\u76EE\u6A19",
+      "sbst.suite.suiteTitle": "\u6F14\u5316\u5F8C\u7684\u6E2C\u8A66\u5957\u4EF6",
+      "sbst.suite.fullCoverage": "\u5DF2\u9054\u6210\u5B8C\u6574\u5206\u652F\u8986\u84CB\u3002",
+      "sbst.suite.minimisedTitle": "\u6700\u5C0F\u5316\u5957\u4EF6",
+      "sbst.suite.minimisedDesc": "\u5DF2\u79FB\u9664\u5197\u9918\u6E2C\u8A66",
+      "sbst.suite.tests": "\u500B\u6E2C\u8A66",
+      "sbst.suite.reset": "\u91CD\u8A2D",
+      "sbst.suite.next": "\u4E0B\u4E00\u4EE3",
+      "sbst.suite.run": "\u57F7\u884C\u81F3\u7D50\u675F",
       // ── 測試驅動開發（O 系列）──
       "section.tdd": "TDD",
       "section.tdd.title": "\u6E2C\u8A66\u9A45\u52D5\u958B\u767C",
@@ -5917,6 +6015,7 @@
       "tag.technique.slicing": "\u7A0B\u5F0F\u5207\u7247",
       "tag.technique.tdd": "\u6E2C\u8A66\u9A45\u52D5\u958B\u767C",
       "tag.technique.security": "\u8CC7\u8A0A\u5B89\u5168",
+      "tag.technique.search-based": "\u641C\u5C0B\u5F0F\u6E2C\u8A66",
       "tag.series.foundations": "\u57FA\u790E\u6982\u5FF5",
       "tag.series.coverage-criteria": "\u8986\u84CB\u6E96\u5247",
       "tag.series.execution": "\u57F7\u884C\u8207\u6E2C\u8A66\u751F\u6210",
@@ -5930,6 +6029,7 @@
       "tag.series.slicing": "\u5207\u7247\u6E2C\u8A66",
       "tag.series.tdd": "\u6E2C\u8A66\u9A45\u52D5\u958B\u767C",
       "tag.series.exploit": "\u6F0F\u6D1E\u5229\u7528\u751F\u6210",
+      "tag.series.sbst": "\u641C\u5C0B\u5F0F\u8EDF\u9AD4\u6E2C\u8A66",
       "tag.difficulty.intro": "\u5165\u9580",
       "tag.difficulty.intermediate": "\u4E2D\u7D1A",
       "tag.difficulty.advanced": "\u9032\u968E",
@@ -6415,13 +6515,13 @@
 
   // src/components/TestingMethodTree.js
   function createTestingMethodTree() {
-    const root38 = document.createElement("div");
+    const root41 = document.createElement("div");
     let expandedIds = /* @__PURE__ */ new Set();
-    function render37() {
+    function render40() {
       const allExpanded = expandedIds.size === testingMethods.length;
-      root38.className = "testing-method-tree";
-      root38.dataset.testid = "testing-method-tree";
-      root38.innerHTML = `
+      root41.className = "testing-method-tree";
+      root41.dataset.testid = "testing-method-tree";
+      root41.innerHTML = `
       <div class="tree-controls">
         <button class="btn-toggle-all" type="button" data-testid="toggle-all-btn">
           ${allExpanded ? t("methods.collapseAll") : t("methods.expandAll")}
@@ -6483,12 +6583,12 @@
       }).join("")}
       </div>
     `;
-      root38.querySelector('[data-testid="toggle-all-btn"]').addEventListener("click", () => {
+      root41.querySelector('[data-testid="toggle-all-btn"]').addEventListener("click", () => {
         expandedIds = allExpanded ? /* @__PURE__ */ new Set() : new Set(testingMethods.map((method) => method.id));
-        render37();
+        render40();
       });
       testingMethods.forEach((method) => {
-        root38.querySelector(`[data-testid="method-card-btn-${method.id}"]`).addEventListener("click", () => {
+        root41.querySelector(`[data-testid="method-card-btn-${method.id}"]`).addEventListener("click", () => {
           const next = new Set(expandedIds);
           if (next.has(method.id)) {
             next.delete(method.id);
@@ -6496,12 +6596,12 @@
             next.add(method.id);
           }
           expandedIds = next;
-          render37();
+          render40();
         });
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/dataFlow.js
@@ -7251,12 +7351,12 @@
   function createParserState(lines) {
     return { lines, index: 0 };
   }
-  function currentLine(state37) {
-    return state37.lines[state37.index] || null;
+  function currentLine(state40) {
+    return state40.lines[state40.index] || null;
   }
-  function consumeLine(state37) {
-    const line = currentLine(state37);
-    state37.index += 1;
+  function consumeLine(state40) {
+    const line = currentLine(state40);
+    state40.index += 1;
     return line;
   }
   function createAstNode(type, line, extra = {}) {
@@ -7279,50 +7379,50 @@
       return line.text.startsWith(token);
     });
   }
-  function parseJavascriptSingleStatement(state37) {
-    const line = currentLine(state37);
+  function parseJavascriptSingleStatement(state40) {
+    const line = currentLine(state40);
     if (!line) {
       return [];
     }
     if (line.text.startsWith("if")) {
-      return [parseJavascriptIf(state37)];
+      return [parseJavascriptIf(state40)];
     }
     if (line.text.startsWith("while")) {
-      return [parseJavascriptLoop(state37, "while")];
+      return [parseJavascriptLoop(state40, "while")];
     }
     if (line.text.startsWith("for")) {
-      return [parseJavascriptLoop(state37, "for")];
+      return [parseJavascriptLoop(state40, "for")];
     }
     if (line.text.startsWith("switch")) {
-      return [parseJavascriptSwitch(state37)];
+      return [parseJavascriptSwitch(state40)];
     }
     if (line.text.startsWith("return")) {
-      consumeLine(state37);
+      consumeLine(state40);
       return [createAstNode("return", line, { text: line.text.replace(/;$/, "") })];
     }
     if (line.text.startsWith("break")) {
-      consumeLine(state37);
+      consumeLine(state40);
       return [createAstNode("break", line, { text: line.text.replace(/;$/, "") })];
     }
     if (line.text.startsWith("continue")) {
-      consumeLine(state37);
+      consumeLine(state40);
       return [createAstNode("continue", line, { text: line.text.replace(/;$/, "") })];
     }
-    consumeLine(state37);
+    consumeLine(state40);
     return [createAstNode("statement", line, { text: line.text.replace(/;$/, "") })];
   }
-  function parseJavascriptIf(state37) {
-    const line = consumeLine(state37);
+  function parseJavascriptIf(state40) {
+    const line = consumeLine(state40);
     const condition = extractParenthesizedContent(line.text) || line.text.replace(/^if\s*/, "").replace(/\{$/, "").trim();
-    const consequent = line.text.endsWith("{") ? parseJavascriptStatements(state37) : parseJavascriptSingleStatement(state37);
+    const consequent = line.text.endsWith("{") ? parseJavascriptStatements(state40) : parseJavascriptSingleStatement(state40);
     let alternate = [];
-    const nextLine = currentLine(state37);
+    const nextLine = currentLine(state40);
     if (nextLine == null ? void 0 : nextLine.text.startsWith("else if")) {
-      state37.lines[state37.index] = { ...nextLine, text: nextLine.text.replace(/^else\s+/, "") };
-      alternate = [parseJavascriptIf(state37)];
+      state40.lines[state40.index] = { ...nextLine, text: nextLine.text.replace(/^else\s+/, "") };
+      alternate = [parseJavascriptIf(state40)];
     } else if (nextLine == null ? void 0 : nextLine.text.startsWith("else")) {
-      const elseLine = consumeLine(state37);
-      alternate = elseLine.text.endsWith("{") ? parseJavascriptStatements(state37) : parseJavascriptSingleStatement(state37);
+      const elseLine = consumeLine(state40);
+      alternate = elseLine.text.endsWith("{") ? parseJavascriptStatements(state40) : parseJavascriptSingleStatement(state40);
     }
     return createAstNode("if", line, {
       condition,
@@ -7330,33 +7430,33 @@
       alternate
     });
   }
-  function parseJavascriptLoop(state37, type) {
-    const line = consumeLine(state37);
+  function parseJavascriptLoop(state40, type) {
+    const line = consumeLine(state40);
     const condition = extractParenthesizedContent(line.text) || line.text.replace(new RegExp(`^${type}\\s*`), "").replace(/\{$/, "").trim();
-    const body = line.text.endsWith("{") ? parseJavascriptStatements(state37) : parseJavascriptSingleStatement(state37);
+    const body = line.text.endsWith("{") ? parseJavascriptStatements(state40) : parseJavascriptSingleStatement(state40);
     return createAstNode(type, line, {
       condition,
       body
     });
   }
-  function parseJavascriptSwitch(state37) {
-    const line = consumeLine(state37);
+  function parseJavascriptSwitch(state40) {
+    const line = consumeLine(state40);
     const expression = extractParenthesizedContent(line.text) || line.text.replace(/^switch\s*/, "").replace(/\{$/, "").trim();
     const cases = [];
-    while (state37.index < state37.lines.length) {
-      const nextLine = currentLine(state37);
+    while (state40.index < state40.lines.length) {
+      const nextLine = currentLine(state40);
       if (!nextLine) {
         break;
       }
       if (nextLine.text === "}") {
-        consumeLine(state37);
+        consumeLine(state40);
         break;
       }
       if (/^(case\s+.+:|default:)$/i.test(nextLine.text)) {
-        const caseLine = consumeLine(state37);
+        const caseLine = consumeLine(state40);
         const isDefault = caseLine.text.startsWith("default:");
         const label = isDefault ? "default" : caseLine.text.replace(/^case\s+/i, "").replace(/:$/, "").trim();
-        const statements = parseJavascriptStatements(state37, ["case ", "default:", "}"]);
+        const statements = parseJavascriptStatements(state40, ["case ", "default:", "}"]);
         cases.push(createAstNode("case", caseLine, {
           label,
           isDefault,
@@ -7364,40 +7464,40 @@
         }));
         continue;
       }
-      consumeLine(state37);
+      consumeLine(state40);
     }
     return createAstNode("switch", line, {
       expression,
       cases
     });
   }
-  function parseJavascriptStatements(state37, stopWhen = ["}"]) {
+  function parseJavascriptStatements(state40, stopWhen = ["}"]) {
     const statements = [];
-    while (state37.index < state37.lines.length) {
-      const line = currentLine(state37);
+    while (state40.index < state40.lines.length) {
+      const line = currentLine(state40);
       if (!line) {
         break;
       }
       if (isJavascriptStop(line, stopWhen)) {
         if (line.text === "}") {
-          consumeLine(state37);
+          consumeLine(state40);
         }
         break;
       }
       if ((line.text.startsWith("function ") || line.text.startsWith("export function ")) && line.text.endsWith("{")) {
-        consumeLine(state37);
+        consumeLine(state40);
         statements.push(createAstNode("statement", line, {
           text: line.text.replace(/\{$/, "").trim()
         }));
-        statements.push(...parseJavascriptStatements(state37));
+        statements.push(...parseJavascriptStatements(state40));
         continue;
       }
       if (line.text === "{") {
-        consumeLine(state37);
-        statements.push(...parseJavascriptStatements(state37));
+        consumeLine(state40);
+        statements.push(...parseJavascriptStatements(state40));
         continue;
       }
-      statements.push(...parseJavascriptSingleStatement(state37));
+      statements.push(...parseJavascriptSingleStatement(state40));
     }
     return statements;
   }
@@ -7408,22 +7508,22 @@
     const upper = line.text.toUpperCase();
     return stopWhen.some((token) => upper.startsWith(token));
   }
-  function parsePseudocodeIf(state37) {
+  function parsePseudocodeIf(state40) {
     var _a;
-    const line = consumeLine(state37);
+    const line = consumeLine(state40);
     const condition = line.text.replace(/^IF\s*/i, "").replace(/\s*THEN$/i, "").trim();
-    const consequent = parsePseudocodeStatements(state37, ["ELSE", "ELSE IF", "END IF", "ENDIF", "END"]);
+    const consequent = parsePseudocodeStatements(state40, ["ELSE", "ELSE IF", "END IF", "ENDIF", "END"]);
     let alternate = [];
-    const nextLine = currentLine(state37);
+    const nextLine = currentLine(state40);
     if (/^ELSE IF\b/i.test((nextLine == null ? void 0 : nextLine.text) || "")) {
-      state37.lines[state37.index] = { ...nextLine, text: nextLine.text.replace(/^ELSE\s+/i, "") };
-      alternate = [parsePseudocodeIf(state37)];
+      state40.lines[state40.index] = { ...nextLine, text: nextLine.text.replace(/^ELSE\s+/i, "") };
+      alternate = [parsePseudocodeIf(state40)];
     } else if (/^ELSE\b/i.test((nextLine == null ? void 0 : nextLine.text) || "")) {
-      consumeLine(state37);
-      alternate = parsePseudocodeStatements(state37, ["END IF", "ENDIF", "END"]);
+      consumeLine(state40);
+      alternate = parsePseudocodeStatements(state40, ["END IF", "ENDIF", "END"]);
     }
-    if (/^(END IF|ENDIF|END)$/i.test(((_a = currentLine(state37)) == null ? void 0 : _a.text) || "")) {
-      consumeLine(state37);
+    if (/^(END IF|ENDIF|END)$/i.test(((_a = currentLine(state40)) == null ? void 0 : _a.text) || "")) {
+      consumeLine(state40);
     }
     return createAstNode("if", line, {
       condition,
@@ -7431,51 +7531,51 @@
       alternate
     });
   }
-  function parsePseudocodeLoop(state37) {
+  function parsePseudocodeLoop(state40) {
     var _a;
-    const line = consumeLine(state37);
+    const line = consumeLine(state40);
     const condition = line.text.replace(/^(WHILE|FOR)\s*/i, "").replace(/\s*DO$/i, "").trim();
-    const body = parsePseudocodeStatements(state37, ["END WHILE", "END FOR", "END"]);
-    if (/^(END WHILE|END FOR|END)$/i.test(((_a = currentLine(state37)) == null ? void 0 : _a.text) || "")) {
-      consumeLine(state37);
+    const body = parsePseudocodeStatements(state40, ["END WHILE", "END FOR", "END"]);
+    if (/^(END WHILE|END FOR|END)$/i.test(((_a = currentLine(state40)) == null ? void 0 : _a.text) || "")) {
+      consumeLine(state40);
     }
     return createAstNode(/^WHILE\b/i.test(line.text) ? "while" : "for", line, {
       condition,
       body
     });
   }
-  function parsePseudocodeStatements(state37, stopWhen = []) {
+  function parsePseudocodeStatements(state40, stopWhen = []) {
     const statements = [];
-    while (state37.index < state37.lines.length) {
-      const line = currentLine(state37);
+    while (state40.index < state40.lines.length) {
+      const line = currentLine(state40);
       if (!line || isPseudocodeStop(line, stopWhen)) {
         break;
       }
       if (/^FUNCTION\b/i.test(line.text)) {
-        consumeLine(state37);
+        consumeLine(state40);
         continue;
       }
       if (/^IF\b/i.test(line.text)) {
-        statements.push(parsePseudocodeIf(state37));
+        statements.push(parsePseudocodeIf(state40));
         continue;
       }
       if (/^(WHILE|FOR)\b/i.test(line.text)) {
-        statements.push(parsePseudocodeLoop(state37));
+        statements.push(parsePseudocodeLoop(state40));
         continue;
       }
       if (/^RETURN\b/i.test(line.text)) {
-        statements.push(createAstNode("return", consumeLine(state37), { text: line.text }));
+        statements.push(createAstNode("return", consumeLine(state40), { text: line.text }));
         continue;
       }
       if (/^BREAK\b/i.test(line.text)) {
-        statements.push(createAstNode("break", consumeLine(state37), { text: line.text }));
+        statements.push(createAstNode("break", consumeLine(state40), { text: line.text }));
         continue;
       }
       if (/^CONTINUE\b/i.test(line.text)) {
-        statements.push(createAstNode("continue", consumeLine(state37), { text: line.text }));
+        statements.push(createAstNode("continue", consumeLine(state40), { text: line.text }));
         continue;
       }
-      statements.push(createAstNode("statement", consumeLine(state37), { text: line.text }));
+      statements.push(createAstNode("statement", consumeLine(state40), { text: line.text }));
     }
     return statements;
   }
@@ -8254,7 +8354,7 @@
   `;
   }
   function createGraphCoverageExplorer() {
-    const root38 = document.createElement("div");
+    const root41 = document.createElement("div");
     const defaultGraph = cloneGraph(graphCoverageGraph);
     const defaultProgram = {
       id: "default-sample",
@@ -8306,7 +8406,7 @@
         userCount: userPaths.length
       };
       graphQuiz.phase = "graded";
-      render37();
+      render40();
     }
     function renderGraphLabReflectPanel() {
       if (!graphLabReflect.active) return "";
@@ -8380,7 +8480,7 @@
       parseError = "";
       sourceStatus = statusMessage;
       selectedRequirementId = null;
-      render37();
+      render40();
     }
     function scheduleAutoApply() {
       if (autoApplyTimer) {
@@ -8395,10 +8495,10 @@
           parseError = "";
           sourceStatus = t("graph.status.recomputed", { name: activeProgram.name });
           selectedRequirementId = null;
-          render37();
+          render40();
         } catch (error) {
           parseError = error.message;
-          render37();
+          render40();
         }
       }, 300);
     }
@@ -8408,7 +8508,7 @@
       parseError = "";
       sourceStatus = t("graph.status.reset", { name: activeProgram.name });
       selectedRequirementId = null;
-      render37();
+      render40();
     }
     function getState() {
       var _a;
@@ -8426,7 +8526,7 @@
         pathPlan
       };
     }
-    function render37() {
+    function render40() {
       var _a, _b, _c, _d, _e, _f, _g, _h;
       const { requirements, selectedRequirement, selectedCriterion, pathPlan } = getState();
       const selectedSourceNodes = getSelectedSourceNodes(graph, selectedRequirement);
@@ -8443,9 +8543,9 @@
         total: 1,
         items: [{ q: t("lab.metric.graph.label", { criterion: (selectedCriterion == null ? void 0 : selectedCriterion.label) || criterionId, paths: pathPlan.selectedPaths.length }), a: "", ok: true }]
       });
-      root38.className = "graph-coverage";
-      root38.dataset.testid = "graph-coverage-explorer";
-      root38.innerHTML = `
+      root41.className = "graph-coverage";
+      root41.dataset.testid = "graph-coverage-explorer";
+      root41.innerHTML = `
       <div class="graph-source-card" data-testid="graph-source-card">
         <div class="graph-source-toolbar">
           <label>
@@ -8647,10 +8747,10 @@
       ${quizPanel}
       ${labReflectPanel}
     `;
-      root38.querySelector('[data-testid="graph-reset-btn"]').addEventListener("click", () => {
+      root41.querySelector('[data-testid="graph-reset-btn"]').addEventListener("click", () => {
         resetGraph();
       });
-      root38.querySelector('[data-testid="program-example-select"]').addEventListener("change", (event) => {
+      root41.querySelector('[data-testid="program-example-select"]').addEventListener("change", (event) => {
         const nextProgramId = event.target.value;
         if (nextProgramId === defaultProgram.id) {
           loadGraphSource(defaultProgram, defaultGraph, t("graph.status.defaultLoaded"));
@@ -8659,13 +8759,13 @@
         if (nextProgramId === "uploaded-spec") {
           selectedProgramId = nextProgramId;
           sourceStatus = t("graph.status.pickJson");
-          render37();
+          render40();
           return;
         }
         if (nextProgramId === "uploaded-code") {
           selectedProgramId = nextProgramId;
           sourceStatus = t("graph.status.pickCode");
-          render37();
+          render40();
           return;
         }
         const example5 = graphCoverageProgramExamples.find((item) => item.id === nextProgramId);
@@ -8675,16 +8775,16 @@
           loadGraphSource(example5, nextGraph, t("graph.status.exampleLoaded", { name: example5.name }));
         }
       });
-      root38.querySelector('[data-testid="program-language-select"]').addEventListener("change", (event) => {
+      root41.querySelector('[data-testid="program-language-select"]').addEventListener("change", (event) => {
         selectedCodeLanguage = event.target.value;
       });
-      root38.querySelector('[data-testid="graph-upload-btn"]').addEventListener("click", () => {
-        root38.querySelector('[data-testid="graph-upload-input"]').click();
+      root41.querySelector('[data-testid="graph-upload-btn"]').addEventListener("click", () => {
+        root41.querySelector('[data-testid="graph-upload-input"]').click();
       });
-      root38.querySelector('[data-testid="code-upload-btn"]').addEventListener("click", () => {
-        root38.querySelector('[data-testid="code-upload-input"]').click();
+      root41.querySelector('[data-testid="code-upload-btn"]').addEventListener("click", () => {
+        root41.querySelector('[data-testid="code-upload-input"]').click();
       });
-      root38.querySelector('[data-testid="graph-upload-input"]').addEventListener("change", async (event) => {
+      root41.querySelector('[data-testid="graph-upload-input"]').addEventListener("change", async (event) => {
         const [file] = event.target.files || [];
         if (!file) {
           return;
@@ -8699,10 +8799,10 @@
         } catch (error) {
           selectedProgramId = "uploaded-spec";
           parseError = error.message;
-          render37();
+          render40();
         }
       });
-      root38.querySelector('[data-testid="code-upload-input"]').addEventListener("change", async (event) => {
+      root41.querySelector('[data-testid="code-upload-input"]').addEventListener("change", async (event) => {
         const [file] = event.target.files || [];
         if (!file) {
           return;
@@ -8722,10 +8822,10 @@
         } catch (error) {
           parseError = error.message;
           sourceStatus = t("graph.status.codeFailed");
-          render37();
+          render40();
         }
       });
-      root38.querySelectorAll("[data-draft-field]").forEach((input) => {
+      root41.querySelectorAll("[data-draft-field]").forEach((input) => {
         input.addEventListener("input", () => {
           draft = {
             ...draft,
@@ -8734,70 +8834,70 @@
           scheduleAutoApply();
         });
       });
-      root38.querySelectorAll("[data-criterion]").forEach((button) => {
+      root41.querySelectorAll("[data-criterion]").forEach((button) => {
         button.addEventListener("click", () => {
           criterionId = button.dataset.criterion;
           selectedRequirementId = null;
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-requirement-id]").forEach((button) => {
+      root41.querySelectorAll("[data-requirement-id]").forEach((button) => {
         button.addEventListener("click", () => {
           selectedRequirementId = button.dataset.requirementId;
-          render37();
+          render40();
         });
       });
-      (_a = root38.querySelector('[data-testid="graph-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root41.querySelector('[data-testid="graph-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         graphQuiz.active = true;
         graphQuiz.selectedPaths = /* @__PURE__ */ new Set();
         graphQuiz.phase = "question";
         graphQuiz.result = null;
-        render37();
+        render40();
       });
-      (_b = root38.querySelector('[data-testid="graph-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root41.querySelector('[data-testid="graph-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         graphQuiz.active = false;
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-quiz-path]").forEach((cb) => {
+      root41.querySelectorAll("[data-quiz-path]").forEach((cb) => {
         cb.addEventListener("change", () => {
           const key = cb.dataset.quizPath;
           if (cb.checked) graphQuiz.selectedPaths.add(key);
           else graphQuiz.selectedPaths.delete(key);
         });
       });
-      (_c = root38.querySelector('[data-testid="graph-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root41.querySelector('[data-testid="graph-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
         const { pathPlan: pathPlan2 } = getState();
         gradeGraphQuiz(pathPlan2);
       });
-      (_d = root38.querySelector('[data-testid="graph-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root41.querySelector('[data-testid="graph-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
         graphQuiz.selectedPaths = /* @__PURE__ */ new Set();
         graphQuiz.phase = "question";
         graphQuiz.result = null;
-        render37();
+        render40();
       });
-      (_e = root38.querySelector('[data-testid="graph-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root41.querySelector('[data-testid="graph-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
         graphLabReflect.active = true;
-        render37();
+        render40();
       });
-      (_f = root38.querySelector('[data-testid="graph-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root41.querySelector('[data-testid="graph-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a2, _b2;
-        graphLabReflect.a1 = ((_a2 = root38.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || graphLabReflect.a1;
-        graphLabReflect.a2 = ((_b2 = root38.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || graphLabReflect.a2;
+        graphLabReflect.a1 = ((_a2 = root41.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || graphLabReflect.a1;
+        graphLabReflect.a2 = ((_b2 = root41.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || graphLabReflect.a2;
         graphLabReflect.active = false;
-        render37();
+        render40();
       });
-      (_g = root38.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root41.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         graphLabReflect.a1 = e.target.value;
       });
-      (_h = root38.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
+      (_h = root41.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
         graphLabReflect.a2 = e.target.value;
       });
-      const lrShare = root38.querySelector('[data-testid="graph-lab-reflect-share"]');
+      const lrShare = root41.querySelector('[data-testid="graph-lab-reflect-share"]');
       if (lrShare) {
         lrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root38.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root38.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root41.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root41.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "graph",
@@ -8832,11 +8932,11 @@
         });
       }
     }
-    render37();
+    render40();
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a;
-        if (!root38.isConnected) return;
+        if (!root41.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "graph") return;
         const content = String((_a = detail.content) != null ? _a : "");
@@ -8854,11 +8954,11 @@
         } catch (error) {
           parseError = error.message;
           sourceStatus = t("graph.status.codeFailed");
-          render37();
+          render40();
         }
       });
     }
-    return root38;
+    return root41;
   }
 
   // src/utils/logicCoverage.js
@@ -10926,10 +11026,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     });
   }
   function createLogicCoverageExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "logic-coverage";
-    root38.dataset.testid = "logic-coverage";
-    const state37 = {
+    const root41 = document.createElement("div");
+    root41.className = "logic-coverage";
+    root41.dataset.testid = "logic-coverage";
+    const state40 = {
       expression: logicCoveragePredicates[0].expression,
       selectedCriterion: "pc",
       error: null,
@@ -10977,8 +11077,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function renderLogicQuizPanel() {
       if (!logicQuiz.active) return "";
-      const criterion = logicCoverageCriteria.find((c) => c.id === state37.selectedCriterion);
-      const criterionLabel = pickField(criterion, "label") || (criterion == null ? void 0 : criterion.id) || state37.selectedCriterion;
+      const criterion = logicCoverageCriteria.find((c) => c.id === state40.selectedCriterion);
+      const criterionLabel = pickField(criterion, "label") || (criterion == null ? void 0 : criterion.id) || state40.selectedCriterion;
       const uniqueCount = getQuizUniqueCount();
       if (uniqueCount === null) return "";
       const isGraded = logicQuiz.phase === "graded";
@@ -10989,7 +11089,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <h4>${t("quiz.logic.title")}</h4>
           <button type="button" class="quiz-close-btn" data-testid="logic-quiz-close">${t("quiz.close")}</button>
         </div>
-        <p class="quiz-prompt">${t("quiz.logic.prompt").replace("{expr}", escapeHtml2(state37.expression)).replace("{criterion}", escapeHtml2(criterionLabel))}</p>
+        <p class="quiz-prompt">${t("quiz.logic.prompt").replace("{expr}", escapeHtml2(state40.expression)).replace("{criterion}", escapeHtml2(criterionLabel))}</p>
         <div class="quiz-bva-inputs">
           <label class="quiz-bva-field">
             <span>${t("quiz.logic.label")}</span>
@@ -11004,7 +11104,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <p class="quiz-score" data-testid="logic-quiz-score">
             ${correct ? `<strong>${t("quiz.bva.perfect")}</strong>` : `${t("quiz.ec.wrong")} ${t("quiz.ec.answer").replace("{count}", uniqueCount)}`}
           </p>
-          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: "logic", explorerLabel: t("quiz.logic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: correct ? 1 : 0, total: 1, items: [{ q: t("quiz.logic.prompt").replace("{expr}", state37.expression).replace("{criterion}", criterionLabel), a: String(logicQuiz.answer), expected: String(uniqueCount), ok: correct }] })}" data-testid="logic-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
+          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: "logic", explorerLabel: t("quiz.logic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: correct ? 1 : 0, total: 1, items: [{ q: t("quiz.logic.prompt").replace("{expr}", state40.expression).replace("{criterion}", criterionLabel), a: String(logicQuiz.answer), expected: String(uniqueCount), ok: correct }] })}" data-testid="logic-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
           <button type="button" class="quiz-start-btn" data-testid="logic-quiz-reset">${t("quiz.reset")}</button>
         ` : `
           <button type="button" class="quiz-start-btn" data-testid="logic-quiz-check">${t("quiz.check")}</button>
@@ -11019,65 +11119,65 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       cloudClient = null;
     }
     function pushRecentToCloud(list) {
-      if (!cloudClient || !state37.cloudUser || typeof cloudClient.saveLogicRecent !== "function") return;
-      cloudClient.saveLogicRecent(state37.cloudUser.uid, list).catch(() => {
+      if (!cloudClient || !state40.cloudUser || typeof cloudClient.saveLogicRecent !== "function") return;
+      cloudClient.saveLogicRecent(state40.cloudUser.uid, list).catch(() => {
       });
     }
     function persistRecent() {
-      saveRecent(state37.recent);
-      pushRecentToCloud(state37.recent);
+      saveRecent(state40.recent);
+      pushRecentToCloud(state40.recent);
     }
     function rememberCurrentExpression() {
-      const expr = state37.expression.trim();
-      if (!expr || state37.error) return false;
+      const expr = state40.expression.trim();
+      if (!expr || state40.error) return false;
       if (isBuiltinExpression(expr)) return false;
-      const next = [expr, ...state37.recent.filter((item) => item !== expr)].slice(0, RECENT_LIMIT);
-      if (next.length === state37.recent.length && next[0] === state37.recent[0]) {
+      const next = [expr, ...state40.recent.filter((item) => item !== expr)].slice(0, RECENT_LIMIT);
+      if (next.length === state40.recent.length && next[0] === state40.recent[0]) {
         return false;
       }
-      state37.recent = next;
+      state40.recent = next;
       persistRecent();
       return true;
     }
     function removeRecent(expr) {
-      const next = state37.recent.filter((item) => item !== expr);
-      if (next.length === state37.recent.length) return;
-      state37.recent = next;
+      const next = state40.recent.filter((item) => item !== expr);
+      if (next.length === state40.recent.length) return;
+      state40.recent = next;
       persistRecent();
-      render37();
+      render40();
     }
     function recompute() {
       try {
-        state37.parsed = parsePredicate(state37.expression);
-        if (state37.parsed.clauses.length > 6) {
+        state40.parsed = parsePredicate(state40.expression);
+        if (state40.parsed.clauses.length > 6) {
           throw new Error(t("logic.err.tooManyClauses"));
         }
-        state37.analysis = buildAllCoverageSets(state37.parsed);
-        state37.error = null;
-        const clauseSet = new Set(state37.parsed.clauses);
-        for (const k of Object.keys(state37.bindings)) {
-          if (!clauseSet.has(k)) delete state37.bindings[k];
+        state40.analysis = buildAllCoverageSets(state40.parsed);
+        state40.error = null;
+        const clauseSet = new Set(state40.parsed.clauses);
+        for (const k of Object.keys(state40.bindings)) {
+          if (!clauseSet.has(k)) delete state40.bindings[k];
         }
       } catch (err) {
-        state37.parsed = null;
-        state37.analysis = null;
-        state37.error = err.message || String(err);
+        state40.parsed = null;
+        state40.analysis = null;
+        state40.error = err.message || String(err);
       }
     }
     function getActiveSet() {
-      if (!state37.analysis) return null;
-      return state37.analysis.sets[state37.selectedCriterion] || null;
+      if (!state40.analysis) return null;
+      return state40.analysis.sets[state40.selectedCriterion] || null;
     }
     function activeRowIds() {
       const set = getActiveSet();
       if (!set) return /* @__PURE__ */ new Set();
       return new Set(set.tests.map((t2) => `r${t2.row.index}`));
     }
-    function render37() {
+    function render40() {
       const examplesMarkup = logicCoveragePredicates.map((p) => `
         <button
           type="button"
-          class="logic-example-btn${state37.expression === p.expression ? " active" : ""}"
+          class="logic-example-btn${state40.expression === p.expression ? " active" : ""}"
           data-expression="${escapeHtml2(p.expression)}"
           data-testid="logic-example-${p.id}"
           title="${escapeHtml2(pickField(p, "description") || "")}"
@@ -11085,11 +11185,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           ${escapeHtml2(p.name)}
         </button>
       `).join("");
-      const recentMarkup = state37.recent.length ? `
+      const recentMarkup = state40.recent.length ? `
         <div class="logic-recent" data-testid="logic-recent">
           <span class="logic-recent-label">${t("logic.recent")}</span>
-          ${state37.recent.map((expr) => `
-              <span class="logic-recent-chip${state37.expression === expr ? " active" : ""}" data-testid="logic-recent-chip">
+          ${state40.recent.map((expr) => `
+              <span class="logic-recent-chip${state40.expression === expr ? " active" : ""}" data-testid="logic-recent-chip">
                 <button
                   type="button"
                   class="logic-recent-select"
@@ -11110,7 +11210,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const criteriaMarkup = logicCoverageCriteria.map((c) => `
         <button
           type="button"
-          class="logic-criterion-btn${state37.selectedCriterion === c.id ? " active" : ""}"
+          class="logic-criterion-btn${state40.selectedCriterion === c.id ? " active" : ""}"
           data-criterion="${c.id}"
           data-testid="logic-criterion-${c.id}"
         >
@@ -11120,14 +11220,14 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       `).join("");
       const truthTableMarkup = renderTruthTable();
       const summaryMarkup = renderSummary2();
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="logic-toolbar">
         <label class="logic-input-label" for="logic-expression-input">Predicate</label>
         <input
           id="logic-expression-input"
           class="logic-expression-input"
           type="text"
-          value="${escapeHtml2(state37.expression)}"
+          value="${escapeHtml2(state40.expression)}"
           spellcheck="false"
           autocomplete="off"
           data-testid="logic-expression-input"
@@ -11137,12 +11237,12 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         ${recentMarkup}
       </div>
 
-      ${state37.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state37.error)}</div>` : ""}
+      ${state40.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state40.error)}</div>` : ""}
 
       <div class="logic-criteria" role="tablist" aria-label="${t("logic.aria.criteria")}">
         <div class="graph-criterion-row">
           ${criteriaMarkup}
-          ${!state37.error && state37.analysis ? `
+          ${!state40.error && state40.analysis ? `
             <button type="button" class="quiz-start-btn" data-testid="logic-quiz-start">
               ${t("quiz.start")}
             </button>
@@ -11162,13 +11262,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
       <div class="logic-truth-table-wrap">${truthTableMarkup}</div>
     `;
-      bindEvents37();
+      bindEvents40();
     }
     function renderTruthTable() {
-      if (!state37.analysis) {
+      if (!state40.analysis) {
         return "";
       }
-      const { rows, clauses } = state37.analysis;
+      const { rows, clauses } = state40.analysis;
       const highlighted = activeRowIds();
       const activeSet = getActiveSet();
       const majorByRow = /* @__PURE__ */ new Map();
@@ -11218,7 +11318,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function renderSummary2() {
       var _a;
-      if (state37.error || !state37.analysis) {
+      if (state40.error || !state40.analysis) {
         return "";
       }
       const set = getActiveSet();
@@ -11236,48 +11336,48 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const testList = annotated.map(({ test, isDuplicate }) => `
         <li class="logic-test-item${isDuplicate ? " duplicate" : ""}" data-testid="logic-test-${escapeHtml2(test.id)}">
           <span class="logic-test-row">#${test.row.index}</span>
-          <span class="logic-test-values">${state37.analysis.clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ")}</span>
+          <span class="logic-test-values">${state40.analysis.clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ")}</span>
           <span class="logic-test-pred ${test.row.predicate ? "is-true" : "is-false"}">P=${test.row.predicate ? "T" : "F"}</span>
           <span class="logic-test-label">${escapeHtml2(test.label)}</span>
           ${isDuplicate ? `<span class="logic-test-dup-tag" aria-label="${t("logic.duplicate")}">${t("logic.duplicate")}</span>` : ""}
         </li>
       `).join("");
       const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">${t("logic.unsatisfied", { items: set.unsatisfied.join(", ") })}</p>` : "";
-      const dnfMarkup = ["ic", "utpc", "mutpc", "nfpc", "mnfpc", "cutpnfp"].includes(set.id) && state37.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">${t("logic.dnfPrefix")}${dnfToHtml(state37.analysis.dnf)}
-          <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state37.analysis.dnf)}${t("logic.textbookClose")}</span>
-        </p>${set.id === "ic" && state37.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">${t("logic.dnfNegPrefix")}${dnfToHtml(state37.analysis.negDnf)}
-                <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state37.analysis.negDnf)}${t("logic.textbookClose")}</span>
+      const dnfMarkup = ["ic", "utpc", "mutpc", "nfpc", "mnfpc", "cutpnfp"].includes(set.id) && state40.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">${t("logic.dnfPrefix")}${dnfToHtml(state40.analysis.dnf)}
+          <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state40.analysis.dnf)}${t("logic.textbookClose")}</span>
+        </p>${set.id === "ic" && state40.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">${t("logic.dnfNegPrefix")}${dnfToHtml(state40.analysis.negDnf)}
+                <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state40.analysis.negDnf)}${t("logic.textbookClose")}</span>
               </p>` : ""}` : "";
-      const kmapMarkup = state37.parsed && (set.id === "ic" || set.id === "utpc" || set.id === "mutpc" || set.id === "nfpc" || set.id === "mnfpc" || set.id === "cutpnfp") ? set.id === "ic" ? (() => {
+      const kmapMarkup = state40.parsed && (set.id === "ic" || set.id === "utpc" || set.id === "mutpc" || set.id === "nfpc" || set.id === "mnfpc" || set.id === "cutpnfp") ? set.id === "ic" ? (() => {
         const posTests = set.tests.filter((t2) => t2.polarity === "pos");
         const negTests = set.tests.filter((t2) => t2.polarity === "neg");
         const posGroups = buildImplicantGroups(
-          state37.analysis.rows,
-          state37.analysis.dnf || [],
+          state40.analysis.rows,
+          state40.analysis.dnf || [],
           true,
           0,
           posTests
         );
         const negGroups = buildImplicantGroups(
-          state37.analysis.rows,
-          state37.analysis.negDnf || [],
+          state40.analysis.rows,
+          state40.analysis.negDnf || [],
           false,
-          (state37.analysis.dnf || []).length,
+          (state40.analysis.dnf || []).length,
           negTests
         );
         const posTestSet = new Set(posTests.map((t2) => t2.row.index));
         const negTestSet = new Set(negTests.map((t2) => t2.row.index));
         return `<div class="logic-kmap-row">
                 ${renderKMap(
-          state37.analysis.rows,
-          state37.parsed.clauses,
+          state40.analysis.rows,
+          state40.parsed.clauses,
           true,
           t("logic.kmap.title.fStar"),
           { highlightedMinterms: posTestSet, implicantGroups: posGroups, highlightLabel: "test" }
         )}
                 ${renderKMap(
-          state37.analysis.rows,
-          state37.parsed.clauses,
+          state40.analysis.rows,
+          state40.parsed.clauses,
           false,
           t("logic.kmap.title.fNegStar"),
           { highlightedMinterms: negTestSet, implicantGroups: negGroups, highlightLabel: "test" }
@@ -11285,19 +11385,19 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               </div>`;
       })() : set.id === "utpc" ? `<div class="logic-kmap-row">
                 ${renderKMap(
-        state37.analysis.rows,
-        state37.parsed.clauses,
+        state40.analysis.rows,
+        state40.parsed.clauses,
         true,
         t("logic.kmap.title.utp"),
         { highlightedMinterms: new Set(set.tests.map((t2) => t2.row.index)) }
       )}
               </div>` : set.id === "mutpc" ? (() => {
-        const dnf = state37.analysis.dnf || [];
-        const groups = buildImplicantGroups(state37.analysis.rows, dnf, true, 0, set.tests);
+        const dnf = state40.analysis.dnf || [];
+        const groups = buildImplicantGroups(state40.analysis.rows, dnf, true, 0, set.tests);
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state37.analysis.rows,
-          state37.parsed.clauses,
+          state40.analysis.rows,
+          state40.parsed.clauses,
           true,
           t("logic.kmap.title.mutp"),
           {
@@ -11308,8 +11408,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         )}
                 </div>`;
       })() : set.id === "nfpc" || set.id === "mnfpc" ? (() => {
-        const dnf = state37.analysis.dnf || [];
-        const groups = buildImplicantGroups(state37.analysis.rows, dnf, true, 0, []);
+        const dnf = state40.analysis.dnf || [];
+        const groups = buildImplicantGroups(state40.analysis.rows, dnf, true, 0, []);
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
         set.tests.forEach((test) => {
@@ -11325,16 +11425,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const titleText = set.id === "mnfpc" ? t("logic.kmap.title.mnfp") : t("logic.kmap.title.nfp");
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state37.analysis.rows,
-          state37.parsed.clauses,
+          state40.analysis.rows,
+          state40.parsed.clauses,
           true,
           titleText,
           { implicantGroups: groups, nfpMarks, ntpMarks, highlightLabel: "test" }
         )}
                 </div>`;
       })() : (() => {
-        const dnf = state37.analysis.dnf || [];
-        const groups = buildImplicantGroups(state37.analysis.rows, dnf, true, 0, []);
+        const dnf = state40.analysis.dnf || [];
+        const groups = buildImplicantGroups(state40.analysis.rows, dnf, true, 0, []);
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
         const testRowSet = /* @__PURE__ */ new Set();
@@ -11352,8 +11452,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state37.analysis.rows,
-          state37.parsed.clauses,
+          state40.analysis.rows,
+          state40.parsed.clauses,
           true,
           t("logic.kmap.title.cutpnfp"),
           {
@@ -11385,16 +11485,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     `;
     }
     function buildBindingResultsHTML() {
-      if (!state37.analysis) return "";
-      const { clauses } = state37.analysis;
+      if (!state40.analysis) return "";
+      const { clauses } = state40.analysis;
       const hasAnyBinding = clauses.some((c) => {
         var _a;
-        return (_a = state37.bindings[c]) == null ? void 0 : _a.trim();
+        return (_a = state40.bindings[c]) == null ? void 0 : _a.trim();
       });
       if (!hasAnyBinding) {
         return `<p class="logic-binding-hint-noentry" data-testid="logic-binding-no-entry">${t("logic.binding.noBinding")}</p>`;
       }
-      const vars = extractVarsFromBindings(state37.bindings);
+      const vars = extractVarsFromBindings(state40.bindings);
       const activeSet = getActiveSet();
       if (!activeSet) return "";
       const seenRows = /* @__PURE__ */ new Set();
@@ -11409,13 +11509,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const valStr = clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ");
         const boundClauseValues = {};
         for (const c of clauses) {
-          if ((_a = state37.bindings[c]) == null ? void 0 : _a.trim()) boundClauseValues[c] = test.row.values[c];
+          if ((_a = state40.bindings[c]) == null ? void 0 : _a.trim()) boundClauseValues[c] = test.row.values[c];
         }
-        const constraintStr = buildConstraintStr(boundClauseValues, state37.bindings);
+        const constraintStr = buildConstraintStr(boundClauseValues, state40.bindings);
         const result = solveBinding({
           clauseValues: boundClauseValues,
-          bindings: state37.bindings,
-          searchRange: state37.bindingRange
+          bindings: state40.bindings,
+          searchRange: state40.bindingRange
         });
         const witnessCell = result.witness ? `<code class="logic-binding-witness" data-testid="logic-binding-witness-${test.row.index}">${escapeHtml2(formatWitnessStr(result.witness))}</code>` : `<span class="logic-binding-infeasible" data-testid="logic-binding-infeasible-${test.row.index}">${t("logic.binding.infeasible")}</span>`;
         return `
@@ -11446,8 +11546,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     function renderSymmetryBridge() {
       const activeSet = getActiveSet();
       if (!activeSet || !["cacc", "racc"].includes(activeSet.id)) return "";
-      if (!state37.analysis || state37.error) return "";
-      const { clauses, rows } = state37.analysis;
+      if (!state40.analysis || state40.error) return "";
+      const { clauses, rows } = state40.analysis;
       if (!clauses || clauses.length < 2 || clauses.length > 6) return "";
       const table = /* @__PURE__ */ new Map();
       for (const row of rows) {
@@ -11471,11 +11571,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       </div>`;
     }
     function activePredicateExample() {
-      return logicCoveragePredicates.find((p) => p.expression === state37.expression) || null;
+      return logicCoveragePredicates.find((p) => p.expression === state40.expression) || null;
     }
     function renderBindingPanel() {
-      if (!state37.analysis || state37.error) return "";
-      const { clauses } = state37.analysis;
+      if (!state40.analysis || state40.error) return "";
+      const { clauses } = state40.analysis;
       const example5 = activePredicateExample();
       const hasDefaults = (example5 == null ? void 0 : example5.defaultBindings) && clauses.some((c) => example5.defaultBindings[c]);
       const inputRows = clauses.map((c) => `
@@ -11487,7 +11587,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           class="logic-binding-expr-input"
           data-testid="logic-binding-input-${escapeHtml2(c)}"
           data-binding-clause="${escapeHtml2(c)}"
-          value="${escapeHtml2(state37.bindings[c] || "")}"
+          value="${escapeHtml2(state40.bindings[c] || "")}"
           placeholder="${t("logic.binding.placeholder")}"
           spellcheck="false"
           autocomplete="off"
@@ -11513,10 +11613,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <div class="logic-binding-range-row">
           <span class="logic-binding-range-label">${t("logic.binding.range")}</span>
           <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-min"
-            data-binding-range="min" value="${state37.bindingRange[0]}" min="-1000" max="0" step="1" />
+            data-binding-range="min" value="${state40.bindingRange[0]}" min="-1000" max="0" step="1" />
           <span class="logic-binding-range-sep">${t("logic.binding.rangeTo")}</span>
           <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-max"
-            data-binding-range="max" value="${state37.bindingRange[1]}" min="0" max="1000" step="1" />
+            data-binding-range="max" value="${state40.bindingRange[1]}" min="0" max="1000" step="1" />
         </div>
         <div class="logic-binding-results" data-testid="logic-binding-results">
           ${buildBindingResultsHTML()}
@@ -11525,116 +11625,116 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     `;
     }
     function refreshBindingResults() {
-      const el = root38.querySelector('[data-testid="logic-binding-results"]');
+      const el = root41.querySelector('[data-testid="logic-binding-results"]');
       if (el) el.innerHTML = buildBindingResultsHTML();
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i;
-      const input = root38.querySelector('[data-testid="logic-expression-input"]');
+      const input = root41.querySelector('[data-testid="logic-expression-input"]');
       if (input) {
         input.addEventListener("input", (event) => {
-          state37.expression = event.target.value;
+          state40.expression = event.target.value;
           recompute();
           renderPreservingFocus("logic-expression-input");
         });
         input.addEventListener("blur", () => {
-          if (rememberCurrentExpression()) render37();
+          if (rememberCurrentExpression()) render40();
         });
         input.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
             event.preventDefault();
-            if (rememberCurrentExpression()) render37();
+            if (rememberCurrentExpression()) render40();
           }
         });
       }
-      root38.querySelectorAll("[data-expression]").forEach((btn) => {
+      root41.querySelectorAll("[data-expression]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.expression = btn.dataset.expression;
+          state40.expression = btn.dataset.expression;
           recompute();
           const example5 = activePredicateExample();
           if (example5 == null ? void 0 : example5.defaultBindings) {
-            state37.bindings = { ...example5.defaultBindings };
+            state40.bindings = { ...example5.defaultBindings };
           }
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-recent-select]").forEach((btn) => {
+      root41.querySelectorAll("[data-recent-select]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.expression = btn.dataset.recentSelect;
+          state40.expression = btn.dataset.recentSelect;
           recompute();
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-recent-remove]").forEach((btn) => {
+      root41.querySelectorAll("[data-recent-remove]").forEach((btn) => {
         btn.addEventListener("click", (event) => {
           event.stopPropagation();
           removeRecent(btn.dataset.recentRemove);
         });
       });
-      root38.querySelectorAll("[data-criterion]").forEach((btn) => {
+      root41.querySelectorAll("[data-criterion]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.selectedCriterion = btn.dataset.criterion;
+          state40.selectedCriterion = btn.dataset.criterion;
           logicQuiz.active = false;
           logicQuiz.phase = "question";
           logicQuiz.answer = "";
           logicQuiz.result = null;
-          render37();
+          render40();
         });
       });
-      (_a = root38.querySelector('[data-testid="logic-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root41.querySelector('[data-testid="logic-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         logicQuiz.active = true;
         logicQuiz.phase = "question";
         logicQuiz.answer = "";
         logicQuiz.result = null;
-        const quizEl = root38.querySelector('[data-testid="logic-quiz"]');
+        const quizEl = root41.querySelector('[data-testid="logic-quiz"]');
         if (!quizEl) {
-          render37();
+          render40();
           return;
         }
         quizEl.outerHTML = renderLogicQuizPanel();
-        render37();
+        render40();
       });
-      (_b = root38.querySelector('[data-testid="logic-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root41.querySelector('[data-testid="logic-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         logicQuiz.active = false;
-        render37();
+        render40();
       });
-      (_c = root38.querySelector('[data-testid="logic-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root41.querySelector('[data-testid="logic-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
         var _a2;
-        const inp = root38.querySelector('[data-testid="logic-quiz-answer"]');
+        const inp = root41.querySelector('[data-testid="logic-quiz-answer"]');
         logicQuiz.answer = (_a2 = inp == null ? void 0 : inp.value) != null ? _a2 : "";
         logicQuiz.phase = "graded";
-        const panel = root38.querySelector('[data-testid="logic-quiz"]');
+        const panel = root41.querySelector('[data-testid="logic-quiz"]');
         if (panel) panel.outerHTML = renderLogicQuizPanel();
-        render37();
+        render40();
       });
-      (_d = root38.querySelector('[data-testid="logic-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root41.querySelector('[data-testid="logic-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
         logicQuiz.phase = "question";
         logicQuiz.answer = "";
-        render37();
+        render40();
       });
-      (_e = root38.querySelector('[data-testid="logic-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root41.querySelector('[data-testid="logic-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
         logicLabReflect.active = true;
-        render37();
+        render40();
       });
-      (_f = root38.querySelector('[data-testid="logic-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root41.querySelector('[data-testid="logic-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a2, _b2;
-        logicLabReflect.a1 = ((_a2 = root38.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || logicLabReflect.a1;
-        logicLabReflect.a2 = ((_b2 = root38.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || logicLabReflect.a2;
+        logicLabReflect.a1 = ((_a2 = root41.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || logicLabReflect.a1;
+        logicLabReflect.a2 = ((_b2 = root41.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || logicLabReflect.a2;
         logicLabReflect.active = false;
-        render37();
+        render40();
       });
-      (_g = root38.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root41.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         logicLabReflect.a1 = e.target.value;
       });
-      (_h = root38.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
+      (_h = root41.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
         logicLabReflect.a2 = e.target.value;
       });
-      const logicLrShare = root38.querySelector('[data-testid="logic-lab-reflect-share"]');
+      const logicLrShare = root41.querySelector('[data-testid="logic-lab-reflect-share"]');
       if (logicLrShare) {
         logicLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root38.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root38.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root41.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root41.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "logic",
@@ -11669,47 +11769,47 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
       }
       let bindingTimer = null;
-      root38.querySelectorAll("[data-binding-clause]").forEach((input2) => {
+      root41.querySelectorAll("[data-binding-clause]").forEach((input2) => {
         input2.addEventListener("input", () => {
           const clause = input2.dataset.bindingClause;
-          state37.bindings[clause] = input2.value;
+          state40.bindings[clause] = input2.value;
           if (bindingTimer) clearTimeout(bindingTimer);
           bindingTimer = setTimeout(() => refreshBindingResults(), 200);
         });
       });
-      const restoreBtn = root38.querySelector('[data-testid="logic-binding-restore"]');
+      const restoreBtn = root41.querySelector('[data-testid="logic-binding-restore"]');
       if (restoreBtn) {
         restoreBtn.addEventListener("click", () => {
           const example5 = activePredicateExample();
           if (example5 == null ? void 0 : example5.defaultBindings) {
-            state37.bindings = { ...example5.defaultBindings };
-            render37();
+            state40.bindings = { ...example5.defaultBindings };
+            render40();
           }
         });
       }
-      (_i = root38.querySelector('[data-testid="logic-bridge-groupth"]')) == null ? void 0 : _i.addEventListener("click", () => {
+      (_i = root41.querySelector('[data-testid="logic-bridge-groupth"]')) == null ? void 0 : _i.addEventListener("click", () => {
         var _a2;
         (_a2 = document.querySelector('[data-section="groupth"]')) == null ? void 0 : _a2.click();
       });
-      root38.querySelectorAll("[data-binding-range]").forEach((input2) => {
+      root41.querySelectorAll("[data-binding-range]").forEach((input2) => {
         input2.addEventListener("change", () => {
           const v = parseInt(input2.value, 10);
           if (Number.isNaN(v)) return;
           if (input2.dataset.bindingRange === "min") {
-            state37.bindingRange = [Math.min(v, state37.bindingRange[1] - 1), state37.bindingRange[1]];
+            state40.bindingRange = [Math.min(v, state40.bindingRange[1] - 1), state40.bindingRange[1]];
           } else {
-            state37.bindingRange = [state37.bindingRange[0], Math.max(v, state37.bindingRange[0] + 1)];
+            state40.bindingRange = [state40.bindingRange[0], Math.max(v, state40.bindingRange[0] + 1)];
           }
           refreshBindingResults();
         });
       });
     }
     function renderPreservingFocus(testid) {
-      const previouslyFocused = root38.querySelector(`[data-testid="${testid}"]`);
+      const previouslyFocused = root41.querySelector(`[data-testid="${testid}"]`);
       const selectionStart = previouslyFocused == null ? void 0 : previouslyFocused.selectionStart;
       const selectionEnd = previouslyFocused == null ? void 0 : previouslyFocused.selectionEnd;
-      render37();
-      const next = root38.querySelector(`[data-testid="${testid}"]`);
+      render40();
+      const next = root41.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof selectionStart === "number" && typeof selectionEnd === "number" && next.setSelectionRange) {
@@ -11718,10 +11818,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }
     }
     recompute();
-    render37();
+    render40();
     if (cloudClient && typeof cloudClient.subscribeAuthState === "function") {
       cloudClient.subscribeAuthState(async (user) => {
-        state37.cloudUser = user || null;
+        state40.cloudUser = user || null;
         if (!user || typeof cloudClient.loadLogicRecent !== "function") {
           return;
         }
@@ -11729,30 +11829,30 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           const remote = await cloudClient.loadLogicRecent(user.uid);
           const merged = [];
           const seen = /* @__PURE__ */ new Set();
-          [...remote, ...state37.recent].forEach((expr) => {
+          [...remote, ...state40.recent].forEach((expr) => {
             if (typeof expr !== "string") return;
             if (seen.has(expr)) return;
             seen.add(expr);
             merged.push(expr);
           });
           const next = merged.slice(0, RECENT_LIMIT);
-          const changed = next.length !== state37.recent.length || next.some((v, i) => v !== state37.recent[i]);
-          state37.recent = next;
-          saveRecent(state37.recent);
+          const changed = next.length !== state40.recent.length || next.some((v, i) => v !== state40.recent[i]);
+          state40.recent = next;
+          saveRecent(state40.recent);
           if (next.length !== remote.length || next.some((v, i) => v !== remote[i])) {
-            pushRecentToCloud(state37.recent);
+            pushRecentToCloud(state40.recent);
           }
-          if (changed) render37();
+          if (changed) render40();
         } catch {
         }
       });
     }
-    return root38;
+    return root41;
   }
 
   // src/components/TestingFlow.js
   function createTestingFlow() {
-    const root38 = document.createElement("div");
+    const root41 = document.createElement("div");
     let activeStep = 0;
     let isPlaying = true;
     let hoveredStep = null;
@@ -11770,13 +11870,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }
     }
     function updateState() {
-      const playBtn = root38.querySelector('[data-testid="flow-play-btn"]');
+      const playBtn = root41.querySelector('[data-testid="flow-play-btn"]');
       if (playBtn) {
         playBtn.className = `flow-play-btn${isPlaying ? " playing" : ""}`;
         playBtn.setAttribute("aria-label", isPlaying ? t("flow.pause") : t("flow.play"));
         playBtn.innerHTML = isPlaying ? `\u23F8 ${t("flow.pause")}` : `\u25B6 ${t("flow.play")}`;
       }
-      root38.querySelectorAll("[data-step-index]").forEach((el) => {
+      root41.querySelectorAll("[data-step-index]").forEach((el) => {
         const idx = Number(el.dataset.stepIndex);
         const step2 = testingFlow[idx];
         const isActive = idx === activeStep;
@@ -11806,7 +11906,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           tooltip.textContent = pickField(step2, "description");
         }
       });
-      root38.querySelectorAll('[data-testid^="flow-arrow-"]').forEach((arrow) => {
+      root41.querySelectorAll('[data-testid^="flow-arrow-"]').forEach((arrow) => {
         const idx = Number(arrow.dataset.testid.replace("flow-arrow-", ""));
         arrow.className = [
           "flow-arrow",
@@ -11814,9 +11914,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           activeStep === idx ? "flow-arrow--active" : ""
         ].filter(Boolean).join(" ");
       });
-      const fill = root38.querySelector('[data-testid="flow-progress-fill"]');
+      const fill = root41.querySelector('[data-testid="flow-progress-fill"]');
       if (fill) fill.style.width = `${(activeStep + 1) / testingFlow.length * 100}%`;
-      const progressLabel = root38.querySelector(".flow-progress-label");
+      const progressLabel = root41.querySelector(".flow-progress-label");
       if (progressLabel) {
         progressLabel.textContent = t("flow.progress", {
           current: activeStep + 1,
@@ -11825,10 +11925,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
       }
     }
-    function render37() {
-      root38.className = "testing-flow";
-      root38.dataset.testid = "testing-flow";
-      root38.innerHTML = `
+    function render40() {
+      root41.className = "testing-flow";
+      root41.dataset.testid = "testing-flow";
+      root41.innerHTML = `
       <div class="flow-controls">
         <button
           class="flow-play-btn${isPlaying ? " playing" : ""}"
@@ -11880,12 +11980,12 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       </div>
       <div class="flow-progress-label">${t("flow.progress", { current: activeStep + 1, total: testingFlow.length, label: pickField(testingFlow[activeStep], "label") })}</div>
     `;
-      root38.querySelector('[data-testid="flow-play-btn"]').addEventListener("click", () => {
+      root41.querySelector('[data-testid="flow-play-btn"]').addEventListener("click", () => {
         isPlaying = !isPlaying;
         restartTimer();
         updateState();
       });
-      root38.querySelectorAll("[data-step-index]").forEach((element) => {
+      root41.querySelectorAll("[data-step-index]").forEach((element) => {
         const stepIndex = Number(element.dataset.stepIndex);
         element.addEventListener("mouseenter", () => {
           hoveredStep = stepIndex;
@@ -11906,21 +12006,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       });
     }
     restartTimer();
-    render37();
-    root38.cleanup = () => {
+    render40();
+    root41.cleanup = () => {
       if (timerId) {
         clearInterval(timerId);
       }
     };
-    return root38;
+    return root41;
   }
 
   // src/components/TestingTypesTable.js
   function createTestingTypesTable() {
-    const root38 = document.createElement("div");
-    root38.className = "testing-types";
-    root38.dataset.testid = "testing-types";
-    root38.innerHTML = `
+    const root41 = document.createElement("div");
+    root41.className = "testing-types";
+    root41.dataset.testid = "testing-types";
+    root41.innerHTML = `
     <div class="pyramid-section">
       <h3 class="pyramid-title">${t("types.pyramid.title")}</h3>
       <div class="pyramid" data-testid="pyramid">
@@ -11965,7 +12065,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       `).join("")}
     </div>
   `;
-    return root38;
+    return root41;
   }
 
   // src/components/CloudStoragePanel.js
@@ -11985,7 +12085,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   }
   function createCloudStoragePanel() {
     var _a;
-    const root38 = document.createElement("div");
+    const root41 = document.createElement("div");
     const client = createCloudIntegrationClient();
     const canUseCloudAuth = client.isConfigured && client.isSupportedOrigin;
     let user = null;
@@ -12003,11 +12103,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     let uploadCount = 0;
     const uploadedResultIds = /* @__PURE__ */ new Set();
-    function render37() {
+    function render40() {
       var _a2, _b, _c, _d;
-      root38.className = "cloud-storage";
-      root38.dataset.testid = "cloud-storage-panel";
-      root38.innerHTML = `
+      root41.className = "cloud-storage";
+      root41.dataset.testid = "cloud-storage-panel";
+      root41.innerHTML = `
       <div class="cloud-card">
         <div class="cloud-header">
           <div>
@@ -12127,45 +12227,45 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     `;
-      (_a2 = root38.querySelector('[data-testid="cloud-signin-btn"]')) == null ? void 0 : _a2.addEventListener("click", async () => {
+      (_a2 = root41.querySelector('[data-testid="cloud-signin-btn"]')) == null ? void 0 : _a2.addEventListener("click", async () => {
         try {
           const result = await client.signInWithGoogle();
           user = result.user;
           status = result.hasDriveToken ? t("cloud.signedInOk") : t("cloud.signedInNoDrive");
           ;
-          render37();
+          render40();
         } catch (error) {
           status = error.message;
-          render37();
+          render40();
         }
       });
-      root38.querySelector('[data-testid="cloud-signout-btn"]').addEventListener("click", async () => {
+      root41.querySelector('[data-testid="cloud-signout-btn"]').addEventListener("click", async () => {
         try {
           await client.signOutGoogle();
           user = null;
           selectedFile = null;
           status = t("cloud.signedOut");
           ;
-          render37();
+          render40();
         } catch (error) {
           status = error.message;
-          render37();
+          render40();
         }
       });
-      root38.querySelector('[data-testid="cloud-criterion-select"]').addEventListener("change", (event) => {
+      root41.querySelector('[data-testid="cloud-criterion-select"]').addEventListener("change", (event) => {
         settings.preferredCriterion = event.target.value;
       });
-      root38.querySelector('[data-testid="cloud-notes-input"]').addEventListener("input", (event) => {
+      root41.querySelector('[data-testid="cloud-notes-input"]').addEventListener("input", (event) => {
         settings.notes = event.target.value;
       });
-      root38.querySelector('[data-testid="cloud-file-btn"]').addEventListener("click", () => {
-        root38.querySelector('[data-testid="cloud-file-input"]').click();
+      root41.querySelector('[data-testid="cloud-file-btn"]').addEventListener("click", () => {
+        root41.querySelector('[data-testid="cloud-file-input"]').click();
       });
-      root38.querySelector('[data-testid="cloud-file-input"]').addEventListener("change", (event) => {
+      root41.querySelector('[data-testid="cloud-file-input"]').addEventListener("change", (event) => {
         [selectedFile] = event.target.files || [];
-        render37();
+        render40();
       });
-      root38.querySelector('[data-testid="cloud-load-settings-btn"]').addEventListener("click", async () => {
+      root41.querySelector('[data-testid="cloud-load-settings-btn"]').addEventListener("click", async () => {
         try {
           const loaded = await client.loadSettings(user.uid);
           if (loaded) {
@@ -12178,25 +12278,25 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           } else {
             status = t("cloud.noSavedSettings");
           }
-          render37();
+          render40();
         } catch (error) {
           status = error.message;
-          render37();
+          render40();
         }
       });
-      root38.querySelector('[data-testid="cloud-save-settings-btn"]').addEventListener("click", async () => {
+      root41.querySelector('[data-testid="cloud-save-settings-btn"]').addEventListener("click", async () => {
         try {
-          const extras = parseJson(root38.querySelector('[data-testid="cloud-extras-input"]').value);
+          const extras = parseJson(root41.querySelector('[data-testid="cloud-extras-input"]').value);
           settings.extras = extras;
           await client.saveSettings(user.uid, settings);
           status = t("cloud.savedOk");
-          render37();
+          render40();
         } catch (error) {
           status = error.message.includes("JSON") ? t("cloud.extrasJsonError") : error.message;
-          render37();
+          render40();
         }
       });
-      root38.querySelector('[data-testid="cloud-upload-btn"]').addEventListener("click", async () => {
+      root41.querySelector('[data-testid="cloud-upload-btn"]').addEventListener("click", async () => {
         try {
           const fileToUpload = selectedFile;
           let content = null;
@@ -12218,13 +12318,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           uploadedFiles = [{ ...uploaded, content, fileName: fileToUpload.name, file: fileToUpload }, ...uploadedFiles].slice(0, 8);
           status = t("cloud.uploadedOk", { name: uploaded.name });
           selectedFile = null;
-          render37();
+          render40();
         } catch (error) {
           status = error.message;
-          render37();
+          render40();
         }
       });
-      root38.querySelectorAll("[data-use-target]").forEach((btn) => {
+      root41.querySelectorAll("[data-use-target]").forEach((btn) => {
         btn.addEventListener("click", async () => {
           var _a3, _b2;
           const idx = Number(btn.dataset.useIdx);
@@ -12243,13 +12343,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               item.content = content;
             } catch (err) {
               status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
-              render37();
+              render40();
               return;
             }
           }
           if (content == null) {
             status = t("cloud.noContent");
-            render37();
+            render40();
             return;
           }
           const sectionId = target === "graph" ? "section-graph" : "section-syntax";
@@ -12259,30 +12359,30 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             detail: { target, name: item.fileName || item.name, content }
           }));
           status = target === "mutation" ? t("cloud.sentToMutation", { name: item.name }) : target === "grammar" ? t("cloud.sentToGrammar", { name: item.name }) : t("cloud.sentToGraph", { name: item.name });
-          render37();
+          render40();
         });
       });
-      (_b = root38.querySelector('[data-testid="cloud-class-save"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root41.querySelector('[data-testid="cloud-class-save"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a3;
-        const inp = root38.querySelector('[data-testid="cloud-class-code-input"]');
+        const inp = root41.querySelector('[data-testid="cloud-class-code-input"]');
         classCode = ((inp == null ? void 0 : inp.value) || "").trim().toUpperCase();
         try {
           (_a3 = globalThis.localStorage) == null ? void 0 : _a3.setItem(CLASS_CODE_KEY, classCode);
         } catch {
         }
-        render37();
+        render40();
       });
-      (_c = root38.querySelector('[data-testid="cloud-view-results"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root41.querySelector('[data-testid="cloud-view-results"]')) == null ? void 0 : _c.addEventListener("click", () => {
         var _a3;
         (_a3 = globalThis.dispatchEvent) == null ? void 0 : _a3.call(globalThis, new CustomEvent("stvisual:open-teacher-dashboard", {
           detail: { classCode }
         }));
       });
-      (_d = root38.querySelector('[data-testid="cloud-refresh-drive-btn"]')) == null ? void 0 : _d.addEventListener("click", async () => {
+      (_d = root41.querySelector('[data-testid="cloud-refresh-drive-btn"]')) == null ? void 0 : _d.addEventListener("click", async () => {
         if (!user || typeof client.listDriveFiles !== "function") return;
         driveFilesLoading = true;
         status = t("cloud.refreshing");
-        render37();
+        render40();
         try {
           driveFiles = await client.listDriveFiles();
           status = t("cloud.driveListed", { count: driveFiles.length });
@@ -12290,10 +12390,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           status = t("cloud.driveListError", { msg: (err == null ? void 0 : err.message) || err });
         } finally {
           driveFilesLoading = false;
-          render37();
+          render40();
         }
       });
-      root38.querySelectorAll("[data-drive-target]").forEach((btn) => {
+      root41.querySelectorAll("[data-drive-target]").forEach((btn) => {
         btn.addEventListener("click", async () => {
           var _a3, _b2;
           const idx = Number(btn.dataset.driveIdx);
@@ -12302,7 +12402,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           if (!f) return;
           try {
             status = t("cloud.downloading", { name: f.name });
-            render37();
+            render40();
             const content = await client.downloadDriveFile(f.id);
             const sectionId = target === "graph" ? "section-graph" : "section-syntax";
             const targetSection = (_a3 = globalThis.document) == null ? void 0 : _a3.querySelector(`[data-testid="${sectionId}"]`);
@@ -12314,7 +12414,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           } catch (err) {
             status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
           }
-          render37();
+          render40();
         });
       });
     }
@@ -12329,7 +12429,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         uploadedResultIds.add(payloadStr);
         await client.saveResult(user.uid, user.displayName || "", user.email || "", classCode, payload);
         uploadCount++;
-        const badge = root38.querySelector('[data-testid="cloud-upload-count"]');
+        const badge = root41.querySelector('[data-testid="cloud-upload-count"]');
         if (badge) badge.textContent = uploadCount;
       } catch {
       }
@@ -12345,10 +12445,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         } catch {
         }
       }
-      render37();
+      render40();
     });
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/data/mutationData.js
@@ -13189,13 +13289,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   }
   function createSyntaxCoverageExplorer() {
     var _a;
-    const root38 = document.createElement("div");
-    root38.className = "syntax-coverage";
-    root38.dataset.testid = "syntax-coverage";
+    const root41 = document.createElement("div");
+    root41.className = "syntax-coverage";
+    root41.dataset.testid = "syntax-coverage";
     const initial = programExamples[0];
     const localPrograms = loadLocalPrograms();
     const initialSnapshot = localPrograms[initial.id] || defaultProgramSnapshot(initial);
-    const state37 = {
+    const state40 = {
       exampleId: initial.id,
       params: initialSnapshot.params,
       body: initialSnapshot.body,
@@ -13223,9 +13323,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function snapshotCurrent() {
       return {
-        params: state37.params,
-        body: state37.body,
-        tests: state37.tests.map((t2) => ({
+        params: state40.params,
+        body: state40.body,
+        tests: state40.tests.map((t2) => ({
           id: t2.id,
           argsText: t2.argsText,
           expectedText: t2.expectedText
@@ -13233,28 +13333,28 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       };
     }
     function persistCurrent() {
-      state37.programs[state37.exampleId] = snapshotCurrent();
-      saveLocalPrograms(state37.programs);
+      state40.programs[state40.exampleId] = snapshotCurrent();
+      saveLocalPrograms(state40.programs);
       pushToCloud();
     }
     const syntaxQuiz = { active: false, phase: "question", answer: "", result: null };
     function renderSyntaxQuizPanel() {
       if (!syntaxQuiz.active) return "";
       if (syntaxQuiz.phase === "graded") {
-        const correct = state37.score.killed;
+        const correct = state40.score.killed;
         const userAns = parseInt(syntaxQuiz.answer, 10);
         const ok = userAns === correct;
-        const shareEncoded = encodeResult({ v: 1, explorer: "syntax", explorerLabel: t("quiz.syntax.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.syntax.prompt", { program: state37.exampleId }), a: String(syntaxQuiz.answer), expected: String(correct), ok }] });
+        const shareEncoded = encodeResult({ v: 1, explorer: "syntax", explorerLabel: t("quiz.syntax.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.syntax.prompt", { program: state40.exampleId }), a: String(syntaxQuiz.answer), expected: String(correct), ok }] });
         return `
         <div class="quiz-panel" data-testid="syntax-quiz-panel">
           <div class="quiz-header">
             <span>${t("quiz.syntax.title")}</span>
             <button type="button" class="quiz-close-btn" data-testid="syntax-quiz-close">\u2715</button>
           </div>
-          <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state37.exampleId) })}</p>
+          <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state40.exampleId) })}</p>
           <p class="quiz-score ${ok ? "quiz-score--perfect" : "quiz-score--wrong"}">
             ${ok ? t("quiz.graph.perfect") : ""}
-            ${t("quiz.syntax.answer", { killed: correct, total: state37.score.total })}
+            ${t("quiz.syntax.answer", { killed: correct, total: state40.score.total })}
           </p>
           <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="syntax-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
           <button type="button" class="quiz-start-btn" data-testid="syntax-quiz-reset">${t("quiz.retry")}</button>
@@ -13267,7 +13367,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <span>${t("quiz.syntax.title")}</span>
           <button type="button" class="quiz-close-btn" data-testid="syntax-quiz-close">\u2715</button>
         </div>
-        <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state37.exampleId) })}</p>
+        <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state40.exampleId) })}</p>
         <div class="quiz-bva-inputs">
           <label class="quiz-bva-field">
             ${t("quiz.syntax.label")}
@@ -13281,21 +13381,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     let saveTimer = null;
     let pendingSave = null;
     function pushToCloud() {
-      if (!cloudClient || !state37.cloudUser || typeof cloudClient.saveSyntaxTests !== "function") return;
+      if (!cloudClient || !state40.cloudUser || typeof cloudClient.saveSyntaxTests !== "function") return;
       if (saveTimer) clearTimeout(saveTimer);
-      state37.cloudStatus = "syncing";
-      state37.cloudMessage = "";
+      state40.cloudStatus = "syncing";
+      state40.cloudMessage = "";
       updateCloudIndicator();
       pendingSave = new Promise((resolve) => {
         saveTimer = setTimeout(async () => {
           saveTimer = null;
           try {
-            await cloudClient.saveSyntaxTests(state37.cloudUser.uid, state37.programs);
-            state37.cloudStatus = "synced";
-            state37.cloudMessage = t("syntax.cloud.synced");
+            await cloudClient.saveSyntaxTests(state40.cloudUser.uid, state40.programs);
+            state40.cloudStatus = "synced";
+            state40.cloudMessage = t("syntax.cloud.synced");
           } catch (err) {
-            state37.cloudStatus = "error";
-            state37.cloudMessage = t("syntax.cloud.saveError", { msg: (err == null ? void 0 : err.message) || err });
+            state40.cloudStatus = "error";
+            state40.cloudMessage = t("syntax.cloud.saveError", { msg: (err == null ? void 0 : err.message) || err });
           }
           updateCloudIndicator();
           resolve();
@@ -13309,7 +13409,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         clearTimeout(saveTimer);
         saveTimer = null;
         try {
-          await cloudClient.saveSyntaxTests(state37.cloudUser.uid, state37.programs);
+          await cloudClient.saveSyntaxTests(state40.cloudUser.uid, state40.programs);
         } catch {
         }
       } else {
@@ -13318,152 +13418,152 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       pendingSave = null;
     }
     function updateCloudIndicator() {
-      const node = root38.querySelector('[data-testid="syntax-cloud-indicator"]');
+      const node = root41.querySelector('[data-testid="syntax-cloud-indicator"]');
       if (!node) return;
-      node.dataset.status = state37.cloudStatus;
+      node.dataset.status = state40.cloudStatus;
       node.textContent = cloudIndicatorText();
     }
     function cloudIndicatorText() {
-      if (!state37.cloudUser) return t("syntax.cloud.notSignedIn");
-      switch (state37.cloudStatus) {
+      if (!state40.cloudUser) return t("syntax.cloud.notSignedIn");
+      switch (state40.cloudStatus) {
         case "syncing":
           return t("syntax.cloud.syncing");
         case "synced":
-          return `\u2601 ${state37.cloudMessage || t("syntax.cloud.synced")}`;
+          return `\u2601 ${state40.cloudMessage || t("syntax.cloud.synced")}`;
         case "error":
-          return `\u2601 ${state37.cloudMessage || t("syntax.cloud.failed")}`;
+          return `\u2601 ${state40.cloudMessage || t("syntax.cloud.failed")}`;
         default:
-          return `\u2601 ${t("syntax.cloud.linked", { name: state37.cloudUser.email || state37.cloudUser.uid })}`;
+          return `\u2601 ${t("syntax.cloud.linked", { name: state40.cloudUser.email || state40.cloudUser.uid })}`;
       }
     }
     async function reloadFromCloud({ force = false } = {}) {
       var _a2, _b;
-      if (!cloudClient || !state37.cloudUser) return;
+      if (!cloudClient || !state40.cloudUser) return;
       if (typeof cloudClient.loadSyntaxTests !== "function") return;
       await flushPendingSave();
-      state37.cloudStatus = "syncing";
-      state37.cloudMessage = force ? t("syntax.cloud.reloading") : "";
+      state40.cloudStatus = "syncing";
+      state40.cloudMessage = force ? t("syntax.cloud.reloading") : "";
       updateCloudIndicator();
       try {
-        const remote = await cloudClient.loadSyntaxTests(state37.cloudUser.uid);
+        const remote = await cloudClient.loadSyntaxTests(state40.cloudUser.uid);
         const remoteObj = remote && typeof remote === "object" ? remote : {};
-        const localOnly = Object.keys(state37.programs).filter((k) => !(k in remoteObj));
+        const localOnly = Object.keys(state40.programs).filter((k) => !(k in remoteObj));
         const merged = { ...remoteObj };
         localOnly.forEach((k) => {
-          merged[k] = state37.programs[k];
+          merged[k] = state40.programs[k];
         });
-        state37.programs = merged;
-        saveLocalPrograms(state37.programs);
-        const current2 = state37.programs[state37.exampleId];
+        state40.programs = merged;
+        saveLocalPrograms(state40.programs);
+        const current2 = state40.programs[state40.exampleId];
         if (current2) {
-          state37.params = (_a2 = current2.params) != null ? _a2 : state37.params;
-          state37.body = (_b = current2.body) != null ? _b : state37.body;
-          state37.tests = Array.isArray(current2.tests) ? current2.tests.map((t2) => ({ ...t2 })) : state37.tests;
-          state37.selectedMutantId = null;
+          state40.params = (_a2 = current2.params) != null ? _a2 : state40.params;
+          state40.body = (_b = current2.body) != null ? _b : state40.body;
+          state40.tests = Array.isArray(current2.tests) ? current2.tests.map((t2) => ({ ...t2 })) : state40.tests;
+          state40.selectedMutantId = null;
         }
-        state37.cloudStatus = "synced";
-        state37.cloudMessage = t("syntax.cloud.loaded");
-        render37();
+        state40.cloudStatus = "synced";
+        state40.cloudMessage = t("syntax.cloud.loaded");
+        render40();
         if (localOnly.length > 0) pushToCloud();
       } catch (err) {
-        state37.cloudStatus = "error";
-        state37.cloudMessage = t("syntax.cloud.loadError", { msg: (err == null ? void 0 : err.message) || err });
+        state40.cloudStatus = "error";
+        state40.cloudMessage = t("syntax.cloud.loadError", { msg: (err == null ? void 0 : err.message) || err });
         updateCloudIndicator();
       }
     }
     function recompute() {
       var _a2;
-      state37.error = null;
+      state40.error = null;
       let params;
       try {
-        params = state37.params.split(",").map((s) => s.trim()).filter(Boolean);
+        params = state40.params.split(",").map((s) => s.trim()).filter(Boolean);
       } catch (err) {
-        state37.error = t("syntax.err.argsParse", { msg: err.message });
+        state40.error = t("syntax.err.argsParse", { msg: err.message });
         return;
       }
       let parsedTests;
       try {
-        parsedTests = state37.tests.map((t2) => ({
+        parsedTests = state40.tests.map((t2) => ({
           id: t2.id,
           args: parseTestArgs(t2.argsText),
           expected: parseExpected(t2.expectedText)
         }));
       } catch (err) {
-        state37.error = err.message;
+        state40.error = err.message;
         return;
       }
       let suiteResults;
       try {
-        suiteResults = runTestSuite(params, state37.body, parsedTests);
+        suiteResults = runTestSuite(params, state40.body, parsedTests);
       } catch (err) {
-        state37.error = t("syntax.err.compile", { msg: err.message });
+        state40.error = t("syntax.err.compile", { msg: err.message });
         return;
       }
-      const operators = [...state37.operators];
-      const generated = generateMutants(state37.body, operators);
-      const evaluated = evaluateMutants(params, state37.body, parsedTests, generated);
+      const operators = [...state40.operators];
+      const generated = generateMutants(state40.body, operators);
+      const evaluated = evaluateMutants(params, state40.body, parsedTests, generated);
       const prevEquivalent = new Set(
-        state37.mutants.filter((m) => m.status === "equivalent").map((m) => m.id)
+        state40.mutants.filter((m) => m.status === "equivalent").map((m) => m.id)
       );
       const finalMutants = evaluated.map(
         (m) => prevEquivalent.has(m.id) ? { ...m, status: "equivalent", killedBy: [] } : m
       );
-      state37.suiteResults = suiteResults;
-      state37.parsedTests = parsedTests;
-      state37.parsedParams = params;
-      state37.mutants = finalMutants;
-      state37.score = computeMutationScore(finalMutants);
-      if (!state37.mutants.find((m) => m.id === state37.selectedMutantId)) {
-        state37.selectedMutantId = ((_a2 = finalMutants[0]) == null ? void 0 : _a2.id) || null;
+      state40.suiteResults = suiteResults;
+      state40.parsedTests = parsedTests;
+      state40.parsedParams = params;
+      state40.mutants = finalMutants;
+      state40.score = computeMutationScore(finalMutants);
+      if (!state40.mutants.find((m) => m.id === state40.selectedMutantId)) {
+        state40.selectedMutantId = ((_a2 = finalMutants[0]) == null ? void 0 : _a2.id) || null;
       }
     }
     function loadExample(id) {
-      const ex = programExamples.find((e) => e.id === id) || state37.customExamples.find((e) => e.id === id);
+      const ex = programExamples.find((e) => e.id === id) || state40.customExamples.find((e) => e.id === id);
       if (!ex) return;
-      state37.exampleId = id;
-      const snap = state37.programs[id] || defaultProgramSnapshot(ex);
-      state37.params = snap.params;
-      state37.body = snap.body;
-      state37.tests = snap.tests.map((t2) => ({ ...t2 }));
-      state37.selectedMutantId = null;
+      state40.exampleId = id;
+      const snap = state40.programs[id] || defaultProgramSnapshot(ex);
+      state40.params = snap.params;
+      state40.body = snap.body;
+      state40.tests = snap.tests.map((t2) => ({ ...t2 }));
+      state40.selectedMutantId = null;
     }
-    function render37() {
+    function render40() {
       recompute();
-      const allExamples = [...programExamples, ...state37.customExamples];
+      const allExamples = [...programExamples, ...state40.customExamples];
       const exampleButtons = allExamples.map((ex) => `
       <button
         type="button"
-        class="syntax-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+        class="syntax-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-example="${ex.id}"
         title="${escapeHtml3(getLocale() === "en" ? ex.descriptionEn || ex.description : ex.description)}"
         data-testid="syntax-example-${ex.id}"
       >${escapeHtml3(ex.name)}</button>
     `).join("");
       const operatorButtons = mutationOperators.map((op) => `
-      <label class="syntax-op-btn${state37.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(getLocale() === "en" ? op.descEn || op.desc : op.desc)}">
-        <input type="checkbox" data-operator="${op.id}" ${state37.operators.has(op.id) ? "checked" : ""} />
+      <label class="syntax-op-btn${state40.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(getLocale() === "en" ? op.descEn || op.desc : op.desc)}">
+        <input type="checkbox" data-operator="${op.id}" ${state40.operators.has(op.id) ? "checked" : ""} />
         <span>${escapeHtml3(op.id)}</span>
       </label>
     `).join("");
-      const selectedMutant = state37.mutants.find((m) => m.id === state37.selectedMutantId) || null;
+      const selectedMutant = state40.mutants.find((m) => m.id === state40.selectedMutantId) || null;
       let mutantSuiteResults = null;
       if (selectedMutant) {
         try {
           mutantSuiteResults = runTestSuite(
-            state37.parsedParams,
+            state40.parsedParams,
             selectedMutant.source,
-            state37.parsedTests
+            state40.parsedTests
           );
         } catch {
-          mutantSuiteResults = state37.parsedTests.map(() => ({
+          mutantSuiteResults = state40.parsedTests.map(() => ({
             outcome: { ok: false, error: "compile error" }
           }));
         }
       }
       const showMutantCol = !!selectedMutant;
       const killedByIds = selectedMutant ? new Set(selectedMutant.killedBy) : /* @__PURE__ */ new Set();
-      const testRows = state37.tests.map((tc, i) => {
-        const result = state37.suiteResults[i];
+      const testRows = state40.tests.map((tc, i) => {
+        const result = state40.suiteResults[i];
         const passClass = (result == null ? void 0 : result.passed) ? "pass" : result ? "fail" : "";
         const actual = (result == null ? void 0 : result.outcome.ok) ? formatValue(result.outcome.value) : `\u26A0 ${(result == null ? void 0 : result.outcome.error) || ""}`;
         let mutantCell = "";
@@ -13490,13 +13590,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }).join("");
       const mutantHeaderCol = showMutantCol ? `<th class="syntax-test-mutant-head">mutant actual${selectedMutant ? `<br><small>(${escapeHtml3(selectedMutant.id)})</small>` : ""}</th>` : "";
       const grouped = /* @__PURE__ */ new Map();
-      state37.mutants.forEach((m) => {
+      state40.mutants.forEach((m) => {
         if (!grouped.has(m.operator)) grouped.set(m.operator, []);
         grouped.get(m.operator).push(m);
       });
       const mutantList = [...grouped.entries()].map(([op, list]) => {
         const items = list.map((m) => `
-        <li class="syntax-mutant-item ${m.status}${state37.selectedMutantId === m.id ? " selected" : ""}" data-mutant-id="${m.id}" data-testid="syntax-mutant-${m.id}">
+        <li class="syntax-mutant-item ${m.status}${state40.selectedMutantId === m.id ? " selected" : ""}" data-mutant-id="${m.id}" data-testid="syntax-mutant-${m.id}">
           <span class="syntax-mutant-id">${escapeHtml3(m.id)}</span>
           <span class="syntax-mutant-loc">L${m.line}:${m.col}</span>
           <span class="syntax-mutant-diff"><code>${escapeHtml3(m.original)}</code> \u2192 <code>${escapeHtml3(m.mutated)}</code></span>
@@ -13526,7 +13626,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     ` : `<p class="syntax-mutant-empty">${t("syntax.mutant.empty")}</p>`;
-      const scorePct = Math.round(state37.score.score * 100);
+      const scorePct = Math.round(state40.score.score * 100);
       const SYNTAX_THRESHOLD = 75;
       const syntaxMetricEncoded = encodeResult({
         v: 1,
@@ -13539,7 +13639,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         total: 1,
         items: [{ q: t("lab.metric.syntax.label", { pct: scorePct }), a: `${scorePct}%`, ok: scorePct >= SYNTAX_THRESHOLD }]
       });
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="syntax-toolbar">
         <div class="syntax-examples" role="tablist">${exampleButtons}</div>
         <div class="syntax-operators" data-testid="syntax-operators">${operatorButtons}</div>
@@ -13548,10 +13648,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <span
           class="syntax-cloud-indicator"
           data-testid="syntax-cloud-indicator"
-          data-status="${state37.cloudStatus}"
+          data-status="${state40.cloudStatus}"
         >${escapeHtml3(cloudIndicatorText())}</span>
         <span class="syntax-cloud-actions">
-          ${state37.cloudUser ? `<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB ${t("syntax.cloud.reload")}</button>` : ""}
+          ${state40.cloudUser ? `<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB ${t("syntax.cloud.reload")}</button>` : ""}
           <button type="button" class="syntax-reset-btn" data-testid="syntax-reset-program">\u21BA ${t("syntax.reset")}</button>
         </span>
       </div>
@@ -13559,9 +13659,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       <div class="syntax-grid">
         <section class="syntax-program">
           <label class="syntax-label">${t("syntax.params")}</label>
-          <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml3(state37.params)}" />
+          <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml3(state40.params)}" />
           <label class="syntax-label">${t("syntax.body")}</label>
-          <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml3(state37.body)}</textarea>
+          <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml3(state40.body)}</textarea>
         </section>
 
         <section class="syntax-tests">
@@ -13585,7 +13685,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </section>
       </div>
 
-      ${state37.error ? `<p class="syntax-error" data-testid="syntax-error">${escapeHtml3(state37.error)}</p>` : ""}
+      ${state40.error ? `<p class="syntax-error" data-testid="syntax-error">${escapeHtml3(state40.error)}</p>` : ""}
 
       <section class="syntax-score-section">
         <div class="syntax-score-bar">
@@ -13594,13 +13694,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <p class="syntax-score-stats" data-testid="syntax-score-stats">
           ${t("syntax.score")}: <strong>${scorePct}%</strong>
           <span class="syntax-divider">\xB7</span>
-          ${t("syntax.totalLabel")} ${state37.score.total}
+          ${t("syntax.totalLabel")} ${state40.score.total}
           <span class="syntax-divider">\xB7</span>
-          killed <strong>${state37.score.killed}</strong>
+          killed <strong>${state40.score.killed}</strong>
           <span class="syntax-divider">\xB7</span>
-          live <strong>${state37.score.live}</strong>
+          live <strong>${state40.score.live}</strong>
           <span class="syntax-divider">\xB7</span>
-          equivalent <strong>${state37.score.equivalent}</strong>
+          equivalent <strong>${state40.score.equivalent}</strong>
           <span class="syntax-divider">\xB7</span>
           ${!syntaxQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="syntax-quiz-start">${t("quiz.start")}</button>` : ""}
           <button type="button" class="quiz-share-btn" data-share-payload="${syntaxMetricEncoded}" data-testid="syntax-lab-metric">\u{1F4CA} ${t("lab.metric.record")}</button>
@@ -13613,179 +13713,179 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         ${selectedDetail}
       </section>
     `;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
-      root38.querySelectorAll("[data-example]").forEach((btn) => {
+    function bindEvents40() {
+      root41.querySelectorAll("[data-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           loadExample(btn.dataset.example);
-          render37();
+          render40();
         });
       });
-      const resetBtn = root38.querySelector('[data-testid="syntax-reset-program"]');
+      const resetBtn = root41.querySelector('[data-testid="syntax-reset-program"]');
       if (resetBtn) {
         resetBtn.addEventListener("click", () => {
-          const ex = programExamples.find((e) => e.id === state37.exampleId);
+          const ex = programExamples.find((e) => e.id === state40.exampleId);
           if (!ex) return;
           const snap = defaultProgramSnapshot(ex);
-          state37.params = snap.params;
-          state37.body = snap.body;
-          state37.tests = snap.tests.map((t2) => ({ ...t2 }));
-          state37.selectedMutantId = null;
+          state40.params = snap.params;
+          state40.body = snap.body;
+          state40.tests = snap.tests.map((t2) => ({ ...t2 }));
+          state40.selectedMutantId = null;
           persistCurrent();
-          render37();
+          render40();
         });
       }
-      const reloadBtn = root38.querySelector('[data-testid="syntax-cloud-reload"]');
+      const reloadBtn = root41.querySelector('[data-testid="syntax-cloud-reload"]');
       if (reloadBtn) {
         reloadBtn.addEventListener("click", () => {
           reloadFromCloud({ force: true });
         });
       }
-      root38.querySelectorAll("[data-operator]").forEach((cb) => {
+      root41.querySelectorAll("[data-operator]").forEach((cb) => {
         cb.addEventListener("change", () => {
           const op = cb.dataset.operator;
-          if (cb.checked) state37.operators.add(op);
-          else state37.operators.delete(op);
-          render37();
+          if (cb.checked) state40.operators.add(op);
+          else state40.operators.delete(op);
+          render40();
         });
       });
-      const params = root38.querySelector('[data-testid="syntax-params"]');
+      const params = root41.querySelector('[data-testid="syntax-params"]');
       if (params) {
         params.addEventListener("input", (e) => {
-          state37.params = e.target.value;
+          state40.params = e.target.value;
           persistCurrent();
         });
         params.addEventListener("change", (e) => {
-          state37.params = e.target.value;
+          state40.params = e.target.value;
           persistCurrent();
-          render37();
+          render40();
         });
       }
-      const body = root38.querySelector('[data-testid="syntax-body"]');
+      const body = root41.querySelector('[data-testid="syntax-body"]');
       if (body) {
         body.addEventListener("input", (e) => {
-          state37.body = e.target.value;
+          state40.body = e.target.value;
           persistCurrent();
         });
         body.addEventListener("change", (e) => {
-          state37.body = e.target.value;
+          state40.body = e.target.value;
           persistCurrent();
-          render37();
+          render40();
         });
       }
-      root38.querySelectorAll("[data-test-args]").forEach((input) => {
+      root41.querySelectorAll("[data-test-args]").forEach((input) => {
         input.addEventListener("input", (e) => {
           const id = input.dataset.testArgs;
-          const t2 = state37.tests.find((x) => x.id === id);
+          const t2 = state40.tests.find((x) => x.id === id);
           if (t2) t2.argsText = e.target.value;
           persistCurrent();
         });
         input.addEventListener("change", (e) => {
           const id = input.dataset.testArgs;
-          const t2 = state37.tests.find((x) => x.id === id);
+          const t2 = state40.tests.find((x) => x.id === id);
           if (t2) t2.argsText = e.target.value;
           persistCurrent();
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-test-expected]").forEach((input) => {
+      root41.querySelectorAll("[data-test-expected]").forEach((input) => {
         input.addEventListener("input", (e) => {
           const id = input.dataset.testExpected;
-          const t2 = state37.tests.find((x) => x.id === id);
+          const t2 = state40.tests.find((x) => x.id === id);
           if (t2) t2.expectedText = e.target.value;
           persistCurrent();
         });
         input.addEventListener("change", (e) => {
           const id = input.dataset.testExpected;
-          const t2 = state37.tests.find((x) => x.id === id);
+          const t2 = state40.tests.find((x) => x.id === id);
           if (t2) t2.expectedText = e.target.value;
           persistCurrent();
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-remove-test]").forEach((btn) => {
+      root41.querySelectorAll("[data-remove-test]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.tests = state37.tests.filter((t2) => t2.id !== btn.dataset.removeTest);
+          state40.tests = state40.tests.filter((t2) => t2.id !== btn.dataset.removeTest);
           persistCurrent();
-          render37();
+          render40();
         });
       });
-      const addBtn = root38.querySelector('[data-testid="syntax-test-add"]');
+      const addBtn = root41.querySelector('[data-testid="syntax-test-add"]');
       if (addBtn) {
         addBtn.addEventListener("click", () => {
-          const next = `t${state37.tests.length + 1}`;
-          state37.tests.push({ id: next, argsText: "", expectedText: "" });
+          const next = `t${state40.tests.length + 1}`;
+          state40.tests.push({ id: next, argsText: "", expectedText: "" });
           persistCurrent();
-          render37();
+          render40();
         });
       }
-      root38.querySelectorAll("[data-mutant-id]").forEach((li) => {
+      root41.querySelectorAll("[data-mutant-id]").forEach((li) => {
         li.addEventListener("click", () => {
-          state37.selectedMutantId = li.dataset.mutantId;
-          render37();
+          state40.selectedMutantId = li.dataset.mutantId;
+          render40();
         });
       });
-      root38.querySelectorAll("[data-toggle-equivalent]").forEach((btn) => {
+      root41.querySelectorAll("[data-toggle-equivalent]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const m = state37.mutants.find((x) => x.id === btn.dataset.toggleEquivalent);
+          const m = state40.mutants.find((x) => x.id === btn.dataset.toggleEquivalent);
           if (!m) return;
           m.status = m.status === "equivalent" ? m.killedBy.length ? "killed" : "live" : "equivalent";
-          state37.score = computeMutationScore(state37.mutants);
-          render37();
+          state40.score = computeMutationScore(state40.mutants);
+          render40();
         });
       });
-      const sqStart = root38.querySelector('[data-testid="syntax-quiz-start"]');
+      const sqStart = root41.querySelector('[data-testid="syntax-quiz-start"]');
       if (sqStart) {
         sqStart.addEventListener("click", () => {
           syntaxQuiz.active = true;
           syntaxQuiz.phase = "question";
           syntaxQuiz.answer = "";
           syntaxQuiz.result = null;
-          render37();
+          render40();
         });
       }
-      const sqClose = root38.querySelector('[data-testid="syntax-quiz-close"]');
+      const sqClose = root41.querySelector('[data-testid="syntax-quiz-close"]');
       if (sqClose) {
         sqClose.addEventListener("click", () => {
           syntaxQuiz.active = false;
-          render37();
+          render40();
         });
       }
-      const sqCheck = root38.querySelector('[data-testid="syntax-quiz-check"]');
+      const sqCheck = root41.querySelector('[data-testid="syntax-quiz-check"]');
       if (sqCheck) {
         sqCheck.addEventListener("click", () => {
-          const inp = root38.querySelector('[data-testid="syntax-quiz-input"]');
+          const inp = root41.querySelector('[data-testid="syntax-quiz-input"]');
           syntaxQuiz.answer = inp ? inp.value : "";
           syntaxQuiz.phase = "graded";
-          render37();
+          render40();
         });
       }
-      const sqReset = root38.querySelector('[data-testid="syntax-quiz-reset"]');
+      const sqReset = root41.querySelector('[data-testid="syntax-quiz-reset"]');
       if (sqReset) {
         sqReset.addEventListener("click", () => {
           syntaxQuiz.phase = "question";
           syntaxQuiz.answer = "";
           syntaxQuiz.result = null;
-          render37();
+          render40();
         });
       }
     }
-    render37();
+    render40();
     if (cloudClient && typeof cloudClient.subscribeAuthState === "function") {
       cloudClient.subscribeAuthState(async (user) => {
-        state37.cloudUser = user || null;
+        state40.cloudUser = user || null;
         if (!user) {
-          state37.cloudStatus = "idle";
-          state37.cloudMessage = "";
-          render37();
+          state40.cloudStatus = "idle";
+          state40.cloudMessage = "";
+          render40();
           return;
         }
         await reloadFromCloud();
       });
       if (typeof ((_a = globalThis.document) == null ? void 0 : _a.addEventListener) === "function") {
         globalThis.document.addEventListener("visibilitychange", () => {
-          if (globalThis.document.visibilityState === "visible" && state37.cloudUser) {
+          if (globalThis.document.visibilityState === "visible" && state40.cloudUser) {
             reloadFromCloud();
           }
         });
@@ -13802,7 +13902,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a2;
-        if (!root38.isConnected) return;
+        if (!root41.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "mutation") return;
         const content = String((_a2 = detail.content) != null ? _a2 : "");
@@ -13821,18 +13921,18 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           body,
           tests: []
         };
-        state37.customExamples = [...state37.customExamples, newExample];
-        state37.programs[id] = { params, body, tests: [] };
-        state37.exampleId = id;
-        state37.params = params;
-        state37.body = body;
-        state37.tests = [];
-        state37.selectedMutantId = null;
+        state40.customExamples = [...state40.customExamples, newExample];
+        state40.programs[id] = { params, body, tests: [] };
+        state40.exampleId = id;
+        state40.params = params;
+        state40.body = body;
+        state40.tests = [];
+        state40.selectedMutantId = null;
         persistCurrent();
-        render37();
+        render40();
       });
     }
-    return root38;
+    return root41;
   }
 
   // src/data/grammarData.js
@@ -14384,13 +14484,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   </div>`;
   }
   function createGrammarCoverageExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "grammar-coverage";
-    root38.dataset.testid = "grammar-coverage";
+    const root41 = document.createElement("div");
+    root41.className = "grammar-coverage";
+    root41.dataset.testid = "grammar-coverage";
     const initial = grammarExamples[0];
     const localPrograms = loadLocalGrammars();
     const initialText = localPrograms[initial.id] || initial.text;
-    const state37 = {
+    const state40 = {
       exampleId: initial.id,
       text: initialText,
       programs: localPrograms,
@@ -14415,98 +14515,98 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       activeTab: loadActiveTab()
     };
     function persistCurrent() {
-      state37.programs[state37.exampleId] = state37.text;
-      saveLocalGrammars(state37.programs);
+      state40.programs[state40.exampleId] = state40.text;
+      saveLocalGrammars(state40.programs);
     }
     function recompute() {
       var _a, _b;
-      state37.parseError = null;
-      state37.grammar = null;
-      state37.derivations = [];
-      state37.coverage = null;
-      state37.mutants = [];
+      state40.parseError = null;
+      state40.grammar = null;
+      state40.derivations = [];
+      state40.coverage = null;
+      state40.mutants = [];
       try {
-        const g = parseGrammar(state37.text);
-        state37.grammar = g;
-        state37.derivations = generateDerivations(g, {
-          maxStrings: state37.maxStrings,
-          maxDepth: state37.maxDepth
+        const g = parseGrammar(state40.text);
+        state40.grammar = g;
+        state40.derivations = generateDerivations(g, {
+          maxStrings: state40.maxStrings,
+          maxDepth: state40.maxDepth
         });
-        state37.coverage = computeCoverage(state37.derivations, g);
-        const ops = [...state37.operators];
+        state40.coverage = computeCoverage(state40.derivations, g);
+        const ops = [...state40.operators];
         if (ops.length > 0) {
           const generated = generateGrammarMutants(g, ops);
           const allTestStrings = [
-            ...state37.derivations.map((d) => d.string),
-            ...state37.extraTests.split("\n").map((s) => s).filter((_, idx, arr) => arr.indexOf(arr[idx]) === idx)
+            ...state40.derivations.map((d) => d.string),
+            ...state40.extraTests.split("\n").map((s) => s).filter((_, idx, arr) => arr.indexOf(arr[idx]) === idx)
           ];
-          state37.mutants = evaluateMutantsAgainstStrings(g, generated, allTestStrings);
+          state40.mutants = evaluateMutantsAgainstStrings(g, generated, allTestStrings);
         }
-        if (!state37.mutants.find((m) => m.id === state37.selectedMutantId)) {
-          state37.selectedMutantId = ((_a = state37.mutants[0]) == null ? void 0 : _a.id) || null;
+        if (!state40.mutants.find((m) => m.id === state40.selectedMutantId)) {
+          state40.selectedMutantId = ((_a = state40.mutants[0]) == null ? void 0 : _a.id) || null;
         }
-        state37.stringMutants = [];
-        if (state37.derivations.length > 0 && state37.stringOperators.size > 0) {
-          const idx = Math.min(state37.seedIndex, state37.derivations.length - 1);
-          const seed = state37.derivations[idx].string;
-          const alphabet = deriveAlphabet(g, state37.derivations.map((d) => d.string));
-          const raw = generateStringMutants(seed, [...state37.stringOperators], {
+        state40.stringMutants = [];
+        if (state40.derivations.length > 0 && state40.stringOperators.size > 0) {
+          const idx = Math.min(state40.seedIndex, state40.derivations.length - 1);
+          const seed = state40.derivations[idx].string;
+          const alphabet = deriveAlphabet(g, state40.derivations.map((d) => d.string));
+          const raw = generateStringMutants(seed, [...state40.stringOperators], {
             alphabet,
-            maxPerOp: state37.maxPerStringOp
+            maxPerOp: state40.maxPerStringOp
           });
-          state37.stringMutants = classifyStringMutants(g, raw);
+          state40.stringMutants = classifyStringMutants(g, raw);
         }
-        if (!state37.stringMutants.find((m) => m.id === state37.selectedStringMutantId)) {
-          state37.selectedStringMutantId = ((_b = state37.stringMutants[0]) == null ? void 0 : _b.id) || null;
+        if (!state40.stringMutants.find((m) => m.id === state40.selectedStringMutantId)) {
+          state40.selectedStringMutantId = ((_b = state40.stringMutants[0]) == null ? void 0 : _b.id) || null;
         }
       } catch (err) {
-        state37.parseError = err.message || String(err);
+        state40.parseError = err.message || String(err);
       }
     }
     function loadExample(id) {
-      const ex = grammarExamples.find((e) => e.id === id) || state37.customExamples.find((e) => e.id === id);
+      const ex = grammarExamples.find((e) => e.id === id) || state40.customExamples.find((e) => e.id === id);
       if (!ex) return;
-      state37.exampleId = id;
-      state37.text = state37.programs[id] || ex.text;
-      state37.selectedMutantId = null;
+      state40.exampleId = id;
+      state40.text = state40.programs[id] || ex.text;
+      state40.selectedMutantId = null;
     }
-    function render37() {
+    function render40() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
       recompute();
-      const allExamples = [...grammarExamples, ...state37.customExamples];
+      const allExamples = [...grammarExamples, ...state40.customExamples];
       const exampleButtons = allExamples.map((ex) => `
       <button
         type="button"
-        class="grammar-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+        class="grammar-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-grammar-example="${ex.id}"
         title="${escapeHtml4(getLocale() === "en" ? ex.descriptionEn || ex.description : ex.description)}"
       >${escapeHtml4(pickField(ex, "name"))}</button>
     `).join("");
       const operatorButtons = GRAMMAR_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state37.operators.has(op) ? " active" : ""}">
-        <input type="checkbox" data-grammar-op="${op}" ${state37.operators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state40.operators.has(op) ? " active" : ""}">
+        <input type="checkbox" data-grammar-op="${op}" ${state40.operators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const productionsHtml = state37.grammar ? state37.grammar.productions.map((p) => {
+      const productionsHtml = state40.grammar ? state40.grammar.productions.map((p) => {
         var _a2;
-        return formatProductionHtml(p, (_a2 = state37.coverage) == null ? void 0 : _a2.pdc.covered.has(p.id));
+        return formatProductionHtml(p, (_a2 = state40.coverage) == null ? void 0 : _a2.pdc.covered.has(p.id));
       }).join("") : "";
-      const derivationsHtml = state37.derivations.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noDerivations"))}</p>` : `<ol class="grammar-derivations">
-          ${state37.derivations.map((d) => `<li><code>${escapeHtml4(d.string === "" ? "\u2205" : d.string)}</code>
+      const derivationsHtml = state40.derivations.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noDerivations"))}</p>` : `<ol class="grammar-derivations">
+          ${state40.derivations.map((d) => `<li><code>${escapeHtml4(d.string === "" ? "\u2205" : d.string)}</code>
             <span class="grammar-derivation-meta">depth ${d.depth} \xB7 p[${d.productionsUsed.join(", ")}]</span></li>`).join("")}
          </ol>`;
-      const pdcRatio = state37.coverage ? Math.round(state37.coverage.pdc.ratio * 100) : 0;
-      const tscRatio = state37.coverage ? Math.round(state37.coverage.tsc.ratio * 100) : 0;
-      const terminalsHtml = state37.grammar ? [...state37.grammar.terminals].map((tm) => {
+      const pdcRatio = state40.coverage ? Math.round(state40.coverage.pdc.ratio * 100) : 0;
+      const tscRatio = state40.coverage ? Math.round(state40.coverage.tsc.ratio * 100) : 0;
+      const terminalsHtml = state40.grammar ? [...state40.grammar.terminals].map((tm) => {
         var _a2;
-        const covered = (_a2 = state37.coverage) == null ? void 0 : _a2.tsc.covered.has(tm);
+        const covered = (_a2 = state40.coverage) == null ? void 0 : _a2.tsc.covered.has(tm);
         return `<span class="grammar-terminal-chip${covered ? " covered" : ""}">"${escapeHtml4(tm)}"</span>`;
       }).join("") : "";
-      const mutantsHtml = state37.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noMutants"))}</p>` : `<ul class="grammar-mutant-list">
-          ${state37.mutants.map((m) => `<li>
+      const mutantsHtml = state40.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noMutants"))}</p>` : `<ul class="grammar-mutant-list">
+          ${state40.mutants.map((m) => `<li>
             <button type="button"
-              class="grammar-mutant-btn${state37.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
+              class="grammar-mutant-btn${state40.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
               data-grammar-mutant="${escapeHtml4(m.id)}">
               <span class="grammar-mutant-op">${m.operator}</span>
               <span class="grammar-mutant-status">${m.killed ? t("grammar.killed") : t("grammar.live")}</span>
@@ -14514,33 +14614,33 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             </button>
           </li>`).join("")}
          </ul>`;
-      const selectedMutant = state37.mutants.find((m) => m.id === state37.selectedMutantId) || null;
+      const selectedMutant = state40.mutants.find((m) => m.id === state40.selectedMutantId) || null;
       const selectedMutantDetailHtml = selectedMutant ? `<div class="grammar-mutant-detail">
           <h5>${escapeHtml4(selectedMutant.id)}</h5>
           <p>${escapeHtml4(selectedMutant.description)}</p>
           ${selectedMutant.killed ? `<p class="grammar-mutant-killers"><strong>${escapeHtml4(t("grammar.killedBy"))}</strong></p>
                <ul class="grammar-killer-list">${selectedMutant.killers.slice(0, 8).map((k) => `<li><code>${escapeHtml4(k.string === "" ? "\u2205" : k.string)}</code> \xB7 ${k.origAccepts ? t("grammar.origAccepts") : t("grammar.origRejects")} \xB7 ${k.mutAccepts ? t("grammar.mutAccepts") : t("grammar.mutRejects")}</li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml4(t("grammar.liveHint"))}</p>`}
         </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.selectMutantHint"))}</p>`;
-      const score = state37.mutants.length === 0 ? null : { killed: state37.mutants.filter((m) => m.killed).length, total: state37.mutants.length };
-      const seedOptionsHtml = state37.derivations.map((d, idx) => `
-      <option value="${idx}" ${idx === Math.min(state37.seedIndex, state37.derivations.length - 1) ? "selected" : ""}>
+      const score = state40.mutants.length === 0 ? null : { killed: state40.mutants.filter((m) => m.killed).length, total: state40.mutants.length };
+      const seedOptionsHtml = state40.derivations.map((d, idx) => `
+      <option value="${idx}" ${idx === Math.min(state40.seedIndex, state40.derivations.length - 1) ? "selected" : ""}>
         #${idx + 1}: ${escapeHtml4(d.string === "" ? "\u2205" : d.string)}
       </option>`).join("");
       const stringOpButtons = STRING_MUTATION_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state37.stringOperators.has(op) ? " active" : ""}">
-        <input type="checkbox" data-grammar-string-op="${op}" ${state37.stringOperators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state40.stringOperators.has(op) ? " active" : ""}">
+        <input type="checkbox" data-grammar-string-op="${op}" ${state40.stringOperators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const stringMutantsHtml = state37.stringMutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.string.empty"))}</p>` : `<table class="grammar-string-mutant-table" data-testid="grammar-string-mutant-table">
+      const stringMutantsHtml = state40.stringMutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.string.empty"))}</p>` : `<table class="grammar-string-mutant-table" data-testid="grammar-string-mutant-table">
           <thead><tr>
             <th>Op</th>
             <th>${escapeHtml4(t("grammar.string.colMutated"))}</th>
             <th>${escapeHtml4(t("grammar.string.colKind"))}</th>
           </tr></thead>
           <tbody>
-            ${state37.stringMutants.map((m) => `<tr
-                class="grammar-string-row ${m.kind === "positive" ? "positive" : "negative"}${state37.selectedStringMutantId === m.id ? " active" : ""}"
+            ${state40.stringMutants.map((m) => `<tr
+                class="grammar-string-row ${m.kind === "positive" ? "positive" : "negative"}${state40.selectedStringMutantId === m.id ? " active" : ""}"
                 data-grammar-string-mutant="${escapeHtml4(m.id)}">
                 <td><span class="grammar-op-tag">${m.operator}</span></td>
                 <td><code>${escapeHtml4(m.mutated === "" ? "\u2205" : m.mutated)}</code></td>
@@ -14548,19 +14648,19 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               </tr>`).join("")}
           </tbody>
          </table>`;
-      const positives = state37.stringMutants.filter((m) => m.kind === "positive").length;
-      const negatives = state37.stringMutants.length - positives;
-      const stringStats = state37.stringMutants.length === 0 ? null : `<span class="grammar-string-stats" data-testid="grammar-string-stats">
+      const positives = state40.stringMutants.filter((m) => m.kind === "positive").length;
+      const negatives = state40.stringMutants.length - positives;
+      const stringStats = state40.stringMutants.length === 0 ? null : `<span class="grammar-string-stats" data-testid="grammar-string-stats">
           ${escapeHtml4(t("grammar.string.statsPositive"))}: ${positives} \xB7 ${escapeHtml4(t("grammar.string.statsNegative"))}: ${negatives}
         </span>`;
-      const selectedStringMutant = state37.stringMutants.find((m) => m.id === state37.selectedStringMutantId) || null;
+      const selectedStringMutant = state40.stringMutants.find((m) => m.id === state40.selectedStringMutantId) || null;
       const selectedStringDetailHtml = selectedStringMutant ? `<div class="grammar-string-detail">
           <p><strong>${escapeHtml4(selectedStringMutant.operator)}</strong> \xB7 ${escapeHtml4(selectedStringMutant.description)}</p>
           <p>${escapeHtml4(t("grammar.string.original"))}: <code>${escapeHtml4(selectedStringMutant.original === "" ? "\u2205" : selectedStringMutant.original)}</code></p>
           <p>${escapeHtml4(t("grammar.string.mutated"))}: <code>${escapeHtml4(selectedStringMutant.mutated === "" ? "\u2205" : selectedStringMutant.mutated)}</code></p>
           <p>${selectedStringMutant.flipped ? `<span class="grammar-string-flip">\u26A1 ${escapeHtml4(t("grammar.string.flipped"))}</span>` : `<span class="grammar-string-same">${escapeHtml4(t("grammar.string.sameLang"))}</span>`}</p>
         </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.string.selectHint"))}</p>`;
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="grammar-card">
         <header class="grammar-header">
           <p class="grammar-kicker">${escapeHtml4(t("grammar.kicker"))}</p>
@@ -14576,20 +14676,20 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <div class="grammar-editor-col">
             <label class="grammar-editor-label">
               ${escapeHtml4(t("grammar.bnfEditor"))}
-              <textarea data-testid="grammar-text" rows="8" spellcheck="false">${escapeHtml4(state37.text)}</textarea>
+              <textarea data-testid="grammar-text" rows="8" spellcheck="false">${escapeHtml4(state40.text)}</textarea>
             </label>
-            ${state37.parseError ? `<p class="grammar-error" data-testid="grammar-parse-error">${escapeHtml4(state37.parseError)}</p>` : ""}
+            ${state40.parseError ? `<p class="grammar-error" data-testid="grammar-parse-error">${escapeHtml4(state40.parseError)}</p>` : ""}
             <div class="grammar-controls-row">
               <label>${escapeHtml4(t("grammar.maxStrings"))}
-                <input type="number" min="1" max="40" value="${state37.maxStrings}" data-grammar-max-strings />
+                <input type="number" min="1" max="40" value="${state40.maxStrings}" data-grammar-max-strings />
               </label>
               <label>${escapeHtml4(t("grammar.maxDepth"))}
-                <input type="number" min="1" max="40" value="${state37.maxDepth}" data-grammar-max-depth />
+                <input type="number" min="1" max="40" value="${state40.maxDepth}" data-grammar-max-depth />
               </label>
             </div>
             <label class="grammar-editor-label">
               ${escapeHtml4(t("grammar.extraTests"))}
-              <textarea data-testid="grammar-extra-tests" rows="3" spellcheck="false" placeholder="${escapeHtml4(t("grammar.extraTestsHint"))}">${escapeHtml4(state37.extraTests)}</textarea>
+              <textarea data-testid="grammar-extra-tests" rows="3" spellcheck="false" placeholder="${escapeHtml4(t("grammar.extraTestsHint"))}">${escapeHtml4(state40.extraTests)}</textarea>
             </label>
           </div>
 
@@ -14599,11 +14699,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             <div class="grammar-coverage-summary">
               <div class="grammar-metric">
                 <span class="grammar-metric-label">PDC</span>
-                <span class="grammar-metric-value" data-testid="grammar-pdc">${((_a = state37.coverage) == null ? void 0 : _a.pdc.covered.size) || 0} / ${((_b = state37.coverage) == null ? void 0 : _b.pdc.all.size) || 0} (${pdcRatio}%)</span>
+                <span class="grammar-metric-value" data-testid="grammar-pdc">${((_a = state40.coverage) == null ? void 0 : _a.pdc.covered.size) || 0} / ${((_b = state40.coverage) == null ? void 0 : _b.pdc.all.size) || 0} (${pdcRatio}%)</span>
               </div>
               <div class="grammar-metric">
                 <span class="grammar-metric-label">TSC</span>
-                <span class="grammar-metric-value" data-testid="grammar-tsc">${((_c = state37.coverage) == null ? void 0 : _c.tsc.covered.size) || 0} / ${((_d = state37.coverage) == null ? void 0 : _d.tsc.all.size) || 0} (${tscRatio}%)</span>
+                <span class="grammar-metric-value" data-testid="grammar-tsc">${((_c = state40.coverage) == null ? void 0 : _c.tsc.covered.size) || 0} / ${((_d = state40.coverage) == null ? void 0 : _d.tsc.all.size) || 0} (${tscRatio}%)</span>
               </div>
             </div>
             <div class="grammar-terminals">${terminalsHtml}</div>
@@ -14613,20 +14713,20 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <nav class="grammar-subtab-row" data-testid="grammar-subtab-row" role="tablist">
           ${GRAMMAR_TABS.map((tab) => `
             <button type="button"
-              class="grammar-subtab-btn${state37.activeTab === tab.id ? " active" : ""}"
+              class="grammar-subtab-btn${state40.activeTab === tab.id ? " active" : ""}"
               data-grammar-subtab="${tab.id}"
               role="tab"
-              aria-selected="${state37.activeTab === tab.id ? "true" : "false"}"
+              aria-selected="${state40.activeTab === tab.id ? "true" : "false"}"
             >${escapeHtml4(t(tab.labelKey))}</button>
           `).join("")}
         </nav>
 
-        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state37.activeTab === "derivations" ? "" : "none"}">
+        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state40.activeTab === "derivations" ? "" : "none"}">
           <h4>${escapeHtml4(t("grammar.derivations"))}</h4>
           ${derivationsHtml}
         </div>
 
-        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state37.activeTab === "mutation" ? "" : "none"}">
+        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state40.activeTab === "mutation" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.mutations"))}</h4>
             ${score ? `<span class="grammar-score" data-testid="grammar-mutation-score">${t("grammar.scoreLabel")}: ${score.killed} / ${score.total} (${Math.round(score.killed / score.total * 100)}%)</span>` : ""}
@@ -14638,7 +14738,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </div>
         </div>
 
-        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state37.activeTab === "string" ? "" : "none"}">
+        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state40.activeTab === "string" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.string.title"))}</h4>
             ${stringStats || ""}
@@ -14646,10 +14746,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <p class="grammar-string-subtitle">${escapeHtml4(t("grammar.string.subtitle"))}</p>
           <div class="grammar-string-controls">
             <label>${escapeHtml4(t("grammar.string.seed"))}
-              <select data-grammar-seed-select ${state37.derivations.length === 0 ? "disabled" : ""}>${seedOptionsHtml}</select>
+              <select data-grammar-seed-select ${state40.derivations.length === 0 ? "disabled" : ""}>${seedOptionsHtml}</select>
             </label>
             <label>${escapeHtml4(t("grammar.string.maxPerOp"))}
-              <input type="number" min="1" max="50" value="${state37.maxPerStringOp}" data-grammar-max-per-string-op />
+              <input type="number" min="1" max="50" value="${state40.maxPerStringOp}" data-grammar-max-per-string-op />
             </label>
           </div>
           <div class="grammar-op-row">${stringOpButtons}</div>
@@ -14660,82 +14760,82 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     `;
-      root38.querySelectorAll("[data-grammar-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-grammar-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           loadExample(btn.dataset.grammarExample);
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-grammar-subtab]").forEach((btn) => {
+      root41.querySelectorAll("[data-grammar-subtab]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.activeTab = btn.dataset.grammarSubtab;
-          saveActiveTab(state37.activeTab);
-          render37();
+          state40.activeTab = btn.dataset.grammarSubtab;
+          saveActiveTab(state40.activeTab);
+          render40();
         });
       });
-      const ta = root38.querySelector('[data-testid="grammar-text"]');
+      const ta = root41.querySelector('[data-testid="grammar-text"]');
       ta == null ? void 0 : ta.addEventListener("input", (e) => {
-        state37.text = e.target.value;
+        state40.text = e.target.value;
         persistCurrent();
       });
       ta == null ? void 0 : ta.addEventListener("change", () => {
-        render37();
+        render40();
       });
-      (_e = root38.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
-        state37.extraTests = e.target.value;
+      (_e = root41.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
+        state40.extraTests = e.target.value;
       });
-      (_f = root38.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _f.addEventListener("change", () => render37());
-      (_g = root38.querySelector("[data-grammar-max-strings]")) == null ? void 0 : _g.addEventListener("change", (e) => {
-        state37.maxStrings = Math.max(1, Math.min(40, Number(e.target.value) || 1));
-        render37();
+      (_f = root41.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _f.addEventListener("change", () => render40());
+      (_g = root41.querySelector("[data-grammar-max-strings]")) == null ? void 0 : _g.addEventListener("change", (e) => {
+        state40.maxStrings = Math.max(1, Math.min(40, Number(e.target.value) || 1));
+        render40();
       });
-      (_h = root38.querySelector("[data-grammar-max-depth]")) == null ? void 0 : _h.addEventListener("change", (e) => {
-        state37.maxDepth = Math.max(1, Math.min(40, Number(e.target.value) || 1));
-        render37();
+      (_h = root41.querySelector("[data-grammar-max-depth]")) == null ? void 0 : _h.addEventListener("change", (e) => {
+        state40.maxDepth = Math.max(1, Math.min(40, Number(e.target.value) || 1));
+        render40();
       });
-      root38.querySelectorAll("[data-grammar-op]").forEach((cb) => {
+      root41.querySelectorAll("[data-grammar-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.grammarOp;
-          if (e.target.checked) state37.operators.add(op);
-          else state37.operators.delete(op);
-          render37();
+          if (e.target.checked) state40.operators.add(op);
+          else state40.operators.delete(op);
+          render40();
         });
       });
-      root38.querySelectorAll("[data-grammar-mutant]").forEach((btn) => {
+      root41.querySelectorAll("[data-grammar-mutant]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.selectedMutantId = btn.dataset.grammarMutant;
-          render37();
+          state40.selectedMutantId = btn.dataset.grammarMutant;
+          render40();
         });
       });
-      (_i = root38.querySelector("[data-grammar-seed-select]")) == null ? void 0 : _i.addEventListener("change", (e) => {
-        state37.seedIndex = Math.max(0, Number(e.target.value) || 0);
-        state37.selectedStringMutantId = null;
-        render37();
+      (_i = root41.querySelector("[data-grammar-seed-select]")) == null ? void 0 : _i.addEventListener("change", (e) => {
+        state40.seedIndex = Math.max(0, Number(e.target.value) || 0);
+        state40.selectedStringMutantId = null;
+        render40();
       });
-      (_j = root38.querySelector("[data-grammar-max-per-string-op]")) == null ? void 0 : _j.addEventListener("change", (e) => {
-        state37.maxPerStringOp = Math.max(1, Math.min(50, Number(e.target.value) || 1));
-        render37();
+      (_j = root41.querySelector("[data-grammar-max-per-string-op]")) == null ? void 0 : _j.addEventListener("change", (e) => {
+        state40.maxPerStringOp = Math.max(1, Math.min(50, Number(e.target.value) || 1));
+        render40();
       });
-      root38.querySelectorAll("[data-grammar-string-op]").forEach((cb) => {
+      root41.querySelectorAll("[data-grammar-string-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.grammarStringOp;
-          if (e.target.checked) state37.stringOperators.add(op);
-          else state37.stringOperators.delete(op);
-          render37();
+          if (e.target.checked) state40.stringOperators.add(op);
+          else state40.stringOperators.delete(op);
+          render40();
         });
       });
-      root38.querySelectorAll("[data-grammar-string-mutant]").forEach((row) => {
+      root41.querySelectorAll("[data-grammar-string-mutant]").forEach((row) => {
         row.addEventListener("click", () => {
-          state37.selectedStringMutantId = row.dataset.grammarStringMutant;
-          render37();
+          state40.selectedStringMutantId = row.dataset.grammarStringMutant;
+          render40();
         });
       });
     }
-    render37();
+    render40();
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a;
-        if (!root38.isConnected) return;
+        if (!root41.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "grammar") return;
         const content = String((_a = detail.content) != null ? _a : "");
@@ -14749,16 +14849,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           descriptionEn: `Uploaded from cloud: ${detail.name || baseName}`,
           text: content
         };
-        state37.customExamples = [...state37.customExamples, newExample];
-        state37.programs[id] = content;
-        state37.exampleId = id;
-        state37.text = content;
-        state37.selectedMutantId = null;
+        state40.customExamples = [...state40.customExamples, newExample];
+        state40.programs[id] = content;
+        state40.exampleId = id;
+        state40.text = content;
+        state40.selectedMutantId = null;
         persistCurrent();
-        render37();
+        render40();
       });
     }
-    return root38;
+    return root41;
   }
 
   // src/utils/specMutation.js
@@ -14824,7 +14924,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         throw new Error(`Unknown AST node: ${node.type}`);
     }
   }
-  function* walkWithReplacers(root38) {
+  function* walkWithReplacers(root41) {
     function* walk(node, replaceInParent) {
       yield [node, replaceInParent];
       if (node.type === "not") {
@@ -14846,7 +14946,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     function topReplace(newRoot) {
       return cloneAst(newRoot);
     }
-    yield* walk(root38, topReplace);
+    yield* walk(root41, topReplace);
   }
   function generateSpecMutants(parsed, opIds = SPEC_MUTATION_OPERATORS) {
     if (!(parsed == null ? void 0 : parsed.ast)) throw new Error("parsed.ast is required");
@@ -15303,14 +15403,14 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist(state37) {
+  function persist(state40) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY4, JSON.stringify({
-        text: state37.text,
-        operators: [...state37.operators],
-        activeCategory: state37.activeCategory,
-        tests: state37.tests
+        text: state40.text,
+        operators: [...state40.operators],
+        activeCategory: state40.activeCategory,
+        tests: state40.tests
       }));
     } catch {
     }
@@ -15319,11 +15419,11 @@ INVARSPEC !w | (i & (l | h))`
     return Object.entries(values).map(([k, v]) => `${k}=${v ? "T" : "F"}`).join(", ");
   }
   function createSpecMutationExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "spec-mutation";
-    root38.dataset.testid = "spec-mutation";
+    const root41 = document.createElement("div");
+    root41.className = "spec-mutation";
+    root41.dataset.testid = "spec-mutation";
     const saved = loadSaved();
-    const state37 = {
+    const state40 = {
       text: (saved == null ? void 0 : saved.text) || DEFAULT_PREDICATE,
       operators: new Set((saved == null ? void 0 : saved.operators) || DEFAULT_OPS2),
       activeCategory: (saved == null ? void 0 : saved.activeCategory) || DEFAULT_CATEGORY,
@@ -15338,59 +15438,59 @@ INVARSPEC !w | (i & (l | h))`
     };
     function recompute() {
       var _a;
-      state37.parseError = null;
-      state37.parsed = null;
-      state37.mutants = [];
+      state40.parseError = null;
+      state40.parsed = null;
+      state40.mutants = [];
       try {
-        const parsed = parsePredicate(state37.text);
-        state37.parsed = parsed;
-        const ops = [...state37.operators];
+        const parsed = parsePredicate(state40.text);
+        state40.parsed = parsed;
+        const ops = [...state40.operators];
         const generated = ops.length > 0 ? generateSpecMutants(parsed, ops) : [];
         let tests;
-        if (state37.useFullTable) {
+        if (state40.useFullTable) {
           tests = buildAssignmentSpace(parsed.clauses);
         } else {
-          tests = (state37.tests || []).map((t2) => {
+          tests = (state40.tests || []).map((t2) => {
             var _a2;
             const v = {};
             for (const c of parsed.clauses) v[c] = !!((_a2 = t2.values) == null ? void 0 : _a2[c]);
             return v;
           });
         }
-        state37.mutants = evaluateSpecMutants(parsed, generated, tests);
-        if (!state37.mutants.find((m) => m.id === state37.selectedMutantId)) {
-          state37.selectedMutantId = ((_a = state37.mutants[0]) == null ? void 0 : _a.id) || null;
+        state40.mutants = evaluateSpecMutants(parsed, generated, tests);
+        if (!state40.mutants.find((m) => m.id === state40.selectedMutantId)) {
+          state40.selectedMutantId = ((_a = state40.mutants[0]) == null ? void 0 : _a.id) || null;
         }
       } catch (err) {
-        state37.parseError = err.message || String(err);
+        state40.parseError = err.message || String(err);
       }
-      persist(state37);
+      persist(state40);
     }
-    function render37() {
+    function render40() {
       var _a, _b, _c;
       recompute();
-      const currentExample4 = SPEC_EXAMPLES.find((ex) => state37.text.trim() === ex.text) || null;
+      const currentExample7 = SPEC_EXAMPLES.find((ex) => state40.text.trim() === ex.text) || null;
       const categoryButtons = SPEC_CATEGORIES.map((cat) => `
       <button type="button"
-        class="spec-category-btn${state37.activeCategory === cat.id ? " active" : ""}"
+        class="spec-category-btn${state40.activeCategory === cat.id ? " active" : ""}"
         data-spec-category="${cat.id}">${escapeHtml5(t(cat.labelKey))}</button>
     `).join("");
-      const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state37.activeCategory);
+      const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state40.activeCategory);
       const exampleButtons = visibleExamples.map((ex) => `
-      <button type="button" class="spec-example-btn${state37.text.trim() === ex.text ? " active" : ""}"
+      <button type="button" class="spec-example-btn${state40.text.trim() === ex.text ? " active" : ""}"
         data-spec-example="${ex.id}" title="${escapeHtml5(ex.description || "")}">${escapeHtml5(ex.name)}</button>
     `).join("");
       const operatorButtons = SPEC_MUTATION_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state37.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
-        <input type="checkbox" data-spec-op="${op}" ${state37.operators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state40.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
+        <input type="checkbox" data-spec-op="${op}" ${state40.operators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const score = state37.mutants.length === 0 ? null : { killed: state37.mutants.filter((m) => m.killed).length, total: state37.mutants.length };
-      const mutantsHtml = state37.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml5(t("spec.noMutants"))}</p>` : `<ul class="grammar-mutant-list" data-testid="spec-mutant-list">
-          ${state37.mutants.map((m) => `<li>
+      const score = state40.mutants.length === 0 ? null : { killed: state40.mutants.filter((m) => m.killed).length, total: state40.mutants.length };
+      const mutantsHtml = state40.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml5(t("spec.noMutants"))}</p>` : `<ul class="grammar-mutant-list" data-testid="spec-mutant-list">
+          ${state40.mutants.map((m) => `<li>
             <button type="button"
-              class="grammar-mutant-btn${state37.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
+              class="grammar-mutant-btn${state40.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
               data-spec-mutant="${escapeHtml5(m.id)}">
               <span class="grammar-mutant-op">${m.operator}</span>
               <span class="grammar-mutant-status">${m.killed ? t("grammar.killed") : t("grammar.live")}</span>
@@ -15401,19 +15501,19 @@ INVARSPEC !w | (i & (l | h))`
             </button>
           </li>`).join("")}
          </ul>`;
-      const selected = state37.mutants.find((m) => m.id === state37.selectedMutantId) || null;
-      const flippedSet = selected ? flippedKeysFromKillers(selected.killers, ((_a = state37.parsed) == null ? void 0 : _a.clauses) || []) : null;
-      const fsmHtml = state37.parsed ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
+      const selected = state40.mutants.find((m) => m.id === state40.selectedMutantId) || null;
+      const flippedSet = selected ? flippedKeysFromKillers(selected.killers, ((_a = state40.parsed) == null ? void 0 : _a.clauses) || []) : null;
+      const fsmHtml = state40.parsed ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
           ${renderMonitorSvg({
-        ast: state37.parsed.ast,
-        clauses: state37.parsed.clauses,
+        ast: state40.parsed.ast,
+        clauses: state40.parsed.clauses,
         title: t("spec.fsm.original"),
         flippedSet: null,
         testId: "spec-fsm-original"
       })}
           ${renderMonitorSvg({
-        ast: selected ? selected.ast : state37.parsed.ast,
-        clauses: state37.parsed.clauses,
+        ast: selected ? selected.ast : state40.parsed.ast,
+        clauses: state40.parsed.clauses,
         title: selected ? `${t("spec.fsm.mutant")}: ${selected.id}` : t("spec.fsm.pickMutant"),
         flippedSet,
         testId: "spec-fsm-mutant"
@@ -15430,7 +15530,7 @@ INVARSPEC !w | (i & (l | h))`
                  \xB7 orig=${k.orig ? "T" : "F"} \xB7 mut=${k.mut ? "T" : "F"}
                </li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml5(t("spec.equivalentHint"))}</p>`}
         </div>` : `<p class="grammar-empty">${escapeHtml5(t("grammar.selectMutantHint"))}</p>`;
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="grammar-card spec-card">
         <header class="grammar-header">
           <p class="grammar-kicker">${escapeHtml5(t("spec.kicker"))}</p>
@@ -15440,21 +15540,21 @@ INVARSPEC !w | (i & (l | h))`
 
         <nav class="spec-category-row" data-testid="spec-category-row" role="tablist" aria-label="${escapeHtml5(t("spec.cat.aria"))}">${categoryButtons}</nav>
         <div class="grammar-example-row" data-testid="spec-example-row">${exampleButtons}</div>
-        ${(currentExample4 == null ? void 0 : currentExample4.description) ? `<p class="spec-example-caption" data-testid="spec-example-caption">${escapeHtml5(currentExample4.description)}</p>` : ""}
-        ${(currentExample4 == null ? void 0 : currentExample4.smv) ? `<details class="spec-smv-source" data-testid="spec-smv-source" open>
+        ${(currentExample7 == null ? void 0 : currentExample7.description) ? `<p class="spec-example-caption" data-testid="spec-example-caption">${escapeHtml5(currentExample7.description)}</p>` : ""}
+        ${(currentExample7 == null ? void 0 : currentExample7.smv) ? `<details class="spec-smv-source" data-testid="spec-smv-source" open>
           <summary>${escapeHtml5(t("spec.smv.viewSource"))}</summary>
-          <pre><code>${escapeHtml5(currentExample4.smv)}</code></pre>
+          <pre><code>${escapeHtml5(currentExample7.smv)}</code></pre>
         </details>` : ""}
 
         <div class="spec-editor-row">
           <label class="grammar-editor-label">
             ${escapeHtml5(t("spec.predicateLabel"))}
-            <input type="text" data-testid="spec-text" value="${escapeHtml5(state37.text)}" spellcheck="false" />
+            <input type="text" data-testid="spec-text" value="${escapeHtml5(state40.text)}" spellcheck="false" />
           </label>
-          ${state37.parseError ? `<p class="grammar-error" data-testid="spec-parse-error">${escapeHtml5(state37.parseError)}</p>` : ""}
-          ${state37.parsed ? `<p class="spec-clauses">
-            <strong>${escapeHtml5(t("spec.clauses"))}:</strong> ${state37.parsed.clauses.map((c) => `<code>${escapeHtml5(c)}</code>`).join(", ") || "\u2014"}
-            \xB7 <strong>${escapeHtml5(t("spec.canonical"))}:</strong> <code>${escapeHtml5(astToString(state37.parsed.ast))}</code>
+          ${state40.parseError ? `<p class="grammar-error" data-testid="spec-parse-error">${escapeHtml5(state40.parseError)}</p>` : ""}
+          ${state40.parsed ? `<p class="spec-clauses">
+            <strong>${escapeHtml5(t("spec.clauses"))}:</strong> ${state40.parsed.clauses.map((c) => `<code>${escapeHtml5(c)}</code>`).join(", ") || "\u2014"}
+            \xB7 <strong>${escapeHtml5(t("spec.canonical"))}:</strong> <code>${escapeHtml5(astToString(state40.parsed.ast))}</code>
           </p>` : ""}
         </div>
 
@@ -15473,46 +15573,46 @@ INVARSPEC !w | (i & (l | h))`
         </div>
       </div>
     `;
-      root38.querySelectorAll("[data-spec-category]").forEach((btn) => {
+      root41.querySelectorAll("[data-spec-category]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.activeCategory = btn.dataset.specCategory;
-          render37();
+          state40.activeCategory = btn.dataset.specCategory;
+          render40();
         });
       });
-      root38.querySelectorAll("[data-spec-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-spec-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
           if (!ex) return;
-          state37.text = ex.text;
-          state37.activeCategory = ex.category || state37.activeCategory;
-          state37.selectedMutantId = null;
-          render37();
+          state40.text = ex.text;
+          state40.activeCategory = ex.category || state40.activeCategory;
+          state40.selectedMutantId = null;
+          render40();
         });
       });
-      (_b = root38.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("input", (e) => {
-        state37.text = e.target.value;
+      (_b = root41.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("input", (e) => {
+        state40.text = e.target.value;
       });
-      (_c = root38.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _c.addEventListener("change", () => {
-        state37.selectedMutantId = null;
-        render37();
+      (_c = root41.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _c.addEventListener("change", () => {
+        state40.selectedMutantId = null;
+        render40();
       });
-      root38.querySelectorAll("[data-spec-op]").forEach((cb) => {
+      root41.querySelectorAll("[data-spec-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.specOp;
-          if (e.target.checked) state37.operators.add(op);
-          else state37.operators.delete(op);
-          render37();
+          if (e.target.checked) state40.operators.add(op);
+          else state40.operators.delete(op);
+          render40();
         });
       });
-      root38.querySelectorAll("[data-spec-mutant]").forEach((btn) => {
+      root41.querySelectorAll("[data-spec-mutant]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.selectedMutantId = btn.dataset.specMutant;
-          render37();
+          state40.selectedMutantId = btn.dataset.specMutant;
+          render40();
         });
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/symbolicExecution.js
@@ -16305,25 +16405,25 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist2(state37) {
+  function persist2(state40) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY5, JSON.stringify({
-        sourceCode: state37.sourceCode,
-        exampleId: state37.exampleId,
-        maxLoopUnroll: state37.maxLoopUnroll,
-        cfgZoom: state37.cfgZoom
+        sourceCode: state40.sourceCode,
+        exampleId: state40.exampleId,
+        maxLoopUnroll: state40.maxLoopUnroll,
+        cfgZoom: state40.cfgZoom
       }));
     } catch {
     }
   }
   function createSymbolicExecutionExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "symbex-explorer";
-    root38.dataset.testid = "symbex-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "symbex-explorer";
+    root41.dataset.testid = "symbex-explorer";
     const saved = loadSaved2();
     const defaultExample = symbolicExecutionExamples[0];
-    const state37 = {
+    const state40 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       maxLoopUnroll: typeof (saved == null ? void 0 : saved.maxLoopUnroll) === "number" ? saved.maxLoopUnroll : 3,
@@ -16361,7 +16461,7 @@ INVARSPEC !w | (i & (l | h))`
     function renderSymbexQuizPanel() {
       if (!symbexQuiz.active) return "";
       if (symbexQuiz.phase === "graded") {
-        const correct = state37.result ? state37.result.paths.filter((p) => p.feasible).length : 0;
+        const correct = state40.result ? state40.result.paths.filter((p) => p.feasible).length : 0;
         const userAns = parseInt(symbexQuiz.answer, 10);
         const ok = userAns === correct;
         const shareEncoded = encodeResult({ v: 1, explorer: "symbex", explorerLabel: t("quiz.symbex.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.symbex.prompt"), a: String(symbexQuiz.answer), expected: String(correct), ok }] });
@@ -16400,52 +16500,52 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a, _b;
-      state37.result = null;
-      state37.error = null;
-      state37.cfg = null;
-      state37.cfgError = null;
+      state40.result = null;
+      state40.error = null;
+      state40.cfg = null;
+      state40.cfgError = null;
       try {
-        state37.result = symbolicExecute(state37.sourceCode, { maxLoopUnroll: state37.maxLoopUnroll });
+        state40.result = symbolicExecute(state40.sourceCode, { maxLoopUnroll: state40.maxLoopUnroll });
       } catch (err) {
-        state37.error = err.message || String(err);
+        state40.error = err.message || String(err);
       }
       try {
-        state37.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state37.sourceCode,
+        state40.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state40.sourceCode,
           language: "javascript",
           title: "Symbolic Execution CFG"
         });
       } catch (err) {
-        state37.cfgError = err.message || String(err);
+        state40.cfgError = err.message || String(err);
       }
-      if ((_b = (_a = state37.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.length) {
-        const stillExists = state37.result.paths.some((p) => p.id === state37.selectedPathId);
+      if ((_b = (_a = state40.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.length) {
+        const stillExists = state40.result.paths.some((p) => p.id === state40.selectedPathId);
         if (!stillExists) {
-          const firstFeasible = state37.result.paths.find((p) => p.feasible) || state37.result.paths[0];
-          state37.selectedPathId = firstFeasible.id;
+          const firstFeasible = state40.result.paths.find((p) => p.feasible) || state40.result.paths[0];
+          state40.selectedPathId = firstFeasible.id;
         }
       } else {
-        state37.selectedPathId = null;
+        state40.selectedPathId = null;
       }
-      persist2(state37);
+      persist2(state40);
     }
-    function render37() {
+    function render40() {
       recompute();
       const exampleButtons = symbolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="symbex-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+        class="symbex-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-symbex-example="${ex.id}"
         data-testid="symbex-example-${ex.id}"
         title="${escapeHtml6(pickField(ex, "description") || "")}">
         ${escapeHtml6(pickField(ex, "name") || ex.name)}
       </button>
     `).join("");
-      const pathsMarkup = state37.error ? `<div class="symbex-error" data-testid="symbex-error">${escapeHtml6(state37.error)}</div>` : renderPaths2(state37.result);
-      const summary = state37.result ? `${t("symbex.summary.paths")}<strong data-testid="symbex-path-count">${state37.result.paths.length}</strong>
+      const pathsMarkup = state40.error ? `<div class="symbex-error" data-testid="symbex-error">${escapeHtml6(state40.error)}</div>` : renderPaths2(state40.result);
+      const summary = state40.result ? `${t("symbex.summary.paths")}<strong data-testid="symbex-path-count">${state40.result.paths.length}</strong>
          <span class="symbex-divider">\xB7</span>
-         ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state37.result.paths.filter((p) => p.feasible).length}</strong>
-         ${state37.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
-      root38.innerHTML = `
+         ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state40.result.paths.filter((p) => p.feasible).length}</strong>
+         ${state40.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
+      root41.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="symbex-mobile-nav">
         <a href="#symbex-input-panel">${t("explorer.panel.input")}</a>
         <a href="#symbex-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -16462,7 +16562,7 @@ INVARSPEC !w | (i & (l | h))`
             <label class="symbex-control">
               <span>${t("symbex.maxUnroll")}</span>
               <input type="number" min="0" max="6" step="1"
-                value="${state37.maxLoopUnroll}"
+                value="${state40.maxLoopUnroll}"
                 data-testid="symbex-max-unroll" />
             </label>
           </div>
@@ -16474,7 +16574,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="symbex-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml6(state37.sourceCode)}</textarea>
+            rows="14">${escapeHtml6(state40.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -16502,24 +16602,24 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="symbex-hint">${t("symbex.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
     function renderCfgPane() {
       var _a, _b;
-      if (state37.cfgError) {
+      if (state40.cfgError) {
         return `<div class="symbex-cfg" data-testid="symbex-cfg">
-        <p class="symbex-cfg-error">${escapeHtml6(state37.cfgError)}</p>
+        <p class="symbex-cfg-error">${escapeHtml6(state40.cfgError)}</p>
       </div>`;
       }
-      if (!state37.cfg) return "";
-      const selected = (_b = (_a = state37.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.find((p) => p.id === state37.selectedPathId);
-      const mapping = selected ? mapBranchesToCfg(state37.cfg, selected.branches) : { nodes: [], edges: [] };
-      const svg = renderCfgSvg(state37.cfg, mapping, {
+      if (!state40.cfg) return "";
+      const selected = (_b = (_a = state40.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.find((p) => p.id === state40.selectedPathId);
+      const mapping = selected ? mapBranchesToCfg(state40.cfg, selected.branches) : { nodes: [], edges: [] };
+      const svg = renderCfgSvg(state40.cfg, mapping, {
         idPrefix: "symbex-cfg",
         ariaLabel: "Symbolic execution CFG",
-        zoom: state37.cfgZoom
+        zoom: state40.cfgZoom
       });
-      const zoomPct = Math.round(state37.cfgZoom * 100);
+      const zoomPct = Math.round(state40.cfgZoom * 100);
       return `
       <div class="symbex-cfg" data-testid="symbex-cfg">
         <div class="symbex-cfg-header">
@@ -16548,7 +16648,7 @@ INVARSPEC !w | (i & (l | h))`
              <dd><code>${escapeHtml6(formatReturn(p.returnExpression, p.concreteReturn))}</code></dd>
            </dl>` : `<p class="symbex-infeasible">${t("symbex.infeasible")}</p>`;
         return `
-        <li class="symbex-path${p.feasible ? "" : " infeasible"}${state37.selectedPathId === p.id ? " selected" : ""}"
+        <li class="symbex-path${p.feasible ? "" : " infeasible"}${state40.selectedPathId === p.id ? " selected" : ""}"
           data-testid="symbex-${p.id}"
           data-symbex-path="${p.id}"
           tabindex="0"
@@ -16573,24 +16673,24 @@ INVARSPEC !w | (i & (l | h))`
       if (concrete === null || concrete === void 0) return expr;
       return `${expr}  \u2192  ${concrete}`;
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a, _b, _c, _d;
-      root38.querySelectorAll("[data-symbex-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-symbex-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.symbexExample;
           const ex = symbolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state37.exampleId = ex.id;
-          state37.sourceCode = ex.sourceCode;
-          state37.selectedPathId = null;
+          state40.exampleId = ex.id;
+          state40.sourceCode = ex.sourceCode;
+          state40.selectedPathId = null;
           symbexQuiz.active = false;
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-symbex-path]").forEach((el) => {
+      root41.querySelectorAll("[data-symbex-path]").forEach((el) => {
         const select = () => {
-          state37.selectedPathId = el.dataset.symbexPath;
-          render37();
+          state40.selectedPathId = el.dataset.symbexPath;
+          render40();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -16600,92 +16700,92 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root38.querySelector('[data-testid="symbex-source"]');
+      const editor = root41.querySelector('[data-testid="symbex-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state37.sourceCode = editor.value;
+          state40.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => {
             renderPreservingFocus("symbex-source");
           }, 220);
         });
       }
-      const unroll = root38.querySelector('[data-testid="symbex-max-unroll"]');
+      const unroll = root41.querySelector('[data-testid="symbex-max-unroll"]');
       if (unroll) {
         unroll.addEventListener("change", () => {
           const n = Number(unroll.value);
           if (Number.isFinite(n) && n >= 0 && n <= 12) {
-            state37.maxLoopUnroll = n;
-            render37();
+            state40.maxLoopUnroll = n;
+            render40();
           }
         });
       }
-      root38.querySelectorAll("[data-symbex-zoom]").forEach((btn) => {
+      root41.querySelectorAll("[data-symbex-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.symbexZoom;
-          if (action === "in") state37.cfgZoom = Math.min(4, +(state37.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(state37.cfgZoom - 0.25).toFixed(2));
-          else state37.cfgZoom = 1;
-          render37();
+          if (action === "in") state40.cfgZoom = Math.min(4, +(state40.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state40.cfgZoom = Math.max(0.25, +(state40.cfgZoom - 0.25).toFixed(2));
+          else state40.cfgZoom = 1;
+          render40();
         });
       });
-      const sqStart = root38.querySelector('[data-testid="symbex-quiz-start"]');
+      const sqStart = root41.querySelector('[data-testid="symbex-quiz-start"]');
       if (sqStart) {
         sqStart.addEventListener("click", () => {
           symbexQuiz.active = true;
           symbexQuiz.phase = "question";
           symbexQuiz.answer = "";
-          render37();
+          render40();
         });
       }
-      const sqClose = root38.querySelector('[data-testid="symbex-quiz-close"]');
+      const sqClose = root41.querySelector('[data-testid="symbex-quiz-close"]');
       if (sqClose) {
         sqClose.addEventListener("click", () => {
           symbexQuiz.active = false;
-          render37();
+          render40();
         });
       }
-      const sqCheck = root38.querySelector('[data-testid="symbex-quiz-check"]');
+      const sqCheck = root41.querySelector('[data-testid="symbex-quiz-check"]');
       if (sqCheck) {
         sqCheck.addEventListener("click", () => {
-          const inp = root38.querySelector('[data-testid="symbex-quiz-input"]');
+          const inp = root41.querySelector('[data-testid="symbex-quiz-input"]');
           symbexQuiz.answer = inp ? inp.value : "";
           symbexQuiz.phase = "graded";
-          render37();
+          render40();
         });
       }
-      const sqReset = root38.querySelector('[data-testid="symbex-quiz-reset"]');
+      const sqReset = root41.querySelector('[data-testid="symbex-quiz-reset"]');
       if (sqReset) {
         sqReset.addEventListener("click", () => {
           symbexQuiz.phase = "question";
           symbexQuiz.answer = "";
-          render37();
+          render40();
         });
       }
-      (_a = root38.querySelector('[data-testid="symbex-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root41.querySelector('[data-testid="symbex-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         symbexLabReflect.active = true;
-        render37();
+        render40();
       });
-      (_b = root38.querySelector('[data-testid="symbex-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root41.querySelector('[data-testid="symbex-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a2, _b2;
-        symbexLabReflect.a1 = ((_a2 = root38.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || symbexLabReflect.a1;
-        symbexLabReflect.a2 = ((_b2 = root38.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || symbexLabReflect.a2;
+        symbexLabReflect.a1 = ((_a2 = root41.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || symbexLabReflect.a1;
+        symbexLabReflect.a2 = ((_b2 = root41.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || symbexLabReflect.a2;
         symbexLabReflect.active = false;
-        render37();
+        render40();
       });
-      (_c = root38.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
+      (_c = root41.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
         symbexLabReflect.a1 = e.target.value;
       });
-      (_d = root38.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root41.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         symbexLabReflect.a2 = e.target.value;
       });
-      const symbexLrShare = root38.querySelector('[data-testid="symbex-lab-reflect-share"]');
+      const symbexLrShare = root41.querySelector('[data-testid="symbex-lab-reflect-share"]');
       if (symbexLrShare) {
         symbexLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root38.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root38.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root41.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root41.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "symbex",
@@ -16721,11 +16821,11 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root38.querySelector(`[data-testid="${testid}"]`);
+      const previously = root41.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render37();
-      const next = root38.querySelector(`[data-testid="${testid}"]`);
+      render40();
+      const next = root41.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -16733,8 +16833,8 @@ INVARSPEC !w | (i & (l | h))`
         }
       }
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/concolicExecution.js
@@ -16838,9 +16938,9 @@ INVARSPEC !w | (i & (l | h))`
         break;
       }
       const inputs = worklist.shift();
-      let trace;
+      let trace2;
       try {
-        trace = runConcolicOnce(fn, inputs);
+        trace2 = runConcolicOnce(fn, inputs);
       } catch (err) {
         iterations.push({
           id: `iter-${iterations.length}`,
@@ -16856,7 +16956,7 @@ INVARSPEC !w | (i & (l | h))`
         });
         continue;
       }
-      const branches = trace.branches;
+      const branches = trace2.branches;
       const pkey = pathKey(branches);
       seenPaths.add(pkey);
       let nextInput = null;
@@ -16894,8 +16994,8 @@ INVARSPEC !w | (i & (l | h))`
         })),
         pathCondition: branches.map((b) => b.taken ? b.condition : `!(${b.condition})`),
         pathKey: pkey,
-        returnValue: trace.returnValue,
-        returnExpression: trace.returnExpression,
+        returnValue: trace2.returnValue,
+        returnExpression: trace2.returnExpression,
         runtimeError: null,
         nextInput,
         negatedAt,
@@ -16928,15 +17028,15 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist3(state37) {
+  function persist3(state40) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY6, JSON.stringify({
-        sourceCode: state37.sourceCode,
-        exampleId: state37.exampleId,
-        seedText: state37.seedText,
-        maxIterations: state37.maxIterations,
-        cfgZoom: state37.cfgZoom
+        sourceCode: state40.sourceCode,
+        exampleId: state40.exampleId,
+        seedText: state40.seedText,
+        maxIterations: state40.maxIterations,
+        cfgZoom: state40.cfgZoom
       }));
     } catch {
     }
@@ -16955,12 +17055,12 @@ INVARSPEC !w | (i & (l | h))`
     return out;
   }
   function createConcolicExecutionExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "concolic-explorer";
-    root38.dataset.testid = "concolic-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "concolic-explorer";
+    root41.dataset.testid = "concolic-explorer";
     const saved = loadSaved3();
     const defaultExample = concolicExecutionExamples[0];
-    const state37 = {
+    const state40 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       seedText: (saved == null ? void 0 : saved.seedText) || defaultExample.seed || "",
@@ -16976,7 +17076,7 @@ INVARSPEC !w | (i & (l | h))`
     function renderConcolicQuizPanel() {
       if (!concolicQuiz.active) return "";
       if (concolicQuiz.phase === "graded") {
-        const correct = state37.result ? state37.result.uniquePathCount : 0;
+        const correct = state40.result ? state40.result.uniquePathCount : 0;
         const userAns = parseInt(concolicQuiz.answer, 10);
         const ok = userAns === correct;
         const shareEncoded = encodeResult({ v: 1, explorer: "concolic", explorerLabel: t("quiz.concolic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.concolic.prompt"), a: String(concolicQuiz.answer), expected: String(correct), ok }] });
@@ -17015,57 +17115,57 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a, _b;
-      state37.result = null;
-      state37.error = null;
-      state37.cfg = null;
-      state37.cfgError = null;
+      state40.result = null;
+      state40.error = null;
+      state40.cfg = null;
+      state40.cfgError = null;
       try {
-        const initialInputs = parseSeed(state37.seedText);
-        state37.result = concolicExecute(state37.sourceCode, {
+        const initialInputs = parseSeed(state40.seedText);
+        state40.result = concolicExecute(state40.sourceCode, {
           initialInputs,
-          maxIterations: state37.maxIterations
+          maxIterations: state40.maxIterations
         });
       } catch (err) {
-        state37.error = err.message || String(err);
+        state40.error = err.message || String(err);
       }
       try {
-        state37.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state37.sourceCode,
+        state40.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state40.sourceCode,
           language: "javascript",
           title: "Concolic Execution CFG"
         });
       } catch (err) {
-        state37.cfgError = err.message || String(err);
+        state40.cfgError = err.message || String(err);
       }
-      if ((_b = (_a = state37.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.length) {
-        const stillExists = state37.result.iterations.some((it) => it.id === state37.selectedIterId);
+      if ((_b = (_a = state40.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.length) {
+        const stillExists = state40.result.iterations.some((it) => it.id === state40.selectedIterId);
         if (!stillExists) {
-          state37.selectedIterId = state37.result.iterations[0].id;
+          state40.selectedIterId = state40.result.iterations[0].id;
         }
       } else {
-        state37.selectedIterId = null;
+        state40.selectedIterId = null;
       }
-      persist3(state37);
+      persist3(state40);
     }
-    function render37() {
+    function render40() {
       recompute();
       const exampleButtons = concolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="concolic-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+        class="concolic-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-concolic-example="${ex.id}"
         data-testid="concolic-example-${ex.id}"
         title="${escapeHtml7(pickField(ex, "description") || "")}">
         ${escapeHtml7(pickField(ex, "name") || ex.name)}
       </button>
     `).join("");
-      const body = state37.error ? `<div class="concolic-error" data-testid="concolic-error">${escapeHtml7(state37.error)}</div>` : renderIterations(state37.result);
-      const summary = state37.result ? `${t("concolic.summary.iterations")}<strong data-testid="concolic-iter-count">${state37.result.iterations.length}</strong>
+      const body = state40.error ? `<div class="concolic-error" data-testid="concolic-error">${escapeHtml7(state40.error)}</div>` : renderIterations(state40.result);
+      const summary = state40.result ? `${t("concolic.summary.iterations")}<strong data-testid="concolic-iter-count">${state40.result.iterations.length}</strong>
          <span class="concolic-divider">\xB7</span>
-         ${t("concolic.summary.uniquePaths")}<strong data-testid="concolic-path-count">${state37.result.uniquePathCount}</strong>
+         ${t("concolic.summary.uniquePaths")}<strong data-testid="concolic-path-count">${state40.result.uniquePathCount}</strong>
          <span class="concolic-divider">\xB7</span>
-         ${t("concolic.summary.uniqueInputs")}<strong>${state37.result.uniqueInputCount}</strong>
-         ${state37.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
-      root38.innerHTML = `
+         ${t("concolic.summary.uniqueInputs")}<strong>${state40.result.uniqueInputCount}</strong>
+         ${state40.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
+      root41.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="concolic-mobile-nav">
         <a href="#concolic-input-panel">${t("explorer.panel.input")}</a>
         <a href="#concolic-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -17081,14 +17181,14 @@ INVARSPEC !w | (i & (l | h))`
           <div class="concolic-controls">
             <label class="concolic-control">
               <span>${t("concolic.seed")}</span>
-              <input type="text" value="${escapeHtml7(state37.seedText)}"
+              <input type="text" value="${escapeHtml7(state40.seedText)}"
                 data-testid="concolic-seed"
                 placeholder="a=1, b=1, c=1" />
             </label>
             <label class="concolic-control">
               <span>${t("concolic.maxIterations")}</span>
               <input type="number" min="1" max="64" step="1"
-                value="${state37.maxIterations}"
+                value="${state40.maxIterations}"
                 data-testid="concolic-max-iter" />
             </label>
           </div>
@@ -17100,7 +17200,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="concolic-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml7(state37.sourceCode)}</textarea>
+            rows="14">${escapeHtml7(state40.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -17126,24 +17226,24 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="concolic-hint">${t("concolic.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
     function renderCfgPane() {
       var _a, _b;
-      if (state37.cfgError) {
+      if (state40.cfgError) {
         return `<div class="concolic-cfg" data-testid="concolic-cfg">
-        <p class="concolic-cfg-error">${escapeHtml7(state37.cfgError)}</p>
+        <p class="concolic-cfg-error">${escapeHtml7(state40.cfgError)}</p>
       </div>`;
       }
-      if (!state37.cfg) return "";
-      const selected = (_b = (_a = state37.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.find((it) => it.id === state37.selectedIterId);
-      const mapping = selected ? mapBranchesToCfg(state37.cfg, selected.branches) : { nodes: [], edges: [] };
-      const svg = renderCfgSvg(state37.cfg, mapping, {
+      if (!state40.cfg) return "";
+      const selected = (_b = (_a = state40.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.find((it) => it.id === state40.selectedIterId);
+      const mapping = selected ? mapBranchesToCfg(state40.cfg, selected.branches) : { nodes: [], edges: [] };
+      const svg = renderCfgSvg(state40.cfg, mapping, {
         idPrefix: "concolic-cfg",
         ariaLabel: "Concolic execution CFG",
-        zoom: state37.cfgZoom
+        zoom: state40.cfgZoom
       });
-      const zoomPct = Math.round(state37.cfgZoom * 100);
+      const zoomPct = Math.round(state40.cfgZoom * 100);
       return `
       <div class="concolic-cfg" data-testid="concolic-cfg">
         <div class="concolic-cfg-header">
@@ -17190,7 +17290,7 @@ INVARSPEC !w | (i & (l | h))`
             `}
           </dl>`;
         return `
-        <li class="concolic-iter${state37.selectedIterId === it.id ? " selected" : ""}"
+        <li class="concolic-iter${state40.selectedIterId === it.id ? " selected" : ""}"
           data-testid="concolic-${it.id}"
           data-concolic-iter="${it.id}"
           tabindex="0"
@@ -17219,24 +17319,24 @@ INVARSPEC !w | (i & (l | h))`
       if (concrete == null) return expr;
       return `${expr}  \u2192  ${concrete}`;
     }
-    function bindEvents37() {
-      root38.querySelectorAll("[data-concolic-example]").forEach((btn) => {
+    function bindEvents40() {
+      root41.querySelectorAll("[data-concolic-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.concolicExample;
           const ex = concolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state37.exampleId = ex.id;
-          state37.sourceCode = ex.sourceCode;
-          state37.seedText = ex.seed || "";
-          state37.selectedIterId = null;
+          state40.exampleId = ex.id;
+          state40.sourceCode = ex.sourceCode;
+          state40.seedText = ex.seed || "";
+          state40.selectedIterId = null;
           concolicQuiz.active = false;
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-concolic-iter]").forEach((el) => {
+      root41.querySelectorAll("[data-concolic-iter]").forEach((el) => {
         const select = () => {
-          state37.selectedIterId = el.dataset.concolicIter;
-          render37();
+          state40.selectedIterId = el.dataset.concolicIter;
+          render40();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -17246,83 +17346,83 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root38.querySelector('[data-testid="concolic-source"]');
+      const editor = root41.querySelector('[data-testid="concolic-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state37.sourceCode = editor.value;
+          state40.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => renderPreservingFocus("concolic-source"), 220);
         });
       }
-      const seed = root38.querySelector('[data-testid="concolic-seed"]');
+      const seed = root41.querySelector('[data-testid="concolic-seed"]');
       if (seed) {
         let timer = null;
         seed.addEventListener("input", () => {
-          state37.seedText = seed.value;
+          state40.seedText = seed.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => renderPreservingFocus("concolic-seed"), 220);
         });
       }
-      const iter = root38.querySelector('[data-testid="concolic-max-iter"]');
+      const iter = root41.querySelector('[data-testid="concolic-max-iter"]');
       if (iter) {
         iter.addEventListener("change", () => {
           const n = Number(iter.value);
           if (Number.isFinite(n) && n >= 1 && n <= 128) {
-            state37.maxIterations = n;
-            render37();
+            state40.maxIterations = n;
+            render40();
           }
         });
       }
-      root38.querySelectorAll("[data-concolic-zoom]").forEach((btn) => {
+      root41.querySelectorAll("[data-concolic-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.concolicZoom;
-          if (action === "in") state37.cfgZoom = Math.min(4, +(state37.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(state37.cfgZoom - 0.25).toFixed(2));
-          else state37.cfgZoom = 1;
-          render37();
+          if (action === "in") state40.cfgZoom = Math.min(4, +(state40.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state40.cfgZoom = Math.max(0.25, +(state40.cfgZoom - 0.25).toFixed(2));
+          else state40.cfgZoom = 1;
+          render40();
         });
       });
-      const cqStart = root38.querySelector('[data-testid="concolic-quiz-start"]');
+      const cqStart = root41.querySelector('[data-testid="concolic-quiz-start"]');
       if (cqStart) {
         cqStart.addEventListener("click", () => {
           concolicQuiz.active = true;
           concolicQuiz.phase = "question";
           concolicQuiz.answer = "";
-          render37();
+          render40();
         });
       }
-      const cqClose = root38.querySelector('[data-testid="concolic-quiz-close"]');
+      const cqClose = root41.querySelector('[data-testid="concolic-quiz-close"]');
       if (cqClose) {
         cqClose.addEventListener("click", () => {
           concolicQuiz.active = false;
-          render37();
+          render40();
         });
       }
-      const cqCheck = root38.querySelector('[data-testid="concolic-quiz-check"]');
+      const cqCheck = root41.querySelector('[data-testid="concolic-quiz-check"]');
       if (cqCheck) {
         cqCheck.addEventListener("click", () => {
-          const inp = root38.querySelector('[data-testid="concolic-quiz-input"]');
+          const inp = root41.querySelector('[data-testid="concolic-quiz-input"]');
           concolicQuiz.answer = inp ? inp.value : "";
           concolicQuiz.phase = "graded";
-          render37();
+          render40();
         });
       }
-      const cqReset = root38.querySelector('[data-testid="concolic-quiz-reset"]');
+      const cqReset = root41.querySelector('[data-testid="concolic-quiz-reset"]');
       if (cqReset) {
         cqReset.addEventListener("click", () => {
           concolicQuiz.phase = "question";
           concolicQuiz.answer = "";
-          render37();
+          render40();
         });
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root38.querySelector(`[data-testid="${testid}"]`);
+      const previously = root41.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render37();
-      const next = root38.querySelector(`[data-testid="${testid}"]`);
+      render40();
+      const next = root41.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -17330,8 +17430,8 @@ INVARSPEC !w | (i & (l | h))`
         }
       }
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/fuzzTesting.js
@@ -17533,28 +17633,28 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist4(state37) {
+  function persist4(state40) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(
         STORAGE_KEY7,
         JSON.stringify({
-          sourceCode: state37.sourceCode,
-          exampleId: state37.exampleId,
-          testCount: state37.testCount,
-          cfgZoom: state37.cfgZoom
+          sourceCode: state40.sourceCode,
+          exampleId: state40.exampleId,
+          testCount: state40.testCount,
+          cfgZoom: state40.cfgZoom
         })
       );
     } catch {
     }
   }
   function createFuzzTestingExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "fuzz-explorer";
-    root38.dataset.testid = "fuzz-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "fuzz-explorer";
+    root41.dataset.testid = "fuzz-explorer";
     const saved = loadSaved4();
     const defaultExample = fuzzTestingExamples[0];
-    const state37 = {
+    const state40 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       testCount: typeof (saved == null ? void 0 : saved.testCount) === "number" ? saved.testCount : 50,
@@ -17595,7 +17695,7 @@ INVARSPEC !w | (i & (l | h))`
     }
     function renderFuzzQuizPanel() {
       if (!fuzzQuiz.active) return "";
-      const nodeCov = state37.totalNodes > 0 ? Math.round(state37.coveredNodes.length / state37.totalNodes * 100) : 0;
+      const nodeCov = state40.totalNodes > 0 ? Math.round(state40.coveredNodes.length / state40.totalNodes * 100) : 0;
       if (fuzzQuiz.phase === "graded") {
         const userAns = parseInt(fuzzQuiz.answer, 10);
         const ok = userAns === nodeCov;
@@ -17635,33 +17735,33 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a;
-      state37.result = null;
-      state37.cfg = null;
-      state37.cfgError = null;
-      state37.error = null;
-      state37.coveredNodes = [];
-      state37.coveredEdges = [];
-      state37.totalNodes = 0;
-      state37.totalEdges = 0;
+      state40.result = null;
+      state40.cfg = null;
+      state40.cfgError = null;
+      state40.error = null;
+      state40.coveredNodes = [];
+      state40.coveredEdges = [];
+      state40.totalNodes = 0;
+      state40.totalEdges = 0;
       try {
-        state37.result = fuzzTest(state37.sourceCode, state37.testCount);
+        state40.result = fuzzTest(state40.sourceCode, state40.testCount);
       } catch (err) {
-        state37.error = err instanceof Error ? err.message : String(err);
+        state40.error = err instanceof Error ? err.message : String(err);
       }
       try {
-        state37.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state37.sourceCode,
+        state40.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state40.sourceCode,
           language: "javascript",
           title: "Fuzz Testing CFG"
         });
       } catch (err) {
-        state37.cfgError = err instanceof Error ? err.message : String(err);
+        state40.cfgError = err instanceof Error ? err.message : String(err);
       }
-      const cfg = state37.cfg;
-      const result = state37.result;
+      const cfg = state40.cfg;
+      const result = state40.result;
       if (cfg && result) {
-        state37.totalNodes = cfg.nodes.length;
-        state37.totalEdges = cfg.edges.length;
+        state40.totalNodes = cfg.nodes.length;
+        state40.totalEdges = cfg.edges.length;
         const allNodes = /* @__PURE__ */ new Set();
         const allEdges = /* @__PURE__ */ new Set();
         for (const tc of result.testCases) {
@@ -17669,23 +17769,23 @@ INVARSPEC !w | (i & (l | h))`
           for (const n of mapping.nodes) allNodes.add(n);
           for (const e of mapping.edges) allEdges.add(e);
         }
-        state37.coveredNodes = [...allNodes];
-        state37.coveredEdges = [...allEdges];
+        state40.coveredNodes = [...allNodes];
+        state40.coveredEdges = [...allEdges];
       }
       if ((_a = result == null ? void 0 : result.testCases) == null ? void 0 : _a.length) {
-        const stillExists = result.testCases.some((tc) => tc.id === state37.selectedCaseId);
-        if (!stillExists) state37.selectedCaseId = null;
+        const stillExists = result.testCases.some((tc) => tc.id === state40.selectedCaseId);
+        if (!stillExists) state40.selectedCaseId = null;
       } else {
-        state37.selectedCaseId = null;
+        state40.selectedCaseId = null;
       }
-      persist4(state37);
+      persist4(state40);
     }
-    function render37() {
+    function render40() {
       recompute();
       const exampleButtons = fuzzTestingExamples.map(
         (ex) => `
       <button type="button"
-        class="fuzz-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+        class="fuzz-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-fuzz-example="${ex.id}"
         data-testid="fuzz-example-${ex.id}"
         title="${escapeHtml8(pickField(ex, "description"))}">
@@ -17693,12 +17793,12 @@ INVARSPEC !w | (i & (l | h))`
       </button>
     `
       ).join("");
-      const result = state37.result;
-      const error = state37.error;
+      const result = state40.result;
+      const error = state40.error;
       const crashCount = (result == null ? void 0 : result.crashes) || 0;
-      const nodeCov = state37.totalNodes > 0 ? Math.round(state37.coveredNodes.length / state37.totalNodes * 100) : 0;
-      const edgeCov = state37.totalEdges > 0 ? Math.round(state37.coveredEdges.length / state37.totalEdges * 100) : 0;
-      const coverageMarkup = result && state37.cfg ? `<span class="fuzz-divider">\xB7</span>
+      const nodeCov = state40.totalNodes > 0 ? Math.round(state40.coveredNodes.length / state40.totalNodes * 100) : 0;
+      const edgeCov = state40.totalEdges > 0 ? Math.round(state40.coveredEdges.length / state40.totalEdges * 100) : 0;
+      const coverageMarkup = result && state40.cfg ? `<span class="fuzz-divider">\xB7</span>
          <span class="fuzz-coverage-badge" data-testid="fuzz-node-cov" title="Node coverage">N ${nodeCov}%</span>
          <span class="fuzz-coverage-badge" data-testid="fuzz-edge-cov" title="Edge coverage">E ${edgeCov}%</span>` : "";
       const summary = result ? `${t("fuzz.summary.tests")}<strong data-testid="fuzz-test-count">${result.totalTests}</strong>
@@ -17710,7 +17810,7 @@ INVARSPEC !w | (i & (l | h))`
          ${result.truncated ? `<span class="fuzz-divider">\xB7</span><span class="fuzz-truncated">${t("fuzz.summary.truncated")}</span>` : ""}` : "";
       const testCasesMarkup = error ? `<div class="fuzz-error" data-testid="fuzz-error">${escapeHtml8(error)}</div>` : renderTestCases3(result);
       const FUZZ_THRESHOLD = 80;
-      const fuzzMetricEncoded = state37.result ? encodeResult({
+      const fuzzMetricEncoded = state40.result ? encodeResult({
         v: 1,
         explorer: "fuzz",
         explorerLabel: t("section.fuzz"),
@@ -17721,7 +17821,7 @@ INVARSPEC !w | (i & (l | h))`
         total: 1,
         items: [{ q: t("lab.metric.fuzz.label", { pct: nodeCov }), a: `${nodeCov}%`, ok: nodeCov >= FUZZ_THRESHOLD }]
       }) : null;
-      root38.innerHTML = `
+      root41.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="fuzz-mobile-nav">
         <a href="#fuzz-input-panel">${t("explorer.panel.input")}</a>
         <a href="#fuzz-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -17738,7 +17838,7 @@ INVARSPEC !w | (i & (l | h))`
             <label class="fuzz-control">
               <span>${t("fuzz.testCount")}</span>
               <input type="number" min="10" max="500" step="10"
-                value="${state37.testCount}"
+                value="${state40.testCount}"
                 data-testid="fuzz-test-count-input" />
             </label>
             <button type="button"
@@ -17756,7 +17856,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="fuzz-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml8(state37.sourceCode)}</textarea>
+            rows="14">${escapeHtml8(state40.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -17774,8 +17874,8 @@ INVARSPEC !w | (i & (l | h))`
           </header>
           <p class="fuzz-summary" data-testid="fuzz-summary">
             ${summary}
-            ${!fuzzQuiz.active && state37.result ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-start" style="margin-left:0.5rem">${t("quiz.start")}</button>` : ""}
-            ${state37.result && !fuzzLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-lab-reflect-start" style="margin-left:0.5rem">${t("lab.reflect.start")}</button>` : ""}
+            ${!fuzzQuiz.active && state40.result ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-start" style="margin-left:0.5rem">${t("quiz.start")}</button>` : ""}
+            ${state40.result && !fuzzLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-lab-reflect-start" style="margin-left:0.5rem">${t("lab.reflect.start")}</button>` : ""}
             ${fuzzMetricEncoded ? `<button type="button" class="quiz-share-btn" data-share-payload="${fuzzMetricEncoded}" data-testid="fuzz-lab-metric" style="margin-left:0.5rem">\u{1F4CA} ${t("lab.metric.record")}</button>` : ""}
           </p>
           ${renderFuzzQuizPanel()}
@@ -17786,20 +17886,20 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="fuzz-hint">${t("fuzz.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
     function renderCfgPane() {
-      if (state37.cfgError) {
+      if (state40.cfgError) {
         return `<div class="fuzz-cfg" data-testid="fuzz-cfg">
-        <p class="fuzz-cfg-error">${escapeHtml8(state37.cfgError)}</p>
+        <p class="fuzz-cfg-error">${escapeHtml8(state40.cfgError)}</p>
       </div>`;
       }
-      if (!state37.cfg) {
+      if (!state40.cfg) {
         return `<div class="fuzz-cfg" data-testid="fuzz-cfg"></div>`;
       }
-      const cfg = state37.cfg;
-      const result = state37.result;
-      const selectedCase = state37.selectedCaseId ? result == null ? void 0 : result.testCases.find((tc) => tc.id === state37.selectedCaseId) : null;
+      const cfg = state40.cfg;
+      const result = state40.result;
+      const selectedCase = state40.selectedCaseId ? result == null ? void 0 : result.testCases.find((tc) => tc.id === state40.selectedCaseId) : null;
       let highlight;
       let cfgSubtitle;
       if (selectedCase) {
@@ -17808,19 +17908,19 @@ INVARSPEC !w | (i & (l | h))`
         cfgSubtitle = `<span class="fuzz-cfg-selected" data-testid="fuzz-cfg-selected">${escapeHtml8(selectedCase.id)}</span>`;
       } else {
         highlight = {
-          nodes: state37.coveredNodes,
-          edges: state37.coveredEdges
+          nodes: state40.coveredNodes,
+          edges: state40.coveredEdges
         };
-        const nodeCov = cfg.nodes.length > 0 ? Math.round(state37.coveredNodes.length / cfg.nodes.length * 100) : 0;
-        const edgeCov = cfg.edges.length > 0 ? Math.round(state37.coveredEdges.length / cfg.edges.length * 100) : 0;
+        const nodeCov = cfg.nodes.length > 0 ? Math.round(state40.coveredNodes.length / cfg.nodes.length * 100) : 0;
+        const edgeCov = cfg.edges.length > 0 ? Math.round(state40.coveredEdges.length / cfg.edges.length * 100) : 0;
         cfgSubtitle = result ? `<span class="fuzz-cfg-metric">N ${nodeCov}%  E ${edgeCov}%</span>` : "";
       }
       const svg = renderCfgSvg(cfg, highlight, {
         idPrefix: "fuzz-cfg",
         ariaLabel: "Fuzz testing CFG",
-        zoom: state37.cfgZoom
+        zoom: state40.cfgZoom
       });
-      const zoomPct = Math.round(state37.cfgZoom * 100);
+      const zoomPct = Math.round(state40.cfgZoom * 100);
       return `
       <div class="fuzz-cfg" data-testid="fuzz-cfg">
         <div class="fuzz-cfg-header">
@@ -17842,7 +17942,7 @@ INVARSPEC !w | (i & (l | h))`
       }
       const items = result.testCases.slice(0, 50).map((tc) => {
         const statusClass = tc.crashed ? "crash" : "pass";
-        const isSelected = state37.selectedCaseId === tc.id;
+        const isSelected = state40.selectedCaseId === tc.id;
         const statusLabel = tc.crashed ? t("fuzz.crash") : t("fuzz.pass");
         const mutBadge = tc.mutated ? `<span class="fuzz-case-mut" title="${t("fuzz.mutated.title")}">${t("fuzz.mutated")}</span>` : "";
         return `
@@ -17870,24 +17970,24 @@ INVARSPEC !w | (i & (l | h))`
       }).join("");
       return `<ol class="fuzz-cases" data-testid="fuzz-cases">${items}</ol>`;
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a, _b, _c, _d;
-      root38.querySelectorAll("[data-fuzz-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-fuzz-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.fuzzExample;
           const ex = fuzzTestingExamples.find((x) => x.id === id);
           if (!ex) return;
-          state37.exampleId = ex.id;
-          state37.sourceCode = ex.sourceCode;
-          state37.selectedCaseId = null;
+          state40.exampleId = ex.id;
+          state40.sourceCode = ex.sourceCode;
+          state40.selectedCaseId = null;
           fuzzQuiz.active = false;
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-fuzz-case]").forEach((el) => {
+      root41.querySelectorAll("[data-fuzz-case]").forEach((el) => {
         const selectCase = () => {
           const id = el.dataset.fuzzCase;
-          state37.selectedCaseId = state37.selectedCaseId === id ? null : id;
+          state40.selectedCaseId = state40.selectedCaseId === id ? null : id;
           renderLight();
         };
         el.addEventListener("click", selectCase);
@@ -17898,11 +17998,11 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root38.querySelector('[data-testid="fuzz-source"]');
+      const editor = root41.querySelector('[data-testid="fuzz-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state37.sourceCode = editor.value;
+          state40.sourceCode = editor.value;
           if (timer) {
             globalThis.clearTimeout(timer);
           }
@@ -17911,88 +18011,88 @@ INVARSPEC !w | (i & (l | h))`
           }, 220);
         });
       }
-      const countInput = root38.querySelector('[data-testid="fuzz-test-count-input"]');
+      const countInput = root41.querySelector('[data-testid="fuzz-test-count-input"]');
       if (countInput) {
         countInput.addEventListener("change", () => {
           const n = Number(countInput.value);
           if (Number.isFinite(n) && n >= 10 && n <= 500) {
-            state37.testCount = n;
-            render37();
+            state40.testCount = n;
+            render40();
           }
         });
       }
-      const runBtn = root38.querySelector('[data-testid="fuzz-run-btn"]');
+      const runBtn = root41.querySelector('[data-testid="fuzz-run-btn"]');
       if (runBtn) {
         runBtn.addEventListener("click", () => {
-          render37();
+          render40();
         });
       }
-      root38.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
+      root41.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.fuzzZoom;
-          const zoom = state37.cfgZoom;
-          if (action === "in") state37.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
-          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
-          else state37.cfgZoom = 1;
-          render37();
+          const zoom = state40.cfgZoom;
+          if (action === "in") state40.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
+          else if (action === "out") state40.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
+          else state40.cfgZoom = 1;
+          render40();
         });
       });
-      const fqStart = root38.querySelector('[data-testid="fuzz-quiz-start"]');
+      const fqStart = root41.querySelector('[data-testid="fuzz-quiz-start"]');
       if (fqStart) {
         fqStart.addEventListener("click", () => {
           fuzzQuiz.active = true;
           fuzzQuiz.phase = "question";
           fuzzQuiz.answer = "";
-          render37();
+          render40();
         });
       }
-      const fqClose = root38.querySelector('[data-testid="fuzz-quiz-close"]');
+      const fqClose = root41.querySelector('[data-testid="fuzz-quiz-close"]');
       if (fqClose) {
         fqClose.addEventListener("click", () => {
           fuzzQuiz.active = false;
-          render37();
+          render40();
         });
       }
-      const fqCheck = root38.querySelector('[data-testid="fuzz-quiz-check"]');
+      const fqCheck = root41.querySelector('[data-testid="fuzz-quiz-check"]');
       if (fqCheck) {
         fqCheck.addEventListener("click", () => {
-          const inp = root38.querySelector('[data-testid="fuzz-quiz-input"]');
+          const inp = root41.querySelector('[data-testid="fuzz-quiz-input"]');
           fuzzQuiz.answer = inp ? inp.value : "";
           fuzzQuiz.phase = "graded";
-          render37();
+          render40();
         });
       }
-      const fqReset = root38.querySelector('[data-testid="fuzz-quiz-reset"]');
+      const fqReset = root41.querySelector('[data-testid="fuzz-quiz-reset"]');
       if (fqReset) {
         fqReset.addEventListener("click", () => {
           fuzzQuiz.phase = "question";
           fuzzQuiz.answer = "";
-          render37();
+          render40();
         });
       }
-      (_a = root38.querySelector('[data-testid="fuzz-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root41.querySelector('[data-testid="fuzz-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         fuzzLabReflect.active = true;
-        render37();
+        render40();
       });
-      (_b = root38.querySelector('[data-testid="fuzz-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root41.querySelector('[data-testid="fuzz-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a2, _b2;
-        fuzzLabReflect.a1 = ((_a2 = root38.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || fuzzLabReflect.a1;
-        fuzzLabReflect.a2 = ((_b2 = root38.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || fuzzLabReflect.a2;
+        fuzzLabReflect.a1 = ((_a2 = root41.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || fuzzLabReflect.a1;
+        fuzzLabReflect.a2 = ((_b2 = root41.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || fuzzLabReflect.a2;
         fuzzLabReflect.active = false;
-        render37();
+        render40();
       });
-      (_c = root38.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
+      (_c = root41.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
         fuzzLabReflect.a1 = e.target.value;
       });
-      (_d = root38.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root41.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         fuzzLabReflect.a2 = e.target.value;
       });
-      const fuzzLrShare = root38.querySelector('[data-testid="fuzz-lab-reflect-share"]');
+      const fuzzLrShare = root41.querySelector('[data-testid="fuzz-lab-reflect-share"]');
       if (fuzzLrShare) {
         fuzzLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root38.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root38.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root41.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root41.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "fuzz",
@@ -18028,11 +18128,11 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root38.querySelector(`[data-testid="${testid}"]`);
+      const previously = root41.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render37();
-      const next = root38.querySelector(`[data-testid="${testid}"]`);
+      render40();
+      const next = root41.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number") {
@@ -18041,31 +18141,31 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderLight() {
-      const cfgPaneEl = root38.querySelector(".fuzz-cfg-pane");
+      const cfgPaneEl = root41.querySelector(".fuzz-cfg-pane");
       if (cfgPaneEl) {
         cfgPaneEl.innerHTML = renderCfgPane();
       }
-      root38.querySelectorAll("[data-fuzz-case]").forEach((el) => {
+      root41.querySelectorAll("[data-fuzz-case]").forEach((el) => {
         const id = el.dataset.fuzzCase;
-        if (id === state37.selectedCaseId) {
+        if (id === state40.selectedCaseId) {
           el.classList.add("selected");
         } else {
           el.classList.remove("selected");
         }
       });
-      root38.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
+      root41.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.fuzzZoom;
-          const zoom = state37.cfgZoom;
-          if (action === "in") state37.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
-          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
-          else state37.cfgZoom = 1;
+          const zoom = state40.cfgZoom;
+          if (action === "in") state40.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
+          else if (action === "out") state40.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
+          else state40.cfgZoom = 1;
           renderLight();
         });
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/testGeneration.js
@@ -18295,25 +18395,25 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist5(state37) {
+  function persist5(state40) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY8, JSON.stringify({
-        exampleId: state37.exampleId,
-        sourceCode: state37.sourceCode,
-        criterion: state37.criterion,
-        cfgZoom: state37.cfgZoom
+        exampleId: state40.exampleId,
+        sourceCode: state40.sourceCode,
+        criterion: state40.criterion,
+        cfgZoom: state40.cfgZoom
       }));
     } catch {
     }
   }
   function createTestGenerationExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "testgen-explorer";
-    root38.dataset.testid = "testgen-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "testgen-explorer";
+    root41.dataset.testid = "testgen-explorer";
     const saved = loadSaved5();
     const defaultExample = symbolicExecutionExamples[0];
-    const state37 = {
+    const state40 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       criterion: (saved == null ? void 0 : saved.criterion) || DEFAULT_CRITERION,
@@ -18324,29 +18424,29 @@ INVARSPEC !w | (i & (l | h))`
     };
     function recompute() {
       var _a, _b, _c, _d;
-      state37.result = generateTestsFromCoverage({
-        sourceCode: state37.sourceCode,
-        criterion: state37.criterion
+      state40.result = generateTestsFromCoverage({
+        sourceCode: state40.sourceCode,
+        criterion: state40.criterion
       });
-      if ((_b = (_a = state37.result) == null ? void 0 : _a.requirements) == null ? void 0 : _b.length) {
-        const exists = state37.result.requirements.some((r) => r.id === state37.selectedRequirementId);
-        if (!exists) state37.selectedRequirementId = state37.result.requirements[0].id;
+      if ((_b = (_a = state40.result) == null ? void 0 : _a.requirements) == null ? void 0 : _b.length) {
+        const exists = state40.result.requirements.some((r) => r.id === state40.selectedRequirementId);
+        if (!exists) state40.selectedRequirementId = state40.result.requirements[0].id;
       } else {
-        state37.selectedRequirementId = null;
+        state40.selectedRequirementId = null;
       }
-      if ((_d = (_c = state37.result) == null ? void 0 : _c.selectedTests) == null ? void 0 : _d.length) {
-        const exists = state37.result.selectedTests.some((t2) => t2.pathId === state37.selectedTestPathId);
-        if (!exists) state37.selectedTestPathId = state37.result.selectedTests[0].pathId;
+      if ((_d = (_c = state40.result) == null ? void 0 : _c.selectedTests) == null ? void 0 : _d.length) {
+        const exists = state40.result.selectedTests.some((t2) => t2.pathId === state40.selectedTestPathId);
+        if (!exists) state40.selectedTestPathId = state40.result.selectedTests[0].pathId;
       } else {
-        state37.selectedTestPathId = null;
+        state40.selectedTestPathId = null;
       }
-      persist5(state37);
+      persist5(state40);
     }
-    function render37() {
+    function render40() {
       recompute();
       const exampleButtons = symbolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="testgen-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+        class="testgen-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-testgen-example="${ex.id}"
         data-testid="testgen-example-${ex.id}"
         title="${escapeHtml9(pickField(ex, "description") || "")}">
@@ -18354,11 +18454,11 @@ INVARSPEC !w | (i & (l | h))`
       </button>
     `).join("");
       const criterionOptions = CRITERIA.map((c) => `
-      <option value="${c.id}"${state37.criterion === c.id ? " selected" : ""}>
+      <option value="${c.id}"${state40.criterion === c.id ? " selected" : ""}>
         ${escapeHtml9(t(c.labelKey))}
       </option>
     `).join("");
-      root38.innerHTML = `
+      root41.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="testgen-mobile-nav">
         <a href="#testgen-input-panel">${t("explorer.panel.input")}</a>
         <a href="#testgen-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -18385,7 +18485,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="testgen-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml9(state37.sourceCode)}</textarea>
+            rows="14">${escapeHtml9(state40.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -18417,10 +18517,10 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="testgen-hint">${t("testgen.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
     function renderSummary2() {
-      const r = state37.result;
+      const r = state40.result;
       if (!r || r.error) return "";
       return `
       <p class="testgen-summary" data-testid="testgen-summary">
@@ -18434,19 +18534,19 @@ INVARSPEC !w | (i & (l | h))`
     `;
     }
     function renderError() {
-      const r = state37.result;
+      const r = state40.result;
       if (!(r == null ? void 0 : r.error)) return "";
       return `<div class="testgen-error" data-testid="testgen-error">${escapeHtml9(r.error)}</div>`;
     }
     function renderRequirements() {
-      const r = state37.result;
+      const r = state40.result;
       if (!r || r.error) return "";
       if (!r.requirementCoverage.length) {
         return `<p class="testgen-empty">${t("testgen.empty")}</p>`;
       }
       const items = r.requirementCoverage.map((rc) => {
         const cls = rc.feasible ? "feasible" : "infeasible";
-        const active = state37.selectedRequirementId === rc.requirementId ? " selected" : "";
+        const active = state40.selectedRequirementId === rc.requirementId ? " selected" : "";
         const witness = rc.feasible && rc.representativeWitness ? formatConcreteCall(r.function.name, r.function.params, rc.representativeWitness) : `<span class="testgen-no-witness">${t("testgen.requirements.noWitness")}</span>`;
         return `
         <li class="testgen-req ${cls}${active}"
@@ -18467,7 +18567,7 @@ INVARSPEC !w | (i & (l | h))`
     }
     function buildVitestFile() {
       var _a, _b;
-      const r = state37.result;
+      const r = state40.result;
       if (!r || r.error || !r.selectedTests.length) return null;
       const fn = ((_a = r.function) == null ? void 0 : _a.name) || "fn";
       const params = ((_b = r.function) == null ? void 0 : _b.params) || [];
@@ -18487,14 +18587,14 @@ INVARSPEC !w | (i & (l | h))`
 import { ${fn} } from './${fn}.js';
 
 // Generated by stvisual TestGenerationExplorer
-// criterion: ${state37.criterion}
+// criterion: ${state40.criterion}
 describe('${fn} \u2013 generated tests', () => {
 ${cases}
 });
 `;
     }
     function renderSelectedTests() {
-      const r = state37.result;
+      const r = state40.result;
       if (!r || r.error) return "";
       if (!r.selectedTests.length) {
         return `<p class="testgen-empty">${t("testgen.tests.empty")}</p>`;
@@ -18504,7 +18604,7 @@ ${cases}
       const items = r.selectedTests.map((tc, i) => {
         const call = formatConcreteCall(r.function.name, r.function.params, tc.witness);
         const ret = formatExpectedReturn(tc.concreteReturn);
-        const active = state37.selectedTestPathId === tc.pathId ? " selected" : "";
+        const active = state40.selectedTestPathId === tc.pathId ? " selected" : "";
         const covers = tc.coveredRequirementIds.join(", ");
         return `
         <li class="testgen-test${active}"
@@ -18524,7 +18624,7 @@ ${cases}
       return `${downloadBtn}<ol class="testgen-test-list" data-testid="testgen-test-list">${items}</ol>`;
     }
     function renderCfgPane() {
-      const r = state37.result;
+      const r = state40.result;
       if (!r) return "";
       if (r.error && !r.cfg) {
         return `<div class="testgen-cfg" data-testid="testgen-cfg">
@@ -18534,13 +18634,13 @@ ${cases}
       if (!r.cfg) return "";
       let mapping = { nodes: [], edges: [] };
       let selectedLabel = t("testgen.cfg.none");
-      const selectedTest = r.selectedTests.find((tc) => tc.pathId === state37.selectedTestPathId);
+      const selectedTest = r.selectedTests.find((tc) => tc.pathId === state40.selectedTestPathId);
       if (selectedTest) {
         const wp = r.witnessedPaths.find((w) => w.id === selectedTest.pathId);
         if (wp) mapping = { nodes: wp.cfgNodes, edges: wp.cfgEdges };
         selectedLabel = `T${r.selectedTests.indexOf(selectedTest) + 1} (${selectedTest.pathId})`;
-      } else if (state37.selectedRequirementId) {
-        const req = r.requirements.find((q) => q.id === state37.selectedRequirementId);
+      } else if (state40.selectedRequirementId) {
+        const req = r.requirements.find((q) => q.id === state40.selectedRequirementId);
         if (req) {
           mapping = {
             nodes: req.nodes || (req.path ? [...new Set(req.path)] : []),
@@ -18552,9 +18652,9 @@ ${cases}
       const svg = renderCfgSvg(r.cfg, mapping, {
         idPrefix: "testgen-cfg",
         ariaLabel: "Test generation CFG",
-        zoom: state37.cfgZoom
+        zoom: state40.cfgZoom
       });
-      const zoomPct = Math.round(state37.cfgZoom * 100);
+      const zoomPct = Math.round(state40.cfgZoom * 100);
       return `
       <div class="testgen-cfg" data-testid="testgen-cfg">
         <div class="testgen-cfg-header">
@@ -18570,33 +18670,33 @@ ${cases}
       </div>
     `;
     }
-    function bindEvents37() {
-      root38.querySelectorAll("[data-testgen-example]").forEach((btn) => {
+    function bindEvents40() {
+      root41.querySelectorAll("[data-testgen-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.testgenExample;
           const ex = symbolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state37.exampleId = ex.id;
-          state37.sourceCode = ex.sourceCode;
-          state37.selectedRequirementId = null;
-          state37.selectedTestPathId = null;
-          render37();
+          state40.exampleId = ex.id;
+          state40.sourceCode = ex.sourceCode;
+          state40.selectedRequirementId = null;
+          state40.selectedTestPathId = null;
+          render40();
         });
       });
-      const criterionSelect = root38.querySelector('[data-testid="testgen-criterion"]');
+      const criterionSelect = root41.querySelector('[data-testid="testgen-criterion"]');
       if (criterionSelect) {
         criterionSelect.addEventListener("change", () => {
-          state37.criterion = criterionSelect.value;
-          state37.selectedRequirementId = null;
-          state37.selectedTestPathId = null;
-          render37();
+          state40.criterion = criterionSelect.value;
+          state40.selectedRequirementId = null;
+          state40.selectedTestPathId = null;
+          render40();
         });
       }
-      root38.querySelectorAll("[data-testgen-req]").forEach((el) => {
+      root41.querySelectorAll("[data-testgen-req]").forEach((el) => {
         const select = () => {
-          state37.selectedRequirementId = el.dataset.testgenReq;
-          state37.selectedTestPathId = null;
-          render37();
+          state40.selectedRequirementId = el.dataset.testgenReq;
+          state40.selectedTestPathId = null;
+          render40();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -18606,10 +18706,10 @@ ${cases}
           }
         });
       });
-      root38.querySelectorAll("[data-testgen-test]").forEach((el) => {
+      root41.querySelectorAll("[data-testgen-test]").forEach((el) => {
         const select = () => {
-          state37.selectedTestPathId = el.dataset.testgenTest;
-          render37();
+          state40.selectedTestPathId = el.dataset.testgenTest;
+          render40();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -18619,24 +18719,24 @@ ${cases}
           }
         });
       });
-      const editor = root38.querySelector('[data-testid="testgen-source"]');
+      const editor = root41.querySelector('[data-testid="testgen-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state37.sourceCode = editor.value;
+          state40.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => {
             renderPreservingFocus("testgen-source");
           }, 280);
         });
       }
-      const downloadBtn = root38.querySelector('[data-testid="testgen-download-btn"]');
+      const downloadBtn = root41.querySelector('[data-testid="testgen-download-btn"]');
       if (downloadBtn) {
         downloadBtn.addEventListener("click", () => {
           var _a, _b;
           const content = buildVitestFile();
           if (!content) return;
-          const fn = ((_b = (_a = state37.result) == null ? void 0 : _a.function) == null ? void 0 : _b.name) || "generated";
+          const fn = ((_b = (_a = state40.result) == null ? void 0 : _a.function) == null ? void 0 : _b.name) || "generated";
           const blob = new Blob([content], { type: "text/javascript" });
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
@@ -18648,22 +18748,22 @@ ${cases}
           URL.revokeObjectURL(url);
         });
       }
-      root38.querySelectorAll("[data-testgen-zoom]").forEach((btn) => {
+      root41.querySelectorAll("[data-testgen-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.testgenZoom;
-          if (action === "in") state37.cfgZoom = Math.min(4, +(state37.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(state37.cfgZoom - 0.25).toFixed(2));
-          else state37.cfgZoom = 1;
-          render37();
+          if (action === "in") state40.cfgZoom = Math.min(4, +(state40.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state40.cfgZoom = Math.max(0.25, +(state40.cfgZoom - 0.25).toFixed(2));
+          else state40.cfgZoom = 1;
+          render40();
         });
       });
     }
     function renderPreservingFocus(testid) {
-      const previously = root38.querySelector(`[data-testid="${testid}"]`);
+      const previously = root41.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render37();
-      const next = root38.querySelector(`[data-testid="${testid}"]`);
+      render40();
+      const next = root41.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -18671,8 +18771,8 @@ ${cases}
         }
       }
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/blackboxTesting.js
@@ -18944,13 +19044,13 @@ ${cases}
       return null;
     }
   }
-  function persist6(state37) {
+  function persist6(state40) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY9, JSON.stringify({
-        exampleId: state37.exampleId,
-        params: state37.params,
-        robust: state37.robust
+        exampleId: state40.exampleId,
+        params: state40.params,
+        robust: state40.robust
       }));
     } catch {
     }
@@ -18962,24 +19062,24 @@ ${cases}
   }
   function createBoundaryValueExplorer() {
     var _a, _b, _c;
-    const root38 = document.createElement("div");
-    root38.className = "bva-explorer";
-    root38.dataset.testid = "bva-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "bva-explorer";
+    root41.dataset.testid = "bva-explorer";
     const saved = loadSaved6();
     const defaultEx = EXAMPLES[0];
-    const state37 = {
+    const state40 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       params: (_b = saved == null ? void 0 : saved.params) != null ? _b : defaultEx.params.map((p) => ({ ...p })),
       robust: (_c = saved == null ? void 0 : saved.robust) != null ? _c : false
     };
     const quiz = { active: false, paramIdx: 0, answers: ["", "", "", "", ""], phase: "question", result: null };
     function getTests() {
-      const valid = state37.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
+      const valid = state40.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
       if (!valid.length) return [];
-      return state37.robust ? generateRobustBvaTests(valid) : generateBvaTests(valid);
+      return state40.robust ? generateRobustBvaTests(valid) : generateBvaTests(valid);
     }
     function validParams() {
-      return state37.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
+      return state40.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
     }
     function pickQuizParam() {
       const vp = validParams();
@@ -18998,7 +19098,7 @@ ${cases}
       const correct = expected.map((e, i) => userNums[i] === e);
       quiz.result = { expected, correct, score: correct.filter(Boolean).length };
       quiz.phase = "graded";
-      render37();
+      render40();
     }
     function renderQuizPanel() {
       var _a2;
@@ -19045,7 +19145,7 @@ ${cases}
     </div>`;
     }
     function renderParamRows() {
-      return state37.params.map((p, i) => `
+      return state40.params.map((p, i) => `
       <tr>
         <td><input class="bva-param-name" data-idx="${i}" value="${escapeHtml10(p.name)}"
             placeholder="param" aria-label="${t("bva.param.name")}" data-testid="bva-param-name-${i}"/></td>
@@ -19054,7 +19154,7 @@ ${cases}
         <td><input class="bva-param-num" type="number" data-idx="${i}" data-field="max"
             value="${p.max}" aria-label="${t("bva.param.max")}" data-testid="bva-param-max-${i}"/></td>
         <td><button class="bva-del-btn" data-del="${i}" aria-label="${t("common.remove")}"
-            data-testid="bva-del-${i}" ${state37.params.length <= 1 ? "disabled" : ""}>\xD7</button></td>
+            data-testid="bva-del-${i}" ${state40.params.length <= 1 ? "disabled" : ""}>\xD7</button></td>
       </tr>
     `).join("");
     }
@@ -19062,7 +19162,7 @@ ${cases}
       if (!tests.length) {
         return `<p class="bva-empty" data-testid="bva-empty">${t("bva.empty")}</p>`;
       }
-      const paramNames = state37.params.filter((p) => p.name).map((p) => p.name);
+      const paramNames = state40.params.filter((p) => p.name).map((p) => p.name);
       const headerCols = paramNames.map((n) => `<th>${escapeHtml10(n)}</th>`).join("");
       const rows = tests.map((tc) => {
         const valCells = paramNames.map((n) => {
@@ -19083,19 +19183,19 @@ ${cases}
       </table>
     `;
     }
-    function render37() {
+    function render40() {
       const exBtns = EXAMPLES.map((ex) => `
-      <button type="button" class="bva-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="bva-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-bva-example="${ex.id}" data-testid="bva-example-${ex.id}">${escapeHtml10(ex.name)}</button>
     `).join("");
       const tests = getTests();
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="bva-panel">
         <div class="bva-toolbar">
           <div class="bva-examples" data-testid="bva-examples">${exBtns}</div>
           <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
             <label class="bva-robust-label">
-              <input type="checkbox" data-testid="bva-robust-toggle" ${state37.robust ? "checked" : ""}/>
+              <input type="checkbox" data-testid="bva-robust-toggle" ${state40.robust ? "checked" : ""}/>
               ${t("bva.robust")}
             </label>
             <button type="button" class="quiz-start-btn" data-testid="bva-quiz-start">${t("quiz.start")}</button>
@@ -19115,7 +19215,7 @@ ${cases}
               <tbody>${renderParamRows()}</tbody>
             </table>
             <button type="button" class="bva-add-btn" data-testid="bva-add-param"
-              ${state37.params.length >= PARAM_LIMIT ? "disabled" : ""}>
+              ${state40.params.length >= PARAM_LIMIT ? "disabled" : ""}>
               + ${t("bva.param.add")}
             </button>
             <p class="bva-hint">${t("bva.hint")}</p>
@@ -19132,89 +19232,89 @@ ${cases}
         ${renderQuizPanel()}
       </div>
     `;
-      bindEvents37();
-      persist6(state37);
+      bindEvents40();
+      persist6(state40);
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a2, _b2, _c2, _d, _e, _f;
-      root38.querySelectorAll("[data-bva-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-bva-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES.find((e) => e.id === btn.dataset.bvaExample);
           if (!ex) return;
-          state37.exampleId = ex.id;
-          state37.params = ex.params.map((p) => ({ ...p }));
-          render37();
+          state40.exampleId = ex.id;
+          state40.params = ex.params.map((p) => ({ ...p }));
+          render40();
         });
       });
-      (_a2 = root38.querySelector('[data-testid="bva-robust-toggle"]')) == null ? void 0 : _a2.addEventListener("change", (e) => {
-        state37.robust = e.target.checked;
-        render37();
+      (_a2 = root41.querySelector('[data-testid="bva-robust-toggle"]')) == null ? void 0 : _a2.addEventListener("change", (e) => {
+        state40.robust = e.target.checked;
+        render40();
       });
-      root38.querySelectorAll(".bva-param-name").forEach((input) => {
+      root41.querySelectorAll(".bva-param-name").forEach((input) => {
         input.addEventListener("input", (e) => {
           const idx = Number(e.target.dataset.idx);
-          state37.params[idx].name = e.target.value;
+          state40.params[idx].name = e.target.value;
           const tests = getTests();
-          const resultsPane = root38.querySelector('[data-testid="bva-results"]');
+          const resultsPane = root41.querySelector('[data-testid="bva-results"]');
           if (resultsPane) {
             resultsPane.innerHTML = `<h3>${t("bva.results.title")}
             <span class="bva-count">${tests.length} ${t("bva.results.count")}</span>
           </h3>${renderTestTable(tests)}`;
           }
-          persist6(state37);
+          persist6(state40);
         });
       });
-      root38.querySelectorAll(".bva-param-num").forEach((input) => {
+      root41.querySelectorAll(".bva-param-num").forEach((input) => {
         input.addEventListener("change", (e) => {
           const idx = Number(e.target.dataset.idx);
           const field = e.target.dataset.field;
-          state37.params[idx][field] = Number(e.target.value);
+          state40.params[idx][field] = Number(e.target.value);
           const tests = getTests();
-          const resultsPane = root38.querySelector('[data-testid="bva-results"]');
+          const resultsPane = root41.querySelector('[data-testid="bva-results"]');
           if (resultsPane) {
             resultsPane.innerHTML = `<h3>${t("bva.results.title")}
             <span class="bva-count">${tests.length} ${t("bva.results.count")}</span>
           </h3>${renderTestTable(tests)}`;
           }
-          persist6(state37);
+          persist6(state40);
         });
       });
-      root38.querySelectorAll("[data-del]").forEach((btn) => {
+      root41.querySelectorAll("[data-del]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.del);
-          state37.params.splice(idx, 1);
-          render37();
+          state40.params.splice(idx, 1);
+          render40();
         });
       });
-      (_b2 = root38.querySelector('[data-testid="bva-add-param"]')) == null ? void 0 : _b2.addEventListener("click", () => {
-        if (state37.params.length >= PARAM_LIMIT) return;
-        state37.params.push({ name: `p${state37.params.length + 1}`, min: 0, max: 100 });
-        render37();
+      (_b2 = root41.querySelector('[data-testid="bva-add-param"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+        if (state40.params.length >= PARAM_LIMIT) return;
+        state40.params.push({ name: `p${state40.params.length + 1}`, min: 0, max: 100 });
+        render40();
       });
-      (_c2 = root38.querySelector('[data-testid="bva-quiz-start"]')) == null ? void 0 : _c2.addEventListener("click", () => {
+      (_c2 = root41.querySelector('[data-testid="bva-quiz-start"]')) == null ? void 0 : _c2.addEventListener("click", () => {
         quiz.active = true;
         pickQuizParam();
-        render37();
+        render40();
       });
-      (_d = root38.querySelector('[data-testid="bva-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root41.querySelector('[data-testid="bva-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
         quiz.active = false;
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-qi]").forEach((input) => {
+      root41.querySelectorAll("[data-qi]").forEach((input) => {
         input.addEventListener("input", (e) => {
           quiz.answers[Number(e.target.dataset.qi)] = e.target.value;
         });
       });
-      (_e = root38.querySelector('[data-testid="bva-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root41.querySelector('[data-testid="bva-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
         gradeQuiz();
       });
-      (_f = root38.querySelector('[data-testid="bva-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root41.querySelector('[data-testid="bva-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         pickQuizParam();
-        render37();
+        render40();
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/EquivalenceClassExplorer.js
@@ -19308,25 +19408,25 @@ ${cases}
       return null;
     }
   }
-  function persist7(state37) {
+  function persist7(state40) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY10, JSON.stringify({
-        exampleId: state37.exampleId,
-        params: state37.params,
-        mode: state37.mode
+        exampleId: state40.exampleId,
+        params: state40.params,
+        mode: state40.mode
       }));
     } catch {
     }
   }
   function createEquivalenceClassExplorer() {
     var _a, _b, _c;
-    const root38 = document.createElement("div");
-    root38.className = "ec-explorer";
-    root38.dataset.testid = "ec-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "ec-explorer";
+    root41.dataset.testid = "ec-explorer";
     const saved = loadSaved7();
     const defaultEx = EXAMPLES2[0];
-    const state37 = {
+    const state40 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       params: (_b = saved == null ? void 0 : saved.params) != null ? _b : defaultEx.params.map((p) => ({ ...p, classes: p.classes.map((c) => ({ ...c })) })),
       mode: (_c = saved == null ? void 0 : saved.mode) != null ? _c : "wect"
@@ -19334,12 +19434,12 @@ ${cases}
     };
     const quiz = { active: false, wectAnswer: "", sectAnswer: "", phase: "question", result: null };
     function getTests() {
-      const valid = state37.params.filter((p) => p.name && p.classes.length);
+      const valid = state40.params.filter((p) => p.name && p.classes.length);
       if (!valid.length) return [];
-      return state37.mode === "sect" ? generateSectTests(valid) : generateWectTests(valid);
+      return state40.mode === "sect" ? generateSectTests(valid) : generateWectTests(valid);
     }
     function gradeEcQuiz() {
-      const valid = state37.params.filter((p) => p.name && p.classes.length);
+      const valid = state40.params.filter((p) => p.name && p.classes.length);
       const wectCount = generateWectTests(valid).length;
       const sectCount = generateSectTests(valid).length;
       const wectUser = Number(quiz.wectAnswer);
@@ -19351,7 +19451,7 @@ ${cases}
         sectCorrect: sectUser === sectCount
       };
       quiz.phase = "graded";
-      render37();
+      render40();
     }
     function renderQuizPanel() {
       if (!quiz.active) return "";
@@ -19421,13 +19521,13 @@ ${cases}
     `;
     }
     function renderParams() {
-      return state37.params.map((p, i) => `
+      return state40.params.map((p, i) => `
       <div class="ec-param-block" data-testid="ec-param-${i}">
         <div class="ec-param-header">
           <input class="ec-param-name-input" data-pidx="${i}" value="${escapeHtml11(p.name)}"
               placeholder="${t("ec.param.name")}" data-testid="ec-param-name-${i}"/>
           <button class="ec-del-param-btn" data-del-param="${i}" aria-label="${t("common.remove")}"
-              data-testid="ec-del-param-${i}" ${state37.params.length <= 1 ? "disabled" : ""}>\xD7</button>
+              data-testid="ec-del-param-${i}" ${state40.params.length <= 1 ? "disabled" : ""}>\xD7</button>
         </div>
         ${renderClassTable(i, p.classes)}
       </div>
@@ -19437,7 +19537,7 @@ ${cases}
       if (!tests.length) {
         return `<p class="ec-empty" data-testid="ec-empty">${t("ec.empty")}</p>`;
       }
-      const paramNames = state37.params.map((p) => p.name);
+      const paramNames = state40.params.map((p) => p.name);
       const headerCols = paramNames.map((n) => `<th>${escapeHtml11(n)}</th>`).join("");
       const rows = tests.map((tc) => {
         const valCells = paramNames.map((n) => {
@@ -19461,21 +19561,21 @@ ${cases}
       </table>
     `;
     }
-    function render37() {
+    function render40() {
       const tests = getTests();
       const exBtns = EXAMPLES2.map((ex) => `
-      <button type="button" class="ec-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="ec-example-btn${state40.exampleId === ex.id ? " active" : ""}"
           data-ec-example="${ex.id}" data-testid="ec-example-${ex.id}">${escapeHtml11(ex.name)}</button>
     `).join("");
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="ec-panel">
         <div class="ec-toolbar">
           <div class="ec-examples" data-testid="ec-examples">${exBtns}</div>
           <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
             <div class="ec-mode-toggle" role="group">
-              <button type="button" class="ec-mode-btn${state37.mode === "wect" ? " active" : ""}"
+              <button type="button" class="ec-mode-btn${state40.mode === "wect" ? " active" : ""}"
                   data-mode="wect" data-testid="ec-mode-wect">WECT</button>
-              <button type="button" class="ec-mode-btn${state37.mode === "sect" ? " active" : ""}"
+              <button type="button" class="ec-mode-btn${state40.mode === "sect" ? " active" : ""}"
                   data-mode="sect" data-testid="ec-mode-sect">SECT</button>
             </div>
             <button type="button" class="quiz-start-btn" data-testid="ec-quiz-start">${t("quiz.start")}</button>
@@ -19487,7 +19587,7 @@ ${cases}
             <h3>${t("ec.params.title")}</h3>
             <div class="ec-params-list">${renderParams()}</div>
             <button class="ec-add-param-btn" data-testid="ec-add-param"
-                ${state37.params.length >= 5 ? "disabled" : ""}>
+                ${state40.params.length >= 5 ? "disabled" : ""}>
               + ${t("ec.param.add")}
             </button>
             <p class="ec-hint">${t("ec.hint")}</p>
@@ -19504,132 +19604,132 @@ ${cases}
         ${renderQuizPanel()}
       </div>
     `;
-      bindEvents37();
-      persist7(state37);
+      bindEvents40();
+      persist7(state40);
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a2, _b2, _c2, _d, _e, _f, _g;
-      root38.querySelectorAll("[data-ec-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-ec-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES2.find((e) => e.id === btn.dataset.ecExample);
           if (!ex) return;
-          state37.exampleId = ex.id;
-          state37.params = ex.params.map((p) => ({
+          state40.exampleId = ex.id;
+          state40.params = ex.params.map((p) => ({
             ...p,
             classes: p.classes.map((c) => ({ ...c }))
           }));
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-mode]").forEach((btn) => {
+      root41.querySelectorAll("[data-mode]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.mode = btn.dataset.mode;
-          render37();
+          state40.mode = btn.dataset.mode;
+          render40();
         });
       });
-      root38.querySelectorAll(".ec-param-name-input").forEach((input) => {
+      root41.querySelectorAll(".ec-param-name-input").forEach((input) => {
         input.addEventListener("input", (e) => {
-          state37.params[Number(e.target.dataset.pidx)].name = e.target.value;
+          state40.params[Number(e.target.dataset.pidx)].name = e.target.value;
           refreshResults();
-          persist7(state37);
+          persist7(state40);
         });
       });
-      root38.querySelectorAll(".ec-class-name").forEach((input) => {
+      root41.querySelectorAll(".ec-class-name").forEach((input) => {
         input.addEventListener("input", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
-          state37.params[pi].classes[ci].name = e.target.value;
+          state40.params[pi].classes[ci].name = e.target.value;
           refreshResults();
-          persist7(state37);
+          persist7(state40);
         });
       });
-      root38.querySelectorAll(".ec-class-rep").forEach((input) => {
+      root41.querySelectorAll(".ec-class-rep").forEach((input) => {
         input.addEventListener("change", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
           const v = e.target.value;
-          state37.params[pi].classes[ci].representative = isNaN(Number(v)) ? v : Number(v);
+          state40.params[pi].classes[ci].representative = isNaN(Number(v)) ? v : Number(v);
           refreshResults();
-          persist7(state37);
+          persist7(state40);
         });
       });
-      root38.querySelectorAll(".ec-class-kind").forEach((sel) => {
+      root41.querySelectorAll(".ec-class-kind").forEach((sel) => {
         sel.addEventListener("change", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
-          state37.params[pi].classes[ci].kind = e.target.value;
+          state40.params[pi].classes[ci].kind = e.target.value;
           refreshResults();
-          persist7(state37);
+          persist7(state40);
         });
       });
-      root38.querySelectorAll("[data-del-class]").forEach((btn) => {
+      root41.querySelectorAll("[data-del-class]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const pi = Number(btn.dataset.pidx), ci = Number(btn.dataset.cidx);
-          state37.params[pi].classes.splice(ci, 1);
-          render37();
+          state40.params[pi].classes.splice(ci, 1);
+          render40();
         });
       });
-      root38.querySelectorAll("[data-add-class]").forEach((btn) => {
+      root41.querySelectorAll("[data-add-class]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const pi = Number(btn.dataset.pidx);
-          state37.params[pi].classes.push({ name: "new class", kind: "valid", representative: 0 });
-          render37();
+          state40.params[pi].classes.push({ name: "new class", kind: "valid", representative: 0 });
+          render40();
         });
       });
-      root38.querySelectorAll("[data-del-param]").forEach((btn) => {
+      root41.querySelectorAll("[data-del-param]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.params.splice(Number(btn.dataset.delParam), 1);
-          render37();
+          state40.params.splice(Number(btn.dataset.delParam), 1);
+          render40();
         });
       });
-      (_a2 = root38.querySelector('[data-testid="ec-add-param"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state37.params.length >= 5) return;
-        state37.params.push({
-          name: `param${state37.params.length + 1}`,
+      (_a2 = root41.querySelector('[data-testid="ec-add-param"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state40.params.length >= 5) return;
+        state40.params.push({
+          name: `param${state40.params.length + 1}`,
           classes: [
             { name: "valid", kind: "valid", representative: 1 },
             { name: "invalid", kind: "invalid", representative: -1 }
           ]
         });
-        render37();
+        render40();
       });
-      (_b2 = root38.querySelector('[data-testid="ec-quiz-start"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+      (_b2 = root41.querySelector('[data-testid="ec-quiz-start"]')) == null ? void 0 : _b2.addEventListener("click", () => {
         quiz.active = true;
         quiz.wectAnswer = "";
         quiz.sectAnswer = "";
         quiz.phase = "question";
         quiz.result = null;
-        render37();
+        render40();
       });
-      (_c2 = root38.querySelector('[data-testid="ec-quiz-close"]')) == null ? void 0 : _c2.addEventListener("click", () => {
+      (_c2 = root41.querySelector('[data-testid="ec-quiz-close"]')) == null ? void 0 : _c2.addEventListener("click", () => {
         quiz.active = false;
-        render37();
+        render40();
       });
-      (_d = root38.querySelector('[data-testid="ec-quiz-wect"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root41.querySelector('[data-testid="ec-quiz-wect"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         quiz.wectAnswer = e.target.value;
       });
-      (_e = root38.querySelector('[data-testid="ec-quiz-sect"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
+      (_e = root41.querySelector('[data-testid="ec-quiz-sect"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
         quiz.sectAnswer = e.target.value;
       });
-      (_f = root38.querySelector('[data-testid="ec-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root41.querySelector('[data-testid="ec-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
         gradeEcQuiz();
       });
-      (_g = root38.querySelector('[data-testid="ec-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
+      (_g = root41.querySelector('[data-testid="ec-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
         quiz.wectAnswer = "";
         quiz.sectAnswer = "";
         quiz.phase = "question";
         quiz.result = null;
-        render37();
+        render40();
       });
     }
     function refreshResults() {
       const tests = getTests();
-      const pane = root38.querySelector('[data-testid="ec-results"]');
+      const pane = root41.querySelector('[data-testid="ec-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("ec.results.title")}
         <span class="ec-count">${tests.length} ${t("ec.results.count")}</span>
       </h3>${renderResultTable(tests)}`;
       }
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/data/ispExamples.js
@@ -19938,9 +20038,9 @@ ${cases}
     });
   }
   function createInputSpacePartitioningExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "isp-explorer";
-    root38.dataset.testid = "isp-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "isp-explorer";
+    root41.dataset.testid = "isp-explorer";
     let exampleId = ISP_EXAMPLES[0].id;
     let idm = idmFromExample(ISP_EXAMPLES[0]);
     let criterion = "acoc";
@@ -20094,7 +20194,7 @@ ${cases}
       <p class="isp-hint">${esc(t("isp.subsumptionHint"))}</p>
     </div>`;
     }
-    function renderQuiz37() {
+    function renderQuiz40() {
       if (!quiz.active) {
         return `<button type="button" class="isp-quiz-start" data-testid="isp-quiz-start">${esc(t("quiz.start"))}</button>`;
       }
@@ -20115,8 +20215,8 @@ ${cases}
       <button type="button" data-testid="isp-quiz-submit" ${!quiz.answer ? "disabled" : ""}>${esc(t("quiz.submit"))}</button>
     </div>`;
     }
-    function render37() {
-      root38.innerHTML = `
+    function render40() {
+      root41.innerHTML = `
       <div class="isp-wrap">
         ${renderExampleChips5()}
         ${renderIdm()}
@@ -20128,58 +20228,58 @@ ${cases}
         ${renderLattice()}
         <section class="isp-self-test">
           <h3>${esc(t("quiz.title"))}</h3>
-          ${renderQuiz37()}
+          ${renderQuiz40()}
         </section>
       </div>`;
-      bindEvents37();
+      bindEvents40();
     }
     function findChar(cid) {
       return idm.find((c) => c.id === cid);
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a, _b, _c, _d, _e;
-      root38.querySelectorAll("[data-isp-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-isp-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = ISP_EXAMPLES.find((e) => e.id === btn.dataset.ispExample);
           if (!ex || ex.id === exampleId) return;
           exampleId = ex.id;
           idm = idmFromExample(ex);
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-isp-criterion]").forEach((btn) => {
+      root41.querySelectorAll("[data-isp-criterion]").forEach((btn) => {
         btn.addEventListener("click", () => {
           criterion = btn.dataset.ispCriterion;
-          render37();
+          render40();
         });
       });
-      (_a = root38.querySelector("[data-isp-twise-t]")) == null ? void 0 : _a.addEventListener("change", (e) => {
+      (_a = root41.querySelector("[data-isp-twise-t]")) == null ? void 0 : _a.addEventListener("change", (e) => {
         const v = parseInt(e.target.value, 10);
         twiseTVal = Number.isFinite(v) ? Math.max(2, Math.min(v, idm.length)) : 2;
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-isp-char-name]").forEach((inp) => {
+      root41.querySelectorAll("[data-isp-char-name]").forEach((inp) => {
         inp.addEventListener("change", () => {
           const c = findChar(inp.dataset.ispCharName);
           if (c) {
             c.name = inp.value;
-            render37();
+            render40();
           }
         });
       });
-      (_b = root38.querySelector("[data-isp-add-char]")) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root41.querySelector("[data-isp-add-char]")) == null ? void 0 : _b.addEventListener("click", () => {
         const b1 = { id: uid(), label: "block 1" };
         const b2 = { id: uid(), label: "block 2" };
         idm.push({ id: uid(), name: "new characteristic", blocks: [b1, b2], baseBlockIds: [b1.id] });
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-isp-char-remove]").forEach((btn) => {
+      root41.querySelectorAll("[data-isp-char-remove]").forEach((btn) => {
         btn.addEventListener("click", () => {
           idm = idm.filter((c) => c.id !== btn.dataset.ispCharRemove);
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-isp-add-block]").forEach((inp) => {
+      root41.querySelectorAll("[data-isp-add-block]").forEach((inp) => {
         inp.addEventListener("change", () => {
           const cid = inp.dataset.ispAddBlock;
           const label = inp.value.trim();
@@ -20190,10 +20290,10 @@ ${cases}
           } else {
             blockDraft[cid] = inp.value;
           }
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-isp-block-remove]").forEach((btn) => {
+      root41.querySelectorAll("[data-isp-block-remove]").forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.stopPropagation();
           const [cid, bid] = btn.dataset.ispBlockRemove.split(":");
@@ -20202,10 +20302,10 @@ ${cases}
           c.blocks = c.blocks.filter((b) => b.id !== bid);
           c.baseBlockIds = c.baseBlockIds.filter((id) => id !== bid);
           if (c.baseBlockIds.length === 0) c.baseBlockIds = [c.blocks[0].id];
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll(".isp-block--base-interactive").forEach((span) => {
+      root41.querySelectorAll(".isp-block--base-interactive").forEach((span) => {
         span.addEventListener("click", () => {
           const [cid, bid] = span.dataset.ispBlock.split(":");
           const c = findChar(cid);
@@ -20216,35 +20316,35 @@ ${cases}
             c.baseBlockIds = c.baseBlockIds.includes(bid) ? c.baseBlockIds.filter((id) => id !== bid) : [...c.baseBlockIds, bid];
             if (c.baseBlockIds.length === 0) c.baseBlockIds = [bid];
           }
-          render37();
+          render40();
         });
       });
-      (_c = root38.querySelector('[data-testid="isp-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root41.querySelector('[data-testid="isp-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
         quiz.active = true;
         quiz.phase = "question";
         quiz.answer = "";
-        render37();
+        render40();
       });
-      root38.querySelectorAll('input[name="isp-quiz"]').forEach((inp) => {
+      root41.querySelectorAll('input[name="isp-quiz"]').forEach((inp) => {
         inp.addEventListener("change", () => {
           quiz.answer = inp.value;
-          render37();
+          render40();
         });
       });
-      (_d = root38.querySelector('[data-testid="isp-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root41.querySelector('[data-testid="isp-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
         quiz.phase = "done";
-        render37();
+        render40();
       });
-      (_e = root38.querySelector('[data-testid="isp-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root41.querySelector('[data-testid="isp-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
         quiz.active = false;
         quiz.phase = "idle";
         quiz.answer = "";
-        render37();
+        render40();
       });
     }
-    onLocaleChange(() => render37());
-    render37();
-    return root38;
+    onLocaleChange(() => render40());
+    render40();
+    return root41;
   }
 
   // src/components/DecisionTableExplorer.js
@@ -20333,21 +20433,21 @@ ${cases}
       return null;
     }
   }
-  function persist8(state37) {
+  function persist8(state40) {
     var _a;
     try {
-      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY11, JSON.stringify({ exampleId: state37.exampleId, conditions: state37.conditions, actions: state37.actions, rules: state37.rules }));
+      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY11, JSON.stringify({ exampleId: state40.exampleId, conditions: state40.conditions, actions: state40.actions, rules: state40.rules }));
     } catch {
     }
   }
   function createDecisionTableExplorer() {
     var _a;
-    const root38 = document.createElement("div");
-    root38.className = "dt-explorer";
-    root38.dataset.testid = "dt-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "dt-explorer";
+    root41.dataset.testid = "dt-explorer";
     const saved = loadSaved8();
     const defaultEx = EXAMPLES3[0];
-    const state37 = {
+    const state40 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       conditions: (saved == null ? void 0 : saved.conditions) ? deepClone(saved.conditions) : deepClone(defaultEx.conditions),
       actions: (saved == null ? void 0 : saved.actions) ? deepClone(saved.actions) : deepClone(defaultEx.actions),
@@ -20359,7 +20459,7 @@ ${cases}
     const dtQuiz = { active: false, phase: "question", ansCovered: "", ansDup: "", result: null };
     function renderDtQuizPanel() {
       if (!dtQuiz.active) return "";
-      const validation = validateDecisionTable(state37.conditions, state37.rules);
+      const validation = validateDecisionTable(state40.conditions, state40.rules);
       const isGraded = dtQuiz.phase === "graded";
       const covCorrect = isGraded && parseInt(dtQuiz.ansCovered, 10) === validation.covered;
       const dupCorrect = isGraded && parseInt(dtQuiz.ansDup, 10) === validation.duplicate.length;
@@ -20398,19 +20498,19 @@ ${cases}
     `;
     }
     function renderTable() {
-      const tests = generateDecisionTableTests(state37.conditions, state37.actions, state37.rules);
-      const validation = validateDecisionTable(state37.conditions, state37.rules);
-      const condHead = state37.conditions.map((c) => `<th class="dt-cond-head">${esc2(c.name)}</th>`).join("");
-      const actHead = state37.actions.map((a) => `<th class="dt-act-head">${esc2(a.name)}</th>`).join("");
+      const tests = generateDecisionTableTests(state40.conditions, state40.actions, state40.rules);
+      const validation = validateDecisionTable(state40.conditions, state40.rules);
+      const condHead = state40.conditions.map((c) => `<th class="dt-cond-head">${esc2(c.name)}</th>`).join("");
+      const actHead = state40.actions.map((a) => `<th class="dt-act-head">${esc2(a.name)}</th>`).join("");
       const rows = tests.map((tc, i) => {
-        const rule = state37.rules[i];
-        const condCells = state37.conditions.map((c) => {
+        const rule = state40.rules[i];
+        const condCells = state40.conditions.map((c) => {
           var _a2;
           const val = (_a2 = tc.conditions[c.id]) != null ? _a2 : "\u2013";
           const cls = val === "T" || val === "Y" ? " dt-val-true" : val === "F" || val === "N" ? " dt-val-false" : " dt-val-dc";
           return `<td class="dt-cell${cls}">${esc2(val)}</td>`;
         }).join("");
-        const actCells = state37.actions.map((a) => {
+        const actCells = state40.actions.map((a) => {
           const fires = tc.actions.includes(a.id);
           return `<td class="dt-cell${fires ? " dt-act-fire" : ""}">${fires ? "\u2713" : ""}</td>`;
         }).join("");
@@ -20421,7 +20521,7 @@ ${cases}
         ${actCells}
         <td>
           <button class="dt-del-rule-btn" data-del-rule="${i}" aria-label="${t("common.remove")}"
-            ${state37.rules.length <= 1 ? "disabled" : ""}>\xD7</button>
+            ${state40.rules.length <= 1 ? "disabled" : ""}>\xD7</button>
         </td>
       </tr>`;
       }).join("");
@@ -20448,31 +20548,31 @@ ${cases}
     </div>`;
     }
     function renderConditions() {
-      return state37.conditions.map((c, i) => `
+      return state40.conditions.map((c, i) => `
       <div class="dt-cond-block" data-testid="dt-cond-${i}">
         <input class="dt-cond-name" data-cidx="${i}" value="${esc2(c.name)}"
           placeholder="${t("dt.condition.name")}" data-testid="dt-cond-name-${i}"/>
         <button class="dt-del-cond-btn" data-del-cond="${i}" aria-label="${t("common.remove")}"
-          ${state37.conditions.length <= 1 ? "disabled" : ""} data-testid="dt-del-cond-${i}">\xD7</button>
+          ${state40.conditions.length <= 1 ? "disabled" : ""} data-testid="dt-del-cond-${i}">\xD7</button>
       </div>
     `).join("");
     }
     function renderActions() {
-      return state37.actions.map((a, i) => `
+      return state40.actions.map((a, i) => `
       <div class="dt-act-block" data-testid="dt-action-${i}">
         <input class="dt-act-name" data-aidx="${i}" value="${esc2(a.name)}"
           placeholder="${t("dt.action.name")}" data-testid="dt-act-name-${i}"/>
         <button class="dt-del-act-btn" data-del-act="${i}" aria-label="${t("common.remove")}"
-          ${state37.actions.length <= 1 ? "disabled" : ""} data-testid="dt-del-act-${i}">\xD7</button>
+          ${state40.actions.length <= 1 ? "disabled" : ""} data-testid="dt-del-act-${i}">\xD7</button>
       </div>
     `).join("");
     }
-    function render37() {
+    function render40() {
       const exBtns = EXAMPLES3.map((ex) => `
-      <button type="button" class="dt-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="dt-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-dt-example="${ex.id}" data-testid="dt-example-${ex.id}">${esc2(ex.name)}</button>
     `).join("");
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="dt-panel">
         <div class="dt-toolbar">
           <div class="dt-examples" data-testid="dt-examples">${exBtns}</div>
@@ -20484,7 +20584,7 @@ ${cases}
               <h4>${t("dt.conditions.title")}</h4>
               <div class="dt-cond-list">${renderConditions()}</div>
               <button class="dt-add-cond-btn" data-testid="dt-add-cond"
-                ${state37.conditions.length >= 6 ? "disabled" : ""}>
+                ${state40.conditions.length >= 6 ? "disabled" : ""}>
                 + ${t("dt.condition.add")}
               </button>
             </div>
@@ -20492,7 +20592,7 @@ ${cases}
               <h4>${t("dt.actions.title")}</h4>
               <div class="dt-act-list">${renderActions()}</div>
               <button class="dt-add-act-btn" data-testid="dt-add-act"
-                ${state37.actions.length >= 6 ? "disabled" : ""}>
+                ${state40.actions.length >= 6 ? "disabled" : ""}>
                 + ${t("dt.action.add")}
               </button>
             </div>
@@ -20501,7 +20601,7 @@ ${cases}
 
           <div class="dt-results-pane" data-testid="dt-results">
             <h3>${t("dt.results.title")}
-              <span class="dt-count">${state37.rules.length} ${t("dt.results.count")}</span>
+              <span class="dt-count">${state40.rules.length} ${t("dt.results.count")}</span>
             </h3>
             ${renderTable()}
             ${renderDtQuizPanel()}
@@ -20509,161 +20609,161 @@ ${cases}
         </div>
       </div>
     `;
-      bindEvents37();
-      persist8(state37);
+      bindEvents40();
+      persist8(state40);
     }
     function addDefaultRule() {
       const conditions = {};
-      for (const c of state37.conditions) conditions[c.id] = "T";
-      state37.rules.push({ id: `r${nextRuleId++}`, conditions, actions: [] });
+      for (const c of state40.conditions) conditions[c.id] = "T";
+      state40.rules.push({ id: `r${nextRuleId++}`, conditions, actions: [] });
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a2, _b, _c, _d, _e, _f, _g;
-      root38.querySelectorAll("[data-dt-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-dt-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES3.find((e) => e.id === btn.dataset.dtExample);
           if (!ex) return;
-          state37.exampleId = ex.id;
-          state37.conditions = deepClone(ex.conditions);
-          state37.actions = deepClone(ex.actions);
-          state37.rules = deepClone(ex.rules);
-          render37();
+          state40.exampleId = ex.id;
+          state40.conditions = deepClone(ex.conditions);
+          state40.actions = deepClone(ex.actions);
+          state40.rules = deepClone(ex.rules);
+          render40();
         });
       });
-      root38.querySelectorAll(".dt-cond-name").forEach((inp) => {
+      root41.querySelectorAll(".dt-cond-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state37.conditions[Number(e.target.dataset.cidx)].name = e.target.value;
+          state40.conditions[Number(e.target.dataset.cidx)].name = e.target.value;
           refreshResults();
-          persist8(state37);
+          persist8(state40);
         });
       });
-      root38.querySelectorAll(".dt-act-name").forEach((inp) => {
+      root41.querySelectorAll(".dt-act-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state37.actions[Number(e.target.dataset.aidx)].name = e.target.value;
+          state40.actions[Number(e.target.dataset.aidx)].name = e.target.value;
           refreshResults();
-          persist8(state37);
+          persist8(state40);
         });
       });
-      root38.querySelectorAll("[data-del-cond]").forEach((btn) => {
+      root41.querySelectorAll("[data-del-cond]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delCond);
-          const cid = state37.conditions[idx].id;
-          state37.conditions.splice(idx, 1);
-          for (const r of state37.rules) delete r.conditions[cid];
-          render37();
+          const cid = state40.conditions[idx].id;
+          state40.conditions.splice(idx, 1);
+          for (const r of state40.rules) delete r.conditions[cid];
+          render40();
         });
       });
-      root38.querySelectorAll("[data-del-act]").forEach((btn) => {
+      root41.querySelectorAll("[data-del-act]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delAct);
-          const aid = state37.actions[idx].id;
-          state37.actions.splice(idx, 1);
-          for (const r of state37.rules) r.actions = r.actions.filter((a) => a !== aid);
-          render37();
+          const aid = state40.actions[idx].id;
+          state40.actions.splice(idx, 1);
+          for (const r of state40.rules) r.actions = r.actions.filter((a) => a !== aid);
+          render40();
         });
       });
-      (_a2 = root38.querySelector('[data-testid="dt-add-cond"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state37.conditions.length >= 6) return;
+      (_a2 = root41.querySelector('[data-testid="dt-add-cond"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state40.conditions.length >= 6) return;
         const id = `c${nextCondId++}`;
-        state37.conditions.push({ id, name: `Condition ${state37.conditions.length + 1}`, values: ["T", "F"] });
-        for (const r of state37.rules) r.conditions[id] = "T";
-        render37();
+        state40.conditions.push({ id, name: `Condition ${state40.conditions.length + 1}`, values: ["T", "F"] });
+        for (const r of state40.rules) r.conditions[id] = "T";
+        render40();
       });
-      (_b = root38.querySelector('[data-testid="dt-add-act"]')) == null ? void 0 : _b.addEventListener("click", () => {
-        if (state37.actions.length >= 6) return;
+      (_b = root41.querySelector('[data-testid="dt-add-act"]')) == null ? void 0 : _b.addEventListener("click", () => {
+        if (state40.actions.length >= 6) return;
         const id = `a${nextActId++}`;
-        state37.actions.push({ id, name: `Action ${state37.actions.length + 1}` });
-        render37();
+        state40.actions.push({ id, name: `Action ${state40.actions.length + 1}` });
+        render40();
       });
-      (_c = root38.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root41.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _c.addEventListener("click", () => {
         addDefaultRule();
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-del-rule]").forEach((btn) => {
+      root41.querySelectorAll("[data-del-rule]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.rules.splice(Number(btn.dataset.delRule), 1);
-          render37();
+          state40.rules.splice(Number(btn.dataset.delRule), 1);
+          render40();
         });
       });
-      root38.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
+      root41.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
         td.addEventListener("click", () => {
           var _a3, _b2;
           const row = td.closest("tr");
           if (!row) return;
-          const ruleIdx = [...root38.querySelectorAll("tbody tr")].indexOf(row);
+          const ruleIdx = [...root41.querySelectorAll("tbody tr")].indexOf(row);
           const allCells = [...row.querySelectorAll('.dt-cell[class*="dt-val"]')];
           const colIdx = allCells.indexOf(td);
           if (ruleIdx < 0 || colIdx < 0) return;
-          const cid = (_a3 = state37.conditions[colIdx]) == null ? void 0 : _a3.id;
+          const cid = (_a3 = state40.conditions[colIdx]) == null ? void 0 : _a3.id;
           if (!cid) return;
-          const cur = state37.rules[ruleIdx].conditions[cid];
+          const cur = state40.rules[ruleIdx].conditions[cid];
           const cycle = { "T": "F", "F": "\u2013", "\u2013": "T" };
-          state37.rules[ruleIdx].conditions[cid] = (_b2 = cycle[cur]) != null ? _b2 : "T";
+          state40.rules[ruleIdx].conditions[cid] = (_b2 = cycle[cur]) != null ? _b2 : "T";
           refreshResults();
-          persist8(state37);
+          persist8(state40);
         });
       });
-      root38.querySelectorAll('.dt-cell.dt-act-fire, .dt-cell:not([class*="dt-val"]):not(.dt-separator):not(.dt-rule-label)').forEach((td) => {
+      root41.querySelectorAll('.dt-cell.dt-act-fire, .dt-cell:not([class*="dt-val"]):not(.dt-separator):not(.dt-rule-label)').forEach((td) => {
         var _a3;
         if (!td.closest("tbody")) return;
         const row = td.closest("tr");
         if (!row) return;
-        const ruleIdx = [...root38.querySelectorAll("tbody tr")].indexOf(row);
+        const ruleIdx = [...root41.querySelectorAll("tbody tr")].indexOf(row);
         if (ruleIdx < 0) return;
         const condCells = row.querySelectorAll('[class*="dt-val"]').length;
         const allTds = [...row.querySelectorAll("td")];
         const tdIdx = allTds.indexOf(td);
         const actColIdx = tdIdx - condCells - 2;
-        if (actColIdx < 0 || actColIdx >= state37.actions.length) return;
-        const aid = (_a3 = state37.actions[actColIdx]) == null ? void 0 : _a3.id;
+        if (actColIdx < 0 || actColIdx >= state40.actions.length) return;
+        const aid = (_a3 = state40.actions[actColIdx]) == null ? void 0 : _a3.id;
         if (!aid) return;
-        const r = state37.rules[ruleIdx];
+        const r = state40.rules[ruleIdx];
         if (r.actions.includes(aid)) r.actions = r.actions.filter((a) => a !== aid);
         else r.actions.push(aid);
         refreshResults();
-        persist8(state37);
+        persist8(state40);
       });
-      (_d = root38.querySelector('[data-testid="dt-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root41.querySelector('[data-testid="dt-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
         dtQuiz.active = true;
         dtQuiz.phase = "question";
         dtQuiz.ansCovered = "";
         dtQuiz.ansDup = "";
-        render37();
+        render40();
       });
-      (_e = root38.querySelector('[data-testid="dt-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root41.querySelector('[data-testid="dt-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
         dtQuiz.active = false;
-        render37();
+        render40();
       });
-      (_f = root38.querySelector('[data-testid="dt-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root41.querySelector('[data-testid="dt-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a3, _b2, _c2, _d2;
-        dtQuiz.ansCovered = (_b2 = (_a3 = root38.querySelector('[data-testid="dt-quiz-covered"]')) == null ? void 0 : _a3.value) != null ? _b2 : "";
-        dtQuiz.ansDup = (_d2 = (_c2 = root38.querySelector('[data-testid="dt-quiz-dup"]')) == null ? void 0 : _c2.value) != null ? _d2 : "";
+        dtQuiz.ansCovered = (_b2 = (_a3 = root41.querySelector('[data-testid="dt-quiz-covered"]')) == null ? void 0 : _a3.value) != null ? _b2 : "";
+        dtQuiz.ansDup = (_d2 = (_c2 = root41.querySelector('[data-testid="dt-quiz-dup"]')) == null ? void 0 : _c2.value) != null ? _d2 : "";
         dtQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      (_g = root38.querySelector('[data-testid="dt-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
+      (_g = root41.querySelector('[data-testid="dt-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
         dtQuiz.phase = "question";
         dtQuiz.ansCovered = "";
         dtQuiz.ansDup = "";
-        render37();
+        render40();
       });
     }
     function refreshResults() {
       var _a2;
-      const pane = root38.querySelector('[data-testid="dt-results"]');
+      const pane = root41.querySelector('[data-testid="dt-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("dt.results.title")}
-        <span class="dt-count">${state37.rules.length} ${t("dt.results.count")}</span>
+        <span class="dt-count">${state40.rules.length} ${t("dt.results.count")}</span>
       </h3>${renderTable()}`;
         pane.querySelectorAll("[data-del-rule]").forEach((btn) => {
           btn.addEventListener("click", () => {
-            state37.rules.splice(Number(btn.dataset.delRule), 1);
-            render37();
+            state40.rules.splice(Number(btn.dataset.delRule), 1);
+            render40();
           });
         });
         (_a2 = pane.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _a2.addEventListener("click", () => {
           addDefaultRule();
-          render37();
+          render40();
         });
         pane.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
           td.addEventListener("click", () => {
@@ -20673,19 +20773,19 @@ ${cases}
             const ruleIdx = [...pane.querySelectorAll("tbody tr")].indexOf(row);
             const colIdx = [...row.querySelectorAll('.dt-cell[class*="dt-val"]')].indexOf(td);
             if (ruleIdx < 0 || colIdx < 0) return;
-            const cid = (_a3 = state37.conditions[colIdx]) == null ? void 0 : _a3.id;
+            const cid = (_a3 = state40.conditions[colIdx]) == null ? void 0 : _a3.id;
             if (!cid) return;
-            const cur = state37.rules[ruleIdx].conditions[cid];
+            const cur = state40.rules[ruleIdx].conditions[cid];
             const cycle = { "T": "F", "F": "\u2013", "\u2013": "T" };
-            state37.rules[ruleIdx].conditions[cid] = (_b = cycle[cur]) != null ? _b : "T";
+            state40.rules[ruleIdx].conditions[cid] = (_b = cycle[cur]) != null ? _b : "T";
             refreshResults();
-            persist8(state37);
+            persist8(state40);
           });
         });
       }
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/StateTransitionExplorer.js
@@ -20769,12 +20869,12 @@ ${cases}
   }
   function createStateTransitionExplorer() {
     var _a, _b;
-    const root38 = document.createElement("div");
-    root38.className = "st-explorer";
-    root38.dataset.testid = "st-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "st-explorer";
+    root41.dataset.testid = "st-explorer";
     const saved = loadSaved9();
     const defaultEx = EXAMPLES4[0];
-    const state37 = {
+    const state40 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       states: (saved == null ? void 0 : saved.states) ? deepClone2(saved.states) : deepClone2(defaultEx.states),
       transitions: (saved == null ? void 0 : saved.transitions) ? deepClone2(saved.transitions) : deepClone2(defaultEx.transitions),
@@ -20788,7 +20888,7 @@ ${cases}
       if (!stQuiz.active) return "";
       const tests = getTests();
       const count = tests.length;
-      const modeLabel = state37.mode === "sequence" ? t("st.mode.sequence") : t("st.mode.transition");
+      const modeLabel = state40.mode === "sequence" ? t("st.mode.sequence") : t("st.mode.transition");
       const isGraded = stQuiz.phase === "graded";
       const correct = isGraded && parseInt(stQuiz.answer, 10) === count;
       return `
@@ -20819,15 +20919,15 @@ ${cases}
     `;
     }
     function getTests() {
-      if (!state37.states.length || !state37.transitions.length) return [];
-      return state37.mode === "sequence" ? generateStSequenceTests(state37.states, state37.transitions) : generateStTransitionTests(state37.states, state37.transitions);
+      if (!state40.states.length || !state40.transitions.length) return [];
+      return state40.mode === "sequence" ? generateStSequenceTests(state40.states, state40.transitions) : generateStTransitionTests(state40.states, state40.transitions);
     }
     function renderDiagram() {
       const W = 520, H = 220, R = 28;
-      const n = state37.states.length;
+      const n = state40.states.length;
       if (!n) return "";
       const cx = W / 2, cy = H / 2, radius = Math.min(W, H) / 2 - R - 16;
-      const positions = state37.states.map((s, i) => {
+      const positions = state40.states.map((s, i) => {
         const angle = 2 * Math.PI * i / n - Math.PI / 2;
         return { id: s.id, x: cx + radius * Math.cos(angle), y: cy + radius * Math.sin(angle) };
       });
@@ -20836,7 +20936,7 @@ ${cases}
       let defs = `<defs><marker id="${arrowId}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
     </marker></defs>`;
-      const edges = state37.transitions.map((tr, i) => {
+      const edges = state40.transitions.map((tr, i) => {
         const from = pos[tr.from];
         const to = pos[tr.to];
         if (!from || !to) return "";
@@ -20858,7 +20958,7 @@ ${cases}
         fill="none" stroke="#6366f1" stroke-width="1.5" marker-end="url(#${arrowId})"/>
         <text x="${mx2}" y="${my2 - 4}" text-anchor="middle" font-size="10" fill="#374151">${esc3(tr.event)}</text>`;
       }).join("");
-      const nodes = state37.states.map((s) => {
+      const nodes = state40.states.map((s) => {
         const p = pos[s.id];
         if (!p) return "";
         const stroke = s.initial ? "#0f4c81" : "#9ca3af";
@@ -20872,21 +20972,21 @@ ${cases}
     </svg>`;
     }
     function renderStateList() {
-      return state37.states.map((s, i) => `
+      return state40.states.map((s, i) => `
       <div class="st-state-row" data-testid="st-state-${i}">
         ${s.initial ? `<span class="st-initial-dot" title="${t("st.initial")}">\u25CF</span>` : `<span class="st-initial-dot st-initial-dot--empty" title="${t("st.set.initial")}" data-set-initial="${i}">\u25CB</span>`}
         <input class="st-state-name" data-sidx="${i}" value="${esc3(s.name)}"
           placeholder="${t("st.state.name")}" data-testid="st-state-name-${i}"/>
         <button class="st-del-btn" data-del-state="${i}" aria-label="${t("common.remove")}"
-          ${state37.states.length <= 1 ? "disabled" : ""} data-testid="st-del-state-${i}">\xD7</button>
+          ${state40.states.length <= 1 ? "disabled" : ""} data-testid="st-del-state-${i}">\xD7</button>
       </div>
     `).join("");
     }
     function renderTransitionList() {
-      return state37.transitions.map((tr, i) => {
+      return state40.transitions.map((tr, i) => {
         var _a2;
-        const fromNames = state37.states.map((s) => `<option value="${esc3(s.id)}"${tr.from === s.id ? " selected" : ""}>${esc3(s.name)}</option>`).join("");
-        const toNames = state37.states.map((s) => `<option value="${esc3(s.id)}"${tr.to === s.id ? " selected" : ""}>${esc3(s.name)}</option>`).join("");
+        const fromNames = state40.states.map((s) => `<option value="${esc3(s.id)}"${tr.from === s.id ? " selected" : ""}>${esc3(s.name)}</option>`).join("");
+        const toNames = state40.states.map((s) => `<option value="${esc3(s.id)}"${tr.to === s.id ? " selected" : ""}>${esc3(s.name)}</option>`).join("");
         return `<tr class="st-tr-row" data-testid="st-transition-${i}">
         <td><select class="st-from-sel" data-tidx="${i}" data-testid="st-from-${i}">${fromNames}</select></td>
         <td>\u2192</td>
@@ -20896,13 +20996,13 @@ ${cases}
         <td><input class="st-action-inp" data-tidx="${i}" value="${esc3((_a2 = tr.action) != null ? _a2 : "")}"
           placeholder="${t("st.transition.action")}" data-testid="st-action-${i}"/></td>
         <td><button class="st-del-btn" data-del-tr="${i}" aria-label="${t("common.remove")}"
-          ${state37.transitions.length <= 1 ? "disabled" : ""} data-testid="st-del-tr-${i}">\xD7</button></td>
+          ${state40.transitions.length <= 1 ? "disabled" : ""} data-testid="st-del-tr-${i}">\xD7</button></td>
       </tr>`;
       }).join("");
     }
     function renderTestTable(tests) {
       if (!tests.length) return `<p class="st-empty" data-testid="st-empty">${t("st.empty")}</p>`;
-      if (state37.mode === "sequence") {
+      if (state40.mode === "sequence") {
         const rows2 = tests.map((tc) => `
         <tr class="st-test-row" data-testid="st-test-${tc.id}">
           <td class="st-test-label">${esc3(tc.label)}</td>
@@ -20939,20 +21039,20 @@ ${cases}
       <tbody>${rows}</tbody>
     </table>`;
     }
-    function render37() {
+    function render40() {
       const tests = getTests();
       const exBtns = EXAMPLES4.map((ex) => `
-      <button type="button" class="st-example-btn${state37.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="st-example-btn${state40.exampleId === ex.id ? " active" : ""}"
         data-st-example="${ex.id}" data-testid="st-example-${ex.id}">${esc3(ex.name)}</button>
     `).join("");
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="st-panel">
         <div class="st-toolbar">
           <div class="st-examples" data-testid="st-examples">${exBtns}</div>
           <div class="st-mode-toggle" role="group">
-            <button type="button" class="st-mode-btn${state37.mode === "transition" ? " active" : ""}"
+            <button type="button" class="st-mode-btn${state40.mode === "transition" ? " active" : ""}"
               data-mode="transition" data-testid="st-mode-transition">${t("st.mode.transition")}</button>
-            <button type="button" class="st-mode-btn${state37.mode === "sequence" ? " active" : ""}"
+            <button type="button" class="st-mode-btn${state40.mode === "sequence" ? " active" : ""}"
               data-mode="sequence" data-testid="st-mode-sequence">${t("st.mode.sequence")}</button>
             <button type="button" class="quiz-start-btn" data-testid="st-quiz-start">${t("quiz.start")}</button>
           </div>
@@ -20968,7 +21068,7 @@ ${cases}
               <h4>${t("st.states.title")}</h4>
               <div class="st-state-list">${renderStateList()}</div>
               <button class="st-add-state-btn" data-testid="st-add-state"
-                ${state37.states.length >= 8 ? "disabled" : ""}>
+                ${state40.states.length >= 8 ? "disabled" : ""}>
                 + ${t("st.state.add")}
               </button>
             </div>
@@ -20977,7 +21077,7 @@ ${cases}
               <h4>${t("st.transitions.title")}</h4>
               <table class="st-tr-table"><tbody>${renderTransitionList()}</tbody></table>
               <button class="st-add-tr-btn" data-testid="st-add-transition"
-                ${state37.transitions.length >= 16 ? "disabled" : ""}>
+                ${state40.transitions.length >= 16 ? "disabled" : ""}>
                 + ${t("st.transition.add")}
               </button>
             </div>
@@ -20993,128 +21093,128 @@ ${cases}
         </div>
       </div>
     `;
-      bindEvents37();
-      persist9(state37);
+      bindEvents40();
+      persist9(state40);
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a2, _b2, _c, _d, _e, _f;
-      root38.querySelectorAll("[data-st-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-st-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES4.find((e) => e.id === btn.dataset.stExample);
           if (!ex) return;
-          state37.exampleId = ex.id;
-          state37.states = deepClone2(ex.states);
-          state37.transitions = deepClone2(ex.transitions);
-          render37();
+          state40.exampleId = ex.id;
+          state40.states = deepClone2(ex.states);
+          state40.transitions = deepClone2(ex.transitions);
+          render40();
         });
       });
-      root38.querySelectorAll("[data-mode]").forEach((btn) => {
+      root41.querySelectorAll("[data-mode]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.mode = btn.dataset.mode;
-          render37();
+          state40.mode = btn.dataset.mode;
+          render40();
         });
       });
-      root38.querySelectorAll(".st-state-name").forEach((inp) => {
+      root41.querySelectorAll(".st-state-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state37.states[Number(e.target.dataset.sidx)].name = e.target.value;
+          state40.states[Number(e.target.dataset.sidx)].name = e.target.value;
           refreshResults();
-          persist9(state37);
+          persist9(state40);
         });
       });
-      root38.querySelectorAll("[data-set-initial]").forEach((dot) => {
+      root41.querySelectorAll("[data-set-initial]").forEach((dot) => {
         dot.addEventListener("click", () => {
           const idx = Number(dot.dataset.setInitial);
-          state37.states.forEach((s, i) => {
+          state40.states.forEach((s, i) => {
             s.initial = i === idx;
           });
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-del-state]").forEach((btn) => {
+      root41.querySelectorAll("[data-del-state]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delState);
-          const sid = state37.states[idx].id;
-          state37.states.splice(idx, 1);
-          state37.transitions = state37.transitions.filter((tr) => tr.from !== sid && tr.to !== sid);
-          if (state37.states.length && !state37.states.some((s) => s.initial)) state37.states[0].initial = true;
-          render37();
+          const sid = state40.states[idx].id;
+          state40.states.splice(idx, 1);
+          state40.transitions = state40.transitions.filter((tr) => tr.from !== sid && tr.to !== sid);
+          if (state40.states.length && !state40.states.some((s) => s.initial)) state40.states[0].initial = true;
+          render40();
         });
       });
-      (_a2 = root38.querySelector('[data-testid="st-add-state"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state37.states.length >= 8) return;
-        state37.states.push({ id: `s${nextSId++}`, name: `State ${state37.states.length + 1}` });
-        render37();
+      (_a2 = root41.querySelector('[data-testid="st-add-state"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state40.states.length >= 8) return;
+        state40.states.push({ id: `s${nextSId++}`, name: `State ${state40.states.length + 1}` });
+        render40();
       });
-      root38.querySelectorAll(".st-from-sel, .st-to-sel").forEach((sel) => {
+      root41.querySelectorAll(".st-from-sel, .st-to-sel").forEach((sel) => {
         sel.addEventListener("change", (e) => {
           const idx = Number(e.target.dataset.tidx);
           const field = e.target.classList.contains("st-from-sel") ? "from" : "to";
-          state37.transitions[idx][field] = e.target.value;
+          state40.transitions[idx][field] = e.target.value;
           refreshResults();
-          persist9(state37);
+          persist9(state40);
         });
       });
-      root38.querySelectorAll(".st-event-inp").forEach((inp) => {
+      root41.querySelectorAll(".st-event-inp").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state37.transitions[Number(e.target.dataset.tidx)].event = e.target.value;
+          state40.transitions[Number(e.target.dataset.tidx)].event = e.target.value;
           refreshResults();
-          persist9(state37);
+          persist9(state40);
         });
       });
-      root38.querySelectorAll(".st-action-inp").forEach((inp) => {
+      root41.querySelectorAll(".st-action-inp").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state37.transitions[Number(e.target.dataset.tidx)].action = e.target.value;
+          state40.transitions[Number(e.target.dataset.tidx)].action = e.target.value;
           refreshResults();
-          persist9(state37);
+          persist9(state40);
         });
       });
-      root38.querySelectorAll("[data-del-tr]").forEach((btn) => {
+      root41.querySelectorAll("[data-del-tr]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.transitions.splice(Number(btn.dataset.delTr), 1);
-          render37();
+          state40.transitions.splice(Number(btn.dataset.delTr), 1);
+          render40();
         });
       });
-      (_b2 = root38.querySelector('[data-testid="st-add-transition"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+      (_b2 = root41.querySelector('[data-testid="st-add-transition"]')) == null ? void 0 : _b2.addEventListener("click", () => {
         var _a3, _b3, _c2, _d2;
-        if (state37.transitions.length >= 16) return;
-        const from = (_b3 = (_a3 = state37.states[0]) == null ? void 0 : _a3.id) != null ? _b3 : "";
-        const to = (_d2 = (_c2 = state37.states[1]) == null ? void 0 : _c2.id) != null ? _d2 : from;
-        state37.transitions.push({ id: `t${nextTId++}`, from, to, event: "event", action: "" });
-        render37();
+        if (state40.transitions.length >= 16) return;
+        const from = (_b3 = (_a3 = state40.states[0]) == null ? void 0 : _a3.id) != null ? _b3 : "";
+        const to = (_d2 = (_c2 = state40.states[1]) == null ? void 0 : _c2.id) != null ? _d2 : from;
+        state40.transitions.push({ id: `t${nextTId++}`, from, to, event: "event", action: "" });
+        render40();
       });
-      (_c = root38.querySelector('[data-testid="st-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root41.querySelector('[data-testid="st-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
         stQuiz.active = true;
         stQuiz.phase = "question";
         stQuiz.answer = "";
-        render37();
+        render40();
       });
-      (_d = root38.querySelector('[data-testid="st-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root41.querySelector('[data-testid="st-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
         stQuiz.active = false;
-        render37();
+        render40();
       });
-      (_e = root38.querySelector('[data-testid="st-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root41.querySelector('[data-testid="st-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
         var _a3, _b3;
-        stQuiz.answer = (_b3 = (_a3 = root38.querySelector('[data-testid="st-quiz-answer"]')) == null ? void 0 : _a3.value) != null ? _b3 : "";
+        stQuiz.answer = (_b3 = (_a3 = root41.querySelector('[data-testid="st-quiz-answer"]')) == null ? void 0 : _a3.value) != null ? _b3 : "";
         stQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      (_f = root38.querySelector('[data-testid="st-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root41.querySelector('[data-testid="st-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         stQuiz.phase = "question";
         stQuiz.answer = "";
-        render37();
+        render40();
       });
     }
     function refreshResults() {
       const tests = getTests();
-      const pane = root38.querySelector('[data-testid="st-results"]');
+      const pane = root41.querySelector('[data-testid="st-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("st.results.title")}
         <span class="st-count">${tests.length} ${t("st.results.count")}</span>
       </h3>${renderTestTable(tests)}`;
       }
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/metamorphicTesting.js
@@ -21588,9 +21688,9 @@ function linearSearch(arr, target) {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createMetamorphicTestingExplorer() {
-    const root38 = document.createElement("div");
-    root38.dataset.testid = "mt-explorer";
-    let state37 = {
+    const root41 = document.createElement("div");
+    root41.dataset.testid = "mt-explorer";
+    let state40 = {
       exampleId: metamorphicExamples[0].id,
       relationId: metamorphicExamples[0].relations[0].id,
       results: null
@@ -21641,25 +21741,25 @@ function linearSearch(arr, target) {
     }
     function getExample() {
       var _a;
-      return (_a = metamorphicExamples.find((e) => e.id === state37.exampleId)) != null ? _a : metamorphicExamples[0];
+      return (_a = metamorphicExamples.find((e) => e.id === state40.exampleId)) != null ? _a : metamorphicExamples[0];
     }
     function getRelation() {
       var _a;
       const ex = getExample();
-      return (_a = ex.relations.find((r) => r.id === state37.relationId)) != null ? _a : ex.relations[0];
+      return (_a = ex.relations.find((r) => r.id === state40.relationId)) != null ? _a : ex.relations[0];
     }
-    function render37() {
+    function render40() {
       const ex = getExample();
       const rel = getRelation();
       const isZh = getLocale() === "zh";
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="mt-layout">
         <div class="mt-sidebar">
           <h3 class="mt-section-title">${t("mt.examples.title")}</h3>
           <div class="mt-example-btns" data-testid="mt-examples">
             ${metamorphicExamples.map((e) => `
               <button type="button"
-                class="mt-example-btn${e.id === state37.exampleId ? " active" : ""}"
+                class="mt-example-btn${e.id === state40.exampleId ? " active" : ""}"
                 data-testid="mt-example-${e.id}"
                 data-example="${e.id}"
               >${e.name}</button>
@@ -21670,7 +21770,7 @@ function linearSearch(arr, target) {
           <div class="mt-relation-list" data-testid="mt-relations">
             ${ex.relations.map((r) => `
               <button type="button"
-                class="mt-rel-btn${r.id === state37.relationId ? " active" : ""}"
+                class="mt-rel-btn${r.id === state40.relationId ? " active" : ""}"
                 data-testid="mt-rel-${r.id}"
                 data-rel="${r.id}"
               >
@@ -21707,12 +21807,12 @@ function linearSearch(arr, target) {
           ${renderMtQuizPanel()}
 
           <div class="mt-results" data-testid="mt-results">
-            ${state37.results ? renderResults(state37.results) : `<p class="mt-hint">${t("mt.hint")}</p>`}
+            ${state40.results ? renderResults(state40.results) : `<p class="mt-hint">${t("mt.hint")}</p>`}
           </div>
         </div>
       </div>
     `;
-      bindEvents37();
+      bindEvents40();
     }
     function renderResults(results) {
       const passing = results.filter((r) => r.holds).length;
@@ -21753,40 +21853,40 @@ function linearSearch(arr, target) {
       </div>
     `;
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a;
-      root38.querySelectorAll("[data-example]").forEach((btn) => {
+      root41.querySelectorAll("[data-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.exampleId = btn.dataset.example;
+          state40.exampleId = btn.dataset.example;
           const ex = getExample();
-          state37.relationId = ex.relations[0].id;
-          state37.results = null;
+          state40.relationId = ex.relations[0].id;
+          state40.results = null;
           mtQuiz.active = false;
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-rel]").forEach((btn) => {
+      root41.querySelectorAll("[data-rel]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.relationId = btn.dataset.rel;
-          state37.results = null;
+          state40.relationId = btn.dataset.rel;
+          state40.results = null;
           mtQuiz.active = false;
-          render37();
+          render40();
         });
       });
-      const generateBtn = root38.querySelector('[data-testid="mt-generate"]');
+      const generateBtn = root41.querySelector('[data-testid="mt-generate"]');
       if (generateBtn) {
         generateBtn.addEventListener("click", () => {
           const ex = getExample();
           const rel = getRelation();
-          state37.results = generateMrTests(ex, rel, 8);
-          const resultsEl = root38.querySelector('[data-testid="mt-results"]');
-          if (resultsEl) resultsEl.innerHTML = renderResults(state37.results);
+          state40.results = generateMrTests(ex, rel, 8);
+          const resultsEl = root41.querySelector('[data-testid="mt-results"]');
+          if (resultsEl) resultsEl.innerHTML = renderResults(state40.results);
         });
       }
-      (_a = root38.querySelector('[data-testid="mt-bridge-groupth"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root41.querySelector('[data-testid="mt-bridge-groupth"]')) == null ? void 0 : _a.addEventListener("click", () => {
         scrollToSection("section-groupth");
       });
-      const mqStart = root38.querySelector('[data-testid="mt-quiz-start"]');
+      const mqStart = root41.querySelector('[data-testid="mt-quiz-start"]');
       if (mqStart) {
         mqStart.addEventListener("click", () => {
           const ex = getExample();
@@ -21795,26 +21895,26 @@ function linearSearch(arr, target) {
           mtQuiz.active = true;
           mtQuiz.phase = "question";
           mtQuiz.answer = "";
-          render37();
+          render40();
         });
       }
-      const mqClose = root38.querySelector('[data-testid="mt-quiz-close"]');
+      const mqClose = root41.querySelector('[data-testid="mt-quiz-close"]');
       if (mqClose) {
         mqClose.addEventListener("click", () => {
           mtQuiz.active = false;
-          render37();
+          render40();
         });
       }
-      const mqCheck = root38.querySelector('[data-testid="mt-quiz-check"]');
+      const mqCheck = root41.querySelector('[data-testid="mt-quiz-check"]');
       if (mqCheck) {
         mqCheck.addEventListener("click", () => {
-          const inp = root38.querySelector('[data-testid="mt-quiz-input"]');
+          const inp = root41.querySelector('[data-testid="mt-quiz-input"]');
           mtQuiz.answer = inp ? inp.value : "";
           mtQuiz.phase = "graded";
-          render37();
+          render40();
         });
       }
-      const mqReset = root38.querySelector('[data-testid="mt-quiz-reset"]');
+      const mqReset = root41.querySelector('[data-testid="mt-quiz-reset"]');
       if (mqReset) {
         mqReset.addEventListener("click", () => {
           const ex = getExample();
@@ -21822,12 +21922,12 @@ function linearSearch(arr, target) {
           mtQuiz.autoResults = generateMrTests(ex, rel, 8);
           mtQuiz.phase = "question";
           mtQuiz.answer = "";
-          render37();
+          render40();
         });
       }
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/ExploratoryTestingExplorer.js
@@ -21872,10 +21972,10 @@ function linearSearch(arr, target) {
     }
   }
   function createExploratoryTestingExplorer() {
-    const root38 = document.createElement("div");
-    root38.dataset.testid = "et-explorer";
+    const root41 = document.createElement("div");
+    root41.dataset.testid = "et-explorer";
     const saved = loadSaved10();
-    let state37 = saved != null ? saved : {
+    let state40 = saved != null ? saved : {
       charter: "",
       timebox: 60,
       sfdipot: [],
@@ -21884,20 +21984,20 @@ function linearSearch(arr, target) {
       timerRemaining: 60 * 60,
       timerEnd: null
     };
-    state37.timerRunning = false;
-    state37.timerEnd = null;
-    if (!state37.timerRemaining || state37.timerRemaining <= 0) {
-      state37.timerRemaining = (state37.timebox || 60) * 60;
+    state40.timerRunning = false;
+    state40.timerEnd = null;
+    if (!state40.timerRemaining || state40.timerRemaining <= 0) {
+      state40.timerRemaining = (state40.timebox || 60) * 60;
     }
     let timerInterval = null;
     function save() {
       persist10({
-        charter: state37.charter,
-        timebox: state37.timebox,
-        sfdipot: state37.sfdipot,
-        notes: state37.notes,
+        charter: state40.charter,
+        timebox: state40.timebox,
+        sfdipot: state40.sfdipot,
+        notes: state40.notes,
         timerRunning: false,
-        timerRemaining: state37.timerRemaining,
+        timerRemaining: state40.timerRemaining,
         timerEnd: null
       });
     }
@@ -21907,64 +22007,64 @@ function linearSearch(arr, target) {
       return `${m}:${s}`;
     }
     function tickTimer() {
-      if (!state37.timerRunning) return;
+      if (!state40.timerRunning) return;
       const now = Date.now();
-      state37.timerRemaining = Math.max(0, Math.round((state37.timerEnd - now) / 1e3));
-      const display = root38.querySelector('[data-testid="et-timer-display"]');
-      if (display) display.textContent = formatTime(state37.timerRemaining);
-      const bar = root38.querySelector('[data-testid="et-timer-bar"]');
+      state40.timerRemaining = Math.max(0, Math.round((state40.timerEnd - now) / 1e3));
+      const display = root41.querySelector('[data-testid="et-timer-display"]');
+      if (display) display.textContent = formatTime(state40.timerRemaining);
+      const bar = root41.querySelector('[data-testid="et-timer-bar"]');
       if (bar) {
-        const total = (state37.timebox || 60) * 60;
-        bar.style.width = `${state37.timerRemaining / total * 100}%`;
-        bar.className = `et-timer-bar${state37.timerRemaining < 60 ? " et-timer-bar--warn" : ""}`;
+        const total = (state40.timebox || 60) * 60;
+        bar.style.width = `${state40.timerRemaining / total * 100}%`;
+        bar.className = `et-timer-bar${state40.timerRemaining < 60 ? " et-timer-bar--warn" : ""}`;
       }
-      if (state37.timerRemaining <= 0) {
+      if (state40.timerRemaining <= 0) {
         stopTimer();
-        const display2 = root38.querySelector('[data-testid="et-timer-display"]');
+        const display2 = root41.querySelector('[data-testid="et-timer-display"]');
         if (display2) display2.textContent = t("et.timer.done");
       }
     }
     function startTimer() {
-      if (state37.timerRunning) return;
-      if (state37.timerRemaining <= 0) state37.timerRemaining = (state37.timebox || 60) * 60;
-      state37.timerRunning = true;
-      state37.timerEnd = Date.now() + state37.timerRemaining * 1e3;
-      const startBtn = root38.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root38.querySelector('[data-testid="et-timer-stop"]');
+      if (state40.timerRunning) return;
+      if (state40.timerRemaining <= 0) state40.timerRemaining = (state40.timebox || 60) * 60;
+      state40.timerRunning = true;
+      state40.timerEnd = Date.now() + state40.timerRemaining * 1e3;
+      const startBtn = root41.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root41.querySelector('[data-testid="et-timer-stop"]');
       if (startBtn) startBtn.disabled = true;
       if (stopBtn) stopBtn.disabled = false;
       timerInterval = setInterval(tickTimer, 500);
     }
     function stopTimer() {
-      state37.timerRunning = false;
-      state37.timerEnd = null;
+      state40.timerRunning = false;
+      state40.timerEnd = null;
       if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
       }
-      const startBtn = root38.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root38.querySelector('[data-testid="et-timer-stop"]');
+      const startBtn = root41.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root41.querySelector('[data-testid="et-timer-stop"]');
       if (startBtn) startBtn.disabled = false;
       if (stopBtn) stopBtn.disabled = true;
     }
     function resetTimer() {
       stopTimer();
-      state37.timerRemaining = (state37.timebox || 60) * 60;
-      const display = root38.querySelector('[data-testid="et-timer-display"]');
-      if (display) display.textContent = formatTime(state37.timerRemaining);
-      const bar = root38.querySelector('[data-testid="et-timer-bar"]');
+      state40.timerRemaining = (state40.timebox || 60) * 60;
+      const display = root41.querySelector('[data-testid="et-timer-display"]');
+      if (display) display.textContent = formatTime(state40.timerRemaining);
+      const bar = root41.querySelector('[data-testid="et-timer-bar"]');
       if (bar) {
         bar.style.width = "100%";
         bar.className = "et-timer-bar";
       }
       save();
     }
-    function render37() {
+    function render40() {
       const isZh = getLocale() === "zh";
-      const total = (state37.timebox || 60) * 60;
-      const barPct = state37.timerRemaining / total * 100;
-      const notesByType = (type) => state37.notes.filter((n) => n.type === type);
-      root38.innerHTML = `
+      const total = (state40.timebox || 60) * 60;
+      const barPct = state40.timerRemaining / total * 100;
+      const notesByType = (type) => state40.notes.filter((n) => n.type === type);
+      root41.innerHTML = `
       <div class="et-layout">
 
         <!-- LEFT: Charter + SFDIPOT -->
@@ -21977,7 +22077,7 @@ function linearSearch(arr, target) {
               data-testid="et-charter"
               rows="4"
               placeholder="${t("et.charter.placeholder")}"
-            >${escapeHtml13(state37.charter)}</textarea>
+            >${escapeHtml13(state40.charter)}</textarea>
           </section>
 
           <section class="et-card" data-testid="et-sfdipot-section">
@@ -21985,10 +22085,10 @@ function linearSearch(arr, target) {
             <p class="et-card-hint">${t("et.sfdipot.hint")}</p>
             <div class="et-sfdipot-list">
               ${SFDIPOT_ITEMS.map((item) => `
-                <label class="et-sfdipot-item${state37.sfdipot.includes(item.id) ? " checked" : ""}"
+                <label class="et-sfdipot-item${state40.sfdipot.includes(item.id) ? " checked" : ""}"
                   data-testid="et-sfdipot-${item.id}">
                   <input type="checkbox" value="${item.id}"
-                    ${state37.sfdipot.includes(item.id) ? "checked" : ""}
+                    ${state40.sfdipot.includes(item.id) ? "checked" : ""}
                     data-sfdipot="${item.id}">
                   <span class="et-sfdipot-letter">${item.id.replace("2", "")}</span>
                   <span class="et-sfdipot-desc">
@@ -22019,16 +22119,16 @@ function linearSearch(arr, target) {
             <h3 class="et-card-title">${t("et.timer.title")}</h3>
             <div class="et-timebox-row">
               <label for="et-timebox">${t("et.timer.timebox")}</label>
-              <input id="et-timebox" type="number" min="1" max="240" value="${state37.timebox}"
+              <input id="et-timebox" type="number" min="1" max="240" value="${state40.timebox}"
                 class="et-timebox-input" data-testid="et-timebox-input">
               <span>${t("et.timer.minutes")}</span>
             </div>
             <div class="et-timer-track">
-              <div class="et-timer-bar${state37.timerRemaining < 60 ? " et-timer-bar--warn" : ""}"
+              <div class="et-timer-bar${state40.timerRemaining < 60 ? " et-timer-bar--warn" : ""}"
                 data-testid="et-timer-bar"
                 style="width:${barPct}%"></div>
             </div>
-            <div class="et-timer-display" data-testid="et-timer-display">${formatTime(state37.timerRemaining)}</div>
+            <div class="et-timer-display" data-testid="et-timer-display">${formatTime(state40.timerRemaining)}</div>
             <div class="et-timer-btns">
               <button type="button" class="et-timer-btn et-timer-btn--start"
                 data-testid="et-timer-start">${t("et.timer.start")}</button>
@@ -22061,7 +22161,7 @@ function linearSearch(arr, target) {
             </div>
 
             <div class="et-notes-list" data-testid="et-notes-list">
-              ${state37.notes.length === 0 ? `<p class="et-notes-empty">${t("et.notes.empty")}</p>` : state37.notes.map((note, i) => `
+              ${state40.notes.length === 0 ? `<p class="et-notes-empty">${t("et.notes.empty")}</p>` : state40.notes.map((note, i) => `
                   <div class="et-note-item et-note-item--${note.type}" data-testid="et-note-${i}">
                     <span class="et-note-badge et-note-badge--${note.type}">${t(`et.note.${note.type}`)}</span>
                     <span class="et-note-body">${escapeHtml13(note.text)}</span>
@@ -22072,7 +22172,7 @@ function linearSearch(arr, target) {
                 `).join("")}
             </div>
 
-            ${state37.notes.length > 0 ? `
+            ${state40.notes.length > 0 ? `
               <div class="et-notes-actions">
                 <button type="button" class="et-clear-btn" data-testid="et-clear-notes">
                   ${t("et.notes.clear")}
@@ -22087,26 +22187,26 @@ function linearSearch(arr, target) {
 
       </div>
     `;
-      bindEvents37();
+      bindEvents40();
     }
     function addNote() {
-      const typeEl = root38.querySelector('[data-testid="et-note-type"]');
-      const textEl = root38.querySelector('[data-testid="et-note-text"]');
+      const typeEl = root41.querySelector('[data-testid="et-note-type"]');
+      const textEl = root41.querySelector('[data-testid="et-note-text"]');
       if (!typeEl || !textEl) return;
       const text = textEl.value.trim();
       if (!text) return;
       const now = /* @__PURE__ */ new Date();
       const time = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-      state37.notes.unshift({ type: typeEl.value, text, time });
+      state40.notes.unshift({ type: typeEl.value, text, time });
       save();
-      render37();
-      const newText = root38.querySelector('[data-testid="et-note-text"]');
+      render40();
+      const newText = root41.querySelector('[data-testid="et-note-text"]');
       if (newText) newText.focus();
     }
     function exportNotes() {
-      const lines = [`# Exploratory Test Session`, `Charter: ${state37.charter}`, ""];
+      const lines = [`# Exploratory Test Session`, `Charter: ${state40.charter}`, ""];
       for (const ty of NOTE_TYPES) {
-        const items = state37.notes.filter((n) => n.type === ty);
+        const items = state40.notes.filter((n) => n.type === ty);
         if (items.length) {
           lines.push(`## ${ty.toUpperCase()}`);
           items.forEach((n) => lines.push(`- [${n.time}] ${n.text}`));
@@ -22119,45 +22219,45 @@ function linearSearch(arr, target) {
       a.download = "session-notes.md";
       a.click();
     }
-    function bindEvents37() {
-      const charterEl = root38.querySelector('[data-testid="et-charter"]');
+    function bindEvents40() {
+      const charterEl = root41.querySelector('[data-testid="et-charter"]');
       if (charterEl) {
         charterEl.addEventListener("input", () => {
-          state37.charter = charterEl.value;
+          state40.charter = charterEl.value;
           save();
         });
       }
-      root38.querySelectorAll("[data-sfdipot]").forEach((cb) => {
+      root41.querySelectorAll("[data-sfdipot]").forEach((cb) => {
         cb.addEventListener("change", () => {
           if (cb.checked) {
-            if (!state37.sfdipot.includes(cb.value)) state37.sfdipot.push(cb.value);
+            if (!state40.sfdipot.includes(cb.value)) state40.sfdipot.push(cb.value);
           } else {
-            state37.sfdipot = state37.sfdipot.filter((v) => v !== cb.value);
+            state40.sfdipot = state40.sfdipot.filter((v) => v !== cb.value);
           }
           const label = cb.closest("label");
           if (label) label.classList.toggle("checked", cb.checked);
           save();
         });
       });
-      const timeboxInput = root38.querySelector('[data-testid="et-timebox-input"]');
+      const timeboxInput = root41.querySelector('[data-testid="et-timebox-input"]');
       if (timeboxInput) {
         timeboxInput.addEventListener("change", () => {
           const v = parseInt(timeboxInput.value, 10);
           if (v > 0) {
-            state37.timebox = v;
+            state40.timebox = v;
             resetTimer();
           }
         });
       }
-      const startBtn = root38.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root38.querySelector('[data-testid="et-timer-stop"]');
-      const resetBtn = root38.querySelector('[data-testid="et-timer-reset"]');
+      const startBtn = root41.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root41.querySelector('[data-testid="et-timer-stop"]');
+      const resetBtn = root41.querySelector('[data-testid="et-timer-reset"]');
       if (startBtn) startBtn.addEventListener("click", startTimer);
       if (stopBtn) stopBtn.addEventListener("click", stopTimer);
       if (resetBtn) resetBtn.addEventListener("click", resetTimer);
-      const addBtn = root38.querySelector('[data-testid="et-note-add"]');
+      const addBtn = root41.querySelector('[data-testid="et-note-add"]');
       if (addBtn) addBtn.addEventListener("click", addNote);
-      const textEl = root38.querySelector('[data-testid="et-note-text"]');
+      const textEl = root41.querySelector('[data-testid="et-note-text"]');
       if (textEl) {
         textEl.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
@@ -22166,29 +22266,29 @@ function linearSearch(arr, target) {
           }
         });
       }
-      root38.querySelectorAll("[data-delete]").forEach((btn) => {
+      root41.querySelectorAll("[data-delete]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = parseInt(btn.dataset.delete, 10);
-          state37.notes.splice(idx, 1);
+          state40.notes.splice(idx, 1);
           save();
-          render37();
+          render40();
         });
       });
-      const clearBtn = root38.querySelector('[data-testid="et-clear-notes"]');
+      const clearBtn = root41.querySelector('[data-testid="et-clear-notes"]');
       if (clearBtn) {
         clearBtn.addEventListener("click", () => {
           if (window.confirm(t("et.notes.confirm.clear"))) {
-            state37.notes = [];
+            state40.notes = [];
             save();
-            render37();
+            render40();
           }
         });
       }
-      const exportBtn = root38.querySelector('[data-testid="et-export-notes"]');
+      const exportBtn = root41.querySelector('[data-testid="et-export-notes"]');
       if (exportBtn) exportBtn.addEventListener("click", exportNotes);
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/TestDoublesExplorer.js
@@ -22764,9 +22864,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     }
   ];
   function createTestDoublesExplorer() {
-    const root38 = document.createElement("div");
-    root38.dataset.testid = "td-explorer";
-    let state37 = {
+    const root41 = document.createElement("div");
+    root41.dataset.testid = "td-explorer";
+    let state40 = {
       typeId: "dummy",
       scenarioId: "order",
       result: null
@@ -22822,16 +22922,16 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     }
     function getType() {
       var _a;
-      return (_a = DOUBLE_TYPES.find((d) => d.id === state37.typeId)) != null ? _a : DOUBLE_TYPES[0];
+      return (_a = DOUBLE_TYPES.find((d) => d.id === state40.typeId)) != null ? _a : DOUBLE_TYPES[0];
     }
     function getScenario() {
       var _a;
       const ty = getType();
-      return (_a = ty.scenarios.find((s) => s.id === state37.scenarioId)) != null ? _a : ty.scenarios[0];
+      return (_a = ty.scenarios.find((s) => s.id === state40.scenarioId)) != null ? _a : ty.scenarios[0];
     }
     function getCode() {
       var _a;
-      return (_a = SCENARIO_CODE[`${state37.typeId}/${state37.scenarioId}`]) != null ? _a : {};
+      return (_a = SCENARIO_CODE[`${state40.typeId}/${state40.scenarioId}`]) != null ? _a : {};
     }
     function formatArg(v) {
       if (v === null || v === void 0) return String(v);
@@ -22887,13 +22987,13 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
     `;
     }
-    function render37() {
+    function render40() {
       var _a, _b, _c;
       const isZh = getLocale() === "zh";
       const ty = getType();
       const code = getCode();
       const scen = getScenario();
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="td-layout">
         <!-- Sidebar: double types -->
         <div class="td-sidebar">
@@ -22901,7 +23001,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           <div class="td-type-list" data-testid="td-types">
             ${DOUBLE_TYPES.map((d) => `
               <button type="button"
-                class="td-type-btn${d.id === state37.typeId ? " active" : ""}"
+                class="td-type-btn${d.id === state40.typeId ? " active" : ""}"
                 data-testid="td-type-${d.id}"
                 data-type="${d.id}"
                 style="--td-color:${d.color}"
@@ -22913,14 +23013,14 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           </div>
 
           <div class="td-type-info" data-testid="td-type-info">
-            <p class="td-type-def">${t(`td.def.${state37.typeId}`)}</p>
-            <p class="td-type-when"><strong>${t("td.whenToUse")}</strong> ${t(`td.when.${state37.typeId}`)}</p>
+            <p class="td-type-def">${t(`td.def.${state40.typeId}`)}</p>
+            <p class="td-type-when"><strong>${t("td.whenToUse")}</strong> ${t(`td.when.${state40.typeId}`)}</p>
           </div>
 
           <div class="td-comparison">
             <h4 class="td-comparison-title">${t("td.comparison.title")}</h4>
             ${DOUBLE_TYPES.map((d) => `
-              <div class="td-comparison-row${d.id === state37.typeId ? " active" : ""}">
+              <div class="td-comparison-row${d.id === state40.typeId ? " active" : ""}">
                 <span class="td-comparison-dot" style="background:${d.color}"></span>
                 <span class="td-comparison-name">${t(`td.type.${d.id}`)}</span>
                 <span class="td-comparison-trait">${t(`td.trait.${d.id}`)}</span>
@@ -22936,10 +23036,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
             <span class="td-scenario-label">${t("td.scenarios.label")}</span>
             ${ty.scenarios.map((s) => `
               <button type="button"
-                class="td-scenario-btn${s.id === state37.scenarioId ? " active" : ""}"
+                class="td-scenario-btn${s.id === state40.scenarioId ? " active" : ""}"
                 data-testid="td-scenario-${s.id}"
                 data-scenario="${s.id}"
-              >${t(`td.scenario.${state37.typeId}.${s.id}`)}</button>
+              >${t(`td.scenario.${state40.typeId}.${s.id}`)}</button>
             `).join("")}
           </div>
 
@@ -22950,7 +23050,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
               <pre class="td-pre"><code>${escapeHtml14((_a = code.sutCode) != null ? _a : "")}</code></pre>
             </div>
             <div class="td-code-panel">
-              <div class="td-code-header td-code-header--double">${t(`td.type.${state37.typeId}`)}</div>
+              <div class="td-code-header td-code-header--double">${t(`td.type.${state40.typeId}`)}</div>
               <pre class="td-pre"><code>${escapeHtml14((_b = code.doubleCode) != null ? _b : "")}</code></pre>
             </div>
             <div class="td-code-panel">
@@ -22971,46 +23071,46 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
           <!-- Results -->
           <div class="td-result-panel" data-testid="td-result">
-            ${state37.result ? renderResult3(state37.result) : `<p class="td-hint">${t("td.hint")}</p>`}
+            ${state40.result ? renderResult3(state40.result) : `<p class="td-hint">${t("td.hint")}</p>`}
           </div>
         </div>
       </div>
     `;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
-      root38.querySelectorAll("[data-type]").forEach((btn) => {
+    function bindEvents40() {
+      root41.querySelectorAll("[data-type]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.typeId = btn.dataset.type;
+          state40.typeId = btn.dataset.type;
           const ty = getType();
-          state37.scenarioId = ty.scenarios[0].id;
-          state37.result = null;
-          render37();
+          state40.scenarioId = ty.scenarios[0].id;
+          state40.result = null;
+          render40();
         });
       });
-      root38.querySelectorAll("[data-scenario]").forEach((btn) => {
+      root41.querySelectorAll("[data-scenario]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state37.scenarioId = btn.dataset.scenario;
-          state37.result = null;
-          render37();
+          state40.scenarioId = btn.dataset.scenario;
+          state40.result = null;
+          render40();
         });
       });
-      const runBtn = root38.querySelector('[data-testid="td-run"]');
+      const runBtn = root41.querySelector('[data-testid="td-run"]');
       if (runBtn) {
         runBtn.addEventListener("click", () => {
           try {
-            state37.result = getScenario().run();
+            state40.result = getScenario().run();
           } catch (e) {
-            state37.result = {
+            state40.result = {
               callLog: [],
               assertions: [{ desc: `Error: ${e.message}`, passed: false }]
             };
           }
-          const panel = root38.querySelector('[data-testid="td-result"]');
-          if (panel) panel.innerHTML = renderResult3(state37.result);
+          const panel = root41.querySelector('[data-testid="td-result"]');
+          if (panel) panel.innerHTML = renderResult3(state40.result);
         });
       }
-      const tqStart = root38.querySelector('[data-testid="td-quiz-start"]');
+      const tqStart = root41.querySelector('[data-testid="td-quiz-start"]');
       if (tqStart) {
         tqStart.addEventListener("click", () => {
           tdQuizScenarioIdx = Math.floor(Math.random() * TD_QUIZ_SCENARIOS.length);
@@ -23018,47 +23118,47 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           tdQuiz.phase = "question";
           tdQuiz.selected = "";
           tdQuiz.result = null;
-          render37();
+          render40();
         });
       }
-      const tqClose = root38.querySelector('[data-testid="td-quiz-close"]');
+      const tqClose = root41.querySelector('[data-testid="td-quiz-close"]');
       if (tqClose) {
         tqClose.addEventListener("click", () => {
           tdQuiz.active = false;
-          render37();
+          render40();
         });
       }
-      root38.querySelectorAll("[data-quiz-choice]").forEach((btn) => {
+      root41.querySelectorAll("[data-quiz-choice]").forEach((btn) => {
         btn.addEventListener("click", () => {
           tdQuiz.selected = btn.dataset.quizChoice;
-          const panel = root38.querySelector('[data-testid="td-quiz-panel"]');
+          const panel = root41.querySelector('[data-testid="td-quiz-panel"]');
           if (panel) {
-            root38.querySelectorAll("[data-quiz-choice]").forEach((b) => b.classList.toggle("active", b.dataset.quizChoice === tdQuiz.selected));
-            const checkBtn = root38.querySelector('[data-testid="td-quiz-check"]');
+            root41.querySelectorAll("[data-quiz-choice]").forEach((b) => b.classList.toggle("active", b.dataset.quizChoice === tdQuiz.selected));
+            const checkBtn = root41.querySelector('[data-testid="td-quiz-check"]');
             if (checkBtn) checkBtn.disabled = false;
           }
         });
       });
-      const tqCheck = root38.querySelector('[data-testid="td-quiz-check"]');
+      const tqCheck = root41.querySelector('[data-testid="td-quiz-check"]');
       if (tqCheck) {
         tqCheck.addEventListener("click", () => {
           tdQuiz.phase = "graded";
-          render37();
+          render40();
         });
       }
-      const tqReset = root38.querySelector('[data-testid="td-quiz-reset"]');
+      const tqReset = root41.querySelector('[data-testid="td-quiz-reset"]');
       if (tqReset) {
         tqReset.addEventListener("click", () => {
           tdQuizScenarioIdx = (tdQuizScenarioIdx + 1) % TD_QUIZ_SCENARIOS.length;
           tdQuiz.phase = "question";
           tdQuiz.selected = "";
           tdQuiz.result = null;
-          render37();
+          render40();
         });
       }
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/DefectCostExplorer.js
@@ -23118,11 +23218,11 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createDefectCostExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "dce-root";
-    root38.dataset.testid = "defect-cost-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "dce-root";
+    root41.dataset.testid = "defect-cost-explorer";
     let selectedId = null;
-    function render37() {
+    function render40() {
       const isZh = getLocale() === "zh";
       const selected = PHASES.find((p) => p.id === selectedId) || null;
       const bars = PHASES.map((phase, i) => {
@@ -23159,7 +23259,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>
     ` : `<p class="dce-hint" data-testid="dce-hint">${t("dce.hint")}</p>`;
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="dce-header">
         <h3 class="dce-title">${t("dce.title")}</h3>
         <p class="dce-subtitle">${t("dce.subtitle")}</p>
@@ -23175,10 +23275,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       <div class="dce-disclaimer">${t("dce.disclaimer")}</div>
       ${detailHtml}
     `;
-      root38.querySelectorAll("[data-dce-phase]").forEach((el) => {
+      root41.querySelectorAll("[data-dce-phase]").forEach((el) => {
         const select = () => {
           selectedId = selectedId === el.dataset.dcePhase ? null : el.dataset.dcePhase;
-          render37();
+          render40();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (e) => {
@@ -23189,8 +23289,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         });
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/VModelExplorer.js
@@ -23233,11 +23333,11 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createVModelExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "vme-root";
-    root38.dataset.testid = "vmodel-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "vme-root";
+    root41.dataset.testid = "vmodel-explorer";
     let selectedId = null;
-    function render37() {
+    function render40() {
       const isZh = getLocale() === "zh";
       const selected = V_PAIRS.find((p) => p.id === selectedId) || (selectedId === "implementation" ? IMPL : null);
       const rows = V_PAIRS.map((pair, i) => {
@@ -23305,7 +23405,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         <p class="vme-detail-desc">${escapeHtml16(isZh ? t("vme.desc.implementation") : t("vme.desc.implementation.en"))}</p>
       </div>
     ` : `<p class="vme-hint" data-testid="vme-hint">${t("vme.hint")}</p>`;
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="vme-header">
         <h3 class="vme-title">${t("vme.title")}</h3>
         <p class="vme-subtitle">${t("vme.subtitle")}</p>
@@ -23328,15 +23428,15 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
       ${detailHtml}
     `;
-      root38.querySelectorAll("[data-vme-id]").forEach((btn) => {
+      root41.querySelectorAll("[data-vme-id]").forEach((btn) => {
         btn.addEventListener("click", () => {
           selectedId = selectedId === btn.dataset.vmeId ? null : btn.dataset.vmeId;
-          render37();
+          render40();
         });
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/PyramidAdjusterExplorer.js
@@ -23371,17 +23471,17 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createPyramidAdjusterExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "pya-root";
-    root38.dataset.testid = "pyramid-adjuster";
+    const root41 = document.createElement("div");
+    root41.className = "pya-root";
+    root41.dataset.testid = "pyramid-adjuster";
     let unit = 70;
     let integration = 20;
     let e2e = 10;
-    function clamp(v, lo, hi) {
+    function clamp2(v, lo, hi) {
       return Math.max(lo, Math.min(hi, v));
     }
     function adjustRatios(changedId, newVal) {
-      newVal = clamp(newVal, 5, 90);
+      newVal = clamp2(newVal, 5, 90);
       if (changedId === "unit") {
         const remaining = 100 - newVal;
         const totalOther = integration + e2e || 1;
@@ -23401,13 +23501,13 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         integration = 100 - newVal - unit;
         e2e = newVal;
       }
-      unit = clamp(unit, 5, 90);
-      integration = clamp(integration, 5, 90);
-      e2e = clamp(e2e, 5, 90);
+      unit = clamp2(unit, 5, 90);
+      integration = clamp2(integration, 5, 90);
+      e2e = clamp2(e2e, 5, 90);
       const sum = unit + integration + e2e;
       if (sum !== 100) unit += 100 - sum;
     }
-    function render37() {
+    function render40() {
       const isZh = getLocale() === "zh";
       const traits = computeTraits(unit, integration, e2e);
       const pyramidLayers = LAYERS.map((layer) => {
@@ -23459,7 +23559,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         ${escapeHtml17(isZh ? t(`pya.preset.${p.id}`) : t(`pya.preset.${p.id}.en`))}
       </button>
     `).join("");
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="pya-header">
         <h3 class="pya-title">${t("pya.title")}</h3>
         <p class="pya-subtitle">${t("pya.subtitle")}</p>
@@ -23481,25 +23581,25 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
       <p class="pya-disclaimer">${t("pya.disclaimer")}</p>
     `;
-      root38.querySelectorAll("[data-pya-layer]").forEach((input) => {
+      root41.querySelectorAll("[data-pya-layer]").forEach((input) => {
         input.addEventListener("input", () => {
           adjustRatios(input.dataset.pyaLayer, Number(input.value));
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-pya-preset]").forEach((btn) => {
+      root41.querySelectorAll("[data-pya-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const p = PRESETS.find((x) => x.id === btn.dataset.pyaPreset);
           if (!p) return;
           unit = p.unit;
           integration = p.integration;
           e2e = p.e2e;
-          render37();
+          render40();
         });
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/PairwiseExplorer.js
@@ -23540,9 +23640,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return preset.params.map((p) => ({ id: uid2(), name: p.name, values: [...p.values] }));
   }
   function createPairwiseExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "pairwise-explorer";
-    root38.dataset.testid = "pairwise-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "pairwise-explorer";
+    root41.dataset.testid = "pairwise-explorer";
     let params = freshParams(PRESETS2[1]);
     let newValueDraft = {};
     const pairwiseQuiz = { active: false, phase: "question", answer: "" };
@@ -23604,7 +23704,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         <button type="button" class="quiz-start-btn" data-testid="pairwise-quiz-check">${t("quiz.check")}</button>
       </div>`;
     }
-    function render37() {
+    function render40() {
       const { tests, exhaustive, pairCount, pairCoverage } = computeResults();
       const vp = validParams();
       const reductionPct = exhaustive > 0 && tests.length < exhaustive ? Math.round((1 - tests.length / exhaustive) * 100) : 0;
@@ -23674,7 +23774,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           <tbody>${tbodyRows}</tbody>
         </table>
       </div>` : `<p class="pairwise-empty">${t("pairwise.empty")}</p>`;
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="pairwise-params-card">
         <p class="pairwise-params-title">${t("pairwise.params.title")}</p>
         <div class="pairwise-presets">${presetBtns}</div>
@@ -23699,45 +23799,45 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="pairwise-hint">${t("pairwise.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
-      root38.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents40() {
+      root41.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           params = freshParams(PRESETS2[parseInt(btn.dataset.preset)]);
           newValueDraft = {};
-          render37();
+          render40();
         });
       });
-      root38.querySelector('[data-testid="pairwise-add-param"]').addEventListener("click", () => {
+      root41.querySelector('[data-testid="pairwise-add-param"]').addEventListener("click", () => {
         params.push({ id: uid2(), name: "", values: ["A", "B"] });
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-remove-param]").forEach((btn) => {
+      root41.querySelectorAll("[data-remove-param]").forEach((btn) => {
         btn.addEventListener("click", () => {
           params = params.filter((p) => p.id !== btn.dataset.removeParam);
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-param-name]").forEach((input) => {
+      root41.querySelectorAll("[data-param-name]").forEach((input) => {
         input.addEventListener("change", () => {
           const p = params.find((x) => x.id === input.dataset.paramName);
           if (p) {
             p.name = input.value;
-            render37();
+            render40();
           }
         });
       });
-      root38.querySelectorAll("[data-remove-val]").forEach((btn) => {
+      root41.querySelectorAll("[data-remove-val]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const p = params.find((x) => x.id === btn.dataset.removeVal);
           if (p) {
             p.values.splice(parseInt(btn.dataset.valIdx), 1);
-            render37();
+            render40();
           }
         });
       });
-      root38.querySelectorAll("[data-new-val]").forEach((input) => {
+      root41.querySelectorAll("[data-new-val]").forEach((input) => {
         input.addEventListener("input", () => {
           newValueDraft[input.dataset.newVal] = input.value;
         });
@@ -23748,36 +23848,36 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           }
         });
       });
-      root38.querySelectorAll("[data-add-val]").forEach((btn) => {
+      root41.querySelectorAll("[data-add-val]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const input = root38.querySelector(`[data-new-val="${btn.dataset.addVal}"]`);
+          const input = root41.querySelector(`[data-new-val="${btn.dataset.addVal}"]`);
           addValue(btn.dataset.addVal, input ? input.value : "");
         });
       });
-      const qStart = root38.querySelector('[data-testid="pairwise-quiz-start"]');
+      const qStart = root41.querySelector('[data-testid="pairwise-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         pairwiseQuiz.active = true;
         pairwiseQuiz.phase = "question";
         pairwiseQuiz.answer = "";
-        render37();
+        render40();
       });
-      const qClose = root38.querySelector('[data-testid="pairwise-quiz-close"]');
+      const qClose = root41.querySelector('[data-testid="pairwise-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         pairwiseQuiz.active = false;
-        render37();
+        render40();
       });
-      const qCheck = root38.querySelector('[data-testid="pairwise-quiz-check"]');
+      const qCheck = root41.querySelector('[data-testid="pairwise-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root38.querySelector('[data-testid="pairwise-quiz-input"]');
+        const inp = root41.querySelector('[data-testid="pairwise-quiz-input"]');
         pairwiseQuiz.answer = inp ? inp.value : "";
         pairwiseQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      const qReset = root38.querySelector('[data-testid="pairwise-quiz-reset"]');
+      const qReset = root41.querySelector('[data-testid="pairwise-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         pairwiseQuiz.phase = "question";
         pairwiseQuiz.answer = "";
-        render37();
+        render40();
       });
     }
     function addValue(paramId, raw) {
@@ -23788,10 +23888,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         p.values.push(val);
       }
       delete newValueDraft[paramId];
-      render37();
+      render40();
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/CauseEffectExplorer.js
@@ -23803,9 +23903,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
   function createCauseEffectExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "ceg-explorer";
-    root38.dataset.testid = "ceg-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "ceg-explorer";
+    root41.dataset.testid = "ceg-explorer";
     let causes = [
       { id: uid3(), name: "C1", label: "User logged in" },
       { id: uid3(), name: "C2", label: "Cart not empty" },
@@ -23955,7 +24055,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>`;
     }
-    function render37() {
+    function render40() {
       const { validCauses, validEffects, rows } = buildTable();
       const activeCount = rows.filter((r) => r.active).length;
       const causeRows = causes.map((c, i) => `
@@ -24029,7 +24129,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         total: 1,
         items: [{ q: t("ceg.rows.active", { n: activeCount }), a: String(activeCount), ok: true }]
       }) : null;
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="ceg-editors">
         <div class="ceg-editor-card">
           <p class="ceg-editor-title">${t("ceg.causes.title")}</p>
@@ -24065,110 +24165,110 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="ceg-hint">${t("ceg.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
-      root38.querySelector('[data-testid="ceg-cause-add"]').addEventListener("click", () => {
+    function bindEvents40() {
+      root41.querySelector('[data-testid="ceg-cause-add"]').addEventListener("click", () => {
         const n = causes.length + 1;
         causes.push({ id: uid3(), name: `C${n}`, label: "" });
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-remove-cause]").forEach((btn) => {
+      root41.querySelectorAll("[data-remove-cause]").forEach((btn) => {
         btn.addEventListener("click", () => {
           causes = causes.filter((c) => c.id !== btn.dataset.removeCause);
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-cause-label]").forEach((input) => {
+      root41.querySelectorAll("[data-cause-label]").forEach((input) => {
         input.addEventListener("change", () => {
           const c = causes.find((x) => x.id === input.dataset.causeLabel);
           if (c) {
             c.label = input.value;
-            render37();
+            render40();
           }
         });
       });
-      root38.querySelector('[data-testid="ceg-effect-add"]').addEventListener("click", () => {
+      root41.querySelector('[data-testid="ceg-effect-add"]').addEventListener("click", () => {
         const n = effects.length + 1;
         effects.push({ id: uid3(), name: `E${n}`, label: "", formula: "" });
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-remove-effect]").forEach((btn) => {
+      root41.querySelectorAll("[data-remove-effect]").forEach((btn) => {
         btn.addEventListener("click", () => {
           effects = effects.filter((e) => e.id !== btn.dataset.removeEffect);
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-effect-label]").forEach((input) => {
+      root41.querySelectorAll("[data-effect-label]").forEach((input) => {
         input.addEventListener("change", () => {
           const e = effects.find((x) => x.id === input.dataset.effectLabel);
           if (e) {
             e.label = input.value;
-            render37();
+            render40();
           }
         });
       });
-      root38.querySelectorAll("[data-effect-formula]").forEach((input) => {
+      root41.querySelectorAll("[data-effect-formula]").forEach((input) => {
         input.addEventListener("input", () => {
           const e = effects.find((x) => x.id === input.dataset.effectFormula);
           if (e) {
             e.formula = input.value;
-            render37();
+            render40();
           }
         });
       });
-      const qStart = root38.querySelector('[data-testid="ceg-quiz-start"]');
+      const qStart = root41.querySelector('[data-testid="ceg-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         cegQuiz.active = true;
         cegQuiz.phase = "question";
         cegQuiz.answer = "";
-        render37();
+        render40();
       });
-      const qClose = root38.querySelector('[data-testid="ceg-quiz-close"]');
+      const qClose = root41.querySelector('[data-testid="ceg-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         cegQuiz.active = false;
-        render37();
+        render40();
       });
-      const qCheck = root38.querySelector('[data-testid="ceg-quiz-check"]');
+      const qCheck = root41.querySelector('[data-testid="ceg-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root38.querySelector('[data-testid="ceg-quiz-input"]');
+        const inp = root41.querySelector('[data-testid="ceg-quiz-input"]');
         cegQuiz.answer = inp ? inp.value : "";
         cegQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      const qReset = root38.querySelector('[data-testid="ceg-quiz-reset"]');
+      const qReset = root41.querySelector('[data-testid="ceg-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         cegQuiz.phase = "question";
         cegQuiz.answer = "";
-        render37();
+        render40();
       });
-      const lrStart = root38.querySelector('[data-testid="ceg-lab-reflect-start"]');
+      const lrStart = root41.querySelector('[data-testid="ceg-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         cegLabReflect.active = true;
-        render37();
+        render40();
       });
-      const lrClose = root38.querySelector('[data-testid="ceg-lab-reflect-close"]');
+      const lrClose = root41.querySelector('[data-testid="ceg-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root38.querySelector('[data-testid="ceg-lab-reflect-a1"]');
-        const a2el = root38.querySelector('[data-testid="ceg-lab-reflect-a2"]');
+        const a1el = root41.querySelector('[data-testid="ceg-lab-reflect-a1"]');
+        const a2el = root41.querySelector('[data-testid="ceg-lab-reflect-a2"]');
         if (a1el) cegLabReflect.a1 = a1el.value;
         if (a2el) cegLabReflect.a2 = a2el.value;
         cegLabReflect.active = false;
-        render37();
+        render40();
       });
-      const lrA1 = root38.querySelector('[data-testid="ceg-lab-reflect-a1"]');
+      const lrA1 = root41.querySelector('[data-testid="ceg-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         cegLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root38.querySelector('[data-testid="ceg-lab-reflect-a2"]');
+      const lrA2 = root41.querySelector('[data-testid="ceg-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         cegLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root38.querySelector('[data-testid="ceg-lab-reflect-share"]');
+      const lrShare = root41.querySelector('[data-testid="ceg-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root38.querySelector('[data-testid="ceg-lab-reflect-a1"]')) == null ? void 0 : _a.value) || cegLabReflect.a1;
-        const a2 = ((_b = root38.querySelector('[data-testid="ceg-lab-reflect-a2"]')) == null ? void 0 : _b.value) || cegLabReflect.a2;
+        const a1 = ((_a = root41.querySelector('[data-testid="ceg-lab-reflect-a1"]')) == null ? void 0 : _a.value) || cegLabReflect.a1;
+        const a2 = ((_b = root41.querySelector('[data-testid="ceg-lab-reflect-a2"]')) == null ? void 0 : _b.value) || cegLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "ceg",
@@ -24191,8 +24291,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         }, 1800);
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/codeCoverage.js
@@ -24523,9 +24623,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     maxOf3: [["1", "2", "3"], ["3", "2", "1"], ["2", "3", "1"]]
   };
   function createCodeCoverageExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "codecov-explorer";
-    root38.dataset.testid = "codecov-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "codecov-explorer";
+    root41.dataset.testid = "codecov-explorer";
     let activePresetId = COVERAGE_PRESETS[0].id;
     let testCases = DEFAULT_TESTS_BY_PRESET[activePresetId].map((args) => ({ id: uid4(), args: [...args], active: true }));
     let activeCriterion = "stmt";
@@ -24650,7 +24750,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>`;
     }
-    function render37() {
+    function render40() {
       const p = preset();
       const { results, stmt, branch, cond, mcdc } = computeCoverage3();
       const strongest = strongestCriterion(stmt, branch, cond, mcdc);
@@ -24716,7 +24816,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         total: 1,
         items: [{ q: `${t("codecov.crit.stmt")} ${stmt.pct}% \xB7 ${t("codecov.crit.branch")} ${branch.pct}% \xB7 ${t("codecov.crit.cond")} ${cond.pct}% \xB7 ${t("codecov.crit.mcdc")} ${mcdc.pct}%`, a: strongest, ok: true }]
       });
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="codecov-presets">
         <span class="codecov-preset-label">Program:</span>
         ${presetBtns}
@@ -24765,90 +24865,90 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="codecov-hint">${t("codecov.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
-      root38.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents40() {
+      root41.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePresetId = btn.dataset.preset;
           testCases = (DEFAULT_TESTS_BY_PRESET[activePresetId] || [["0"]]).map((args) => ({ id: uid4(), args: [...args], active: true }));
           codecovQuiz.active = false;
           codecovLabReflect.active = false;
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-tc][data-arg]").forEach((input) => {
+      root41.querySelectorAll("[data-tc][data-arg]").forEach((input) => {
         input.addEventListener("change", () => {
           const tc = testCases.find((x) => x.id === input.dataset.tc);
           if (tc) {
             tc.args[parseInt(input.dataset.arg)] = input.value;
-            render37();
+            render40();
           }
         });
       });
-      root38.querySelectorAll("[data-remove-tc]").forEach((btn) => {
+      root41.querySelectorAll("[data-remove-tc]").forEach((btn) => {
         btn.addEventListener("click", () => {
           testCases = testCases.filter((tc) => tc.id !== btn.dataset.removeTc);
-          render37();
+          render40();
         });
       });
-      root38.querySelector('[data-testid="codecov-add-test"]').addEventListener("click", () => {
+      root41.querySelector('[data-testid="codecov-add-test"]').addEventListener("click", () => {
         const p = preset();
         testCases.push({ id: uid4(), args: p.params.map(() => "0"), active: true });
-        render37();
+        render40();
       });
-      const qStart = root38.querySelector('[data-testid="codecov-quiz-start"]');
+      const qStart = root41.querySelector('[data-testid="codecov-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         codecovQuiz.active = true;
         codecovQuiz.phase = "question";
         codecovQuiz.answer = "";
-        render37();
+        render40();
       });
-      const qClose = root38.querySelector('[data-testid="codecov-quiz-close"]');
+      const qClose = root41.querySelector('[data-testid="codecov-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         codecovQuiz.active = false;
-        render37();
+        render40();
       });
-      const qCheck = root38.querySelector('[data-testid="codecov-quiz-check"]');
+      const qCheck = root41.querySelector('[data-testid="codecov-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const sel = root38.querySelector('[name="codecov-quiz"]:checked');
+        const sel = root41.querySelector('[name="codecov-quiz"]:checked');
         codecovQuiz.answer = sel ? sel.value : "";
         codecovQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      const qReset = root38.querySelector('[data-testid="codecov-quiz-reset"]');
+      const qReset = root41.querySelector('[data-testid="codecov-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         codecovQuiz.phase = "question";
         codecovQuiz.answer = "";
-        render37();
+        render40();
       });
-      const lrStart = root38.querySelector('[data-testid="codecov-lab-reflect-start"]');
+      const lrStart = root41.querySelector('[data-testid="codecov-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         codecovLabReflect.active = true;
-        render37();
+        render40();
       });
-      const lrClose = root38.querySelector('[data-testid="codecov-lab-reflect-close"]');
+      const lrClose = root41.querySelector('[data-testid="codecov-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root38.querySelector('[data-testid="codecov-lab-reflect-a1"]');
-        const a2el = root38.querySelector('[data-testid="codecov-lab-reflect-a2"]');
+        const a1el = root41.querySelector('[data-testid="codecov-lab-reflect-a1"]');
+        const a2el = root41.querySelector('[data-testid="codecov-lab-reflect-a2"]');
         if (a1el) codecovLabReflect.a1 = a1el.value;
         if (a2el) codecovLabReflect.a2 = a2el.value;
         codecovLabReflect.active = false;
-        render37();
+        render40();
       });
-      const lrA1 = root38.querySelector('[data-testid="codecov-lab-reflect-a1"]');
+      const lrA1 = root41.querySelector('[data-testid="codecov-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         codecovLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root38.querySelector('[data-testid="codecov-lab-reflect-a2"]');
+      const lrA2 = root41.querySelector('[data-testid="codecov-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         codecovLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root38.querySelector('[data-testid="codecov-lab-reflect-share"]');
+      const lrShare = root41.querySelector('[data-testid="codecov-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root38.querySelector('[data-testid="codecov-lab-reflect-a1"]')) == null ? void 0 : _a.value) || codecovLabReflect.a1;
-        const a2 = ((_b = root38.querySelector('[data-testid="codecov-lab-reflect-a2"]')) == null ? void 0 : _b.value) || codecovLabReflect.a2;
+        const a1 = ((_a = root41.querySelector('[data-testid="codecov-lab-reflect-a1"]')) == null ? void 0 : _a.value) || codecovLabReflect.a1;
+        const a2 = ((_b = root41.querySelector('[data-testid="codecov-lab-reflect-a2"]')) == null ? void 0 : _b.value) || codecovLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "codecov",
@@ -24871,8 +24971,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         }, 1800);
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/IntegrationTestingExplorer.js
@@ -25012,9 +25112,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
   var SVG_W2 = 400;
   var SVG_H2 = 280;
   function createIntegrationTestingExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "inttest-explorer";
-    root38.dataset.testid = "inttest-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "inttest-explorer";
+    root41.dataset.testid = "inttest-explorer";
     let activeStrategy = "topdown";
     let activeStep = 0;
     const inttestQuiz = { active: false, phase: "question", answer: "" };
@@ -25143,7 +25243,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render37() {
+    function render40() {
       const strategy = STRATEGIES[activeStrategy];
       const step2 = strategy.steps[activeStep];
       const locale = getLocale();
@@ -25183,7 +25283,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `Strategy: ${t(strategy.key)} \xB7 Stubs: ${strategy.stubCount} \xB7 Drivers: ${strategy.driverCount}`, a: "", ok: true }]
       });
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="inttest-strategy-tabs" data-testid="inttest-strategy-tabs">
         ${stratTabs}
       </div>
@@ -25248,83 +25348,83 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="inttest-hint">${t("codecov.hint").replace("MC/DC \u2287 Condition \u2287 Branch \u2287 Statement", "Big Bang \u2192 Top-down \u2192 Bottom-up \u2192 Sandwich: each adds more structure and isolation.")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
-      root38.querySelectorAll("[data-strategy]").forEach((btn) => {
+    function bindEvents40() {
+      root41.querySelectorAll("[data-strategy]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeStrategy = btn.dataset.strategy;
           activeStep = 0;
-          render37();
+          render40();
         });
       });
-      const prevBtn = root38.querySelector('[data-testid="inttest-prev"]');
+      const prevBtn = root41.querySelector('[data-testid="inttest-prev"]');
       if (prevBtn) prevBtn.addEventListener("click", () => {
         if (activeStep > 0) {
           activeStep--;
-          render37();
+          render40();
         }
       });
-      const nextBtn = root38.querySelector('[data-testid="inttest-next"]');
+      const nextBtn = root41.querySelector('[data-testid="inttest-next"]');
       if (nextBtn) nextBtn.addEventListener("click", () => {
         const s = STRATEGIES[activeStrategy];
         if (activeStep < s.steps.length - 1) {
           activeStep++;
-          render37();
+          render40();
         }
       });
-      const qStart = root38.querySelector('[data-testid="inttest-quiz-start"]');
+      const qStart = root41.querySelector('[data-testid="inttest-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         inttestQuiz.active = true;
         inttestQuiz.phase = "question";
         inttestQuiz.answer = "";
-        render37();
+        render40();
       });
-      const qClose = root38.querySelector('[data-testid="inttest-quiz-close"]');
+      const qClose = root41.querySelector('[data-testid="inttest-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         inttestQuiz.active = false;
-        render37();
+        render40();
       });
-      const qCheck = root38.querySelector('[data-testid="inttest-quiz-check"]');
+      const qCheck = root41.querySelector('[data-testid="inttest-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root38.querySelector('[data-testid="inttest-quiz-input"]');
+        const inp = root41.querySelector('[data-testid="inttest-quiz-input"]');
         inttestQuiz.answer = inp ? inp.value : "";
         inttestQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      const qReset = root38.querySelector('[data-testid="inttest-quiz-reset"]');
+      const qReset = root41.querySelector('[data-testid="inttest-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         inttestQuiz.phase = "question";
         inttestQuiz.answer = "";
-        render37();
+        render40();
       });
-      const lrStart = root38.querySelector('[data-testid="inttest-lab-reflect-start"]');
+      const lrStart = root41.querySelector('[data-testid="inttest-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         inttestLabReflect.active = true;
-        render37();
+        render40();
       });
-      const lrClose = root38.querySelector('[data-testid="inttest-lab-reflect-close"]');
+      const lrClose = root41.querySelector('[data-testid="inttest-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root38.querySelector('[data-testid="inttest-lab-reflect-a1"]');
-        const a2el = root38.querySelector('[data-testid="inttest-lab-reflect-a2"]');
+        const a1el = root41.querySelector('[data-testid="inttest-lab-reflect-a1"]');
+        const a2el = root41.querySelector('[data-testid="inttest-lab-reflect-a2"]');
         if (a1el) inttestLabReflect.a1 = a1el.value;
         if (a2el) inttestLabReflect.a2 = a2el.value;
         inttestLabReflect.active = false;
-        render37();
+        render40();
       });
-      const lrA1 = root38.querySelector('[data-testid="inttest-lab-reflect-a1"]');
+      const lrA1 = root41.querySelector('[data-testid="inttest-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         inttestLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root38.querySelector('[data-testid="inttest-lab-reflect-a2"]');
+      const lrA2 = root41.querySelector('[data-testid="inttest-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         inttestLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root38.querySelector('[data-testid="inttest-lab-reflect-share"]');
+      const lrShare = root41.querySelector('[data-testid="inttest-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root38.querySelector('[data-testid="inttest-lab-reflect-a1"]')) == null ? void 0 : _a.value) || inttestLabReflect.a1;
-        const a2 = ((_b = root38.querySelector('[data-testid="inttest-lab-reflect-a2"]')) == null ? void 0 : _b.value) || inttestLabReflect.a2;
+        const a1 = ((_a = root41.querySelector('[data-testid="inttest-lab-reflect-a1"]')) == null ? void 0 : _a.value) || inttestLabReflect.a1;
+        const a2 = ((_b = root41.querySelector('[data-testid="inttest-lab-reflect-a2"]')) == null ? void 0 : _b.value) || inttestLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "inttest",
@@ -25347,8 +25447,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/utils/propertyTesting.js
@@ -25641,9 +25741,9 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
   function createPropertyBasedTestingExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "pbt-explorer";
-    root38.dataset.testid = "pbt-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "pbt-explorer";
+    root41.dataset.testid = "pbt-explorer";
     let activePresetId = PBT_PRESETS[0].id;
     let numTests = 100;
     let lastResult = null;
@@ -25723,7 +25823,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render37() {
+    function render40() {
       const p = preset();
       const presetBtns = PBT_PRESETS.map((pr) => {
         const isBug = pr.expectsCounterexample;
@@ -25785,7 +25885,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `${activePresetId} \xB7 ${numTests} tests`, a: lastResult && lastResult.counterexample ? "fail" : "pass", ok: true }]
       });
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="pbt-presets" data-testid="pbt-preset-bar">${presetBtns}</div>
 
       <div class="pbt-main">
@@ -25835,84 +25935,84 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="pbt-hint">${t("pbt.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
-      root38.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents40() {
+      root41.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePresetId = btn.dataset.preset;
           lastResult = null;
-          render37();
+          render40();
         });
       });
-      const numInput = root38.querySelector('[data-testid="pbt-numtests-input"]');
+      const numInput = root41.querySelector('[data-testid="pbt-numtests-input"]');
       if (numInput) numInput.addEventListener("change", () => {
         const v = parseInt(numInput.value, 10);
         if (v >= 10 && v <= 500) numTests = v;
-        render37();
+        render40();
       });
-      const runBtn = root38.querySelector('[data-testid="pbt-run-btn"]');
+      const runBtn = root41.querySelector('[data-testid="pbt-run-btn"]');
       if (runBtn) runBtn.addEventListener("click", () => {
         const p = preset();
         lastResult = runPropertyTests(p, numTests);
-        render37();
+        render40();
       });
-      const qStart = root38.querySelector('[data-testid="pbt-quiz-start"]');
+      const qStart = root41.querySelector('[data-testid="pbt-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         pbtQuiz.active = true;
         pbtQuiz.phase = "question";
         pbtQuiz.gotAnswer = "";
         pbtQuiz.expectedAnswer = "";
-        render37();
+        render40();
       });
-      const qClose = root38.querySelector('[data-testid="pbt-quiz-close"]');
+      const qClose = root41.querySelector('[data-testid="pbt-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         pbtQuiz.active = false;
-        render37();
+        render40();
       });
-      const qCheck = root38.querySelector('[data-testid="pbt-quiz-check"]');
+      const qCheck = root41.querySelector('[data-testid="pbt-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const gotEl = root38.querySelector('[data-testid="pbt-quiz-got"]');
-        const expEl = root38.querySelector('[data-testid="pbt-quiz-expected"]');
+        const gotEl = root41.querySelector('[data-testid="pbt-quiz-got"]');
+        const expEl = root41.querySelector('[data-testid="pbt-quiz-expected"]');
         pbtQuiz.gotAnswer = gotEl ? gotEl.value : "";
         pbtQuiz.expectedAnswer = expEl ? expEl.value : "";
         pbtQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      const qReset = root38.querySelector('[data-testid="pbt-quiz-reset"]');
+      const qReset = root41.querySelector('[data-testid="pbt-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         pbtQuiz.phase = "question";
         pbtQuiz.gotAnswer = "";
         pbtQuiz.expectedAnswer = "";
-        render37();
+        render40();
       });
-      const lrStart = root38.querySelector('[data-testid="pbt-lab-reflect-start"]');
+      const lrStart = root41.querySelector('[data-testid="pbt-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         pbtLabReflect.active = true;
-        render37();
+        render40();
       });
-      const lrClose = root38.querySelector('[data-testid="pbt-lab-reflect-close"]');
+      const lrClose = root41.querySelector('[data-testid="pbt-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root38.querySelector('[data-testid="pbt-lab-reflect-a1"]');
-        const a2el = root38.querySelector('[data-testid="pbt-lab-reflect-a2"]');
+        const a1el = root41.querySelector('[data-testid="pbt-lab-reflect-a1"]');
+        const a2el = root41.querySelector('[data-testid="pbt-lab-reflect-a2"]');
         if (a1el) pbtLabReflect.a1 = a1el.value;
         if (a2el) pbtLabReflect.a2 = a2el.value;
         pbtLabReflect.active = false;
-        render37();
+        render40();
       });
-      const lrA1 = root38.querySelector('[data-testid="pbt-lab-reflect-a1"]');
+      const lrA1 = root41.querySelector('[data-testid="pbt-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         pbtLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root38.querySelector('[data-testid="pbt-lab-reflect-a2"]');
+      const lrA2 = root41.querySelector('[data-testid="pbt-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         pbtLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root38.querySelector('[data-testid="pbt-lab-reflect-share"]');
+      const lrShare = root41.querySelector('[data-testid="pbt-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root38.querySelector('[data-testid="pbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || pbtLabReflect.a1;
-        const a2 = ((_b = root38.querySelector('[data-testid="pbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || pbtLabReflect.a2;
+        const a1 = ((_a = root41.querySelector('[data-testid="pbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || pbtLabReflect.a1;
+        const a2 = ((_b = root41.querySelector('[data-testid="pbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || pbtLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "pbt",
@@ -25935,8 +26035,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/RiskBasedTestingExplorer.js
@@ -25956,9 +26056,9 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
   var HEAT_PAD = 32;
   var SVG_SIZE = 5 * HEAT_CELL + HEAT_PAD * 2;
   function createRiskBasedTestingExplorer() {
-    const root38 = document.createElement("div");
-    root38.className = "rbt-explorer";
-    root38.dataset.testid = "rbt-explorer";
+    const root41 = document.createElement("div");
+    root41.className = "rbt-explorer";
+    root41.dataset.testid = "rbt-explorer";
     let modules = [
       { id: uid5(), name: "Login", likelihood: 5, impact: 5 },
       { id: uid5(), name: "Payment", likelihood: 4, impact: 5 },
@@ -26078,7 +26178,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render37() {
+    function render40() {
       const moduleRows = modules.map((m, i) => `
       <div class="rbt-module-row" data-module-id="${m.id}">
         <input type="text" class="rbt-module-name-input" value="${escapeHtml23(m.name)}"
@@ -26119,7 +26219,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `High-risk: ${highCount} \xB7 Modules: ${modules.length}`, a: String(highCount), ok: true }]
       });
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="rbt-modules-card">
         <p class="rbt-modules-title">${t("rbt.modules.title")}</p>
         <div data-testid="rbt-module-list">${moduleRows}</div>
@@ -26170,103 +26270,103 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="rbt-hint">${t("rbt.hint")}</p>
     `;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
-      root38.querySelector('[data-testid="rbt-add-module"]').addEventListener("click", () => {
+    function bindEvents40() {
+      root41.querySelector('[data-testid="rbt-add-module"]').addEventListener("click", () => {
         modules.push({ id: uid5(), name: `Module${modules.length + 1}`, likelihood: 3, impact: 3 });
-        render37();
+        render40();
       });
-      root38.querySelectorAll("[data-remove-module]").forEach((btn) => {
+      root41.querySelectorAll("[data-remove-module]").forEach((btn) => {
         btn.addEventListener("click", () => {
           modules = modules.filter((m) => m.id !== btn.dataset.removeModule);
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-module-name]").forEach((input) => {
+      root41.querySelectorAll("[data-module-name]").forEach((input) => {
         input.addEventListener("change", () => {
           const m = modules.find((x) => x.id === input.dataset.moduleName);
           if (m) {
             m.name = input.value;
-            render37();
+            render40();
           }
         });
       });
-      root38.querySelectorAll("[data-module-likelihood]").forEach((slider) => {
+      root41.querySelectorAll("[data-module-likelihood]").forEach((slider) => {
         slider.addEventListener("input", () => {
           const m = modules.find((x) => x.id === slider.dataset.moduleLikelihood);
           if (m) {
             m.likelihood = parseInt(slider.value);
-            render37();
+            render40();
           }
         });
       });
-      root38.querySelectorAll("[data-module-impact]").forEach((slider) => {
+      root41.querySelectorAll("[data-module-impact]").forEach((slider) => {
         slider.addEventListener("input", () => {
           const m = modules.find((x) => x.id === slider.dataset.moduleImpact);
           if (m) {
             m.impact = parseInt(slider.value);
-            render37();
+            render40();
           }
         });
       });
-      const filterSel = root38.querySelector('[data-testid="rbt-filter"]');
+      const filterSel = root41.querySelector('[data-testid="rbt-filter"]');
       if (filterSel) filterSel.addEventListener("change", () => {
         filter = filterSel.value;
-        render37();
+        render40();
       });
-      const qStart = root38.querySelector('[data-testid="rbt-quiz-start"]');
+      const qStart = root41.querySelector('[data-testid="rbt-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         rbtQuiz.active = true;
         rbtQuiz.phase = "question";
         rbtQuiz.answer = "";
-        render37();
+        render40();
       });
-      const qClose = root38.querySelector('[data-testid="rbt-quiz-close"]');
+      const qClose = root41.querySelector('[data-testid="rbt-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         rbtQuiz.active = false;
-        render37();
+        render40();
       });
-      const qCheck = root38.querySelector('[data-testid="rbt-quiz-check"]');
+      const qCheck = root41.querySelector('[data-testid="rbt-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root38.querySelector('[data-testid="rbt-quiz-input"]');
+        const inp = root41.querySelector('[data-testid="rbt-quiz-input"]');
         rbtQuiz.answer = inp ? inp.value : "";
         rbtQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      const qReset = root38.querySelector('[data-testid="rbt-quiz-reset"]');
+      const qReset = root41.querySelector('[data-testid="rbt-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         rbtQuiz.phase = "question";
         rbtQuiz.answer = "";
-        render37();
+        render40();
       });
-      const lrStart = root38.querySelector('[data-testid="rbt-lab-reflect-start"]');
+      const lrStart = root41.querySelector('[data-testid="rbt-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         rbtLabReflect.active = true;
-        render37();
+        render40();
       });
-      const lrClose = root38.querySelector('[data-testid="rbt-lab-reflect-close"]');
+      const lrClose = root41.querySelector('[data-testid="rbt-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root38.querySelector('[data-testid="rbt-lab-reflect-a1"]');
-        const a2el = root38.querySelector('[data-testid="rbt-lab-reflect-a2"]');
+        const a1el = root41.querySelector('[data-testid="rbt-lab-reflect-a1"]');
+        const a2el = root41.querySelector('[data-testid="rbt-lab-reflect-a2"]');
         if (a1el) rbtLabReflect.a1 = a1el.value;
         if (a2el) rbtLabReflect.a2 = a2el.value;
         rbtLabReflect.active = false;
-        render37();
+        render40();
       });
-      const lrA1 = root38.querySelector('[data-testid="rbt-lab-reflect-a1"]');
+      const lrA1 = root41.querySelector('[data-testid="rbt-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         rbtLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root38.querySelector('[data-testid="rbt-lab-reflect-a2"]');
+      const lrA2 = root41.querySelector('[data-testid="rbt-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         rbtLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root38.querySelector('[data-testid="rbt-lab-reflect-share"]');
+      const lrShare = root41.querySelector('[data-testid="rbt-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root38.querySelector('[data-testid="rbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || rbtLabReflect.a1;
-        const a2 = ((_b = root38.querySelector('[data-testid="rbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || rbtLabReflect.a2;
+        const a1 = ((_a = root41.querySelector('[data-testid="rbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || rbtLabReflect.a1;
+        const a2 = ((_b = root41.querySelector('[data-testid="rbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || rbtLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "rbt",
@@ -26289,8 +26389,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
 
   // src/components/GroupTheoryExplorer.js
@@ -26330,8 +26430,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     return Array.from({ length: n }, (_, i) => !!(mask & 1 << n - 1 - i));
   }
   function createGroupTheoryExplorer() {
-    const root38 = document.createElement("div");
-    root38.dataset.testid = "gth-explorer";
+    const root41 = document.createElement("div");
+    root41.dataset.testid = "gth-explorer";
     let formula = "A AND B";
     let activeTab = "orbits";
     let covP = 2;
@@ -26635,7 +26735,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         <button type="button" class="quiz-share-btn" data-share-payload="${reflectEncoded}" data-testid="gth-lab-reflect-share">\u{1F4CB} ${t("lab.reflect.record")}</button>
       </div>`;
     }
-    function render37() {
+    function render40() {
       const result = computeOrbits();
       const { vars, valid } = parseDNF(formula);
       let orbitContent = "";
@@ -26665,7 +26765,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `Orbits: ${metricData.orbits}/${metricData.total} \xB7 |Aut(f)|=${metricData.autOrder}`, a: String(metricData.orbits), ok: true }]
       });
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="gth-explorer">
         <div class="gth-input-card">
           <label class="gth-label">${t("groupth.formula.label")}</label>
@@ -26710,30 +26810,30 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
         <p class="gth-hint">${t("groupth.hint")}</p>
       </div>`;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-      const inp = root38.querySelector('[data-testid="gth-formula-input"]');
+      const inp = root41.querySelector('[data-testid="gth-formula-input"]');
       if (inp) {
         inp.addEventListener("change", () => {
           formula = inp.value;
-          render37();
+          render40();
         });
       }
-      root38.querySelectorAll(".gth-example-btn").forEach((btn) => {
+      root41.querySelectorAll(".gth-example-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           formula = btn.dataset.formula;
-          render37();
+          render40();
         });
       });
-      root38.querySelectorAll("[data-tab]").forEach((btn) => {
+      root41.querySelectorAll("[data-tab]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeTab = btn.dataset.tab;
-          render37();
+          render40();
         });
       });
-      const copyBtn = root38.querySelector('[data-testid="gth-copy"]');
+      const copyBtn = root41.querySelector('[data-testid="gth-copy"]');
       if (copyBtn) {
         copyBtn.addEventListener("click", () => {
           var _a2;
@@ -26756,66 +26856,66 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
           });
         });
       }
-      (_a = root38.querySelector('[data-testid="gth-bridge-mt"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root41.querySelector('[data-testid="gth-bridge-mt"]')) == null ? void 0 : _a.addEventListener("click", () => {
         var _a2, _b2;
         (_a2 = document.querySelector('[data-section="blackbox"]')) == null ? void 0 : _a2.click();
         (_b2 = document.querySelector('[data-blackbox-tab="mt"]')) == null ? void 0 : _b2.click();
       });
-      (_b = root38.querySelector('[data-testid="gth-cov-p"]')) == null ? void 0 : _b.addEventListener("change", (e) => {
+      (_b = root41.querySelector('[data-testid="gth-cov-p"]')) == null ? void 0 : _b.addEventListener("change", (e) => {
         covP = Number(e.target.value);
-        render37();
+        render40();
       });
-      const covKSlider = root38.querySelector('[data-testid="gth-cov-k"]');
+      const covKSlider = root41.querySelector('[data-testid="gth-cov-k"]');
       if (covKSlider) {
         covKSlider.addEventListener("input", (e) => {
           covK = Number(e.target.value);
-          const val = root38.querySelector('[data-testid="gth-cov-k-val"]');
+          const val = root41.querySelector('[data-testid="gth-cov-k-val"]');
           if (val) val.textContent = covK;
         });
-        covKSlider.addEventListener("change", () => render37());
+        covKSlider.addEventListener("change", () => render40());
       }
-      (_c = root38.querySelector('[data-testid="gth-cov-t"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
+      (_c = root41.querySelector('[data-testid="gth-cov-t"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
         covT = Number(e.target.value);
-        render37();
+        render40();
       });
-      (_d = root38.querySelector('[data-testid="gth-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", (e) => {
+      (_d = root41.querySelector('[data-testid="gth-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", (e) => {
         gthQuiz.tab = e.currentTarget.dataset.quizTab || activeTab;
         gthQuiz.active = true;
         gthQuiz.phase = "question";
         gthQuiz.answer = "";
-        render37();
+        render40();
       });
-      (_e = root38.querySelector('[data-testid="gth-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root41.querySelector('[data-testid="gth-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
         gthQuiz.active = false;
-        render37();
+        render40();
       });
-      (_f = root38.querySelector('[data-testid="gth-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root41.querySelector('[data-testid="gth-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         gthQuiz.phase = "question";
         gthQuiz.answer = "";
-        render37();
+        render40();
       });
-      (_g = root38.querySelector('[data-testid="gth-quiz-input"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root41.querySelector('[data-testid="gth-quiz-input"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         gthQuiz.answer = e.target.value;
       });
-      (_h = root38.querySelector('[data-testid="gth-quiz-submit"]')) == null ? void 0 : _h.addEventListener("click", () => {
+      (_h = root41.querySelector('[data-testid="gth-quiz-submit"]')) == null ? void 0 : _h.addEventListener("click", () => {
         gthQuiz.phase = "graded";
-        render37();
+        render40();
       });
-      (_i = root38.querySelector('[data-testid="gth-lab-reflect-start"]')) == null ? void 0 : _i.addEventListener("click", () => {
+      (_i = root41.querySelector('[data-testid="gth-lab-reflect-start"]')) == null ? void 0 : _i.addEventListener("click", () => {
         gthLabReflect.active = true;
-        render37();
+        render40();
       });
-      (_j = root38.querySelector('[data-testid="gth-lab-reflect-close"]')) == null ? void 0 : _j.addEventListener("click", () => {
+      (_j = root41.querySelector('[data-testid="gth-lab-reflect-close"]')) == null ? void 0 : _j.addEventListener("click", () => {
         gthLabReflect.active = false;
-        render37();
+        render40();
       });
-      (_k = root38.querySelector('[data-testid="gth-lab-reflect-text"]')) == null ? void 0 : _k.addEventListener("input", (e) => {
+      (_k = root41.querySelector('[data-testid="gth-lab-reflect-text"]')) == null ? void 0 : _k.addEventListener("input", (e) => {
         gthLabReflect.text = e.target.value;
       });
-      (_l = root38.querySelector('[data-testid="gth-lab-reflect-text2"]')) == null ? void 0 : _l.addEventListener("input", (e) => {
+      (_l = root41.querySelector('[data-testid="gth-lab-reflect-text2"]')) == null ? void 0 : _l.addEventListener("input", (e) => {
         gthLabReflect.text2 = e.target.value;
       });
-      root38.querySelectorAll("[data-share-payload]").forEach((btn) => {
+      root41.querySelectorAll("[data-share-payload]").forEach((btn) => {
         btn.addEventListener("click", () => {
           var _a2;
           const url = (window.__buildShareUrl__ || (() => btn.dataset.sharePayload))(btn.dataset.sharePayload);
@@ -26823,8 +26923,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         });
       });
     }
-    render37();
-    return root38;
+    render40();
+    return root41;
   }
   function _evalFormula(formula, env) {
     try {
@@ -29850,10 +29950,10 @@ CONFIRMED \u2014 real crash, not a harness artifact`,
     return journey.steps.reduce((p, s) => p * stepPassProbability(s), 1);
   }
   function simulateRuns(journey, runs, seed = 1) {
-    let state37 = seed;
+    let state40 = seed;
     function rand() {
-      state37 = state37 * 1103515245 + 12345 & 2147483647;
-      return state37 / 2147483647;
+      state40 = state40 * 1103515245 + 12345 & 2147483647;
+      return state40 / 2147483647;
     }
     const reached = journey.steps.map(() => 0);
     let fullPasses = 0;
@@ -32635,7 +32735,7 @@ VERDICT: pass  (conformance holds)`,
       const os = runMealy(SPEC, s, seq).outputs;
       const ot = runMealy(SPEC, tt, seq).outputs;
       const diffAt = os.findIndex((o, i) => o !== ot[i]);
-      const trace = (outs, label) => `
+      const trace2 = (outs, label) => `
       <div class="wmethod-trace">
         <span class="wmethod-trace-label">${label}</span>
         ${seq.map((inp, i) => `
@@ -32645,8 +32745,8 @@ VERDICT: pass  (conformance holds)`,
       </div>`;
       body = `
       <p class="wmethod-dist-seq">${t("wmethod.dist.seq")}: <code>${fmt(seq)}</code></p>
-      ${trace(os, s)}
-      ${trace(ot, tt)}
+      ${trace2(os, s)}
+      ${trace2(ot, tt)}
       <p class="wmethod-dist-note">${t("wmethod.dist.note", { pos: diffAt + 1 })}</p>`;
     }
     return `
@@ -34539,11 +34639,11 @@ ${items.join("\n")}
     }
     return slice;
   }
-  function liveDataDeps(pdg, trace) {
+  function liveDataDeps(pdg, trace2) {
     const stmtById = new Map(pdg.statements.map((s) => [s.id, s]));
     const lastDef = /* @__PURE__ */ new Map();
     const live = /* @__PURE__ */ new Set();
-    for (const sid of trace.steps) {
+    for (const sid of trace2.steps) {
       const st = stmtById.get(sid);
       if (!st) continue;
       for (const v of st.uses || []) {
@@ -34554,11 +34654,11 @@ ${items.join("\n")}
     }
     return live;
   }
-  function dynamicSlice(pdg, trace, criterion) {
+  function dynamicSlice(pdg, trace2, criterion) {
     const { stmtId, variable } = criterion;
-    const executed = new Set(trace.steps);
+    const executed = new Set(trace2.steps);
     if (!executed.has(stmtId)) return /* @__PURE__ */ new Set();
-    const live = liveDataDeps(pdg, trace);
+    const live = liveDataDeps(pdg, trace2);
     const slice = /* @__PURE__ */ new Set([stmtId]);
     const queue = [];
     for (const [from, to] of pdg.controlDeps) {
@@ -34625,14 +34725,14 @@ ${items.join("\n")}
     }
     const affected = /* @__PURE__ */ new Set();
     const safe = /* @__PURE__ */ new Set();
-    for (const trace of pdg.traces || []) {
+    for (const trace2 of pdg.traces || []) {
       let hit;
       if (mode === "dynamic") {
-        hit = dynamicSlice(pdg, trace, criterion).has(changedStmtId);
+        hit = dynamicSlice(pdg, trace2, criterion).has(changedStmtId);
       } else {
-        hit = slicesIntersect(impact, new Set(trace.steps));
+        hit = slicesIntersect(impact, new Set(trace2.steps));
       }
-      (hit ? affected : safe).add(trace.id);
+      (hit ? affected : safe).add(trace2.id);
     }
     return { affected, safe, impact };
   }
@@ -34677,9 +34777,9 @@ ${items.join("\n")}
     const ex = currentExample();
     const criterion = { stmtId: state23.selectedStmtId, variable: state23.selectedVar };
     if (state23.mode === "dynamic") {
-      const trace = currentTrace();
-      if (!trace) return /* @__PURE__ */ new Set();
-      return dynamicSlice(ex, trace, criterion);
+      const trace2 = currentTrace();
+      if (!trace2) return /* @__PURE__ */ new Set();
+      return dynamicSlice(ex, trace2, criterion);
     }
     if (state23.direction === "forward") return forwardSlice(ex, criterion);
     return backwardSlice(ex, criterion);
@@ -36328,49 +36428,49 @@ ${items.join("\n")}
   function initialTddState() {
     return { phase: "start", hasFailingTest: false, allGreen: true, cycleCount: 0 };
   }
-  function isLegal(state37, action) {
-    if (action === "write-failing-test") return !state37.hasFailingTest;
-    if (action === "write-production-code") return state37.hasFailingTest;
+  function isLegal(state40, action) {
+    if (action === "write-failing-test") return !state40.hasFailingTest;
+    if (action === "write-production-code") return state40.hasFailingTest;
     if (action === "refactor") {
-      return state37.allGreen && !state37.hasFailingTest && state37.cycleCount > 0;
+      return state40.allGreen && !state40.hasFailingTest && state40.cycleCount > 0;
     }
     return false;
   }
-  function legalActions(state37) {
-    return new Set(ACTIONS.filter((a) => isLegal(state37, a)));
+  function legalActions(state40) {
+    return new Set(ACTIONS.filter((a) => isLegal(state40, a)));
   }
-  function reasonKey(state37, action) {
+  function reasonKey(state40, action) {
     if (action === "write-failing-test") return "tdd.rules.reason.alreadyRed";
     if (action === "write-production-code") return "tdd.rules.reason.noRed";
-    if (state37.hasFailingTest) return "tdd.rules.reason.notGreen";
+    if (state40.hasFailingTest) return "tdd.rules.reason.notGreen";
     return "tdd.rules.reason.nothingYet";
   }
-  function applyAction(state37, action) {
+  function applyAction(state40, action) {
     if (!ACTIONS.includes(action)) {
-      return { state: state37, blocked: true, reasonKey: "tdd.rules.reason.unknown" };
+      return { state: state40, blocked: true, reasonKey: "tdd.rules.reason.unknown" };
     }
-    if (!isLegal(state37, action)) {
-      return { state: state37, blocked: true, reasonKey: reasonKey(state37, action) };
+    if (!isLegal(state40, action)) {
+      return { state: state40, blocked: true, reasonKey: reasonKey(state40, action) };
     }
     if (action === "write-failing-test") {
       return {
-        state: { ...state37, phase: "red", hasFailingTest: true, allGreen: false },
+        state: { ...state40, phase: "red", hasFailingTest: true, allGreen: false },
         blocked: false
       };
     }
     if (action === "write-production-code") {
       return {
         state: {
-          ...state37,
+          ...state40,
           phase: "green",
           hasFailingTest: false,
           allGreen: true,
-          cycleCount: state37.cycleCount + 1
+          cycleCount: state40.cycleCount + 1
         },
         blocked: false
       };
     }
-    return { state: { ...state37, phase: "refactor" }, blocked: false };
+    return { state: { ...state40, phase: "refactor" }, blocked: false };
   }
 
   // src/components/TddRulesExplorer.js
@@ -37797,6 +37897,1114 @@ ${items.join("\n")}
     return root32;
   }
 
+  // src/data/sbstExamples.js
+  var SBST_EXAMPLES = [
+    {
+      id: "nested-guard",
+      nameKey: "sbst.example.nestedGuard",
+      source: [
+        "function classify(x, y) {",
+        "  if (x === 17) {        // b1",
+        "    if (y > 100) {       // b2  \u2190 target",
+        '      return "JACKPOT";',
+        "    }",
+        "  }",
+        '  return "none";',
+        "}"
+      ].join("\n"),
+      inputSchema: [
+        { name: "x", min: 0, max: 50 },
+        { name: "y", min: 0, max: 200 }
+      ],
+      branches: [
+        { id: "b1", op: "==", requires: [] },
+        { id: "b2", op: ">", requires: [{ branchId: "b1", outcome: true }] }
+      ],
+      target: { branchId: "b2", outcome: true },
+      run([x, y], probe) {
+        const c1 = x === 17;
+        probe("b1", "==", x, 17, c1);
+        if (c1) {
+          const c2 = y > 100;
+          probe("b2", ">", y, 100, c2);
+        }
+      }
+    },
+    {
+      id: "triangle",
+      nameKey: "sbst.example.triangle",
+      source: [
+        "function classify(a, b, c) {",
+        "  if (a === b) {         // b1",
+        "    if (b === c) {       // b2  \u2190 target (equilateral)",
+        '      return "equilateral";',
+        "    }",
+        '    return "isosceles";',
+        "  }",
+        '  return "scalene";',
+        "}"
+      ].join("\n"),
+      inputSchema: [
+        { name: "a", min: 1, max: 30 },
+        { name: "b", min: 1, max: 30 },
+        { name: "c", min: 1, max: 30 }
+      ],
+      branches: [
+        { id: "b1", op: "==", requires: [] },
+        { id: "b2", op: "==", requires: [{ branchId: "b1", outcome: true }] }
+      ],
+      target: { branchId: "b2", outcome: true },
+      run([a, b, c], probe) {
+        const c1 = a === b;
+        probe("b1", "==", a, b, c1);
+        if (c1) {
+          const c2 = b === c;
+          probe("b2", "==", b, c, c2);
+        }
+      }
+    },
+    {
+      id: "multimodal",
+      nameKey: "sbst.example.multimodal",
+      source: [
+        "function check(x) {",
+        "  const r = x % 20;     // non-monotone \u2014 creates many basins",
+        "  if (r === 7) {        // b1",
+        "    if (x > 50) {       // b2  \u2190 target",
+        '      return "hit";',
+        "    }",
+        "  }",
+        '  return "miss";',
+        "}"
+      ].join("\n"),
+      inputSchema: [{ name: "x", min: 0, max: 100 }],
+      branches: [
+        { id: "b1", op: "==", requires: [] },
+        { id: "b2", op: ">", requires: [{ branchId: "b1", outcome: true }] }
+      ],
+      target: { branchId: "b2", outcome: true },
+      run([x], probe) {
+        const r = x % 20;
+        const c1 = r === 7;
+        probe("b1", "==", r, 7, c1);
+        if (c1) {
+          const c2 = x > 50;
+          probe("b2", ">", x, 50, c2);
+        }
+      }
+    }
+  ];
+
+  // src/utils/searchBasedTesting.js
+  function makeRng(seed) {
+    let s = seed >>> 0;
+    return function next() {
+      s = s + 1831565813 | 0;
+      let t2 = Math.imul(s ^ s >>> 15, 1 | s);
+      t2 = t2 + Math.imul(t2 ^ t2 >>> 7, 61 | t2) ^ t2;
+      return ((t2 ^ t2 >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function rngInt(rng, lo, hi) {
+    return lo + Math.floor(rng() * (hi - lo + 1));
+  }
+  var K = 1;
+  function branchDistance(op, lhs, rhs) {
+    switch (op) {
+      case "==":
+        return Math.abs(lhs - rhs);
+      case "!=":
+        return lhs !== rhs ? 0 : K;
+      case "<":
+        return lhs < rhs ? 0 : lhs - rhs + K;
+      case "<=":
+        return lhs <= rhs ? 0 : lhs - rhs;
+      case ">":
+        return lhs > rhs ? 0 : rhs - lhs + K;
+      case ">=":
+        return lhs >= rhs ? 0 : rhs - lhs;
+      default:
+        throw new Error(`branchDistance: unknown operator ${op}`);
+    }
+  }
+  function normalize(d) {
+    return d / (d + 1);
+  }
+  var NEGATE = { "==": "!=", "!=": "==", "<": ">=", ">=": "<", "<=": ">", ">": "<=" };
+  function trace(example5, inputs) {
+    const events = [];
+    example5.run(inputs, (branchId, op, lhs, rhs, outcome) => events.push({ branchId, op, lhs, rhs, outcome }));
+    return events;
+  }
+  function evaluate(example5, inputs) {
+    const events = trace(example5, inputs);
+    const branch = example5.branches.find((b) => b.id === example5.target.branchId);
+    const required = [...branch.requires, { branchId: example5.target.branchId, outcome: example5.target.outcome }];
+    for (let i = 0; i < required.length; i++) {
+      const req = required[i];
+      const ev = events.find((e) => e.branchId === req.branchId);
+      if (ev && ev.outcome === req.outcome) continue;
+      const approachLevel = required.length - i - 1;
+      let raw;
+      if (ev) {
+        const op = req.outcome ? ev.op : NEGATE[ev.op];
+        raw = branchDistance(op, ev.lhs, ev.rhs);
+      } else {
+        raw = Infinity;
+      }
+      const bd = raw === Infinity ? 1 : normalize(raw);
+      return { covered: false, approachLevel, branchDistance: bd, cost: approachLevel + bd };
+    }
+    return { covered: true, approachLevel: 0, branchDistance: 0, cost: 0 };
+  }
+  function clamp(v, lo, hi) {
+    return v < lo ? lo : v > hi ? hi : v;
+  }
+  function randomIndividual(rng, schema) {
+    return schema.map((s) => rngInt(rng, s.min, s.max));
+  }
+  function randomSearch(example5, { seed, budget }) {
+    const rng = makeRng(seed);
+    const history2 = [];
+    let bestCost = Infinity, bestIndividual = null;
+    for (let i = 0; i < budget; i++) {
+      const ind = randomIndividual(rng, example5.inputSchema);
+      const cost = evaluate(example5, ind).cost;
+      if (cost < bestCost) {
+        bestCost = cost;
+        bestIndividual = ind;
+      }
+      history2.push({ evaluation: i + 1, bestCost, bestIndividual, covered: bestCost === 0 });
+      if (bestCost === 0) break;
+    }
+    return { strategy: "random", history: history2, covered: bestCost === 0, bestIndividual, bestCost };
+  }
+  function hillClimb(example5, { seed, budget }) {
+    const rng = makeRng(seed);
+    const schema = example5.inputSchema;
+    let current2 = randomIndividual(rng, schema);
+    let currentCost = evaluate(example5, current2).cost;
+    const history2 = [{ evaluation: 1, bestCost: currentCost, bestIndividual: current2, covered: currentCost === 0 }];
+    let evals = 1;
+    while (evals < budget && currentCost > 0) {
+      let bestNeighbour = null, bestNeighbourCost = currentCost;
+      for (let d = 0; d < schema.length; d++) {
+        for (const delta of [-1, 1]) {
+          if (evals >= budget) break;
+          const n = current2.slice();
+          n[d] = clamp(n[d] + delta, schema[d].min, schema[d].max);
+          const cost = evaluate(example5, n).cost;
+          evals++;
+          const entryBest = Math.min(currentCost, bestNeighbourCost, cost);
+          history2.push({
+            evaluation: evals,
+            bestCost: entryBest,
+            bestIndividual: cost < bestNeighbourCost ? n : bestNeighbour || current2,
+            covered: entryBest === 0
+          });
+          if (cost < bestNeighbourCost) {
+            bestNeighbourCost = cost;
+            bestNeighbour = n;
+          }
+        }
+      }
+      if (bestNeighbour && bestNeighbourCost < currentCost) {
+        current2 = bestNeighbour;
+        currentCost = bestNeighbourCost;
+      } else {
+        break;
+      }
+    }
+    return {
+      strategy: "hillClimb",
+      history: history2,
+      covered: currentCost === 0,
+      bestIndividual: current2,
+      bestCost: currentCost,
+      stuck: currentCost > 0
+    };
+  }
+  function geneticAlgorithm(example5, { seed, budget, populationSize = 20 }) {
+    const rng = makeRng(seed);
+    const schema = example5.inputSchema;
+    const history2 = [];
+    let evals = 0;
+    let gen = 0;
+    let bestCost = Infinity, bestIndividual = null;
+    function score(ind) {
+      const cost = evaluate(example5, ind).cost;
+      evals++;
+      if (cost < bestCost) {
+        bestCost = cost;
+        bestIndividual = ind;
+      }
+      history2.push({ evaluation: evals, generation: gen, individual: ind, cost, bestCost, bestIndividual, covered: bestCost === 0 });
+      return cost;
+    }
+    function tournament(pop, costs2) {
+      const a = Math.floor(rng() * pop.length);
+      const b = Math.floor(rng() * pop.length);
+      return costs2[a] <= costs2[b] ? pop[a] : pop[b];
+    }
+    function crossover(p1, p2) {
+      if (schema.length === 1) return p1.slice();
+      const cut = 1 + Math.floor(rng() * (schema.length - 1));
+      return p1.slice(0, cut).concat(p2.slice(cut));
+    }
+    function mutate(ind) {
+      return ind.map((v, d) => {
+        if (rng() < 1 / schema.length) {
+          const span = Math.max(1, Math.round((schema[d].max - schema[d].min) * 0.1));
+          return clamp(v + rngInt(rng, -span, span), schema[d].min, schema[d].max);
+        }
+        return v;
+      });
+    }
+    let population = Array.from({ length: populationSize }, () => randomIndividual(rng, schema));
+    let costs = [];
+    for (const ind of population) {
+      if (evals >= budget) break;
+      costs.push(score(ind));
+    }
+    while (evals < budget && bestCost > 0) {
+      gen++;
+      const eliteIdx = costs.indexOf(Math.min(...costs));
+      const next = [population[eliteIdx]];
+      while (next.length < populationSize) {
+        const child = mutate(crossover(tournament(population, costs), tournament(population, costs)));
+        next.push(child);
+      }
+      population = next;
+      const nextCosts = [costs[eliteIdx]];
+      for (let k = 1; k < population.length; k++) {
+        if (evals >= budget) break;
+        nextCosts.push(score(population[k]));
+      }
+      costs = nextCosts;
+      if (bestCost === 0) break;
+    }
+    return { strategy: "genetic", history: history2, covered: bestCost === 0, bestIndividual, bestCost };
+  }
+  function coverageGoals(example5) {
+    const goals = [];
+    for (const b of example5.branches) {
+      goals.push({ branchId: b.id, outcome: true });
+      goals.push({ branchId: b.id, outcome: false });
+    }
+    return goals;
+  }
+  function costForGoal(example5, inputs, goal) {
+    const events = trace(example5, inputs);
+    const branch = example5.branches.find((b) => b.id === goal.branchId);
+    const required = [...branch.requires, { branchId: goal.branchId, outcome: goal.outcome }];
+    for (let i = 0; i < required.length; i++) {
+      const req = required[i];
+      const ev = events.find((e) => e.branchId === req.branchId);
+      if (ev && ev.outcome === req.outcome) continue;
+      const approachLevel = required.length - i - 1;
+      let raw;
+      if (ev) {
+        raw = branchDistance(req.outcome ? ev.op : NEGATE[ev.op], ev.lhs, ev.rhs);
+      } else {
+        raw = Infinity;
+      }
+      return approachLevel + (raw === Infinity ? 1 : normalize(raw));
+    }
+    return 0;
+  }
+  function suiteFitness(example5, suite) {
+    const goals = coverageGoals(example5);
+    let cost = 0, covered = 0;
+    for (const goal of goals) {
+      let best = Infinity;
+      for (const test of suite) best = Math.min(best, costForGoal(example5, test, goal));
+      cost += best;
+      if (best === 0) covered++;
+    }
+    return { cost, coverage: covered / goals.length, goals: goals.length, covered };
+  }
+  function minimiseSuite(example5, suite) {
+    const goals = coverageGoals(example5);
+    const covers = (s) => goals.filter((g) => s.some((t2) => costForGoal(example5, t2, g) === 0)).length;
+    const full = covers(suite);
+    const kept = suite.slice();
+    for (let i = kept.length - 1; i >= 0; i--) {
+      const without = kept.slice(0, i).concat(kept.slice(i + 1));
+      if (covers(without) === full) kept.splice(i, 1);
+    }
+    return kept;
+  }
+  function wholeSuiteGA(example5, { seed, budget, populationSize = 16, suiteSize = 4 }) {
+    const rng = makeRng(seed);
+    const schema = example5.inputSchema;
+    const history2 = [];
+    let evals = 0;
+    let gen = 0;
+    let bestCost = Infinity, bestSuite = null, bestCoverage = 0;
+    const randomTest = () => schema.map((s) => rngInt(rng, s.min, s.max));
+    const randomSuite = () => Array.from({ length: suiteSize }, randomTest);
+    function score(suite) {
+      const f = suiteFitness(example5, suite);
+      evals++;
+      if (f.cost < bestCost) {
+        bestCost = f.cost;
+        bestSuite = suite;
+        bestCoverage = f.coverage;
+      }
+      history2.push({ evaluation: evals, generation: gen, bestCost, coverage: bestCoverage, bestSuite });
+      return f.cost;
+    }
+    function tournament(pop, costs2) {
+      const a = Math.floor(rng() * pop.length);
+      const b = Math.floor(rng() * pop.length);
+      return costs2[a] <= costs2[b] ? pop[a] : pop[b];
+    }
+    function crossover(s1, s2) {
+      const cut = 1 + Math.floor(rng() * (suiteSize - 1));
+      return s1.slice(0, cut).concat(s2.slice(cut));
+    }
+    function mutate(suite) {
+      return suite.map((test) => rng() < 1 / suiteSize ? randomTest() : test);
+    }
+    let population = Array.from({ length: populationSize }, randomSuite);
+    let costs = population.map(score);
+    while (evals < budget && bestCost > 0) {
+      gen++;
+      const eliteIdx = costs.indexOf(Math.min(...costs));
+      const next = [population[eliteIdx]];
+      while (next.length < populationSize) {
+        next.push(mutate(crossover(tournament(population, costs), tournament(population, costs))));
+      }
+      population = next;
+      costs = [costs[eliteIdx], ...population.slice(1).map(score)];
+      if (bestCost === 0) break;
+    }
+    return {
+      strategy: "wholeSuite",
+      history: history2,
+      bestSuite,
+      bestCost,
+      coverage: bestCoverage,
+      minimisedSuite: minimiseSuite(example5, bestSuite)
+    };
+  }
+
+  // src/components/SbstBranchExplorer.js
+  var state33 = {
+    exampleId: SBST_EXAMPLES[0].id,
+    genIndex: 0,
+    gaResult: null,
+    randomResult: null,
+    quiz: { active: false, phase: "idle", answer: "" }
+  };
+  var root33;
+  function esc19(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  function currentExample4() {
+    return SBST_EXAMPLES.find((e) => e.id === state33.exampleId) || SBST_EXAMPLES[0];
+  }
+  function runSearch() {
+    const example5 = currentExample4();
+    state33.gaResult = geneticAlgorithm(example5, { seed: 1, budget: 8e3, populationSize: 20 });
+    state33.randomResult = randomSearch(example5, { seed: 1, budget: 8e3 });
+    state33.genIndex = 0;
+  }
+  function getGenerations() {
+    if (!state33.gaResult) return [];
+    const map = /* @__PURE__ */ new Map();
+    for (const entry of state33.gaResult.history) {
+      const g = entry.generation;
+      if (!map.has(g)) map.set(g, []);
+      map.get(g).push(entry);
+    }
+    const sorted = [...map.entries()].sort((a, b) => a[0] - b[0]);
+    return sorted.map(([, entries]) => entries);
+  }
+  function totalGenerations() {
+    return getGenerations().length;
+  }
+  function currentGenEntries() {
+    const gens = getGenerations();
+    return gens[state33.genIndex] || [];
+  }
+  function firstCoveredGenIndex() {
+    const gens = getGenerations();
+    for (let i = 0; i < gens.length; i++) {
+      const entries = gens[i];
+      if (entries.some((e) => e.bestCost === 0)) return i;
+    }
+    return gens.length - 1;
+  }
+  function sparklineData() {
+    const gens = getGenerations();
+    return gens.map((entries) => {
+      const last = entries[entries.length - 1];
+      return last ? last.bestCost : Infinity;
+    });
+  }
+  function renderExamplePicker() {
+    return `<div class="sbst-branch-chips">
+    ${SBST_EXAMPLES.map((ex) => `
+      <button type="button"
+        class="sbst-branch-chip${state33.exampleId === ex.id ? " sbst-branch-chip--active" : ""}"
+        data-testid="sbst-branch-example-${esc19(ex.id)}"
+        data-sbst-example-id="${esc19(ex.id)}">
+        ${esc19(t(ex.nameKey))}
+      </button>`).join("")}
+  </div>`;
+  }
+  function renderCodePanel6() {
+    const example5 = currentExample4();
+    const lines = example5.source.split("\n").map((line, i) => {
+      const isTarget = line.includes("\u2190 target");
+      const cls = isTarget ? "sbst-branch-code-line sbst-branch-code-line--target" : "sbst-branch-code-line";
+      const n = i + 1;
+      return `<span class="${cls}"><span class="sbst-branch-code-lineno">${n}</span>${esc19(line)}</span>`;
+    }).join("\n");
+    return `<div class="sbst-branch-code-panel" data-testid="sbst-branch-code">
+    <h3 class="eog-col-title">${esc19(t("sbst.branch.codeTitle"))}</h3>
+    <pre class="sbst-branch-code-pre">${lines}</pre>
+  </div>`;
+  }
+  function renderPopulationPanel() {
+    const entries = currentGenEntries();
+    const example5 = currentExample4();
+    const schema = example5.inputSchema;
+    if (!entries.length) {
+      return `<div class="sbst-branch-pop-panel" data-testid="sbst-branch-population"></div>`;
+    }
+    const minCost = Math.min(...entries.map((e) => e.cost));
+    const covered = entries[entries.length - 1].bestCost === 0;
+    const coveredBanner = covered ? `<div class="sbst-branch-covered" data-testid="sbst-branch-covered">${esc19(t("sbst.branch.covered"))}</div>` : "";
+    const rows = entries.map((entry) => {
+      const isBest = entry.cost === minCost;
+      const inputsDisplay = schema.map((s, i) => `${esc19(s.name)}=${esc19(String(entry.individual[i]))}`).join(", ");
+      const costDisplay = isFinite(entry.cost) ? entry.cost.toFixed(4) : "\u221E";
+      return `<div class="sbst-branch-pop-row${isBest ? " sbst-branch-pop-row--best" : ""}">
+      <span class="sbst-branch-pop-inputs">${inputsDisplay}</span>
+      <span class="sbst-branch-pop-cost">${esc19(t("sbst.branch.cost"))}: ${esc19(costDisplay)}</span>
+    </div>`;
+    }).join("");
+    return `<div class="sbst-branch-pop-panel" data-testid="sbst-branch-population">
+    <h3 class="eog-col-title">${esc19(t("sbst.branch.populationTitle"))}</h3>
+    ${coveredBanner}
+    <div class="sbst-branch-pop-list">${rows}</div>
+  </div>`;
+  }
+  function renderSparkline() {
+    const data = sparklineData();
+    if (!data.length) return `<div data-testid="sbst-branch-sparkline"></div>`;
+    const W = 300, H = 60, pad = 4;
+    const finite = data.filter(isFinite);
+    const maxVal = finite.length ? Math.max(...finite) : 1;
+    const minVal = 0;
+    const range = maxVal - minVal || 1;
+    const points = data.map((v, i) => {
+      const x = pad + i / Math.max(data.length - 1, 1) * (W - pad * 2);
+      const normalised = isFinite(v) ? (v - minVal) / range : 1;
+      const y = pad + normalised * (H - pad * 2);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ");
+    const curEntry = data[state33.genIndex];
+    const curX = pad + state33.genIndex / Math.max(data.length - 1, 1) * (W - pad * 2);
+    const curNorm = isFinite(curEntry) ? (curEntry - minVal) / range : 1;
+    const curY = pad + curNorm * (H - pad * 2);
+    return `<div class="sbst-branch-sparkline-wrap" data-testid="sbst-branch-sparkline">
+    <h3 class="eog-col-title">${esc19(t("sbst.branch.sparklineTitle"))}</h3>
+    <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" class="sbst-branch-svg">
+      <polyline points="${points}" fill="none" stroke="var(--app-primary-strong, #4f46e5)" stroke-width="1.5"/>
+      <circle cx="${curX.toFixed(1)}" cy="${curY.toFixed(1)}" r="4"
+        fill="var(--app-primary-strong, #4f46e5)" stroke="#fff" stroke-width="1.5"/>
+    </svg>
+  </div>`;
+  }
+  function renderRandomPanel() {
+    if (!state33.randomResult) return "";
+    const r = state33.randomResult;
+    const costDisplay = isFinite(r.bestCost) ? r.bestCost.toFixed(4) : "\u221E";
+    const statusKey = r.covered ? "sbst.branch.randomCovered" : "sbst.branch.randomNotCovered";
+    return `<div class="sbst-branch-random-panel" data-testid="sbst-branch-random">
+    <h3 class="eog-col-title">${esc19(t("sbst.branch.randomTitle"))}</h3>
+    <p class="sbst-branch-random-cost">${esc19(t("sbst.branch.bestCost"))}: ${esc19(costDisplay)}</p>
+    <p class="sbst-branch-random-status">${esc19(t(statusKey))}</p>
+  </div>`;
+  }
+  function renderStepControls() {
+    const total = totalGenerations();
+    const isLast = state33.genIndex >= total - 1;
+    return `<div class="eog-step-controls">
+    <span class="eog-step-counter">${state33.genIndex + 1} / ${total}</span>
+    <button type="button" class="eog-btn" data-testid="sbst-branch-reset">${esc19(t("sbst.branch.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--next" data-testid="sbst-branch-next"
+      ${isLast ? "disabled" : ""}>${esc19(t("sbst.branch.next"))}</button>
+    <button type="button" class="eog-btn eog-btn--run" data-testid="sbst-branch-run"
+      ${isLast ? "disabled" : ""}>${esc19(t("sbst.branch.run"))}</button>
+  </div>`;
+  }
+  var QUIZ_PROMPT_KEY = "sbst.branch.quiz.prompt";
+  var QUIZ_OPTIONS = ["option.gradient", "option.luck", "option.larger", "option.random"];
+  var QUIZ_ANSWER = "option.gradient";
+  function renderQuiz33() {
+    if (!state33.quiz.active) {
+      return `<button type="button" class="eog-quiz-start" data-testid="sbst-branch-quiz-start">${esc19(t("quiz.start"))}</button>`;
+    }
+    if (state33.quiz.phase === "done") {
+      const correct = state33.quiz.answer === QUIZ_ANSWER;
+      return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="sbst-branch-quiz-result">
+      <p>${correct ? esc19(t("quiz.correct")) : esc19(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="sbst-branch-quiz-close">${esc19(t("quiz.close"))}</button>
+    </div>`;
+    }
+    return `<div class="eog-quiz" data-testid="sbst-branch-quiz">
+    <p class="eog-quiz-prompt">${esc19(t(QUIZ_PROMPT_KEY))}</p>
+    ${QUIZ_OPTIONS.map((k) => `
+      <label class="eog-quiz-option">
+        <input type="radio" name="sbst-branch-quiz" value="${esc19(k)}" ${state33.quiz.answer === k ? "checked" : ""}>
+        ${esc19(t(`sbst.branch.quiz.${k}`))}
+      </label>`).join("")}
+    <button type="button" data-testid="sbst-branch-quiz-submit"
+      ${!state33.quiz.answer ? "disabled" : ""}>${esc19(t("quiz.submit"))}</button>
+  </div>`;
+  }
+  function render33() {
+    root33.innerHTML = `
+    <div class="sbst-branch-wrap">
+      <h2 class="eog-title">${esc19(t("section.sbst.title"))}</h2>
+      ${renderExamplePicker()}
+      <div class="sbst-branch-panels-row">
+        ${renderCodePanel6()}
+        ${renderPopulationPanel()}
+      </div>
+      ${renderSparkline()}
+      ${renderRandomPanel()}
+      ${renderStepControls()}
+      <section class="eog-self-test">
+        <h3>${esc19(t("quiz.title"))}</h3>
+        ${renderQuiz33()}
+      </section>
+    </div>`;
+    bindEvents33();
+  }
+  function bindEvents33() {
+    var _a, _b, _c, _d, _e, _f;
+    root33.querySelectorAll("[data-sbst-example-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state33.exampleId = btn.dataset.sbstExampleId;
+        runSearch();
+        render33();
+      });
+    });
+    (_a = root33.querySelector('[data-testid="sbst-branch-next"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      const total = totalGenerations();
+      if (state33.genIndex < total - 1) {
+        state33.genIndex += 1;
+        render33();
+      }
+    });
+    (_b = root33.querySelector('[data-testid="sbst-branch-run"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state33.genIndex = firstCoveredGenIndex();
+      render33();
+    });
+    (_c = root33.querySelector('[data-testid="sbst-branch-reset"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state33.genIndex = 0;
+      render33();
+    });
+    (_d = root33.querySelector('[data-testid="sbst-branch-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state33.quiz = { active: true, phase: "question", answer: "" };
+      render33();
+    });
+    root33.querySelectorAll('input[name="sbst-branch-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state33.quiz.answer = inp.value;
+        render33();
+      });
+    });
+    (_e = root33.querySelector('[data-testid="sbst-branch-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state33.quiz.phase = "done";
+      render33();
+    });
+    (_f = root33.querySelector('[data-testid="sbst-branch-quiz-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      state33.quiz = { active: false, phase: "idle", answer: "" };
+      render33();
+    });
+  }
+  function createSbstBranchExplorer() {
+    state33.exampleId = SBST_EXAMPLES[0].id;
+    state33.genIndex = 0;
+    state33.gaResult = null;
+    state33.randomResult = null;
+    state33.quiz = { active: false, phase: "idle", answer: "" };
+    root33 = document.createElement("div");
+    root33.dataset.testid = "sbst-branch-explorer";
+    runSearch();
+    onLocaleChange(() => render33());
+    render33();
+    return root33;
+  }
+
+  // src/components/SbstCompareExplorer.js
+  var state34 = {
+    exampleId: SBST_EXAMPLES[0].id,
+    results: { random: null, hillClimb: null, genetic: null },
+    quiz: { active: false, phase: "idle", answer: "" }
+  };
+  var root34;
+  function esc20(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  function currentExample5() {
+    return SBST_EXAMPLES.find((e) => e.id === state34.exampleId) || SBST_EXAMPLES[0];
+  }
+  function pickHillClimbSeed(example5) {
+    if (example5.id !== "multimodal") return 1;
+    for (let seed = 1; seed <= 30; seed++) {
+      const r = hillClimb(example5, { seed, budget: 8e3 });
+      if (r.stuck && !r.covered) return seed;
+    }
+    return 1;
+  }
+  function runAll() {
+    const example5 = currentExample5();
+    const hcSeed = pickHillClimbSeed(example5);
+    state34.results.random = randomSearch(example5, { seed: 1, budget: 8e3 });
+    state34.results.hillClimb = hillClimb(example5, { seed: hcSeed, budget: 8e3 });
+    state34.results.genetic = geneticAlgorithm(example5, { seed: 1, budget: 8e3, populationSize: 20 });
+  }
+  function renderExamplePicker2() {
+    return `<div class="sbst-compare-chips">
+    ${SBST_EXAMPLES.map((ex) => `
+      <button type="button"
+        class="sbst-compare-chip${state34.exampleId === ex.id ? " sbst-compare-chip--active" : ""}"
+        data-testid="sbst-compare-example-${esc20(ex.id)}"
+        data-sbst-compare-example-id="${esc20(ex.id)}">
+        ${esc20(t(ex.nameKey))}
+      </button>`).join("")}
+  </div>`;
+  }
+  function formatCoverage(result) {
+    if (!result) return esc20(t("sbst.compare.noResult"));
+    if (result.covered) {
+      const evalCount = result.history.length;
+      return `${esc20(t("sbst.compare.covered"))} (${esc20(String(evalCount))} ${esc20(t("sbst.compare.evaluations"))})`;
+    }
+    return esc20(t("sbst.compare.budgetExhausted"));
+  }
+  function formatCost(result) {
+    if (!result) return "\u2014";
+    const c = result.bestCost;
+    return isFinite(c) ? esc20(c.toFixed(4)) : "\u221E";
+  }
+  function renderStrategyPanel(key, testid, nameKey) {
+    const result = state34.results[key];
+    const stuckBadge = key === "hillClimb" && result && result.stuck ? `<span class="sbst-compare-stuck-badge">${esc20(t("sbst.compare.stuck"))}</span>` : "";
+    return `<div class="sbst-compare-panel" data-testid="${esc20(testid)}">
+    <h3 class="sbst-compare-panel-title">${esc20(t(nameKey))} ${stuckBadge}</h3>
+    <p class="sbst-compare-panel-status">${formatCoverage(result)}</p>
+    <p class="sbst-compare-panel-cost">${esc20(t("sbst.compare.bestCost"))}: ${formatCost(result)}</p>
+  </div>`;
+  }
+  function renderChart() {
+    const { random: r, hillClimb: hc, genetic: ga } = state34.results;
+    if (!r || !hc || !ga) {
+      return `<div data-testid="sbst-compare-chart"></div>`;
+    }
+    const W = 400, H = 80, pad = 6;
+    const innerW = W - pad * 2;
+    const innerH = H - pad * 2;
+    function buildSeries(history2) {
+      return history2.map((e) => e.bestCost);
+    }
+    const seriesR = buildSeries(r.history);
+    const seriesHC = buildSeries(hc.history);
+    const seriesGA = buildSeries(ga.history);
+    const allFinite = [
+      ...seriesR,
+      ...seriesHC,
+      ...seriesGA
+    ].filter(isFinite);
+    const maxVal = allFinite.length ? Math.max(...allFinite) : 1;
+    const minVal = 0;
+    const range = maxVal - minVal || 1;
+    function toPoints(series) {
+      const n = series.length;
+      return series.map((v, i) => {
+        const x = pad + i / Math.max(n - 1, 1) * innerW;
+        const normalised = isFinite(v) ? (v - minVal) / range : 1;
+        const y = pad + normalised * innerH;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(" ");
+    }
+    const ptsR = toPoints(seriesR);
+    const ptsHC = toPoints(seriesHC);
+    const ptsGA = toPoints(seriesGA);
+    return `<div class="sbst-compare-chart-wrap" data-testid="sbst-compare-chart">
+    <h3 class="eog-col-title">${esc20(t("sbst.compare.chartTitle"))}</h3>
+    <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" class="sbst-compare-svg">
+      <polyline points="${ptsR}"  fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.85"/>
+      <polyline points="${ptsHC}" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.85"/>
+      <polyline points="${ptsGA}" fill="none" stroke="#22c55e" stroke-width="2"/>
+    </svg>
+    <div class="sbst-compare-chart-legend">
+      <span class="sbst-compare-legend-item sbst-compare-legend-item--random">${esc20(t("sbst.compare.legendRandom"))}</span>
+      <span class="sbst-compare-legend-item sbst-compare-legend-item--hillclimb">${esc20(t("sbst.compare.legendHillClimb"))}</span>
+      <span class="sbst-compare-legend-item sbst-compare-legend-item--genetic">${esc20(t("sbst.compare.legendGenetic"))}</span>
+    </div>
+  </div>`;
+  }
+  function renderTakeaway() {
+    return `<p class="sbst-compare-takeaway" data-testid="sbst-compare-takeaway">
+    ${esc20(t("sbst.compare.takeaway"))}
+  </p>`;
+  }
+  function renderControls() {
+    return `<div class="eog-step-controls">
+    <button type="button" class="eog-btn eog-btn--run" data-testid="sbst-compare-run">${esc20(t("sbst.compare.run"))}</button>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="sbst-compare-reset">${esc20(t("sbst.compare.reset"))}</button>
+  </div>`;
+  }
+  var QUIZ_PROMPT_KEY2 = "sbst.compare.quiz.prompt";
+  var QUIZ_OPTIONS2 = ["option.localOpt", "option.budget", "option.random", "option.gradient"];
+  var QUIZ_ANSWER2 = "option.localOpt";
+  function renderQuiz34() {
+    if (!state34.quiz.active) {
+      return `<button type="button" class="eog-quiz-start" data-testid="sbst-compare-quiz-start">${esc20(t("quiz.start"))}</button>`;
+    }
+    if (state34.quiz.phase === "done") {
+      const correct = state34.quiz.answer === QUIZ_ANSWER2;
+      return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="sbst-compare-quiz-result">
+      <p>${correct ? esc20(t("quiz.correct")) : esc20(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="sbst-compare-quiz-close">${esc20(t("quiz.close"))}</button>
+    </div>`;
+    }
+    return `<div class="eog-quiz" data-testid="sbst-compare-quiz">
+    <p class="eog-quiz-prompt">${esc20(t(QUIZ_PROMPT_KEY2))}</p>
+    ${QUIZ_OPTIONS2.map((k) => `
+      <label class="eog-quiz-option">
+        <input type="radio" name="sbst-compare-quiz" value="${esc20(k)}" ${state34.quiz.answer === k ? "checked" : ""}>
+        ${esc20(t(`sbst.compare.quiz.${k}`))}
+      </label>`).join("")}
+    <button type="button" data-testid="sbst-compare-quiz-submit"
+      ${!state34.quiz.answer ? "disabled" : ""}>${esc20(t("quiz.submit"))}</button>
+  </div>`;
+  }
+  function render34() {
+    root34.innerHTML = `
+    <div class="sbst-compare-wrap">
+      <h2 class="eog-title">${esc20(t("section.sbst.title"))}</h2>
+      ${renderExamplePicker2()}
+      <div class="sbst-compare-panels-row">
+        ${renderStrategyPanel("random", "sbst-compare-random", "sbst.compare.strategyRandom")}
+        ${renderStrategyPanel("hillClimb", "sbst-compare-hillclimb", "sbst.compare.strategyHillClimb")}
+        ${renderStrategyPanel("genetic", "sbst-compare-genetic", "sbst.compare.strategyGenetic")}
+      </div>
+      ${renderChart()}
+      ${renderTakeaway()}
+      ${renderControls()}
+      <section class="eog-self-test">
+        <h3>${esc20(t("quiz.title"))}</h3>
+        ${renderQuiz34()}
+      </section>
+    </div>`;
+    bindEvents34();
+  }
+  function bindEvents34() {
+    var _a, _b, _c, _d, _e;
+    root34.querySelectorAll("[data-sbst-compare-example-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state34.exampleId = btn.dataset.sbstCompareExampleId;
+        runAll();
+        render34();
+      });
+    });
+    (_a = root34.querySelector('[data-testid="sbst-compare-run"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      runAll();
+      render34();
+    });
+    (_b = root34.querySelector('[data-testid="sbst-compare-reset"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state34.exampleId = SBST_EXAMPLES[0].id;
+      state34.quiz = { active: false, phase: "idle", answer: "" };
+      runAll();
+      render34();
+    });
+    (_c = root34.querySelector('[data-testid="sbst-compare-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state34.quiz = { active: true, phase: "question", answer: "" };
+      render34();
+    });
+    root34.querySelectorAll('input[name="sbst-compare-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state34.quiz.answer = inp.value;
+        render34();
+      });
+    });
+    (_d = root34.querySelector('[data-testid="sbst-compare-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state34.quiz.phase = "done";
+      render34();
+    });
+    (_e = root34.querySelector('[data-testid="sbst-compare-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state34.quiz = { active: false, phase: "idle", answer: "" };
+      render34();
+    });
+  }
+  function createSbstCompareExplorer() {
+    state34.exampleId = SBST_EXAMPLES[0].id;
+    state34.results = { random: null, hillClimb: null, genetic: null };
+    state34.quiz = { active: false, phase: "idle", answer: "" };
+    root34 = document.createElement("div");
+    root34.dataset.testid = "sbst-compare-explorer";
+    runAll();
+    onLocaleChange(() => render34());
+    render34();
+    return root34;
+  }
+
+  // src/components/SbstSuiteExplorer.js
+  var state35 = {
+    exampleId: SBST_EXAMPLES[0].id,
+    genIndex: 0,
+    result: null,
+    quiz: { active: false, phase: "idle", answer: "" }
+  };
+  var root35;
+  function esc21(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  function currentExample6() {
+    return SBST_EXAMPLES.find((e) => e.id === state35.exampleId) || SBST_EXAMPLES[0];
+  }
+  function runGA() {
+    const example5 = currentExample6();
+    state35.result = wholeSuiteGA(example5, { seed: 1, budget: 5e3, populationSize: 16, suiteSize: 4 });
+    state35.genIndex = 0;
+  }
+  function getGenerations2() {
+    if (!state35.result) return [];
+    const map = /* @__PURE__ */ new Map();
+    for (const entry of state35.result.history) {
+      const g = entry.generation;
+      if (!map.has(g)) map.set(g, []);
+      map.get(g).push(entry);
+    }
+    const sorted = [...map.entries()].sort((a, b) => a[0] - b[0]);
+    return sorted.map(([, entries]) => entries);
+  }
+  function totalGenerations2() {
+    return getGenerations2().length;
+  }
+  function currentGenLastEntry() {
+    const gens = getGenerations2();
+    const entries = gens[state35.genIndex] || [];
+    return entries[entries.length - 1] || null;
+  }
+  function firstCoveredGenIndex2() {
+    const gens = getGenerations2();
+    for (let i = 0; i < gens.length; i++) {
+      const entries = gens[i];
+      const last = entries[entries.length - 1];
+      if (last && last.coverage >= 1) return i;
+    }
+    return gens.length - 1;
+  }
+  function renderExamplePicker3() {
+    return `<div class="sbst-suite-chips">
+    ${SBST_EXAMPLES.map((ex) => `
+      <button type="button"
+        class="sbst-suite-chip${state35.exampleId === ex.id ? " sbst-suite-chip--active" : ""}"
+        data-testid="sbst-suite-example-${esc21(ex.id)}"
+        data-sbst-suite-example-id="${esc21(ex.id)}">
+        ${esc21(t(ex.nameKey))}
+      </button>`).join("")}
+  </div>`;
+  }
+  function renderCodePanel7() {
+    const example5 = currentExample6();
+    const lines = example5.source.split("\n").map((line, i) => {
+      const n = i + 1;
+      return `<span class="sbst-suite-code-line"><span class="sbst-suite-code-lineno">${n}</span>${esc21(line)}</span>`;
+    }).join("\n");
+    return `<div class="sbst-suite-code-panel" data-testid="sbst-suite-code">
+    <h3 class="eog-col-title">${esc21(t("sbst.suite.codeTitle"))}</h3>
+    <pre class="sbst-suite-code-pre">${lines}</pre>
+  </div>`;
+  }
+  function renderCoverageGauge() {
+    const entry = currentGenLastEntry();
+    const coverage = entry ? entry.coverage : 0;
+    const pct2 = Math.round(coverage * 100);
+    return `<div class="sbst-suite-coverage-panel" data-testid="sbst-suite-coverage">
+    <div class="sbst-suite-coverage-label">${esc21(t("sbst.suite.coverage"))}: <strong>${pct2}%</strong></div>
+    <div class="sbst-suite-coverage-bar-bg">
+      <div class="sbst-suite-coverage-bar-fill" style="width: ${pct2}%"></div>
+    </div>
+  </div>`;
+  }
+  function renderTestList3() {
+    const entry = currentGenLastEntry();
+    const example5 = currentExample6();
+    const schema = example5.inputSchema;
+    if (!entry || !entry.bestSuite) {
+      return `<div class="sbst-suite-tests-panel" data-testid="sbst-suite-tests"></div>`;
+    }
+    const suite = entry.bestSuite;
+    const coveredCount = entry ? Math.round(entry.coverage * (example5.branches ? example5.branches.length * 2 : 0)) : 0;
+    const totalGoals = state35.result ? Math.round(entry.coverage > 0 ? coveredCount / entry.coverage : example5.branches ? example5.branches.length * 2 : 0) : 0;
+    const rows = suite.map((test, idx) => {
+      const inputs = schema.map((s, i) => `${esc21(s.name)}=${esc21(String(test[i]))}`).join(", ");
+      return `<div class="sbst-suite-test-row">
+      <span class="sbst-suite-test-label">${esc21(t("sbst.suite.test"))} ${idx + 1}</span>
+      <span class="sbst-suite-test-inputs">${inputs}</span>
+    </div>`;
+    }).join("");
+    const coveredInfo = `<div class="sbst-suite-tests-meta">
+    ${esc21(t("sbst.suite.covered"))}: ${esc21(String(Math.round(entry.coverage * totalGoals)))} / ${esc21(String(totalGoals))} ${esc21(t("sbst.suite.goals"))}
+  </div>`;
+    return `<div class="sbst-suite-tests-panel" data-testid="sbst-suite-tests">
+    <h3 class="eog-col-title">${esc21(t("sbst.suite.suiteTitle"))}</h3>
+    ${coveredInfo}
+    <div class="sbst-suite-tests-list">${rows}</div>
+  </div>`;
+  }
+  function renderSuccessBanner() {
+    const entry = currentGenLastEntry();
+    if (!entry || entry.coverage < 1) return "";
+    return `<div class="sbst-suite-success-banner" data-testid="sbst-suite-covered">
+    ${esc21(t("sbst.suite.fullCoverage"))}
+  </div>`;
+  }
+  function renderMinimisedSuite() {
+    const entry = currentGenLastEntry();
+    if (!entry || entry.coverage < 1 || !state35.result) return "";
+    const example5 = currentExample6();
+    const schema = example5.inputSchema;
+    const miniSuite = state35.result.minimisedSuite;
+    if (!miniSuite || !miniSuite.length) return "";
+    const rows = miniSuite.map((test, idx) => {
+      const inputs = schema.map((s, i) => `${esc21(s.name)}=${esc21(String(test[i]))}`).join(", ");
+      return `<div class="sbst-suite-mini-row">
+      <span class="sbst-suite-mini-label">${esc21(t("sbst.suite.test"))} ${idx + 1}</span>
+      <span class="sbst-suite-mini-inputs">${inputs}</span>
+    </div>`;
+    }).join("");
+    return `<div class="sbst-suite-mini-panel" data-testid="sbst-suite-minimised">
+    <h3 class="eog-col-title">${esc21(t("sbst.suite.minimisedTitle"))}</h3>
+    <p class="sbst-suite-mini-meta">${esc21(t("sbst.suite.minimisedDesc"))} (${esc21(String(miniSuite.length))} ${esc21(t("sbst.suite.tests"))})</p>
+    <div class="sbst-suite-mini-list">${rows}</div>
+  </div>`;
+  }
+  function renderStepControls2() {
+    const total = totalGenerations2();
+    const isLast = state35.genIndex >= total - 1;
+    return `<div class="eog-step-controls">
+    <span class="eog-step-counter">${state35.genIndex + 1} / ${total}</span>
+    <button type="button" class="eog-btn" data-testid="sbst-suite-reset">${esc21(t("sbst.suite.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--next" data-testid="sbst-suite-next"
+      ${isLast ? "disabled" : ""}>${esc21(t("sbst.suite.next"))}</button>
+    <button type="button" class="eog-btn eog-btn--run" data-testid="sbst-suite-run">${esc21(t("sbst.suite.run"))}</button>
+  </div>`;
+  }
+  var QUIZ_PROMPT_KEY3 = "sbst.suite.quiz.prompt";
+  var QUIZ_OPTIONS3 = ["option.allGoals", "option.singleGoal", "option.random", "option.coverage"];
+  var QUIZ_ANSWER3 = "option.allGoals";
+  function renderQuiz35() {
+    if (!state35.quiz.active) {
+      return `<button type="button" class="eog-quiz-start" data-testid="sbst-suite-quiz-start">${esc21(t("quiz.start"))}</button>`;
+    }
+    if (state35.quiz.phase === "done") {
+      const correct = state35.quiz.answer === QUIZ_ANSWER3;
+      return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="sbst-suite-quiz-result">
+      <p>${correct ? esc21(t("quiz.correct")) : esc21(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="sbst-suite-quiz-close">${esc21(t("quiz.close"))}</button>
+    </div>`;
+    }
+    return `<div class="eog-quiz" data-testid="sbst-suite-quiz">
+    <p class="eog-quiz-prompt">${esc21(t(QUIZ_PROMPT_KEY3))}</p>
+    ${QUIZ_OPTIONS3.map((k) => `
+      <label class="eog-quiz-option">
+        <input type="radio" name="sbst-suite-quiz" value="${esc21(k)}" ${state35.quiz.answer === k ? "checked" : ""}>
+        ${esc21(t(`sbst.suite.quiz.${k}`))}
+      </label>`).join("")}
+    <button type="button" data-testid="sbst-suite-quiz-submit"
+      ${!state35.quiz.answer ? "disabled" : ""}>${esc21(t("quiz.submit"))}</button>
+  </div>`;
+  }
+  function render35() {
+    root35.innerHTML = `
+    <div class="sbst-suite-wrap">
+      <h2 class="eog-title">${esc21(t("section.sbst.title"))}</h2>
+      ${renderExamplePicker3()}
+      <div class="sbst-suite-panels-row">
+        ${renderCodePanel7()}
+        <div class="sbst-suite-right-col">
+          ${renderCoverageGauge()}
+          ${renderTestList3()}
+        </div>
+      </div>
+      ${renderSuccessBanner()}
+      ${renderMinimisedSuite()}
+      ${renderStepControls2()}
+      <section class="eog-self-test">
+        <h3>${esc21(t("quiz.title"))}</h3>
+        ${renderQuiz35()}
+      </section>
+    </div>`;
+    bindEvents35();
+  }
+  function bindEvents35() {
+    var _a, _b, _c, _d, _e, _f;
+    root35.querySelectorAll("[data-sbst-suite-example-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state35.exampleId = btn.dataset.sbstSuiteExampleId;
+        runGA();
+        render35();
+      });
+    });
+    (_a = root35.querySelector('[data-testid="sbst-suite-next"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      const total = totalGenerations2();
+      if (state35.genIndex < total - 1) {
+        state35.genIndex += 1;
+        render35();
+      }
+    });
+    (_b = root35.querySelector('[data-testid="sbst-suite-run"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state35.genIndex = firstCoveredGenIndex2();
+      render35();
+    });
+    (_c = root35.querySelector('[data-testid="sbst-suite-reset"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state35.genIndex = 0;
+      render35();
+    });
+    (_d = root35.querySelector('[data-testid="sbst-suite-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state35.quiz = { active: true, phase: "question", answer: "" };
+      render35();
+    });
+    root35.querySelectorAll('input[name="sbst-suite-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state35.quiz.answer = inp.value;
+        render35();
+      });
+    });
+    (_e = root35.querySelector('[data-testid="sbst-suite-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state35.quiz.phase = "done";
+      render35();
+    });
+    (_f = root35.querySelector('[data-testid="sbst-suite-quiz-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      state35.quiz = { active: false, phase: "idle", answer: "" };
+      render35();
+    });
+  }
+  function createSbstSuiteExplorer() {
+    state35.exampleId = SBST_EXAMPLES[0].id;
+    state35.genIndex = 0;
+    state35.result = null;
+    state35.quiz = { active: false, phase: "idle", answer: "" };
+    root35 = document.createElement("div");
+    root35.dataset.testid = "sbst-suite-explorer";
+    runGA();
+    onLocaleChange(() => render35());
+    render35();
+    return root35;
+  }
+
   // src/components/DefinitionGatesExplorer.js
   var CRITERIA4 = [
     { id: "dor-criteria", gate: "dor" },
@@ -37818,7 +39026,7 @@ ${items.join("\n")}
     { id: "unverified-ac", gate: "dod", criterion: "dod-ac" },
     { id: "known-defect", gate: "dod", criterion: "dod-nosev1" }
   ];
-  function evaluate(enabled) {
+  function evaluate2(enabled) {
     const caught = [];
     const leaked = [];
     for (const issue of ISSUES2) {
@@ -37827,13 +39035,13 @@ ${items.join("\n")}
     }
     return { caught, leaked };
   }
-  var state33 = {
+  var state36 = {
     // Start with two criteria off, so a leak is visible immediately.
     enabled: new Set(CRITERIA4.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review")),
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root33;
+  var root36;
   function renderGate(gate) {
     const crits = CRITERIA4.filter((c) => c.gate === gate);
     return `
@@ -37845,7 +39053,7 @@ ${items.join("\n")}
           <li>
             <label class="gate-crit">
               <input type="checkbox" data-crit="${c.id}" data-testid="gate-crit-${c.id}"
-                ${state33.enabled.has(c.id) ? "checked" : ""}>
+                ${state36.enabled.has(c.id) ? "checked" : ""}>
               ${t("gate.crit." + c.id)}
             </label>
           </li>`).join("")}
@@ -37853,7 +39061,7 @@ ${items.join("\n")}
     </div>`;
   }
   function renderResult2() {
-    const { caught, leaked } = evaluate(state33.enabled);
+    const { caught, leaked } = evaluate2(state36.enabled);
     const issueRow = (issue, status) => `
     <li class="gate-issue gate-issue--${status}">
       <span class="gate-issue-icon">${status === "caught" ? "\u2705" : "\u26A0\uFE0F"}</span>
@@ -37887,12 +39095,12 @@ ${items.join("\n")}
         title="${t("gate.bridge.bdd.title")}">\u{1F517} \u2192 ${t("acceptanceTab.gherkin")}</button>
     </div>`;
   }
-  function renderQuiz33() {
-    if (!state33.quiz.active) {
+  function renderQuiz36() {
+    if (!state36.quiz.active) {
       return `<button type="button" class="gate-quiz-start" data-testid="gate-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state33.quiz.phase === "done") {
-      const correct = state33.quiz.answer === "c";
+    if (state36.quiz.phase === "done") {
+      const correct = state36.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "gate",
@@ -37904,7 +39112,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("gate.quiz.prompt"),
-          a: state33.quiz.answer ? t("gate.quiz." + state33.quiz.answer) : "",
+          a: state36.quiz.answer ? t("gate.quiz." + state36.quiz.answer) : "",
           expected: t("gate.quiz.c"),
           ok: correct
         }]
@@ -37919,26 +39127,26 @@ ${items.join("\n")}
       <p class="gate-quiz-prompt">${t("gate.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="gate-quiz-option">
-          <input type="radio" name="gate-quiz" value="${k}" ${state33.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="gate-quiz" value="${k}" ${state36.quiz.answer === k ? "checked" : ""}>
           ${t("gate.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="gate-quiz-submit" data-testid="gate-quiz-submit"
-        ${!state33.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state36.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab22() {
-    if (!state33.lab.active) {
+    if (!state36.lab.active) {
       return `<button type="button" class="gate-lab-start" data-testid="gate-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="gate-lab" data-testid="gate-lab">
       <p class="gate-lab-prompt">${t("gate.lab.prompt")}</p>
       <textarea class="gate-lab-textarea" data-testid="gate-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state33.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state36.lab.text}</textarea>
     </div>`;
   }
-  function render33() {
-    root33.innerHTML = `
+  function render36() {
+    root36.innerHTML = `
     <div class="gate-wrap" data-testid="gate-wrap">
       <h2 class="gate-title">${t("gate.title")}</h2>
       <p class="gate-desc">${t("gate.desc")}</p>
@@ -37950,61 +39158,61 @@ ${items.join("\n")}
       ${renderBridges9()}
       <section class="gate-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz33()}
+        ${renderQuiz36()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab22()}
       </section>
     </div>`;
-    bindEvents33();
+    bindEvents36();
   }
-  function bindEvents33() {
+  function bindEvents36() {
     var _a, _b, _c, _d, _e, _f;
-    root33.querySelectorAll("[data-crit]").forEach((inp) => {
+    root36.querySelectorAll("[data-crit]").forEach((inp) => {
       inp.addEventListener("change", () => {
-        if (inp.checked) state33.enabled.add(inp.dataset.crit);
-        else state33.enabled.delete(inp.dataset.crit);
-        render33();
+        if (inp.checked) state36.enabled.add(inp.dataset.crit);
+        else state36.enabled.delete(inp.dataset.crit);
+        render36();
       });
     });
-    (_a = root33.querySelector('[data-testid="gate-bridge-defectcost"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root36.querySelector('[data-testid="gate-bridge-defectcost"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="flow"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-flow-tab="defectCost"]')) == null ? void 0 : _b2.click();
     });
-    (_b = root33.querySelector('[data-testid="gate-bridge-bdd"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root36.querySelector('[data-testid="gate-bridge-bdd"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="gherkin"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root33.querySelector('[data-testid="gate-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state33.quiz = { active: true, phase: "question", answer: "" };
-      render33();
+    (_c = root36.querySelector('[data-testid="gate-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state36.quiz = { active: true, phase: "question", answer: "" };
+      render36();
     });
-    root33.querySelectorAll('input[name="gate-quiz"]').forEach((inp) => {
+    root36.querySelectorAll('input[name="gate-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state33.quiz.answer = inp.value;
-        render33();
+        state36.quiz.answer = inp.value;
+        render36();
       });
     });
-    (_d = root33.querySelector('[data-testid="gate-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state33.quiz.phase = "done";
-      render33();
+    (_d = root36.querySelector('[data-testid="gate-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state36.quiz.phase = "done";
+      render36();
     });
-    (_e = root33.querySelector('[data-testid="gate-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state33.lab.active = true;
-      render33();
+    (_e = root36.querySelector('[data-testid="gate-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state36.lab.active = true;
+      render36();
     });
-    (_f = root33.querySelector('[data-testid="gate-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state33.lab.text = e.target.value;
+    (_f = root36.querySelector('[data-testid="gate-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state36.lab.text = e.target.value;
     });
   }
   function createDefinitionGatesExplorer() {
-    state33.enabled = new Set(CRITERIA4.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review"));
-    state33.quiz = { active: false, phase: "idle", answer: "" };
-    state33.lab = { active: false, text: "" };
-    root33 = document.createElement("div");
-    render33();
-    return root33;
+    state36.enabled = new Set(CRITERIA4.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review"));
+    state36.quiz = { active: false, phase: "idle", answer: "" };
+    state36.lab = { active: false, text: "" };
+    root36 = document.createElement("div");
+    render36();
+    return root36;
   }
 
   // src/components/ExampleMappingExplorer.js
@@ -38015,25 +39223,25 @@ ${items.join("\n")}
   ];
   var QUESTIONS = ["q1", "q2", "q3"];
   var ROLES = ["ba", "dev", "tester"];
-  var state34 = {
+  var state37 = {
     role: "ba",
     resolved: /* @__PURE__ */ new Set(),
     activeExample: "e1",
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root34;
+  var root37;
   function openQuestionCount() {
-    return QUESTIONS.filter((q) => !state34.resolved.has(q)).length;
+    return QUESTIONS.filter((q) => !state37.resolved.has(q)).length;
   }
   function renderRoles() {
     return `
     <div class="emap-roles" data-testid="emap-roles">
       ${ROLES.map((r) => `
         <button type="button"
-          class="emap-role ${state34.role === r ? "emap-role--active" : ""}"
+          class="emap-role ${state37.role === r ? "emap-role--active" : ""}"
           data-role="${r}" data-testid="emap-role-${r}">${t("emap.role." + r)}</button>`).join("")}
-      <p class="emap-role-note">${t("emap.role." + state34.role + ".note")}</p>
+      <p class="emap-role-note">${t("emap.role." + state37.role + ".note")}</p>
     </div>`;
   }
   function renderMap() {
@@ -38053,7 +39261,7 @@ ${items.join("\n")}
             <div class="emap-examples">
               ${rule.examples.map((ex) => `
                 <button type="button"
-                  class="emap-card emap-card--example ${state34.activeExample === ex ? "emap-card--active" : ""}"
+                  class="emap-card emap-card--example ${state37.activeExample === ex ? "emap-card--active" : ""}"
                   data-example="${ex}" data-testid="emap-ex-${ex}">
                   <span class="emap-card-kind">${t("emap.kind.example")}</span>
                   ${t("emap.ex." + ex)}
@@ -38064,7 +39272,7 @@ ${items.join("\n")}
       <div class="emap-questions" data-testid="emap-questions">
         <span class="emap-card-kind">${t("emap.kind.question")}</span>
         ${QUESTIONS.map((q) => {
-      const done = state34.resolved.has(q);
+      const done = state37.resolved.has(q);
       return `<button type="button"
             class="emap-card emap-card--question ${done ? "emap-card--resolved" : ""}"
             data-question="${q}" data-testid="emap-q-${q}">
@@ -38084,7 +39292,7 @@ ${items.join("\n")}
     </div>`;
   }
   function renderGherkin() {
-    const ex = state34.activeExample;
+    const ex = state37.activeExample;
     return `
     <div class="emap-gherkin" data-testid="emap-gherkin">
       <h3>${t("emap.gherkin.title")}</h3>
@@ -38101,12 +39309,12 @@ ${items.join("\n")}
         title="${t("emap.bridge.gates.title")}">\u{1F517} \u2192 ${t("agileTab.gates")}</button>
     </div>`;
   }
-  function renderQuiz34() {
-    if (!state34.quiz.active) {
+  function renderQuiz37() {
+    if (!state37.quiz.active) {
       return `<button type="button" class="emap-quiz-start" data-testid="emap-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state34.quiz.phase === "done") {
-      const correct = state34.quiz.answer === "c";
+    if (state37.quiz.phase === "done") {
+      const correct = state37.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "emap",
@@ -38118,7 +39326,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("emap.quiz.prompt"),
-          a: state34.quiz.answer ? t("emap.quiz." + state34.quiz.answer) : "",
+          a: state37.quiz.answer ? t("emap.quiz." + state37.quiz.answer) : "",
           expected: t("emap.quiz.c"),
           ok: correct
         }]
@@ -38133,26 +39341,26 @@ ${items.join("\n")}
       <p class="emap-quiz-prompt">${t("emap.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="emap-quiz-option">
-          <input type="radio" name="emap-quiz" value="${k}" ${state34.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="emap-quiz" value="${k}" ${state37.quiz.answer === k ? "checked" : ""}>
           ${t("emap.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="emap-quiz-submit" data-testid="emap-quiz-submit"
-        ${!state34.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state37.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab23() {
-    if (!state34.lab.active) {
+    if (!state37.lab.active) {
       return `<button type="button" class="emap-lab-start" data-testid="emap-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="emap-lab" data-testid="emap-lab">
       <p class="emap-lab-prompt">${t("emap.lab.prompt")}</p>
       <textarea class="emap-lab-textarea" data-testid="emap-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state34.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state37.lab.text}</textarea>
     </div>`;
   }
-  function render34() {
-    root34.innerHTML = `
+  function render37() {
+    root37.innerHTML = `
     <div class="emap-wrap" data-testid="emap-wrap">
       <h2 class="emap-title">${t("emap.title")}</h2>
       <p class="emap-desc">${t("emap.desc")}</p>
@@ -38163,76 +39371,76 @@ ${items.join("\n")}
       ${renderBridges10()}
       <section class="emap-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz34()}
+        ${renderQuiz37()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab23()}
       </section>
     </div>`;
-    bindEvents34();
+    bindEvents37();
   }
-  function bindEvents34() {
+  function bindEvents37() {
     var _a, _b, _c, _d, _e, _f;
-    root34.querySelectorAll("[data-role]").forEach((btn) => {
+    root37.querySelectorAll("[data-role]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state34.role = btn.dataset.role;
-        render34();
+        state37.role = btn.dataset.role;
+        render37();
       });
     });
-    root34.querySelectorAll("[data-example]").forEach((btn) => {
+    root37.querySelectorAll("[data-example]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state34.activeExample = btn.dataset.example;
-        render34();
+        state37.activeExample = btn.dataset.example;
+        render37();
       });
     });
-    root34.querySelectorAll("[data-question]").forEach((btn) => {
+    root37.querySelectorAll("[data-question]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const q = btn.dataset.question;
-        if (state34.resolved.has(q)) state34.resolved.delete(q);
-        else state34.resolved.add(q);
-        render34();
+        if (state37.resolved.has(q)) state37.resolved.delete(q);
+        else state37.resolved.add(q);
+        render37();
       });
     });
-    (_a = root34.querySelector('[data-testid="emap-bridge-bdd"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root37.querySelector('[data-testid="emap-bridge-bdd"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="gherkin"]')) == null ? void 0 : _b2.click();
     });
-    (_b = root34.querySelector('[data-testid="emap-bridge-gates"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root37.querySelector('[data-testid="emap-bridge-gates"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="agile"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-agile-tab="gates"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root34.querySelector('[data-testid="emap-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state34.quiz = { active: true, phase: "question", answer: "" };
-      render34();
+    (_c = root37.querySelector('[data-testid="emap-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state37.quiz = { active: true, phase: "question", answer: "" };
+      render37();
     });
-    root34.querySelectorAll('input[name="emap-quiz"]').forEach((inp) => {
+    root37.querySelectorAll('input[name="emap-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state34.quiz.answer = inp.value;
-        render34();
+        state37.quiz.answer = inp.value;
+        render37();
       });
     });
-    (_d = root34.querySelector('[data-testid="emap-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state34.quiz.phase = "done";
-      render34();
+    (_d = root37.querySelector('[data-testid="emap-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state37.quiz.phase = "done";
+      render37();
     });
-    (_e = root34.querySelector('[data-testid="emap-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state34.lab.active = true;
-      render34();
+    (_e = root37.querySelector('[data-testid="emap-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state37.lab.active = true;
+      render37();
     });
-    (_f = root34.querySelector('[data-testid="emap-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state34.lab.text = e.target.value;
+    (_f = root37.querySelector('[data-testid="emap-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state37.lab.text = e.target.value;
     });
   }
   function createExampleMappingExplorer() {
-    state34.role = "ba";
-    state34.resolved = /* @__PURE__ */ new Set();
-    state34.activeExample = "e1";
-    state34.quiz = { active: false, phase: "idle", answer: "" };
-    state34.lab = { active: false, text: "" };
-    root34 = document.createElement("div");
-    render34();
-    return root34;
+    state37.role = "ba";
+    state37.resolved = /* @__PURE__ */ new Set();
+    state37.activeExample = "e1";
+    state37.quiz = { active: false, phase: "idle", answer: "" };
+    state37.lab = { active: false, text: "" };
+    root37 = document.createElement("div");
+    render37();
+    return root37;
   }
 
   // src/components/ContinuousTestingPipelineExplorer.js
@@ -38245,31 +39453,31 @@ ${items.join("\n")}
   var TIER_RANK = { commit: 0, pr: 1, nightly: 2 };
   var COMMIT_BUDGET = 120;
   var IMPACT_FRACTION = 0.15;
-  var state35 = {
+  var state38 = {
     tierOf: { unit: "commit", integration: "pr", e2e: "nightly" },
     flaky: 0,
     impact: false,
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root35;
+  var root38;
   function typesAtTier(tier) {
-    return TEST_TYPES.filter((tt) => TIER_RANK[state35.tierOf[tt.id]] <= TIER_RANK[tier]);
+    return TEST_TYPES.filter((tt) => TIER_RANK[state38.tierOf[tt.id]] <= TIER_RANK[tier]);
   }
   function tierStats(tier) {
     const types = typesAtTier(tier);
     let tests = 0;
     let seconds = 0;
     for (const tt of types) {
-      const factor = tier === "commit" && state35.impact ? IMPACT_FRACTION : 1;
+      const factor = tier === "commit" && state38.impact ? IMPACT_FRACTION : 1;
       tests += tt.count * factor;
       seconds += tt.count * tt.time * factor;
     }
     return { tests: Math.round(tests), seconds };
   }
   function falseFailureRate(n) {
-    if (!state35.flaky) return 0;
-    return 1 - Math.pow(1 - state35.flaky / 100, n);
+    if (!state38.flaky) return 0;
+    return 1 - Math.pow(1 - state38.flaky / 100, n);
   }
   function fmtTime(s) {
     if (s < 1) return s.toFixed(2) + "s";
@@ -38293,14 +39501,14 @@ ${items.join("\n")}
               <td>${fmtTime(tt.time)}</td>
               <td>
                 <select data-tier-of="${tt.id}" data-testid="ctp-tier-${tt.id}">
-                  ${TIERS.map((tr) => `<option value="${tr}" ${state35.tierOf[tt.id] === tr ? "selected" : ""}>${t("ctp.tier." + tr)}</option>`).join("")}
+                  ${TIERS.map((tr) => `<option value="${tr}" ${state38.tierOf[tt.id] === tr ? "selected" : ""}>${t("ctp.tier." + tr)}</option>`).join("")}
                 </select>
               </td>
             </tr>`).join("")}
         </tbody>
       </table>
       <label class="ctp-impact-toggle">
-        <input type="checkbox" data-testid="ctp-impact" ${state35.impact ? "checked" : ""}>
+        <input type="checkbox" data-testid="ctp-impact" ${state38.impact ? "checked" : ""}>
         ${t("ctp.impact.label")}
       </label>
     </div>`;
@@ -38334,7 +39542,7 @@ ${items.join("\n")}
         <span>${t("ctp.flaky.label")}</span>
         ${[0, 2, 5].map((f) => `
           <button type="button"
-            class="ctp-flaky-btn ${state35.flaky === f ? "ctp-flaky-btn--active" : ""}"
+            class="ctp-flaky-btn ${state38.flaky === f ? "ctp-flaky-btn--active" : ""}"
             data-flaky="${f}" data-testid="ctp-flaky-${f}">${f}%</button>`).join("")}
       </div>
       <p class="ctp-flaky-result ${rate > 0.3 ? "ctp-flaky-result--bad" : ""}">
@@ -38351,12 +39559,12 @@ ${items.join("\n")}
         title="${t("ctp.bridge.flaky.title")}">\u{1F517} \u2192 ${t("acceptanceTab.flaky")}</button>
     </div>`;
   }
-  function renderQuiz35() {
-    if (!state35.quiz.active) {
+  function renderQuiz38() {
+    if (!state38.quiz.active) {
       return `<button type="button" class="ctp-quiz-start" data-testid="ctp-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state35.quiz.phase === "done") {
-      const correct = state35.quiz.answer === "c";
+    if (state38.quiz.phase === "done") {
+      const correct = state38.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "ctp",
@@ -38368,7 +39576,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("ctp.quiz.prompt"),
-          a: state35.quiz.answer ? t("ctp.quiz." + state35.quiz.answer) : "",
+          a: state38.quiz.answer ? t("ctp.quiz." + state38.quiz.answer) : "",
           expected: t("ctp.quiz.c"),
           ok: correct
         }]
@@ -38383,26 +39591,26 @@ ${items.join("\n")}
       <p class="ctp-quiz-prompt">${t("ctp.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="ctp-quiz-option">
-          <input type="radio" name="ctp-quiz" value="${k}" ${state35.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="ctp-quiz" value="${k}" ${state38.quiz.answer === k ? "checked" : ""}>
           ${t("ctp.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="ctp-quiz-submit" data-testid="ctp-quiz-submit"
-        ${!state35.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state38.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab24() {
-    if (!state35.lab.active) {
+    if (!state38.lab.active) {
       return `<button type="button" class="ctp-lab-start" data-testid="ctp-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="ctp-lab" data-testid="ctp-lab">
       <p class="ctp-lab-prompt">${t("ctp.lab.prompt")}</p>
       <textarea class="ctp-lab-textarea" data-testid="ctp-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state35.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state38.lab.text}</textarea>
     </div>`;
   }
-  function render35() {
-    root35.innerHTML = `
+  function render38() {
+    root38.innerHTML = `
     <div class="ctp-wrap" data-testid="ctp-wrap">
       <h2 class="ctp-title">${t("ctp.title")}</h2>
       <p class="ctp-desc">${t("ctp.desc")}</p>
@@ -38412,72 +39620,72 @@ ${items.join("\n")}
       ${renderBridges11()}
       <section class="ctp-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz35()}
+        ${renderQuiz38()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab24()}
       </section>
     </div>`;
-    bindEvents35();
+    bindEvents38();
   }
-  function bindEvents35() {
+  function bindEvents38() {
     var _a, _b, _c, _d, _e, _f, _g;
-    root35.querySelectorAll("[data-tier-of]").forEach((sel) => {
+    root38.querySelectorAll("[data-tier-of]").forEach((sel) => {
       sel.addEventListener("change", () => {
-        state35.tierOf[sel.dataset.tierOf] = sel.value;
-        render35();
+        state38.tierOf[sel.dataset.tierOf] = sel.value;
+        render38();
       });
     });
-    (_a = root35.querySelector('[data-testid="ctp-impact"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
-      state35.impact = e.target.checked;
-      render35();
+    (_a = root38.querySelector('[data-testid="ctp-impact"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
+      state38.impact = e.target.checked;
+      render38();
     });
-    root35.querySelectorAll("[data-flaky]").forEach((btn) => {
+    root38.querySelectorAll("[data-flaky]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state35.flaky = Number(btn.dataset.flaky);
-        render35();
+        state38.flaky = Number(btn.dataset.flaky);
+        render38();
       });
     });
-    (_b = root35.querySelector('[data-testid="ctp-bridge-pyramid"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root38.querySelector('[data-testid="ctp-bridge-pyramid"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="types"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-types-tab="adjuster"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root35.querySelector('[data-testid="ctp-bridge-flaky"]')) == null ? void 0 : _c.addEventListener("click", () => {
+    (_c = root38.querySelector('[data-testid="ctp-bridge-flaky"]')) == null ? void 0 : _c.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="flaky"]')) == null ? void 0 : _b2.click();
     });
-    (_d = root35.querySelector('[data-testid="ctp-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state35.quiz = { active: true, phase: "question", answer: "" };
-      render35();
+    (_d = root38.querySelector('[data-testid="ctp-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state38.quiz = { active: true, phase: "question", answer: "" };
+      render38();
     });
-    root35.querySelectorAll('input[name="ctp-quiz"]').forEach((inp) => {
+    root38.querySelectorAll('input[name="ctp-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state35.quiz.answer = inp.value;
-        render35();
+        state38.quiz.answer = inp.value;
+        render38();
       });
     });
-    (_e = root35.querySelector('[data-testid="ctp-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state35.quiz.phase = "done";
-      render35();
+    (_e = root38.querySelector('[data-testid="ctp-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state38.quiz.phase = "done";
+      render38();
     });
-    (_f = root35.querySelector('[data-testid="ctp-lab-start"]')) == null ? void 0 : _f.addEventListener("click", () => {
-      state35.lab.active = true;
-      render35();
+    (_f = root38.querySelector('[data-testid="ctp-lab-start"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      state38.lab.active = true;
+      render38();
     });
-    (_g = root35.querySelector('[data-testid="ctp-lab-text"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
-      state35.lab.text = e.target.value;
+    (_g = root38.querySelector('[data-testid="ctp-lab-text"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      state38.lab.text = e.target.value;
     });
   }
   function createContinuousTestingPipelineExplorer() {
-    state35.tierOf = { unit: "commit", integration: "pr", e2e: "nightly" };
-    state35.flaky = 0;
-    state35.impact = false;
-    state35.quiz = { active: false, phase: "idle", answer: "" };
-    state35.lab = { active: false, text: "" };
-    root35 = document.createElement("div");
-    render35();
-    return root35;
+    state38.tierOf = { unit: "commit", integration: "pr", e2e: "nightly" };
+    state38.flaky = 0;
+    state38.impact = false;
+    state38.quiz = { active: false, phase: "idle", answer: "" };
+    state38.lab = { active: false, text: "" };
+    root38 = document.createElement("div");
+    render38();
+    return root38;
   }
 
   // src/components/RegressionDebtExplorer.js
@@ -38544,12 +39752,12 @@ ${items.join("\n")}
     const row = rows.find((r) => r.cost > r.value);
     return row ? row.sprint : null;
   }
-  var state36 = {
+  var state39 = {
     strategies: { prune: false, quarantine: false, riskBased: false },
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root36;
+  var root39;
   var STRATEGIES2 = ["prune", "quarantine", "riskBased"];
   function fmtTime2(s) {
     return s < 90 ? Math.round(s) + "s" : Math.floor(s / 60) + "m " + Math.round(s % 60) + "s";
@@ -38561,12 +39769,12 @@ ${items.join("\n")}
       ${STRATEGIES2.map((s) => `
         <label class="rdebt-strat">
           <input type="checkbox" data-strategy="${s}" data-testid="rdebt-strat-${s}"
-            ${state36.strategies[s] ? "checked" : ""}>
+            ${state39.strategies[s] ? "checked" : ""}>
           ${t("rdebt.strat." + s)}
         </label>`).join("")}
     </div>`;
   }
-  function renderChart(rows) {
+  function renderChart2(rows) {
     const W = 360;
     const H = 170;
     const padL = 8;
@@ -38618,12 +39826,12 @@ ${items.join("\n")}
         title="${t("rdebt.bridge.flaky.title")}">\u{1F517} \u2192 ${t("acceptanceTab.flaky")}</button>
     </div>`;
   }
-  function renderQuiz36() {
-    if (!state36.quiz.active) {
+  function renderQuiz39() {
+    if (!state39.quiz.active) {
       return `<button type="button" class="rdebt-quiz-start" data-testid="rdebt-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state36.quiz.phase === "done") {
-      const correct = state36.quiz.answer === "c";
+    if (state39.quiz.phase === "done") {
+      const correct = state39.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "rdebt",
@@ -38635,7 +39843,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("rdebt.quiz.prompt"),
-          a: state36.quiz.answer ? t("rdebt.quiz." + state36.quiz.answer) : "",
+          a: state39.quiz.answer ? t("rdebt.quiz." + state39.quiz.answer) : "",
           expected: t("rdebt.quiz.c"),
           ok: correct
         }]
@@ -38650,89 +39858,89 @@ ${items.join("\n")}
       <p class="rdebt-quiz-prompt">${t("rdebt.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="rdebt-quiz-option">
-          <input type="radio" name="rdebt-quiz" value="${k}" ${state36.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="rdebt-quiz" value="${k}" ${state39.quiz.answer === k ? "checked" : ""}>
           ${t("rdebt.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="rdebt-quiz-submit" data-testid="rdebt-quiz-submit"
-        ${!state36.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state39.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab25() {
-    if (!state36.lab.active) {
+    if (!state39.lab.active) {
       return `<button type="button" class="rdebt-lab-start" data-testid="rdebt-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="rdebt-lab" data-testid="rdebt-lab">
       <p class="rdebt-lab-prompt">${t("rdebt.lab.prompt")}</p>
       <textarea class="rdebt-lab-textarea" data-testid="rdebt-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state36.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state39.lab.text}</textarea>
     </div>`;
   }
-  function render36() {
-    const rows = simulate(state36.strategies);
-    root36.innerHTML = `
+  function render39() {
+    const rows = simulate(state39.strategies);
+    root39.innerHTML = `
     <div class="rdebt-wrap" data-testid="rdebt-wrap">
       <h2 class="rdebt-title">${t("rdebt.title")}</h2>
       <p class="rdebt-desc">${t("rdebt.desc")}</p>
       ${renderStrategies()}
-      ${renderChart(rows)}
+      ${renderChart2(rows)}
       ${renderSummary(rows)}
       ${renderBridges12()}
       <section class="rdebt-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz36()}
+        ${renderQuiz39()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab25()}
       </section>
     </div>`;
-    bindEvents36();
+    bindEvents39();
   }
-  function bindEvents36() {
+  function bindEvents39() {
     var _a, _b, _c, _d, _e, _f;
-    root36.querySelectorAll("[data-strategy]").forEach((inp) => {
+    root39.querySelectorAll("[data-strategy]").forEach((inp) => {
       inp.addEventListener("change", () => {
-        state36.strategies[inp.dataset.strategy] = inp.checked;
-        render36();
+        state39.strategies[inp.dataset.strategy] = inp.checked;
+        render39();
       });
     });
-    (_a = root36.querySelector('[data-testid="rdebt-bridge-rbt"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root39.querySelector('[data-testid="rdebt-bridge-rbt"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2;
       (_a2 = document.querySelector('[data-section="rbt"]')) == null ? void 0 : _a2.click();
     });
-    (_b = root36.querySelector('[data-testid="rdebt-bridge-flaky"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root39.querySelector('[data-testid="rdebt-bridge-flaky"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="flaky"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root36.querySelector('[data-testid="rdebt-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state36.quiz = { active: true, phase: "question", answer: "" };
-      render36();
+    (_c = root39.querySelector('[data-testid="rdebt-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state39.quiz = { active: true, phase: "question", answer: "" };
+      render39();
     });
-    root36.querySelectorAll('input[name="rdebt-quiz"]').forEach((inp) => {
+    root39.querySelectorAll('input[name="rdebt-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state36.quiz.answer = inp.value;
-        render36();
+        state39.quiz.answer = inp.value;
+        render39();
       });
     });
-    (_d = root36.querySelector('[data-testid="rdebt-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state36.quiz.phase = "done";
-      render36();
+    (_d = root39.querySelector('[data-testid="rdebt-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state39.quiz.phase = "done";
+      render39();
     });
-    (_e = root36.querySelector('[data-testid="rdebt-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state36.lab.active = true;
-      render36();
+    (_e = root39.querySelector('[data-testid="rdebt-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state39.lab.active = true;
+      render39();
     });
-    (_f = root36.querySelector('[data-testid="rdebt-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state36.lab.text = e.target.value;
+    (_f = root39.querySelector('[data-testid="rdebt-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state39.lab.text = e.target.value;
     });
   }
   function createRegressionDebtExplorer() {
-    state36.strategies = { prune: false, quarantine: false, riskBased: false };
-    state36.quiz = { active: false, phase: "idle", answer: "" };
-    state36.lab = { active: false, text: "" };
-    root36 = document.createElement("div");
-    render36();
-    return root36;
+    state39.strategies = { prune: false, quarantine: false, riskBased: false };
+    state39.quiz = { active: false, phase: "idle", answer: "" };
+    state39.lab = { active: false, text: "" };
+    root39 = document.createElement("div");
+    render39();
+    return root39;
   }
 
   // src/data/slideDecks.generated.js
@@ -40291,7 +41499,8 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     "agile",
     "slicing",
     "tdd",
-    "security"
+    "security",
+    "search-based"
   ];
   var TAG_SERIES = [
     "foundations",
@@ -40306,7 +41515,8 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     "agile",
     "slicing",
     "tdd",
-    "exploit"
+    "exploit",
+    "sbst"
   ];
   var TAG_DIFFICULTY = ["intro", "intermediate", "advanced", "research"];
   var ACH = "paper:arxiv-2501.12862";
@@ -40786,6 +41996,28 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       series: ["exploit"],
       difficulty: "advanced",
       source: [TEXTBOOK]
+    },
+    // ── Search-Based Software Testing ────────────────────────────────
+    SbstBranchExplorer: {
+      level: ["unit"],
+      technique: ["search-based"],
+      series: ["sbst"],
+      difficulty: "intermediate",
+      source: [TEXTBOOK]
+    },
+    SbstCompareExplorer: {
+      level: ["unit"],
+      technique: ["search-based"],
+      series: ["sbst"],
+      difficulty: "intermediate",
+      source: [TEXTBOOK]
+    },
+    SbstSuiteExplorer: {
+      level: ["unit"],
+      technique: ["search-based"],
+      series: ["sbst"],
+      difficulty: "advanced",
+      source: [TEXTBOOK]
     }
   };
   var SECTION_EXPLORERS = {
@@ -40852,7 +42084,8 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     ],
     slicing: ["ProgramSlicingExplorer", "SliceDicingExplorer", "SliceCoverageExplorer", "SliceRegressionExplorer"],
     tdd: ["TddCycleExplorer", "TddRulesExplorer"],
-    exploit: ["ExploitOverflowExplorer", "ExploitSqliExplorer", "ExploitCmdiExplorer", "ExploitPathExplorer"]
+    exploit: ["ExploitOverflowExplorer", "ExploitSqliExplorer", "ExploitCmdiExplorer", "ExploitPathExplorer"],
+    sbst: ["SbstBranchExplorer", "SbstCompareExplorer", "SbstSuiteExplorer"]
   };
   function getSectionTags(sectionId) {
     var _a, _b, _c, _d, _e;
@@ -40891,18 +42124,18 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
   ];
   var EMPTY_FILTER = () => ({ level: [], technique: [], series: [], difficulty: [] });
   function createTagFilterBar({ initial, onChange } = {}) {
-    const state37 = {
+    const state40 = {
       filter: normalizeFilter(initial),
       listener: typeof onChange === "function" ? onChange : () => {
       }
     };
-    const root38 = document.createElement("div");
-    root38.className = "tag-filter-bar";
-    root38.dataset.testid = "tag-filter-bar";
-    function render37() {
+    const root41 = document.createElement("div");
+    root41.className = "tag-filter-bar";
+    root41.dataset.testid = "tag-filter-bar";
+    function render40() {
       var _a;
-      const totalActive = Object.values(state37.filter).reduce((n, arr) => n + arr.length, 0);
-      root38.innerHTML = `
+      const totalActive = Object.values(state40.filter).reduce((n, arr) => n + arr.length, 0);
+      root41.innerHTML = `
       <div class="tag-filter-bar__header">
         <span class="tag-filter-bar__title">${t("filter.title")}</span>
         <button type="button" class="tag-filter-bar__clear"
@@ -40916,7 +42149,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
           <span class="tag-filter-row__label">${t("filter.dim." + dim.id)}</span>
           <div class="tag-filter-row__chips">
             ${dim.values.map((v) => {
-        const active = state37.filter[dim.id].includes(v);
+        const active = state40.filter[dim.id].includes(v);
         return `
                 <button type="button"
                   class="tag-chip${active ? " tag-chip--active" : ""}"
@@ -40929,40 +42162,40 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
           </div>
         </div>
       `).join("")}`;
-      root38.querySelectorAll("[data-dim][data-value]").forEach((btn) => {
+      root41.querySelectorAll("[data-dim][data-value]").forEach((btn) => {
         btn.addEventListener("click", () => toggle(btn.dataset.dim, btn.dataset.value));
       });
-      (_a = root38.querySelector('[data-testid="tag-filter-clear"]')) == null ? void 0 : _a.addEventListener("click", () => clear());
+      (_a = root41.querySelector('[data-testid="tag-filter-clear"]')) == null ? void 0 : _a.addEventListener("click", () => clear());
     }
     function toggle(dim, value) {
       var _a;
-      const arr = (_a = state37.filter[dim]) != null ? _a : [];
+      const arr = (_a = state40.filter[dim]) != null ? _a : [];
       const i = arr.indexOf(value);
       if (i === -1) arr.push(value);
       else arr.splice(i, 1);
-      state37.filter[dim] = arr;
-      render37();
-      state37.listener(getFilter());
+      state40.filter[dim] = arr;
+      render40();
+      state40.listener(getFilter());
     }
     function clear() {
-      state37.filter = EMPTY_FILTER();
-      render37();
-      state37.listener(getFilter());
+      state40.filter = EMPTY_FILTER();
+      render40();
+      state40.listener(getFilter());
     }
     function getFilter() {
       return {
-        level: [...state37.filter.level],
-        technique: [...state37.filter.technique],
-        series: [...state37.filter.series],
-        difficulty: [...state37.filter.difficulty]
+        level: [...state40.filter.level],
+        technique: [...state40.filter.technique],
+        series: [...state40.filter.series],
+        difficulty: [...state40.filter.difficulty]
       };
     }
     function setFilter(next) {
-      state37.filter = normalizeFilter(next);
-      render37();
+      state40.filter = normalizeFilter(next);
+      render40();
     }
-    render37();
-    return { element: root38, getFilter, setFilter, clear };
+    render40();
+    return { element: root41, getFilter, setFilter, clear };
   }
   function normalizeFilter(input) {
     const out = EMPTY_FILTER();
@@ -41081,7 +42314,9 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     // Section O — TDD. O1 ships 'cycle'; O2 ships 'rules'.
     tdd: { tabs: ["cycle", "rules"], default: "cycle" },
     // Section P — Exploit Generation. P1 ships 'overflow'; P2-P3 will add 'sqli', 'cmdi'.
-    exploit: { tabs: ["overflow", "sqli", "cmdi", "path"], default: "overflow" }
+    exploit: { tabs: ["overflow", "sqli", "cmdi", "path"], default: "overflow" },
+    // Section — Search-Based Software Testing.
+    sbst: { tabs: ["branch", "compare", "suite"], default: "branch" }
   };
   var EXPLORER_TO_LOCATION = {
     TestingMethodTree: { section: "methods" },
@@ -41149,7 +42384,10 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     ExploitOverflowExplorer: { section: "exploit", tab: "overflow" },
     ExploitSqliExplorer: { section: "exploit", tab: "sqli" },
     ExploitCmdiExplorer: { section: "exploit", tab: "cmdi" },
-    ExploitPathExplorer: { section: "exploit", tab: "path" }
+    ExploitPathExplorer: { section: "exploit", tab: "path" },
+    SbstBranchExplorer: { section: "sbst", tab: "branch" },
+    SbstCompareExplorer: { section: "sbst", tab: "compare" },
+    SbstSuiteExplorer: { section: "sbst", tab: "suite" }
   };
   var FILTER_DIMS = ["level", "technique", "series", "difficulty"];
   function parseAppLocation(search, hash) {
@@ -41190,22 +42428,22 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     }
     return out;
   }
-  function serializeLocation(state37) {
-    if (!state37) return "";
+  function serializeLocation(state40) {
+    if (!state40) return "";
     const params = new URLSearchParams();
-    if (state37.lang === "en" || state37.lang === "zh") params.set("lang", state37.lang);
-    if (state37.section && state37.section !== "all") {
-      params.set("section", state37.section);
-      const sectionInfo = TAB_SECTIONS[state37.section];
-      if (sectionInfo && state37.tab && sectionInfo.tabs.includes(state37.tab)) {
-        params.set("tab", state37.tab);
+    if (state40.lang === "en" || state40.lang === "zh") params.set("lang", state40.lang);
+    if (state40.section && state40.section !== "all") {
+      params.set("section", state40.section);
+      const sectionInfo = TAB_SECTIONS[state40.section];
+      if (sectionInfo && state40.tab && sectionInfo.tabs.includes(state40.tab)) {
+        params.set("tab", state40.tab);
       }
     }
-    if (state37.pack) {
-      params.set("pack", state37.pack);
-    } else if (state37.filter) {
+    if (state40.pack) {
+      params.set("pack", state40.pack);
+    } else if (state40.filter) {
       for (const dim of FILTER_DIMS) {
-        const arr = state37.filter[dim];
+        const arr = state40.filter[dim];
         if (Array.isArray(arr) && arr.length > 0) params.set(dim, arr.join(","));
       }
     }
@@ -41310,16 +42548,16 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
   // src/components/CoursePackBar.js
   function createCoursePackBar({ initial, onApplyFilter } = {}) {
     const validInitial = COURSE_PACKS.some((p) => p.id === initial);
-    const state37 = { activeId: validInitial ? initial : null };
-    const root38 = document.createElement("div");
-    root38.className = "course-pack-bar";
-    root38.dataset.testid = "course-pack-bar";
-    function render37() {
+    const state40 = { activeId: validInitial ? initial : null };
+    const root41 = document.createElement("div");
+    root41.className = "course-pack-bar";
+    root41.dataset.testid = "course-pack-bar";
+    function render40() {
       var _a;
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="course-pack-bar__header">
         <span class="course-pack-bar__title">${t("pack.title")}</span>
-        ${state37.activeId ? `
+        ${state40.activeId ? `
           <button type="button"
             class="course-pack-bar__export"
             data-testid="course-pack-export">
@@ -41329,7 +42567,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       <div class="course-pack-bar__chips">
         ${COURSE_PACKS.map((pack) => {
         const count = getCoursePackExplorers(pack.id).length;
-        const active = state37.activeId === pack.id;
+        const active = state40.activeId === pack.id;
         return `
             <button type="button"
               class="course-pack-chip${active ? " course-pack-chip--active" : ""}"
@@ -41342,36 +42580,36 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
             </button>`;
       }).join("")}
       </div>
-      ${state37.activeId ? `
+      ${state40.activeId ? `
         <p class="course-pack-bar__desc" data-testid="course-pack-desc">
-          ${t(COURSE_PACKS.find((p) => p.id === state37.activeId).descKey)}
+          ${t(COURSE_PACKS.find((p) => p.id === state40.activeId).descKey)}
         </p>` : ""}`;
-      root38.querySelectorAll("[data-pack]").forEach((btn) => {
+      root41.querySelectorAll("[data-pack]").forEach((btn) => {
         btn.addEventListener("click", () => choose(btn.dataset.pack));
       });
-      (_a = root38.querySelector('[data-testid="course-pack-export"]')) == null ? void 0 : _a.addEventListener("click", () => {
-        if (state37.activeId) downloadCoursePackMarkdown(state37.activeId);
+      (_a = root41.querySelector('[data-testid="course-pack-export"]')) == null ? void 0 : _a.addEventListener("click", () => {
+        if (state40.activeId) downloadCoursePackMarkdown(state40.activeId);
       });
     }
     function choose(packId) {
-      if (state37.activeId === packId) {
-        state37.activeId = null;
+      if (state40.activeId === packId) {
+        state40.activeId = null;
         onApplyFilter == null ? void 0 : onApplyFilter(null);
       } else {
-        state37.activeId = packId;
+        state40.activeId = packId;
         onApplyFilter == null ? void 0 : onApplyFilter(getCoursePackFilter(packId));
       }
-      render37();
+      render40();
     }
     function clear() {
-      state37.activeId = null;
-      render37();
+      state40.activeId = null;
+      render40();
     }
     function getActiveId() {
-      return state37.activeId;
+      return state40.activeId;
     }
-    render37();
-    return { element: root38, choose, clear, getActiveId };
+    render40();
+    return { element: root41, choose, clear, getActiveId };
   }
 
   // src/components/ResultViewer.js
@@ -41494,9 +42732,9 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     return `${score != null ? score : 0} / ${total}`;
   }
   function createTeacherDashboard() {
-    const root38 = document.createElement("div");
-    root38.dataset.testid = "teacher-dashboard";
-    root38.className = "td-overlay";
+    const root41 = document.createElement("div");
+    root41.dataset.testid = "teacher-dashboard";
+    root41.className = "td-overlay";
     const client = createCloudIntegrationClient();
     let classCode = "";
     let results = [];
@@ -41511,10 +42749,10 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       if (!filterExplorer) return results;
       return results.filter((r) => r.explorer === filterExplorer);
     }
-    function render37() {
+    function render40() {
       const filtered = filteredResults();
       const explorerOpts = explorerOptions();
-      root38.innerHTML = `
+      root41.innerHTML = `
       <div class="td-panel" role="dialog" aria-modal="true" aria-label="${t("td.title")}" data-testid="td-panel">
         <div class="td-header">
           <div class="td-header-left">
@@ -41587,25 +42825,25 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
           </table>
         </div>` : ""}
       </div>`;
-      bindEvents37();
+      bindEvents40();
     }
-    function bindEvents37() {
+    function bindEvents40() {
       var _a;
-      root38.querySelector('[data-testid="td-close"]').addEventListener("click", () => {
-        root38.hidden = true;
+      root41.querySelector('[data-testid="td-close"]').addEventListener("click", () => {
+        root41.hidden = true;
       });
-      root38.querySelector('[data-testid="td-load-btn"]').addEventListener("click", async () => {
-        const inp = root38.querySelector('[data-testid="td-code-input"]');
+      root41.querySelector('[data-testid="td-load-btn"]').addEventListener("click", async () => {
+        const inp = root41.querySelector('[data-testid="td-code-input"]');
         classCode = ((inp == null ? void 0 : inp.value) || "").trim().toUpperCase();
         if (!classCode) {
           errorMsg = t("td.err.noCode");
-          render37();
+          render40();
           return;
         }
         loading = true;
         errorMsg = "";
         results = [];
-        render37();
+        render40();
         try {
           results = await client.loadCourseResults(classCode);
           filterExplorer = "";
@@ -41613,21 +42851,21 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
           errorMsg = err.message || t("td.err.loadFailed");
         }
         loading = false;
-        render37();
+        render40();
       });
-      (_a = root38.querySelector('[data-testid="td-filter-explorer"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
+      (_a = root41.querySelector('[data-testid="td-filter-explorer"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
         filterExplorer = e.target.value;
-        render37();
+        render40();
       });
     }
-    render37();
+    render40();
     window.addEventListener("stvisual:open-teacher-dashboard", (e) => {
       var _a;
       classCode = ((_a = e.detail) == null ? void 0 : _a.classCode) || classCode;
-      root38.hidden = false;
-      render37();
+      root41.hidden = false;
+      render40();
     });
-    return root38;
+    return root41;
   }
 
   // src/data/sectionTaxonomy.js
@@ -41660,7 +42898,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     {
       id: "generation",
       labelKey: "taxonomy.generation",
-      sectionIds: ["symbex", "concolic", "fuzz", "testgen", "exploit"]
+      sectionIds: ["symbex", "concolic", "fuzz", "testgen", "exploit", "sbst"]
     },
     {
       id: "process",
@@ -41713,7 +42951,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     let langInUrl = false;
     let lastSearchSnapshot = (_b = (_a = globalThis.location) == null ? void 0 : _a.search) != null ? _b : "";
     function paint2() {
-      var _a2, _b2, _c2, _d2, _e2, _f2, _g2, _h2, _i, _j, _k, _l, _m, _n, _o;
+      var _a2, _b2, _c2, _d2, _e2, _f2, _g2, _h2, _i, _j, _k, _l, _m, _n, _o, _p;
       const urlState = parseAppLocation(
         (_b2 = (_a2 = globalThis.location) == null ? void 0 : _a2.search) != null ? _b2 : "",
         (_d2 = (_c2 = globalThis.location) == null ? void 0 : _c2.hash) != null ? _d2 : ""
@@ -41770,6 +43008,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t("section.fuzz.title")}</h2><div data-slot="fuzz"></div></section>
           <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t("section.testgen.title")}</h2><div data-slot="testgen"></div></section>
           <section data-testid="section-exploit" tabindex="-1" aria-labelledby="section-exploit-title"><h2 id="section-exploit-title">${t("section.exploit.title")}</h2><div data-slot="exploit"></div></section>
+          <section data-testid="section-sbst" tabindex="-1" aria-labelledby="section-sbst-title"><h2 id="section-sbst-title">${t("section.sbst.title")}</h2><div data-slot="sbst"></div></section>
           <section data-testid="section-tdd" tabindex="-1" aria-labelledby="section-tdd-title"><h2 id="section-tdd-title">${t("section.tdd.title")}</h2><div data-slot="tdd"></div></section>
           <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t("section.acceptance.title")}</h2><div data-slot="acceptance"></div></section>
           <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t("section.agile.title")}</h2><div data-slot="agile"></div></section>
@@ -41883,6 +43122,9 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
         exploitsqli: createExploitSqliExplorer(),
         exploitcmdi: createExploitCmdiExplorer(),
         exploitpath: createExploitPathExplorer(),
+        sbstbranch: createSbstBranchExplorer(),
+        sbstcompare: createSbstCompareExplorer(),
+        sbstsuite: createSbstSuiteExplorer(),
         definitiongates: createDefinitionGatesExplorer(),
         examplemapping: createExampleMappingExplorer(),
         ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -42369,6 +43611,76 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       }
       renderExploitTabs();
       updateExploitPanels();
+      const sbstSlot = container.querySelector('[data-slot="sbst"]');
+      const sbstTabBar = document.createElement("nav");
+      sbstTabBar.className = "syntax-tab-row";
+      sbstTabBar.dataset.testid = "sbst-tab-row";
+      sbstTabBar.setAttribute("role", "tablist");
+      sbstSlot.appendChild(sbstTabBar);
+      const sbstPanels = document.createElement("div");
+      sbstPanels.className = "syntax-tab-panels";
+      sbstSlot.appendChild(sbstPanels);
+      const sbstTabDefs = ["branch", "compare", "suite"];
+      for (const tabId of sbstTabDefs) {
+        const panel = document.createElement("div");
+        panel.className = "syntax-tab-panel";
+        panel.dataset.sbstPanel = tabId;
+        if (tabId === "branch") {
+          panel.appendChild(components.sbstbranch);
+        } else if (tabId === "compare") {
+          panel.appendChild(components.sbstcompare);
+        } else if (tabId === "suite") {
+          panel.appendChild(components.sbstsuite);
+        }
+        sbstPanels.appendChild(panel);
+      }
+      const SBST_TAB_KEY = "stvisual.sbstActiveTab";
+      let savedSbstTab = null;
+      try {
+        savedSbstTab = (_k = globalThis.localStorage) == null ? void 0 : _k.getItem(SBST_TAB_KEY);
+      } catch {
+      }
+      let activeSbstTab = resolveInitialTab({
+        sectionId: "sbst",
+        urlSection: urlState.section,
+        urlTab: urlState.tab,
+        saved: savedSbstTab
+      });
+      const sbstTabItems = [
+        { id: "branch", key: "sbst.tab.branch" },
+        { id: "compare", key: "sbst.tab.compare" },
+        { id: "suite", key: "sbst.tab.suite" }
+      ];
+      function renderSbstTabs() {
+        sbstTabBar.innerHTML = sbstTabItems.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeSbstTab === tab.id ? " active" : ""}"
+          data-sbst-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeSbstTab === tab.id ? "true" : "false"}"
+        >${t(tab.key)}</button>
+      `).join("");
+        sbstTabBar.querySelectorAll("[data-sbst-tab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            var _a3;
+            activeSbstTab = btn.dataset.sbstTab;
+            try {
+              (_a3 = globalThis.localStorage) == null ? void 0 : _a3.setItem(SBST_TAB_KEY, activeSbstTab);
+            } catch {
+            }
+            renderSbstTabs();
+            updateSbstPanels();
+            if (activeSection === "sbst") syncUrl();
+          });
+        });
+      }
+      function updateSbstPanels() {
+        sbstPanels.querySelectorAll("[data-sbst-panel]").forEach((panel) => {
+          panel.style.display = panel.dataset.sbstPanel === activeSbstTab ? "" : "none";
+        });
+      }
+      renderSbstTabs();
+      updateSbstPanels();
       const tddSlot = container.querySelector('[data-slot="tdd"]');
       const tddTabBar = document.createElement("nav");
       tddTabBar.className = "syntax-tab-row";
@@ -42393,7 +43705,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       const TDD_TAB_KEY = "stvisual.tddActiveTab";
       let savedTddTab = null;
       try {
-        savedTddTab = (_k = globalThis.localStorage) == null ? void 0 : _k.getItem(TDD_TAB_KEY);
+        savedTddTab = (_l = globalThis.localStorage) == null ? void 0 : _l.getItem(TDD_TAB_KEY);
       } catch {
       }
       let activeTddTab = resolveInitialTab({
@@ -42460,7 +43772,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       const SYNTAX_TAB_KEY = "stvisual.syntaxActiveTab";
       let savedSyntaxTab = null;
       try {
-        savedSyntaxTab = (_l = globalThis.localStorage) == null ? void 0 : _l.getItem(SYNTAX_TAB_KEY);
+        savedSyntaxTab = (_m = globalThis.localStorage) == null ? void 0 : _m.getItem(SYNTAX_TAB_KEY);
       } catch {
       }
       let activeSyntaxTab = resolveInitialTab({
@@ -42530,7 +43842,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       const BLACKBOX_TAB_KEY = "stvisual.blackboxActiveTab";
       let savedBlackboxTab = null;
       try {
-        savedBlackboxTab = (_m = globalThis.localStorage) == null ? void 0 : _m.getItem(BLACKBOX_TAB_KEY);
+        savedBlackboxTab = (_n = globalThis.localStorage) == null ? void 0 : _n.getItem(BLACKBOX_TAB_KEY);
       } catch {
       }
       let activeBlackboxTab = resolveInitialTab({
@@ -42598,7 +43910,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       const FLOW_TAB_KEY = "stvisual.flowActiveTab";
       let savedFlowTab = null;
       try {
-        savedFlowTab = (_n = globalThis.localStorage) == null ? void 0 : _n.getItem(FLOW_TAB_KEY);
+        savedFlowTab = (_o = globalThis.localStorage) == null ? void 0 : _o.getItem(FLOW_TAB_KEY);
       } catch {
       }
       let activeFlowTab = resolveInitialTab({
@@ -42712,7 +44024,7 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       });
       overviewFilterHost.appendChild(filterBar.element);
       const packBar = createCoursePackBar({
-        initial: (_o = urlState.pack) != null ? _o : null,
+        initial: (_p = urlState.pack) != null ? _p : null,
         onApplyFilter: (filter) => {
           const next = filter != null ? filter : { level: [], technique: [], series: [], difficulty: [] };
           activeFilter = { level: [], technique: [], series: [], difficulty: [], ...next };
@@ -42725,14 +44037,14 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
       function syncUrl(mode = "replace") {
         var _a3, _b3, _c3, _d3, _e3;
         try {
-          const state37 = {
+          const state40 = {
             section: activeSection,
             tab: getCurrentTabForSection(activeSection),
             pack: (_a3 = packBar == null ? void 0 : packBar.getActiveId()) != null ? _a3 : null,
             filter: activeFilter,
             lang: langInUrl ? getLocale() : void 0
           };
-          const qs = serializeLocation(state37);
+          const qs = serializeLocation(state40);
           const rawHash = globalThis.location.hash || "";
           const hash = /^#section-[a-z0-9-]+$/.test(rawHash) ? "" : rawHash;
           const url = `${globalThis.location.pathname}${qs}${hash}`;
@@ -43032,8 +44344,8 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
   }
 
   // src/main.js
-  var root37 = document.getElementById("root");
-  if (root37) {
-    renderApp(root37);
+  var root40 = document.getElementById("root");
+  if (root40) {
+    renderApp(root40);
   }
 })();

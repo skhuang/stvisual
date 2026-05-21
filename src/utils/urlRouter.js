@@ -38,6 +38,8 @@ export const TAB_SECTIONS = {
   tdd: { tabs: ['cycle', 'rules'], default: 'cycle' },
   // Section P — Exploit Generation. P1 ships 'overflow'; P2-P3 will add 'sqli', 'cmdi'.
   exploit: { tabs: ['overflow', 'sqli', 'cmdi', 'path'], default: 'overflow' },
+  // Section — Search-Based Software Testing.
+  sbst: { tabs: ['branch', 'compare', 'suite'], default: 'branch' },
 };
 
 // ── ComponentName → { section, tab? } ────────────────────────────────
@@ -110,6 +112,9 @@ export const EXPLORER_TO_LOCATION = {
   ExploitSqliExplorer:         { section: 'exploit', tab: 'sqli' },
   ExploitCmdiExplorer:         { section: 'exploit', tab: 'cmdi' },
   ExploitPathExplorer:         { section: 'exploit', tab: 'path' },
+  SbstBranchExplorer:  { section: 'sbst', tab: 'branch' },
+  SbstCompareExplorer: { section: 'sbst', tab: 'compare' },
+  SbstSuiteExplorer:   { section: 'sbst', tab: 'suite' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];

@@ -61,6 +61,9 @@ import { createExploitOverflowExplorer } from './components/ExploitOverflowExplo
 import { createExploitSqliExplorer }     from './components/ExploitSqliExplorer.js';
 import { createExploitCmdiExplorer }     from './components/ExploitCmdiExplorer.js';
 import { createExploitPathExplorer }     from './components/ExploitPathExplorer.js';
+import { createSbstBranchExplorer }  from './components/SbstBranchExplorer.js';
+import { createSbstCompareExplorer } from './components/SbstCompareExplorer.js';
+import { createSbstSuiteExplorer }   from './components/SbstSuiteExplorer.js';
 import { createDefinitionGatesExplorer } from './components/DefinitionGatesExplorer.js';
 import { createExampleMappingExplorer } from './components/ExampleMappingExplorer.js';
 import { createContinuousTestingPipelineExplorer } from './components/ContinuousTestingPipelineExplorer.js';
@@ -194,6 +197,7 @@ export function renderApp(container) {
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t('section.fuzz.title')}</h2><div data-slot="fuzz"></div></section>
           <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t('section.testgen.title')}</h2><div data-slot="testgen"></div></section>
           <section data-testid="section-exploit" tabindex="-1" aria-labelledby="section-exploit-title"><h2 id="section-exploit-title">${t('section.exploit.title')}</h2><div data-slot="exploit"></div></section>
+          <section data-testid="section-sbst" tabindex="-1" aria-labelledby="section-sbst-title"><h2 id="section-sbst-title">${t('section.sbst.title')}</h2><div data-slot="sbst"></div></section>
           <section data-testid="section-tdd" tabindex="-1" aria-labelledby="section-tdd-title"><h2 id="section-tdd-title">${t('section.tdd.title')}</h2><div data-slot="tdd"></div></section>
           <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t('section.acceptance.title')}</h2><div data-slot="acceptance"></div></section>
           <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t('section.agile.title')}</h2><div data-slot="agile"></div></section>
@@ -313,6 +317,9 @@ export function renderApp(container) {
       exploitsqli:     createExploitSqliExplorer(),
       exploitcmdi:     createExploitCmdiExplorer(),
       exploitpath:     createExploitPathExplorer(),
+      sbstbranch:  createSbstBranchExplorer(),
+      sbstcompare: createSbstCompareExplorer(),
+      sbstsuite:   createSbstSuiteExplorer(),
       definitiongates: createDefinitionGatesExplorer(),
       examplemapping: createExampleMappingExplorer(),
       ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -787,6 +794,75 @@ export function renderApp(container) {
     }
     renderExploitTabs();
     updateExploitPanels();
+
+    // --- Search-Based Software Testing: tabbed (branch / compare / suite) ---
+    const sbstSlot = container.querySelector('[data-slot="sbst"]');
+    const sbstTabBar = document.createElement('nav');
+    sbstTabBar.className = 'syntax-tab-row';
+    sbstTabBar.dataset.testid = 'sbst-tab-row';
+    sbstTabBar.setAttribute('role', 'tablist');
+    sbstSlot.appendChild(sbstTabBar);
+    const sbstPanels = document.createElement('div');
+    sbstPanels.className = 'syntax-tab-panels';
+    sbstSlot.appendChild(sbstPanels);
+
+    const sbstTabDefs = ['branch', 'compare', 'suite'];
+    for (const tabId of sbstTabDefs) {
+      const panel = document.createElement('div');
+      panel.className = 'syntax-tab-panel';
+      panel.dataset.sbstPanel = tabId;
+      if (tabId === 'branch') {
+        panel.appendChild(components.sbstbranch);
+      } else if (tabId === 'compare') {
+        panel.appendChild(components.sbstcompare);
+      } else if (tabId === 'suite') {
+        panel.appendChild(components.sbstsuite);
+      }
+      sbstPanels.appendChild(panel);
+    }
+
+    const SBST_TAB_KEY = 'stvisual.sbstActiveTab';
+    let savedSbstTab = null;
+    try { savedSbstTab = globalThis.localStorage?.getItem(SBST_TAB_KEY); } catch {}
+    let activeSbstTab = resolveInitialTab({
+      sectionId: 'sbst',
+      urlSection: urlState.section,
+      urlTab: urlState.tab,
+      saved: savedSbstTab,
+    });
+
+    const sbstTabItems = [
+      { id: 'branch',  key: 'sbst.tab.branch' },
+      { id: 'compare', key: 'sbst.tab.compare' },
+      { id: 'suite',   key: 'sbst.tab.suite' },
+    ];
+
+    function renderSbstTabs() {
+      sbstTabBar.innerHTML = sbstTabItems.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeSbstTab === tab.id ? ' active' : ''}"
+          data-sbst-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeSbstTab === tab.id ? 'true' : 'false'}"
+        >${t(tab.key)}</button>
+      `).join('');
+      sbstTabBar.querySelectorAll('[data-sbst-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeSbstTab = btn.dataset.sbstTab;
+          try { globalThis.localStorage?.setItem(SBST_TAB_KEY, activeSbstTab); } catch {}
+          renderSbstTabs();
+          updateSbstPanels();
+          if (activeSection === 'sbst') syncUrl();
+        });
+      });
+    }
+    function updateSbstPanels() {
+      sbstPanels.querySelectorAll('[data-sbst-panel]').forEach((panel) => {
+        panel.style.display = panel.dataset.sbstPanel === activeSbstTab ? '' : 'none';
+      });
+    }
+    renderSbstTabs();
+    updateSbstPanels();
 
     // --- Test-Driven Development: tabbed (O1 cycle / O2 rules — both live) ---
     const tddSlot = container.querySelector('[data-slot="tdd"]');
