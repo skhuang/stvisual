@@ -78,6 +78,7 @@ const DECKS = [
   { base: '60-slice-based-coverage',         id: 'slice-based-coverage',      num: 60, section: 'slicing' },
   { base: '61-regression-test-selection',   id: 'regression-test-selection', num: 61, section: 'slicing' },
   { base: '62-test-driven-development', id: 'test-driven-development', num: 62, section: 'tdd' },
+  { base: '63-exploit-generation', id: 'exploit-generation', num: 63, section: 'exploit' },
 ];
 
 function frontMatterTitle(md) {
