@@ -51,3 +51,30 @@ jobs:
 
       - name: Run browser tests
         run: npm run test:browser
+
+  standalone-bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Rebuild standalone bundle
+        run: npm run build:standalone
+
+      - name: Verify src/standalone.js is committed up to date
+        run: |
+          if ! git diff --quiet -- src/standalone.js; then
+            echo "::error file=src/standalone.js::src/standalone.js is out of date — run 'npm run build:standalone' and commit the result."
+            git diff --stat -- src/standalone.js
+            exit 1
+          fi
+          echo "src/standalone.js is up to date."
