@@ -43,6 +43,7 @@ export const TAG_TECHNIQUES = [
   'agile',
   'slicing',
   'tdd',
+  'security',
 ];
 
 export const TAG_SERIES = [
@@ -58,6 +59,7 @@ export const TAG_SERIES = [
   'agile',
   'slicing',
   'tdd',
+  'exploit',
 ];
 
 export const TAG_DIFFICULTY = ['intro', 'intermediate', 'advanced', 'research'];
@@ -348,6 +350,12 @@ export const EXPLORER_TAGS = {
     level: ['unit'], technique: ['tdd'], series: ['tdd'],
     difficulty: 'intermediate', source: [TEXTBOOK],
   },
+
+  // ── Exploit Generation (P-series) ────────────────────────────────
+  ExploitOverflowExplorer: {
+    level: ['nonfunctional'], technique: ['security'], series: ['exploit'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -419,6 +427,7 @@ export const SECTION_EXPLORERS = {
   ],
   slicing: ['ProgramSlicingExplorer', 'SliceDicingExplorer', 'SliceCoverageExplorer', 'SliceRegressionExplorer'],
   tdd: ['TddCycleExplorer', 'TddRulesExplorer'],
+  exploit: ['ExploitOverflowExplorer'],
 };
 
 // ── Helpers ────────────────────────────────────────────────────────
