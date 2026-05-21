@@ -44077,6 +44077,8 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
             return activeTddTab;
           case "exploit":
             return activeExploitTab;
+          case "sbst":
+            return activeSbstTab;
           case "flow":
             return activeFlowTab;
           case "types":

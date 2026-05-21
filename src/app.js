@@ -1263,6 +1263,7 @@ export function renderApp(container) {
         case 'slicing':    return activeSlicingTab;
         case 'tdd':        return activeTddTab;
         case 'exploit':    return activeExploitTab;
+        case 'sbst':       return activeSbstTab;
         case 'flow':       return activeFlowTab;
         case 'types':      return activeTypesTab;
         default: return undefined;
