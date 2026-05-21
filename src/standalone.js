@@ -916,15 +916,14 @@
       "explorer.mobileNav": "Explorer sections",
       // Sections
       "section.all": "Overview",
-      "overview.group.foundations": "Foundations",
-      "overview.group.coverage": "Coverage Criteria",
-      "overview.group.execution": "Execution & Test Generation",
-      "overview.group.blackbox": "Black-Box Test Design",
-      "overview.group.advanced": "AI-Assisted Testing (Research)",
-      "overview.group.acceptance": "System / E2E / Acceptance",
-      "overview.group.mbt": "Model-Based Testing",
-      "overview.group.agile": "Agile Testing",
-      "overview.group.slicing": "Slice-Based Testing",
+      "taxonomy.foundations": "Foundations",
+      "taxonomy.input-space": "Input Space (Black-box)",
+      "taxonomy.graph-model": "Graph, Model & Dependence Coverage",
+      "taxonomy.logic": "Logic Coverage",
+      "taxonomy.syntax": "Syntax-Based Testing",
+      "taxonomy.generation": "Test Generation",
+      "taxonomy.process": "Process & Discipline",
+      "taxonomy.strategy": "Strategy & Quality",
       "overview.desc.methods": "Browse testing families and how black-box, white-box, and gray-box methods relate.",
       "overview.desc.flow": "Walk through the testing lifecycle from requirements to defect reporting.",
       "overview.desc.types": "Compare common testing levels and when each type is used.",
@@ -1553,6 +1552,135 @@
       "coverage.quiz.d": "D. It counts the number of distinct input values explored.",
       "coverage.quiz.correct": "Correct! Slice coverage counts executed statements within the backward slice \u2014 a finer target than plain statement coverage.",
       "coverage.quiz.wrong": "Not quite. Slice coverage focuses on the backward slice of the chosen criterion, not the entire program.",
+      // ── Exploit Generation (P-series) ──
+      "section.exploit": "Exploit Generation",
+      "section.exploit.title": "Exploit Generation Explorer",
+      "exploit.tab.overflow": "Stack Buffer Overflow",
+      "exploit.tab.sqli": "SQL Injection",
+      "exploit.tab.cmdi": "Command Injection",
+      "exploit.phase.vuln": "Vuln",
+      "exploit.phase.constraint": "Constraint",
+      "exploit.phase.payload": "Payload",
+      "exploit.phase.defense": "Defense",
+      "exploit.nextPhase": "Next phase",
+      "exploit.reset": "Reset",
+      "exploit.predictMode": "Predict mode",
+      "exploit.predictPrompt": "Which mitigation gates this payload?",
+      "exploit.predictCorrect": "Correct \u2014 that defense gates the canonical payload.",
+      "exploit.predictIncorrect": "Not the canonical defense \u2014 the canonical answer is highlighted below.",
+      "exploit.defenseTitle": "Defenses",
+      "exploit.payloadStatus.succeeds": "Payload succeeds",
+      "exploit.payloadStatus.gated": "Payload gated by an active defense",
+      "exploit.payloadStatus.allActive": "All defenses active \u2014 exploit requires bypass research",
+      "exploit.codeTitle": "Vulnerable code",
+      "exploit.constraintTitle": "Precondition",
+      "exploit.payloadTitle": "Synthesised payload",
+      "exploit.stackTitle": "Stack layout",
+      "exploit.queryTitle": "Resulting query",
+      "exploit.commandTitle": "Resulting command",
+      "exploit.overflow.cwe": "CWE-787 (out-of-bounds write)",
+      "exploit.overflow.constraint": "The input must be long enough to overflow the buffer and the saved EBP and reach the return address \u2014 16 + 4 + 4 = 24 bytes.",
+      "exploit.overflow.def.canary": "Stack canary",
+      "exploit.overflow.def.dep": "DEP / NX (non-executable stack)",
+      "exploit.overflow.def.aslr": "ASLR (address randomisation)",
+      "exploit.overflow.quiz.prompt": "Which single defense most directly invalidates the literal return-address bytes in the payload above?",
+      "exploit.overflow.quiz.a": "Stack canary alone",
+      "exploit.overflow.quiz.b": "DEP / NX alone",
+      "exploit.overflow.quiz.c": "ASLR \u2014 randomises the landing pad, so the literal retaddr no longer points anywhere meaningful",
+      "exploit.overflow.quiz.d": "None \u2014 all three are equivalent",
+      "exploit.sqli.cwe": "CWE-89 (SQL injection)",
+      "exploit.sqli.constraint": "The input must contain an unescaped quote to break out of the string literal in the query.",
+      "exploit.sqli.def.prepared": "Parameterised queries (prepared statements)",
+      "exploit.sqli.def.allowlist": "Input allowlist / type validation",
+      "exploit.sqli.def.waf": "WAF pattern matching",
+      "exploit.sqli.quiz.prompt": "Which defense structurally prevents the entire class of SQL injection?",
+      "exploit.sqli.quiz.a": "Input allowlist (handles only known-good characters)",
+      "exploit.sqli.quiz.b": "WAF pattern matching",
+      "exploit.sqli.quiz.c": "Prepared statements \u2014 the input never becomes part of the SQL string at all",
+      "exploit.sqli.quiz.d": "Escaping single quotes manually",
+      "exploit.cmdi.cwe": "CWE-78 (OS command injection)",
+      "exploit.cmdi.constraint": "The input must contain a shell metacharacter (;, |, &&) for the shell to parse it as a command separator.",
+      "exploit.cmdi.def.execv": "execv() with arg vector (no shell)",
+      "exploit.cmdi.def.shellescape": "shellescape / quote the argument",
+      "exploit.cmdi.def.allowlist": "Input allowlist (e.g., IP-address regex)",
+      "exploit.cmdi.quiz.prompt": "Which defense eliminates the shell entirely, so metacharacters cannot be parsed?",
+      "exploit.cmdi.quiz.a": "shellescape the argument",
+      "exploit.cmdi.quiz.b": "Input allowlist",
+      "exploit.cmdi.quiz.c": "execv() with arg vector \u2014 no shell is invoked, so metachars are literal",
+      "exploit.cmdi.quiz.d": "WAF rules",
+      // ── Test-Driven Development (O-series) ──
+      "section.tdd": "TDD",
+      "section.tdd.title": "Test-Driven Development",
+      "section.tdd.blurb": "Practice the red-green-refactor cycle and learn the discipline rules that keep TDD productive.",
+      "overview.desc.tdd": "Work through TDD katas step by step \u2014 watch the test list, code, and suite panel change each cycle \u2014 then internalize the three discipline rules by attempting actions in the rules explorer.",
+      "tdd.tab.cycle": "TDD Cycle",
+      "tdd.tab.rules": "TDD Rules",
+      // TDD Cycle Explorer
+      "tdd.cycle.title": "TDD Cycle Explorer",
+      "tdd.cycle.desc": "Step through a TDD kata one phase at a time. Enable predict mode to guess the next phase before revealing it.",
+      "tdd.testList": "Test List",
+      "tdd.code": "Production Code",
+      "tdd.suite": "Test Suite",
+      "tdd.passing": "Passing",
+      "tdd.failing": "Failing",
+      "tdd.noCode": "(no code yet)",
+      "tdd.predictNext": "Predict next phase:",
+      "tdd.predictMode": "Predict mode",
+      "tdd.correct": "Correct!",
+      "tdd.incorrect": "Incorrect.",
+      "tdd.reset": "Reset",
+      "tdd.nextStep": "Next Step",
+      "tdd.quiz.prompt": "Which TDD phase immediately follows a failing test (red)?",
+      "tdd.quiz.a": "A. Refactor \u2014 clean up first.",
+      "tdd.quiz.b": "B. Write another failing test to triangulate.",
+      "tdd.quiz.c": "C. Write just enough production code to make the test pass (green).",
+      "tdd.quiz.d": "D. Skip to integration testing.",
+      "tdd.quiz.correct": "Correct! After red you write the minimum production code needed to pass the test, then optionally refactor.",
+      "tdd.quiz.wrong": "Not quite. The TDD cycle is: red \u2192 green (minimum code) \u2192 refactor.",
+      // TDD Rules Explorer
+      "tdd.rules.title": "TDD Rules Explorer",
+      "tdd.rules.desc": "Apply TDD actions one at a time. Illegal moves are blocked and the violated discipline rule is explained.",
+      "tdd.rules.actionsTitle": "Actions",
+      "tdd.rules.state.phase": "Phase",
+      "tdd.rules.state.hasFailingTest": "Has failing test",
+      "tdd.rules.state.allGreen": "All green",
+      "tdd.rules.state.cycleCount": "Cycles completed",
+      "tdd.rules.action.writeFailingTest": "Write a failing test",
+      "tdd.rules.action.writeProductionCode": "Write production code",
+      "tdd.rules.action.refactor": "Refactor",
+      "tdd.rules.ok": "Legal move \u2014 step applied.",
+      "tdd.rules.reset": "Reset",
+      "tdd.rules.reason.alreadyRed": "Rule violated: you already have a failing test. Make it pass before writing another.",
+      "tdd.rules.reason.noRed": "Rule violated: you may not write production code without a failing test. Write a failing test first.",
+      "tdd.rules.reason.notGreen": "Rule violated: you may not refactor while a test is failing. Get to green first.",
+      "tdd.rules.reason.nothingYet": "Rule violated: nothing to refactor yet \u2014 complete at least one red-green cycle first.",
+      "tdd.rules.reason.unknown": "Unknown action.",
+      "tdd.rules.quiz.prompt": "Which of the following is always illegal in strict TDD?",
+      "tdd.rules.quiz.a": "A. Writing a failing test when all tests pass.",
+      "tdd.rules.quiz.b": "B. Writing production code when there is a failing test.",
+      "tdd.rules.quiz.c": "C. Writing production code before any failing test exists.",
+      "tdd.rules.quiz.d": "D. Refactoring after achieving green.",
+      "tdd.rules.quiz.correct": "Correct! You must never write production code without a failing test \u2014 that is the first and most important TDD rule.",
+      "tdd.rules.quiz.wrong": "Not quite. The fundamental TDD discipline forbids writing production code without a failing test to justify it.",
+      // Kata names and notes
+      "tdd.kata.fizzbuzz": "FizzBuzz",
+      "tdd.kata.fizzbuzz.s1": 'Red: write the first failing test \u2014 fizzbuzz(1) should return "1" but no implementation exists yet.',
+      "tdd.kata.fizzbuzz.s2": 'Green: fake it \u2014 return "1" unconditionally. The test passes; the implementation is obviously wrong but that is fine.',
+      "tdd.kata.fizzbuzz.s3": 'Red: add fizzbuzz(3) === "Fizz". The hardcoded "1" now fails this test.',
+      "tdd.kata.fizzbuzz.s4": "Green: introduce the modulo-3 branch. Both tests pass.",
+      "tdd.kata.fizzbuzz.s5": 'Red: add fizzbuzz(5) === "Buzz". The current code has no modulo-5 check.',
+      "tdd.kata.fizzbuzz.s6": "Green: add the modulo-5 branch. Three tests pass.",
+      "tdd.kata.fizzbuzz.s7": 'Red: add fizzbuzz(15) === "FizzBuzz". The greedy modulo-3 check fires first and returns "Fizz".',
+      "tdd.kata.fizzbuzz.s8": "Green: add the modulo-15 guard before the others. All four tests pass.",
+      "tdd.kata.fizzbuzz.s9": "Refactor: express fizz + buzz concatenation so the logic is self-evident. All tests still pass.",
+      "tdd.kata.stack": "Stack",
+      "tdd.kata.stack.s1": "Red: write the first failing test \u2014 a new Stack should be empty. No implementation exists yet.",
+      "tdd.kata.stack.s2": "Green: fake it \u2014 isEmpty() returns true unconditionally.",
+      "tdd.kata.stack.s3": "Red: push an item then assert isEmpty() is false. The fake fails.",
+      "tdd.kata.stack.s4": "Green: introduce real state (this.items array). Both tests pass.",
+      "tdd.kata.stack.s5": "Red: add a pop() test. The method does not exist yet.",
+      "tdd.kata.stack.s6": "Green: implement pop(). All three tests pass.",
+      "tdd.kata.stack.s7": "Refactor: introduce size() and express isEmpty() through it. Tests still green.",
       // Agile Testing Quadrants Explorer (M1)
       "agq.title": "Agile Testing Quadrants Explorer",
       "agq.desc": "Brian Marick's quadrants, popularised by Crispin & Gregory, are the map of agile testing. Two axes \u2014 business-facing vs technology-facing, and supporting the team vs critiquing the product \u2014 sort every kind of test. Click a quadrant; most technique chips bridge to the Explorer that teaches it in depth.",
@@ -2992,6 +3120,8 @@
       "tag.technique.model-based": "Model-Based",
       "tag.technique.agile": "Agile",
       "tag.technique.slicing": "Slicing",
+      "tag.technique.tdd": "Test-Driven Development",
+      "tag.technique.security": "Security",
       "tag.series.foundations": "Foundations",
       "tag.series.coverage-criteria": "Coverage Criteria",
       "tag.series.execution": "Execution & Test Generation",
@@ -3003,6 +3133,8 @@
       "tag.series.model-based": "Model-Based Testing",
       "tag.series.agile": "Agile Testing",
       "tag.series.slicing": "Slice-Based Testing",
+      "tag.series.tdd": "Test-Driven Development",
+      "tag.series.exploit": "Exploit Generation",
       "tag.difficulty.intro": "Intro",
       "tag.difficulty.intermediate": "Intermediate",
       "tag.difficulty.advanced": "Advanced",
@@ -3434,15 +3566,14 @@
       "explorer.panel.results": "\u7D50\u679C",
       "explorer.mobileNav": "Explorer \u5340\u584A",
       "section.all": "\u5168\u89BD",
-      "overview.group.foundations": "\u57FA\u790E\u6982\u5FF5",
-      "overview.group.coverage": "\u8986\u84CB\u6E96\u5247",
-      "overview.group.execution": "\u57F7\u884C\u8207\u6E2C\u8A66\u751F\u6210",
-      "overview.group.blackbox": "\u9ED1\u76D2\u6E2C\u8A66\u8A2D\u8A08",
-      "overview.group.advanced": "AI \u8F14\u52A9\u6E2C\u8A66\uFF08\u7814\u7A76\u524D\u6CBF\uFF09",
-      "overview.group.acceptance": "\u7CFB\u7D71 / E2E / \u9A57\u6536",
-      "overview.group.mbt": "\u6A21\u578B\u9A45\u52D5\u6E2C\u8A66",
-      "overview.group.agile": "\u654F\u6377\u6E2C\u8A66",
-      "overview.group.slicing": "\u5207\u7247\u6E2C\u8A66",
+      "taxonomy.foundations": "\u57FA\u790E",
+      "taxonomy.input-space": "\u8F38\u5165\u7A7A\u9593\uFF08\u9ED1\u76D2\uFF09",
+      "taxonomy.graph-model": "\u5716\u5F62\uFF0F\u6A21\u578B\uFF0F\u76F8\u4F9D\u6027\u8986\u84CB",
+      "taxonomy.logic": "\u908F\u8F2F\u8986\u84CB",
+      "taxonomy.syntax": "\u8A9E\u6CD5\u57FA\u790E\u6E2C\u8A66",
+      "taxonomy.generation": "\u6E2C\u8A66\u751F\u6210",
+      "taxonomy.process": "\u6D41\u7A0B\u8207\u7D00\u5F8B",
+      "taxonomy.strategy": "\u7B56\u7565\u8207\u54C1\u8CEA",
       "overview.desc.methods": "\u700F\u89BD\u9ED1\u7BB1\u3001\u767D\u7BB1\u3001\u7070\u7BB1\u6E2C\u8A66\u65B9\u6CD5\uFF0C\u4EE5\u53CA\u5404\u985E\u65B9\u6CD5\u4E4B\u9593\u7684\u95DC\u4FC2\u3002",
       "overview.desc.flow": "\u5F9E\u9700\u6C42\u5206\u6790\u5230\u7F3A\u9677\u56DE\u5831\uFF0C\u9010\u6B65\u67E5\u770B\u6E2C\u8A66\u751F\u547D\u9031\u671F\u3002",
       "overview.desc.types": "\u6BD4\u8F03\u5E38\u898B\u6E2C\u8A66\u5C64\u7D1A\uFF0C\u4EE5\u53CA\u5404\u985E\u578B\u9069\u5408\u4F7F\u7528\u7684\u6642\u6A5F\u3002",
@@ -4346,6 +4477,135 @@
       "coverage.quiz.d": "D. \u8A08\u7B97\u63A2\u7D22\u7684\u4E0D\u540C\u8F38\u5165\u503C\u6578\u91CF\u3002",
       "coverage.quiz.correct": "\u6B63\u78BA\uFF01\u5207\u7247\u8986\u84CB\u7D71\u8A08\u5F8C\u5411\u5207\u7247\u4E2D\u5DF2\u57F7\u884C\u7684\u9673\u8FF0\u53E5\u2014\u2014\u6BD4\u7D14\u9673\u8FF0\u53E5\u8986\u84CB\u66F4\u7CBE\u7D30\u7684\u76EE\u6A19\u3002",
       "coverage.quiz.wrong": "\u4E0D\u592A\u5C0D\u3002\u5207\u7247\u8986\u84CB\u805A\u7126\u65BC\u6240\u9078\u689D\u4EF6\u7684\u5F8C\u5411\u5207\u7247\uFF0C\u800C\u975E\u6574\u500B\u7A0B\u5F0F\u3002",
+      // ── 漏洞利用生成（P 系列）──
+      "section.exploit": "\u6F0F\u6D1E\u5229\u7528\u751F\u6210",
+      "section.exploit.title": "\u6F0F\u6D1E\u5229\u7528\u751F\u6210\u63A2\u7D22\u5668",
+      "exploit.tab.overflow": "\u5806\u758A\u7DE9\u885D\u5340\u6EA2\u4F4D",
+      "exploit.tab.sqli": "SQL \u6CE8\u5165",
+      "exploit.tab.cmdi": "\u547D\u4EE4\u6CE8\u5165",
+      "exploit.phase.vuln": "\u5F31\u9EDE",
+      "exploit.phase.constraint": "\u524D\u7F6E\u689D\u4EF6",
+      "exploit.phase.payload": "\u653B\u64CA\u8F09\u8377",
+      "exploit.phase.defense": "\u9632\u79A6",
+      "exploit.nextPhase": "\u4E0B\u4E00\u968E\u6BB5",
+      "exploit.reset": "\u91CD\u7F6E",
+      "exploit.predictMode": "\u9810\u6E2C\u6A21\u5F0F",
+      "exploit.predictPrompt": "\u54EA\u4E00\u7A2E\u9632\u79A6\u80FD\u963B\u64CB\u6B64\u653B\u64CA\u8F09\u8377\uFF1F",
+      "exploit.predictCorrect": "\u6B63\u78BA\u2014\u2014\u8A72\u9632\u79A6\u80FD\u963B\u64CB\u6B64\u5178\u578B\u653B\u64CA\u8F09\u8377\u3002",
+      "exploit.predictIncorrect": "\u4E26\u975E\u5178\u578B\u7B54\u6848\u2014\u2014\u4E0B\u65B9\u6A19\u793A\u51FA\u5178\u578B\u7B54\u6848\u3002",
+      "exploit.defenseTitle": "\u9632\u79A6\u6A5F\u5236",
+      "exploit.payloadStatus.succeeds": "\u653B\u64CA\u8F09\u8377\u6210\u529F",
+      "exploit.payloadStatus.gated": "\u653B\u64CA\u8F09\u8377\u88AB\u555F\u7528\u7684\u9632\u79A6\u963B\u64CB",
+      "exploit.payloadStatus.allActive": "\u5168\u90E8\u9632\u79A6\u555F\u7528\u2014\u2014\u653B\u64CA\u9700\u8981\u7E5E\u904E\u6280\u8853",
+      "exploit.codeTitle": "\u5F31\u9EDE\u7A0B\u5F0F\u78BC",
+      "exploit.constraintTitle": "\u524D\u7F6E\u689D\u4EF6",
+      "exploit.payloadTitle": "\u5408\u6210\u653B\u64CA\u8F09\u8377",
+      "exploit.stackTitle": "\u5806\u758A\u914D\u7F6E",
+      "exploit.queryTitle": "\u7522\u751F\u7684\u67E5\u8A62",
+      "exploit.commandTitle": "\u7522\u751F\u7684\u547D\u4EE4",
+      "exploit.overflow.cwe": "CWE-787\uFF08\u8D8A\u754C\u5BEB\u5165\uFF09",
+      "exploit.overflow.constraint": "\u8F38\u5165\u5FC5\u9808\u5920\u9577\uFF0C\u5148\u586B\u6EFF\u7DE9\u885D\u5340\u8207\u4FDD\u5B58\u7684 EBP\uFF0C\u624D\u80FD\u62B5\u9054\u8FD4\u56DE\u4F4D\u5740\u2014\u201416 + 4 + 4 = 24 \u4F4D\u5143\u7D44\u3002",
+      "exploit.overflow.def.canary": "\u5806\u758A\u91D1\u7D72\u96C0\uFF08stack canary\uFF09",
+      "exploit.overflow.def.dep": "DEP / NX\uFF08\u5806\u758A\u4E0D\u53EF\u57F7\u884C\uFF09",
+      "exploit.overflow.def.aslr": "ASLR\uFF08\u4F4D\u5740\u96A8\u6A5F\u5316\uFF09",
+      "exploit.overflow.quiz.prompt": "\u4E0A\u65B9\u653B\u64CA\u8F09\u8377\u4E2D\u7684\u56FA\u5B9A\u8FD4\u56DE\u4F4D\u5740\uFF0C\u54EA\u4E00\u7A2E\u9632\u79A6\u6700\u76F4\u63A5\u5730\u8B93\u5B83\u5931\u6548\uFF1F",
+      "exploit.overflow.quiz.a": "\u50C5\u9760\u5806\u758A\u91D1\u7D72\u96C0",
+      "exploit.overflow.quiz.b": "\u50C5\u9760 DEP / NX",
+      "exploit.overflow.quiz.c": "ASLR\u2014\u2014\u96A8\u6A5F\u5316\u964D\u843D\u5340\uFF0C\u56FA\u5B9A\u7684\u8FD4\u56DE\u4F4D\u5740\u4E0D\u518D\u6307\u5411\u6709\u610F\u7FA9\u7684\u4F4D\u7F6E",
+      "exploit.overflow.quiz.d": "\u4EE5\u4E0A\u4E09\u8005\u7B49\u6548",
+      "exploit.sqli.cwe": "CWE-89\uFF08SQL \u6CE8\u5165\uFF09",
+      "exploit.sqli.constraint": "\u8F38\u5165\u5FC5\u9808\u5305\u542B\u672A\u8F49\u7FA9\u7684\u5F15\u865F\uFF0C\u624D\u80FD\u8DF3\u812B\u67E5\u8A62\u4E2D\u7684\u5B57\u4E32\u5B57\u9762\u503C\u3002",
+      "exploit.sqli.def.prepared": "\u53C3\u6578\u5316\u67E5\u8A62\uFF08prepared statements\uFF09",
+      "exploit.sqli.def.allowlist": "\u8F38\u5165\u767D\u540D\u55AE\uFF0F\u578B\u5225\u9A57\u8B49",
+      "exploit.sqli.def.waf": "WAF \u6A23\u5F0F\u6BD4\u5C0D",
+      "exploit.sqli.quiz.prompt": "\u54EA\u4E00\u7A2E\u9632\u79A6\u5F9E\u7D50\u69CB\u4E0A\u963B\u6B62\u6574\u500B SQL \u6CE8\u5165\u985E\u5225\uFF1F",
+      "exploit.sqli.quiz.a": "\u8F38\u5165\u767D\u540D\u55AE\uFF08\u50C5\u63A5\u53D7\u5DF2\u77E5\u5408\u6CD5\u5B57\u5143\uFF09",
+      "exploit.sqli.quiz.b": "WAF \u6A23\u5F0F\u6BD4\u5C0D",
+      "exploit.sqli.quiz.c": "\u53C3\u6578\u5316\u67E5\u8A62\u2014\u2014\u8F38\u5165\u6839\u672C\u4E0D\u6703\u6210\u70BA SQL \u5B57\u4E32\u7684\u4E00\u90E8\u5206",
+      "exploit.sqli.quiz.d": "\u624B\u52D5\u8F49\u7FA9\u55AE\u5F15\u865F",
+      "exploit.cmdi.cwe": "CWE-78\uFF08\u4F5C\u696D\u7CFB\u7D71\u547D\u4EE4\u6CE8\u5165\uFF09",
+      "exploit.cmdi.constraint": "\u8F38\u5165\u5FC5\u9808\u5305\u542B shell \u5143\u5B57\u5143\uFF08;\u3001|\u3001&&\uFF09\uFF0Cshell \u624D\u6703\u5C07\u5176\u89E3\u6790\u70BA\u547D\u4EE4\u5206\u9694\u3002",
+      "exploit.cmdi.def.execv": "execv() \u4EE5\u53C3\u6578\u5411\u91CF\u547C\u53EB\uFF08\u4E0D\u7D93\u904E shell\uFF09",
+      "exploit.cmdi.def.shellescape": "shellescape / \u5C0D\u53C3\u6578\u52A0\u5F15\u865F",
+      "exploit.cmdi.def.allowlist": "\u8F38\u5165\u767D\u540D\u55AE\uFF08\u5982 IP \u4F4D\u5740\u6B63\u5247\uFF09",
+      "exploit.cmdi.quiz.prompt": "\u54EA\u4E00\u7A2E\u9632\u79A6\u5B8C\u5168\u79FB\u9664 shell\uFF0C\u4F7F\u5143\u5B57\u5143\u7121\u6CD5\u88AB\u89E3\u6790\uFF1F",
+      "exploit.cmdi.quiz.a": "\u5C0D\u53C3\u6578\u505A shellescape",
+      "exploit.cmdi.quiz.b": "\u8F38\u5165\u767D\u540D\u55AE",
+      "exploit.cmdi.quiz.c": "execv() \u4EE5\u53C3\u6578\u5411\u91CF\u547C\u53EB\u2014\u2014\u4E0D\u6703\u547C\u53EB shell\uFF0C\u5143\u5B57\u5143\u8B8A\u6210\u5B57\u9762\u503C",
+      "exploit.cmdi.quiz.d": "WAF \u898F\u5247",
+      // ── 測試驅動開發（O 系列）──
+      "section.tdd": "TDD",
+      "section.tdd.title": "\u6E2C\u8A66\u9A45\u52D5\u958B\u767C",
+      "section.tdd.blurb": "\u7DF4\u7FD2\u7D05\u71C8\uFF0F\u7DA0\u71C8\uFF0F\u91CD\u69CB\u5FAA\u74B0\uFF0C\u4E26\u5B78\u7FD2\u8B93 TDD \u4FDD\u6301\u9AD8\u6548\u7684\u7D00\u5F8B\u898F\u5247\u3002",
+      "overview.desc.tdd": "\u4E00\u6B65\u4E00\u6B65\u8D70\u904E TDD \u7BC4\u4F8B\u2014\u2014\u89C0\u5BDF\u6E2C\u8A66\u6E05\u55AE\u3001\u7A0B\u5F0F\u78BC\u8207\u6E2C\u8A66\u5957\u4EF6\u9762\u677F\u5728\u6BCF\u500B\u5FAA\u74B0\u4E2D\u7684\u8B8A\u5316\u2014\u2014\u518D\u900F\u904E\u898F\u5247\u63A2\u7D22\u5668\u5617\u8A66\u5404\u7A2E\u64CD\u4F5C\uFF0C\u5167\u5316\u4E09\u689D\u7D00\u5F8B\u898F\u5247\u3002",
+      "tdd.tab.cycle": "TDD \u5FAA\u74B0",
+      "tdd.tab.rules": "TDD \u898F\u5247",
+      // TDD 循環探索器
+      "tdd.cycle.title": "TDD \u5FAA\u74B0\u63A2\u7D22\u5668",
+      "tdd.cycle.desc": "\u6BCF\u6B21\u4E00\u500B\u968E\u6BB5\u5730\u9010\u6B65\u8D70\u904E TDD \u7BC4\u4F8B\u3002\u555F\u7528\u9810\u6E2C\u6A21\u5F0F\uFF0C\u5728\u63ED\u66C9\u4E0B\u4E00\u968E\u6BB5\u4E4B\u524D\u5148\u731C\u6E2C\u5B83\u3002",
+      "tdd.testList": "\u6E2C\u8A66\u6E05\u55AE",
+      "tdd.code": "\u6B63\u5F0F\u7A0B\u5F0F\u78BC",
+      "tdd.suite": "\u6E2C\u8A66\u5957\u4EF6",
+      "tdd.passing": "\u901A\u904E",
+      "tdd.failing": "\u5931\u6557",
+      "tdd.noCode": "\uFF08\u5C1A\u7121\u7A0B\u5F0F\u78BC\uFF09",
+      "tdd.predictNext": "\u9810\u6E2C\u4E0B\u4E00\u968E\u6BB5\uFF1A",
+      "tdd.predictMode": "\u9810\u6E2C\u6A21\u5F0F",
+      "tdd.correct": "\u6B63\u78BA\uFF01",
+      "tdd.incorrect": "\u4E0D\u6B63\u78BA\u3002",
+      "tdd.reset": "\u91CD\u7F6E",
+      "tdd.nextStep": "\u4E0B\u4E00\u6B65",
+      "tdd.quiz.prompt": "\u5728 TDD \u4E2D\uFF0C\u7DCA\u63A5\u5728\u5931\u6557\u6E2C\u8A66\uFF08\u7D05\u71C8\uFF09\u4E4B\u5F8C\u7684\u662F\u54EA\u500B\u968E\u6BB5\uFF1F",
+      "tdd.quiz.a": "A. \u91CD\u69CB\u2014\u2014\u5148\u6574\u7406\u7A0B\u5F0F\u78BC\u3002",
+      "tdd.quiz.b": "B. \u518D\u5BEB\u4E00\u500B\u5931\u6557\u6E2C\u8A66\u9032\u884C\u4E09\u89D2\u6E2C\u91CF\u3002",
+      "tdd.quiz.c": "C. \u64B0\u5BEB\u525B\u597D\u8DB3\u4EE5\u8B93\u6E2C\u8A66\u901A\u904E\u7684\u6B63\u5F0F\u7A0B\u5F0F\u78BC\uFF08\u7DA0\u71C8\uFF09\u3002",
+      "tdd.quiz.d": "D. \u8DF3\u5230\u6574\u5408\u6E2C\u8A66\u3002",
+      "tdd.quiz.correct": "\u6B63\u78BA\uFF01\u7D05\u71C8\u4E4B\u5F8C\uFF0C\u4F60\u53EA\u9700\u64B0\u5BEB\u6700\u5C11\u7684\u6B63\u5F0F\u7A0B\u5F0F\u78BC\u8B93\u6E2C\u8A66\u901A\u904E\uFF0C\u63A5\u8457\u53EF\u9078\u64C7\u6027\u5730\u91CD\u69CB\u3002",
+      "tdd.quiz.wrong": "\u4E0D\u592A\u5C0D\u3002TDD \u5FAA\u74B0\u662F\uFF1A\u7D05\u71C8 \u2192 \u7DA0\u71C8\uFF08\u6700\u5C11\u7A0B\u5F0F\u78BC\uFF09\u2192 \u91CD\u69CB\u3002",
+      // TDD 規則探索器
+      "tdd.rules.title": "TDD \u898F\u5247\u63A2\u7D22\u5668",
+      "tdd.rules.desc": "\u6BCF\u6B21\u5617\u8A66\u4E00\u500B TDD \u64CD\u4F5C\u3002\u4E0D\u5408\u6CD5\u7684\u64CD\u4F5C\u6703\u88AB\u963B\u6B62\uFF0C\u4E26\u8AAA\u660E\u9055\u53CD\u7684\u7D00\u5F8B\u898F\u5247\u3002",
+      "tdd.rules.actionsTitle": "\u64CD\u4F5C",
+      "tdd.rules.state.phase": "\u968E\u6BB5",
+      "tdd.rules.state.hasFailingTest": "\u6709\u5931\u6557\u6E2C\u8A66",
+      "tdd.rules.state.allGreen": "\u5168\u90E8\u901A\u904E",
+      "tdd.rules.state.cycleCount": "\u5DF2\u5B8C\u6210\u5FAA\u74B0\u6578",
+      "tdd.rules.action.writeFailingTest": "\u5BEB\u4E00\u500B\u5931\u6557\u6E2C\u8A66",
+      "tdd.rules.action.writeProductionCode": "\u64B0\u5BEB\u6B63\u5F0F\u7A0B\u5F0F\u78BC",
+      "tdd.rules.action.refactor": "\u91CD\u69CB",
+      "tdd.rules.ok": "\u5408\u6CD5\u64CD\u4F5C\u2014\u2014\u5DF2\u5957\u7528\u6B65\u9A5F\u3002",
+      "tdd.rules.reset": "\u91CD\u7F6E",
+      "tdd.rules.reason.alreadyRed": "\u9055\u53CD\u898F\u5247\uFF1A\u4F60\u5DF2\u6709\u4E00\u500B\u5931\u6557\u6E2C\u8A66\u3002\u5148\u8B93\u5B83\u901A\u904E\u518D\u5BEB\u4E0B\u4E00\u500B\u3002",
+      "tdd.rules.reason.noRed": "\u9055\u53CD\u898F\u5247\uFF1A\u6C92\u6709\u5931\u6557\u6E2C\u8A66\u5C31\u4E0D\u80FD\u64B0\u5BEB\u6B63\u5F0F\u7A0B\u5F0F\u78BC\u3002\u8ACB\u5148\u5BEB\u4E00\u500B\u5931\u6557\u6E2C\u8A66\u3002",
+      "tdd.rules.reason.notGreen": "\u9055\u53CD\u898F\u5247\uFF1A\u6709\u6E2C\u8A66\u5931\u6557\u6642\u4E0D\u80FD\u91CD\u69CB\u3002\u8ACB\u5148\u9054\u5230\u7DA0\u71C8\u3002",
+      "tdd.rules.reason.nothingYet": "\u9055\u53CD\u898F\u5247\uFF1A\u5C1A\u7121\u53EF\u91CD\u69CB\u7684\u5167\u5BB9\u2014\u2014\u5148\u5B8C\u6210\u81F3\u5C11\u4E00\u500B\u7D05\u71C8-\u7DA0\u71C8\u5FAA\u74B0\u3002",
+      "tdd.rules.reason.unknown": "\u672A\u77E5\u64CD\u4F5C\u3002",
+      "tdd.rules.quiz.prompt": "\u4EE5\u4E0B\u54EA\u4E00\u9805\u5728\u56B4\u683C TDD \u4E2D\u6C38\u9060\u662F\u4E0D\u5408\u6CD5\u7684\uFF1F",
+      "tdd.rules.quiz.a": "A. \u5728\u6240\u6709\u6E2C\u8A66\u901A\u904E\u6642\u5BEB\u4E00\u500B\u5931\u6557\u6E2C\u8A66\u3002",
+      "tdd.rules.quiz.b": "B. \u5728\u6709\u5931\u6557\u6E2C\u8A66\u6642\u64B0\u5BEB\u6B63\u5F0F\u7A0B\u5F0F\u78BC\u3002",
+      "tdd.rules.quiz.c": "C. \u5728\u6C92\u6709\u4EFB\u4F55\u5931\u6557\u6E2C\u8A66\u7684\u60C5\u6CC1\u4E0B\u64B0\u5BEB\u6B63\u5F0F\u7A0B\u5F0F\u78BC\u3002",
+      "tdd.rules.quiz.d": "D. \u9054\u5230\u7DA0\u71C8\u5F8C\u9032\u884C\u91CD\u69CB\u3002",
+      "tdd.rules.quiz.correct": "\u6B63\u78BA\uFF01\u6C92\u6709\u5931\u6557\u6E2C\u8A66\u5C31\u64B0\u5BEB\u6B63\u5F0F\u7A0B\u5F0F\u78BC\u2014\u2014\u9019\u662F\u7B2C\u4E00\u689D\u4E5F\u662F\u6700\u91CD\u8981\u7684 TDD \u898F\u5247\uFF0C\u6C38\u9060\u4E0D\u53EF\u9055\u53CD\u3002",
+      "tdd.rules.quiz.wrong": "\u4E0D\u592A\u5C0D\u3002TDD \u7684\u57FA\u672C\u7D00\u5F8B\u7981\u6B62\u5728\u6C92\u6709\u5931\u6557\u6E2C\u8A66\u4F86\u6B63\u7576\u5316\u7684\u60C5\u6CC1\u4E0B\u64B0\u5BEB\u6B63\u5F0F\u7A0B\u5F0F\u78BC\u3002",
+      // 範例名稱與備註
+      "tdd.kata.fizzbuzz": "FizzBuzz",
+      "tdd.kata.fizzbuzz.s1": '\u7D05\u71C8\uFF1A\u5BEB\u7B2C\u4E00\u500B\u5931\u6557\u6E2C\u8A66\u2014\u2014fizzbuzz(1) \u61C9\u56DE\u50B3 "1"\uFF0C\u4F46\u5C1A\u7121\u4EFB\u4F55\u5BE6\u4F5C\u3002',
+      "tdd.kata.fizzbuzz.s2": '\u7DA0\u71C8\uFF1A\u5047\u5BE6\u4F5C\u2014\u2014\u7121\u689D\u4EF6\u56DE\u50B3 "1"\u3002\u6E2C\u8A66\u901A\u904E\uFF1B\u5BE6\u4F5C\u986F\u7136\u6709\u8AA4\uFF0C\u4F46\u9019\u6C92\u95DC\u4FC2\u3002',
+      "tdd.kata.fizzbuzz.s3": '\u7D05\u71C8\uFF1A\u65B0\u589E fizzbuzz(3) === "Fizz"\u3002\u786C\u7DE8\u78BC\u7684 "1" \u8B93\u9019\u500B\u6E2C\u8A66\u5931\u6557\u3002',
+      "tdd.kata.fizzbuzz.s4": "\u7DA0\u71C8\uFF1A\u52A0\u5165 mod 3 \u5206\u652F\u3002\u5169\u500B\u6E2C\u8A66\u7686\u901A\u904E\u3002",
+      "tdd.kata.fizzbuzz.s5": '\u7D05\u71C8\uFF1A\u65B0\u589E fizzbuzz(5) === "Buzz"\u3002\u76EE\u524D\u7A0B\u5F0F\u78BC\u6C92\u6709 mod 5 \u6AA2\u67E5\u3002',
+      "tdd.kata.fizzbuzz.s6": "\u7DA0\u71C8\uFF1A\u52A0\u5165 mod 5 \u5206\u652F\u3002\u4E09\u500B\u6E2C\u8A66\u901A\u904E\u3002",
+      "tdd.kata.fizzbuzz.s7": '\u7D05\u71C8\uFF1A\u65B0\u589E fizzbuzz(15) === "FizzBuzz"\u3002\u8CAA\u5A6A\u7684 mod 3 \u6AA2\u67E5\u512A\u5148\u89F8\u767C\u4E26\u56DE\u50B3 "Fizz"\u3002',
+      "tdd.kata.fizzbuzz.s8": "\u7DA0\u71C8\uFF1A\u5728\u5176\u4ED6\u689D\u4EF6\u4E4B\u524D\u52A0\u5165 mod 15 \u5B88\u885B\u3002\u56DB\u500B\u6E2C\u8A66\u5168\u90E8\u901A\u904E\u3002",
+      "tdd.kata.fizzbuzz.s9": "\u91CD\u69CB\uFF1A\u6539\u7528 fizz + buzz \u5B57\u4E32\u4E32\u63A5\uFF0C\u8B93\u908F\u8F2F\u4E00\u76EE\u77AD\u7136\u3002\u6240\u6709\u6E2C\u8A66\u4ECD\u7136\u901A\u904E\u3002",
+      "tdd.kata.stack": "Stack\uFF08\u5806\u758A\uFF09",
+      "tdd.kata.stack.s1": "\u7D05\u71C8\uFF1A\u5BEB\u7B2C\u4E00\u500B\u5931\u6557\u6E2C\u8A66\u2014\u2014\u65B0\u5EFA\u7684 Stack \u61C9\u70BA\u7A7A\u3002\u5C1A\u7121\u5BE6\u4F5C\u3002",
+      "tdd.kata.stack.s2": "\u7DA0\u71C8\uFF1A\u5047\u5BE6\u4F5C\u2014\u2014isEmpty() \u7121\u689D\u4EF6\u56DE\u50B3 true\u3002",
+      "tdd.kata.stack.s3": "\u7D05\u71C8\uFF1Apush \u4E00\u500B\u5143\u7D20\u5F8C\u65B7\u8A00 isEmpty() \u70BA false\u3002\u5047\u5BE6\u4F5C\u5931\u6557\u3002",
+      "tdd.kata.stack.s4": "\u7DA0\u71C8\uFF1A\u5F15\u5165\u771F\u5BE6\u72C0\u614B\uFF08this.items \u9663\u5217\uFF09\u3002\u5169\u500B\u6E2C\u8A66\u7686\u901A\u904E\u3002",
+      "tdd.kata.stack.s5": "\u7D05\u71C8\uFF1A\u65B0\u589E pop() \u6E2C\u8A66\u3002\u6B64\u65B9\u6CD5\u5C1A\u4E0D\u5B58\u5728\u3002",
+      "tdd.kata.stack.s6": "\u7DA0\u71C8\uFF1A\u5BE6\u4F5C pop()\u3002\u4E09\u500B\u6E2C\u8A66\u7686\u901A\u904E\u3002",
+      "tdd.kata.stack.s7": "\u91CD\u69CB\uFF1A\u5F15\u5165 size() \u4E26\u900F\u904E\u5B83\u5BE6\u4F5C isEmpty()\u3002\u6E2C\u8A66\u4ECD\u4FDD\u6301\u7DA0\u71C8\u3002",
       // BDD / Gherkin 探索器（J1）
       "bdd.title": "BDD / Gherkin \u63A2\u7D22\u5668",
       "bdd.desc": "\u7DF4\u7FD2\u884C\u70BA\u9A45\u52D5\u9A57\u6536\u6D41\u7A0B\uFF1AFeature \u2192 Scenario \u2192 Step\u3002\u5207\u63DB\u9810\u8A2D\u7BC4\u4F8B\u53EF\u770B\u5230 Scenario Outline + Examples \u8868\u5982\u4F55\u5C55\u958B\u6210\u53C3\u6578\u5316\u6E2C\u8A66\u6848\u4F8B\u3002",
@@ -5503,6 +5763,8 @@
       "tag.technique.model-based": "\u6A21\u578B\u9A45\u52D5",
       "tag.technique.agile": "\u654F\u6377",
       "tag.technique.slicing": "\u7A0B\u5F0F\u5207\u7247",
+      "tag.technique.tdd": "\u6E2C\u8A66\u9A45\u52D5\u958B\u767C",
+      "tag.technique.security": "\u8CC7\u8A0A\u5B89\u5168",
       "tag.series.foundations": "\u57FA\u790E\u6982\u5FF5",
       "tag.series.coverage-criteria": "\u8986\u84CB\u6E96\u5247",
       "tag.series.execution": "\u57F7\u884C\u8207\u6E2C\u8A66\u751F\u6210",
@@ -5514,6 +5776,8 @@
       "tag.series.model-based": "\u6A21\u578B\u9A45\u52D5\u6E2C\u8A66",
       "tag.series.agile": "\u654F\u6377\u6E2C\u8A66",
       "tag.series.slicing": "\u5207\u7247\u6E2C\u8A66",
+      "tag.series.tdd": "\u6E2C\u8A66\u9A45\u52D5\u958B\u767C",
+      "tag.series.exploit": "\u6F0F\u6D1E\u5229\u7528\u751F\u6210",
       "tag.difficulty.intro": "\u5165\u9580",
       "tag.difficulty.intermediate": "\u4E2D\u7D1A",
       "tag.difficulty.advanced": "\u9032\u968E",
@@ -5999,13 +6263,13 @@
 
   // src/components/TestingMethodTree.js
   function createTestingMethodTree() {
-    const root32 = document.createElement("div");
+    const root37 = document.createElement("div");
     let expandedIds = /* @__PURE__ */ new Set();
-    function render31() {
+    function render36() {
       const allExpanded = expandedIds.size === testingMethods.length;
-      root32.className = "testing-method-tree";
-      root32.dataset.testid = "testing-method-tree";
-      root32.innerHTML = `
+      root37.className = "testing-method-tree";
+      root37.dataset.testid = "testing-method-tree";
+      root37.innerHTML = `
       <div class="tree-controls">
         <button class="btn-toggle-all" type="button" data-testid="toggle-all-btn">
           ${allExpanded ? t("methods.collapseAll") : t("methods.expandAll")}
@@ -6067,12 +6331,12 @@
       }).join("")}
       </div>
     `;
-      root32.querySelector('[data-testid="toggle-all-btn"]').addEventListener("click", () => {
+      root37.querySelector('[data-testid="toggle-all-btn"]').addEventListener("click", () => {
         expandedIds = allExpanded ? /* @__PURE__ */ new Set() : new Set(testingMethods.map((method) => method.id));
-        render31();
+        render36();
       });
       testingMethods.forEach((method) => {
-        root32.querySelector(`[data-testid="method-card-btn-${method.id}"]`).addEventListener("click", () => {
+        root37.querySelector(`[data-testid="method-card-btn-${method.id}"]`).addEventListener("click", () => {
           const next = new Set(expandedIds);
           if (next.has(method.id)) {
             next.delete(method.id);
@@ -6080,12 +6344,12 @@
             next.add(method.id);
           }
           expandedIds = next;
-          render31();
+          render36();
         });
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/dataFlow.js
@@ -6835,12 +7099,12 @@
   function createParserState(lines) {
     return { lines, index: 0 };
   }
-  function currentLine(state31) {
-    return state31.lines[state31.index] || null;
+  function currentLine(state36) {
+    return state36.lines[state36.index] || null;
   }
-  function consumeLine(state31) {
-    const line = currentLine(state31);
-    state31.index += 1;
+  function consumeLine(state36) {
+    const line = currentLine(state36);
+    state36.index += 1;
     return line;
   }
   function createAstNode(type, line, extra = {}) {
@@ -6863,50 +7127,50 @@
       return line.text.startsWith(token);
     });
   }
-  function parseJavascriptSingleStatement(state31) {
-    const line = currentLine(state31);
+  function parseJavascriptSingleStatement(state36) {
+    const line = currentLine(state36);
     if (!line) {
       return [];
     }
     if (line.text.startsWith("if")) {
-      return [parseJavascriptIf(state31)];
+      return [parseJavascriptIf(state36)];
     }
     if (line.text.startsWith("while")) {
-      return [parseJavascriptLoop(state31, "while")];
+      return [parseJavascriptLoop(state36, "while")];
     }
     if (line.text.startsWith("for")) {
-      return [parseJavascriptLoop(state31, "for")];
+      return [parseJavascriptLoop(state36, "for")];
     }
     if (line.text.startsWith("switch")) {
-      return [parseJavascriptSwitch(state31)];
+      return [parseJavascriptSwitch(state36)];
     }
     if (line.text.startsWith("return")) {
-      consumeLine(state31);
+      consumeLine(state36);
       return [createAstNode("return", line, { text: line.text.replace(/;$/, "") })];
     }
     if (line.text.startsWith("break")) {
-      consumeLine(state31);
+      consumeLine(state36);
       return [createAstNode("break", line, { text: line.text.replace(/;$/, "") })];
     }
     if (line.text.startsWith("continue")) {
-      consumeLine(state31);
+      consumeLine(state36);
       return [createAstNode("continue", line, { text: line.text.replace(/;$/, "") })];
     }
-    consumeLine(state31);
+    consumeLine(state36);
     return [createAstNode("statement", line, { text: line.text.replace(/;$/, "") })];
   }
-  function parseJavascriptIf(state31) {
-    const line = consumeLine(state31);
+  function parseJavascriptIf(state36) {
+    const line = consumeLine(state36);
     const condition = extractParenthesizedContent(line.text) || line.text.replace(/^if\s*/, "").replace(/\{$/, "").trim();
-    const consequent = line.text.endsWith("{") ? parseJavascriptStatements(state31) : parseJavascriptSingleStatement(state31);
+    const consequent = line.text.endsWith("{") ? parseJavascriptStatements(state36) : parseJavascriptSingleStatement(state36);
     let alternate = [];
-    const nextLine = currentLine(state31);
+    const nextLine = currentLine(state36);
     if (nextLine == null ? void 0 : nextLine.text.startsWith("else if")) {
-      state31.lines[state31.index] = { ...nextLine, text: nextLine.text.replace(/^else\s+/, "") };
-      alternate = [parseJavascriptIf(state31)];
+      state36.lines[state36.index] = { ...nextLine, text: nextLine.text.replace(/^else\s+/, "") };
+      alternate = [parseJavascriptIf(state36)];
     } else if (nextLine == null ? void 0 : nextLine.text.startsWith("else")) {
-      const elseLine = consumeLine(state31);
-      alternate = elseLine.text.endsWith("{") ? parseJavascriptStatements(state31) : parseJavascriptSingleStatement(state31);
+      const elseLine = consumeLine(state36);
+      alternate = elseLine.text.endsWith("{") ? parseJavascriptStatements(state36) : parseJavascriptSingleStatement(state36);
     }
     return createAstNode("if", line, {
       condition,
@@ -6914,33 +7178,33 @@
       alternate
     });
   }
-  function parseJavascriptLoop(state31, type) {
-    const line = consumeLine(state31);
+  function parseJavascriptLoop(state36, type) {
+    const line = consumeLine(state36);
     const condition = extractParenthesizedContent(line.text) || line.text.replace(new RegExp(`^${type}\\s*`), "").replace(/\{$/, "").trim();
-    const body = line.text.endsWith("{") ? parseJavascriptStatements(state31) : parseJavascriptSingleStatement(state31);
+    const body = line.text.endsWith("{") ? parseJavascriptStatements(state36) : parseJavascriptSingleStatement(state36);
     return createAstNode(type, line, {
       condition,
       body
     });
   }
-  function parseJavascriptSwitch(state31) {
-    const line = consumeLine(state31);
+  function parseJavascriptSwitch(state36) {
+    const line = consumeLine(state36);
     const expression = extractParenthesizedContent(line.text) || line.text.replace(/^switch\s*/, "").replace(/\{$/, "").trim();
     const cases = [];
-    while (state31.index < state31.lines.length) {
-      const nextLine = currentLine(state31);
+    while (state36.index < state36.lines.length) {
+      const nextLine = currentLine(state36);
       if (!nextLine) {
         break;
       }
       if (nextLine.text === "}") {
-        consumeLine(state31);
+        consumeLine(state36);
         break;
       }
       if (/^(case\s+.+:|default:)$/i.test(nextLine.text)) {
-        const caseLine = consumeLine(state31);
+        const caseLine = consumeLine(state36);
         const isDefault = caseLine.text.startsWith("default:");
         const label = isDefault ? "default" : caseLine.text.replace(/^case\s+/i, "").replace(/:$/, "").trim();
-        const statements = parseJavascriptStatements(state31, ["case ", "default:", "}"]);
+        const statements = parseJavascriptStatements(state36, ["case ", "default:", "}"]);
         cases.push(createAstNode("case", caseLine, {
           label,
           isDefault,
@@ -6948,40 +7212,40 @@
         }));
         continue;
       }
-      consumeLine(state31);
+      consumeLine(state36);
     }
     return createAstNode("switch", line, {
       expression,
       cases
     });
   }
-  function parseJavascriptStatements(state31, stopWhen = ["}"]) {
+  function parseJavascriptStatements(state36, stopWhen = ["}"]) {
     const statements = [];
-    while (state31.index < state31.lines.length) {
-      const line = currentLine(state31);
+    while (state36.index < state36.lines.length) {
+      const line = currentLine(state36);
       if (!line) {
         break;
       }
       if (isJavascriptStop(line, stopWhen)) {
         if (line.text === "}") {
-          consumeLine(state31);
+          consumeLine(state36);
         }
         break;
       }
       if ((line.text.startsWith("function ") || line.text.startsWith("export function ")) && line.text.endsWith("{")) {
-        consumeLine(state31);
+        consumeLine(state36);
         statements.push(createAstNode("statement", line, {
           text: line.text.replace(/\{$/, "").trim()
         }));
-        statements.push(...parseJavascriptStatements(state31));
+        statements.push(...parseJavascriptStatements(state36));
         continue;
       }
       if (line.text === "{") {
-        consumeLine(state31);
-        statements.push(...parseJavascriptStatements(state31));
+        consumeLine(state36);
+        statements.push(...parseJavascriptStatements(state36));
         continue;
       }
-      statements.push(...parseJavascriptSingleStatement(state31));
+      statements.push(...parseJavascriptSingleStatement(state36));
     }
     return statements;
   }
@@ -6992,22 +7256,22 @@
     const upper = line.text.toUpperCase();
     return stopWhen.some((token) => upper.startsWith(token));
   }
-  function parsePseudocodeIf(state31) {
+  function parsePseudocodeIf(state36) {
     var _a;
-    const line = consumeLine(state31);
+    const line = consumeLine(state36);
     const condition = line.text.replace(/^IF\s*/i, "").replace(/\s*THEN$/i, "").trim();
-    const consequent = parsePseudocodeStatements(state31, ["ELSE", "ELSE IF", "END IF", "ENDIF", "END"]);
+    const consequent = parsePseudocodeStatements(state36, ["ELSE", "ELSE IF", "END IF", "ENDIF", "END"]);
     let alternate = [];
-    const nextLine = currentLine(state31);
+    const nextLine = currentLine(state36);
     if (/^ELSE IF\b/i.test((nextLine == null ? void 0 : nextLine.text) || "")) {
-      state31.lines[state31.index] = { ...nextLine, text: nextLine.text.replace(/^ELSE\s+/i, "") };
-      alternate = [parsePseudocodeIf(state31)];
+      state36.lines[state36.index] = { ...nextLine, text: nextLine.text.replace(/^ELSE\s+/i, "") };
+      alternate = [parsePseudocodeIf(state36)];
     } else if (/^ELSE\b/i.test((nextLine == null ? void 0 : nextLine.text) || "")) {
-      consumeLine(state31);
-      alternate = parsePseudocodeStatements(state31, ["END IF", "ENDIF", "END"]);
+      consumeLine(state36);
+      alternate = parsePseudocodeStatements(state36, ["END IF", "ENDIF", "END"]);
     }
-    if (/^(END IF|ENDIF|END)$/i.test(((_a = currentLine(state31)) == null ? void 0 : _a.text) || "")) {
-      consumeLine(state31);
+    if (/^(END IF|ENDIF|END)$/i.test(((_a = currentLine(state36)) == null ? void 0 : _a.text) || "")) {
+      consumeLine(state36);
     }
     return createAstNode("if", line, {
       condition,
@@ -7015,51 +7279,51 @@
       alternate
     });
   }
-  function parsePseudocodeLoop(state31) {
+  function parsePseudocodeLoop(state36) {
     var _a;
-    const line = consumeLine(state31);
+    const line = consumeLine(state36);
     const condition = line.text.replace(/^(WHILE|FOR)\s*/i, "").replace(/\s*DO$/i, "").trim();
-    const body = parsePseudocodeStatements(state31, ["END WHILE", "END FOR", "END"]);
-    if (/^(END WHILE|END FOR|END)$/i.test(((_a = currentLine(state31)) == null ? void 0 : _a.text) || "")) {
-      consumeLine(state31);
+    const body = parsePseudocodeStatements(state36, ["END WHILE", "END FOR", "END"]);
+    if (/^(END WHILE|END FOR|END)$/i.test(((_a = currentLine(state36)) == null ? void 0 : _a.text) || "")) {
+      consumeLine(state36);
     }
     return createAstNode(/^WHILE\b/i.test(line.text) ? "while" : "for", line, {
       condition,
       body
     });
   }
-  function parsePseudocodeStatements(state31, stopWhen = []) {
+  function parsePseudocodeStatements(state36, stopWhen = []) {
     const statements = [];
-    while (state31.index < state31.lines.length) {
-      const line = currentLine(state31);
+    while (state36.index < state36.lines.length) {
+      const line = currentLine(state36);
       if (!line || isPseudocodeStop(line, stopWhen)) {
         break;
       }
       if (/^FUNCTION\b/i.test(line.text)) {
-        consumeLine(state31);
+        consumeLine(state36);
         continue;
       }
       if (/^IF\b/i.test(line.text)) {
-        statements.push(parsePseudocodeIf(state31));
+        statements.push(parsePseudocodeIf(state36));
         continue;
       }
       if (/^(WHILE|FOR)\b/i.test(line.text)) {
-        statements.push(parsePseudocodeLoop(state31));
+        statements.push(parsePseudocodeLoop(state36));
         continue;
       }
       if (/^RETURN\b/i.test(line.text)) {
-        statements.push(createAstNode("return", consumeLine(state31), { text: line.text }));
+        statements.push(createAstNode("return", consumeLine(state36), { text: line.text }));
         continue;
       }
       if (/^BREAK\b/i.test(line.text)) {
-        statements.push(createAstNode("break", consumeLine(state31), { text: line.text }));
+        statements.push(createAstNode("break", consumeLine(state36), { text: line.text }));
         continue;
       }
       if (/^CONTINUE\b/i.test(line.text)) {
-        statements.push(createAstNode("continue", consumeLine(state31), { text: line.text }));
+        statements.push(createAstNode("continue", consumeLine(state36), { text: line.text }));
         continue;
       }
-      statements.push(createAstNode("statement", consumeLine(state31), { text: line.text }));
+      statements.push(createAstNode("statement", consumeLine(state36), { text: line.text }));
     }
     return statements;
   }
@@ -7838,7 +8102,7 @@
   `;
   }
   function createGraphCoverageExplorer() {
-    const root32 = document.createElement("div");
+    const root37 = document.createElement("div");
     const defaultGraph = cloneGraph(graphCoverageGraph);
     const defaultProgram = {
       id: "default-sample",
@@ -7890,7 +8154,7 @@
         userCount: userPaths.length
       };
       graphQuiz.phase = "graded";
-      render31();
+      render36();
     }
     function renderGraphLabReflectPanel() {
       if (!graphLabReflect.active) return "";
@@ -7964,7 +8228,7 @@
       parseError = "";
       sourceStatus = statusMessage;
       selectedRequirementId = null;
-      render31();
+      render36();
     }
     function scheduleAutoApply() {
       if (autoApplyTimer) {
@@ -7979,10 +8243,10 @@
           parseError = "";
           sourceStatus = t("graph.status.recomputed", { name: activeProgram.name });
           selectedRequirementId = null;
-          render31();
+          render36();
         } catch (error) {
           parseError = error.message;
-          render31();
+          render36();
         }
       }, 300);
     }
@@ -7992,7 +8256,7 @@
       parseError = "";
       sourceStatus = t("graph.status.reset", { name: activeProgram.name });
       selectedRequirementId = null;
-      render31();
+      render36();
     }
     function getState() {
       var _a;
@@ -8010,7 +8274,7 @@
         pathPlan
       };
     }
-    function render31() {
+    function render36() {
       var _a, _b, _c, _d, _e, _f, _g, _h;
       const { requirements, selectedRequirement, selectedCriterion, pathPlan } = getState();
       const selectedSourceNodes = getSelectedSourceNodes(graph, selectedRequirement);
@@ -8027,17 +8291,17 @@
         total: 1,
         items: [{ q: t("lab.metric.graph.label", { criterion: (selectedCriterion == null ? void 0 : selectedCriterion.label) || criterionId, paths: pathPlan.selectedPaths.length }), a: "", ok: true }]
       });
-      root32.className = "graph-coverage";
-      root32.dataset.testid = "graph-coverage-explorer";
-      root32.innerHTML = `
+      root37.className = "graph-coverage";
+      root37.dataset.testid = "graph-coverage-explorer";
+      root37.innerHTML = `
       <div class="graph-source-card" data-testid="graph-source-card">
         <div class="graph-source-toolbar">
           <label>
             Program Example
             <select data-testid="program-example-select">
               <option value="${defaultProgram.id}"${selectedProgramId === defaultProgram.id ? " selected" : ""}>Default CFG Sample</option>
-              ${graphCoverageProgramExamples.map((example) => `
-                <option value="${example.id}"${selectedProgramId === example.id ? " selected" : ""}>${example.name}</option>
+              ${graphCoverageProgramExamples.map((example4) => `
+                <option value="${example4.id}"${selectedProgramId === example4.id ? " selected" : ""}>${example4.name}</option>
               `).join("")}
               <option value="uploaded-code"${selectedProgramId === "uploaded-code" ? " selected" : ""}>Uploaded Source Code</option>
               <option value="uploaded-spec"${selectedProgramId === "uploaded-spec" ? " selected" : ""}>Uploaded Graph Spec</option>
@@ -8231,10 +8495,10 @@
       ${quizPanel}
       ${labReflectPanel}
     `;
-      root32.querySelector('[data-testid="graph-reset-btn"]').addEventListener("click", () => {
+      root37.querySelector('[data-testid="graph-reset-btn"]').addEventListener("click", () => {
         resetGraph();
       });
-      root32.querySelector('[data-testid="program-example-select"]').addEventListener("change", (event) => {
+      root37.querySelector('[data-testid="program-example-select"]').addEventListener("change", (event) => {
         const nextProgramId = event.target.value;
         if (nextProgramId === defaultProgram.id) {
           loadGraphSource(defaultProgram, defaultGraph, t("graph.status.defaultLoaded"));
@@ -8243,32 +8507,32 @@
         if (nextProgramId === "uploaded-spec") {
           selectedProgramId = nextProgramId;
           sourceStatus = t("graph.status.pickJson");
-          render31();
+          render36();
           return;
         }
         if (nextProgramId === "uploaded-code") {
           selectedProgramId = nextProgramId;
           sourceStatus = t("graph.status.pickCode");
-          render31();
+          render36();
           return;
         }
-        const example = graphCoverageProgramExamples.find((item) => item.id === nextProgramId);
-        if (example) {
-          const nextGraph = resolveProgramGraph(example);
-          selectedCodeLanguage = example.language || selectedCodeLanguage;
-          loadGraphSource(example, nextGraph, t("graph.status.exampleLoaded", { name: example.name }));
+        const example4 = graphCoverageProgramExamples.find((item) => item.id === nextProgramId);
+        if (example4) {
+          const nextGraph = resolveProgramGraph(example4);
+          selectedCodeLanguage = example4.language || selectedCodeLanguage;
+          loadGraphSource(example4, nextGraph, t("graph.status.exampleLoaded", { name: example4.name }));
         }
       });
-      root32.querySelector('[data-testid="program-language-select"]').addEventListener("change", (event) => {
+      root37.querySelector('[data-testid="program-language-select"]').addEventListener("change", (event) => {
         selectedCodeLanguage = event.target.value;
       });
-      root32.querySelector('[data-testid="graph-upload-btn"]').addEventListener("click", () => {
-        root32.querySelector('[data-testid="graph-upload-input"]').click();
+      root37.querySelector('[data-testid="graph-upload-btn"]').addEventListener("click", () => {
+        root37.querySelector('[data-testid="graph-upload-input"]').click();
       });
-      root32.querySelector('[data-testid="code-upload-btn"]').addEventListener("click", () => {
-        root32.querySelector('[data-testid="code-upload-input"]').click();
+      root37.querySelector('[data-testid="code-upload-btn"]').addEventListener("click", () => {
+        root37.querySelector('[data-testid="code-upload-input"]').click();
       });
-      root32.querySelector('[data-testid="graph-upload-input"]').addEventListener("change", async (event) => {
+      root37.querySelector('[data-testid="graph-upload-input"]').addEventListener("change", async (event) => {
         const [file] = event.target.files || [];
         if (!file) {
           return;
@@ -8283,10 +8547,10 @@
         } catch (error) {
           selectedProgramId = "uploaded-spec";
           parseError = error.message;
-          render31();
+          render36();
         }
       });
-      root32.querySelector('[data-testid="code-upload-input"]').addEventListener("change", async (event) => {
+      root37.querySelector('[data-testid="code-upload-input"]').addEventListener("change", async (event) => {
         const [file] = event.target.files || [];
         if (!file) {
           return;
@@ -8306,10 +8570,10 @@
         } catch (error) {
           parseError = error.message;
           sourceStatus = t("graph.status.codeFailed");
-          render31();
+          render36();
         }
       });
-      root32.querySelectorAll("[data-draft-field]").forEach((input) => {
+      root37.querySelectorAll("[data-draft-field]").forEach((input) => {
         input.addEventListener("input", () => {
           draft = {
             ...draft,
@@ -8318,70 +8582,70 @@
           scheduleAutoApply();
         });
       });
-      root32.querySelectorAll("[data-criterion]").forEach((button) => {
+      root37.querySelectorAll("[data-criterion]").forEach((button) => {
         button.addEventListener("click", () => {
           criterionId = button.dataset.criterion;
           selectedRequirementId = null;
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-requirement-id]").forEach((button) => {
+      root37.querySelectorAll("[data-requirement-id]").forEach((button) => {
         button.addEventListener("click", () => {
           selectedRequirementId = button.dataset.requirementId;
-          render31();
+          render36();
         });
       });
-      (_a = root32.querySelector('[data-testid="graph-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root37.querySelector('[data-testid="graph-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         graphQuiz.active = true;
         graphQuiz.selectedPaths = /* @__PURE__ */ new Set();
         graphQuiz.phase = "question";
         graphQuiz.result = null;
-        render31();
+        render36();
       });
-      (_b = root32.querySelector('[data-testid="graph-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root37.querySelector('[data-testid="graph-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         graphQuiz.active = false;
-        render31();
+        render36();
       });
-      root32.querySelectorAll("[data-quiz-path]").forEach((cb) => {
+      root37.querySelectorAll("[data-quiz-path]").forEach((cb) => {
         cb.addEventListener("change", () => {
           const key = cb.dataset.quizPath;
           if (cb.checked) graphQuiz.selectedPaths.add(key);
           else graphQuiz.selectedPaths.delete(key);
         });
       });
-      (_c = root32.querySelector('[data-testid="graph-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root37.querySelector('[data-testid="graph-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
         const { pathPlan: pathPlan2 } = getState();
         gradeGraphQuiz(pathPlan2);
       });
-      (_d = root32.querySelector('[data-testid="graph-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root37.querySelector('[data-testid="graph-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
         graphQuiz.selectedPaths = /* @__PURE__ */ new Set();
         graphQuiz.phase = "question";
         graphQuiz.result = null;
-        render31();
+        render36();
       });
-      (_e = root32.querySelector('[data-testid="graph-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root37.querySelector('[data-testid="graph-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
         graphLabReflect.active = true;
-        render31();
+        render36();
       });
-      (_f = root32.querySelector('[data-testid="graph-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root37.querySelector('[data-testid="graph-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a2, _b2;
-        graphLabReflect.a1 = ((_a2 = root32.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || graphLabReflect.a1;
-        graphLabReflect.a2 = ((_b2 = root32.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || graphLabReflect.a2;
+        graphLabReflect.a1 = ((_a2 = root37.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || graphLabReflect.a1;
+        graphLabReflect.a2 = ((_b2 = root37.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || graphLabReflect.a2;
         graphLabReflect.active = false;
-        render31();
+        render36();
       });
-      (_g = root32.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root37.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         graphLabReflect.a1 = e.target.value;
       });
-      (_h = root32.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
+      (_h = root37.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
         graphLabReflect.a2 = e.target.value;
       });
-      const lrShare = root32.querySelector('[data-testid="graph-lab-reflect-share"]');
+      const lrShare = root37.querySelector('[data-testid="graph-lab-reflect-share"]');
       if (lrShare) {
         lrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root32.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root32.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root37.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root37.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "graph",
@@ -8416,11 +8680,11 @@
         });
       }
     }
-    render31();
+    render36();
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a;
-        if (!root32.isConnected) return;
+        if (!root37.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "graph") return;
         const content = String((_a = detail.content) != null ? _a : "");
@@ -8438,11 +8702,11 @@
         } catch (error) {
           parseError = error.message;
           sourceStatus = t("graph.status.codeFailed");
-          render31();
+          render36();
         }
       });
     }
-    return root32;
+    return root37;
   }
 
   // src/utils/logicCoverage.js
@@ -10510,10 +10774,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     });
   }
   function createLogicCoverageExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "logic-coverage";
-    root32.dataset.testid = "logic-coverage";
-    const state31 = {
+    const root37 = document.createElement("div");
+    root37.className = "logic-coverage";
+    root37.dataset.testid = "logic-coverage";
+    const state36 = {
       expression: logicCoveragePredicates[0].expression,
       selectedCriterion: "pc",
       error: null,
@@ -10561,8 +10825,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function renderLogicQuizPanel() {
       if (!logicQuiz.active) return "";
-      const criterion = logicCoverageCriteria.find((c) => c.id === state31.selectedCriterion);
-      const criterionLabel = pickField(criterion, "label") || (criterion == null ? void 0 : criterion.id) || state31.selectedCriterion;
+      const criterion = logicCoverageCriteria.find((c) => c.id === state36.selectedCriterion);
+      const criterionLabel = pickField(criterion, "label") || (criterion == null ? void 0 : criterion.id) || state36.selectedCriterion;
       const uniqueCount = getQuizUniqueCount();
       if (uniqueCount === null) return "";
       const isGraded = logicQuiz.phase === "graded";
@@ -10573,7 +10837,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <h4>${t("quiz.logic.title")}</h4>
           <button type="button" class="quiz-close-btn" data-testid="logic-quiz-close">${t("quiz.close")}</button>
         </div>
-        <p class="quiz-prompt">${t("quiz.logic.prompt").replace("{expr}", escapeHtml2(state31.expression)).replace("{criterion}", escapeHtml2(criterionLabel))}</p>
+        <p class="quiz-prompt">${t("quiz.logic.prompt").replace("{expr}", escapeHtml2(state36.expression)).replace("{criterion}", escapeHtml2(criterionLabel))}</p>
         <div class="quiz-bva-inputs">
           <label class="quiz-bva-field">
             <span>${t("quiz.logic.label")}</span>
@@ -10588,7 +10852,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <p class="quiz-score" data-testid="logic-quiz-score">
             ${correct ? `<strong>${t("quiz.bva.perfect")}</strong>` : `${t("quiz.ec.wrong")} ${t("quiz.ec.answer").replace("{count}", uniqueCount)}`}
           </p>
-          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: "logic", explorerLabel: t("quiz.logic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: correct ? 1 : 0, total: 1, items: [{ q: t("quiz.logic.prompt").replace("{expr}", state31.expression).replace("{criterion}", criterionLabel), a: String(logicQuiz.answer), expected: String(uniqueCount), ok: correct }] })}" data-testid="logic-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
+          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: "logic", explorerLabel: t("quiz.logic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: correct ? 1 : 0, total: 1, items: [{ q: t("quiz.logic.prompt").replace("{expr}", state36.expression).replace("{criterion}", criterionLabel), a: String(logicQuiz.answer), expected: String(uniqueCount), ok: correct }] })}" data-testid="logic-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
           <button type="button" class="quiz-start-btn" data-testid="logic-quiz-reset">${t("quiz.reset")}</button>
         ` : `
           <button type="button" class="quiz-start-btn" data-testid="logic-quiz-check">${t("quiz.check")}</button>
@@ -10603,65 +10867,65 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       cloudClient = null;
     }
     function pushRecentToCloud(list) {
-      if (!cloudClient || !state31.cloudUser || typeof cloudClient.saveLogicRecent !== "function") return;
-      cloudClient.saveLogicRecent(state31.cloudUser.uid, list).catch(() => {
+      if (!cloudClient || !state36.cloudUser || typeof cloudClient.saveLogicRecent !== "function") return;
+      cloudClient.saveLogicRecent(state36.cloudUser.uid, list).catch(() => {
       });
     }
     function persistRecent() {
-      saveRecent(state31.recent);
-      pushRecentToCloud(state31.recent);
+      saveRecent(state36.recent);
+      pushRecentToCloud(state36.recent);
     }
     function rememberCurrentExpression() {
-      const expr = state31.expression.trim();
-      if (!expr || state31.error) return false;
+      const expr = state36.expression.trim();
+      if (!expr || state36.error) return false;
       if (isBuiltinExpression(expr)) return false;
-      const next = [expr, ...state31.recent.filter((item) => item !== expr)].slice(0, RECENT_LIMIT);
-      if (next.length === state31.recent.length && next[0] === state31.recent[0]) {
+      const next = [expr, ...state36.recent.filter((item) => item !== expr)].slice(0, RECENT_LIMIT);
+      if (next.length === state36.recent.length && next[0] === state36.recent[0]) {
         return false;
       }
-      state31.recent = next;
+      state36.recent = next;
       persistRecent();
       return true;
     }
     function removeRecent(expr) {
-      const next = state31.recent.filter((item) => item !== expr);
-      if (next.length === state31.recent.length) return;
-      state31.recent = next;
+      const next = state36.recent.filter((item) => item !== expr);
+      if (next.length === state36.recent.length) return;
+      state36.recent = next;
       persistRecent();
-      render31();
+      render36();
     }
     function recompute() {
       try {
-        state31.parsed = parsePredicate(state31.expression);
-        if (state31.parsed.clauses.length > 6) {
+        state36.parsed = parsePredicate(state36.expression);
+        if (state36.parsed.clauses.length > 6) {
           throw new Error(t("logic.err.tooManyClauses"));
         }
-        state31.analysis = buildAllCoverageSets(state31.parsed);
-        state31.error = null;
-        const clauseSet = new Set(state31.parsed.clauses);
-        for (const k of Object.keys(state31.bindings)) {
-          if (!clauseSet.has(k)) delete state31.bindings[k];
+        state36.analysis = buildAllCoverageSets(state36.parsed);
+        state36.error = null;
+        const clauseSet = new Set(state36.parsed.clauses);
+        for (const k of Object.keys(state36.bindings)) {
+          if (!clauseSet.has(k)) delete state36.bindings[k];
         }
       } catch (err) {
-        state31.parsed = null;
-        state31.analysis = null;
-        state31.error = err.message || String(err);
+        state36.parsed = null;
+        state36.analysis = null;
+        state36.error = err.message || String(err);
       }
     }
     function getActiveSet() {
-      if (!state31.analysis) return null;
-      return state31.analysis.sets[state31.selectedCriterion] || null;
+      if (!state36.analysis) return null;
+      return state36.analysis.sets[state36.selectedCriterion] || null;
     }
     function activeRowIds() {
       const set = getActiveSet();
       if (!set) return /* @__PURE__ */ new Set();
       return new Set(set.tests.map((t2) => `r${t2.row.index}`));
     }
-    function render31() {
+    function render36() {
       const examplesMarkup = logicCoveragePredicates.map((p) => `
         <button
           type="button"
-          class="logic-example-btn${state31.expression === p.expression ? " active" : ""}"
+          class="logic-example-btn${state36.expression === p.expression ? " active" : ""}"
           data-expression="${escapeHtml2(p.expression)}"
           data-testid="logic-example-${p.id}"
           title="${escapeHtml2(pickField(p, "description") || "")}"
@@ -10669,11 +10933,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           ${escapeHtml2(p.name)}
         </button>
       `).join("");
-      const recentMarkup = state31.recent.length ? `
+      const recentMarkup = state36.recent.length ? `
         <div class="logic-recent" data-testid="logic-recent">
           <span class="logic-recent-label">${t("logic.recent")}</span>
-          ${state31.recent.map((expr) => `
-              <span class="logic-recent-chip${state31.expression === expr ? " active" : ""}" data-testid="logic-recent-chip">
+          ${state36.recent.map((expr) => `
+              <span class="logic-recent-chip${state36.expression === expr ? " active" : ""}" data-testid="logic-recent-chip">
                 <button
                   type="button"
                   class="logic-recent-select"
@@ -10694,7 +10958,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const criteriaMarkup = logicCoverageCriteria.map((c) => `
         <button
           type="button"
-          class="logic-criterion-btn${state31.selectedCriterion === c.id ? " active" : ""}"
+          class="logic-criterion-btn${state36.selectedCriterion === c.id ? " active" : ""}"
           data-criterion="${c.id}"
           data-testid="logic-criterion-${c.id}"
         >
@@ -10704,14 +10968,14 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       `).join("");
       const truthTableMarkup = renderTruthTable();
       const summaryMarkup = renderSummary2();
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="logic-toolbar">
         <label class="logic-input-label" for="logic-expression-input">Predicate</label>
         <input
           id="logic-expression-input"
           class="logic-expression-input"
           type="text"
-          value="${escapeHtml2(state31.expression)}"
+          value="${escapeHtml2(state36.expression)}"
           spellcheck="false"
           autocomplete="off"
           data-testid="logic-expression-input"
@@ -10721,12 +10985,12 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         ${recentMarkup}
       </div>
 
-      ${state31.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state31.error)}</div>` : ""}
+      ${state36.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state36.error)}</div>` : ""}
 
       <div class="logic-criteria" role="tablist" aria-label="${t("logic.aria.criteria")}">
         <div class="graph-criterion-row">
           ${criteriaMarkup}
-          ${!state31.error && state31.analysis ? `
+          ${!state36.error && state36.analysis ? `
             <button type="button" class="quiz-start-btn" data-testid="logic-quiz-start">
               ${t("quiz.start")}
             </button>
@@ -10746,13 +11010,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
       <div class="logic-truth-table-wrap">${truthTableMarkup}</div>
     `;
-      bindEvents31();
+      bindEvents36();
     }
     function renderTruthTable() {
-      if (!state31.analysis) {
+      if (!state36.analysis) {
         return "";
       }
-      const { rows, clauses } = state31.analysis;
+      const { rows, clauses } = state36.analysis;
       const highlighted = activeRowIds();
       const activeSet = getActiveSet();
       const majorByRow = /* @__PURE__ */ new Map();
@@ -10802,7 +11066,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function renderSummary2() {
       var _a;
-      if (state31.error || !state31.analysis) {
+      if (state36.error || !state36.analysis) {
         return "";
       }
       const set = getActiveSet();
@@ -10820,48 +11084,48 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const testList = annotated.map(({ test, isDuplicate }) => `
         <li class="logic-test-item${isDuplicate ? " duplicate" : ""}" data-testid="logic-test-${escapeHtml2(test.id)}">
           <span class="logic-test-row">#${test.row.index}</span>
-          <span class="logic-test-values">${state31.analysis.clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ")}</span>
+          <span class="logic-test-values">${state36.analysis.clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ")}</span>
           <span class="logic-test-pred ${test.row.predicate ? "is-true" : "is-false"}">P=${test.row.predicate ? "T" : "F"}</span>
           <span class="logic-test-label">${escapeHtml2(test.label)}</span>
           ${isDuplicate ? `<span class="logic-test-dup-tag" aria-label="${t("logic.duplicate")}">${t("logic.duplicate")}</span>` : ""}
         </li>
       `).join("");
       const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">${t("logic.unsatisfied", { items: set.unsatisfied.join(", ") })}</p>` : "";
-      const dnfMarkup = ["ic", "utpc", "mutpc", "nfpc", "mnfpc", "cutpnfp"].includes(set.id) && state31.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">${t("logic.dnfPrefix")}${dnfToHtml(state31.analysis.dnf)}
-          <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state31.analysis.dnf)}${t("logic.textbookClose")}</span>
-        </p>${set.id === "ic" && state31.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">${t("logic.dnfNegPrefix")}${dnfToHtml(state31.analysis.negDnf)}
-                <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state31.analysis.negDnf)}${t("logic.textbookClose")}</span>
+      const dnfMarkup = ["ic", "utpc", "mutpc", "nfpc", "mnfpc", "cutpnfp"].includes(set.id) && state36.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">${t("logic.dnfPrefix")}${dnfToHtml(state36.analysis.dnf)}
+          <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state36.analysis.dnf)}${t("logic.textbookClose")}</span>
+        </p>${set.id === "ic" && state36.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">${t("logic.dnfNegPrefix")}${dnfToHtml(state36.analysis.negDnf)}
+                <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state36.analysis.negDnf)}${t("logic.textbookClose")}</span>
               </p>` : ""}` : "";
-      const kmapMarkup = state31.parsed && (set.id === "ic" || set.id === "utpc" || set.id === "mutpc" || set.id === "nfpc" || set.id === "mnfpc" || set.id === "cutpnfp") ? set.id === "ic" ? (() => {
+      const kmapMarkup = state36.parsed && (set.id === "ic" || set.id === "utpc" || set.id === "mutpc" || set.id === "nfpc" || set.id === "mnfpc" || set.id === "cutpnfp") ? set.id === "ic" ? (() => {
         const posTests = set.tests.filter((t2) => t2.polarity === "pos");
         const negTests = set.tests.filter((t2) => t2.polarity === "neg");
         const posGroups = buildImplicantGroups(
-          state31.analysis.rows,
-          state31.analysis.dnf || [],
+          state36.analysis.rows,
+          state36.analysis.dnf || [],
           true,
           0,
           posTests
         );
         const negGroups = buildImplicantGroups(
-          state31.analysis.rows,
-          state31.analysis.negDnf || [],
+          state36.analysis.rows,
+          state36.analysis.negDnf || [],
           false,
-          (state31.analysis.dnf || []).length,
+          (state36.analysis.dnf || []).length,
           negTests
         );
         const posTestSet = new Set(posTests.map((t2) => t2.row.index));
         const negTestSet = new Set(negTests.map((t2) => t2.row.index));
         return `<div class="logic-kmap-row">
                 ${renderKMap(
-          state31.analysis.rows,
-          state31.parsed.clauses,
+          state36.analysis.rows,
+          state36.parsed.clauses,
           true,
           t("logic.kmap.title.fStar"),
           { highlightedMinterms: posTestSet, implicantGroups: posGroups, highlightLabel: "test" }
         )}
                 ${renderKMap(
-          state31.analysis.rows,
-          state31.parsed.clauses,
+          state36.analysis.rows,
+          state36.parsed.clauses,
           false,
           t("logic.kmap.title.fNegStar"),
           { highlightedMinterms: negTestSet, implicantGroups: negGroups, highlightLabel: "test" }
@@ -10869,19 +11133,19 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               </div>`;
       })() : set.id === "utpc" ? `<div class="logic-kmap-row">
                 ${renderKMap(
-        state31.analysis.rows,
-        state31.parsed.clauses,
+        state36.analysis.rows,
+        state36.parsed.clauses,
         true,
         t("logic.kmap.title.utp"),
         { highlightedMinterms: new Set(set.tests.map((t2) => t2.row.index)) }
       )}
               </div>` : set.id === "mutpc" ? (() => {
-        const dnf = state31.analysis.dnf || [];
-        const groups = buildImplicantGroups(state31.analysis.rows, dnf, true, 0, set.tests);
+        const dnf = state36.analysis.dnf || [];
+        const groups = buildImplicantGroups(state36.analysis.rows, dnf, true, 0, set.tests);
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state31.analysis.rows,
-          state31.parsed.clauses,
+          state36.analysis.rows,
+          state36.parsed.clauses,
           true,
           t("logic.kmap.title.mutp"),
           {
@@ -10892,8 +11156,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         )}
                 </div>`;
       })() : set.id === "nfpc" || set.id === "mnfpc" ? (() => {
-        const dnf = state31.analysis.dnf || [];
-        const groups = buildImplicantGroups(state31.analysis.rows, dnf, true, 0, []);
+        const dnf = state36.analysis.dnf || [];
+        const groups = buildImplicantGroups(state36.analysis.rows, dnf, true, 0, []);
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
         set.tests.forEach((test) => {
@@ -10909,16 +11173,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const titleText = set.id === "mnfpc" ? t("logic.kmap.title.mnfp") : t("logic.kmap.title.nfp");
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state31.analysis.rows,
-          state31.parsed.clauses,
+          state36.analysis.rows,
+          state36.parsed.clauses,
           true,
           titleText,
           { implicantGroups: groups, nfpMarks, ntpMarks, highlightLabel: "test" }
         )}
                 </div>`;
       })() : (() => {
-        const dnf = state31.analysis.dnf || [];
-        const groups = buildImplicantGroups(state31.analysis.rows, dnf, true, 0, []);
+        const dnf = state36.analysis.dnf || [];
+        const groups = buildImplicantGroups(state36.analysis.rows, dnf, true, 0, []);
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
         const testRowSet = /* @__PURE__ */ new Set();
@@ -10936,8 +11200,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state31.analysis.rows,
-          state31.parsed.clauses,
+          state36.analysis.rows,
+          state36.parsed.clauses,
           true,
           t("logic.kmap.title.cutpnfp"),
           {
@@ -10969,16 +11233,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     `;
     }
     function buildBindingResultsHTML() {
-      if (!state31.analysis) return "";
-      const { clauses } = state31.analysis;
+      if (!state36.analysis) return "";
+      const { clauses } = state36.analysis;
       const hasAnyBinding = clauses.some((c) => {
         var _a;
-        return (_a = state31.bindings[c]) == null ? void 0 : _a.trim();
+        return (_a = state36.bindings[c]) == null ? void 0 : _a.trim();
       });
       if (!hasAnyBinding) {
         return `<p class="logic-binding-hint-noentry" data-testid="logic-binding-no-entry">${t("logic.binding.noBinding")}</p>`;
       }
-      const vars = extractVarsFromBindings(state31.bindings);
+      const vars = extractVarsFromBindings(state36.bindings);
       const activeSet = getActiveSet();
       if (!activeSet) return "";
       const seenRows = /* @__PURE__ */ new Set();
@@ -10993,13 +11257,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const valStr = clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ");
         const boundClauseValues = {};
         for (const c of clauses) {
-          if ((_a = state31.bindings[c]) == null ? void 0 : _a.trim()) boundClauseValues[c] = test.row.values[c];
+          if ((_a = state36.bindings[c]) == null ? void 0 : _a.trim()) boundClauseValues[c] = test.row.values[c];
         }
-        const constraintStr = buildConstraintStr(boundClauseValues, state31.bindings);
+        const constraintStr = buildConstraintStr(boundClauseValues, state36.bindings);
         const result = solveBinding({
           clauseValues: boundClauseValues,
-          bindings: state31.bindings,
-          searchRange: state31.bindingRange
+          bindings: state36.bindings,
+          searchRange: state36.bindingRange
         });
         const witnessCell = result.witness ? `<code class="logic-binding-witness" data-testid="logic-binding-witness-${test.row.index}">${escapeHtml2(formatWitnessStr(result.witness))}</code>` : `<span class="logic-binding-infeasible" data-testid="logic-binding-infeasible-${test.row.index}">${t("logic.binding.infeasible")}</span>`;
         return `
@@ -11030,8 +11294,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     function renderSymmetryBridge() {
       const activeSet = getActiveSet();
       if (!activeSet || !["cacc", "racc"].includes(activeSet.id)) return "";
-      if (!state31.analysis || state31.error) return "";
-      const { clauses, rows } = state31.analysis;
+      if (!state36.analysis || state36.error) return "";
+      const { clauses, rows } = state36.analysis;
       if (!clauses || clauses.length < 2 || clauses.length > 6) return "";
       const table = /* @__PURE__ */ new Map();
       for (const row of rows) {
@@ -11055,13 +11319,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       </div>`;
     }
     function activePredicateExample() {
-      return logicCoveragePredicates.find((p) => p.expression === state31.expression) || null;
+      return logicCoveragePredicates.find((p) => p.expression === state36.expression) || null;
     }
     function renderBindingPanel() {
-      if (!state31.analysis || state31.error) return "";
-      const { clauses } = state31.analysis;
-      const example = activePredicateExample();
-      const hasDefaults = (example == null ? void 0 : example.defaultBindings) && clauses.some((c) => example.defaultBindings[c]);
+      if (!state36.analysis || state36.error) return "";
+      const { clauses } = state36.analysis;
+      const example4 = activePredicateExample();
+      const hasDefaults = (example4 == null ? void 0 : example4.defaultBindings) && clauses.some((c) => example4.defaultBindings[c]);
       const inputRows = clauses.map((c) => `
       <label class="logic-binding-clause-row">
         <span class="logic-binding-clause-name" aria-label="${t("logic.binding.clause")} ${escapeHtml2(c)}">${escapeHtml2(c)}</span>
@@ -11071,7 +11335,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           class="logic-binding-expr-input"
           data-testid="logic-binding-input-${escapeHtml2(c)}"
           data-binding-clause="${escapeHtml2(c)}"
-          value="${escapeHtml2(state31.bindings[c] || "")}"
+          value="${escapeHtml2(state36.bindings[c] || "")}"
           placeholder="${t("logic.binding.placeholder")}"
           spellcheck="false"
           autocomplete="off"
@@ -11082,8 +11346,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const restoreBtn = hasDefaults ? `<button type="button" class="logic-binding-restore-btn"
            data-testid="logic-binding-restore"
            title="${t("logic.binding.restore")}">${t("logic.binding.restore")}</button>` : "";
-      const paramsHint = (example == null ? void 0 : example.bindingParams) ? `<span class="logic-binding-params-hint">${t("logic.binding.params")} <code>${escapeHtml2(example.bindingParams)}</code></span>` : "";
-      const sourceBlock = (example == null ? void 0 : example.sourceCode) ? `<pre class="logic-binding-source" data-testid="logic-binding-source"><code>${escapeHtml2(example.sourceCode)}</code></pre>` : "";
+      const paramsHint = (example4 == null ? void 0 : example4.bindingParams) ? `<span class="logic-binding-params-hint">${t("logic.binding.params")} <code>${escapeHtml2(example4.bindingParams)}</code></span>` : "";
+      const sourceBlock = (example4 == null ? void 0 : example4.sourceCode) ? `<pre class="logic-binding-source" data-testid="logic-binding-source"><code>${escapeHtml2(example4.sourceCode)}</code></pre>` : "";
       return `
       <details class="logic-binding" data-testid="logic-binding" open>
         <summary class="logic-binding-summary">${t("logic.binding.title")}</summary>
@@ -11097,10 +11361,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <div class="logic-binding-range-row">
           <span class="logic-binding-range-label">${t("logic.binding.range")}</span>
           <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-min"
-            data-binding-range="min" value="${state31.bindingRange[0]}" min="-1000" max="0" step="1" />
+            data-binding-range="min" value="${state36.bindingRange[0]}" min="-1000" max="0" step="1" />
           <span class="logic-binding-range-sep">${t("logic.binding.rangeTo")}</span>
           <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-max"
-            data-binding-range="max" value="${state31.bindingRange[1]}" min="0" max="1000" step="1" />
+            data-binding-range="max" value="${state36.bindingRange[1]}" min="0" max="1000" step="1" />
         </div>
         <div class="logic-binding-results" data-testid="logic-binding-results">
           ${buildBindingResultsHTML()}
@@ -11109,116 +11373,116 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     `;
     }
     function refreshBindingResults() {
-      const el = root32.querySelector('[data-testid="logic-binding-results"]');
+      const el = root37.querySelector('[data-testid="logic-binding-results"]');
       if (el) el.innerHTML = buildBindingResultsHTML();
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i;
-      const input = root32.querySelector('[data-testid="logic-expression-input"]');
+      const input = root37.querySelector('[data-testid="logic-expression-input"]');
       if (input) {
         input.addEventListener("input", (event) => {
-          state31.expression = event.target.value;
+          state36.expression = event.target.value;
           recompute();
           renderPreservingFocus("logic-expression-input");
         });
         input.addEventListener("blur", () => {
-          if (rememberCurrentExpression()) render31();
+          if (rememberCurrentExpression()) render36();
         });
         input.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
             event.preventDefault();
-            if (rememberCurrentExpression()) render31();
+            if (rememberCurrentExpression()) render36();
           }
         });
       }
-      root32.querySelectorAll("[data-expression]").forEach((btn) => {
+      root37.querySelectorAll("[data-expression]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.expression = btn.dataset.expression;
+          state36.expression = btn.dataset.expression;
           recompute();
-          const example = activePredicateExample();
-          if (example == null ? void 0 : example.defaultBindings) {
-            state31.bindings = { ...example.defaultBindings };
+          const example4 = activePredicateExample();
+          if (example4 == null ? void 0 : example4.defaultBindings) {
+            state36.bindings = { ...example4.defaultBindings };
           }
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-recent-select]").forEach((btn) => {
+      root37.querySelectorAll("[data-recent-select]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.expression = btn.dataset.recentSelect;
+          state36.expression = btn.dataset.recentSelect;
           recompute();
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-recent-remove]").forEach((btn) => {
+      root37.querySelectorAll("[data-recent-remove]").forEach((btn) => {
         btn.addEventListener("click", (event) => {
           event.stopPropagation();
           removeRecent(btn.dataset.recentRemove);
         });
       });
-      root32.querySelectorAll("[data-criterion]").forEach((btn) => {
+      root37.querySelectorAll("[data-criterion]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.selectedCriterion = btn.dataset.criterion;
+          state36.selectedCriterion = btn.dataset.criterion;
           logicQuiz.active = false;
           logicQuiz.phase = "question";
           logicQuiz.answer = "";
           logicQuiz.result = null;
-          render31();
+          render36();
         });
       });
-      (_a = root32.querySelector('[data-testid="logic-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root37.querySelector('[data-testid="logic-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         logicQuiz.active = true;
         logicQuiz.phase = "question";
         logicQuiz.answer = "";
         logicQuiz.result = null;
-        const quizEl = root32.querySelector('[data-testid="logic-quiz"]');
+        const quizEl = root37.querySelector('[data-testid="logic-quiz"]');
         if (!quizEl) {
-          render31();
+          render36();
           return;
         }
         quizEl.outerHTML = renderLogicQuizPanel();
-        render31();
+        render36();
       });
-      (_b = root32.querySelector('[data-testid="logic-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root37.querySelector('[data-testid="logic-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         logicQuiz.active = false;
-        render31();
+        render36();
       });
-      (_c = root32.querySelector('[data-testid="logic-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root37.querySelector('[data-testid="logic-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
         var _a2;
-        const inp = root32.querySelector('[data-testid="logic-quiz-answer"]');
+        const inp = root37.querySelector('[data-testid="logic-quiz-answer"]');
         logicQuiz.answer = (_a2 = inp == null ? void 0 : inp.value) != null ? _a2 : "";
         logicQuiz.phase = "graded";
-        const panel = root32.querySelector('[data-testid="logic-quiz"]');
+        const panel = root37.querySelector('[data-testid="logic-quiz"]');
         if (panel) panel.outerHTML = renderLogicQuizPanel();
-        render31();
+        render36();
       });
-      (_d = root32.querySelector('[data-testid="logic-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root37.querySelector('[data-testid="logic-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
         logicQuiz.phase = "question";
         logicQuiz.answer = "";
-        render31();
+        render36();
       });
-      (_e = root32.querySelector('[data-testid="logic-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root37.querySelector('[data-testid="logic-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
         logicLabReflect.active = true;
-        render31();
+        render36();
       });
-      (_f = root32.querySelector('[data-testid="logic-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root37.querySelector('[data-testid="logic-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a2, _b2;
-        logicLabReflect.a1 = ((_a2 = root32.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || logicLabReflect.a1;
-        logicLabReflect.a2 = ((_b2 = root32.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || logicLabReflect.a2;
+        logicLabReflect.a1 = ((_a2 = root37.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || logicLabReflect.a1;
+        logicLabReflect.a2 = ((_b2 = root37.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || logicLabReflect.a2;
         logicLabReflect.active = false;
-        render31();
+        render36();
       });
-      (_g = root32.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root37.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         logicLabReflect.a1 = e.target.value;
       });
-      (_h = root32.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
+      (_h = root37.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
         logicLabReflect.a2 = e.target.value;
       });
-      const logicLrShare = root32.querySelector('[data-testid="logic-lab-reflect-share"]');
+      const logicLrShare = root37.querySelector('[data-testid="logic-lab-reflect-share"]');
       if (logicLrShare) {
         logicLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root32.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root32.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root37.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root37.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "logic",
@@ -11253,47 +11517,47 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
       }
       let bindingTimer = null;
-      root32.querySelectorAll("[data-binding-clause]").forEach((input2) => {
+      root37.querySelectorAll("[data-binding-clause]").forEach((input2) => {
         input2.addEventListener("input", () => {
           const clause = input2.dataset.bindingClause;
-          state31.bindings[clause] = input2.value;
+          state36.bindings[clause] = input2.value;
           if (bindingTimer) clearTimeout(bindingTimer);
           bindingTimer = setTimeout(() => refreshBindingResults(), 200);
         });
       });
-      const restoreBtn = root32.querySelector('[data-testid="logic-binding-restore"]');
+      const restoreBtn = root37.querySelector('[data-testid="logic-binding-restore"]');
       if (restoreBtn) {
         restoreBtn.addEventListener("click", () => {
-          const example = activePredicateExample();
-          if (example == null ? void 0 : example.defaultBindings) {
-            state31.bindings = { ...example.defaultBindings };
-            render31();
+          const example4 = activePredicateExample();
+          if (example4 == null ? void 0 : example4.defaultBindings) {
+            state36.bindings = { ...example4.defaultBindings };
+            render36();
           }
         });
       }
-      (_i = root32.querySelector('[data-testid="logic-bridge-groupth"]')) == null ? void 0 : _i.addEventListener("click", () => {
+      (_i = root37.querySelector('[data-testid="logic-bridge-groupth"]')) == null ? void 0 : _i.addEventListener("click", () => {
         var _a2;
         (_a2 = document.querySelector('[data-section="groupth"]')) == null ? void 0 : _a2.click();
       });
-      root32.querySelectorAll("[data-binding-range]").forEach((input2) => {
+      root37.querySelectorAll("[data-binding-range]").forEach((input2) => {
         input2.addEventListener("change", () => {
           const v = parseInt(input2.value, 10);
           if (Number.isNaN(v)) return;
           if (input2.dataset.bindingRange === "min") {
-            state31.bindingRange = [Math.min(v, state31.bindingRange[1] - 1), state31.bindingRange[1]];
+            state36.bindingRange = [Math.min(v, state36.bindingRange[1] - 1), state36.bindingRange[1]];
           } else {
-            state31.bindingRange = [state31.bindingRange[0], Math.max(v, state31.bindingRange[0] + 1)];
+            state36.bindingRange = [state36.bindingRange[0], Math.max(v, state36.bindingRange[0] + 1)];
           }
           refreshBindingResults();
         });
       });
     }
     function renderPreservingFocus(testid) {
-      const previouslyFocused = root32.querySelector(`[data-testid="${testid}"]`);
+      const previouslyFocused = root37.querySelector(`[data-testid="${testid}"]`);
       const selectionStart = previouslyFocused == null ? void 0 : previouslyFocused.selectionStart;
       const selectionEnd = previouslyFocused == null ? void 0 : previouslyFocused.selectionEnd;
-      render31();
-      const next = root32.querySelector(`[data-testid="${testid}"]`);
+      render36();
+      const next = root37.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof selectionStart === "number" && typeof selectionEnd === "number" && next.setSelectionRange) {
@@ -11302,10 +11566,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }
     }
     recompute();
-    render31();
+    render36();
     if (cloudClient && typeof cloudClient.subscribeAuthState === "function") {
       cloudClient.subscribeAuthState(async (user) => {
-        state31.cloudUser = user || null;
+        state36.cloudUser = user || null;
         if (!user || typeof cloudClient.loadLogicRecent !== "function") {
           return;
         }
@@ -11313,30 +11577,30 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           const remote = await cloudClient.loadLogicRecent(user.uid);
           const merged = [];
           const seen = /* @__PURE__ */ new Set();
-          [...remote, ...state31.recent].forEach((expr) => {
+          [...remote, ...state36.recent].forEach((expr) => {
             if (typeof expr !== "string") return;
             if (seen.has(expr)) return;
             seen.add(expr);
             merged.push(expr);
           });
           const next = merged.slice(0, RECENT_LIMIT);
-          const changed = next.length !== state31.recent.length || next.some((v, i) => v !== state31.recent[i]);
-          state31.recent = next;
-          saveRecent(state31.recent);
+          const changed = next.length !== state36.recent.length || next.some((v, i) => v !== state36.recent[i]);
+          state36.recent = next;
+          saveRecent(state36.recent);
           if (next.length !== remote.length || next.some((v, i) => v !== remote[i])) {
-            pushRecentToCloud(state31.recent);
+            pushRecentToCloud(state36.recent);
           }
-          if (changed) render31();
+          if (changed) render36();
         } catch {
         }
       });
     }
-    return root32;
+    return root37;
   }
 
   // src/components/TestingFlow.js
   function createTestingFlow() {
-    const root32 = document.createElement("div");
+    const root37 = document.createElement("div");
     let activeStep = 0;
     let isPlaying = true;
     let hoveredStep = null;
@@ -11354,13 +11618,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }
     }
     function updateState() {
-      const playBtn = root32.querySelector('[data-testid="flow-play-btn"]');
+      const playBtn = root37.querySelector('[data-testid="flow-play-btn"]');
       if (playBtn) {
         playBtn.className = `flow-play-btn${isPlaying ? " playing" : ""}`;
         playBtn.setAttribute("aria-label", isPlaying ? t("flow.pause") : t("flow.play"));
         playBtn.innerHTML = isPlaying ? `\u23F8 ${t("flow.pause")}` : `\u25B6 ${t("flow.play")}`;
       }
-      root32.querySelectorAll("[data-step-index]").forEach((el) => {
+      root37.querySelectorAll("[data-step-index]").forEach((el) => {
         const idx = Number(el.dataset.stepIndex);
         const step2 = testingFlow[idx];
         const isActive = idx === activeStep;
@@ -11390,7 +11654,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           tooltip.textContent = pickField(step2, "description");
         }
       });
-      root32.querySelectorAll('[data-testid^="flow-arrow-"]').forEach((arrow) => {
+      root37.querySelectorAll('[data-testid^="flow-arrow-"]').forEach((arrow) => {
         const idx = Number(arrow.dataset.testid.replace("flow-arrow-", ""));
         arrow.className = [
           "flow-arrow",
@@ -11398,9 +11662,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           activeStep === idx ? "flow-arrow--active" : ""
         ].filter(Boolean).join(" ");
       });
-      const fill = root32.querySelector('[data-testid="flow-progress-fill"]');
+      const fill = root37.querySelector('[data-testid="flow-progress-fill"]');
       if (fill) fill.style.width = `${(activeStep + 1) / testingFlow.length * 100}%`;
-      const progressLabel = root32.querySelector(".flow-progress-label");
+      const progressLabel = root37.querySelector(".flow-progress-label");
       if (progressLabel) {
         progressLabel.textContent = t("flow.progress", {
           current: activeStep + 1,
@@ -11409,10 +11673,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
       }
     }
-    function render31() {
-      root32.className = "testing-flow";
-      root32.dataset.testid = "testing-flow";
-      root32.innerHTML = `
+    function render36() {
+      root37.className = "testing-flow";
+      root37.dataset.testid = "testing-flow";
+      root37.innerHTML = `
       <div class="flow-controls">
         <button
           class="flow-play-btn${isPlaying ? " playing" : ""}"
@@ -11464,12 +11728,12 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       </div>
       <div class="flow-progress-label">${t("flow.progress", { current: activeStep + 1, total: testingFlow.length, label: pickField(testingFlow[activeStep], "label") })}</div>
     `;
-      root32.querySelector('[data-testid="flow-play-btn"]').addEventListener("click", () => {
+      root37.querySelector('[data-testid="flow-play-btn"]').addEventListener("click", () => {
         isPlaying = !isPlaying;
         restartTimer();
         updateState();
       });
-      root32.querySelectorAll("[data-step-index]").forEach((element) => {
+      root37.querySelectorAll("[data-step-index]").forEach((element) => {
         const stepIndex = Number(element.dataset.stepIndex);
         element.addEventListener("mouseenter", () => {
           hoveredStep = stepIndex;
@@ -11490,21 +11754,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       });
     }
     restartTimer();
-    render31();
-    root32.cleanup = () => {
+    render36();
+    root37.cleanup = () => {
       if (timerId) {
         clearInterval(timerId);
       }
     };
-    return root32;
+    return root37;
   }
 
   // src/components/TestingTypesTable.js
   function createTestingTypesTable() {
-    const root32 = document.createElement("div");
-    root32.className = "testing-types";
-    root32.dataset.testid = "testing-types";
-    root32.innerHTML = `
+    const root37 = document.createElement("div");
+    root37.className = "testing-types";
+    root37.dataset.testid = "testing-types";
+    root37.innerHTML = `
     <div class="pyramid-section">
       <h3 class="pyramid-title">${t("types.pyramid.title")}</h3>
       <div class="pyramid" data-testid="pyramid">
@@ -11549,7 +11813,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       `).join("")}
     </div>
   `;
-    return root32;
+    return root37;
   }
 
   // src/components/CloudStoragePanel.js
@@ -11569,7 +11833,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   }
   function createCloudStoragePanel() {
     var _a;
-    const root32 = document.createElement("div");
+    const root37 = document.createElement("div");
     const client = createCloudIntegrationClient();
     const canUseCloudAuth = client.isConfigured && client.isSupportedOrigin;
     let user = null;
@@ -11587,11 +11851,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     let uploadCount = 0;
     const uploadedResultIds = /* @__PURE__ */ new Set();
-    function render31() {
+    function render36() {
       var _a2, _b, _c, _d;
-      root32.className = "cloud-storage";
-      root32.dataset.testid = "cloud-storage-panel";
-      root32.innerHTML = `
+      root37.className = "cloud-storage";
+      root37.dataset.testid = "cloud-storage-panel";
+      root37.innerHTML = `
       <div class="cloud-card">
         <div class="cloud-header">
           <div>
@@ -11711,45 +11975,45 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     `;
-      (_a2 = root32.querySelector('[data-testid="cloud-signin-btn"]')) == null ? void 0 : _a2.addEventListener("click", async () => {
+      (_a2 = root37.querySelector('[data-testid="cloud-signin-btn"]')) == null ? void 0 : _a2.addEventListener("click", async () => {
         try {
           const result = await client.signInWithGoogle();
           user = result.user;
           status = result.hasDriveToken ? t("cloud.signedInOk") : t("cloud.signedInNoDrive");
           ;
-          render31();
+          render36();
         } catch (error) {
           status = error.message;
-          render31();
+          render36();
         }
       });
-      root32.querySelector('[data-testid="cloud-signout-btn"]').addEventListener("click", async () => {
+      root37.querySelector('[data-testid="cloud-signout-btn"]').addEventListener("click", async () => {
         try {
           await client.signOutGoogle();
           user = null;
           selectedFile = null;
           status = t("cloud.signedOut");
           ;
-          render31();
+          render36();
         } catch (error) {
           status = error.message;
-          render31();
+          render36();
         }
       });
-      root32.querySelector('[data-testid="cloud-criterion-select"]').addEventListener("change", (event) => {
+      root37.querySelector('[data-testid="cloud-criterion-select"]').addEventListener("change", (event) => {
         settings.preferredCriterion = event.target.value;
       });
-      root32.querySelector('[data-testid="cloud-notes-input"]').addEventListener("input", (event) => {
+      root37.querySelector('[data-testid="cloud-notes-input"]').addEventListener("input", (event) => {
         settings.notes = event.target.value;
       });
-      root32.querySelector('[data-testid="cloud-file-btn"]').addEventListener("click", () => {
-        root32.querySelector('[data-testid="cloud-file-input"]').click();
+      root37.querySelector('[data-testid="cloud-file-btn"]').addEventListener("click", () => {
+        root37.querySelector('[data-testid="cloud-file-input"]').click();
       });
-      root32.querySelector('[data-testid="cloud-file-input"]').addEventListener("change", (event) => {
+      root37.querySelector('[data-testid="cloud-file-input"]').addEventListener("change", (event) => {
         [selectedFile] = event.target.files || [];
-        render31();
+        render36();
       });
-      root32.querySelector('[data-testid="cloud-load-settings-btn"]').addEventListener("click", async () => {
+      root37.querySelector('[data-testid="cloud-load-settings-btn"]').addEventListener("click", async () => {
         try {
           const loaded = await client.loadSettings(user.uid);
           if (loaded) {
@@ -11762,25 +12026,25 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           } else {
             status = t("cloud.noSavedSettings");
           }
-          render31();
+          render36();
         } catch (error) {
           status = error.message;
-          render31();
+          render36();
         }
       });
-      root32.querySelector('[data-testid="cloud-save-settings-btn"]').addEventListener("click", async () => {
+      root37.querySelector('[data-testid="cloud-save-settings-btn"]').addEventListener("click", async () => {
         try {
-          const extras = parseJson(root32.querySelector('[data-testid="cloud-extras-input"]').value);
+          const extras = parseJson(root37.querySelector('[data-testid="cloud-extras-input"]').value);
           settings.extras = extras;
           await client.saveSettings(user.uid, settings);
           status = t("cloud.savedOk");
-          render31();
+          render36();
         } catch (error) {
           status = error.message.includes("JSON") ? t("cloud.extrasJsonError") : error.message;
-          render31();
+          render36();
         }
       });
-      root32.querySelector('[data-testid="cloud-upload-btn"]').addEventListener("click", async () => {
+      root37.querySelector('[data-testid="cloud-upload-btn"]').addEventListener("click", async () => {
         try {
           const fileToUpload = selectedFile;
           let content = null;
@@ -11802,13 +12066,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           uploadedFiles = [{ ...uploaded, content, fileName: fileToUpload.name, file: fileToUpload }, ...uploadedFiles].slice(0, 8);
           status = t("cloud.uploadedOk", { name: uploaded.name });
           selectedFile = null;
-          render31();
+          render36();
         } catch (error) {
           status = error.message;
-          render31();
+          render36();
         }
       });
-      root32.querySelectorAll("[data-use-target]").forEach((btn) => {
+      root37.querySelectorAll("[data-use-target]").forEach((btn) => {
         btn.addEventListener("click", async () => {
           var _a3, _b2;
           const idx = Number(btn.dataset.useIdx);
@@ -11827,13 +12091,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               item.content = content;
             } catch (err) {
               status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
-              render31();
+              render36();
               return;
             }
           }
           if (content == null) {
             status = t("cloud.noContent");
-            render31();
+            render36();
             return;
           }
           const sectionId = target === "graph" ? "section-graph" : "section-syntax";
@@ -11843,30 +12107,30 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             detail: { target, name: item.fileName || item.name, content }
           }));
           status = target === "mutation" ? t("cloud.sentToMutation", { name: item.name }) : target === "grammar" ? t("cloud.sentToGrammar", { name: item.name }) : t("cloud.sentToGraph", { name: item.name });
-          render31();
+          render36();
         });
       });
-      (_b = root32.querySelector('[data-testid="cloud-class-save"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root37.querySelector('[data-testid="cloud-class-save"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a3;
-        const inp = root32.querySelector('[data-testid="cloud-class-code-input"]');
+        const inp = root37.querySelector('[data-testid="cloud-class-code-input"]');
         classCode = ((inp == null ? void 0 : inp.value) || "").trim().toUpperCase();
         try {
           (_a3 = globalThis.localStorage) == null ? void 0 : _a3.setItem(CLASS_CODE_KEY, classCode);
         } catch {
         }
-        render31();
+        render36();
       });
-      (_c = root32.querySelector('[data-testid="cloud-view-results"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root37.querySelector('[data-testid="cloud-view-results"]')) == null ? void 0 : _c.addEventListener("click", () => {
         var _a3;
         (_a3 = globalThis.dispatchEvent) == null ? void 0 : _a3.call(globalThis, new CustomEvent("stvisual:open-teacher-dashboard", {
           detail: { classCode }
         }));
       });
-      (_d = root32.querySelector('[data-testid="cloud-refresh-drive-btn"]')) == null ? void 0 : _d.addEventListener("click", async () => {
+      (_d = root37.querySelector('[data-testid="cloud-refresh-drive-btn"]')) == null ? void 0 : _d.addEventListener("click", async () => {
         if (!user || typeof client.listDriveFiles !== "function") return;
         driveFilesLoading = true;
         status = t("cloud.refreshing");
-        render31();
+        render36();
         try {
           driveFiles = await client.listDriveFiles();
           status = t("cloud.driveListed", { count: driveFiles.length });
@@ -11874,10 +12138,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           status = t("cloud.driveListError", { msg: (err == null ? void 0 : err.message) || err });
         } finally {
           driveFilesLoading = false;
-          render31();
+          render36();
         }
       });
-      root32.querySelectorAll("[data-drive-target]").forEach((btn) => {
+      root37.querySelectorAll("[data-drive-target]").forEach((btn) => {
         btn.addEventListener("click", async () => {
           var _a3, _b2;
           const idx = Number(btn.dataset.driveIdx);
@@ -11886,7 +12150,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           if (!f) return;
           try {
             status = t("cloud.downloading", { name: f.name });
-            render31();
+            render36();
             const content = await client.downloadDriveFile(f.id);
             const sectionId = target === "graph" ? "section-graph" : "section-syntax";
             const targetSection = (_a3 = globalThis.document) == null ? void 0 : _a3.querySelector(`[data-testid="${sectionId}"]`);
@@ -11898,7 +12162,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           } catch (err) {
             status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
           }
-          render31();
+          render36();
         });
       });
     }
@@ -11913,7 +12177,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         uploadedResultIds.add(payloadStr);
         await client.saveResult(user.uid, user.displayName || "", user.email || "", classCode, payload);
         uploadCount++;
-        const badge = root32.querySelector('[data-testid="cloud-upload-count"]');
+        const badge = root37.querySelector('[data-testid="cloud-upload-count"]');
         if (badge) badge.textContent = uploadCount;
       } catch {
       }
@@ -11929,10 +12193,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         } catch {
         }
       }
-      render31();
+      render36();
     });
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/data/mutationData.js
@@ -12773,13 +13037,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   }
   function createSyntaxCoverageExplorer() {
     var _a;
-    const root32 = document.createElement("div");
-    root32.className = "syntax-coverage";
-    root32.dataset.testid = "syntax-coverage";
+    const root37 = document.createElement("div");
+    root37.className = "syntax-coverage";
+    root37.dataset.testid = "syntax-coverage";
     const initial = programExamples[0];
     const localPrograms = loadLocalPrograms();
     const initialSnapshot = localPrograms[initial.id] || defaultProgramSnapshot(initial);
-    const state31 = {
+    const state36 = {
       exampleId: initial.id,
       params: initialSnapshot.params,
       body: initialSnapshot.body,
@@ -12807,9 +13071,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function snapshotCurrent() {
       return {
-        params: state31.params,
-        body: state31.body,
-        tests: state31.tests.map((t2) => ({
+        params: state36.params,
+        body: state36.body,
+        tests: state36.tests.map((t2) => ({
           id: t2.id,
           argsText: t2.argsText,
           expectedText: t2.expectedText
@@ -12817,28 +13081,28 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       };
     }
     function persistCurrent() {
-      state31.programs[state31.exampleId] = snapshotCurrent();
-      saveLocalPrograms(state31.programs);
+      state36.programs[state36.exampleId] = snapshotCurrent();
+      saveLocalPrograms(state36.programs);
       pushToCloud();
     }
     const syntaxQuiz = { active: false, phase: "question", answer: "", result: null };
     function renderSyntaxQuizPanel() {
       if (!syntaxQuiz.active) return "";
       if (syntaxQuiz.phase === "graded") {
-        const correct = state31.score.killed;
+        const correct = state36.score.killed;
         const userAns = parseInt(syntaxQuiz.answer, 10);
         const ok = userAns === correct;
-        const shareEncoded = encodeResult({ v: 1, explorer: "syntax", explorerLabel: t("quiz.syntax.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.syntax.prompt", { program: state31.exampleId }), a: String(syntaxQuiz.answer), expected: String(correct), ok }] });
+        const shareEncoded = encodeResult({ v: 1, explorer: "syntax", explorerLabel: t("quiz.syntax.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.syntax.prompt", { program: state36.exampleId }), a: String(syntaxQuiz.answer), expected: String(correct), ok }] });
         return `
         <div class="quiz-panel" data-testid="syntax-quiz-panel">
           <div class="quiz-header">
             <span>${t("quiz.syntax.title")}</span>
             <button type="button" class="quiz-close-btn" data-testid="syntax-quiz-close">\u2715</button>
           </div>
-          <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state31.exampleId) })}</p>
+          <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state36.exampleId) })}</p>
           <p class="quiz-score ${ok ? "quiz-score--perfect" : "quiz-score--wrong"}">
             ${ok ? t("quiz.graph.perfect") : ""}
-            ${t("quiz.syntax.answer", { killed: correct, total: state31.score.total })}
+            ${t("quiz.syntax.answer", { killed: correct, total: state36.score.total })}
           </p>
           <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="syntax-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
           <button type="button" class="quiz-start-btn" data-testid="syntax-quiz-reset">${t("quiz.retry")}</button>
@@ -12851,7 +13115,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <span>${t("quiz.syntax.title")}</span>
           <button type="button" class="quiz-close-btn" data-testid="syntax-quiz-close">\u2715</button>
         </div>
-        <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state31.exampleId) })}</p>
+        <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state36.exampleId) })}</p>
         <div class="quiz-bva-inputs">
           <label class="quiz-bva-field">
             ${t("quiz.syntax.label")}
@@ -12865,21 +13129,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     let saveTimer = null;
     let pendingSave = null;
     function pushToCloud() {
-      if (!cloudClient || !state31.cloudUser || typeof cloudClient.saveSyntaxTests !== "function") return;
+      if (!cloudClient || !state36.cloudUser || typeof cloudClient.saveSyntaxTests !== "function") return;
       if (saveTimer) clearTimeout(saveTimer);
-      state31.cloudStatus = "syncing";
-      state31.cloudMessage = "";
+      state36.cloudStatus = "syncing";
+      state36.cloudMessage = "";
       updateCloudIndicator();
       pendingSave = new Promise((resolve) => {
         saveTimer = setTimeout(async () => {
           saveTimer = null;
           try {
-            await cloudClient.saveSyntaxTests(state31.cloudUser.uid, state31.programs);
-            state31.cloudStatus = "synced";
-            state31.cloudMessage = t("syntax.cloud.synced");
+            await cloudClient.saveSyntaxTests(state36.cloudUser.uid, state36.programs);
+            state36.cloudStatus = "synced";
+            state36.cloudMessage = t("syntax.cloud.synced");
           } catch (err) {
-            state31.cloudStatus = "error";
-            state31.cloudMessage = t("syntax.cloud.saveError", { msg: (err == null ? void 0 : err.message) || err });
+            state36.cloudStatus = "error";
+            state36.cloudMessage = t("syntax.cloud.saveError", { msg: (err == null ? void 0 : err.message) || err });
           }
           updateCloudIndicator();
           resolve();
@@ -12893,7 +13157,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         clearTimeout(saveTimer);
         saveTimer = null;
         try {
-          await cloudClient.saveSyntaxTests(state31.cloudUser.uid, state31.programs);
+          await cloudClient.saveSyntaxTests(state36.cloudUser.uid, state36.programs);
         } catch {
         }
       } else {
@@ -12902,152 +13166,152 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       pendingSave = null;
     }
     function updateCloudIndicator() {
-      const node = root32.querySelector('[data-testid="syntax-cloud-indicator"]');
+      const node = root37.querySelector('[data-testid="syntax-cloud-indicator"]');
       if (!node) return;
-      node.dataset.status = state31.cloudStatus;
+      node.dataset.status = state36.cloudStatus;
       node.textContent = cloudIndicatorText();
     }
     function cloudIndicatorText() {
-      if (!state31.cloudUser) return t("syntax.cloud.notSignedIn");
-      switch (state31.cloudStatus) {
+      if (!state36.cloudUser) return t("syntax.cloud.notSignedIn");
+      switch (state36.cloudStatus) {
         case "syncing":
           return t("syntax.cloud.syncing");
         case "synced":
-          return `\u2601 ${state31.cloudMessage || t("syntax.cloud.synced")}`;
+          return `\u2601 ${state36.cloudMessage || t("syntax.cloud.synced")}`;
         case "error":
-          return `\u2601 ${state31.cloudMessage || t("syntax.cloud.failed")}`;
+          return `\u2601 ${state36.cloudMessage || t("syntax.cloud.failed")}`;
         default:
-          return `\u2601 ${t("syntax.cloud.linked", { name: state31.cloudUser.email || state31.cloudUser.uid })}`;
+          return `\u2601 ${t("syntax.cloud.linked", { name: state36.cloudUser.email || state36.cloudUser.uid })}`;
       }
     }
     async function reloadFromCloud({ force = false } = {}) {
       var _a2, _b;
-      if (!cloudClient || !state31.cloudUser) return;
+      if (!cloudClient || !state36.cloudUser) return;
       if (typeof cloudClient.loadSyntaxTests !== "function") return;
       await flushPendingSave();
-      state31.cloudStatus = "syncing";
-      state31.cloudMessage = force ? t("syntax.cloud.reloading") : "";
+      state36.cloudStatus = "syncing";
+      state36.cloudMessage = force ? t("syntax.cloud.reloading") : "";
       updateCloudIndicator();
       try {
-        const remote = await cloudClient.loadSyntaxTests(state31.cloudUser.uid);
+        const remote = await cloudClient.loadSyntaxTests(state36.cloudUser.uid);
         const remoteObj = remote && typeof remote === "object" ? remote : {};
-        const localOnly = Object.keys(state31.programs).filter((k) => !(k in remoteObj));
+        const localOnly = Object.keys(state36.programs).filter((k) => !(k in remoteObj));
         const merged = { ...remoteObj };
         localOnly.forEach((k) => {
-          merged[k] = state31.programs[k];
+          merged[k] = state36.programs[k];
         });
-        state31.programs = merged;
-        saveLocalPrograms(state31.programs);
-        const current2 = state31.programs[state31.exampleId];
+        state36.programs = merged;
+        saveLocalPrograms(state36.programs);
+        const current2 = state36.programs[state36.exampleId];
         if (current2) {
-          state31.params = (_a2 = current2.params) != null ? _a2 : state31.params;
-          state31.body = (_b = current2.body) != null ? _b : state31.body;
-          state31.tests = Array.isArray(current2.tests) ? current2.tests.map((t2) => ({ ...t2 })) : state31.tests;
-          state31.selectedMutantId = null;
+          state36.params = (_a2 = current2.params) != null ? _a2 : state36.params;
+          state36.body = (_b = current2.body) != null ? _b : state36.body;
+          state36.tests = Array.isArray(current2.tests) ? current2.tests.map((t2) => ({ ...t2 })) : state36.tests;
+          state36.selectedMutantId = null;
         }
-        state31.cloudStatus = "synced";
-        state31.cloudMessage = t("syntax.cloud.loaded");
-        render31();
+        state36.cloudStatus = "synced";
+        state36.cloudMessage = t("syntax.cloud.loaded");
+        render36();
         if (localOnly.length > 0) pushToCloud();
       } catch (err) {
-        state31.cloudStatus = "error";
-        state31.cloudMessage = t("syntax.cloud.loadError", { msg: (err == null ? void 0 : err.message) || err });
+        state36.cloudStatus = "error";
+        state36.cloudMessage = t("syntax.cloud.loadError", { msg: (err == null ? void 0 : err.message) || err });
         updateCloudIndicator();
       }
     }
     function recompute() {
       var _a2;
-      state31.error = null;
+      state36.error = null;
       let params;
       try {
-        params = state31.params.split(",").map((s) => s.trim()).filter(Boolean);
+        params = state36.params.split(",").map((s) => s.trim()).filter(Boolean);
       } catch (err) {
-        state31.error = t("syntax.err.argsParse", { msg: err.message });
+        state36.error = t("syntax.err.argsParse", { msg: err.message });
         return;
       }
       let parsedTests;
       try {
-        parsedTests = state31.tests.map((t2) => ({
+        parsedTests = state36.tests.map((t2) => ({
           id: t2.id,
           args: parseTestArgs(t2.argsText),
           expected: parseExpected(t2.expectedText)
         }));
       } catch (err) {
-        state31.error = err.message;
+        state36.error = err.message;
         return;
       }
       let suiteResults;
       try {
-        suiteResults = runTestSuite(params, state31.body, parsedTests);
+        suiteResults = runTestSuite(params, state36.body, parsedTests);
       } catch (err) {
-        state31.error = t("syntax.err.compile", { msg: err.message });
+        state36.error = t("syntax.err.compile", { msg: err.message });
         return;
       }
-      const operators = [...state31.operators];
-      const generated = generateMutants(state31.body, operators);
-      const evaluated = evaluateMutants(params, state31.body, parsedTests, generated);
+      const operators = [...state36.operators];
+      const generated = generateMutants(state36.body, operators);
+      const evaluated = evaluateMutants(params, state36.body, parsedTests, generated);
       const prevEquivalent = new Set(
-        state31.mutants.filter((m) => m.status === "equivalent").map((m) => m.id)
+        state36.mutants.filter((m) => m.status === "equivalent").map((m) => m.id)
       );
       const finalMutants = evaluated.map(
         (m) => prevEquivalent.has(m.id) ? { ...m, status: "equivalent", killedBy: [] } : m
       );
-      state31.suiteResults = suiteResults;
-      state31.parsedTests = parsedTests;
-      state31.parsedParams = params;
-      state31.mutants = finalMutants;
-      state31.score = computeMutationScore(finalMutants);
-      if (!state31.mutants.find((m) => m.id === state31.selectedMutantId)) {
-        state31.selectedMutantId = ((_a2 = finalMutants[0]) == null ? void 0 : _a2.id) || null;
+      state36.suiteResults = suiteResults;
+      state36.parsedTests = parsedTests;
+      state36.parsedParams = params;
+      state36.mutants = finalMutants;
+      state36.score = computeMutationScore(finalMutants);
+      if (!state36.mutants.find((m) => m.id === state36.selectedMutantId)) {
+        state36.selectedMutantId = ((_a2 = finalMutants[0]) == null ? void 0 : _a2.id) || null;
       }
     }
     function loadExample(id) {
-      const ex = programExamples.find((e) => e.id === id) || state31.customExamples.find((e) => e.id === id);
+      const ex = programExamples.find((e) => e.id === id) || state36.customExamples.find((e) => e.id === id);
       if (!ex) return;
-      state31.exampleId = id;
-      const snap = state31.programs[id] || defaultProgramSnapshot(ex);
-      state31.params = snap.params;
-      state31.body = snap.body;
-      state31.tests = snap.tests.map((t2) => ({ ...t2 }));
-      state31.selectedMutantId = null;
+      state36.exampleId = id;
+      const snap = state36.programs[id] || defaultProgramSnapshot(ex);
+      state36.params = snap.params;
+      state36.body = snap.body;
+      state36.tests = snap.tests.map((t2) => ({ ...t2 }));
+      state36.selectedMutantId = null;
     }
-    function render31() {
+    function render36() {
       recompute();
-      const allExamples = [...programExamples, ...state31.customExamples];
+      const allExamples = [...programExamples, ...state36.customExamples];
       const exampleButtons = allExamples.map((ex) => `
       <button
         type="button"
-        class="syntax-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+        class="syntax-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-example="${ex.id}"
         title="${escapeHtml3(getLocale() === "en" ? ex.descriptionEn || ex.description : ex.description)}"
         data-testid="syntax-example-${ex.id}"
       >${escapeHtml3(ex.name)}</button>
     `).join("");
       const operatorButtons = mutationOperators.map((op) => `
-      <label class="syntax-op-btn${state31.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(getLocale() === "en" ? op.descEn || op.desc : op.desc)}">
-        <input type="checkbox" data-operator="${op.id}" ${state31.operators.has(op.id) ? "checked" : ""} />
+      <label class="syntax-op-btn${state36.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(getLocale() === "en" ? op.descEn || op.desc : op.desc)}">
+        <input type="checkbox" data-operator="${op.id}" ${state36.operators.has(op.id) ? "checked" : ""} />
         <span>${escapeHtml3(op.id)}</span>
       </label>
     `).join("");
-      const selectedMutant = state31.mutants.find((m) => m.id === state31.selectedMutantId) || null;
+      const selectedMutant = state36.mutants.find((m) => m.id === state36.selectedMutantId) || null;
       let mutantSuiteResults = null;
       if (selectedMutant) {
         try {
           mutantSuiteResults = runTestSuite(
-            state31.parsedParams,
+            state36.parsedParams,
             selectedMutant.source,
-            state31.parsedTests
+            state36.parsedTests
           );
         } catch {
-          mutantSuiteResults = state31.parsedTests.map(() => ({
+          mutantSuiteResults = state36.parsedTests.map(() => ({
             outcome: { ok: false, error: "compile error" }
           }));
         }
       }
       const showMutantCol = !!selectedMutant;
       const killedByIds = selectedMutant ? new Set(selectedMutant.killedBy) : /* @__PURE__ */ new Set();
-      const testRows = state31.tests.map((tc, i) => {
-        const result = state31.suiteResults[i];
+      const testRows = state36.tests.map((tc, i) => {
+        const result = state36.suiteResults[i];
         const passClass = (result == null ? void 0 : result.passed) ? "pass" : result ? "fail" : "";
         const actual = (result == null ? void 0 : result.outcome.ok) ? formatValue(result.outcome.value) : `\u26A0 ${(result == null ? void 0 : result.outcome.error) || ""}`;
         let mutantCell = "";
@@ -13074,13 +13338,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }).join("");
       const mutantHeaderCol = showMutantCol ? `<th class="syntax-test-mutant-head">mutant actual${selectedMutant ? `<br><small>(${escapeHtml3(selectedMutant.id)})</small>` : ""}</th>` : "";
       const grouped = /* @__PURE__ */ new Map();
-      state31.mutants.forEach((m) => {
+      state36.mutants.forEach((m) => {
         if (!grouped.has(m.operator)) grouped.set(m.operator, []);
         grouped.get(m.operator).push(m);
       });
       const mutantList = [...grouped.entries()].map(([op, list]) => {
         const items = list.map((m) => `
-        <li class="syntax-mutant-item ${m.status}${state31.selectedMutantId === m.id ? " selected" : ""}" data-mutant-id="${m.id}" data-testid="syntax-mutant-${m.id}">
+        <li class="syntax-mutant-item ${m.status}${state36.selectedMutantId === m.id ? " selected" : ""}" data-mutant-id="${m.id}" data-testid="syntax-mutant-${m.id}">
           <span class="syntax-mutant-id">${escapeHtml3(m.id)}</span>
           <span class="syntax-mutant-loc">L${m.line}:${m.col}</span>
           <span class="syntax-mutant-diff"><code>${escapeHtml3(m.original)}</code> \u2192 <code>${escapeHtml3(m.mutated)}</code></span>
@@ -13110,7 +13374,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     ` : `<p class="syntax-mutant-empty">${t("syntax.mutant.empty")}</p>`;
-      const scorePct = Math.round(state31.score.score * 100);
+      const scorePct = Math.round(state36.score.score * 100);
       const SYNTAX_THRESHOLD = 75;
       const syntaxMetricEncoded = encodeResult({
         v: 1,
@@ -13123,7 +13387,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         total: 1,
         items: [{ q: t("lab.metric.syntax.label", { pct: scorePct }), a: `${scorePct}%`, ok: scorePct >= SYNTAX_THRESHOLD }]
       });
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="syntax-toolbar">
         <div class="syntax-examples" role="tablist">${exampleButtons}</div>
         <div class="syntax-operators" data-testid="syntax-operators">${operatorButtons}</div>
@@ -13132,10 +13396,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <span
           class="syntax-cloud-indicator"
           data-testid="syntax-cloud-indicator"
-          data-status="${state31.cloudStatus}"
+          data-status="${state36.cloudStatus}"
         >${escapeHtml3(cloudIndicatorText())}</span>
         <span class="syntax-cloud-actions">
-          ${state31.cloudUser ? `<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB ${t("syntax.cloud.reload")}</button>` : ""}
+          ${state36.cloudUser ? `<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB ${t("syntax.cloud.reload")}</button>` : ""}
           <button type="button" class="syntax-reset-btn" data-testid="syntax-reset-program">\u21BA ${t("syntax.reset")}</button>
         </span>
       </div>
@@ -13143,9 +13407,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       <div class="syntax-grid">
         <section class="syntax-program">
           <label class="syntax-label">${t("syntax.params")}</label>
-          <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml3(state31.params)}" />
+          <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml3(state36.params)}" />
           <label class="syntax-label">${t("syntax.body")}</label>
-          <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml3(state31.body)}</textarea>
+          <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml3(state36.body)}</textarea>
         </section>
 
         <section class="syntax-tests">
@@ -13169,7 +13433,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </section>
       </div>
 
-      ${state31.error ? `<p class="syntax-error" data-testid="syntax-error">${escapeHtml3(state31.error)}</p>` : ""}
+      ${state36.error ? `<p class="syntax-error" data-testid="syntax-error">${escapeHtml3(state36.error)}</p>` : ""}
 
       <section class="syntax-score-section">
         <div class="syntax-score-bar">
@@ -13178,13 +13442,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <p class="syntax-score-stats" data-testid="syntax-score-stats">
           ${t("syntax.score")}: <strong>${scorePct}%</strong>
           <span class="syntax-divider">\xB7</span>
-          ${t("syntax.totalLabel")} ${state31.score.total}
+          ${t("syntax.totalLabel")} ${state36.score.total}
           <span class="syntax-divider">\xB7</span>
-          killed <strong>${state31.score.killed}</strong>
+          killed <strong>${state36.score.killed}</strong>
           <span class="syntax-divider">\xB7</span>
-          live <strong>${state31.score.live}</strong>
+          live <strong>${state36.score.live}</strong>
           <span class="syntax-divider">\xB7</span>
-          equivalent <strong>${state31.score.equivalent}</strong>
+          equivalent <strong>${state36.score.equivalent}</strong>
           <span class="syntax-divider">\xB7</span>
           ${!syntaxQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="syntax-quiz-start">${t("quiz.start")}</button>` : ""}
           <button type="button" class="quiz-share-btn" data-share-payload="${syntaxMetricEncoded}" data-testid="syntax-lab-metric">\u{1F4CA} ${t("lab.metric.record")}</button>
@@ -13197,179 +13461,179 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         ${selectedDetail}
       </section>
     `;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
-      root32.querySelectorAll("[data-example]").forEach((btn) => {
+    function bindEvents36() {
+      root37.querySelectorAll("[data-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           loadExample(btn.dataset.example);
-          render31();
+          render36();
         });
       });
-      const resetBtn = root32.querySelector('[data-testid="syntax-reset-program"]');
+      const resetBtn = root37.querySelector('[data-testid="syntax-reset-program"]');
       if (resetBtn) {
         resetBtn.addEventListener("click", () => {
-          const ex = programExamples.find((e) => e.id === state31.exampleId);
+          const ex = programExamples.find((e) => e.id === state36.exampleId);
           if (!ex) return;
           const snap = defaultProgramSnapshot(ex);
-          state31.params = snap.params;
-          state31.body = snap.body;
-          state31.tests = snap.tests.map((t2) => ({ ...t2 }));
-          state31.selectedMutantId = null;
+          state36.params = snap.params;
+          state36.body = snap.body;
+          state36.tests = snap.tests.map((t2) => ({ ...t2 }));
+          state36.selectedMutantId = null;
           persistCurrent();
-          render31();
+          render36();
         });
       }
-      const reloadBtn = root32.querySelector('[data-testid="syntax-cloud-reload"]');
+      const reloadBtn = root37.querySelector('[data-testid="syntax-cloud-reload"]');
       if (reloadBtn) {
         reloadBtn.addEventListener("click", () => {
           reloadFromCloud({ force: true });
         });
       }
-      root32.querySelectorAll("[data-operator]").forEach((cb) => {
+      root37.querySelectorAll("[data-operator]").forEach((cb) => {
         cb.addEventListener("change", () => {
           const op = cb.dataset.operator;
-          if (cb.checked) state31.operators.add(op);
-          else state31.operators.delete(op);
-          render31();
+          if (cb.checked) state36.operators.add(op);
+          else state36.operators.delete(op);
+          render36();
         });
       });
-      const params = root32.querySelector('[data-testid="syntax-params"]');
+      const params = root37.querySelector('[data-testid="syntax-params"]');
       if (params) {
         params.addEventListener("input", (e) => {
-          state31.params = e.target.value;
+          state36.params = e.target.value;
           persistCurrent();
         });
         params.addEventListener("change", (e) => {
-          state31.params = e.target.value;
+          state36.params = e.target.value;
           persistCurrent();
-          render31();
+          render36();
         });
       }
-      const body = root32.querySelector('[data-testid="syntax-body"]');
+      const body = root37.querySelector('[data-testid="syntax-body"]');
       if (body) {
         body.addEventListener("input", (e) => {
-          state31.body = e.target.value;
+          state36.body = e.target.value;
           persistCurrent();
         });
         body.addEventListener("change", (e) => {
-          state31.body = e.target.value;
+          state36.body = e.target.value;
           persistCurrent();
-          render31();
+          render36();
         });
       }
-      root32.querySelectorAll("[data-test-args]").forEach((input) => {
+      root37.querySelectorAll("[data-test-args]").forEach((input) => {
         input.addEventListener("input", (e) => {
           const id = input.dataset.testArgs;
-          const t2 = state31.tests.find((x) => x.id === id);
+          const t2 = state36.tests.find((x) => x.id === id);
           if (t2) t2.argsText = e.target.value;
           persistCurrent();
         });
         input.addEventListener("change", (e) => {
           const id = input.dataset.testArgs;
-          const t2 = state31.tests.find((x) => x.id === id);
+          const t2 = state36.tests.find((x) => x.id === id);
           if (t2) t2.argsText = e.target.value;
           persistCurrent();
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-test-expected]").forEach((input) => {
+      root37.querySelectorAll("[data-test-expected]").forEach((input) => {
         input.addEventListener("input", (e) => {
           const id = input.dataset.testExpected;
-          const t2 = state31.tests.find((x) => x.id === id);
+          const t2 = state36.tests.find((x) => x.id === id);
           if (t2) t2.expectedText = e.target.value;
           persistCurrent();
         });
         input.addEventListener("change", (e) => {
           const id = input.dataset.testExpected;
-          const t2 = state31.tests.find((x) => x.id === id);
+          const t2 = state36.tests.find((x) => x.id === id);
           if (t2) t2.expectedText = e.target.value;
           persistCurrent();
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-remove-test]").forEach((btn) => {
+      root37.querySelectorAll("[data-remove-test]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.tests = state31.tests.filter((t2) => t2.id !== btn.dataset.removeTest);
+          state36.tests = state36.tests.filter((t2) => t2.id !== btn.dataset.removeTest);
           persistCurrent();
-          render31();
+          render36();
         });
       });
-      const addBtn = root32.querySelector('[data-testid="syntax-test-add"]');
+      const addBtn = root37.querySelector('[data-testid="syntax-test-add"]');
       if (addBtn) {
         addBtn.addEventListener("click", () => {
-          const next = `t${state31.tests.length + 1}`;
-          state31.tests.push({ id: next, argsText: "", expectedText: "" });
+          const next = `t${state36.tests.length + 1}`;
+          state36.tests.push({ id: next, argsText: "", expectedText: "" });
           persistCurrent();
-          render31();
+          render36();
         });
       }
-      root32.querySelectorAll("[data-mutant-id]").forEach((li) => {
+      root37.querySelectorAll("[data-mutant-id]").forEach((li) => {
         li.addEventListener("click", () => {
-          state31.selectedMutantId = li.dataset.mutantId;
-          render31();
+          state36.selectedMutantId = li.dataset.mutantId;
+          render36();
         });
       });
-      root32.querySelectorAll("[data-toggle-equivalent]").forEach((btn) => {
+      root37.querySelectorAll("[data-toggle-equivalent]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const m = state31.mutants.find((x) => x.id === btn.dataset.toggleEquivalent);
+          const m = state36.mutants.find((x) => x.id === btn.dataset.toggleEquivalent);
           if (!m) return;
           m.status = m.status === "equivalent" ? m.killedBy.length ? "killed" : "live" : "equivalent";
-          state31.score = computeMutationScore(state31.mutants);
-          render31();
+          state36.score = computeMutationScore(state36.mutants);
+          render36();
         });
       });
-      const sqStart = root32.querySelector('[data-testid="syntax-quiz-start"]');
+      const sqStart = root37.querySelector('[data-testid="syntax-quiz-start"]');
       if (sqStart) {
         sqStart.addEventListener("click", () => {
           syntaxQuiz.active = true;
           syntaxQuiz.phase = "question";
           syntaxQuiz.answer = "";
           syntaxQuiz.result = null;
-          render31();
+          render36();
         });
       }
-      const sqClose = root32.querySelector('[data-testid="syntax-quiz-close"]');
+      const sqClose = root37.querySelector('[data-testid="syntax-quiz-close"]');
       if (sqClose) {
         sqClose.addEventListener("click", () => {
           syntaxQuiz.active = false;
-          render31();
+          render36();
         });
       }
-      const sqCheck = root32.querySelector('[data-testid="syntax-quiz-check"]');
+      const sqCheck = root37.querySelector('[data-testid="syntax-quiz-check"]');
       if (sqCheck) {
         sqCheck.addEventListener("click", () => {
-          const inp = root32.querySelector('[data-testid="syntax-quiz-input"]');
+          const inp = root37.querySelector('[data-testid="syntax-quiz-input"]');
           syntaxQuiz.answer = inp ? inp.value : "";
           syntaxQuiz.phase = "graded";
-          render31();
+          render36();
         });
       }
-      const sqReset = root32.querySelector('[data-testid="syntax-quiz-reset"]');
+      const sqReset = root37.querySelector('[data-testid="syntax-quiz-reset"]');
       if (sqReset) {
         sqReset.addEventListener("click", () => {
           syntaxQuiz.phase = "question";
           syntaxQuiz.answer = "";
           syntaxQuiz.result = null;
-          render31();
+          render36();
         });
       }
     }
-    render31();
+    render36();
     if (cloudClient && typeof cloudClient.subscribeAuthState === "function") {
       cloudClient.subscribeAuthState(async (user) => {
-        state31.cloudUser = user || null;
+        state36.cloudUser = user || null;
         if (!user) {
-          state31.cloudStatus = "idle";
-          state31.cloudMessage = "";
-          render31();
+          state36.cloudStatus = "idle";
+          state36.cloudMessage = "";
+          render36();
           return;
         }
         await reloadFromCloud();
       });
       if (typeof ((_a = globalThis.document) == null ? void 0 : _a.addEventListener) === "function") {
         globalThis.document.addEventListener("visibilitychange", () => {
-          if (globalThis.document.visibilityState === "visible" && state31.cloudUser) {
+          if (globalThis.document.visibilityState === "visible" && state36.cloudUser) {
             reloadFromCloud();
           }
         });
@@ -13386,7 +13650,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a2;
-        if (!root32.isConnected) return;
+        if (!root37.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "mutation") return;
         const content = String((_a2 = detail.content) != null ? _a2 : "");
@@ -13405,18 +13669,18 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           body,
           tests: []
         };
-        state31.customExamples = [...state31.customExamples, newExample];
-        state31.programs[id] = { params, body, tests: [] };
-        state31.exampleId = id;
-        state31.params = params;
-        state31.body = body;
-        state31.tests = [];
-        state31.selectedMutantId = null;
+        state36.customExamples = [...state36.customExamples, newExample];
+        state36.programs[id] = { params, body, tests: [] };
+        state36.exampleId = id;
+        state36.params = params;
+        state36.body = body;
+        state36.tests = [];
+        state36.selectedMutantId = null;
         persistCurrent();
-        render31();
+        render36();
       });
     }
-    return root32;
+    return root37;
   }
 
   // src/data/grammarData.js
@@ -13968,13 +14232,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   </div>`;
   }
   function createGrammarCoverageExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "grammar-coverage";
-    root32.dataset.testid = "grammar-coverage";
+    const root37 = document.createElement("div");
+    root37.className = "grammar-coverage";
+    root37.dataset.testid = "grammar-coverage";
     const initial = grammarExamples[0];
     const localPrograms = loadLocalGrammars();
     const initialText = localPrograms[initial.id] || initial.text;
-    const state31 = {
+    const state36 = {
       exampleId: initial.id,
       text: initialText,
       programs: localPrograms,
@@ -13999,98 +14263,98 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       activeTab: loadActiveTab()
     };
     function persistCurrent() {
-      state31.programs[state31.exampleId] = state31.text;
-      saveLocalGrammars(state31.programs);
+      state36.programs[state36.exampleId] = state36.text;
+      saveLocalGrammars(state36.programs);
     }
     function recompute() {
       var _a, _b;
-      state31.parseError = null;
-      state31.grammar = null;
-      state31.derivations = [];
-      state31.coverage = null;
-      state31.mutants = [];
+      state36.parseError = null;
+      state36.grammar = null;
+      state36.derivations = [];
+      state36.coverage = null;
+      state36.mutants = [];
       try {
-        const g = parseGrammar(state31.text);
-        state31.grammar = g;
-        state31.derivations = generateDerivations(g, {
-          maxStrings: state31.maxStrings,
-          maxDepth: state31.maxDepth
+        const g = parseGrammar(state36.text);
+        state36.grammar = g;
+        state36.derivations = generateDerivations(g, {
+          maxStrings: state36.maxStrings,
+          maxDepth: state36.maxDepth
         });
-        state31.coverage = computeCoverage(state31.derivations, g);
-        const ops = [...state31.operators];
+        state36.coverage = computeCoverage(state36.derivations, g);
+        const ops = [...state36.operators];
         if (ops.length > 0) {
           const generated = generateGrammarMutants(g, ops);
           const allTestStrings = [
-            ...state31.derivations.map((d) => d.string),
-            ...state31.extraTests.split("\n").map((s) => s).filter((_, idx, arr) => arr.indexOf(arr[idx]) === idx)
+            ...state36.derivations.map((d) => d.string),
+            ...state36.extraTests.split("\n").map((s) => s).filter((_, idx, arr) => arr.indexOf(arr[idx]) === idx)
           ];
-          state31.mutants = evaluateMutantsAgainstStrings(g, generated, allTestStrings);
+          state36.mutants = evaluateMutantsAgainstStrings(g, generated, allTestStrings);
         }
-        if (!state31.mutants.find((m) => m.id === state31.selectedMutantId)) {
-          state31.selectedMutantId = ((_a = state31.mutants[0]) == null ? void 0 : _a.id) || null;
+        if (!state36.mutants.find((m) => m.id === state36.selectedMutantId)) {
+          state36.selectedMutantId = ((_a = state36.mutants[0]) == null ? void 0 : _a.id) || null;
         }
-        state31.stringMutants = [];
-        if (state31.derivations.length > 0 && state31.stringOperators.size > 0) {
-          const idx = Math.min(state31.seedIndex, state31.derivations.length - 1);
-          const seed = state31.derivations[idx].string;
-          const alphabet = deriveAlphabet(g, state31.derivations.map((d) => d.string));
-          const raw = generateStringMutants(seed, [...state31.stringOperators], {
+        state36.stringMutants = [];
+        if (state36.derivations.length > 0 && state36.stringOperators.size > 0) {
+          const idx = Math.min(state36.seedIndex, state36.derivations.length - 1);
+          const seed = state36.derivations[idx].string;
+          const alphabet = deriveAlphabet(g, state36.derivations.map((d) => d.string));
+          const raw = generateStringMutants(seed, [...state36.stringOperators], {
             alphabet,
-            maxPerOp: state31.maxPerStringOp
+            maxPerOp: state36.maxPerStringOp
           });
-          state31.stringMutants = classifyStringMutants(g, raw);
+          state36.stringMutants = classifyStringMutants(g, raw);
         }
-        if (!state31.stringMutants.find((m) => m.id === state31.selectedStringMutantId)) {
-          state31.selectedStringMutantId = ((_b = state31.stringMutants[0]) == null ? void 0 : _b.id) || null;
+        if (!state36.stringMutants.find((m) => m.id === state36.selectedStringMutantId)) {
+          state36.selectedStringMutantId = ((_b = state36.stringMutants[0]) == null ? void 0 : _b.id) || null;
         }
       } catch (err) {
-        state31.parseError = err.message || String(err);
+        state36.parseError = err.message || String(err);
       }
     }
     function loadExample(id) {
-      const ex = grammarExamples.find((e) => e.id === id) || state31.customExamples.find((e) => e.id === id);
+      const ex = grammarExamples.find((e) => e.id === id) || state36.customExamples.find((e) => e.id === id);
       if (!ex) return;
-      state31.exampleId = id;
-      state31.text = state31.programs[id] || ex.text;
-      state31.selectedMutantId = null;
+      state36.exampleId = id;
+      state36.text = state36.programs[id] || ex.text;
+      state36.selectedMutantId = null;
     }
-    function render31() {
+    function render36() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
       recompute();
-      const allExamples = [...grammarExamples, ...state31.customExamples];
+      const allExamples = [...grammarExamples, ...state36.customExamples];
       const exampleButtons = allExamples.map((ex) => `
       <button
         type="button"
-        class="grammar-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+        class="grammar-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-grammar-example="${ex.id}"
         title="${escapeHtml4(getLocale() === "en" ? ex.descriptionEn || ex.description : ex.description)}"
       >${escapeHtml4(pickField(ex, "name"))}</button>
     `).join("");
       const operatorButtons = GRAMMAR_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state31.operators.has(op) ? " active" : ""}">
-        <input type="checkbox" data-grammar-op="${op}" ${state31.operators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state36.operators.has(op) ? " active" : ""}">
+        <input type="checkbox" data-grammar-op="${op}" ${state36.operators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const productionsHtml = state31.grammar ? state31.grammar.productions.map((p) => {
+      const productionsHtml = state36.grammar ? state36.grammar.productions.map((p) => {
         var _a2;
-        return formatProductionHtml(p, (_a2 = state31.coverage) == null ? void 0 : _a2.pdc.covered.has(p.id));
+        return formatProductionHtml(p, (_a2 = state36.coverage) == null ? void 0 : _a2.pdc.covered.has(p.id));
       }).join("") : "";
-      const derivationsHtml = state31.derivations.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noDerivations"))}</p>` : `<ol class="grammar-derivations">
-          ${state31.derivations.map((d) => `<li><code>${escapeHtml4(d.string === "" ? "\u2205" : d.string)}</code>
+      const derivationsHtml = state36.derivations.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noDerivations"))}</p>` : `<ol class="grammar-derivations">
+          ${state36.derivations.map((d) => `<li><code>${escapeHtml4(d.string === "" ? "\u2205" : d.string)}</code>
             <span class="grammar-derivation-meta">depth ${d.depth} \xB7 p[${d.productionsUsed.join(", ")}]</span></li>`).join("")}
          </ol>`;
-      const pdcRatio = state31.coverage ? Math.round(state31.coverage.pdc.ratio * 100) : 0;
-      const tscRatio = state31.coverage ? Math.round(state31.coverage.tsc.ratio * 100) : 0;
-      const terminalsHtml = state31.grammar ? [...state31.grammar.terminals].map((tm) => {
+      const pdcRatio = state36.coverage ? Math.round(state36.coverage.pdc.ratio * 100) : 0;
+      const tscRatio = state36.coverage ? Math.round(state36.coverage.tsc.ratio * 100) : 0;
+      const terminalsHtml = state36.grammar ? [...state36.grammar.terminals].map((tm) => {
         var _a2;
-        const covered = (_a2 = state31.coverage) == null ? void 0 : _a2.tsc.covered.has(tm);
+        const covered = (_a2 = state36.coverage) == null ? void 0 : _a2.tsc.covered.has(tm);
         return `<span class="grammar-terminal-chip${covered ? " covered" : ""}">"${escapeHtml4(tm)}"</span>`;
       }).join("") : "";
-      const mutantsHtml = state31.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noMutants"))}</p>` : `<ul class="grammar-mutant-list">
-          ${state31.mutants.map((m) => `<li>
+      const mutantsHtml = state36.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noMutants"))}</p>` : `<ul class="grammar-mutant-list">
+          ${state36.mutants.map((m) => `<li>
             <button type="button"
-              class="grammar-mutant-btn${state31.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
+              class="grammar-mutant-btn${state36.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
               data-grammar-mutant="${escapeHtml4(m.id)}">
               <span class="grammar-mutant-op">${m.operator}</span>
               <span class="grammar-mutant-status">${m.killed ? t("grammar.killed") : t("grammar.live")}</span>
@@ -14098,33 +14362,33 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             </button>
           </li>`).join("")}
          </ul>`;
-      const selectedMutant = state31.mutants.find((m) => m.id === state31.selectedMutantId) || null;
+      const selectedMutant = state36.mutants.find((m) => m.id === state36.selectedMutantId) || null;
       const selectedMutantDetailHtml = selectedMutant ? `<div class="grammar-mutant-detail">
           <h5>${escapeHtml4(selectedMutant.id)}</h5>
           <p>${escapeHtml4(selectedMutant.description)}</p>
           ${selectedMutant.killed ? `<p class="grammar-mutant-killers"><strong>${escapeHtml4(t("grammar.killedBy"))}</strong></p>
                <ul class="grammar-killer-list">${selectedMutant.killers.slice(0, 8).map((k) => `<li><code>${escapeHtml4(k.string === "" ? "\u2205" : k.string)}</code> \xB7 ${k.origAccepts ? t("grammar.origAccepts") : t("grammar.origRejects")} \xB7 ${k.mutAccepts ? t("grammar.mutAccepts") : t("grammar.mutRejects")}</li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml4(t("grammar.liveHint"))}</p>`}
         </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.selectMutantHint"))}</p>`;
-      const score = state31.mutants.length === 0 ? null : { killed: state31.mutants.filter((m) => m.killed).length, total: state31.mutants.length };
-      const seedOptionsHtml = state31.derivations.map((d, idx) => `
-      <option value="${idx}" ${idx === Math.min(state31.seedIndex, state31.derivations.length - 1) ? "selected" : ""}>
+      const score = state36.mutants.length === 0 ? null : { killed: state36.mutants.filter((m) => m.killed).length, total: state36.mutants.length };
+      const seedOptionsHtml = state36.derivations.map((d, idx) => `
+      <option value="${idx}" ${idx === Math.min(state36.seedIndex, state36.derivations.length - 1) ? "selected" : ""}>
         #${idx + 1}: ${escapeHtml4(d.string === "" ? "\u2205" : d.string)}
       </option>`).join("");
       const stringOpButtons = STRING_MUTATION_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state31.stringOperators.has(op) ? " active" : ""}">
-        <input type="checkbox" data-grammar-string-op="${op}" ${state31.stringOperators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state36.stringOperators.has(op) ? " active" : ""}">
+        <input type="checkbox" data-grammar-string-op="${op}" ${state36.stringOperators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const stringMutantsHtml = state31.stringMutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.string.empty"))}</p>` : `<table class="grammar-string-mutant-table" data-testid="grammar-string-mutant-table">
+      const stringMutantsHtml = state36.stringMutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.string.empty"))}</p>` : `<table class="grammar-string-mutant-table" data-testid="grammar-string-mutant-table">
           <thead><tr>
             <th>Op</th>
             <th>${escapeHtml4(t("grammar.string.colMutated"))}</th>
             <th>${escapeHtml4(t("grammar.string.colKind"))}</th>
           </tr></thead>
           <tbody>
-            ${state31.stringMutants.map((m) => `<tr
-                class="grammar-string-row ${m.kind === "positive" ? "positive" : "negative"}${state31.selectedStringMutantId === m.id ? " active" : ""}"
+            ${state36.stringMutants.map((m) => `<tr
+                class="grammar-string-row ${m.kind === "positive" ? "positive" : "negative"}${state36.selectedStringMutantId === m.id ? " active" : ""}"
                 data-grammar-string-mutant="${escapeHtml4(m.id)}">
                 <td><span class="grammar-op-tag">${m.operator}</span></td>
                 <td><code>${escapeHtml4(m.mutated === "" ? "\u2205" : m.mutated)}</code></td>
@@ -14132,19 +14396,19 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               </tr>`).join("")}
           </tbody>
          </table>`;
-      const positives = state31.stringMutants.filter((m) => m.kind === "positive").length;
-      const negatives = state31.stringMutants.length - positives;
-      const stringStats = state31.stringMutants.length === 0 ? null : `<span class="grammar-string-stats" data-testid="grammar-string-stats">
+      const positives = state36.stringMutants.filter((m) => m.kind === "positive").length;
+      const negatives = state36.stringMutants.length - positives;
+      const stringStats = state36.stringMutants.length === 0 ? null : `<span class="grammar-string-stats" data-testid="grammar-string-stats">
           ${escapeHtml4(t("grammar.string.statsPositive"))}: ${positives} \xB7 ${escapeHtml4(t("grammar.string.statsNegative"))}: ${negatives}
         </span>`;
-      const selectedStringMutant = state31.stringMutants.find((m) => m.id === state31.selectedStringMutantId) || null;
+      const selectedStringMutant = state36.stringMutants.find((m) => m.id === state36.selectedStringMutantId) || null;
       const selectedStringDetailHtml = selectedStringMutant ? `<div class="grammar-string-detail">
           <p><strong>${escapeHtml4(selectedStringMutant.operator)}</strong> \xB7 ${escapeHtml4(selectedStringMutant.description)}</p>
           <p>${escapeHtml4(t("grammar.string.original"))}: <code>${escapeHtml4(selectedStringMutant.original === "" ? "\u2205" : selectedStringMutant.original)}</code></p>
           <p>${escapeHtml4(t("grammar.string.mutated"))}: <code>${escapeHtml4(selectedStringMutant.mutated === "" ? "\u2205" : selectedStringMutant.mutated)}</code></p>
           <p>${selectedStringMutant.flipped ? `<span class="grammar-string-flip">\u26A1 ${escapeHtml4(t("grammar.string.flipped"))}</span>` : `<span class="grammar-string-same">${escapeHtml4(t("grammar.string.sameLang"))}</span>`}</p>
         </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.string.selectHint"))}</p>`;
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="grammar-card">
         <header class="grammar-header">
           <p class="grammar-kicker">${escapeHtml4(t("grammar.kicker"))}</p>
@@ -14160,20 +14424,20 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <div class="grammar-editor-col">
             <label class="grammar-editor-label">
               ${escapeHtml4(t("grammar.bnfEditor"))}
-              <textarea data-testid="grammar-text" rows="8" spellcheck="false">${escapeHtml4(state31.text)}</textarea>
+              <textarea data-testid="grammar-text" rows="8" spellcheck="false">${escapeHtml4(state36.text)}</textarea>
             </label>
-            ${state31.parseError ? `<p class="grammar-error" data-testid="grammar-parse-error">${escapeHtml4(state31.parseError)}</p>` : ""}
+            ${state36.parseError ? `<p class="grammar-error" data-testid="grammar-parse-error">${escapeHtml4(state36.parseError)}</p>` : ""}
             <div class="grammar-controls-row">
               <label>${escapeHtml4(t("grammar.maxStrings"))}
-                <input type="number" min="1" max="40" value="${state31.maxStrings}" data-grammar-max-strings />
+                <input type="number" min="1" max="40" value="${state36.maxStrings}" data-grammar-max-strings />
               </label>
               <label>${escapeHtml4(t("grammar.maxDepth"))}
-                <input type="number" min="1" max="40" value="${state31.maxDepth}" data-grammar-max-depth />
+                <input type="number" min="1" max="40" value="${state36.maxDepth}" data-grammar-max-depth />
               </label>
             </div>
             <label class="grammar-editor-label">
               ${escapeHtml4(t("grammar.extraTests"))}
-              <textarea data-testid="grammar-extra-tests" rows="3" spellcheck="false" placeholder="${escapeHtml4(t("grammar.extraTestsHint"))}">${escapeHtml4(state31.extraTests)}</textarea>
+              <textarea data-testid="grammar-extra-tests" rows="3" spellcheck="false" placeholder="${escapeHtml4(t("grammar.extraTestsHint"))}">${escapeHtml4(state36.extraTests)}</textarea>
             </label>
           </div>
 
@@ -14183,11 +14447,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             <div class="grammar-coverage-summary">
               <div class="grammar-metric">
                 <span class="grammar-metric-label">PDC</span>
-                <span class="grammar-metric-value" data-testid="grammar-pdc">${((_a = state31.coverage) == null ? void 0 : _a.pdc.covered.size) || 0} / ${((_b = state31.coverage) == null ? void 0 : _b.pdc.all.size) || 0} (${pdcRatio}%)</span>
+                <span class="grammar-metric-value" data-testid="grammar-pdc">${((_a = state36.coverage) == null ? void 0 : _a.pdc.covered.size) || 0} / ${((_b = state36.coverage) == null ? void 0 : _b.pdc.all.size) || 0} (${pdcRatio}%)</span>
               </div>
               <div class="grammar-metric">
                 <span class="grammar-metric-label">TSC</span>
-                <span class="grammar-metric-value" data-testid="grammar-tsc">${((_c = state31.coverage) == null ? void 0 : _c.tsc.covered.size) || 0} / ${((_d = state31.coverage) == null ? void 0 : _d.tsc.all.size) || 0} (${tscRatio}%)</span>
+                <span class="grammar-metric-value" data-testid="grammar-tsc">${((_c = state36.coverage) == null ? void 0 : _c.tsc.covered.size) || 0} / ${((_d = state36.coverage) == null ? void 0 : _d.tsc.all.size) || 0} (${tscRatio}%)</span>
               </div>
             </div>
             <div class="grammar-terminals">${terminalsHtml}</div>
@@ -14197,20 +14461,20 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <nav class="grammar-subtab-row" data-testid="grammar-subtab-row" role="tablist">
           ${GRAMMAR_TABS.map((tab) => `
             <button type="button"
-              class="grammar-subtab-btn${state31.activeTab === tab.id ? " active" : ""}"
+              class="grammar-subtab-btn${state36.activeTab === tab.id ? " active" : ""}"
               data-grammar-subtab="${tab.id}"
               role="tab"
-              aria-selected="${state31.activeTab === tab.id ? "true" : "false"}"
+              aria-selected="${state36.activeTab === tab.id ? "true" : "false"}"
             >${escapeHtml4(t(tab.labelKey))}</button>
           `).join("")}
         </nav>
 
-        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state31.activeTab === "derivations" ? "" : "none"}">
+        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state36.activeTab === "derivations" ? "" : "none"}">
           <h4>${escapeHtml4(t("grammar.derivations"))}</h4>
           ${derivationsHtml}
         </div>
 
-        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state31.activeTab === "mutation" ? "" : "none"}">
+        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state36.activeTab === "mutation" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.mutations"))}</h4>
             ${score ? `<span class="grammar-score" data-testid="grammar-mutation-score">${t("grammar.scoreLabel")}: ${score.killed} / ${score.total} (${Math.round(score.killed / score.total * 100)}%)</span>` : ""}
@@ -14222,7 +14486,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </div>
         </div>
 
-        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state31.activeTab === "string" ? "" : "none"}">
+        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state36.activeTab === "string" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.string.title"))}</h4>
             ${stringStats || ""}
@@ -14230,10 +14494,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <p class="grammar-string-subtitle">${escapeHtml4(t("grammar.string.subtitle"))}</p>
           <div class="grammar-string-controls">
             <label>${escapeHtml4(t("grammar.string.seed"))}
-              <select data-grammar-seed-select ${state31.derivations.length === 0 ? "disabled" : ""}>${seedOptionsHtml}</select>
+              <select data-grammar-seed-select ${state36.derivations.length === 0 ? "disabled" : ""}>${seedOptionsHtml}</select>
             </label>
             <label>${escapeHtml4(t("grammar.string.maxPerOp"))}
-              <input type="number" min="1" max="50" value="${state31.maxPerStringOp}" data-grammar-max-per-string-op />
+              <input type="number" min="1" max="50" value="${state36.maxPerStringOp}" data-grammar-max-per-string-op />
             </label>
           </div>
           <div class="grammar-op-row">${stringOpButtons}</div>
@@ -14244,82 +14508,82 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     `;
-      root32.querySelectorAll("[data-grammar-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-grammar-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           loadExample(btn.dataset.grammarExample);
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-grammar-subtab]").forEach((btn) => {
+      root37.querySelectorAll("[data-grammar-subtab]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.activeTab = btn.dataset.grammarSubtab;
-          saveActiveTab(state31.activeTab);
-          render31();
+          state36.activeTab = btn.dataset.grammarSubtab;
+          saveActiveTab(state36.activeTab);
+          render36();
         });
       });
-      const ta = root32.querySelector('[data-testid="grammar-text"]');
+      const ta = root37.querySelector('[data-testid="grammar-text"]');
       ta == null ? void 0 : ta.addEventListener("input", (e) => {
-        state31.text = e.target.value;
+        state36.text = e.target.value;
         persistCurrent();
       });
       ta == null ? void 0 : ta.addEventListener("change", () => {
-        render31();
+        render36();
       });
-      (_e = root32.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
-        state31.extraTests = e.target.value;
+      (_e = root37.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
+        state36.extraTests = e.target.value;
       });
-      (_f = root32.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _f.addEventListener("change", () => render31());
-      (_g = root32.querySelector("[data-grammar-max-strings]")) == null ? void 0 : _g.addEventListener("change", (e) => {
-        state31.maxStrings = Math.max(1, Math.min(40, Number(e.target.value) || 1));
-        render31();
+      (_f = root37.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _f.addEventListener("change", () => render36());
+      (_g = root37.querySelector("[data-grammar-max-strings]")) == null ? void 0 : _g.addEventListener("change", (e) => {
+        state36.maxStrings = Math.max(1, Math.min(40, Number(e.target.value) || 1));
+        render36();
       });
-      (_h = root32.querySelector("[data-grammar-max-depth]")) == null ? void 0 : _h.addEventListener("change", (e) => {
-        state31.maxDepth = Math.max(1, Math.min(40, Number(e.target.value) || 1));
-        render31();
+      (_h = root37.querySelector("[data-grammar-max-depth]")) == null ? void 0 : _h.addEventListener("change", (e) => {
+        state36.maxDepth = Math.max(1, Math.min(40, Number(e.target.value) || 1));
+        render36();
       });
-      root32.querySelectorAll("[data-grammar-op]").forEach((cb) => {
+      root37.querySelectorAll("[data-grammar-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.grammarOp;
-          if (e.target.checked) state31.operators.add(op);
-          else state31.operators.delete(op);
-          render31();
+          if (e.target.checked) state36.operators.add(op);
+          else state36.operators.delete(op);
+          render36();
         });
       });
-      root32.querySelectorAll("[data-grammar-mutant]").forEach((btn) => {
+      root37.querySelectorAll("[data-grammar-mutant]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.selectedMutantId = btn.dataset.grammarMutant;
-          render31();
+          state36.selectedMutantId = btn.dataset.grammarMutant;
+          render36();
         });
       });
-      (_i = root32.querySelector("[data-grammar-seed-select]")) == null ? void 0 : _i.addEventListener("change", (e) => {
-        state31.seedIndex = Math.max(0, Number(e.target.value) || 0);
-        state31.selectedStringMutantId = null;
-        render31();
+      (_i = root37.querySelector("[data-grammar-seed-select]")) == null ? void 0 : _i.addEventListener("change", (e) => {
+        state36.seedIndex = Math.max(0, Number(e.target.value) || 0);
+        state36.selectedStringMutantId = null;
+        render36();
       });
-      (_j = root32.querySelector("[data-grammar-max-per-string-op]")) == null ? void 0 : _j.addEventListener("change", (e) => {
-        state31.maxPerStringOp = Math.max(1, Math.min(50, Number(e.target.value) || 1));
-        render31();
+      (_j = root37.querySelector("[data-grammar-max-per-string-op]")) == null ? void 0 : _j.addEventListener("change", (e) => {
+        state36.maxPerStringOp = Math.max(1, Math.min(50, Number(e.target.value) || 1));
+        render36();
       });
-      root32.querySelectorAll("[data-grammar-string-op]").forEach((cb) => {
+      root37.querySelectorAll("[data-grammar-string-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.grammarStringOp;
-          if (e.target.checked) state31.stringOperators.add(op);
-          else state31.stringOperators.delete(op);
-          render31();
+          if (e.target.checked) state36.stringOperators.add(op);
+          else state36.stringOperators.delete(op);
+          render36();
         });
       });
-      root32.querySelectorAll("[data-grammar-string-mutant]").forEach((row) => {
+      root37.querySelectorAll("[data-grammar-string-mutant]").forEach((row) => {
         row.addEventListener("click", () => {
-          state31.selectedStringMutantId = row.dataset.grammarStringMutant;
-          render31();
+          state36.selectedStringMutantId = row.dataset.grammarStringMutant;
+          render36();
         });
       });
     }
-    render31();
+    render36();
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a;
-        if (!root32.isConnected) return;
+        if (!root37.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "grammar") return;
         const content = String((_a = detail.content) != null ? _a : "");
@@ -14333,16 +14597,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           descriptionEn: `Uploaded from cloud: ${detail.name || baseName}`,
           text: content
         };
-        state31.customExamples = [...state31.customExamples, newExample];
-        state31.programs[id] = content;
-        state31.exampleId = id;
-        state31.text = content;
-        state31.selectedMutantId = null;
+        state36.customExamples = [...state36.customExamples, newExample];
+        state36.programs[id] = content;
+        state36.exampleId = id;
+        state36.text = content;
+        state36.selectedMutantId = null;
         persistCurrent();
-        render31();
+        render36();
       });
     }
-    return root32;
+    return root37;
   }
 
   // src/utils/specMutation.js
@@ -14408,7 +14672,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         throw new Error(`Unknown AST node: ${node.type}`);
     }
   }
-  function* walkWithReplacers(root32) {
+  function* walkWithReplacers(root37) {
     function* walk(node, replaceInParent) {
       yield [node, replaceInParent];
       if (node.type === "not") {
@@ -14430,7 +14694,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     function topReplace(newRoot) {
       return cloneAst(newRoot);
     }
-    yield* walk(root32, topReplace);
+    yield* walk(root37, topReplace);
   }
   function generateSpecMutants(parsed, opIds = SPEC_MUTATION_OPERATORS) {
     if (!(parsed == null ? void 0 : parsed.ast)) throw new Error("parsed.ast is required");
@@ -14887,14 +15151,14 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist(state31) {
+  function persist(state36) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY4, JSON.stringify({
-        text: state31.text,
-        operators: [...state31.operators],
-        activeCategory: state31.activeCategory,
-        tests: state31.tests
+        text: state36.text,
+        operators: [...state36.operators],
+        activeCategory: state36.activeCategory,
+        tests: state36.tests
       }));
     } catch {
     }
@@ -14903,11 +15167,11 @@ INVARSPEC !w | (i & (l | h))`
     return Object.entries(values).map(([k, v]) => `${k}=${v ? "T" : "F"}`).join(", ");
   }
   function createSpecMutationExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "spec-mutation";
-    root32.dataset.testid = "spec-mutation";
+    const root37 = document.createElement("div");
+    root37.className = "spec-mutation";
+    root37.dataset.testid = "spec-mutation";
     const saved = loadSaved();
-    const state31 = {
+    const state36 = {
       text: (saved == null ? void 0 : saved.text) || DEFAULT_PREDICATE,
       operators: new Set((saved == null ? void 0 : saved.operators) || DEFAULT_OPS2),
       activeCategory: (saved == null ? void 0 : saved.activeCategory) || DEFAULT_CATEGORY,
@@ -14922,59 +15186,59 @@ INVARSPEC !w | (i & (l | h))`
     };
     function recompute() {
       var _a;
-      state31.parseError = null;
-      state31.parsed = null;
-      state31.mutants = [];
+      state36.parseError = null;
+      state36.parsed = null;
+      state36.mutants = [];
       try {
-        const parsed = parsePredicate(state31.text);
-        state31.parsed = parsed;
-        const ops = [...state31.operators];
+        const parsed = parsePredicate(state36.text);
+        state36.parsed = parsed;
+        const ops = [...state36.operators];
         const generated = ops.length > 0 ? generateSpecMutants(parsed, ops) : [];
         let tests;
-        if (state31.useFullTable) {
+        if (state36.useFullTable) {
           tests = buildAssignmentSpace(parsed.clauses);
         } else {
-          tests = (state31.tests || []).map((t2) => {
+          tests = (state36.tests || []).map((t2) => {
             var _a2;
             const v = {};
             for (const c of parsed.clauses) v[c] = !!((_a2 = t2.values) == null ? void 0 : _a2[c]);
             return v;
           });
         }
-        state31.mutants = evaluateSpecMutants(parsed, generated, tests);
-        if (!state31.mutants.find((m) => m.id === state31.selectedMutantId)) {
-          state31.selectedMutantId = ((_a = state31.mutants[0]) == null ? void 0 : _a.id) || null;
+        state36.mutants = evaluateSpecMutants(parsed, generated, tests);
+        if (!state36.mutants.find((m) => m.id === state36.selectedMutantId)) {
+          state36.selectedMutantId = ((_a = state36.mutants[0]) == null ? void 0 : _a.id) || null;
         }
       } catch (err) {
-        state31.parseError = err.message || String(err);
+        state36.parseError = err.message || String(err);
       }
-      persist(state31);
+      persist(state36);
     }
-    function render31() {
+    function render36() {
       var _a, _b, _c;
       recompute();
-      const currentExample4 = SPEC_EXAMPLES.find((ex) => state31.text.trim() === ex.text) || null;
+      const currentExample4 = SPEC_EXAMPLES.find((ex) => state36.text.trim() === ex.text) || null;
       const categoryButtons = SPEC_CATEGORIES.map((cat) => `
       <button type="button"
-        class="spec-category-btn${state31.activeCategory === cat.id ? " active" : ""}"
+        class="spec-category-btn${state36.activeCategory === cat.id ? " active" : ""}"
         data-spec-category="${cat.id}">${escapeHtml5(t(cat.labelKey))}</button>
     `).join("");
-      const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state31.activeCategory);
+      const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state36.activeCategory);
       const exampleButtons = visibleExamples.map((ex) => `
-      <button type="button" class="spec-example-btn${state31.text.trim() === ex.text ? " active" : ""}"
+      <button type="button" class="spec-example-btn${state36.text.trim() === ex.text ? " active" : ""}"
         data-spec-example="${ex.id}" title="${escapeHtml5(ex.description || "")}">${escapeHtml5(ex.name)}</button>
     `).join("");
       const operatorButtons = SPEC_MUTATION_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state31.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
-        <input type="checkbox" data-spec-op="${op}" ${state31.operators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state36.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
+        <input type="checkbox" data-spec-op="${op}" ${state36.operators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const score = state31.mutants.length === 0 ? null : { killed: state31.mutants.filter((m) => m.killed).length, total: state31.mutants.length };
-      const mutantsHtml = state31.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml5(t("spec.noMutants"))}</p>` : `<ul class="grammar-mutant-list" data-testid="spec-mutant-list">
-          ${state31.mutants.map((m) => `<li>
+      const score = state36.mutants.length === 0 ? null : { killed: state36.mutants.filter((m) => m.killed).length, total: state36.mutants.length };
+      const mutantsHtml = state36.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml5(t("spec.noMutants"))}</p>` : `<ul class="grammar-mutant-list" data-testid="spec-mutant-list">
+          ${state36.mutants.map((m) => `<li>
             <button type="button"
-              class="grammar-mutant-btn${state31.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
+              class="grammar-mutant-btn${state36.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
               data-spec-mutant="${escapeHtml5(m.id)}">
               <span class="grammar-mutant-op">${m.operator}</span>
               <span class="grammar-mutant-status">${m.killed ? t("grammar.killed") : t("grammar.live")}</span>
@@ -14985,19 +15249,19 @@ INVARSPEC !w | (i & (l | h))`
             </button>
           </li>`).join("")}
          </ul>`;
-      const selected = state31.mutants.find((m) => m.id === state31.selectedMutantId) || null;
-      const flippedSet = selected ? flippedKeysFromKillers(selected.killers, ((_a = state31.parsed) == null ? void 0 : _a.clauses) || []) : null;
-      const fsmHtml = state31.parsed ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
+      const selected = state36.mutants.find((m) => m.id === state36.selectedMutantId) || null;
+      const flippedSet = selected ? flippedKeysFromKillers(selected.killers, ((_a = state36.parsed) == null ? void 0 : _a.clauses) || []) : null;
+      const fsmHtml = state36.parsed ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
           ${renderMonitorSvg({
-        ast: state31.parsed.ast,
-        clauses: state31.parsed.clauses,
+        ast: state36.parsed.ast,
+        clauses: state36.parsed.clauses,
         title: t("spec.fsm.original"),
         flippedSet: null,
         testId: "spec-fsm-original"
       })}
           ${renderMonitorSvg({
-        ast: selected ? selected.ast : state31.parsed.ast,
-        clauses: state31.parsed.clauses,
+        ast: selected ? selected.ast : state36.parsed.ast,
+        clauses: state36.parsed.clauses,
         title: selected ? `${t("spec.fsm.mutant")}: ${selected.id}` : t("spec.fsm.pickMutant"),
         flippedSet,
         testId: "spec-fsm-mutant"
@@ -15014,7 +15278,7 @@ INVARSPEC !w | (i & (l | h))`
                  \xB7 orig=${k.orig ? "T" : "F"} \xB7 mut=${k.mut ? "T" : "F"}
                </li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml5(t("spec.equivalentHint"))}</p>`}
         </div>` : `<p class="grammar-empty">${escapeHtml5(t("grammar.selectMutantHint"))}</p>`;
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="grammar-card spec-card">
         <header class="grammar-header">
           <p class="grammar-kicker">${escapeHtml5(t("spec.kicker"))}</p>
@@ -15033,12 +15297,12 @@ INVARSPEC !w | (i & (l | h))`
         <div class="spec-editor-row">
           <label class="grammar-editor-label">
             ${escapeHtml5(t("spec.predicateLabel"))}
-            <input type="text" data-testid="spec-text" value="${escapeHtml5(state31.text)}" spellcheck="false" />
+            <input type="text" data-testid="spec-text" value="${escapeHtml5(state36.text)}" spellcheck="false" />
           </label>
-          ${state31.parseError ? `<p class="grammar-error" data-testid="spec-parse-error">${escapeHtml5(state31.parseError)}</p>` : ""}
-          ${state31.parsed ? `<p class="spec-clauses">
-            <strong>${escapeHtml5(t("spec.clauses"))}:</strong> ${state31.parsed.clauses.map((c) => `<code>${escapeHtml5(c)}</code>`).join(", ") || "\u2014"}
-            \xB7 <strong>${escapeHtml5(t("spec.canonical"))}:</strong> <code>${escapeHtml5(astToString(state31.parsed.ast))}</code>
+          ${state36.parseError ? `<p class="grammar-error" data-testid="spec-parse-error">${escapeHtml5(state36.parseError)}</p>` : ""}
+          ${state36.parsed ? `<p class="spec-clauses">
+            <strong>${escapeHtml5(t("spec.clauses"))}:</strong> ${state36.parsed.clauses.map((c) => `<code>${escapeHtml5(c)}</code>`).join(", ") || "\u2014"}
+            \xB7 <strong>${escapeHtml5(t("spec.canonical"))}:</strong> <code>${escapeHtml5(astToString(state36.parsed.ast))}</code>
           </p>` : ""}
         </div>
 
@@ -15057,46 +15321,46 @@ INVARSPEC !w | (i & (l | h))`
         </div>
       </div>
     `;
-      root32.querySelectorAll("[data-spec-category]").forEach((btn) => {
+      root37.querySelectorAll("[data-spec-category]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.activeCategory = btn.dataset.specCategory;
-          render31();
+          state36.activeCategory = btn.dataset.specCategory;
+          render36();
         });
       });
-      root32.querySelectorAll("[data-spec-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-spec-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
           if (!ex) return;
-          state31.text = ex.text;
-          state31.activeCategory = ex.category || state31.activeCategory;
-          state31.selectedMutantId = null;
-          render31();
+          state36.text = ex.text;
+          state36.activeCategory = ex.category || state36.activeCategory;
+          state36.selectedMutantId = null;
+          render36();
         });
       });
-      (_b = root32.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("input", (e) => {
-        state31.text = e.target.value;
+      (_b = root37.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("input", (e) => {
+        state36.text = e.target.value;
       });
-      (_c = root32.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _c.addEventListener("change", () => {
-        state31.selectedMutantId = null;
-        render31();
+      (_c = root37.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _c.addEventListener("change", () => {
+        state36.selectedMutantId = null;
+        render36();
       });
-      root32.querySelectorAll("[data-spec-op]").forEach((cb) => {
+      root37.querySelectorAll("[data-spec-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.specOp;
-          if (e.target.checked) state31.operators.add(op);
-          else state31.operators.delete(op);
-          render31();
+          if (e.target.checked) state36.operators.add(op);
+          else state36.operators.delete(op);
+          render36();
         });
       });
-      root32.querySelectorAll("[data-spec-mutant]").forEach((btn) => {
+      root37.querySelectorAll("[data-spec-mutant]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.selectedMutantId = btn.dataset.specMutant;
-          render31();
+          state36.selectedMutantId = btn.dataset.specMutant;
+          render36();
         });
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/symbolicExecution.js
@@ -15889,25 +16153,25 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist2(state31) {
+  function persist2(state36) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY5, JSON.stringify({
-        sourceCode: state31.sourceCode,
-        exampleId: state31.exampleId,
-        maxLoopUnroll: state31.maxLoopUnroll,
-        cfgZoom: state31.cfgZoom
+        sourceCode: state36.sourceCode,
+        exampleId: state36.exampleId,
+        maxLoopUnroll: state36.maxLoopUnroll,
+        cfgZoom: state36.cfgZoom
       }));
     } catch {
     }
   }
   function createSymbolicExecutionExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "symbex-explorer";
-    root32.dataset.testid = "symbex-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "symbex-explorer";
+    root37.dataset.testid = "symbex-explorer";
     const saved = loadSaved2();
     const defaultExample = symbolicExecutionExamples[0];
-    const state31 = {
+    const state36 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       maxLoopUnroll: typeof (saved == null ? void 0 : saved.maxLoopUnroll) === "number" ? saved.maxLoopUnroll : 3,
@@ -15945,7 +16209,7 @@ INVARSPEC !w | (i & (l | h))`
     function renderSymbexQuizPanel() {
       if (!symbexQuiz.active) return "";
       if (symbexQuiz.phase === "graded") {
-        const correct = state31.result ? state31.result.paths.filter((p) => p.feasible).length : 0;
+        const correct = state36.result ? state36.result.paths.filter((p) => p.feasible).length : 0;
         const userAns = parseInt(symbexQuiz.answer, 10);
         const ok = userAns === correct;
         const shareEncoded = encodeResult({ v: 1, explorer: "symbex", explorerLabel: t("quiz.symbex.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.symbex.prompt"), a: String(symbexQuiz.answer), expected: String(correct), ok }] });
@@ -15984,52 +16248,52 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a, _b;
-      state31.result = null;
-      state31.error = null;
-      state31.cfg = null;
-      state31.cfgError = null;
+      state36.result = null;
+      state36.error = null;
+      state36.cfg = null;
+      state36.cfgError = null;
       try {
-        state31.result = symbolicExecute(state31.sourceCode, { maxLoopUnroll: state31.maxLoopUnroll });
+        state36.result = symbolicExecute(state36.sourceCode, { maxLoopUnroll: state36.maxLoopUnroll });
       } catch (err) {
-        state31.error = err.message || String(err);
+        state36.error = err.message || String(err);
       }
       try {
-        state31.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state31.sourceCode,
+        state36.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state36.sourceCode,
           language: "javascript",
           title: "Symbolic Execution CFG"
         });
       } catch (err) {
-        state31.cfgError = err.message || String(err);
+        state36.cfgError = err.message || String(err);
       }
-      if ((_b = (_a = state31.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.length) {
-        const stillExists = state31.result.paths.some((p) => p.id === state31.selectedPathId);
+      if ((_b = (_a = state36.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.length) {
+        const stillExists = state36.result.paths.some((p) => p.id === state36.selectedPathId);
         if (!stillExists) {
-          const firstFeasible = state31.result.paths.find((p) => p.feasible) || state31.result.paths[0];
-          state31.selectedPathId = firstFeasible.id;
+          const firstFeasible = state36.result.paths.find((p) => p.feasible) || state36.result.paths[0];
+          state36.selectedPathId = firstFeasible.id;
         }
       } else {
-        state31.selectedPathId = null;
+        state36.selectedPathId = null;
       }
-      persist2(state31);
+      persist2(state36);
     }
-    function render31() {
+    function render36() {
       recompute();
       const exampleButtons = symbolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="symbex-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+        class="symbex-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-symbex-example="${ex.id}"
         data-testid="symbex-example-${ex.id}"
         title="${escapeHtml6(pickField(ex, "description") || "")}">
         ${escapeHtml6(pickField(ex, "name") || ex.name)}
       </button>
     `).join("");
-      const pathsMarkup = state31.error ? `<div class="symbex-error" data-testid="symbex-error">${escapeHtml6(state31.error)}</div>` : renderPaths2(state31.result);
-      const summary = state31.result ? `${t("symbex.summary.paths")}<strong data-testid="symbex-path-count">${state31.result.paths.length}</strong>
+      const pathsMarkup = state36.error ? `<div class="symbex-error" data-testid="symbex-error">${escapeHtml6(state36.error)}</div>` : renderPaths2(state36.result);
+      const summary = state36.result ? `${t("symbex.summary.paths")}<strong data-testid="symbex-path-count">${state36.result.paths.length}</strong>
          <span class="symbex-divider">\xB7</span>
-         ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state31.result.paths.filter((p) => p.feasible).length}</strong>
-         ${state31.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
-      root32.innerHTML = `
+         ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state36.result.paths.filter((p) => p.feasible).length}</strong>
+         ${state36.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
+      root37.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="symbex-mobile-nav">
         <a href="#symbex-input-panel">${t("explorer.panel.input")}</a>
         <a href="#symbex-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -16046,7 +16310,7 @@ INVARSPEC !w | (i & (l | h))`
             <label class="symbex-control">
               <span>${t("symbex.maxUnroll")}</span>
               <input type="number" min="0" max="6" step="1"
-                value="${state31.maxLoopUnroll}"
+                value="${state36.maxLoopUnroll}"
                 data-testid="symbex-max-unroll" />
             </label>
           </div>
@@ -16058,7 +16322,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="symbex-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml6(state31.sourceCode)}</textarea>
+            rows="14">${escapeHtml6(state36.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -16086,24 +16350,24 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="symbex-hint">${t("symbex.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
     function renderCfgPane() {
       var _a, _b;
-      if (state31.cfgError) {
+      if (state36.cfgError) {
         return `<div class="symbex-cfg" data-testid="symbex-cfg">
-        <p class="symbex-cfg-error">${escapeHtml6(state31.cfgError)}</p>
+        <p class="symbex-cfg-error">${escapeHtml6(state36.cfgError)}</p>
       </div>`;
       }
-      if (!state31.cfg) return "";
-      const selected = (_b = (_a = state31.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.find((p) => p.id === state31.selectedPathId);
-      const mapping = selected ? mapBranchesToCfg(state31.cfg, selected.branches) : { nodes: [], edges: [] };
-      const svg = renderCfgSvg(state31.cfg, mapping, {
+      if (!state36.cfg) return "";
+      const selected = (_b = (_a = state36.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.find((p) => p.id === state36.selectedPathId);
+      const mapping = selected ? mapBranchesToCfg(state36.cfg, selected.branches) : { nodes: [], edges: [] };
+      const svg = renderCfgSvg(state36.cfg, mapping, {
         idPrefix: "symbex-cfg",
         ariaLabel: "Symbolic execution CFG",
-        zoom: state31.cfgZoom
+        zoom: state36.cfgZoom
       });
-      const zoomPct = Math.round(state31.cfgZoom * 100);
+      const zoomPct = Math.round(state36.cfgZoom * 100);
       return `
       <div class="symbex-cfg" data-testid="symbex-cfg">
         <div class="symbex-cfg-header">
@@ -16132,7 +16396,7 @@ INVARSPEC !w | (i & (l | h))`
              <dd><code>${escapeHtml6(formatReturn(p.returnExpression, p.concreteReturn))}</code></dd>
            </dl>` : `<p class="symbex-infeasible">${t("symbex.infeasible")}</p>`;
         return `
-        <li class="symbex-path${p.feasible ? "" : " infeasible"}${state31.selectedPathId === p.id ? " selected" : ""}"
+        <li class="symbex-path${p.feasible ? "" : " infeasible"}${state36.selectedPathId === p.id ? " selected" : ""}"
           data-testid="symbex-${p.id}"
           data-symbex-path="${p.id}"
           tabindex="0"
@@ -16157,24 +16421,24 @@ INVARSPEC !w | (i & (l | h))`
       if (concrete === null || concrete === void 0) return expr;
       return `${expr}  \u2192  ${concrete}`;
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a, _b, _c, _d;
-      root32.querySelectorAll("[data-symbex-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-symbex-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.symbexExample;
           const ex = symbolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state31.exampleId = ex.id;
-          state31.sourceCode = ex.sourceCode;
-          state31.selectedPathId = null;
+          state36.exampleId = ex.id;
+          state36.sourceCode = ex.sourceCode;
+          state36.selectedPathId = null;
           symbexQuiz.active = false;
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-symbex-path]").forEach((el) => {
+      root37.querySelectorAll("[data-symbex-path]").forEach((el) => {
         const select = () => {
-          state31.selectedPathId = el.dataset.symbexPath;
-          render31();
+          state36.selectedPathId = el.dataset.symbexPath;
+          render36();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -16184,92 +16448,92 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root32.querySelector('[data-testid="symbex-source"]');
+      const editor = root37.querySelector('[data-testid="symbex-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state31.sourceCode = editor.value;
+          state36.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => {
             renderPreservingFocus("symbex-source");
           }, 220);
         });
       }
-      const unroll = root32.querySelector('[data-testid="symbex-max-unroll"]');
+      const unroll = root37.querySelector('[data-testid="symbex-max-unroll"]');
       if (unroll) {
         unroll.addEventListener("change", () => {
           const n = Number(unroll.value);
           if (Number.isFinite(n) && n >= 0 && n <= 12) {
-            state31.maxLoopUnroll = n;
-            render31();
+            state36.maxLoopUnroll = n;
+            render36();
           }
         });
       }
-      root32.querySelectorAll("[data-symbex-zoom]").forEach((btn) => {
+      root37.querySelectorAll("[data-symbex-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.symbexZoom;
-          if (action === "in") state31.cfgZoom = Math.min(4, +(state31.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state31.cfgZoom = Math.max(0.25, +(state31.cfgZoom - 0.25).toFixed(2));
-          else state31.cfgZoom = 1;
-          render31();
+          if (action === "in") state36.cfgZoom = Math.min(4, +(state36.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(state36.cfgZoom - 0.25).toFixed(2));
+          else state36.cfgZoom = 1;
+          render36();
         });
       });
-      const sqStart = root32.querySelector('[data-testid="symbex-quiz-start"]');
+      const sqStart = root37.querySelector('[data-testid="symbex-quiz-start"]');
       if (sqStart) {
         sqStart.addEventListener("click", () => {
           symbexQuiz.active = true;
           symbexQuiz.phase = "question";
           symbexQuiz.answer = "";
-          render31();
+          render36();
         });
       }
-      const sqClose = root32.querySelector('[data-testid="symbex-quiz-close"]');
+      const sqClose = root37.querySelector('[data-testid="symbex-quiz-close"]');
       if (sqClose) {
         sqClose.addEventListener("click", () => {
           symbexQuiz.active = false;
-          render31();
+          render36();
         });
       }
-      const sqCheck = root32.querySelector('[data-testid="symbex-quiz-check"]');
+      const sqCheck = root37.querySelector('[data-testid="symbex-quiz-check"]');
       if (sqCheck) {
         sqCheck.addEventListener("click", () => {
-          const inp = root32.querySelector('[data-testid="symbex-quiz-input"]');
+          const inp = root37.querySelector('[data-testid="symbex-quiz-input"]');
           symbexQuiz.answer = inp ? inp.value : "";
           symbexQuiz.phase = "graded";
-          render31();
+          render36();
         });
       }
-      const sqReset = root32.querySelector('[data-testid="symbex-quiz-reset"]');
+      const sqReset = root37.querySelector('[data-testid="symbex-quiz-reset"]');
       if (sqReset) {
         sqReset.addEventListener("click", () => {
           symbexQuiz.phase = "question";
           symbexQuiz.answer = "";
-          render31();
+          render36();
         });
       }
-      (_a = root32.querySelector('[data-testid="symbex-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root37.querySelector('[data-testid="symbex-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         symbexLabReflect.active = true;
-        render31();
+        render36();
       });
-      (_b = root32.querySelector('[data-testid="symbex-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root37.querySelector('[data-testid="symbex-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a2, _b2;
-        symbexLabReflect.a1 = ((_a2 = root32.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || symbexLabReflect.a1;
-        symbexLabReflect.a2 = ((_b2 = root32.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || symbexLabReflect.a2;
+        symbexLabReflect.a1 = ((_a2 = root37.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || symbexLabReflect.a1;
+        symbexLabReflect.a2 = ((_b2 = root37.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || symbexLabReflect.a2;
         symbexLabReflect.active = false;
-        render31();
+        render36();
       });
-      (_c = root32.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
+      (_c = root37.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
         symbexLabReflect.a1 = e.target.value;
       });
-      (_d = root32.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root37.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         symbexLabReflect.a2 = e.target.value;
       });
-      const symbexLrShare = root32.querySelector('[data-testid="symbex-lab-reflect-share"]');
+      const symbexLrShare = root37.querySelector('[data-testid="symbex-lab-reflect-share"]');
       if (symbexLrShare) {
         symbexLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root32.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root32.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root37.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root37.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "symbex",
@@ -16305,11 +16569,11 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root32.querySelector(`[data-testid="${testid}"]`);
+      const previously = root37.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render31();
-      const next = root32.querySelector(`[data-testid="${testid}"]`);
+      render36();
+      const next = root37.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -16317,8 +16581,8 @@ INVARSPEC !w | (i & (l | h))`
         }
       }
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/concolicExecution.js
@@ -16512,15 +16776,15 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist3(state31) {
+  function persist3(state36) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY6, JSON.stringify({
-        sourceCode: state31.sourceCode,
-        exampleId: state31.exampleId,
-        seedText: state31.seedText,
-        maxIterations: state31.maxIterations,
-        cfgZoom: state31.cfgZoom
+        sourceCode: state36.sourceCode,
+        exampleId: state36.exampleId,
+        seedText: state36.seedText,
+        maxIterations: state36.maxIterations,
+        cfgZoom: state36.cfgZoom
       }));
     } catch {
     }
@@ -16539,12 +16803,12 @@ INVARSPEC !w | (i & (l | h))`
     return out;
   }
   function createConcolicExecutionExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "concolic-explorer";
-    root32.dataset.testid = "concolic-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "concolic-explorer";
+    root37.dataset.testid = "concolic-explorer";
     const saved = loadSaved3();
     const defaultExample = concolicExecutionExamples[0];
-    const state31 = {
+    const state36 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       seedText: (saved == null ? void 0 : saved.seedText) || defaultExample.seed || "",
@@ -16560,7 +16824,7 @@ INVARSPEC !w | (i & (l | h))`
     function renderConcolicQuizPanel() {
       if (!concolicQuiz.active) return "";
       if (concolicQuiz.phase === "graded") {
-        const correct = state31.result ? state31.result.uniquePathCount : 0;
+        const correct = state36.result ? state36.result.uniquePathCount : 0;
         const userAns = parseInt(concolicQuiz.answer, 10);
         const ok = userAns === correct;
         const shareEncoded = encodeResult({ v: 1, explorer: "concolic", explorerLabel: t("quiz.concolic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.concolic.prompt"), a: String(concolicQuiz.answer), expected: String(correct), ok }] });
@@ -16599,57 +16863,57 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a, _b;
-      state31.result = null;
-      state31.error = null;
-      state31.cfg = null;
-      state31.cfgError = null;
+      state36.result = null;
+      state36.error = null;
+      state36.cfg = null;
+      state36.cfgError = null;
       try {
-        const initialInputs = parseSeed(state31.seedText);
-        state31.result = concolicExecute(state31.sourceCode, {
+        const initialInputs = parseSeed(state36.seedText);
+        state36.result = concolicExecute(state36.sourceCode, {
           initialInputs,
-          maxIterations: state31.maxIterations
+          maxIterations: state36.maxIterations
         });
       } catch (err) {
-        state31.error = err.message || String(err);
+        state36.error = err.message || String(err);
       }
       try {
-        state31.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state31.sourceCode,
+        state36.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state36.sourceCode,
           language: "javascript",
           title: "Concolic Execution CFG"
         });
       } catch (err) {
-        state31.cfgError = err.message || String(err);
+        state36.cfgError = err.message || String(err);
       }
-      if ((_b = (_a = state31.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.length) {
-        const stillExists = state31.result.iterations.some((it) => it.id === state31.selectedIterId);
+      if ((_b = (_a = state36.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.length) {
+        const stillExists = state36.result.iterations.some((it) => it.id === state36.selectedIterId);
         if (!stillExists) {
-          state31.selectedIterId = state31.result.iterations[0].id;
+          state36.selectedIterId = state36.result.iterations[0].id;
         }
       } else {
-        state31.selectedIterId = null;
+        state36.selectedIterId = null;
       }
-      persist3(state31);
+      persist3(state36);
     }
-    function render31() {
+    function render36() {
       recompute();
       const exampleButtons = concolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="concolic-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+        class="concolic-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-concolic-example="${ex.id}"
         data-testid="concolic-example-${ex.id}"
         title="${escapeHtml7(pickField(ex, "description") || "")}">
         ${escapeHtml7(pickField(ex, "name") || ex.name)}
       </button>
     `).join("");
-      const body = state31.error ? `<div class="concolic-error" data-testid="concolic-error">${escapeHtml7(state31.error)}</div>` : renderIterations(state31.result);
-      const summary = state31.result ? `${t("concolic.summary.iterations")}<strong data-testid="concolic-iter-count">${state31.result.iterations.length}</strong>
+      const body = state36.error ? `<div class="concolic-error" data-testid="concolic-error">${escapeHtml7(state36.error)}</div>` : renderIterations(state36.result);
+      const summary = state36.result ? `${t("concolic.summary.iterations")}<strong data-testid="concolic-iter-count">${state36.result.iterations.length}</strong>
          <span class="concolic-divider">\xB7</span>
-         ${t("concolic.summary.uniquePaths")}<strong data-testid="concolic-path-count">${state31.result.uniquePathCount}</strong>
+         ${t("concolic.summary.uniquePaths")}<strong data-testid="concolic-path-count">${state36.result.uniquePathCount}</strong>
          <span class="concolic-divider">\xB7</span>
-         ${t("concolic.summary.uniqueInputs")}<strong>${state31.result.uniqueInputCount}</strong>
-         ${state31.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
-      root32.innerHTML = `
+         ${t("concolic.summary.uniqueInputs")}<strong>${state36.result.uniqueInputCount}</strong>
+         ${state36.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
+      root37.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="concolic-mobile-nav">
         <a href="#concolic-input-panel">${t("explorer.panel.input")}</a>
         <a href="#concolic-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -16665,14 +16929,14 @@ INVARSPEC !w | (i & (l | h))`
           <div class="concolic-controls">
             <label class="concolic-control">
               <span>${t("concolic.seed")}</span>
-              <input type="text" value="${escapeHtml7(state31.seedText)}"
+              <input type="text" value="${escapeHtml7(state36.seedText)}"
                 data-testid="concolic-seed"
                 placeholder="a=1, b=1, c=1" />
             </label>
             <label class="concolic-control">
               <span>${t("concolic.maxIterations")}</span>
               <input type="number" min="1" max="64" step="1"
-                value="${state31.maxIterations}"
+                value="${state36.maxIterations}"
                 data-testid="concolic-max-iter" />
             </label>
           </div>
@@ -16684,7 +16948,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="concolic-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml7(state31.sourceCode)}</textarea>
+            rows="14">${escapeHtml7(state36.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -16710,24 +16974,24 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="concolic-hint">${t("concolic.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
     function renderCfgPane() {
       var _a, _b;
-      if (state31.cfgError) {
+      if (state36.cfgError) {
         return `<div class="concolic-cfg" data-testid="concolic-cfg">
-        <p class="concolic-cfg-error">${escapeHtml7(state31.cfgError)}</p>
+        <p class="concolic-cfg-error">${escapeHtml7(state36.cfgError)}</p>
       </div>`;
       }
-      if (!state31.cfg) return "";
-      const selected = (_b = (_a = state31.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.find((it) => it.id === state31.selectedIterId);
-      const mapping = selected ? mapBranchesToCfg(state31.cfg, selected.branches) : { nodes: [], edges: [] };
-      const svg = renderCfgSvg(state31.cfg, mapping, {
+      if (!state36.cfg) return "";
+      const selected = (_b = (_a = state36.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.find((it) => it.id === state36.selectedIterId);
+      const mapping = selected ? mapBranchesToCfg(state36.cfg, selected.branches) : { nodes: [], edges: [] };
+      const svg = renderCfgSvg(state36.cfg, mapping, {
         idPrefix: "concolic-cfg",
         ariaLabel: "Concolic execution CFG",
-        zoom: state31.cfgZoom
+        zoom: state36.cfgZoom
       });
-      const zoomPct = Math.round(state31.cfgZoom * 100);
+      const zoomPct = Math.round(state36.cfgZoom * 100);
       return `
       <div class="concolic-cfg" data-testid="concolic-cfg">
         <div class="concolic-cfg-header">
@@ -16774,7 +17038,7 @@ INVARSPEC !w | (i & (l | h))`
             `}
           </dl>`;
         return `
-        <li class="concolic-iter${state31.selectedIterId === it.id ? " selected" : ""}"
+        <li class="concolic-iter${state36.selectedIterId === it.id ? " selected" : ""}"
           data-testid="concolic-${it.id}"
           data-concolic-iter="${it.id}"
           tabindex="0"
@@ -16803,24 +17067,24 @@ INVARSPEC !w | (i & (l | h))`
       if (concrete == null) return expr;
       return `${expr}  \u2192  ${concrete}`;
     }
-    function bindEvents31() {
-      root32.querySelectorAll("[data-concolic-example]").forEach((btn) => {
+    function bindEvents36() {
+      root37.querySelectorAll("[data-concolic-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.concolicExample;
           const ex = concolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state31.exampleId = ex.id;
-          state31.sourceCode = ex.sourceCode;
-          state31.seedText = ex.seed || "";
-          state31.selectedIterId = null;
+          state36.exampleId = ex.id;
+          state36.sourceCode = ex.sourceCode;
+          state36.seedText = ex.seed || "";
+          state36.selectedIterId = null;
           concolicQuiz.active = false;
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-concolic-iter]").forEach((el) => {
+      root37.querySelectorAll("[data-concolic-iter]").forEach((el) => {
         const select = () => {
-          state31.selectedIterId = el.dataset.concolicIter;
-          render31();
+          state36.selectedIterId = el.dataset.concolicIter;
+          render36();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -16830,83 +17094,83 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root32.querySelector('[data-testid="concolic-source"]');
+      const editor = root37.querySelector('[data-testid="concolic-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state31.sourceCode = editor.value;
+          state36.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => renderPreservingFocus("concolic-source"), 220);
         });
       }
-      const seed = root32.querySelector('[data-testid="concolic-seed"]');
+      const seed = root37.querySelector('[data-testid="concolic-seed"]');
       if (seed) {
         let timer = null;
         seed.addEventListener("input", () => {
-          state31.seedText = seed.value;
+          state36.seedText = seed.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => renderPreservingFocus("concolic-seed"), 220);
         });
       }
-      const iter = root32.querySelector('[data-testid="concolic-max-iter"]');
+      const iter = root37.querySelector('[data-testid="concolic-max-iter"]');
       if (iter) {
         iter.addEventListener("change", () => {
           const n = Number(iter.value);
           if (Number.isFinite(n) && n >= 1 && n <= 128) {
-            state31.maxIterations = n;
-            render31();
+            state36.maxIterations = n;
+            render36();
           }
         });
       }
-      root32.querySelectorAll("[data-concolic-zoom]").forEach((btn) => {
+      root37.querySelectorAll("[data-concolic-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.concolicZoom;
-          if (action === "in") state31.cfgZoom = Math.min(4, +(state31.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state31.cfgZoom = Math.max(0.25, +(state31.cfgZoom - 0.25).toFixed(2));
-          else state31.cfgZoom = 1;
-          render31();
+          if (action === "in") state36.cfgZoom = Math.min(4, +(state36.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(state36.cfgZoom - 0.25).toFixed(2));
+          else state36.cfgZoom = 1;
+          render36();
         });
       });
-      const cqStart = root32.querySelector('[data-testid="concolic-quiz-start"]');
+      const cqStart = root37.querySelector('[data-testid="concolic-quiz-start"]');
       if (cqStart) {
         cqStart.addEventListener("click", () => {
           concolicQuiz.active = true;
           concolicQuiz.phase = "question";
           concolicQuiz.answer = "";
-          render31();
+          render36();
         });
       }
-      const cqClose = root32.querySelector('[data-testid="concolic-quiz-close"]');
+      const cqClose = root37.querySelector('[data-testid="concolic-quiz-close"]');
       if (cqClose) {
         cqClose.addEventListener("click", () => {
           concolicQuiz.active = false;
-          render31();
+          render36();
         });
       }
-      const cqCheck = root32.querySelector('[data-testid="concolic-quiz-check"]');
+      const cqCheck = root37.querySelector('[data-testid="concolic-quiz-check"]');
       if (cqCheck) {
         cqCheck.addEventListener("click", () => {
-          const inp = root32.querySelector('[data-testid="concolic-quiz-input"]');
+          const inp = root37.querySelector('[data-testid="concolic-quiz-input"]');
           concolicQuiz.answer = inp ? inp.value : "";
           concolicQuiz.phase = "graded";
-          render31();
+          render36();
         });
       }
-      const cqReset = root32.querySelector('[data-testid="concolic-quiz-reset"]');
+      const cqReset = root37.querySelector('[data-testid="concolic-quiz-reset"]');
       if (cqReset) {
         cqReset.addEventListener("click", () => {
           concolicQuiz.phase = "question";
           concolicQuiz.answer = "";
-          render31();
+          render36();
         });
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root32.querySelector(`[data-testid="${testid}"]`);
+      const previously = root37.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render31();
-      const next = root32.querySelector(`[data-testid="${testid}"]`);
+      render36();
+      const next = root37.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -16914,8 +17178,8 @@ INVARSPEC !w | (i & (l | h))`
         }
       }
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/fuzzTesting.js
@@ -17117,28 +17381,28 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist4(state31) {
+  function persist4(state36) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(
         STORAGE_KEY7,
         JSON.stringify({
-          sourceCode: state31.sourceCode,
-          exampleId: state31.exampleId,
-          testCount: state31.testCount,
-          cfgZoom: state31.cfgZoom
+          sourceCode: state36.sourceCode,
+          exampleId: state36.exampleId,
+          testCount: state36.testCount,
+          cfgZoom: state36.cfgZoom
         })
       );
     } catch {
     }
   }
   function createFuzzTestingExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "fuzz-explorer";
-    root32.dataset.testid = "fuzz-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "fuzz-explorer";
+    root37.dataset.testid = "fuzz-explorer";
     const saved = loadSaved4();
     const defaultExample = fuzzTestingExamples[0];
-    const state31 = {
+    const state36 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       testCount: typeof (saved == null ? void 0 : saved.testCount) === "number" ? saved.testCount : 50,
@@ -17179,7 +17443,7 @@ INVARSPEC !w | (i & (l | h))`
     }
     function renderFuzzQuizPanel() {
       if (!fuzzQuiz.active) return "";
-      const nodeCov = state31.totalNodes > 0 ? Math.round(state31.coveredNodes.length / state31.totalNodes * 100) : 0;
+      const nodeCov = state36.totalNodes > 0 ? Math.round(state36.coveredNodes.length / state36.totalNodes * 100) : 0;
       if (fuzzQuiz.phase === "graded") {
         const userAns = parseInt(fuzzQuiz.answer, 10);
         const ok = userAns === nodeCov;
@@ -17219,33 +17483,33 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a;
-      state31.result = null;
-      state31.cfg = null;
-      state31.cfgError = null;
-      state31.error = null;
-      state31.coveredNodes = [];
-      state31.coveredEdges = [];
-      state31.totalNodes = 0;
-      state31.totalEdges = 0;
+      state36.result = null;
+      state36.cfg = null;
+      state36.cfgError = null;
+      state36.error = null;
+      state36.coveredNodes = [];
+      state36.coveredEdges = [];
+      state36.totalNodes = 0;
+      state36.totalEdges = 0;
       try {
-        state31.result = fuzzTest(state31.sourceCode, state31.testCount);
+        state36.result = fuzzTest(state36.sourceCode, state36.testCount);
       } catch (err) {
-        state31.error = err instanceof Error ? err.message : String(err);
+        state36.error = err instanceof Error ? err.message : String(err);
       }
       try {
-        state31.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state31.sourceCode,
+        state36.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state36.sourceCode,
           language: "javascript",
           title: "Fuzz Testing CFG"
         });
       } catch (err) {
-        state31.cfgError = err instanceof Error ? err.message : String(err);
+        state36.cfgError = err instanceof Error ? err.message : String(err);
       }
-      const cfg = state31.cfg;
-      const result = state31.result;
+      const cfg = state36.cfg;
+      const result = state36.result;
       if (cfg && result) {
-        state31.totalNodes = cfg.nodes.length;
-        state31.totalEdges = cfg.edges.length;
+        state36.totalNodes = cfg.nodes.length;
+        state36.totalEdges = cfg.edges.length;
         const allNodes = /* @__PURE__ */ new Set();
         const allEdges = /* @__PURE__ */ new Set();
         for (const tc of result.testCases) {
@@ -17253,23 +17517,23 @@ INVARSPEC !w | (i & (l | h))`
           for (const n of mapping.nodes) allNodes.add(n);
           for (const e of mapping.edges) allEdges.add(e);
         }
-        state31.coveredNodes = [...allNodes];
-        state31.coveredEdges = [...allEdges];
+        state36.coveredNodes = [...allNodes];
+        state36.coveredEdges = [...allEdges];
       }
       if ((_a = result == null ? void 0 : result.testCases) == null ? void 0 : _a.length) {
-        const stillExists = result.testCases.some((tc) => tc.id === state31.selectedCaseId);
-        if (!stillExists) state31.selectedCaseId = null;
+        const stillExists = result.testCases.some((tc) => tc.id === state36.selectedCaseId);
+        if (!stillExists) state36.selectedCaseId = null;
       } else {
-        state31.selectedCaseId = null;
+        state36.selectedCaseId = null;
       }
-      persist4(state31);
+      persist4(state36);
     }
-    function render31() {
+    function render36() {
       recompute();
       const exampleButtons = fuzzTestingExamples.map(
         (ex) => `
       <button type="button"
-        class="fuzz-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+        class="fuzz-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-fuzz-example="${ex.id}"
         data-testid="fuzz-example-${ex.id}"
         title="${escapeHtml8(pickField(ex, "description"))}">
@@ -17277,12 +17541,12 @@ INVARSPEC !w | (i & (l | h))`
       </button>
     `
       ).join("");
-      const result = state31.result;
-      const error = state31.error;
+      const result = state36.result;
+      const error = state36.error;
       const crashCount = (result == null ? void 0 : result.crashes) || 0;
-      const nodeCov = state31.totalNodes > 0 ? Math.round(state31.coveredNodes.length / state31.totalNodes * 100) : 0;
-      const edgeCov = state31.totalEdges > 0 ? Math.round(state31.coveredEdges.length / state31.totalEdges * 100) : 0;
-      const coverageMarkup = result && state31.cfg ? `<span class="fuzz-divider">\xB7</span>
+      const nodeCov = state36.totalNodes > 0 ? Math.round(state36.coveredNodes.length / state36.totalNodes * 100) : 0;
+      const edgeCov = state36.totalEdges > 0 ? Math.round(state36.coveredEdges.length / state36.totalEdges * 100) : 0;
+      const coverageMarkup = result && state36.cfg ? `<span class="fuzz-divider">\xB7</span>
          <span class="fuzz-coverage-badge" data-testid="fuzz-node-cov" title="Node coverage">N ${nodeCov}%</span>
          <span class="fuzz-coverage-badge" data-testid="fuzz-edge-cov" title="Edge coverage">E ${edgeCov}%</span>` : "";
       const summary = result ? `${t("fuzz.summary.tests")}<strong data-testid="fuzz-test-count">${result.totalTests}</strong>
@@ -17294,7 +17558,7 @@ INVARSPEC !w | (i & (l | h))`
          ${result.truncated ? `<span class="fuzz-divider">\xB7</span><span class="fuzz-truncated">${t("fuzz.summary.truncated")}</span>` : ""}` : "";
       const testCasesMarkup = error ? `<div class="fuzz-error" data-testid="fuzz-error">${escapeHtml8(error)}</div>` : renderTestCases3(result);
       const FUZZ_THRESHOLD = 80;
-      const fuzzMetricEncoded = state31.result ? encodeResult({
+      const fuzzMetricEncoded = state36.result ? encodeResult({
         v: 1,
         explorer: "fuzz",
         explorerLabel: t("section.fuzz"),
@@ -17305,7 +17569,7 @@ INVARSPEC !w | (i & (l | h))`
         total: 1,
         items: [{ q: t("lab.metric.fuzz.label", { pct: nodeCov }), a: `${nodeCov}%`, ok: nodeCov >= FUZZ_THRESHOLD }]
       }) : null;
-      root32.innerHTML = `
+      root37.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="fuzz-mobile-nav">
         <a href="#fuzz-input-panel">${t("explorer.panel.input")}</a>
         <a href="#fuzz-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -17322,7 +17586,7 @@ INVARSPEC !w | (i & (l | h))`
             <label class="fuzz-control">
               <span>${t("fuzz.testCount")}</span>
               <input type="number" min="10" max="500" step="10"
-                value="${state31.testCount}"
+                value="${state36.testCount}"
                 data-testid="fuzz-test-count-input" />
             </label>
             <button type="button"
@@ -17340,7 +17604,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="fuzz-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml8(state31.sourceCode)}</textarea>
+            rows="14">${escapeHtml8(state36.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -17358,8 +17622,8 @@ INVARSPEC !w | (i & (l | h))`
           </header>
           <p class="fuzz-summary" data-testid="fuzz-summary">
             ${summary}
-            ${!fuzzQuiz.active && state31.result ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-start" style="margin-left:0.5rem">${t("quiz.start")}</button>` : ""}
-            ${state31.result && !fuzzLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-lab-reflect-start" style="margin-left:0.5rem">${t("lab.reflect.start")}</button>` : ""}
+            ${!fuzzQuiz.active && state36.result ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-start" style="margin-left:0.5rem">${t("quiz.start")}</button>` : ""}
+            ${state36.result && !fuzzLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-lab-reflect-start" style="margin-left:0.5rem">${t("lab.reflect.start")}</button>` : ""}
             ${fuzzMetricEncoded ? `<button type="button" class="quiz-share-btn" data-share-payload="${fuzzMetricEncoded}" data-testid="fuzz-lab-metric" style="margin-left:0.5rem">\u{1F4CA} ${t("lab.metric.record")}</button>` : ""}
           </p>
           ${renderFuzzQuizPanel()}
@@ -17370,20 +17634,20 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="fuzz-hint">${t("fuzz.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
     function renderCfgPane() {
-      if (state31.cfgError) {
+      if (state36.cfgError) {
         return `<div class="fuzz-cfg" data-testid="fuzz-cfg">
-        <p class="fuzz-cfg-error">${escapeHtml8(state31.cfgError)}</p>
+        <p class="fuzz-cfg-error">${escapeHtml8(state36.cfgError)}</p>
       </div>`;
       }
-      if (!state31.cfg) {
+      if (!state36.cfg) {
         return `<div class="fuzz-cfg" data-testid="fuzz-cfg"></div>`;
       }
-      const cfg = state31.cfg;
-      const result = state31.result;
-      const selectedCase = state31.selectedCaseId ? result == null ? void 0 : result.testCases.find((tc) => tc.id === state31.selectedCaseId) : null;
+      const cfg = state36.cfg;
+      const result = state36.result;
+      const selectedCase = state36.selectedCaseId ? result == null ? void 0 : result.testCases.find((tc) => tc.id === state36.selectedCaseId) : null;
       let highlight;
       let cfgSubtitle;
       if (selectedCase) {
@@ -17392,19 +17656,19 @@ INVARSPEC !w | (i & (l | h))`
         cfgSubtitle = `<span class="fuzz-cfg-selected" data-testid="fuzz-cfg-selected">${escapeHtml8(selectedCase.id)}</span>`;
       } else {
         highlight = {
-          nodes: state31.coveredNodes,
-          edges: state31.coveredEdges
+          nodes: state36.coveredNodes,
+          edges: state36.coveredEdges
         };
-        const nodeCov = cfg.nodes.length > 0 ? Math.round(state31.coveredNodes.length / cfg.nodes.length * 100) : 0;
-        const edgeCov = cfg.edges.length > 0 ? Math.round(state31.coveredEdges.length / cfg.edges.length * 100) : 0;
+        const nodeCov = cfg.nodes.length > 0 ? Math.round(state36.coveredNodes.length / cfg.nodes.length * 100) : 0;
+        const edgeCov = cfg.edges.length > 0 ? Math.round(state36.coveredEdges.length / cfg.edges.length * 100) : 0;
         cfgSubtitle = result ? `<span class="fuzz-cfg-metric">N ${nodeCov}%  E ${edgeCov}%</span>` : "";
       }
       const svg = renderCfgSvg(cfg, highlight, {
         idPrefix: "fuzz-cfg",
         ariaLabel: "Fuzz testing CFG",
-        zoom: state31.cfgZoom
+        zoom: state36.cfgZoom
       });
-      const zoomPct = Math.round(state31.cfgZoom * 100);
+      const zoomPct = Math.round(state36.cfgZoom * 100);
       return `
       <div class="fuzz-cfg" data-testid="fuzz-cfg">
         <div class="fuzz-cfg-header">
@@ -17426,7 +17690,7 @@ INVARSPEC !w | (i & (l | h))`
       }
       const items = result.testCases.slice(0, 50).map((tc) => {
         const statusClass = tc.crashed ? "crash" : "pass";
-        const isSelected = state31.selectedCaseId === tc.id;
+        const isSelected = state36.selectedCaseId === tc.id;
         const statusLabel = tc.crashed ? t("fuzz.crash") : t("fuzz.pass");
         const mutBadge = tc.mutated ? `<span class="fuzz-case-mut" title="${t("fuzz.mutated.title")}">${t("fuzz.mutated")}</span>` : "";
         return `
@@ -17454,24 +17718,24 @@ INVARSPEC !w | (i & (l | h))`
       }).join("");
       return `<ol class="fuzz-cases" data-testid="fuzz-cases">${items}</ol>`;
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a, _b, _c, _d;
-      root32.querySelectorAll("[data-fuzz-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-fuzz-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.fuzzExample;
           const ex = fuzzTestingExamples.find((x) => x.id === id);
           if (!ex) return;
-          state31.exampleId = ex.id;
-          state31.sourceCode = ex.sourceCode;
-          state31.selectedCaseId = null;
+          state36.exampleId = ex.id;
+          state36.sourceCode = ex.sourceCode;
+          state36.selectedCaseId = null;
           fuzzQuiz.active = false;
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-fuzz-case]").forEach((el) => {
+      root37.querySelectorAll("[data-fuzz-case]").forEach((el) => {
         const selectCase = () => {
           const id = el.dataset.fuzzCase;
-          state31.selectedCaseId = state31.selectedCaseId === id ? null : id;
+          state36.selectedCaseId = state36.selectedCaseId === id ? null : id;
           renderLight();
         };
         el.addEventListener("click", selectCase);
@@ -17482,11 +17746,11 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root32.querySelector('[data-testid="fuzz-source"]');
+      const editor = root37.querySelector('[data-testid="fuzz-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state31.sourceCode = editor.value;
+          state36.sourceCode = editor.value;
           if (timer) {
             globalThis.clearTimeout(timer);
           }
@@ -17495,88 +17759,88 @@ INVARSPEC !w | (i & (l | h))`
           }, 220);
         });
       }
-      const countInput = root32.querySelector('[data-testid="fuzz-test-count-input"]');
+      const countInput = root37.querySelector('[data-testid="fuzz-test-count-input"]');
       if (countInput) {
         countInput.addEventListener("change", () => {
           const n = Number(countInput.value);
           if (Number.isFinite(n) && n >= 10 && n <= 500) {
-            state31.testCount = n;
-            render31();
+            state36.testCount = n;
+            render36();
           }
         });
       }
-      const runBtn = root32.querySelector('[data-testid="fuzz-run-btn"]');
+      const runBtn = root37.querySelector('[data-testid="fuzz-run-btn"]');
       if (runBtn) {
         runBtn.addEventListener("click", () => {
-          render31();
+          render36();
         });
       }
-      root32.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
+      root37.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.fuzzZoom;
-          const zoom = state31.cfgZoom;
-          if (action === "in") state31.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
-          else if (action === "out") state31.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
-          else state31.cfgZoom = 1;
-          render31();
+          const zoom = state36.cfgZoom;
+          if (action === "in") state36.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
+          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
+          else state36.cfgZoom = 1;
+          render36();
         });
       });
-      const fqStart = root32.querySelector('[data-testid="fuzz-quiz-start"]');
+      const fqStart = root37.querySelector('[data-testid="fuzz-quiz-start"]');
       if (fqStart) {
         fqStart.addEventListener("click", () => {
           fuzzQuiz.active = true;
           fuzzQuiz.phase = "question";
           fuzzQuiz.answer = "";
-          render31();
+          render36();
         });
       }
-      const fqClose = root32.querySelector('[data-testid="fuzz-quiz-close"]');
+      const fqClose = root37.querySelector('[data-testid="fuzz-quiz-close"]');
       if (fqClose) {
         fqClose.addEventListener("click", () => {
           fuzzQuiz.active = false;
-          render31();
+          render36();
         });
       }
-      const fqCheck = root32.querySelector('[data-testid="fuzz-quiz-check"]');
+      const fqCheck = root37.querySelector('[data-testid="fuzz-quiz-check"]');
       if (fqCheck) {
         fqCheck.addEventListener("click", () => {
-          const inp = root32.querySelector('[data-testid="fuzz-quiz-input"]');
+          const inp = root37.querySelector('[data-testid="fuzz-quiz-input"]');
           fuzzQuiz.answer = inp ? inp.value : "";
           fuzzQuiz.phase = "graded";
-          render31();
+          render36();
         });
       }
-      const fqReset = root32.querySelector('[data-testid="fuzz-quiz-reset"]');
+      const fqReset = root37.querySelector('[data-testid="fuzz-quiz-reset"]');
       if (fqReset) {
         fqReset.addEventListener("click", () => {
           fuzzQuiz.phase = "question";
           fuzzQuiz.answer = "";
-          render31();
+          render36();
         });
       }
-      (_a = root32.querySelector('[data-testid="fuzz-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root37.querySelector('[data-testid="fuzz-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         fuzzLabReflect.active = true;
-        render31();
+        render36();
       });
-      (_b = root32.querySelector('[data-testid="fuzz-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root37.querySelector('[data-testid="fuzz-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a2, _b2;
-        fuzzLabReflect.a1 = ((_a2 = root32.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || fuzzLabReflect.a1;
-        fuzzLabReflect.a2 = ((_b2 = root32.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || fuzzLabReflect.a2;
+        fuzzLabReflect.a1 = ((_a2 = root37.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || fuzzLabReflect.a1;
+        fuzzLabReflect.a2 = ((_b2 = root37.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || fuzzLabReflect.a2;
         fuzzLabReflect.active = false;
-        render31();
+        render36();
       });
-      (_c = root32.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
+      (_c = root37.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
         fuzzLabReflect.a1 = e.target.value;
       });
-      (_d = root32.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root37.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         fuzzLabReflect.a2 = e.target.value;
       });
-      const fuzzLrShare = root32.querySelector('[data-testid="fuzz-lab-reflect-share"]');
+      const fuzzLrShare = root37.querySelector('[data-testid="fuzz-lab-reflect-share"]');
       if (fuzzLrShare) {
         fuzzLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root32.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root32.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root37.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root37.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "fuzz",
@@ -17612,11 +17876,11 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root32.querySelector(`[data-testid="${testid}"]`);
+      const previously = root37.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render31();
-      const next = root32.querySelector(`[data-testid="${testid}"]`);
+      render36();
+      const next = root37.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number") {
@@ -17625,31 +17889,31 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderLight() {
-      const cfgPaneEl = root32.querySelector(".fuzz-cfg-pane");
+      const cfgPaneEl = root37.querySelector(".fuzz-cfg-pane");
       if (cfgPaneEl) {
         cfgPaneEl.innerHTML = renderCfgPane();
       }
-      root32.querySelectorAll("[data-fuzz-case]").forEach((el) => {
+      root37.querySelectorAll("[data-fuzz-case]").forEach((el) => {
         const id = el.dataset.fuzzCase;
-        if (id === state31.selectedCaseId) {
+        if (id === state36.selectedCaseId) {
           el.classList.add("selected");
         } else {
           el.classList.remove("selected");
         }
       });
-      root32.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
+      root37.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.fuzzZoom;
-          const zoom = state31.cfgZoom;
-          if (action === "in") state31.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
-          else if (action === "out") state31.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
-          else state31.cfgZoom = 1;
+          const zoom = state36.cfgZoom;
+          if (action === "in") state36.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
+          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
+          else state36.cfgZoom = 1;
           renderLight();
         });
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/testGeneration.js
@@ -17879,25 +18143,25 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist5(state31) {
+  function persist5(state36) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY8, JSON.stringify({
-        exampleId: state31.exampleId,
-        sourceCode: state31.sourceCode,
-        criterion: state31.criterion,
-        cfgZoom: state31.cfgZoom
+        exampleId: state36.exampleId,
+        sourceCode: state36.sourceCode,
+        criterion: state36.criterion,
+        cfgZoom: state36.cfgZoom
       }));
     } catch {
     }
   }
   function createTestGenerationExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "testgen-explorer";
-    root32.dataset.testid = "testgen-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "testgen-explorer";
+    root37.dataset.testid = "testgen-explorer";
     const saved = loadSaved5();
     const defaultExample = symbolicExecutionExamples[0];
-    const state31 = {
+    const state36 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       criterion: (saved == null ? void 0 : saved.criterion) || DEFAULT_CRITERION,
@@ -17908,29 +18172,29 @@ INVARSPEC !w | (i & (l | h))`
     };
     function recompute() {
       var _a, _b, _c, _d;
-      state31.result = generateTestsFromCoverage({
-        sourceCode: state31.sourceCode,
-        criterion: state31.criterion
+      state36.result = generateTestsFromCoverage({
+        sourceCode: state36.sourceCode,
+        criterion: state36.criterion
       });
-      if ((_b = (_a = state31.result) == null ? void 0 : _a.requirements) == null ? void 0 : _b.length) {
-        const exists = state31.result.requirements.some((r) => r.id === state31.selectedRequirementId);
-        if (!exists) state31.selectedRequirementId = state31.result.requirements[0].id;
+      if ((_b = (_a = state36.result) == null ? void 0 : _a.requirements) == null ? void 0 : _b.length) {
+        const exists = state36.result.requirements.some((r) => r.id === state36.selectedRequirementId);
+        if (!exists) state36.selectedRequirementId = state36.result.requirements[0].id;
       } else {
-        state31.selectedRequirementId = null;
+        state36.selectedRequirementId = null;
       }
-      if ((_d = (_c = state31.result) == null ? void 0 : _c.selectedTests) == null ? void 0 : _d.length) {
-        const exists = state31.result.selectedTests.some((t2) => t2.pathId === state31.selectedTestPathId);
-        if (!exists) state31.selectedTestPathId = state31.result.selectedTests[0].pathId;
+      if ((_d = (_c = state36.result) == null ? void 0 : _c.selectedTests) == null ? void 0 : _d.length) {
+        const exists = state36.result.selectedTests.some((t2) => t2.pathId === state36.selectedTestPathId);
+        if (!exists) state36.selectedTestPathId = state36.result.selectedTests[0].pathId;
       } else {
-        state31.selectedTestPathId = null;
+        state36.selectedTestPathId = null;
       }
-      persist5(state31);
+      persist5(state36);
     }
-    function render31() {
+    function render36() {
       recompute();
       const exampleButtons = symbolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="testgen-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+        class="testgen-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-testgen-example="${ex.id}"
         data-testid="testgen-example-${ex.id}"
         title="${escapeHtml9(pickField(ex, "description") || "")}">
@@ -17938,11 +18202,11 @@ INVARSPEC !w | (i & (l | h))`
       </button>
     `).join("");
       const criterionOptions = CRITERIA.map((c) => `
-      <option value="${c.id}"${state31.criterion === c.id ? " selected" : ""}>
+      <option value="${c.id}"${state36.criterion === c.id ? " selected" : ""}>
         ${escapeHtml9(t(c.labelKey))}
       </option>
     `).join("");
-      root32.innerHTML = `
+      root37.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="testgen-mobile-nav">
         <a href="#testgen-input-panel">${t("explorer.panel.input")}</a>
         <a href="#testgen-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -17969,7 +18233,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="testgen-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml9(state31.sourceCode)}</textarea>
+            rows="14">${escapeHtml9(state36.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -18001,10 +18265,10 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="testgen-hint">${t("testgen.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
     function renderSummary2() {
-      const r = state31.result;
+      const r = state36.result;
       if (!r || r.error) return "";
       return `
       <p class="testgen-summary" data-testid="testgen-summary">
@@ -18018,19 +18282,19 @@ INVARSPEC !w | (i & (l | h))`
     `;
     }
     function renderError() {
-      const r = state31.result;
+      const r = state36.result;
       if (!(r == null ? void 0 : r.error)) return "";
       return `<div class="testgen-error" data-testid="testgen-error">${escapeHtml9(r.error)}</div>`;
     }
     function renderRequirements() {
-      const r = state31.result;
+      const r = state36.result;
       if (!r || r.error) return "";
       if (!r.requirementCoverage.length) {
         return `<p class="testgen-empty">${t("testgen.empty")}</p>`;
       }
       const items = r.requirementCoverage.map((rc) => {
         const cls = rc.feasible ? "feasible" : "infeasible";
-        const active = state31.selectedRequirementId === rc.requirementId ? " selected" : "";
+        const active = state36.selectedRequirementId === rc.requirementId ? " selected" : "";
         const witness = rc.feasible && rc.representativeWitness ? formatConcreteCall(r.function.name, r.function.params, rc.representativeWitness) : `<span class="testgen-no-witness">${t("testgen.requirements.noWitness")}</span>`;
         return `
         <li class="testgen-req ${cls}${active}"
@@ -18051,7 +18315,7 @@ INVARSPEC !w | (i & (l | h))`
     }
     function buildVitestFile() {
       var _a, _b;
-      const r = state31.result;
+      const r = state36.result;
       if (!r || r.error || !r.selectedTests.length) return null;
       const fn = ((_a = r.function) == null ? void 0 : _a.name) || "fn";
       const params = ((_b = r.function) == null ? void 0 : _b.params) || [];
@@ -18071,14 +18335,14 @@ INVARSPEC !w | (i & (l | h))`
 import { ${fn} } from './${fn}.js';
 
 // Generated by stvisual TestGenerationExplorer
-// criterion: ${state31.criterion}
+// criterion: ${state36.criterion}
 describe('${fn} \u2013 generated tests', () => {
 ${cases}
 });
 `;
     }
     function renderSelectedTests() {
-      const r = state31.result;
+      const r = state36.result;
       if (!r || r.error) return "";
       if (!r.selectedTests.length) {
         return `<p class="testgen-empty">${t("testgen.tests.empty")}</p>`;
@@ -18088,7 +18352,7 @@ ${cases}
       const items = r.selectedTests.map((tc, i) => {
         const call = formatConcreteCall(r.function.name, r.function.params, tc.witness);
         const ret = formatExpectedReturn(tc.concreteReturn);
-        const active = state31.selectedTestPathId === tc.pathId ? " selected" : "";
+        const active = state36.selectedTestPathId === tc.pathId ? " selected" : "";
         const covers = tc.coveredRequirementIds.join(", ");
         return `
         <li class="testgen-test${active}"
@@ -18108,7 +18372,7 @@ ${cases}
       return `${downloadBtn}<ol class="testgen-test-list" data-testid="testgen-test-list">${items}</ol>`;
     }
     function renderCfgPane() {
-      const r = state31.result;
+      const r = state36.result;
       if (!r) return "";
       if (r.error && !r.cfg) {
         return `<div class="testgen-cfg" data-testid="testgen-cfg">
@@ -18118,13 +18382,13 @@ ${cases}
       if (!r.cfg) return "";
       let mapping = { nodes: [], edges: [] };
       let selectedLabel = t("testgen.cfg.none");
-      const selectedTest = r.selectedTests.find((tc) => tc.pathId === state31.selectedTestPathId);
+      const selectedTest = r.selectedTests.find((tc) => tc.pathId === state36.selectedTestPathId);
       if (selectedTest) {
         const wp = r.witnessedPaths.find((w) => w.id === selectedTest.pathId);
         if (wp) mapping = { nodes: wp.cfgNodes, edges: wp.cfgEdges };
         selectedLabel = `T${r.selectedTests.indexOf(selectedTest) + 1} (${selectedTest.pathId})`;
-      } else if (state31.selectedRequirementId) {
-        const req = r.requirements.find((q) => q.id === state31.selectedRequirementId);
+      } else if (state36.selectedRequirementId) {
+        const req = r.requirements.find((q) => q.id === state36.selectedRequirementId);
         if (req) {
           mapping = {
             nodes: req.nodes || (req.path ? [...new Set(req.path)] : []),
@@ -18136,9 +18400,9 @@ ${cases}
       const svg = renderCfgSvg(r.cfg, mapping, {
         idPrefix: "testgen-cfg",
         ariaLabel: "Test generation CFG",
-        zoom: state31.cfgZoom
+        zoom: state36.cfgZoom
       });
-      const zoomPct = Math.round(state31.cfgZoom * 100);
+      const zoomPct = Math.round(state36.cfgZoom * 100);
       return `
       <div class="testgen-cfg" data-testid="testgen-cfg">
         <div class="testgen-cfg-header">
@@ -18154,33 +18418,33 @@ ${cases}
       </div>
     `;
     }
-    function bindEvents31() {
-      root32.querySelectorAll("[data-testgen-example]").forEach((btn) => {
+    function bindEvents36() {
+      root37.querySelectorAll("[data-testgen-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.testgenExample;
           const ex = symbolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state31.exampleId = ex.id;
-          state31.sourceCode = ex.sourceCode;
-          state31.selectedRequirementId = null;
-          state31.selectedTestPathId = null;
-          render31();
+          state36.exampleId = ex.id;
+          state36.sourceCode = ex.sourceCode;
+          state36.selectedRequirementId = null;
+          state36.selectedTestPathId = null;
+          render36();
         });
       });
-      const criterionSelect = root32.querySelector('[data-testid="testgen-criterion"]');
+      const criterionSelect = root37.querySelector('[data-testid="testgen-criterion"]');
       if (criterionSelect) {
         criterionSelect.addEventListener("change", () => {
-          state31.criterion = criterionSelect.value;
-          state31.selectedRequirementId = null;
-          state31.selectedTestPathId = null;
-          render31();
+          state36.criterion = criterionSelect.value;
+          state36.selectedRequirementId = null;
+          state36.selectedTestPathId = null;
+          render36();
         });
       }
-      root32.querySelectorAll("[data-testgen-req]").forEach((el) => {
+      root37.querySelectorAll("[data-testgen-req]").forEach((el) => {
         const select = () => {
-          state31.selectedRequirementId = el.dataset.testgenReq;
-          state31.selectedTestPathId = null;
-          render31();
+          state36.selectedRequirementId = el.dataset.testgenReq;
+          state36.selectedTestPathId = null;
+          render36();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -18190,10 +18454,10 @@ ${cases}
           }
         });
       });
-      root32.querySelectorAll("[data-testgen-test]").forEach((el) => {
+      root37.querySelectorAll("[data-testgen-test]").forEach((el) => {
         const select = () => {
-          state31.selectedTestPathId = el.dataset.testgenTest;
-          render31();
+          state36.selectedTestPathId = el.dataset.testgenTest;
+          render36();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -18203,24 +18467,24 @@ ${cases}
           }
         });
       });
-      const editor = root32.querySelector('[data-testid="testgen-source"]');
+      const editor = root37.querySelector('[data-testid="testgen-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state31.sourceCode = editor.value;
+          state36.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => {
             renderPreservingFocus("testgen-source");
           }, 280);
         });
       }
-      const downloadBtn = root32.querySelector('[data-testid="testgen-download-btn"]');
+      const downloadBtn = root37.querySelector('[data-testid="testgen-download-btn"]');
       if (downloadBtn) {
         downloadBtn.addEventListener("click", () => {
           var _a, _b;
           const content = buildVitestFile();
           if (!content) return;
-          const fn = ((_b = (_a = state31.result) == null ? void 0 : _a.function) == null ? void 0 : _b.name) || "generated";
+          const fn = ((_b = (_a = state36.result) == null ? void 0 : _a.function) == null ? void 0 : _b.name) || "generated";
           const blob = new Blob([content], { type: "text/javascript" });
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
@@ -18232,22 +18496,22 @@ ${cases}
           URL.revokeObjectURL(url);
         });
       }
-      root32.querySelectorAll("[data-testgen-zoom]").forEach((btn) => {
+      root37.querySelectorAll("[data-testgen-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.testgenZoom;
-          if (action === "in") state31.cfgZoom = Math.min(4, +(state31.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state31.cfgZoom = Math.max(0.25, +(state31.cfgZoom - 0.25).toFixed(2));
-          else state31.cfgZoom = 1;
-          render31();
+          if (action === "in") state36.cfgZoom = Math.min(4, +(state36.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(state36.cfgZoom - 0.25).toFixed(2));
+          else state36.cfgZoom = 1;
+          render36();
         });
       });
     }
     function renderPreservingFocus(testid) {
-      const previously = root32.querySelector(`[data-testid="${testid}"]`);
+      const previously = root37.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render31();
-      const next = root32.querySelector(`[data-testid="${testid}"]`);
+      render36();
+      const next = root37.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -18255,8 +18519,8 @@ ${cases}
         }
       }
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/blackboxTesting.js
@@ -18528,13 +18792,13 @@ ${cases}
       return null;
     }
   }
-  function persist6(state31) {
+  function persist6(state36) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY9, JSON.stringify({
-        exampleId: state31.exampleId,
-        params: state31.params,
-        robust: state31.robust
+        exampleId: state36.exampleId,
+        params: state36.params,
+        robust: state36.robust
       }));
     } catch {
     }
@@ -18546,24 +18810,24 @@ ${cases}
   }
   function createBoundaryValueExplorer() {
     var _a, _b, _c;
-    const root32 = document.createElement("div");
-    root32.className = "bva-explorer";
-    root32.dataset.testid = "bva-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "bva-explorer";
+    root37.dataset.testid = "bva-explorer";
     const saved = loadSaved6();
     const defaultEx = EXAMPLES[0];
-    const state31 = {
+    const state36 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       params: (_b = saved == null ? void 0 : saved.params) != null ? _b : defaultEx.params.map((p) => ({ ...p })),
       robust: (_c = saved == null ? void 0 : saved.robust) != null ? _c : false
     };
     const quiz = { active: false, paramIdx: 0, answers: ["", "", "", "", ""], phase: "question", result: null };
     function getTests() {
-      const valid = state31.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
+      const valid = state36.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
       if (!valid.length) return [];
-      return state31.robust ? generateRobustBvaTests(valid) : generateBvaTests(valid);
+      return state36.robust ? generateRobustBvaTests(valid) : generateBvaTests(valid);
     }
     function validParams() {
-      return state31.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
+      return state36.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
     }
     function pickQuizParam() {
       const vp = validParams();
@@ -18582,7 +18846,7 @@ ${cases}
       const correct = expected.map((e, i) => userNums[i] === e);
       quiz.result = { expected, correct, score: correct.filter(Boolean).length };
       quiz.phase = "graded";
-      render31();
+      render36();
     }
     function renderQuizPanel() {
       var _a2;
@@ -18629,7 +18893,7 @@ ${cases}
     </div>`;
     }
     function renderParamRows() {
-      return state31.params.map((p, i) => `
+      return state36.params.map((p, i) => `
       <tr>
         <td><input class="bva-param-name" data-idx="${i}" value="${escapeHtml10(p.name)}"
             placeholder="param" aria-label="${t("bva.param.name")}" data-testid="bva-param-name-${i}"/></td>
@@ -18638,7 +18902,7 @@ ${cases}
         <td><input class="bva-param-num" type="number" data-idx="${i}" data-field="max"
             value="${p.max}" aria-label="${t("bva.param.max")}" data-testid="bva-param-max-${i}"/></td>
         <td><button class="bva-del-btn" data-del="${i}" aria-label="${t("common.remove")}"
-            data-testid="bva-del-${i}" ${state31.params.length <= 1 ? "disabled" : ""}>\xD7</button></td>
+            data-testid="bva-del-${i}" ${state36.params.length <= 1 ? "disabled" : ""}>\xD7</button></td>
       </tr>
     `).join("");
     }
@@ -18646,7 +18910,7 @@ ${cases}
       if (!tests.length) {
         return `<p class="bva-empty" data-testid="bva-empty">${t("bva.empty")}</p>`;
       }
-      const paramNames = state31.params.filter((p) => p.name).map((p) => p.name);
+      const paramNames = state36.params.filter((p) => p.name).map((p) => p.name);
       const headerCols = paramNames.map((n) => `<th>${escapeHtml10(n)}</th>`).join("");
       const rows = tests.map((tc) => {
         const valCells = paramNames.map((n) => {
@@ -18667,19 +18931,19 @@ ${cases}
       </table>
     `;
     }
-    function render31() {
+    function render36() {
       const exBtns = EXAMPLES.map((ex) => `
-      <button type="button" class="bva-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="bva-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-bva-example="${ex.id}" data-testid="bva-example-${ex.id}">${escapeHtml10(ex.name)}</button>
     `).join("");
       const tests = getTests();
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="bva-panel">
         <div class="bva-toolbar">
           <div class="bva-examples" data-testid="bva-examples">${exBtns}</div>
           <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
             <label class="bva-robust-label">
-              <input type="checkbox" data-testid="bva-robust-toggle" ${state31.robust ? "checked" : ""}/>
+              <input type="checkbox" data-testid="bva-robust-toggle" ${state36.robust ? "checked" : ""}/>
               ${t("bva.robust")}
             </label>
             <button type="button" class="quiz-start-btn" data-testid="bva-quiz-start">${t("quiz.start")}</button>
@@ -18699,7 +18963,7 @@ ${cases}
               <tbody>${renderParamRows()}</tbody>
             </table>
             <button type="button" class="bva-add-btn" data-testid="bva-add-param"
-              ${state31.params.length >= PARAM_LIMIT ? "disabled" : ""}>
+              ${state36.params.length >= PARAM_LIMIT ? "disabled" : ""}>
               + ${t("bva.param.add")}
             </button>
             <p class="bva-hint">${t("bva.hint")}</p>
@@ -18716,89 +18980,89 @@ ${cases}
         ${renderQuizPanel()}
       </div>
     `;
-      bindEvents31();
-      persist6(state31);
+      bindEvents36();
+      persist6(state36);
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a2, _b2, _c2, _d, _e, _f;
-      root32.querySelectorAll("[data-bva-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-bva-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES.find((e) => e.id === btn.dataset.bvaExample);
           if (!ex) return;
-          state31.exampleId = ex.id;
-          state31.params = ex.params.map((p) => ({ ...p }));
-          render31();
+          state36.exampleId = ex.id;
+          state36.params = ex.params.map((p) => ({ ...p }));
+          render36();
         });
       });
-      (_a2 = root32.querySelector('[data-testid="bva-robust-toggle"]')) == null ? void 0 : _a2.addEventListener("change", (e) => {
-        state31.robust = e.target.checked;
-        render31();
+      (_a2 = root37.querySelector('[data-testid="bva-robust-toggle"]')) == null ? void 0 : _a2.addEventListener("change", (e) => {
+        state36.robust = e.target.checked;
+        render36();
       });
-      root32.querySelectorAll(".bva-param-name").forEach((input) => {
+      root37.querySelectorAll(".bva-param-name").forEach((input) => {
         input.addEventListener("input", (e) => {
           const idx = Number(e.target.dataset.idx);
-          state31.params[idx].name = e.target.value;
+          state36.params[idx].name = e.target.value;
           const tests = getTests();
-          const resultsPane = root32.querySelector('[data-testid="bva-results"]');
+          const resultsPane = root37.querySelector('[data-testid="bva-results"]');
           if (resultsPane) {
             resultsPane.innerHTML = `<h3>${t("bva.results.title")}
             <span class="bva-count">${tests.length} ${t("bva.results.count")}</span>
           </h3>${renderTestTable(tests)}`;
           }
-          persist6(state31);
+          persist6(state36);
         });
       });
-      root32.querySelectorAll(".bva-param-num").forEach((input) => {
+      root37.querySelectorAll(".bva-param-num").forEach((input) => {
         input.addEventListener("change", (e) => {
           const idx = Number(e.target.dataset.idx);
           const field = e.target.dataset.field;
-          state31.params[idx][field] = Number(e.target.value);
+          state36.params[idx][field] = Number(e.target.value);
           const tests = getTests();
-          const resultsPane = root32.querySelector('[data-testid="bva-results"]');
+          const resultsPane = root37.querySelector('[data-testid="bva-results"]');
           if (resultsPane) {
             resultsPane.innerHTML = `<h3>${t("bva.results.title")}
             <span class="bva-count">${tests.length} ${t("bva.results.count")}</span>
           </h3>${renderTestTable(tests)}`;
           }
-          persist6(state31);
+          persist6(state36);
         });
       });
-      root32.querySelectorAll("[data-del]").forEach((btn) => {
+      root37.querySelectorAll("[data-del]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.del);
-          state31.params.splice(idx, 1);
-          render31();
+          state36.params.splice(idx, 1);
+          render36();
         });
       });
-      (_b2 = root32.querySelector('[data-testid="bva-add-param"]')) == null ? void 0 : _b2.addEventListener("click", () => {
-        if (state31.params.length >= PARAM_LIMIT) return;
-        state31.params.push({ name: `p${state31.params.length + 1}`, min: 0, max: 100 });
-        render31();
+      (_b2 = root37.querySelector('[data-testid="bva-add-param"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+        if (state36.params.length >= PARAM_LIMIT) return;
+        state36.params.push({ name: `p${state36.params.length + 1}`, min: 0, max: 100 });
+        render36();
       });
-      (_c2 = root32.querySelector('[data-testid="bva-quiz-start"]')) == null ? void 0 : _c2.addEventListener("click", () => {
+      (_c2 = root37.querySelector('[data-testid="bva-quiz-start"]')) == null ? void 0 : _c2.addEventListener("click", () => {
         quiz.active = true;
         pickQuizParam();
-        render31();
+        render36();
       });
-      (_d = root32.querySelector('[data-testid="bva-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root37.querySelector('[data-testid="bva-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
         quiz.active = false;
-        render31();
+        render36();
       });
-      root32.querySelectorAll("[data-qi]").forEach((input) => {
+      root37.querySelectorAll("[data-qi]").forEach((input) => {
         input.addEventListener("input", (e) => {
           quiz.answers[Number(e.target.dataset.qi)] = e.target.value;
         });
       });
-      (_e = root32.querySelector('[data-testid="bva-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root37.querySelector('[data-testid="bva-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
         gradeQuiz();
       });
-      (_f = root32.querySelector('[data-testid="bva-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root37.querySelector('[data-testid="bva-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         pickQuizParam();
-        render31();
+        render36();
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/EquivalenceClassExplorer.js
@@ -18892,25 +19156,25 @@ ${cases}
       return null;
     }
   }
-  function persist7(state31) {
+  function persist7(state36) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY10, JSON.stringify({
-        exampleId: state31.exampleId,
-        params: state31.params,
-        mode: state31.mode
+        exampleId: state36.exampleId,
+        params: state36.params,
+        mode: state36.mode
       }));
     } catch {
     }
   }
   function createEquivalenceClassExplorer() {
     var _a, _b, _c;
-    const root32 = document.createElement("div");
-    root32.className = "ec-explorer";
-    root32.dataset.testid = "ec-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "ec-explorer";
+    root37.dataset.testid = "ec-explorer";
     const saved = loadSaved7();
     const defaultEx = EXAMPLES2[0];
-    const state31 = {
+    const state36 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       params: (_b = saved == null ? void 0 : saved.params) != null ? _b : defaultEx.params.map((p) => ({ ...p, classes: p.classes.map((c) => ({ ...c })) })),
       mode: (_c = saved == null ? void 0 : saved.mode) != null ? _c : "wect"
@@ -18918,12 +19182,12 @@ ${cases}
     };
     const quiz = { active: false, wectAnswer: "", sectAnswer: "", phase: "question", result: null };
     function getTests() {
-      const valid = state31.params.filter((p) => p.name && p.classes.length);
+      const valid = state36.params.filter((p) => p.name && p.classes.length);
       if (!valid.length) return [];
-      return state31.mode === "sect" ? generateSectTests(valid) : generateWectTests(valid);
+      return state36.mode === "sect" ? generateSectTests(valid) : generateWectTests(valid);
     }
     function gradeEcQuiz() {
-      const valid = state31.params.filter((p) => p.name && p.classes.length);
+      const valid = state36.params.filter((p) => p.name && p.classes.length);
       const wectCount = generateWectTests(valid).length;
       const sectCount = generateSectTests(valid).length;
       const wectUser = Number(quiz.wectAnswer);
@@ -18935,7 +19199,7 @@ ${cases}
         sectCorrect: sectUser === sectCount
       };
       quiz.phase = "graded";
-      render31();
+      render36();
     }
     function renderQuizPanel() {
       if (!quiz.active) return "";
@@ -19005,13 +19269,13 @@ ${cases}
     `;
     }
     function renderParams() {
-      return state31.params.map((p, i) => `
+      return state36.params.map((p, i) => `
       <div class="ec-param-block" data-testid="ec-param-${i}">
         <div class="ec-param-header">
           <input class="ec-param-name-input" data-pidx="${i}" value="${escapeHtml11(p.name)}"
               placeholder="${t("ec.param.name")}" data-testid="ec-param-name-${i}"/>
           <button class="ec-del-param-btn" data-del-param="${i}" aria-label="${t("common.remove")}"
-              data-testid="ec-del-param-${i}" ${state31.params.length <= 1 ? "disabled" : ""}>\xD7</button>
+              data-testid="ec-del-param-${i}" ${state36.params.length <= 1 ? "disabled" : ""}>\xD7</button>
         </div>
         ${renderClassTable(i, p.classes)}
       </div>
@@ -19021,7 +19285,7 @@ ${cases}
       if (!tests.length) {
         return `<p class="ec-empty" data-testid="ec-empty">${t("ec.empty")}</p>`;
       }
-      const paramNames = state31.params.map((p) => p.name);
+      const paramNames = state36.params.map((p) => p.name);
       const headerCols = paramNames.map((n) => `<th>${escapeHtml11(n)}</th>`).join("");
       const rows = tests.map((tc) => {
         const valCells = paramNames.map((n) => {
@@ -19045,21 +19309,21 @@ ${cases}
       </table>
     `;
     }
-    function render31() {
+    function render36() {
       const tests = getTests();
       const exBtns = EXAMPLES2.map((ex) => `
-      <button type="button" class="ec-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="ec-example-btn${state36.exampleId === ex.id ? " active" : ""}"
           data-ec-example="${ex.id}" data-testid="ec-example-${ex.id}">${escapeHtml11(ex.name)}</button>
     `).join("");
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="ec-panel">
         <div class="ec-toolbar">
           <div class="ec-examples" data-testid="ec-examples">${exBtns}</div>
           <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
             <div class="ec-mode-toggle" role="group">
-              <button type="button" class="ec-mode-btn${state31.mode === "wect" ? " active" : ""}"
+              <button type="button" class="ec-mode-btn${state36.mode === "wect" ? " active" : ""}"
                   data-mode="wect" data-testid="ec-mode-wect">WECT</button>
-              <button type="button" class="ec-mode-btn${state31.mode === "sect" ? " active" : ""}"
+              <button type="button" class="ec-mode-btn${state36.mode === "sect" ? " active" : ""}"
                   data-mode="sect" data-testid="ec-mode-sect">SECT</button>
             </div>
             <button type="button" class="quiz-start-btn" data-testid="ec-quiz-start">${t("quiz.start")}</button>
@@ -19071,7 +19335,7 @@ ${cases}
             <h3>${t("ec.params.title")}</h3>
             <div class="ec-params-list">${renderParams()}</div>
             <button class="ec-add-param-btn" data-testid="ec-add-param"
-                ${state31.params.length >= 5 ? "disabled" : ""}>
+                ${state36.params.length >= 5 ? "disabled" : ""}>
               + ${t("ec.param.add")}
             </button>
             <p class="ec-hint">${t("ec.hint")}</p>
@@ -19088,132 +19352,132 @@ ${cases}
         ${renderQuizPanel()}
       </div>
     `;
-      bindEvents31();
-      persist7(state31);
+      bindEvents36();
+      persist7(state36);
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a2, _b2, _c2, _d, _e, _f, _g;
-      root32.querySelectorAll("[data-ec-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-ec-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES2.find((e) => e.id === btn.dataset.ecExample);
           if (!ex) return;
-          state31.exampleId = ex.id;
-          state31.params = ex.params.map((p) => ({
+          state36.exampleId = ex.id;
+          state36.params = ex.params.map((p) => ({
             ...p,
             classes: p.classes.map((c) => ({ ...c }))
           }));
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-mode]").forEach((btn) => {
+      root37.querySelectorAll("[data-mode]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.mode = btn.dataset.mode;
-          render31();
+          state36.mode = btn.dataset.mode;
+          render36();
         });
       });
-      root32.querySelectorAll(".ec-param-name-input").forEach((input) => {
+      root37.querySelectorAll(".ec-param-name-input").forEach((input) => {
         input.addEventListener("input", (e) => {
-          state31.params[Number(e.target.dataset.pidx)].name = e.target.value;
+          state36.params[Number(e.target.dataset.pidx)].name = e.target.value;
           refreshResults();
-          persist7(state31);
+          persist7(state36);
         });
       });
-      root32.querySelectorAll(".ec-class-name").forEach((input) => {
+      root37.querySelectorAll(".ec-class-name").forEach((input) => {
         input.addEventListener("input", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
-          state31.params[pi].classes[ci].name = e.target.value;
+          state36.params[pi].classes[ci].name = e.target.value;
           refreshResults();
-          persist7(state31);
+          persist7(state36);
         });
       });
-      root32.querySelectorAll(".ec-class-rep").forEach((input) => {
+      root37.querySelectorAll(".ec-class-rep").forEach((input) => {
         input.addEventListener("change", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
           const v = e.target.value;
-          state31.params[pi].classes[ci].representative = isNaN(Number(v)) ? v : Number(v);
+          state36.params[pi].classes[ci].representative = isNaN(Number(v)) ? v : Number(v);
           refreshResults();
-          persist7(state31);
+          persist7(state36);
         });
       });
-      root32.querySelectorAll(".ec-class-kind").forEach((sel) => {
+      root37.querySelectorAll(".ec-class-kind").forEach((sel) => {
         sel.addEventListener("change", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
-          state31.params[pi].classes[ci].kind = e.target.value;
+          state36.params[pi].classes[ci].kind = e.target.value;
           refreshResults();
-          persist7(state31);
+          persist7(state36);
         });
       });
-      root32.querySelectorAll("[data-del-class]").forEach((btn) => {
+      root37.querySelectorAll("[data-del-class]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const pi = Number(btn.dataset.pidx), ci = Number(btn.dataset.cidx);
-          state31.params[pi].classes.splice(ci, 1);
-          render31();
+          state36.params[pi].classes.splice(ci, 1);
+          render36();
         });
       });
-      root32.querySelectorAll("[data-add-class]").forEach((btn) => {
+      root37.querySelectorAll("[data-add-class]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const pi = Number(btn.dataset.pidx);
-          state31.params[pi].classes.push({ name: "new class", kind: "valid", representative: 0 });
-          render31();
+          state36.params[pi].classes.push({ name: "new class", kind: "valid", representative: 0 });
+          render36();
         });
       });
-      root32.querySelectorAll("[data-del-param]").forEach((btn) => {
+      root37.querySelectorAll("[data-del-param]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.params.splice(Number(btn.dataset.delParam), 1);
-          render31();
+          state36.params.splice(Number(btn.dataset.delParam), 1);
+          render36();
         });
       });
-      (_a2 = root32.querySelector('[data-testid="ec-add-param"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state31.params.length >= 5) return;
-        state31.params.push({
-          name: `param${state31.params.length + 1}`,
+      (_a2 = root37.querySelector('[data-testid="ec-add-param"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state36.params.length >= 5) return;
+        state36.params.push({
+          name: `param${state36.params.length + 1}`,
           classes: [
             { name: "valid", kind: "valid", representative: 1 },
             { name: "invalid", kind: "invalid", representative: -1 }
           ]
         });
-        render31();
+        render36();
       });
-      (_b2 = root32.querySelector('[data-testid="ec-quiz-start"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+      (_b2 = root37.querySelector('[data-testid="ec-quiz-start"]')) == null ? void 0 : _b2.addEventListener("click", () => {
         quiz.active = true;
         quiz.wectAnswer = "";
         quiz.sectAnswer = "";
         quiz.phase = "question";
         quiz.result = null;
-        render31();
+        render36();
       });
-      (_c2 = root32.querySelector('[data-testid="ec-quiz-close"]')) == null ? void 0 : _c2.addEventListener("click", () => {
+      (_c2 = root37.querySelector('[data-testid="ec-quiz-close"]')) == null ? void 0 : _c2.addEventListener("click", () => {
         quiz.active = false;
-        render31();
+        render36();
       });
-      (_d = root32.querySelector('[data-testid="ec-quiz-wect"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root37.querySelector('[data-testid="ec-quiz-wect"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         quiz.wectAnswer = e.target.value;
       });
-      (_e = root32.querySelector('[data-testid="ec-quiz-sect"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
+      (_e = root37.querySelector('[data-testid="ec-quiz-sect"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
         quiz.sectAnswer = e.target.value;
       });
-      (_f = root32.querySelector('[data-testid="ec-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root37.querySelector('[data-testid="ec-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
         gradeEcQuiz();
       });
-      (_g = root32.querySelector('[data-testid="ec-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
+      (_g = root37.querySelector('[data-testid="ec-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
         quiz.wectAnswer = "";
         quiz.sectAnswer = "";
         quiz.phase = "question";
         quiz.result = null;
-        render31();
+        render36();
       });
     }
     function refreshResults() {
       const tests = getTests();
-      const pane = root32.querySelector('[data-testid="ec-results"]');
+      const pane = root37.querySelector('[data-testid="ec-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("ec.results.title")}
         <span class="ec-count">${tests.length} ${t("ec.results.count")}</span>
       </h3>${renderResultTable(tests)}`;
       }
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/DecisionTableExplorer.js
@@ -19302,21 +19566,21 @@ ${cases}
       return null;
     }
   }
-  function persist8(state31) {
+  function persist8(state36) {
     var _a;
     try {
-      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY11, JSON.stringify({ exampleId: state31.exampleId, conditions: state31.conditions, actions: state31.actions, rules: state31.rules }));
+      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY11, JSON.stringify({ exampleId: state36.exampleId, conditions: state36.conditions, actions: state36.actions, rules: state36.rules }));
     } catch {
     }
   }
   function createDecisionTableExplorer() {
     var _a;
-    const root32 = document.createElement("div");
-    root32.className = "dt-explorer";
-    root32.dataset.testid = "dt-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "dt-explorer";
+    root37.dataset.testid = "dt-explorer";
     const saved = loadSaved8();
     const defaultEx = EXAMPLES3[0];
-    const state31 = {
+    const state36 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       conditions: (saved == null ? void 0 : saved.conditions) ? deepClone(saved.conditions) : deepClone(defaultEx.conditions),
       actions: (saved == null ? void 0 : saved.actions) ? deepClone(saved.actions) : deepClone(defaultEx.actions),
@@ -19328,7 +19592,7 @@ ${cases}
     const dtQuiz = { active: false, phase: "question", ansCovered: "", ansDup: "", result: null };
     function renderDtQuizPanel() {
       if (!dtQuiz.active) return "";
-      const validation = validateDecisionTable(state31.conditions, state31.rules);
+      const validation = validateDecisionTable(state36.conditions, state36.rules);
       const isGraded = dtQuiz.phase === "graded";
       const covCorrect = isGraded && parseInt(dtQuiz.ansCovered, 10) === validation.covered;
       const dupCorrect = isGraded && parseInt(dtQuiz.ansDup, 10) === validation.duplicate.length;
@@ -19367,19 +19631,19 @@ ${cases}
     `;
     }
     function renderTable() {
-      const tests = generateDecisionTableTests(state31.conditions, state31.actions, state31.rules);
-      const validation = validateDecisionTable(state31.conditions, state31.rules);
-      const condHead = state31.conditions.map((c) => `<th class="dt-cond-head">${esc(c.name)}</th>`).join("");
-      const actHead = state31.actions.map((a) => `<th class="dt-act-head">${esc(a.name)}</th>`).join("");
+      const tests = generateDecisionTableTests(state36.conditions, state36.actions, state36.rules);
+      const validation = validateDecisionTable(state36.conditions, state36.rules);
+      const condHead = state36.conditions.map((c) => `<th class="dt-cond-head">${esc(c.name)}</th>`).join("");
+      const actHead = state36.actions.map((a) => `<th class="dt-act-head">${esc(a.name)}</th>`).join("");
       const rows = tests.map((tc, i) => {
-        const rule = state31.rules[i];
-        const condCells = state31.conditions.map((c) => {
+        const rule = state36.rules[i];
+        const condCells = state36.conditions.map((c) => {
           var _a2;
           const val = (_a2 = tc.conditions[c.id]) != null ? _a2 : "\u2013";
           const cls = val === "T" || val === "Y" ? " dt-val-true" : val === "F" || val === "N" ? " dt-val-false" : " dt-val-dc";
           return `<td class="dt-cell${cls}">${esc(val)}</td>`;
         }).join("");
-        const actCells = state31.actions.map((a) => {
+        const actCells = state36.actions.map((a) => {
           const fires = tc.actions.includes(a.id);
           return `<td class="dt-cell${fires ? " dt-act-fire" : ""}">${fires ? "\u2713" : ""}</td>`;
         }).join("");
@@ -19390,7 +19654,7 @@ ${cases}
         ${actCells}
         <td>
           <button class="dt-del-rule-btn" data-del-rule="${i}" aria-label="${t("common.remove")}"
-            ${state31.rules.length <= 1 ? "disabled" : ""}>\xD7</button>
+            ${state36.rules.length <= 1 ? "disabled" : ""}>\xD7</button>
         </td>
       </tr>`;
       }).join("");
@@ -19417,31 +19681,31 @@ ${cases}
     </div>`;
     }
     function renderConditions() {
-      return state31.conditions.map((c, i) => `
+      return state36.conditions.map((c, i) => `
       <div class="dt-cond-block" data-testid="dt-cond-${i}">
         <input class="dt-cond-name" data-cidx="${i}" value="${esc(c.name)}"
           placeholder="${t("dt.condition.name")}" data-testid="dt-cond-name-${i}"/>
         <button class="dt-del-cond-btn" data-del-cond="${i}" aria-label="${t("common.remove")}"
-          ${state31.conditions.length <= 1 ? "disabled" : ""} data-testid="dt-del-cond-${i}">\xD7</button>
+          ${state36.conditions.length <= 1 ? "disabled" : ""} data-testid="dt-del-cond-${i}">\xD7</button>
       </div>
     `).join("");
     }
     function renderActions() {
-      return state31.actions.map((a, i) => `
+      return state36.actions.map((a, i) => `
       <div class="dt-act-block" data-testid="dt-action-${i}">
         <input class="dt-act-name" data-aidx="${i}" value="${esc(a.name)}"
           placeholder="${t("dt.action.name")}" data-testid="dt-act-name-${i}"/>
         <button class="dt-del-act-btn" data-del-act="${i}" aria-label="${t("common.remove")}"
-          ${state31.actions.length <= 1 ? "disabled" : ""} data-testid="dt-del-act-${i}">\xD7</button>
+          ${state36.actions.length <= 1 ? "disabled" : ""} data-testid="dt-del-act-${i}">\xD7</button>
       </div>
     `).join("");
     }
-    function render31() {
+    function render36() {
       const exBtns = EXAMPLES3.map((ex) => `
-      <button type="button" class="dt-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="dt-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-dt-example="${ex.id}" data-testid="dt-example-${ex.id}">${esc(ex.name)}</button>
     `).join("");
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="dt-panel">
         <div class="dt-toolbar">
           <div class="dt-examples" data-testid="dt-examples">${exBtns}</div>
@@ -19453,7 +19717,7 @@ ${cases}
               <h4>${t("dt.conditions.title")}</h4>
               <div class="dt-cond-list">${renderConditions()}</div>
               <button class="dt-add-cond-btn" data-testid="dt-add-cond"
-                ${state31.conditions.length >= 6 ? "disabled" : ""}>
+                ${state36.conditions.length >= 6 ? "disabled" : ""}>
                 + ${t("dt.condition.add")}
               </button>
             </div>
@@ -19461,7 +19725,7 @@ ${cases}
               <h4>${t("dt.actions.title")}</h4>
               <div class="dt-act-list">${renderActions()}</div>
               <button class="dt-add-act-btn" data-testid="dt-add-act"
-                ${state31.actions.length >= 6 ? "disabled" : ""}>
+                ${state36.actions.length >= 6 ? "disabled" : ""}>
                 + ${t("dt.action.add")}
               </button>
             </div>
@@ -19470,7 +19734,7 @@ ${cases}
 
           <div class="dt-results-pane" data-testid="dt-results">
             <h3>${t("dt.results.title")}
-              <span class="dt-count">${state31.rules.length} ${t("dt.results.count")}</span>
+              <span class="dt-count">${state36.rules.length} ${t("dt.results.count")}</span>
             </h3>
             ${renderTable()}
             ${renderDtQuizPanel()}
@@ -19478,161 +19742,161 @@ ${cases}
         </div>
       </div>
     `;
-      bindEvents31();
-      persist8(state31);
+      bindEvents36();
+      persist8(state36);
     }
     function addDefaultRule() {
       const conditions = {};
-      for (const c of state31.conditions) conditions[c.id] = "T";
-      state31.rules.push({ id: `r${nextRuleId++}`, conditions, actions: [] });
+      for (const c of state36.conditions) conditions[c.id] = "T";
+      state36.rules.push({ id: `r${nextRuleId++}`, conditions, actions: [] });
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a2, _b, _c, _d, _e, _f, _g;
-      root32.querySelectorAll("[data-dt-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-dt-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES3.find((e) => e.id === btn.dataset.dtExample);
           if (!ex) return;
-          state31.exampleId = ex.id;
-          state31.conditions = deepClone(ex.conditions);
-          state31.actions = deepClone(ex.actions);
-          state31.rules = deepClone(ex.rules);
-          render31();
+          state36.exampleId = ex.id;
+          state36.conditions = deepClone(ex.conditions);
+          state36.actions = deepClone(ex.actions);
+          state36.rules = deepClone(ex.rules);
+          render36();
         });
       });
-      root32.querySelectorAll(".dt-cond-name").forEach((inp) => {
+      root37.querySelectorAll(".dt-cond-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state31.conditions[Number(e.target.dataset.cidx)].name = e.target.value;
+          state36.conditions[Number(e.target.dataset.cidx)].name = e.target.value;
           refreshResults();
-          persist8(state31);
+          persist8(state36);
         });
       });
-      root32.querySelectorAll(".dt-act-name").forEach((inp) => {
+      root37.querySelectorAll(".dt-act-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state31.actions[Number(e.target.dataset.aidx)].name = e.target.value;
+          state36.actions[Number(e.target.dataset.aidx)].name = e.target.value;
           refreshResults();
-          persist8(state31);
+          persist8(state36);
         });
       });
-      root32.querySelectorAll("[data-del-cond]").forEach((btn) => {
+      root37.querySelectorAll("[data-del-cond]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delCond);
-          const cid = state31.conditions[idx].id;
-          state31.conditions.splice(idx, 1);
-          for (const r of state31.rules) delete r.conditions[cid];
-          render31();
+          const cid = state36.conditions[idx].id;
+          state36.conditions.splice(idx, 1);
+          for (const r of state36.rules) delete r.conditions[cid];
+          render36();
         });
       });
-      root32.querySelectorAll("[data-del-act]").forEach((btn) => {
+      root37.querySelectorAll("[data-del-act]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delAct);
-          const aid = state31.actions[idx].id;
-          state31.actions.splice(idx, 1);
-          for (const r of state31.rules) r.actions = r.actions.filter((a) => a !== aid);
-          render31();
+          const aid = state36.actions[idx].id;
+          state36.actions.splice(idx, 1);
+          for (const r of state36.rules) r.actions = r.actions.filter((a) => a !== aid);
+          render36();
         });
       });
-      (_a2 = root32.querySelector('[data-testid="dt-add-cond"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state31.conditions.length >= 6) return;
+      (_a2 = root37.querySelector('[data-testid="dt-add-cond"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state36.conditions.length >= 6) return;
         const id = `c${nextCondId++}`;
-        state31.conditions.push({ id, name: `Condition ${state31.conditions.length + 1}`, values: ["T", "F"] });
-        for (const r of state31.rules) r.conditions[id] = "T";
-        render31();
+        state36.conditions.push({ id, name: `Condition ${state36.conditions.length + 1}`, values: ["T", "F"] });
+        for (const r of state36.rules) r.conditions[id] = "T";
+        render36();
       });
-      (_b = root32.querySelector('[data-testid="dt-add-act"]')) == null ? void 0 : _b.addEventListener("click", () => {
-        if (state31.actions.length >= 6) return;
+      (_b = root37.querySelector('[data-testid="dt-add-act"]')) == null ? void 0 : _b.addEventListener("click", () => {
+        if (state36.actions.length >= 6) return;
         const id = `a${nextActId++}`;
-        state31.actions.push({ id, name: `Action ${state31.actions.length + 1}` });
-        render31();
+        state36.actions.push({ id, name: `Action ${state36.actions.length + 1}` });
+        render36();
       });
-      (_c = root32.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root37.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _c.addEventListener("click", () => {
         addDefaultRule();
-        render31();
+        render36();
       });
-      root32.querySelectorAll("[data-del-rule]").forEach((btn) => {
+      root37.querySelectorAll("[data-del-rule]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.rules.splice(Number(btn.dataset.delRule), 1);
-          render31();
+          state36.rules.splice(Number(btn.dataset.delRule), 1);
+          render36();
         });
       });
-      root32.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
+      root37.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
         td.addEventListener("click", () => {
           var _a3, _b2;
           const row = td.closest("tr");
           if (!row) return;
-          const ruleIdx = [...root32.querySelectorAll("tbody tr")].indexOf(row);
+          const ruleIdx = [...root37.querySelectorAll("tbody tr")].indexOf(row);
           const allCells = [...row.querySelectorAll('.dt-cell[class*="dt-val"]')];
           const colIdx = allCells.indexOf(td);
           if (ruleIdx < 0 || colIdx < 0) return;
-          const cid = (_a3 = state31.conditions[colIdx]) == null ? void 0 : _a3.id;
+          const cid = (_a3 = state36.conditions[colIdx]) == null ? void 0 : _a3.id;
           if (!cid) return;
-          const cur = state31.rules[ruleIdx].conditions[cid];
+          const cur = state36.rules[ruleIdx].conditions[cid];
           const cycle = { "T": "F", "F": "\u2013", "\u2013": "T" };
-          state31.rules[ruleIdx].conditions[cid] = (_b2 = cycle[cur]) != null ? _b2 : "T";
+          state36.rules[ruleIdx].conditions[cid] = (_b2 = cycle[cur]) != null ? _b2 : "T";
           refreshResults();
-          persist8(state31);
+          persist8(state36);
         });
       });
-      root32.querySelectorAll('.dt-cell.dt-act-fire, .dt-cell:not([class*="dt-val"]):not(.dt-separator):not(.dt-rule-label)').forEach((td) => {
+      root37.querySelectorAll('.dt-cell.dt-act-fire, .dt-cell:not([class*="dt-val"]):not(.dt-separator):not(.dt-rule-label)').forEach((td) => {
         var _a3;
         if (!td.closest("tbody")) return;
         const row = td.closest("tr");
         if (!row) return;
-        const ruleIdx = [...root32.querySelectorAll("tbody tr")].indexOf(row);
+        const ruleIdx = [...root37.querySelectorAll("tbody tr")].indexOf(row);
         if (ruleIdx < 0) return;
         const condCells = row.querySelectorAll('[class*="dt-val"]').length;
         const allTds = [...row.querySelectorAll("td")];
         const tdIdx = allTds.indexOf(td);
         const actColIdx = tdIdx - condCells - 2;
-        if (actColIdx < 0 || actColIdx >= state31.actions.length) return;
-        const aid = (_a3 = state31.actions[actColIdx]) == null ? void 0 : _a3.id;
+        if (actColIdx < 0 || actColIdx >= state36.actions.length) return;
+        const aid = (_a3 = state36.actions[actColIdx]) == null ? void 0 : _a3.id;
         if (!aid) return;
-        const r = state31.rules[ruleIdx];
+        const r = state36.rules[ruleIdx];
         if (r.actions.includes(aid)) r.actions = r.actions.filter((a) => a !== aid);
         else r.actions.push(aid);
         refreshResults();
-        persist8(state31);
+        persist8(state36);
       });
-      (_d = root32.querySelector('[data-testid="dt-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root37.querySelector('[data-testid="dt-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
         dtQuiz.active = true;
         dtQuiz.phase = "question";
         dtQuiz.ansCovered = "";
         dtQuiz.ansDup = "";
-        render31();
+        render36();
       });
-      (_e = root32.querySelector('[data-testid="dt-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root37.querySelector('[data-testid="dt-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
         dtQuiz.active = false;
-        render31();
+        render36();
       });
-      (_f = root32.querySelector('[data-testid="dt-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root37.querySelector('[data-testid="dt-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a3, _b2, _c2, _d2;
-        dtQuiz.ansCovered = (_b2 = (_a3 = root32.querySelector('[data-testid="dt-quiz-covered"]')) == null ? void 0 : _a3.value) != null ? _b2 : "";
-        dtQuiz.ansDup = (_d2 = (_c2 = root32.querySelector('[data-testid="dt-quiz-dup"]')) == null ? void 0 : _c2.value) != null ? _d2 : "";
+        dtQuiz.ansCovered = (_b2 = (_a3 = root37.querySelector('[data-testid="dt-quiz-covered"]')) == null ? void 0 : _a3.value) != null ? _b2 : "";
+        dtQuiz.ansDup = (_d2 = (_c2 = root37.querySelector('[data-testid="dt-quiz-dup"]')) == null ? void 0 : _c2.value) != null ? _d2 : "";
         dtQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      (_g = root32.querySelector('[data-testid="dt-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
+      (_g = root37.querySelector('[data-testid="dt-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
         dtQuiz.phase = "question";
         dtQuiz.ansCovered = "";
         dtQuiz.ansDup = "";
-        render31();
+        render36();
       });
     }
     function refreshResults() {
       var _a2;
-      const pane = root32.querySelector('[data-testid="dt-results"]');
+      const pane = root37.querySelector('[data-testid="dt-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("dt.results.title")}
-        <span class="dt-count">${state31.rules.length} ${t("dt.results.count")}</span>
+        <span class="dt-count">${state36.rules.length} ${t("dt.results.count")}</span>
       </h3>${renderTable()}`;
         pane.querySelectorAll("[data-del-rule]").forEach((btn) => {
           btn.addEventListener("click", () => {
-            state31.rules.splice(Number(btn.dataset.delRule), 1);
-            render31();
+            state36.rules.splice(Number(btn.dataset.delRule), 1);
+            render36();
           });
         });
         (_a2 = pane.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _a2.addEventListener("click", () => {
           addDefaultRule();
-          render31();
+          render36();
         });
         pane.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
           td.addEventListener("click", () => {
@@ -19642,19 +19906,19 @@ ${cases}
             const ruleIdx = [...pane.querySelectorAll("tbody tr")].indexOf(row);
             const colIdx = [...row.querySelectorAll('.dt-cell[class*="dt-val"]')].indexOf(td);
             if (ruleIdx < 0 || colIdx < 0) return;
-            const cid = (_a3 = state31.conditions[colIdx]) == null ? void 0 : _a3.id;
+            const cid = (_a3 = state36.conditions[colIdx]) == null ? void 0 : _a3.id;
             if (!cid) return;
-            const cur = state31.rules[ruleIdx].conditions[cid];
+            const cur = state36.rules[ruleIdx].conditions[cid];
             const cycle = { "T": "F", "F": "\u2013", "\u2013": "T" };
-            state31.rules[ruleIdx].conditions[cid] = (_b = cycle[cur]) != null ? _b : "T";
+            state36.rules[ruleIdx].conditions[cid] = (_b = cycle[cur]) != null ? _b : "T";
             refreshResults();
-            persist8(state31);
+            persist8(state36);
           });
         });
       }
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/StateTransitionExplorer.js
@@ -19738,12 +20002,12 @@ ${cases}
   }
   function createStateTransitionExplorer() {
     var _a, _b;
-    const root32 = document.createElement("div");
-    root32.className = "st-explorer";
-    root32.dataset.testid = "st-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "st-explorer";
+    root37.dataset.testid = "st-explorer";
     const saved = loadSaved9();
     const defaultEx = EXAMPLES4[0];
-    const state31 = {
+    const state36 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       states: (saved == null ? void 0 : saved.states) ? deepClone2(saved.states) : deepClone2(defaultEx.states),
       transitions: (saved == null ? void 0 : saved.transitions) ? deepClone2(saved.transitions) : deepClone2(defaultEx.transitions),
@@ -19757,7 +20021,7 @@ ${cases}
       if (!stQuiz.active) return "";
       const tests = getTests();
       const count = tests.length;
-      const modeLabel = state31.mode === "sequence" ? t("st.mode.sequence") : t("st.mode.transition");
+      const modeLabel = state36.mode === "sequence" ? t("st.mode.sequence") : t("st.mode.transition");
       const isGraded = stQuiz.phase === "graded";
       const correct = isGraded && parseInt(stQuiz.answer, 10) === count;
       return `
@@ -19788,15 +20052,15 @@ ${cases}
     `;
     }
     function getTests() {
-      if (!state31.states.length || !state31.transitions.length) return [];
-      return state31.mode === "sequence" ? generateStSequenceTests(state31.states, state31.transitions) : generateStTransitionTests(state31.states, state31.transitions);
+      if (!state36.states.length || !state36.transitions.length) return [];
+      return state36.mode === "sequence" ? generateStSequenceTests(state36.states, state36.transitions) : generateStTransitionTests(state36.states, state36.transitions);
     }
     function renderDiagram() {
       const W = 520, H = 220, R = 28;
-      const n = state31.states.length;
+      const n = state36.states.length;
       if (!n) return "";
       const cx = W / 2, cy = H / 2, radius = Math.min(W, H) / 2 - R - 16;
-      const positions = state31.states.map((s, i) => {
+      const positions = state36.states.map((s, i) => {
         const angle = 2 * Math.PI * i / n - Math.PI / 2;
         return { id: s.id, x: cx + radius * Math.cos(angle), y: cy + radius * Math.sin(angle) };
       });
@@ -19805,7 +20069,7 @@ ${cases}
       let defs = `<defs><marker id="${arrowId}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
     </marker></defs>`;
-      const edges = state31.transitions.map((tr, i) => {
+      const edges = state36.transitions.map((tr, i) => {
         const from = pos[tr.from];
         const to = pos[tr.to];
         if (!from || !to) return "";
@@ -19827,7 +20091,7 @@ ${cases}
         fill="none" stroke="#6366f1" stroke-width="1.5" marker-end="url(#${arrowId})"/>
         <text x="${mx2}" y="${my2 - 4}" text-anchor="middle" font-size="10" fill="#374151">${esc2(tr.event)}</text>`;
       }).join("");
-      const nodes = state31.states.map((s) => {
+      const nodes = state36.states.map((s) => {
         const p = pos[s.id];
         if (!p) return "";
         const stroke = s.initial ? "#0f4c81" : "#9ca3af";
@@ -19841,21 +20105,21 @@ ${cases}
     </svg>`;
     }
     function renderStateList() {
-      return state31.states.map((s, i) => `
+      return state36.states.map((s, i) => `
       <div class="st-state-row" data-testid="st-state-${i}">
         ${s.initial ? `<span class="st-initial-dot" title="${t("st.initial")}">\u25CF</span>` : `<span class="st-initial-dot st-initial-dot--empty" title="${t("st.set.initial")}" data-set-initial="${i}">\u25CB</span>`}
         <input class="st-state-name" data-sidx="${i}" value="${esc2(s.name)}"
           placeholder="${t("st.state.name")}" data-testid="st-state-name-${i}"/>
         <button class="st-del-btn" data-del-state="${i}" aria-label="${t("common.remove")}"
-          ${state31.states.length <= 1 ? "disabled" : ""} data-testid="st-del-state-${i}">\xD7</button>
+          ${state36.states.length <= 1 ? "disabled" : ""} data-testid="st-del-state-${i}">\xD7</button>
       </div>
     `).join("");
     }
     function renderTransitionList() {
-      return state31.transitions.map((tr, i) => {
+      return state36.transitions.map((tr, i) => {
         var _a2;
-        const fromNames = state31.states.map((s) => `<option value="${esc2(s.id)}"${tr.from === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
-        const toNames = state31.states.map((s) => `<option value="${esc2(s.id)}"${tr.to === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
+        const fromNames = state36.states.map((s) => `<option value="${esc2(s.id)}"${tr.from === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
+        const toNames = state36.states.map((s) => `<option value="${esc2(s.id)}"${tr.to === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
         return `<tr class="st-tr-row" data-testid="st-transition-${i}">
         <td><select class="st-from-sel" data-tidx="${i}" data-testid="st-from-${i}">${fromNames}</select></td>
         <td>\u2192</td>
@@ -19865,13 +20129,13 @@ ${cases}
         <td><input class="st-action-inp" data-tidx="${i}" value="${esc2((_a2 = tr.action) != null ? _a2 : "")}"
           placeholder="${t("st.transition.action")}" data-testid="st-action-${i}"/></td>
         <td><button class="st-del-btn" data-del-tr="${i}" aria-label="${t("common.remove")}"
-          ${state31.transitions.length <= 1 ? "disabled" : ""} data-testid="st-del-tr-${i}">\xD7</button></td>
+          ${state36.transitions.length <= 1 ? "disabled" : ""} data-testid="st-del-tr-${i}">\xD7</button></td>
       </tr>`;
       }).join("");
     }
     function renderTestTable(tests) {
       if (!tests.length) return `<p class="st-empty" data-testid="st-empty">${t("st.empty")}</p>`;
-      if (state31.mode === "sequence") {
+      if (state36.mode === "sequence") {
         const rows2 = tests.map((tc) => `
         <tr class="st-test-row" data-testid="st-test-${tc.id}">
           <td class="st-test-label">${esc2(tc.label)}</td>
@@ -19908,20 +20172,20 @@ ${cases}
       <tbody>${rows}</tbody>
     </table>`;
     }
-    function render31() {
+    function render36() {
       const tests = getTests();
       const exBtns = EXAMPLES4.map((ex) => `
-      <button type="button" class="st-example-btn${state31.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="st-example-btn${state36.exampleId === ex.id ? " active" : ""}"
         data-st-example="${ex.id}" data-testid="st-example-${ex.id}">${esc2(ex.name)}</button>
     `).join("");
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="st-panel">
         <div class="st-toolbar">
           <div class="st-examples" data-testid="st-examples">${exBtns}</div>
           <div class="st-mode-toggle" role="group">
-            <button type="button" class="st-mode-btn${state31.mode === "transition" ? " active" : ""}"
+            <button type="button" class="st-mode-btn${state36.mode === "transition" ? " active" : ""}"
               data-mode="transition" data-testid="st-mode-transition">${t("st.mode.transition")}</button>
-            <button type="button" class="st-mode-btn${state31.mode === "sequence" ? " active" : ""}"
+            <button type="button" class="st-mode-btn${state36.mode === "sequence" ? " active" : ""}"
               data-mode="sequence" data-testid="st-mode-sequence">${t("st.mode.sequence")}</button>
             <button type="button" class="quiz-start-btn" data-testid="st-quiz-start">${t("quiz.start")}</button>
           </div>
@@ -19937,7 +20201,7 @@ ${cases}
               <h4>${t("st.states.title")}</h4>
               <div class="st-state-list">${renderStateList()}</div>
               <button class="st-add-state-btn" data-testid="st-add-state"
-                ${state31.states.length >= 8 ? "disabled" : ""}>
+                ${state36.states.length >= 8 ? "disabled" : ""}>
                 + ${t("st.state.add")}
               </button>
             </div>
@@ -19946,7 +20210,7 @@ ${cases}
               <h4>${t("st.transitions.title")}</h4>
               <table class="st-tr-table"><tbody>${renderTransitionList()}</tbody></table>
               <button class="st-add-tr-btn" data-testid="st-add-transition"
-                ${state31.transitions.length >= 16 ? "disabled" : ""}>
+                ${state36.transitions.length >= 16 ? "disabled" : ""}>
                 + ${t("st.transition.add")}
               </button>
             </div>
@@ -19962,128 +20226,128 @@ ${cases}
         </div>
       </div>
     `;
-      bindEvents31();
-      persist9(state31);
+      bindEvents36();
+      persist9(state36);
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a2, _b2, _c, _d, _e, _f;
-      root32.querySelectorAll("[data-st-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-st-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES4.find((e) => e.id === btn.dataset.stExample);
           if (!ex) return;
-          state31.exampleId = ex.id;
-          state31.states = deepClone2(ex.states);
-          state31.transitions = deepClone2(ex.transitions);
-          render31();
+          state36.exampleId = ex.id;
+          state36.states = deepClone2(ex.states);
+          state36.transitions = deepClone2(ex.transitions);
+          render36();
         });
       });
-      root32.querySelectorAll("[data-mode]").forEach((btn) => {
+      root37.querySelectorAll("[data-mode]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.mode = btn.dataset.mode;
-          render31();
+          state36.mode = btn.dataset.mode;
+          render36();
         });
       });
-      root32.querySelectorAll(".st-state-name").forEach((inp) => {
+      root37.querySelectorAll(".st-state-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state31.states[Number(e.target.dataset.sidx)].name = e.target.value;
+          state36.states[Number(e.target.dataset.sidx)].name = e.target.value;
           refreshResults();
-          persist9(state31);
+          persist9(state36);
         });
       });
-      root32.querySelectorAll("[data-set-initial]").forEach((dot) => {
+      root37.querySelectorAll("[data-set-initial]").forEach((dot) => {
         dot.addEventListener("click", () => {
           const idx = Number(dot.dataset.setInitial);
-          state31.states.forEach((s, i) => {
+          state36.states.forEach((s, i) => {
             s.initial = i === idx;
           });
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-del-state]").forEach((btn) => {
+      root37.querySelectorAll("[data-del-state]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delState);
-          const sid = state31.states[idx].id;
-          state31.states.splice(idx, 1);
-          state31.transitions = state31.transitions.filter((tr) => tr.from !== sid && tr.to !== sid);
-          if (state31.states.length && !state31.states.some((s) => s.initial)) state31.states[0].initial = true;
-          render31();
+          const sid = state36.states[idx].id;
+          state36.states.splice(idx, 1);
+          state36.transitions = state36.transitions.filter((tr) => tr.from !== sid && tr.to !== sid);
+          if (state36.states.length && !state36.states.some((s) => s.initial)) state36.states[0].initial = true;
+          render36();
         });
       });
-      (_a2 = root32.querySelector('[data-testid="st-add-state"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state31.states.length >= 8) return;
-        state31.states.push({ id: `s${nextSId++}`, name: `State ${state31.states.length + 1}` });
-        render31();
+      (_a2 = root37.querySelector('[data-testid="st-add-state"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state36.states.length >= 8) return;
+        state36.states.push({ id: `s${nextSId++}`, name: `State ${state36.states.length + 1}` });
+        render36();
       });
-      root32.querySelectorAll(".st-from-sel, .st-to-sel").forEach((sel) => {
+      root37.querySelectorAll(".st-from-sel, .st-to-sel").forEach((sel) => {
         sel.addEventListener("change", (e) => {
           const idx = Number(e.target.dataset.tidx);
           const field = e.target.classList.contains("st-from-sel") ? "from" : "to";
-          state31.transitions[idx][field] = e.target.value;
+          state36.transitions[idx][field] = e.target.value;
           refreshResults();
-          persist9(state31);
+          persist9(state36);
         });
       });
-      root32.querySelectorAll(".st-event-inp").forEach((inp) => {
+      root37.querySelectorAll(".st-event-inp").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state31.transitions[Number(e.target.dataset.tidx)].event = e.target.value;
+          state36.transitions[Number(e.target.dataset.tidx)].event = e.target.value;
           refreshResults();
-          persist9(state31);
+          persist9(state36);
         });
       });
-      root32.querySelectorAll(".st-action-inp").forEach((inp) => {
+      root37.querySelectorAll(".st-action-inp").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state31.transitions[Number(e.target.dataset.tidx)].action = e.target.value;
+          state36.transitions[Number(e.target.dataset.tidx)].action = e.target.value;
           refreshResults();
-          persist9(state31);
+          persist9(state36);
         });
       });
-      root32.querySelectorAll("[data-del-tr]").forEach((btn) => {
+      root37.querySelectorAll("[data-del-tr]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.transitions.splice(Number(btn.dataset.delTr), 1);
-          render31();
+          state36.transitions.splice(Number(btn.dataset.delTr), 1);
+          render36();
         });
       });
-      (_b2 = root32.querySelector('[data-testid="st-add-transition"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+      (_b2 = root37.querySelector('[data-testid="st-add-transition"]')) == null ? void 0 : _b2.addEventListener("click", () => {
         var _a3, _b3, _c2, _d2;
-        if (state31.transitions.length >= 16) return;
-        const from = (_b3 = (_a3 = state31.states[0]) == null ? void 0 : _a3.id) != null ? _b3 : "";
-        const to = (_d2 = (_c2 = state31.states[1]) == null ? void 0 : _c2.id) != null ? _d2 : from;
-        state31.transitions.push({ id: `t${nextTId++}`, from, to, event: "event", action: "" });
-        render31();
+        if (state36.transitions.length >= 16) return;
+        const from = (_b3 = (_a3 = state36.states[0]) == null ? void 0 : _a3.id) != null ? _b3 : "";
+        const to = (_d2 = (_c2 = state36.states[1]) == null ? void 0 : _c2.id) != null ? _d2 : from;
+        state36.transitions.push({ id: `t${nextTId++}`, from, to, event: "event", action: "" });
+        render36();
       });
-      (_c = root32.querySelector('[data-testid="st-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root37.querySelector('[data-testid="st-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
         stQuiz.active = true;
         stQuiz.phase = "question";
         stQuiz.answer = "";
-        render31();
+        render36();
       });
-      (_d = root32.querySelector('[data-testid="st-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root37.querySelector('[data-testid="st-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
         stQuiz.active = false;
-        render31();
+        render36();
       });
-      (_e = root32.querySelector('[data-testid="st-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root37.querySelector('[data-testid="st-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
         var _a3, _b3;
-        stQuiz.answer = (_b3 = (_a3 = root32.querySelector('[data-testid="st-quiz-answer"]')) == null ? void 0 : _a3.value) != null ? _b3 : "";
+        stQuiz.answer = (_b3 = (_a3 = root37.querySelector('[data-testid="st-quiz-answer"]')) == null ? void 0 : _a3.value) != null ? _b3 : "";
         stQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      (_f = root32.querySelector('[data-testid="st-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root37.querySelector('[data-testid="st-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         stQuiz.phase = "question";
         stQuiz.answer = "";
-        render31();
+        render36();
       });
     }
     function refreshResults() {
       const tests = getTests();
-      const pane = root32.querySelector('[data-testid="st-results"]');
+      const pane = root37.querySelector('[data-testid="st-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("st.results.title")}
         <span class="st-count">${tests.length} ${t("st.results.count")}</span>
       </h3>${renderTestTable(tests)}`;
       }
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/metamorphicTesting.js
@@ -20431,8 +20695,8 @@ function linearSearch(arr, target) {
       makeRunner: () => makeRunner2(SEARCH_SRC, "(arr, target) => linearSearch(arr, target)")
     }
   ];
-  function generateMrTests(example, relation, count = 8) {
-    const runner = example.makeRunner();
+  function generateMrTests(example4, relation, count = 8) {
+    const runner = example4.makeRunner();
     const results = [];
     for (let i = 0; i < count; i++) {
       try {
@@ -20474,7 +20738,7 @@ function linearSearch(arr, target) {
           continue;
         }
         if (relation.isSearch) {
-          const runner2 = example.makeRunner();
+          const runner2 = example4.makeRunner();
           const input2 = relation.generateInput();
           const [arr, target] = input2;
           const [transArr, transTgt] = relation.transformInput(input2);
@@ -20557,9 +20821,9 @@ function linearSearch(arr, target) {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createMetamorphicTestingExplorer() {
-    const root32 = document.createElement("div");
-    root32.dataset.testid = "mt-explorer";
-    let state31 = {
+    const root37 = document.createElement("div");
+    root37.dataset.testid = "mt-explorer";
+    let state36 = {
       exampleId: metamorphicExamples[0].id,
       relationId: metamorphicExamples[0].relations[0].id,
       results: null
@@ -20610,25 +20874,25 @@ function linearSearch(arr, target) {
     }
     function getExample() {
       var _a;
-      return (_a = metamorphicExamples.find((e) => e.id === state31.exampleId)) != null ? _a : metamorphicExamples[0];
+      return (_a = metamorphicExamples.find((e) => e.id === state36.exampleId)) != null ? _a : metamorphicExamples[0];
     }
     function getRelation() {
       var _a;
       const ex = getExample();
-      return (_a = ex.relations.find((r) => r.id === state31.relationId)) != null ? _a : ex.relations[0];
+      return (_a = ex.relations.find((r) => r.id === state36.relationId)) != null ? _a : ex.relations[0];
     }
-    function render31() {
+    function render36() {
       const ex = getExample();
       const rel = getRelation();
       const isZh = getLocale() === "zh";
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="mt-layout">
         <div class="mt-sidebar">
           <h3 class="mt-section-title">${t("mt.examples.title")}</h3>
           <div class="mt-example-btns" data-testid="mt-examples">
             ${metamorphicExamples.map((e) => `
               <button type="button"
-                class="mt-example-btn${e.id === state31.exampleId ? " active" : ""}"
+                class="mt-example-btn${e.id === state36.exampleId ? " active" : ""}"
                 data-testid="mt-example-${e.id}"
                 data-example="${e.id}"
               >${e.name}</button>
@@ -20639,7 +20903,7 @@ function linearSearch(arr, target) {
           <div class="mt-relation-list" data-testid="mt-relations">
             ${ex.relations.map((r) => `
               <button type="button"
-                class="mt-rel-btn${r.id === state31.relationId ? " active" : ""}"
+                class="mt-rel-btn${r.id === state36.relationId ? " active" : ""}"
                 data-testid="mt-rel-${r.id}"
                 data-rel="${r.id}"
               >
@@ -20676,12 +20940,12 @@ function linearSearch(arr, target) {
           ${renderMtQuizPanel()}
 
           <div class="mt-results" data-testid="mt-results">
-            ${state31.results ? renderResults(state31.results) : `<p class="mt-hint">${t("mt.hint")}</p>`}
+            ${state36.results ? renderResults(state36.results) : `<p class="mt-hint">${t("mt.hint")}</p>`}
           </div>
         </div>
       </div>
     `;
-      bindEvents31();
+      bindEvents36();
     }
     function renderResults(results) {
       const passing = results.filter((r) => r.holds).length;
@@ -20722,40 +20986,40 @@ function linearSearch(arr, target) {
       </div>
     `;
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a;
-      root32.querySelectorAll("[data-example]").forEach((btn) => {
+      root37.querySelectorAll("[data-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.exampleId = btn.dataset.example;
+          state36.exampleId = btn.dataset.example;
           const ex = getExample();
-          state31.relationId = ex.relations[0].id;
-          state31.results = null;
+          state36.relationId = ex.relations[0].id;
+          state36.results = null;
           mtQuiz.active = false;
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-rel]").forEach((btn) => {
+      root37.querySelectorAll("[data-rel]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.relationId = btn.dataset.rel;
-          state31.results = null;
+          state36.relationId = btn.dataset.rel;
+          state36.results = null;
           mtQuiz.active = false;
-          render31();
+          render36();
         });
       });
-      const generateBtn = root32.querySelector('[data-testid="mt-generate"]');
+      const generateBtn = root37.querySelector('[data-testid="mt-generate"]');
       if (generateBtn) {
         generateBtn.addEventListener("click", () => {
           const ex = getExample();
           const rel = getRelation();
-          state31.results = generateMrTests(ex, rel, 8);
-          const resultsEl = root32.querySelector('[data-testid="mt-results"]');
-          if (resultsEl) resultsEl.innerHTML = renderResults(state31.results);
+          state36.results = generateMrTests(ex, rel, 8);
+          const resultsEl = root37.querySelector('[data-testid="mt-results"]');
+          if (resultsEl) resultsEl.innerHTML = renderResults(state36.results);
         });
       }
-      (_a = root32.querySelector('[data-testid="mt-bridge-groupth"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root37.querySelector('[data-testid="mt-bridge-groupth"]')) == null ? void 0 : _a.addEventListener("click", () => {
         scrollToSection("section-groupth");
       });
-      const mqStart = root32.querySelector('[data-testid="mt-quiz-start"]');
+      const mqStart = root37.querySelector('[data-testid="mt-quiz-start"]');
       if (mqStart) {
         mqStart.addEventListener("click", () => {
           const ex = getExample();
@@ -20764,26 +21028,26 @@ function linearSearch(arr, target) {
           mtQuiz.active = true;
           mtQuiz.phase = "question";
           mtQuiz.answer = "";
-          render31();
+          render36();
         });
       }
-      const mqClose = root32.querySelector('[data-testid="mt-quiz-close"]');
+      const mqClose = root37.querySelector('[data-testid="mt-quiz-close"]');
       if (mqClose) {
         mqClose.addEventListener("click", () => {
           mtQuiz.active = false;
-          render31();
+          render36();
         });
       }
-      const mqCheck = root32.querySelector('[data-testid="mt-quiz-check"]');
+      const mqCheck = root37.querySelector('[data-testid="mt-quiz-check"]');
       if (mqCheck) {
         mqCheck.addEventListener("click", () => {
-          const inp = root32.querySelector('[data-testid="mt-quiz-input"]');
+          const inp = root37.querySelector('[data-testid="mt-quiz-input"]');
           mtQuiz.answer = inp ? inp.value : "";
           mtQuiz.phase = "graded";
-          render31();
+          render36();
         });
       }
-      const mqReset = root32.querySelector('[data-testid="mt-quiz-reset"]');
+      const mqReset = root37.querySelector('[data-testid="mt-quiz-reset"]');
       if (mqReset) {
         mqReset.addEventListener("click", () => {
           const ex = getExample();
@@ -20791,12 +21055,12 @@ function linearSearch(arr, target) {
           mtQuiz.autoResults = generateMrTests(ex, rel, 8);
           mtQuiz.phase = "question";
           mtQuiz.answer = "";
-          render31();
+          render36();
         });
       }
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/ExploratoryTestingExplorer.js
@@ -20841,10 +21105,10 @@ function linearSearch(arr, target) {
     }
   }
   function createExploratoryTestingExplorer() {
-    const root32 = document.createElement("div");
-    root32.dataset.testid = "et-explorer";
+    const root37 = document.createElement("div");
+    root37.dataset.testid = "et-explorer";
     const saved = loadSaved10();
-    let state31 = saved != null ? saved : {
+    let state36 = saved != null ? saved : {
       charter: "",
       timebox: 60,
       sfdipot: [],
@@ -20853,20 +21117,20 @@ function linearSearch(arr, target) {
       timerRemaining: 60 * 60,
       timerEnd: null
     };
-    state31.timerRunning = false;
-    state31.timerEnd = null;
-    if (!state31.timerRemaining || state31.timerRemaining <= 0) {
-      state31.timerRemaining = (state31.timebox || 60) * 60;
+    state36.timerRunning = false;
+    state36.timerEnd = null;
+    if (!state36.timerRemaining || state36.timerRemaining <= 0) {
+      state36.timerRemaining = (state36.timebox || 60) * 60;
     }
     let timerInterval = null;
     function save() {
       persist10({
-        charter: state31.charter,
-        timebox: state31.timebox,
-        sfdipot: state31.sfdipot,
-        notes: state31.notes,
+        charter: state36.charter,
+        timebox: state36.timebox,
+        sfdipot: state36.sfdipot,
+        notes: state36.notes,
         timerRunning: false,
-        timerRemaining: state31.timerRemaining,
+        timerRemaining: state36.timerRemaining,
         timerEnd: null
       });
     }
@@ -20876,64 +21140,64 @@ function linearSearch(arr, target) {
       return `${m}:${s}`;
     }
     function tickTimer() {
-      if (!state31.timerRunning) return;
+      if (!state36.timerRunning) return;
       const now = Date.now();
-      state31.timerRemaining = Math.max(0, Math.round((state31.timerEnd - now) / 1e3));
-      const display = root32.querySelector('[data-testid="et-timer-display"]');
-      if (display) display.textContent = formatTime(state31.timerRemaining);
-      const bar = root32.querySelector('[data-testid="et-timer-bar"]');
+      state36.timerRemaining = Math.max(0, Math.round((state36.timerEnd - now) / 1e3));
+      const display = root37.querySelector('[data-testid="et-timer-display"]');
+      if (display) display.textContent = formatTime(state36.timerRemaining);
+      const bar = root37.querySelector('[data-testid="et-timer-bar"]');
       if (bar) {
-        const total = (state31.timebox || 60) * 60;
-        bar.style.width = `${state31.timerRemaining / total * 100}%`;
-        bar.className = `et-timer-bar${state31.timerRemaining < 60 ? " et-timer-bar--warn" : ""}`;
+        const total = (state36.timebox || 60) * 60;
+        bar.style.width = `${state36.timerRemaining / total * 100}%`;
+        bar.className = `et-timer-bar${state36.timerRemaining < 60 ? " et-timer-bar--warn" : ""}`;
       }
-      if (state31.timerRemaining <= 0) {
+      if (state36.timerRemaining <= 0) {
         stopTimer();
-        const display2 = root32.querySelector('[data-testid="et-timer-display"]');
+        const display2 = root37.querySelector('[data-testid="et-timer-display"]');
         if (display2) display2.textContent = t("et.timer.done");
       }
     }
     function startTimer() {
-      if (state31.timerRunning) return;
-      if (state31.timerRemaining <= 0) state31.timerRemaining = (state31.timebox || 60) * 60;
-      state31.timerRunning = true;
-      state31.timerEnd = Date.now() + state31.timerRemaining * 1e3;
-      const startBtn = root32.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root32.querySelector('[data-testid="et-timer-stop"]');
+      if (state36.timerRunning) return;
+      if (state36.timerRemaining <= 0) state36.timerRemaining = (state36.timebox || 60) * 60;
+      state36.timerRunning = true;
+      state36.timerEnd = Date.now() + state36.timerRemaining * 1e3;
+      const startBtn = root37.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root37.querySelector('[data-testid="et-timer-stop"]');
       if (startBtn) startBtn.disabled = true;
       if (stopBtn) stopBtn.disabled = false;
       timerInterval = setInterval(tickTimer, 500);
     }
     function stopTimer() {
-      state31.timerRunning = false;
-      state31.timerEnd = null;
+      state36.timerRunning = false;
+      state36.timerEnd = null;
       if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
       }
-      const startBtn = root32.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root32.querySelector('[data-testid="et-timer-stop"]');
+      const startBtn = root37.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root37.querySelector('[data-testid="et-timer-stop"]');
       if (startBtn) startBtn.disabled = false;
       if (stopBtn) stopBtn.disabled = true;
     }
     function resetTimer() {
       stopTimer();
-      state31.timerRemaining = (state31.timebox || 60) * 60;
-      const display = root32.querySelector('[data-testid="et-timer-display"]');
-      if (display) display.textContent = formatTime(state31.timerRemaining);
-      const bar = root32.querySelector('[data-testid="et-timer-bar"]');
+      state36.timerRemaining = (state36.timebox || 60) * 60;
+      const display = root37.querySelector('[data-testid="et-timer-display"]');
+      if (display) display.textContent = formatTime(state36.timerRemaining);
+      const bar = root37.querySelector('[data-testid="et-timer-bar"]');
       if (bar) {
         bar.style.width = "100%";
         bar.className = "et-timer-bar";
       }
       save();
     }
-    function render31() {
+    function render36() {
       const isZh = getLocale() === "zh";
-      const total = (state31.timebox || 60) * 60;
-      const barPct = state31.timerRemaining / total * 100;
-      const notesByType = (type) => state31.notes.filter((n) => n.type === type);
-      root32.innerHTML = `
+      const total = (state36.timebox || 60) * 60;
+      const barPct = state36.timerRemaining / total * 100;
+      const notesByType = (type) => state36.notes.filter((n) => n.type === type);
+      root37.innerHTML = `
       <div class="et-layout">
 
         <!-- LEFT: Charter + SFDIPOT -->
@@ -20946,7 +21210,7 @@ function linearSearch(arr, target) {
               data-testid="et-charter"
               rows="4"
               placeholder="${t("et.charter.placeholder")}"
-            >${escapeHtml13(state31.charter)}</textarea>
+            >${escapeHtml13(state36.charter)}</textarea>
           </section>
 
           <section class="et-card" data-testid="et-sfdipot-section">
@@ -20954,10 +21218,10 @@ function linearSearch(arr, target) {
             <p class="et-card-hint">${t("et.sfdipot.hint")}</p>
             <div class="et-sfdipot-list">
               ${SFDIPOT_ITEMS.map((item) => `
-                <label class="et-sfdipot-item${state31.sfdipot.includes(item.id) ? " checked" : ""}"
+                <label class="et-sfdipot-item${state36.sfdipot.includes(item.id) ? " checked" : ""}"
                   data-testid="et-sfdipot-${item.id}">
                   <input type="checkbox" value="${item.id}"
-                    ${state31.sfdipot.includes(item.id) ? "checked" : ""}
+                    ${state36.sfdipot.includes(item.id) ? "checked" : ""}
                     data-sfdipot="${item.id}">
                   <span class="et-sfdipot-letter">${item.id.replace("2", "")}</span>
                   <span class="et-sfdipot-desc">
@@ -20988,16 +21252,16 @@ function linearSearch(arr, target) {
             <h3 class="et-card-title">${t("et.timer.title")}</h3>
             <div class="et-timebox-row">
               <label for="et-timebox">${t("et.timer.timebox")}</label>
-              <input id="et-timebox" type="number" min="1" max="240" value="${state31.timebox}"
+              <input id="et-timebox" type="number" min="1" max="240" value="${state36.timebox}"
                 class="et-timebox-input" data-testid="et-timebox-input">
               <span>${t("et.timer.minutes")}</span>
             </div>
             <div class="et-timer-track">
-              <div class="et-timer-bar${state31.timerRemaining < 60 ? " et-timer-bar--warn" : ""}"
+              <div class="et-timer-bar${state36.timerRemaining < 60 ? " et-timer-bar--warn" : ""}"
                 data-testid="et-timer-bar"
                 style="width:${barPct}%"></div>
             </div>
-            <div class="et-timer-display" data-testid="et-timer-display">${formatTime(state31.timerRemaining)}</div>
+            <div class="et-timer-display" data-testid="et-timer-display">${formatTime(state36.timerRemaining)}</div>
             <div class="et-timer-btns">
               <button type="button" class="et-timer-btn et-timer-btn--start"
                 data-testid="et-timer-start">${t("et.timer.start")}</button>
@@ -21030,7 +21294,7 @@ function linearSearch(arr, target) {
             </div>
 
             <div class="et-notes-list" data-testid="et-notes-list">
-              ${state31.notes.length === 0 ? `<p class="et-notes-empty">${t("et.notes.empty")}</p>` : state31.notes.map((note, i) => `
+              ${state36.notes.length === 0 ? `<p class="et-notes-empty">${t("et.notes.empty")}</p>` : state36.notes.map((note, i) => `
                   <div class="et-note-item et-note-item--${note.type}" data-testid="et-note-${i}">
                     <span class="et-note-badge et-note-badge--${note.type}">${t(`et.note.${note.type}`)}</span>
                     <span class="et-note-body">${escapeHtml13(note.text)}</span>
@@ -21041,7 +21305,7 @@ function linearSearch(arr, target) {
                 `).join("")}
             </div>
 
-            ${state31.notes.length > 0 ? `
+            ${state36.notes.length > 0 ? `
               <div class="et-notes-actions">
                 <button type="button" class="et-clear-btn" data-testid="et-clear-notes">
                   ${t("et.notes.clear")}
@@ -21056,26 +21320,26 @@ function linearSearch(arr, target) {
 
       </div>
     `;
-      bindEvents31();
+      bindEvents36();
     }
     function addNote() {
-      const typeEl = root32.querySelector('[data-testid="et-note-type"]');
-      const textEl = root32.querySelector('[data-testid="et-note-text"]');
+      const typeEl = root37.querySelector('[data-testid="et-note-type"]');
+      const textEl = root37.querySelector('[data-testid="et-note-text"]');
       if (!typeEl || !textEl) return;
       const text = textEl.value.trim();
       if (!text) return;
       const now = /* @__PURE__ */ new Date();
       const time = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-      state31.notes.unshift({ type: typeEl.value, text, time });
+      state36.notes.unshift({ type: typeEl.value, text, time });
       save();
-      render31();
-      const newText = root32.querySelector('[data-testid="et-note-text"]');
+      render36();
+      const newText = root37.querySelector('[data-testid="et-note-text"]');
       if (newText) newText.focus();
     }
     function exportNotes() {
-      const lines = [`# Exploratory Test Session`, `Charter: ${state31.charter}`, ""];
+      const lines = [`# Exploratory Test Session`, `Charter: ${state36.charter}`, ""];
       for (const ty of NOTE_TYPES) {
-        const items = state31.notes.filter((n) => n.type === ty);
+        const items = state36.notes.filter((n) => n.type === ty);
         if (items.length) {
           lines.push(`## ${ty.toUpperCase()}`);
           items.forEach((n) => lines.push(`- [${n.time}] ${n.text}`));
@@ -21088,45 +21352,45 @@ function linearSearch(arr, target) {
       a.download = "session-notes.md";
       a.click();
     }
-    function bindEvents31() {
-      const charterEl = root32.querySelector('[data-testid="et-charter"]');
+    function bindEvents36() {
+      const charterEl = root37.querySelector('[data-testid="et-charter"]');
       if (charterEl) {
         charterEl.addEventListener("input", () => {
-          state31.charter = charterEl.value;
+          state36.charter = charterEl.value;
           save();
         });
       }
-      root32.querySelectorAll("[data-sfdipot]").forEach((cb) => {
+      root37.querySelectorAll("[data-sfdipot]").forEach((cb) => {
         cb.addEventListener("change", () => {
           if (cb.checked) {
-            if (!state31.sfdipot.includes(cb.value)) state31.sfdipot.push(cb.value);
+            if (!state36.sfdipot.includes(cb.value)) state36.sfdipot.push(cb.value);
           } else {
-            state31.sfdipot = state31.sfdipot.filter((v) => v !== cb.value);
+            state36.sfdipot = state36.sfdipot.filter((v) => v !== cb.value);
           }
           const label = cb.closest("label");
           if (label) label.classList.toggle("checked", cb.checked);
           save();
         });
       });
-      const timeboxInput = root32.querySelector('[data-testid="et-timebox-input"]');
+      const timeboxInput = root37.querySelector('[data-testid="et-timebox-input"]');
       if (timeboxInput) {
         timeboxInput.addEventListener("change", () => {
           const v = parseInt(timeboxInput.value, 10);
           if (v > 0) {
-            state31.timebox = v;
+            state36.timebox = v;
             resetTimer();
           }
         });
       }
-      const startBtn = root32.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root32.querySelector('[data-testid="et-timer-stop"]');
-      const resetBtn = root32.querySelector('[data-testid="et-timer-reset"]');
+      const startBtn = root37.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root37.querySelector('[data-testid="et-timer-stop"]');
+      const resetBtn = root37.querySelector('[data-testid="et-timer-reset"]');
       if (startBtn) startBtn.addEventListener("click", startTimer);
       if (stopBtn) stopBtn.addEventListener("click", stopTimer);
       if (resetBtn) resetBtn.addEventListener("click", resetTimer);
-      const addBtn = root32.querySelector('[data-testid="et-note-add"]');
+      const addBtn = root37.querySelector('[data-testid="et-note-add"]');
       if (addBtn) addBtn.addEventListener("click", addNote);
-      const textEl = root32.querySelector('[data-testid="et-note-text"]');
+      const textEl = root37.querySelector('[data-testid="et-note-text"]');
       if (textEl) {
         textEl.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
@@ -21135,29 +21399,29 @@ function linearSearch(arr, target) {
           }
         });
       }
-      root32.querySelectorAll("[data-delete]").forEach((btn) => {
+      root37.querySelectorAll("[data-delete]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = parseInt(btn.dataset.delete, 10);
-          state31.notes.splice(idx, 1);
+          state36.notes.splice(idx, 1);
           save();
-          render31();
+          render36();
         });
       });
-      const clearBtn = root32.querySelector('[data-testid="et-clear-notes"]');
+      const clearBtn = root37.querySelector('[data-testid="et-clear-notes"]');
       if (clearBtn) {
         clearBtn.addEventListener("click", () => {
           if (window.confirm(t("et.notes.confirm.clear"))) {
-            state31.notes = [];
+            state36.notes = [];
             save();
-            render31();
+            render36();
           }
         });
       }
-      const exportBtn = root32.querySelector('[data-testid="et-export-notes"]');
+      const exportBtn = root37.querySelector('[data-testid="et-export-notes"]');
       if (exportBtn) exportBtn.addEventListener("click", exportNotes);
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/TestDoublesExplorer.js
@@ -21733,9 +21997,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     }
   ];
   function createTestDoublesExplorer() {
-    const root32 = document.createElement("div");
-    root32.dataset.testid = "td-explorer";
-    let state31 = {
+    const root37 = document.createElement("div");
+    root37.dataset.testid = "td-explorer";
+    let state36 = {
       typeId: "dummy",
       scenarioId: "order",
       result: null
@@ -21791,16 +22055,16 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     }
     function getType() {
       var _a;
-      return (_a = DOUBLE_TYPES.find((d) => d.id === state31.typeId)) != null ? _a : DOUBLE_TYPES[0];
+      return (_a = DOUBLE_TYPES.find((d) => d.id === state36.typeId)) != null ? _a : DOUBLE_TYPES[0];
     }
     function getScenario() {
       var _a;
       const ty = getType();
-      return (_a = ty.scenarios.find((s) => s.id === state31.scenarioId)) != null ? _a : ty.scenarios[0];
+      return (_a = ty.scenarios.find((s) => s.id === state36.scenarioId)) != null ? _a : ty.scenarios[0];
     }
     function getCode() {
       var _a;
-      return (_a = SCENARIO_CODE[`${state31.typeId}/${state31.scenarioId}`]) != null ? _a : {};
+      return (_a = SCENARIO_CODE[`${state36.typeId}/${state36.scenarioId}`]) != null ? _a : {};
     }
     function formatArg(v) {
       if (v === null || v === void 0) return String(v);
@@ -21856,13 +22120,13 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
     `;
     }
-    function render31() {
+    function render36() {
       var _a, _b, _c;
       const isZh = getLocale() === "zh";
       const ty = getType();
       const code = getCode();
       const scen = getScenario();
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="td-layout">
         <!-- Sidebar: double types -->
         <div class="td-sidebar">
@@ -21870,7 +22134,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           <div class="td-type-list" data-testid="td-types">
             ${DOUBLE_TYPES.map((d) => `
               <button type="button"
-                class="td-type-btn${d.id === state31.typeId ? " active" : ""}"
+                class="td-type-btn${d.id === state36.typeId ? " active" : ""}"
                 data-testid="td-type-${d.id}"
                 data-type="${d.id}"
                 style="--td-color:${d.color}"
@@ -21882,14 +22146,14 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           </div>
 
           <div class="td-type-info" data-testid="td-type-info">
-            <p class="td-type-def">${t(`td.def.${state31.typeId}`)}</p>
-            <p class="td-type-when"><strong>${t("td.whenToUse")}</strong> ${t(`td.when.${state31.typeId}`)}</p>
+            <p class="td-type-def">${t(`td.def.${state36.typeId}`)}</p>
+            <p class="td-type-when"><strong>${t("td.whenToUse")}</strong> ${t(`td.when.${state36.typeId}`)}</p>
           </div>
 
           <div class="td-comparison">
             <h4 class="td-comparison-title">${t("td.comparison.title")}</h4>
             ${DOUBLE_TYPES.map((d) => `
-              <div class="td-comparison-row${d.id === state31.typeId ? " active" : ""}">
+              <div class="td-comparison-row${d.id === state36.typeId ? " active" : ""}">
                 <span class="td-comparison-dot" style="background:${d.color}"></span>
                 <span class="td-comparison-name">${t(`td.type.${d.id}`)}</span>
                 <span class="td-comparison-trait">${t(`td.trait.${d.id}`)}</span>
@@ -21905,10 +22169,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
             <span class="td-scenario-label">${t("td.scenarios.label")}</span>
             ${ty.scenarios.map((s) => `
               <button type="button"
-                class="td-scenario-btn${s.id === state31.scenarioId ? " active" : ""}"
+                class="td-scenario-btn${s.id === state36.scenarioId ? " active" : ""}"
                 data-testid="td-scenario-${s.id}"
                 data-scenario="${s.id}"
-              >${t(`td.scenario.${state31.typeId}.${s.id}`)}</button>
+              >${t(`td.scenario.${state36.typeId}.${s.id}`)}</button>
             `).join("")}
           </div>
 
@@ -21919,7 +22183,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
               <pre class="td-pre"><code>${escapeHtml14((_a = code.sutCode) != null ? _a : "")}</code></pre>
             </div>
             <div class="td-code-panel">
-              <div class="td-code-header td-code-header--double">${t(`td.type.${state31.typeId}`)}</div>
+              <div class="td-code-header td-code-header--double">${t(`td.type.${state36.typeId}`)}</div>
               <pre class="td-pre"><code>${escapeHtml14((_b = code.doubleCode) != null ? _b : "")}</code></pre>
             </div>
             <div class="td-code-panel">
@@ -21940,46 +22204,46 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
           <!-- Results -->
           <div class="td-result-panel" data-testid="td-result">
-            ${state31.result ? renderResult3(state31.result) : `<p class="td-hint">${t("td.hint")}</p>`}
+            ${state36.result ? renderResult3(state36.result) : `<p class="td-hint">${t("td.hint")}</p>`}
           </div>
         </div>
       </div>
     `;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
-      root32.querySelectorAll("[data-type]").forEach((btn) => {
+    function bindEvents36() {
+      root37.querySelectorAll("[data-type]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.typeId = btn.dataset.type;
+          state36.typeId = btn.dataset.type;
           const ty = getType();
-          state31.scenarioId = ty.scenarios[0].id;
-          state31.result = null;
-          render31();
+          state36.scenarioId = ty.scenarios[0].id;
+          state36.result = null;
+          render36();
         });
       });
-      root32.querySelectorAll("[data-scenario]").forEach((btn) => {
+      root37.querySelectorAll("[data-scenario]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state31.scenarioId = btn.dataset.scenario;
-          state31.result = null;
-          render31();
+          state36.scenarioId = btn.dataset.scenario;
+          state36.result = null;
+          render36();
         });
       });
-      const runBtn = root32.querySelector('[data-testid="td-run"]');
+      const runBtn = root37.querySelector('[data-testid="td-run"]');
       if (runBtn) {
         runBtn.addEventListener("click", () => {
           try {
-            state31.result = getScenario().run();
+            state36.result = getScenario().run();
           } catch (e) {
-            state31.result = {
+            state36.result = {
               callLog: [],
               assertions: [{ desc: `Error: ${e.message}`, passed: false }]
             };
           }
-          const panel = root32.querySelector('[data-testid="td-result"]');
-          if (panel) panel.innerHTML = renderResult3(state31.result);
+          const panel = root37.querySelector('[data-testid="td-result"]');
+          if (panel) panel.innerHTML = renderResult3(state36.result);
         });
       }
-      const tqStart = root32.querySelector('[data-testid="td-quiz-start"]');
+      const tqStart = root37.querySelector('[data-testid="td-quiz-start"]');
       if (tqStart) {
         tqStart.addEventListener("click", () => {
           tdQuizScenarioIdx = Math.floor(Math.random() * TD_QUIZ_SCENARIOS.length);
@@ -21987,47 +22251,47 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           tdQuiz.phase = "question";
           tdQuiz.selected = "";
           tdQuiz.result = null;
-          render31();
+          render36();
         });
       }
-      const tqClose = root32.querySelector('[data-testid="td-quiz-close"]');
+      const tqClose = root37.querySelector('[data-testid="td-quiz-close"]');
       if (tqClose) {
         tqClose.addEventListener("click", () => {
           tdQuiz.active = false;
-          render31();
+          render36();
         });
       }
-      root32.querySelectorAll("[data-quiz-choice]").forEach((btn) => {
+      root37.querySelectorAll("[data-quiz-choice]").forEach((btn) => {
         btn.addEventListener("click", () => {
           tdQuiz.selected = btn.dataset.quizChoice;
-          const panel = root32.querySelector('[data-testid="td-quiz-panel"]');
+          const panel = root37.querySelector('[data-testid="td-quiz-panel"]');
           if (panel) {
-            root32.querySelectorAll("[data-quiz-choice]").forEach((b) => b.classList.toggle("active", b.dataset.quizChoice === tdQuiz.selected));
-            const checkBtn = root32.querySelector('[data-testid="td-quiz-check"]');
+            root37.querySelectorAll("[data-quiz-choice]").forEach((b) => b.classList.toggle("active", b.dataset.quizChoice === tdQuiz.selected));
+            const checkBtn = root37.querySelector('[data-testid="td-quiz-check"]');
             if (checkBtn) checkBtn.disabled = false;
           }
         });
       });
-      const tqCheck = root32.querySelector('[data-testid="td-quiz-check"]');
+      const tqCheck = root37.querySelector('[data-testid="td-quiz-check"]');
       if (tqCheck) {
         tqCheck.addEventListener("click", () => {
           tdQuiz.phase = "graded";
-          render31();
+          render36();
         });
       }
-      const tqReset = root32.querySelector('[data-testid="td-quiz-reset"]');
+      const tqReset = root37.querySelector('[data-testid="td-quiz-reset"]');
       if (tqReset) {
         tqReset.addEventListener("click", () => {
           tdQuizScenarioIdx = (tdQuizScenarioIdx + 1) % TD_QUIZ_SCENARIOS.length;
           tdQuiz.phase = "question";
           tdQuiz.selected = "";
           tdQuiz.result = null;
-          render31();
+          render36();
         });
       }
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/DefectCostExplorer.js
@@ -22087,11 +22351,11 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createDefectCostExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "dce-root";
-    root32.dataset.testid = "defect-cost-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "dce-root";
+    root37.dataset.testid = "defect-cost-explorer";
     let selectedId = null;
-    function render31() {
+    function render36() {
       const isZh = getLocale() === "zh";
       const selected = PHASES.find((p) => p.id === selectedId) || null;
       const bars = PHASES.map((phase, i) => {
@@ -22128,7 +22392,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>
     ` : `<p class="dce-hint" data-testid="dce-hint">${t("dce.hint")}</p>`;
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="dce-header">
         <h3 class="dce-title">${t("dce.title")}</h3>
         <p class="dce-subtitle">${t("dce.subtitle")}</p>
@@ -22144,10 +22408,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       <div class="dce-disclaimer">${t("dce.disclaimer")}</div>
       ${detailHtml}
     `;
-      root32.querySelectorAll("[data-dce-phase]").forEach((el) => {
+      root37.querySelectorAll("[data-dce-phase]").forEach((el) => {
         const select = () => {
           selectedId = selectedId === el.dataset.dcePhase ? null : el.dataset.dcePhase;
-          render31();
+          render36();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (e) => {
@@ -22158,8 +22422,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         });
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/VModelExplorer.js
@@ -22202,11 +22466,11 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createVModelExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "vme-root";
-    root32.dataset.testid = "vmodel-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "vme-root";
+    root37.dataset.testid = "vmodel-explorer";
     let selectedId = null;
-    function render31() {
+    function render36() {
       const isZh = getLocale() === "zh";
       const selected = V_PAIRS.find((p) => p.id === selectedId) || (selectedId === "implementation" ? IMPL : null);
       const rows = V_PAIRS.map((pair, i) => {
@@ -22274,7 +22538,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         <p class="vme-detail-desc">${escapeHtml16(isZh ? t("vme.desc.implementation") : t("vme.desc.implementation.en"))}</p>
       </div>
     ` : `<p class="vme-hint" data-testid="vme-hint">${t("vme.hint")}</p>`;
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="vme-header">
         <h3 class="vme-title">${t("vme.title")}</h3>
         <p class="vme-subtitle">${t("vme.subtitle")}</p>
@@ -22297,15 +22561,15 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
       ${detailHtml}
     `;
-      root32.querySelectorAll("[data-vme-id]").forEach((btn) => {
+      root37.querySelectorAll("[data-vme-id]").forEach((btn) => {
         btn.addEventListener("click", () => {
           selectedId = selectedId === btn.dataset.vmeId ? null : btn.dataset.vmeId;
-          render31();
+          render36();
         });
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/PyramidAdjusterExplorer.js
@@ -22340,9 +22604,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createPyramidAdjusterExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "pya-root";
-    root32.dataset.testid = "pyramid-adjuster";
+    const root37 = document.createElement("div");
+    root37.className = "pya-root";
+    root37.dataset.testid = "pyramid-adjuster";
     let unit = 70;
     let integration = 20;
     let e2e = 10;
@@ -22376,7 +22640,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       const sum = unit + integration + e2e;
       if (sum !== 100) unit += 100 - sum;
     }
-    function render31() {
+    function render36() {
       const isZh = getLocale() === "zh";
       const traits = computeTraits(unit, integration, e2e);
       const pyramidLayers = LAYERS.map((layer) => {
@@ -22428,7 +22692,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         ${escapeHtml17(isZh ? t(`pya.preset.${p.id}`) : t(`pya.preset.${p.id}.en`))}
       </button>
     `).join("");
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="pya-header">
         <h3 class="pya-title">${t("pya.title")}</h3>
         <p class="pya-subtitle">${t("pya.subtitle")}</p>
@@ -22450,25 +22714,25 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
       <p class="pya-disclaimer">${t("pya.disclaimer")}</p>
     `;
-      root32.querySelectorAll("[data-pya-layer]").forEach((input) => {
+      root37.querySelectorAll("[data-pya-layer]").forEach((input) => {
         input.addEventListener("input", () => {
           adjustRatios(input.dataset.pyaLayer, Number(input.value));
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-pya-preset]").forEach((btn) => {
+      root37.querySelectorAll("[data-pya-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const p = PRESETS.find((x) => x.id === btn.dataset.pyaPreset);
           if (!p) return;
           unit = p.unit;
           integration = p.integration;
           e2e = p.e2e;
-          render31();
+          render36();
         });
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/pairwise.js
@@ -22619,9 +22883,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return preset.params.map((p) => ({ id: uid(), name: p.name, values: [...p.values] }));
   }
   function createPairwiseExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "pairwise-explorer";
-    root32.dataset.testid = "pairwise-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "pairwise-explorer";
+    root37.dataset.testid = "pairwise-explorer";
     let params = freshParams(PRESETS2[1]);
     let newValueDraft = {};
     const pairwiseQuiz = { active: false, phase: "question", answer: "" };
@@ -22683,7 +22947,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         <button type="button" class="quiz-start-btn" data-testid="pairwise-quiz-check">${t("quiz.check")}</button>
       </div>`;
     }
-    function render31() {
+    function render36() {
       const { tests, exhaustive, pairCount, pairCoverage } = computeResults();
       const vp = validParams();
       const reductionPct = exhaustive > 0 && tests.length < exhaustive ? Math.round((1 - tests.length / exhaustive) * 100) : 0;
@@ -22753,7 +23017,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           <tbody>${tbodyRows}</tbody>
         </table>
       </div>` : `<p class="pairwise-empty">${t("pairwise.empty")}</p>`;
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="pairwise-params-card">
         <p class="pairwise-params-title">${t("pairwise.params.title")}</p>
         <div class="pairwise-presets">${presetBtns}</div>
@@ -22778,45 +23042,45 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="pairwise-hint">${t("pairwise.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
-      root32.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents36() {
+      root37.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           params = freshParams(PRESETS2[parseInt(btn.dataset.preset)]);
           newValueDraft = {};
-          render31();
+          render36();
         });
       });
-      root32.querySelector('[data-testid="pairwise-add-param"]').addEventListener("click", () => {
+      root37.querySelector('[data-testid="pairwise-add-param"]').addEventListener("click", () => {
         params.push({ id: uid(), name: "", values: ["A", "B"] });
-        render31();
+        render36();
       });
-      root32.querySelectorAll("[data-remove-param]").forEach((btn) => {
+      root37.querySelectorAll("[data-remove-param]").forEach((btn) => {
         btn.addEventListener("click", () => {
           params = params.filter((p) => p.id !== btn.dataset.removeParam);
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-param-name]").forEach((input) => {
+      root37.querySelectorAll("[data-param-name]").forEach((input) => {
         input.addEventListener("change", () => {
           const p = params.find((x) => x.id === input.dataset.paramName);
           if (p) {
             p.name = input.value;
-            render31();
+            render36();
           }
         });
       });
-      root32.querySelectorAll("[data-remove-val]").forEach((btn) => {
+      root37.querySelectorAll("[data-remove-val]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const p = params.find((x) => x.id === btn.dataset.removeVal);
           if (p) {
             p.values.splice(parseInt(btn.dataset.valIdx), 1);
-            render31();
+            render36();
           }
         });
       });
-      root32.querySelectorAll("[data-new-val]").forEach((input) => {
+      root37.querySelectorAll("[data-new-val]").forEach((input) => {
         input.addEventListener("input", () => {
           newValueDraft[input.dataset.newVal] = input.value;
         });
@@ -22827,36 +23091,36 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           }
         });
       });
-      root32.querySelectorAll("[data-add-val]").forEach((btn) => {
+      root37.querySelectorAll("[data-add-val]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const input = root32.querySelector(`[data-new-val="${btn.dataset.addVal}"]`);
+          const input = root37.querySelector(`[data-new-val="${btn.dataset.addVal}"]`);
           addValue(btn.dataset.addVal, input ? input.value : "");
         });
       });
-      const qStart = root32.querySelector('[data-testid="pairwise-quiz-start"]');
+      const qStart = root37.querySelector('[data-testid="pairwise-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         pairwiseQuiz.active = true;
         pairwiseQuiz.phase = "question";
         pairwiseQuiz.answer = "";
-        render31();
+        render36();
       });
-      const qClose = root32.querySelector('[data-testid="pairwise-quiz-close"]');
+      const qClose = root37.querySelector('[data-testid="pairwise-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         pairwiseQuiz.active = false;
-        render31();
+        render36();
       });
-      const qCheck = root32.querySelector('[data-testid="pairwise-quiz-check"]');
+      const qCheck = root37.querySelector('[data-testid="pairwise-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root32.querySelector('[data-testid="pairwise-quiz-input"]');
+        const inp = root37.querySelector('[data-testid="pairwise-quiz-input"]');
         pairwiseQuiz.answer = inp ? inp.value : "";
         pairwiseQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      const qReset = root32.querySelector('[data-testid="pairwise-quiz-reset"]');
+      const qReset = root37.querySelector('[data-testid="pairwise-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         pairwiseQuiz.phase = "question";
         pairwiseQuiz.answer = "";
-        render31();
+        render36();
       });
     }
     function addValue(paramId, raw) {
@@ -22867,10 +23131,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         p.values.push(val);
       }
       delete newValueDraft[paramId];
-      render31();
+      render36();
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/CauseEffectExplorer.js
@@ -22882,9 +23146,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
   function createCauseEffectExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "ceg-explorer";
-    root32.dataset.testid = "ceg-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "ceg-explorer";
+    root37.dataset.testid = "ceg-explorer";
     let causes = [
       { id: uid2(), name: "C1", label: "User logged in" },
       { id: uid2(), name: "C2", label: "Cart not empty" },
@@ -23034,7 +23298,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>`;
     }
-    function render31() {
+    function render36() {
       const { validCauses, validEffects, rows } = buildTable();
       const activeCount = rows.filter((r) => r.active).length;
       const causeRows = causes.map((c, i) => `
@@ -23108,7 +23372,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         total: 1,
         items: [{ q: t("ceg.rows.active", { n: activeCount }), a: String(activeCount), ok: true }]
       }) : null;
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="ceg-editors">
         <div class="ceg-editor-card">
           <p class="ceg-editor-title">${t("ceg.causes.title")}</p>
@@ -23144,110 +23408,110 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="ceg-hint">${t("ceg.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
-      root32.querySelector('[data-testid="ceg-cause-add"]').addEventListener("click", () => {
+    function bindEvents36() {
+      root37.querySelector('[data-testid="ceg-cause-add"]').addEventListener("click", () => {
         const n = causes.length + 1;
         causes.push({ id: uid2(), name: `C${n}`, label: "" });
-        render31();
+        render36();
       });
-      root32.querySelectorAll("[data-remove-cause]").forEach((btn) => {
+      root37.querySelectorAll("[data-remove-cause]").forEach((btn) => {
         btn.addEventListener("click", () => {
           causes = causes.filter((c) => c.id !== btn.dataset.removeCause);
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-cause-label]").forEach((input) => {
+      root37.querySelectorAll("[data-cause-label]").forEach((input) => {
         input.addEventListener("change", () => {
           const c = causes.find((x) => x.id === input.dataset.causeLabel);
           if (c) {
             c.label = input.value;
-            render31();
+            render36();
           }
         });
       });
-      root32.querySelector('[data-testid="ceg-effect-add"]').addEventListener("click", () => {
+      root37.querySelector('[data-testid="ceg-effect-add"]').addEventListener("click", () => {
         const n = effects.length + 1;
         effects.push({ id: uid2(), name: `E${n}`, label: "", formula: "" });
-        render31();
+        render36();
       });
-      root32.querySelectorAll("[data-remove-effect]").forEach((btn) => {
+      root37.querySelectorAll("[data-remove-effect]").forEach((btn) => {
         btn.addEventListener("click", () => {
           effects = effects.filter((e) => e.id !== btn.dataset.removeEffect);
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-effect-label]").forEach((input) => {
+      root37.querySelectorAll("[data-effect-label]").forEach((input) => {
         input.addEventListener("change", () => {
           const e = effects.find((x) => x.id === input.dataset.effectLabel);
           if (e) {
             e.label = input.value;
-            render31();
+            render36();
           }
         });
       });
-      root32.querySelectorAll("[data-effect-formula]").forEach((input) => {
+      root37.querySelectorAll("[data-effect-formula]").forEach((input) => {
         input.addEventListener("input", () => {
           const e = effects.find((x) => x.id === input.dataset.effectFormula);
           if (e) {
             e.formula = input.value;
-            render31();
+            render36();
           }
         });
       });
-      const qStart = root32.querySelector('[data-testid="ceg-quiz-start"]');
+      const qStart = root37.querySelector('[data-testid="ceg-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         cegQuiz.active = true;
         cegQuiz.phase = "question";
         cegQuiz.answer = "";
-        render31();
+        render36();
       });
-      const qClose = root32.querySelector('[data-testid="ceg-quiz-close"]');
+      const qClose = root37.querySelector('[data-testid="ceg-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         cegQuiz.active = false;
-        render31();
+        render36();
       });
-      const qCheck = root32.querySelector('[data-testid="ceg-quiz-check"]');
+      const qCheck = root37.querySelector('[data-testid="ceg-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root32.querySelector('[data-testid="ceg-quiz-input"]');
+        const inp = root37.querySelector('[data-testid="ceg-quiz-input"]');
         cegQuiz.answer = inp ? inp.value : "";
         cegQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      const qReset = root32.querySelector('[data-testid="ceg-quiz-reset"]');
+      const qReset = root37.querySelector('[data-testid="ceg-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         cegQuiz.phase = "question";
         cegQuiz.answer = "";
-        render31();
+        render36();
       });
-      const lrStart = root32.querySelector('[data-testid="ceg-lab-reflect-start"]');
+      const lrStart = root37.querySelector('[data-testid="ceg-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         cegLabReflect.active = true;
-        render31();
+        render36();
       });
-      const lrClose = root32.querySelector('[data-testid="ceg-lab-reflect-close"]');
+      const lrClose = root37.querySelector('[data-testid="ceg-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root32.querySelector('[data-testid="ceg-lab-reflect-a1"]');
-        const a2el = root32.querySelector('[data-testid="ceg-lab-reflect-a2"]');
+        const a1el = root37.querySelector('[data-testid="ceg-lab-reflect-a1"]');
+        const a2el = root37.querySelector('[data-testid="ceg-lab-reflect-a2"]');
         if (a1el) cegLabReflect.a1 = a1el.value;
         if (a2el) cegLabReflect.a2 = a2el.value;
         cegLabReflect.active = false;
-        render31();
+        render36();
       });
-      const lrA1 = root32.querySelector('[data-testid="ceg-lab-reflect-a1"]');
+      const lrA1 = root37.querySelector('[data-testid="ceg-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         cegLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root32.querySelector('[data-testid="ceg-lab-reflect-a2"]');
+      const lrA2 = root37.querySelector('[data-testid="ceg-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         cegLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root32.querySelector('[data-testid="ceg-lab-reflect-share"]');
+      const lrShare = root37.querySelector('[data-testid="ceg-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root32.querySelector('[data-testid="ceg-lab-reflect-a1"]')) == null ? void 0 : _a.value) || cegLabReflect.a1;
-        const a2 = ((_b = root32.querySelector('[data-testid="ceg-lab-reflect-a2"]')) == null ? void 0 : _b.value) || cegLabReflect.a2;
+        const a1 = ((_a = root37.querySelector('[data-testid="ceg-lab-reflect-a1"]')) == null ? void 0 : _a.value) || cegLabReflect.a1;
+        const a2 = ((_b = root37.querySelector('[data-testid="ceg-lab-reflect-a2"]')) == null ? void 0 : _b.value) || cegLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "ceg",
@@ -23270,8 +23534,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         }, 1800);
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/codeCoverage.js
@@ -23602,9 +23866,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     maxOf3: [["1", "2", "3"], ["3", "2", "1"], ["2", "3", "1"]]
   };
   function createCodeCoverageExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "codecov-explorer";
-    root32.dataset.testid = "codecov-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "codecov-explorer";
+    root37.dataset.testid = "codecov-explorer";
     let activePresetId = COVERAGE_PRESETS[0].id;
     let testCases = DEFAULT_TESTS_BY_PRESET[activePresetId].map((args) => ({ id: uid3(), args: [...args], active: true }));
     let activeCriterion = "stmt";
@@ -23729,7 +23993,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>`;
     }
-    function render31() {
+    function render36() {
       const p = preset();
       const { results, stmt, branch, cond, mcdc } = computeCoverage3();
       const strongest = strongestCriterion(stmt, branch, cond, mcdc);
@@ -23795,7 +24059,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         total: 1,
         items: [{ q: `${t("codecov.crit.stmt")} ${stmt.pct}% \xB7 ${t("codecov.crit.branch")} ${branch.pct}% \xB7 ${t("codecov.crit.cond")} ${cond.pct}% \xB7 ${t("codecov.crit.mcdc")} ${mcdc.pct}%`, a: strongest, ok: true }]
       });
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="codecov-presets">
         <span class="codecov-preset-label">Program:</span>
         ${presetBtns}
@@ -23844,90 +24108,90 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="codecov-hint">${t("codecov.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
-      root32.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents36() {
+      root37.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePresetId = btn.dataset.preset;
           testCases = (DEFAULT_TESTS_BY_PRESET[activePresetId] || [["0"]]).map((args) => ({ id: uid3(), args: [...args], active: true }));
           codecovQuiz.active = false;
           codecovLabReflect.active = false;
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-tc][data-arg]").forEach((input) => {
+      root37.querySelectorAll("[data-tc][data-arg]").forEach((input) => {
         input.addEventListener("change", () => {
           const tc = testCases.find((x) => x.id === input.dataset.tc);
           if (tc) {
             tc.args[parseInt(input.dataset.arg)] = input.value;
-            render31();
+            render36();
           }
         });
       });
-      root32.querySelectorAll("[data-remove-tc]").forEach((btn) => {
+      root37.querySelectorAll("[data-remove-tc]").forEach((btn) => {
         btn.addEventListener("click", () => {
           testCases = testCases.filter((tc) => tc.id !== btn.dataset.removeTc);
-          render31();
+          render36();
         });
       });
-      root32.querySelector('[data-testid="codecov-add-test"]').addEventListener("click", () => {
+      root37.querySelector('[data-testid="codecov-add-test"]').addEventListener("click", () => {
         const p = preset();
         testCases.push({ id: uid3(), args: p.params.map(() => "0"), active: true });
-        render31();
+        render36();
       });
-      const qStart = root32.querySelector('[data-testid="codecov-quiz-start"]');
+      const qStart = root37.querySelector('[data-testid="codecov-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         codecovQuiz.active = true;
         codecovQuiz.phase = "question";
         codecovQuiz.answer = "";
-        render31();
+        render36();
       });
-      const qClose = root32.querySelector('[data-testid="codecov-quiz-close"]');
+      const qClose = root37.querySelector('[data-testid="codecov-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         codecovQuiz.active = false;
-        render31();
+        render36();
       });
-      const qCheck = root32.querySelector('[data-testid="codecov-quiz-check"]');
+      const qCheck = root37.querySelector('[data-testid="codecov-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const sel = root32.querySelector('[name="codecov-quiz"]:checked');
+        const sel = root37.querySelector('[name="codecov-quiz"]:checked');
         codecovQuiz.answer = sel ? sel.value : "";
         codecovQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      const qReset = root32.querySelector('[data-testid="codecov-quiz-reset"]');
+      const qReset = root37.querySelector('[data-testid="codecov-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         codecovQuiz.phase = "question";
         codecovQuiz.answer = "";
-        render31();
+        render36();
       });
-      const lrStart = root32.querySelector('[data-testid="codecov-lab-reflect-start"]');
+      const lrStart = root37.querySelector('[data-testid="codecov-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         codecovLabReflect.active = true;
-        render31();
+        render36();
       });
-      const lrClose = root32.querySelector('[data-testid="codecov-lab-reflect-close"]');
+      const lrClose = root37.querySelector('[data-testid="codecov-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root32.querySelector('[data-testid="codecov-lab-reflect-a1"]');
-        const a2el = root32.querySelector('[data-testid="codecov-lab-reflect-a2"]');
+        const a1el = root37.querySelector('[data-testid="codecov-lab-reflect-a1"]');
+        const a2el = root37.querySelector('[data-testid="codecov-lab-reflect-a2"]');
         if (a1el) codecovLabReflect.a1 = a1el.value;
         if (a2el) codecovLabReflect.a2 = a2el.value;
         codecovLabReflect.active = false;
-        render31();
+        render36();
       });
-      const lrA1 = root32.querySelector('[data-testid="codecov-lab-reflect-a1"]');
+      const lrA1 = root37.querySelector('[data-testid="codecov-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         codecovLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root32.querySelector('[data-testid="codecov-lab-reflect-a2"]');
+      const lrA2 = root37.querySelector('[data-testid="codecov-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         codecovLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root32.querySelector('[data-testid="codecov-lab-reflect-share"]');
+      const lrShare = root37.querySelector('[data-testid="codecov-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root32.querySelector('[data-testid="codecov-lab-reflect-a1"]')) == null ? void 0 : _a.value) || codecovLabReflect.a1;
-        const a2 = ((_b = root32.querySelector('[data-testid="codecov-lab-reflect-a2"]')) == null ? void 0 : _b.value) || codecovLabReflect.a2;
+        const a1 = ((_a = root37.querySelector('[data-testid="codecov-lab-reflect-a1"]')) == null ? void 0 : _a.value) || codecovLabReflect.a1;
+        const a2 = ((_b = root37.querySelector('[data-testid="codecov-lab-reflect-a2"]')) == null ? void 0 : _b.value) || codecovLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "codecov",
@@ -23950,8 +24214,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         }, 1800);
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/IntegrationTestingExplorer.js
@@ -24091,9 +24355,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
   var SVG_W2 = 400;
   var SVG_H2 = 280;
   function createIntegrationTestingExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "inttest-explorer";
-    root32.dataset.testid = "inttest-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "inttest-explorer";
+    root37.dataset.testid = "inttest-explorer";
     let activeStrategy = "topdown";
     let activeStep = 0;
     const inttestQuiz = { active: false, phase: "question", answer: "" };
@@ -24222,7 +24486,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render31() {
+    function render36() {
       const strategy = STRATEGIES[activeStrategy];
       const step2 = strategy.steps[activeStep];
       const locale = getLocale();
@@ -24262,7 +24526,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `Strategy: ${t(strategy.key)} \xB7 Stubs: ${strategy.stubCount} \xB7 Drivers: ${strategy.driverCount}`, a: "", ok: true }]
       });
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="inttest-strategy-tabs" data-testid="inttest-strategy-tabs">
         ${stratTabs}
       </div>
@@ -24327,83 +24591,83 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="inttest-hint">${t("codecov.hint").replace("MC/DC \u2287 Condition \u2287 Branch \u2287 Statement", "Big Bang \u2192 Top-down \u2192 Bottom-up \u2192 Sandwich: each adds more structure and isolation.")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
-      root32.querySelectorAll("[data-strategy]").forEach((btn) => {
+    function bindEvents36() {
+      root37.querySelectorAll("[data-strategy]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeStrategy = btn.dataset.strategy;
           activeStep = 0;
-          render31();
+          render36();
         });
       });
-      const prevBtn = root32.querySelector('[data-testid="inttest-prev"]');
+      const prevBtn = root37.querySelector('[data-testid="inttest-prev"]');
       if (prevBtn) prevBtn.addEventListener("click", () => {
         if (activeStep > 0) {
           activeStep--;
-          render31();
+          render36();
         }
       });
-      const nextBtn = root32.querySelector('[data-testid="inttest-next"]');
+      const nextBtn = root37.querySelector('[data-testid="inttest-next"]');
       if (nextBtn) nextBtn.addEventListener("click", () => {
         const s = STRATEGIES[activeStrategy];
         if (activeStep < s.steps.length - 1) {
           activeStep++;
-          render31();
+          render36();
         }
       });
-      const qStart = root32.querySelector('[data-testid="inttest-quiz-start"]');
+      const qStart = root37.querySelector('[data-testid="inttest-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         inttestQuiz.active = true;
         inttestQuiz.phase = "question";
         inttestQuiz.answer = "";
-        render31();
+        render36();
       });
-      const qClose = root32.querySelector('[data-testid="inttest-quiz-close"]');
+      const qClose = root37.querySelector('[data-testid="inttest-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         inttestQuiz.active = false;
-        render31();
+        render36();
       });
-      const qCheck = root32.querySelector('[data-testid="inttest-quiz-check"]');
+      const qCheck = root37.querySelector('[data-testid="inttest-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root32.querySelector('[data-testid="inttest-quiz-input"]');
+        const inp = root37.querySelector('[data-testid="inttest-quiz-input"]');
         inttestQuiz.answer = inp ? inp.value : "";
         inttestQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      const qReset = root32.querySelector('[data-testid="inttest-quiz-reset"]');
+      const qReset = root37.querySelector('[data-testid="inttest-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         inttestQuiz.phase = "question";
         inttestQuiz.answer = "";
-        render31();
+        render36();
       });
-      const lrStart = root32.querySelector('[data-testid="inttest-lab-reflect-start"]');
+      const lrStart = root37.querySelector('[data-testid="inttest-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         inttestLabReflect.active = true;
-        render31();
+        render36();
       });
-      const lrClose = root32.querySelector('[data-testid="inttest-lab-reflect-close"]');
+      const lrClose = root37.querySelector('[data-testid="inttest-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root32.querySelector('[data-testid="inttest-lab-reflect-a1"]');
-        const a2el = root32.querySelector('[data-testid="inttest-lab-reflect-a2"]');
+        const a1el = root37.querySelector('[data-testid="inttest-lab-reflect-a1"]');
+        const a2el = root37.querySelector('[data-testid="inttest-lab-reflect-a2"]');
         if (a1el) inttestLabReflect.a1 = a1el.value;
         if (a2el) inttestLabReflect.a2 = a2el.value;
         inttestLabReflect.active = false;
-        render31();
+        render36();
       });
-      const lrA1 = root32.querySelector('[data-testid="inttest-lab-reflect-a1"]');
+      const lrA1 = root37.querySelector('[data-testid="inttest-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         inttestLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root32.querySelector('[data-testid="inttest-lab-reflect-a2"]');
+      const lrA2 = root37.querySelector('[data-testid="inttest-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         inttestLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root32.querySelector('[data-testid="inttest-lab-reflect-share"]');
+      const lrShare = root37.querySelector('[data-testid="inttest-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root32.querySelector('[data-testid="inttest-lab-reflect-a1"]')) == null ? void 0 : _a.value) || inttestLabReflect.a1;
-        const a2 = ((_b = root32.querySelector('[data-testid="inttest-lab-reflect-a2"]')) == null ? void 0 : _b.value) || inttestLabReflect.a2;
+        const a1 = ((_a = root37.querySelector('[data-testid="inttest-lab-reflect-a1"]')) == null ? void 0 : _a.value) || inttestLabReflect.a1;
+        const a2 = ((_b = root37.querySelector('[data-testid="inttest-lab-reflect-a2"]')) == null ? void 0 : _b.value) || inttestLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "inttest",
@@ -24426,8 +24690,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/utils/propertyTesting.js
@@ -24720,9 +24984,9 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
   function createPropertyBasedTestingExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "pbt-explorer";
-    root32.dataset.testid = "pbt-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "pbt-explorer";
+    root37.dataset.testid = "pbt-explorer";
     let activePresetId = PBT_PRESETS[0].id;
     let numTests = 100;
     let lastResult = null;
@@ -24802,7 +25066,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render31() {
+    function render36() {
       const p = preset();
       const presetBtns = PBT_PRESETS.map((pr) => {
         const isBug = pr.expectsCounterexample;
@@ -24864,7 +25128,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `${activePresetId} \xB7 ${numTests} tests`, a: lastResult && lastResult.counterexample ? "fail" : "pass", ok: true }]
       });
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="pbt-presets" data-testid="pbt-preset-bar">${presetBtns}</div>
 
       <div class="pbt-main">
@@ -24914,84 +25178,84 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="pbt-hint">${t("pbt.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
-      root32.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents36() {
+      root37.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePresetId = btn.dataset.preset;
           lastResult = null;
-          render31();
+          render36();
         });
       });
-      const numInput = root32.querySelector('[data-testid="pbt-numtests-input"]');
+      const numInput = root37.querySelector('[data-testid="pbt-numtests-input"]');
       if (numInput) numInput.addEventListener("change", () => {
         const v = parseInt(numInput.value, 10);
         if (v >= 10 && v <= 500) numTests = v;
-        render31();
+        render36();
       });
-      const runBtn = root32.querySelector('[data-testid="pbt-run-btn"]');
+      const runBtn = root37.querySelector('[data-testid="pbt-run-btn"]');
       if (runBtn) runBtn.addEventListener("click", () => {
         const p = preset();
         lastResult = runPropertyTests(p, numTests);
-        render31();
+        render36();
       });
-      const qStart = root32.querySelector('[data-testid="pbt-quiz-start"]');
+      const qStart = root37.querySelector('[data-testid="pbt-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         pbtQuiz.active = true;
         pbtQuiz.phase = "question";
         pbtQuiz.gotAnswer = "";
         pbtQuiz.expectedAnswer = "";
-        render31();
+        render36();
       });
-      const qClose = root32.querySelector('[data-testid="pbt-quiz-close"]');
+      const qClose = root37.querySelector('[data-testid="pbt-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         pbtQuiz.active = false;
-        render31();
+        render36();
       });
-      const qCheck = root32.querySelector('[data-testid="pbt-quiz-check"]');
+      const qCheck = root37.querySelector('[data-testid="pbt-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const gotEl = root32.querySelector('[data-testid="pbt-quiz-got"]');
-        const expEl = root32.querySelector('[data-testid="pbt-quiz-expected"]');
+        const gotEl = root37.querySelector('[data-testid="pbt-quiz-got"]');
+        const expEl = root37.querySelector('[data-testid="pbt-quiz-expected"]');
         pbtQuiz.gotAnswer = gotEl ? gotEl.value : "";
         pbtQuiz.expectedAnswer = expEl ? expEl.value : "";
         pbtQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      const qReset = root32.querySelector('[data-testid="pbt-quiz-reset"]');
+      const qReset = root37.querySelector('[data-testid="pbt-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         pbtQuiz.phase = "question";
         pbtQuiz.gotAnswer = "";
         pbtQuiz.expectedAnswer = "";
-        render31();
+        render36();
       });
-      const lrStart = root32.querySelector('[data-testid="pbt-lab-reflect-start"]');
+      const lrStart = root37.querySelector('[data-testid="pbt-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         pbtLabReflect.active = true;
-        render31();
+        render36();
       });
-      const lrClose = root32.querySelector('[data-testid="pbt-lab-reflect-close"]');
+      const lrClose = root37.querySelector('[data-testid="pbt-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root32.querySelector('[data-testid="pbt-lab-reflect-a1"]');
-        const a2el = root32.querySelector('[data-testid="pbt-lab-reflect-a2"]');
+        const a1el = root37.querySelector('[data-testid="pbt-lab-reflect-a1"]');
+        const a2el = root37.querySelector('[data-testid="pbt-lab-reflect-a2"]');
         if (a1el) pbtLabReflect.a1 = a1el.value;
         if (a2el) pbtLabReflect.a2 = a2el.value;
         pbtLabReflect.active = false;
-        render31();
+        render36();
       });
-      const lrA1 = root32.querySelector('[data-testid="pbt-lab-reflect-a1"]');
+      const lrA1 = root37.querySelector('[data-testid="pbt-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         pbtLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root32.querySelector('[data-testid="pbt-lab-reflect-a2"]');
+      const lrA2 = root37.querySelector('[data-testid="pbt-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         pbtLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root32.querySelector('[data-testid="pbt-lab-reflect-share"]');
+      const lrShare = root37.querySelector('[data-testid="pbt-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root32.querySelector('[data-testid="pbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || pbtLabReflect.a1;
-        const a2 = ((_b = root32.querySelector('[data-testid="pbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || pbtLabReflect.a2;
+        const a1 = ((_a = root37.querySelector('[data-testid="pbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || pbtLabReflect.a1;
+        const a2 = ((_b = root37.querySelector('[data-testid="pbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || pbtLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "pbt",
@@ -25014,8 +25278,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/RiskBasedTestingExplorer.js
@@ -25035,9 +25299,9 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
   var HEAT_PAD = 32;
   var SVG_SIZE = 5 * HEAT_CELL + HEAT_PAD * 2;
   function createRiskBasedTestingExplorer() {
-    const root32 = document.createElement("div");
-    root32.className = "rbt-explorer";
-    root32.dataset.testid = "rbt-explorer";
+    const root37 = document.createElement("div");
+    root37.className = "rbt-explorer";
+    root37.dataset.testid = "rbt-explorer";
     let modules = [
       { id: uid4(), name: "Login", likelihood: 5, impact: 5 },
       { id: uid4(), name: "Payment", likelihood: 4, impact: 5 },
@@ -25157,7 +25421,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render31() {
+    function render36() {
       const moduleRows = modules.map((m, i) => `
       <div class="rbt-module-row" data-module-id="${m.id}">
         <input type="text" class="rbt-module-name-input" value="${escapeHtml23(m.name)}"
@@ -25198,7 +25462,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `High-risk: ${highCount} \xB7 Modules: ${modules.length}`, a: String(highCount), ok: true }]
       });
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="rbt-modules-card">
         <p class="rbt-modules-title">${t("rbt.modules.title")}</p>
         <div data-testid="rbt-module-list">${moduleRows}</div>
@@ -25249,103 +25513,103 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="rbt-hint">${t("rbt.hint")}</p>
     `;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
-      root32.querySelector('[data-testid="rbt-add-module"]').addEventListener("click", () => {
+    function bindEvents36() {
+      root37.querySelector('[data-testid="rbt-add-module"]').addEventListener("click", () => {
         modules.push({ id: uid4(), name: `Module${modules.length + 1}`, likelihood: 3, impact: 3 });
-        render31();
+        render36();
       });
-      root32.querySelectorAll("[data-remove-module]").forEach((btn) => {
+      root37.querySelectorAll("[data-remove-module]").forEach((btn) => {
         btn.addEventListener("click", () => {
           modules = modules.filter((m) => m.id !== btn.dataset.removeModule);
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-module-name]").forEach((input) => {
+      root37.querySelectorAll("[data-module-name]").forEach((input) => {
         input.addEventListener("change", () => {
           const m = modules.find((x) => x.id === input.dataset.moduleName);
           if (m) {
             m.name = input.value;
-            render31();
+            render36();
           }
         });
       });
-      root32.querySelectorAll("[data-module-likelihood]").forEach((slider) => {
+      root37.querySelectorAll("[data-module-likelihood]").forEach((slider) => {
         slider.addEventListener("input", () => {
           const m = modules.find((x) => x.id === slider.dataset.moduleLikelihood);
           if (m) {
             m.likelihood = parseInt(slider.value);
-            render31();
+            render36();
           }
         });
       });
-      root32.querySelectorAll("[data-module-impact]").forEach((slider) => {
+      root37.querySelectorAll("[data-module-impact]").forEach((slider) => {
         slider.addEventListener("input", () => {
           const m = modules.find((x) => x.id === slider.dataset.moduleImpact);
           if (m) {
             m.impact = parseInt(slider.value);
-            render31();
+            render36();
           }
         });
       });
-      const filterSel = root32.querySelector('[data-testid="rbt-filter"]');
+      const filterSel = root37.querySelector('[data-testid="rbt-filter"]');
       if (filterSel) filterSel.addEventListener("change", () => {
         filter = filterSel.value;
-        render31();
+        render36();
       });
-      const qStart = root32.querySelector('[data-testid="rbt-quiz-start"]');
+      const qStart = root37.querySelector('[data-testid="rbt-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         rbtQuiz.active = true;
         rbtQuiz.phase = "question";
         rbtQuiz.answer = "";
-        render31();
+        render36();
       });
-      const qClose = root32.querySelector('[data-testid="rbt-quiz-close"]');
+      const qClose = root37.querySelector('[data-testid="rbt-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         rbtQuiz.active = false;
-        render31();
+        render36();
       });
-      const qCheck = root32.querySelector('[data-testid="rbt-quiz-check"]');
+      const qCheck = root37.querySelector('[data-testid="rbt-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root32.querySelector('[data-testid="rbt-quiz-input"]');
+        const inp = root37.querySelector('[data-testid="rbt-quiz-input"]');
         rbtQuiz.answer = inp ? inp.value : "";
         rbtQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      const qReset = root32.querySelector('[data-testid="rbt-quiz-reset"]');
+      const qReset = root37.querySelector('[data-testid="rbt-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         rbtQuiz.phase = "question";
         rbtQuiz.answer = "";
-        render31();
+        render36();
       });
-      const lrStart = root32.querySelector('[data-testid="rbt-lab-reflect-start"]');
+      const lrStart = root37.querySelector('[data-testid="rbt-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         rbtLabReflect.active = true;
-        render31();
+        render36();
       });
-      const lrClose = root32.querySelector('[data-testid="rbt-lab-reflect-close"]');
+      const lrClose = root37.querySelector('[data-testid="rbt-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root32.querySelector('[data-testid="rbt-lab-reflect-a1"]');
-        const a2el = root32.querySelector('[data-testid="rbt-lab-reflect-a2"]');
+        const a1el = root37.querySelector('[data-testid="rbt-lab-reflect-a1"]');
+        const a2el = root37.querySelector('[data-testid="rbt-lab-reflect-a2"]');
         if (a1el) rbtLabReflect.a1 = a1el.value;
         if (a2el) rbtLabReflect.a2 = a2el.value;
         rbtLabReflect.active = false;
-        render31();
+        render36();
       });
-      const lrA1 = root32.querySelector('[data-testid="rbt-lab-reflect-a1"]');
+      const lrA1 = root37.querySelector('[data-testid="rbt-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         rbtLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root32.querySelector('[data-testid="rbt-lab-reflect-a2"]');
+      const lrA2 = root37.querySelector('[data-testid="rbt-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         rbtLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root32.querySelector('[data-testid="rbt-lab-reflect-share"]');
+      const lrShare = root37.querySelector('[data-testid="rbt-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root32.querySelector('[data-testid="rbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || rbtLabReflect.a1;
-        const a2 = ((_b = root32.querySelector('[data-testid="rbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || rbtLabReflect.a2;
+        const a1 = ((_a = root37.querySelector('[data-testid="rbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || rbtLabReflect.a1;
+        const a2 = ((_b = root37.querySelector('[data-testid="rbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || rbtLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "rbt",
@@ -25368,8 +25632,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
 
   // src/components/GroupTheoryExplorer.js
@@ -25409,8 +25673,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     return Array.from({ length: n }, (_, i) => !!(mask & 1 << n - 1 - i));
   }
   function createGroupTheoryExplorer() {
-    const root32 = document.createElement("div");
-    root32.dataset.testid = "gth-explorer";
+    const root37 = document.createElement("div");
+    root37.dataset.testid = "gth-explorer";
     let formula = "A AND B";
     let activeTab = "orbits";
     let covP = 2;
@@ -25714,7 +25978,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         <button type="button" class="quiz-share-btn" data-share-payload="${reflectEncoded}" data-testid="gth-lab-reflect-share">\u{1F4CB} ${t("lab.reflect.record")}</button>
       </div>`;
     }
-    function render31() {
+    function render36() {
       const result = computeOrbits();
       const { vars, valid } = parseDNF(formula);
       let orbitContent = "";
@@ -25744,7 +26008,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `Orbits: ${metricData.orbits}/${metricData.total} \xB7 |Aut(f)|=${metricData.autOrder}`, a: String(metricData.orbits), ok: true }]
       });
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="gth-explorer">
         <div class="gth-input-card">
           <label class="gth-label">${t("groupth.formula.label")}</label>
@@ -25789,30 +26053,30 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
         <p class="gth-hint">${t("groupth.hint")}</p>
       </div>`;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-      const inp = root32.querySelector('[data-testid="gth-formula-input"]');
+      const inp = root37.querySelector('[data-testid="gth-formula-input"]');
       if (inp) {
         inp.addEventListener("change", () => {
           formula = inp.value;
-          render31();
+          render36();
         });
       }
-      root32.querySelectorAll(".gth-example-btn").forEach((btn) => {
+      root37.querySelectorAll(".gth-example-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           formula = btn.dataset.formula;
-          render31();
+          render36();
         });
       });
-      root32.querySelectorAll("[data-tab]").forEach((btn) => {
+      root37.querySelectorAll("[data-tab]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeTab = btn.dataset.tab;
-          render31();
+          render36();
         });
       });
-      const copyBtn = root32.querySelector('[data-testid="gth-copy"]');
+      const copyBtn = root37.querySelector('[data-testid="gth-copy"]');
       if (copyBtn) {
         copyBtn.addEventListener("click", () => {
           var _a2;
@@ -25835,66 +26099,66 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
           });
         });
       }
-      (_a = root32.querySelector('[data-testid="gth-bridge-mt"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root37.querySelector('[data-testid="gth-bridge-mt"]')) == null ? void 0 : _a.addEventListener("click", () => {
         var _a2, _b2;
         (_a2 = document.querySelector('[data-section="blackbox"]')) == null ? void 0 : _a2.click();
         (_b2 = document.querySelector('[data-blackbox-tab="mt"]')) == null ? void 0 : _b2.click();
       });
-      (_b = root32.querySelector('[data-testid="gth-cov-p"]')) == null ? void 0 : _b.addEventListener("change", (e) => {
+      (_b = root37.querySelector('[data-testid="gth-cov-p"]')) == null ? void 0 : _b.addEventListener("change", (e) => {
         covP = Number(e.target.value);
-        render31();
+        render36();
       });
-      const covKSlider = root32.querySelector('[data-testid="gth-cov-k"]');
+      const covKSlider = root37.querySelector('[data-testid="gth-cov-k"]');
       if (covKSlider) {
         covKSlider.addEventListener("input", (e) => {
           covK = Number(e.target.value);
-          const val = root32.querySelector('[data-testid="gth-cov-k-val"]');
+          const val = root37.querySelector('[data-testid="gth-cov-k-val"]');
           if (val) val.textContent = covK;
         });
-        covKSlider.addEventListener("change", () => render31());
+        covKSlider.addEventListener("change", () => render36());
       }
-      (_c = root32.querySelector('[data-testid="gth-cov-t"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
+      (_c = root37.querySelector('[data-testid="gth-cov-t"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
         covT = Number(e.target.value);
-        render31();
+        render36();
       });
-      (_d = root32.querySelector('[data-testid="gth-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", (e) => {
+      (_d = root37.querySelector('[data-testid="gth-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", (e) => {
         gthQuiz.tab = e.currentTarget.dataset.quizTab || activeTab;
         gthQuiz.active = true;
         gthQuiz.phase = "question";
         gthQuiz.answer = "";
-        render31();
+        render36();
       });
-      (_e = root32.querySelector('[data-testid="gth-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root37.querySelector('[data-testid="gth-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
         gthQuiz.active = false;
-        render31();
+        render36();
       });
-      (_f = root32.querySelector('[data-testid="gth-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root37.querySelector('[data-testid="gth-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         gthQuiz.phase = "question";
         gthQuiz.answer = "";
-        render31();
+        render36();
       });
-      (_g = root32.querySelector('[data-testid="gth-quiz-input"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root37.querySelector('[data-testid="gth-quiz-input"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         gthQuiz.answer = e.target.value;
       });
-      (_h = root32.querySelector('[data-testid="gth-quiz-submit"]')) == null ? void 0 : _h.addEventListener("click", () => {
+      (_h = root37.querySelector('[data-testid="gth-quiz-submit"]')) == null ? void 0 : _h.addEventListener("click", () => {
         gthQuiz.phase = "graded";
-        render31();
+        render36();
       });
-      (_i = root32.querySelector('[data-testid="gth-lab-reflect-start"]')) == null ? void 0 : _i.addEventListener("click", () => {
+      (_i = root37.querySelector('[data-testid="gth-lab-reflect-start"]')) == null ? void 0 : _i.addEventListener("click", () => {
         gthLabReflect.active = true;
-        render31();
+        render36();
       });
-      (_j = root32.querySelector('[data-testid="gth-lab-reflect-close"]')) == null ? void 0 : _j.addEventListener("click", () => {
+      (_j = root37.querySelector('[data-testid="gth-lab-reflect-close"]')) == null ? void 0 : _j.addEventListener("click", () => {
         gthLabReflect.active = false;
-        render31();
+        render36();
       });
-      (_k = root32.querySelector('[data-testid="gth-lab-reflect-text"]')) == null ? void 0 : _k.addEventListener("input", (e) => {
+      (_k = root37.querySelector('[data-testid="gth-lab-reflect-text"]')) == null ? void 0 : _k.addEventListener("input", (e) => {
         gthLabReflect.text = e.target.value;
       });
-      (_l = root32.querySelector('[data-testid="gth-lab-reflect-text2"]')) == null ? void 0 : _l.addEventListener("input", (e) => {
+      (_l = root37.querySelector('[data-testid="gth-lab-reflect-text2"]')) == null ? void 0 : _l.addEventListener("input", (e) => {
         gthLabReflect.text2 = e.target.value;
       });
-      root32.querySelectorAll("[data-share-payload]").forEach((btn) => {
+      root37.querySelectorAll("[data-share-payload]").forEach((btn) => {
         btn.addEventListener("click", () => {
           var _a2;
           const url = (window.__buildShareUrl__ || (() => btn.dataset.sharePayload))(btn.dataset.sharePayload);
@@ -25902,8 +26166,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         });
       });
     }
-    render31();
-    return root32;
+    render36();
+    return root37;
   }
   function _evalFormula(formula, env) {
     try {
@@ -28929,10 +29193,10 @@ CONFIRMED \u2014 real crash, not a harness artifact`,
     return journey.steps.reduce((p, s) => p * stepPassProbability(s), 1);
   }
   function simulateRuns(journey, runs, seed = 1) {
-    let state31 = seed;
+    let state36 = seed;
     function rand() {
-      state31 = state31 * 1103515245 + 12345 & 2147483647;
-      return state31 / 2147483647;
+      state36 = state36 * 1103515245 + 12345 & 2147483647;
+      return state36 / 2147483647;
     }
     const reached = journey.steps.map(() => 0);
     let fullPasses = 0;
@@ -33448,10 +33712,10 @@ VERDICT: pass  (conformance holds)`,
     }
     return map;
   }
-  function renderSliceCodeListing(example, sliceSet, options = {}) {
+  function renderSliceCodeListing(example4, sliceSet, options = {}) {
     const secondary = options.secondary || /* @__PURE__ */ new Set();
-    const lineIndex = buildLineIndex(example.statements);
-    const items = example.source.map((rawLine, i) => {
+    const lineIndex = buildLineIndex(example4.statements);
+    const items = example4.source.map((rawLine, i) => {
       const lineNum = i + 1;
       const stmtId = lineIndex.get(lineNum);
       const escaped = escapeSourceLine(rawLine);
@@ -33486,15 +33750,15 @@ ${items.join("\n")}
     const len = Math.hypot(dx, dy) || 1;
     return { x: to.x - dx / len * radius, y: to.y - dy / len * radius };
   }
-  function renderSlicePdgGraph(example, sliceSet, options = {}) {
+  function renderSlicePdgGraph(example4, sliceSet, options = {}) {
     const idPrefix = options.idPrefix || "slice";
     const zoom = Number.isFinite(options.zoom) && options.zoom > 0 ? options.zoom : 1;
     const secondary = options.secondary || /* @__PURE__ */ new Set();
-    const stmts = example.statements;
+    const stmts = example4.statements;
     const positions = new Map(stmts.map((s, i) => [s.id, nodePos(i)]));
     const svgWidth = SVG_X * 2 + SVG_PAD;
     const svgHeight = SVG_Y_START + stmts.length * SVG_Y_STEP + SVG_PAD;
-    const controlEdges = (example.controlDeps || []).map(([from, to]) => {
+    const controlEdges = (example4.controlDeps || []).map(([from, to]) => {
       const fPos = positions.get(from);
       const tPos = positions.get(to);
       if (!fPos || !tPos) return "";
@@ -33507,7 +33771,7 @@ ${items.join("\n")}
       const marker = `url(#pdg-arrow-ctrl-${escapeAttr(idPrefix)})`;
       return `<path class="pdg-edge pdg-edge--control" d="M ${startTrimmed.x} ${startTrimmed.y} Q ${cpX} ${cpY} ${endTrimmed.x} ${endTrimmed.y}" marker-end="${marker}"></path>`;
     }).join("");
-    const dataEdges = (example.dataDeps || []).map(([from, to, variable]) => {
+    const dataEdges = (example4.dataDeps || []).map(([from, to, variable]) => {
       const fPos = positions.get(from);
       const tPos = positions.get(to);
       if (!fPos || !tPos) return "";
@@ -34481,28 +34745,28 @@ ${items.join("\n")}
   function currentExample2() {
     return SLICING_EXAMPLES.find((e) => e.id === state25.exampleId) || SLICING_EXAMPLES[0];
   }
-  function allTraceIds(example) {
-    return new Set(example.traces.map((tr) => tr.id));
+  function allTraceIds(example4) {
+    return new Set(example4.traces.map((tr) => tr.id));
   }
-  function outputStatement(example) {
-    return example.statements.find((s) => s.kind === "output") || null;
+  function outputStatement(example4) {
+    return example4.statements.find((s) => s.kind === "output") || null;
   }
-  function computeSlice2(example) {
-    const outStmt = outputStatement(example);
+  function computeSlice2(example4) {
+    const outStmt = outputStatement(example4);
     if (!outStmt) {
-      console.warn(`[SliceCoverageExplorer] example "${example.id}" has no output statement \u2014 slice will be empty`);
+      console.warn(`[SliceCoverageExplorer] example "${example4.id}" has no output statement \u2014 slice will be empty`);
       return /* @__PURE__ */ new Set();
     }
     const variable = outStmt.uses[0];
     if (!variable) {
-      console.warn(`[SliceCoverageExplorer] example "${example.id}" output statement has no uses \u2014 slice will be empty`);
+      console.warn(`[SliceCoverageExplorer] example "${example4.id}" output statement has no uses \u2014 slice will be empty`);
       return /* @__PURE__ */ new Set();
     }
-    return backwardSlice(example, { stmtId: outStmt.id, variable });
+    return backwardSlice(example4, { stmtId: outStmt.id, variable });
   }
-  function computeExecuted(example) {
+  function computeExecuted(example4) {
     const executed = /* @__PURE__ */ new Set();
-    for (const tr of example.traces) {
+    for (const tr of example4.traces) {
       if (state25.activeTraceIds.has(tr.id)) {
         for (const s of tr.steps) executed.add(s);
       }
@@ -34520,10 +34784,10 @@ ${items.join("\n")}
       </button>`).join("")}
   </div>`;
   }
-  function renderTraceChips(example) {
+  function renderTraceChips(example4) {
     return `<div class="sce-chip-bar sce-trace-bar">
     <span class="sce-toggle-label">${t("coverage.traceLabel")}</span>
-    ${example.traces.map((tr) => {
+    ${example4.traces.map((tr) => {
       const active = state25.activeTraceIds.has(tr.id);
       const label = esc11(tr.inputLabel || tr.label || tr.id);
       return `<button type="button"
@@ -34535,8 +34799,8 @@ ${items.join("\n")}
     }).join("")}
   </div>`;
   }
-  function renderMetrics2(cov, example, executed) {
-    const stmtPct = example.statements.length === 0 ? 100 : Math.round(executed.size / example.statements.length * 100);
+  function renderMetrics2(cov, example4, executed) {
+    const stmtPct = example4.statements.length === 0 ? 100 : Math.round(executed.size / example4.statements.length * 100);
     return `<div class="sce-metrics" data-testid="coverage-metrics">
     <div class="sce-metric-row">
       <span class="sce-metric-label">${t("coverage.sliceCoverage")}</span>
@@ -34552,13 +34816,13 @@ ${items.join("\n")}
         <div class="sce-meter-fill sce-meter-fill--stmt" style="width:${stmtPct}%"></div>
       </div>
       <span class="sce-metric-pct" data-testid="coverage-stmt-pct">${stmtPct}%</span>
-      <span class="sce-metric-detail">(${executed.size}/${example.statements.length})</span>
+      <span class="sce-metric-detail">(${executed.size}/${example4.statements.length})</span>
     </div>
   </div>`;
   }
-  function renderGaps(cov, example, slice, executed) {
-    const uncoveredStmts = example.statements.filter((s) => cov.uncovered.has(s.id));
-    const outsideSlice = example.statements.filter(
+  function renderGaps(cov, example4, slice, executed) {
+    const uncoveredStmts = example4.statements.filter((s) => cov.uncovered.has(s.id));
+    const outsideSlice = example4.statements.filter(
       (s) => executed.has(s.id) && !slice.has(s.id)
     );
     let gapBody;
@@ -34586,7 +34850,7 @@ ${items.join("\n")}
     ${outsideBody}
   </div>`;
   }
-  function renderGraphPanel3(example, cov) {
+  function renderGraphPanel3(example4, cov) {
     return `<div class="sce-graph" data-testid="coverage-graph">
     <div class="sce-graph-head">
       <h3 class="sce-col-title">${t("slicing.pdgTitle")}</h3>
@@ -34601,7 +34865,7 @@ ${items.join("\n")}
       </div>
     </div>
     <div class="sce-graph-scroll">
-      ${renderSlicePdgGraph(example, cov.uncovered, { secondary: cov.covered, zoom: state25.pdgZoom, idPrefix: "coverage" })}
+      ${renderSlicePdgGraph(example4, cov.uncovered, { secondary: cov.covered, zoom: state25.pdgZoom, idPrefix: "coverage" })}
     </div>
   </div>`;
   }
@@ -34628,9 +34892,9 @@ ${items.join("\n")}
   </div>`;
   }
   function render25() {
-    const example = currentExample2();
-    const slice = computeSlice2(example);
-    const executed = computeExecuted(example);
+    const example4 = currentExample2();
+    const slice = computeSlice2(example4);
+    const executed = computeExecuted(example4);
     const cov = sliceCoverage(slice, executed);
     root25.innerHTML = `
     <div class="sce-wrap">
@@ -34639,19 +34903,19 @@ ${items.join("\n")}
 
       <section class="sce-controls">
         ${renderExampleChips2()}
-        ${renderTraceChips(example)}
+        ${renderTraceChips(example4)}
       </section>
 
-      ${renderMetrics2(cov, example, executed)}
+      ${renderMetrics2(cov, example4, executed)}
 
       <div class="sce-code-wrap">
         <h3 class="sce-col-title">${t("slicing.codeTitle")}</h3>
-        ${renderSliceCodeListing(example, cov.uncovered, { secondary: cov.covered })}
+        ${renderSliceCodeListing(example4, cov.uncovered, { secondary: cov.covered })}
       </div>
 
       <div class="sce-graph-row">
-        ${renderGraphPanel3(example, cov)}
-        ${renderGaps(cov, example, slice, executed)}
+        ${renderGraphPanel3(example4, cov)}
+        ${renderGaps(cov, example4, slice, executed)}
       </div>
 
       <section class="sce-self-test">
@@ -34742,11 +35006,11 @@ ${items.join("\n")}
   function currentExample3() {
     return SLICING_EXAMPLES.find((e) => e.id === state26.exampleId) || SLICING_EXAMPLES[0];
   }
-  function outputStatement2(example) {
-    return example.statements.find((s) => s.kind === "output") || null;
+  function outputStatement2(example4) {
+    return example4.statements.find((s) => s.kind === "output") || null;
   }
-  function outputCriterion(example) {
-    const outStmt = outputStatement2(example);
+  function outputCriterion(example4) {
+    const outStmt = outputStatement2(example4);
     if (!outStmt) return null;
     const variable = outStmt.uses[0];
     if (!variable) return null;
@@ -34780,8 +35044,8 @@ ${items.join("\n")}
     </button>
   </div>`;
   }
-  function renderCriterionBadge(example) {
-    const criterion = outputCriterion(example);
+  function renderCriterionBadge(example4) {
+    const criterion = outputCriterion(example4);
     if (!criterion) return "";
     return `<div class="sre-criterion">
     <span class="sre-criterion-label">${t("regression.criterionLabel")}</span>
@@ -34790,7 +35054,7 @@ ${items.join("\n")}
     <code class="sre-criterion-val">${esc12(criterion.variable)}</code>
   </div>`;
   }
-  function renderGraphPanel4(example, sliceSet, impact) {
+  function renderGraphPanel4(example4, sliceSet, impact) {
     return `<div class="sre-graph" data-testid="regression-graph">
     <div class="sre-graph-head">
       <h3 class="sre-col-title">${t("slicing.pdgTitle")}</h3>
@@ -34805,17 +35069,17 @@ ${items.join("\n")}
       </div>
     </div>
     <div class="sre-graph-scroll">
-      ${renderSlicePdgGraph(example, sliceSet, { secondary: impact, zoom: state26.pdgZoom, idPrefix: "regression" })}
+      ${renderSlicePdgGraph(example4, sliceSet, { secondary: impact, zoom: state26.pdgZoom, idPrefix: "regression" })}
     </div>
   </div>`;
   }
-  function renderTestPanel(example, affected, safe) {
+  function renderTestPanel(example4, affected, safe) {
     let body;
     if (!state26.changedStmtId) {
       body = `<p class="sre-pick-prompt">${t("regression.pickPrompt")}</p>`;
     } else {
       body = `<ul class="sre-test-list">
-      ${example.traces.map((tr) => {
+      ${example4.traces.map((tr) => {
         const label = esc12(tr.inputLabel || tr.label || tr.id);
         let badge = "";
         if (affected.has(tr.id)) {
@@ -34835,11 +35099,11 @@ ${items.join("\n")}
     ${body}
   </div>`;
   }
-  function renderMetric(example, affected, safe) {
+  function renderMetric(example4, affected, safe) {
     if (!state26.changedStmtId) {
       return `<div class="sre-metric" data-testid="regression-metric">${t("regression.pickPrompt")}</div>`;
     }
-    const N = example.traces.length;
+    const N = example4.traces.length;
     const A = affected.size;
     const X = N === 0 ? 0 : Math.round(safe.size / N * 100);
     return `<div class="sre-metric" data-testid="regression-metric">${t("regression.metric", { A, N, X })}</div>`;
@@ -34867,13 +35131,13 @@ ${items.join("\n")}
   </div>`;
   }
   function render26() {
-    const example = currentExample3();
-    const criterion = outputCriterion(example);
+    const example4 = currentExample3();
+    const criterion = outputCriterion(example4);
     let affected = /* @__PURE__ */ new Set();
     let safe = /* @__PURE__ */ new Set();
     let impact = /* @__PURE__ */ new Set();
     if (state26.changedStmtId && criterion) {
-      const result = affectedTests(example, criterion, state26.changedStmtId, state26.mode);
+      const result = affectedTests(example4, criterion, state26.changedStmtId, state26.mode);
       affected = result.affected;
       safe = result.safe;
       impact = result.impact;
@@ -34887,20 +35151,20 @@ ${items.join("\n")}
       <section class="sre-controls">
         ${renderExampleChips3()}
         ${renderModeToggle4()}
-        ${renderCriterionBadge(example)}
+        ${renderCriterionBadge(example4)}
       </section>
 
       <div class="sre-code-wrap">
         <h3 class="sre-col-title">${t("slicing.codeTitle")}</h3>
         <p class="sre-pick-hint">${state26.changedStmtId ? "" : t("regression.pickStmtHint")}</p>
-        ${renderSliceCodeListing(example, sliceSet, { secondary: impact })}
+        ${renderSliceCodeListing(example4, sliceSet, { secondary: impact })}
       </div>
 
-      ${renderMetric(example, affected, safe)}
+      ${renderMetric(example4, affected, safe)}
 
       <div class="sre-graph-row">
-        ${renderGraphPanel4(example, sliceSet, impact)}
-        ${renderTestPanel(example, affected, safe)}
+        ${renderGraphPanel4(example4, sliceSet, impact)}
+        ${renderTestPanel(example4, affected, safe)}
       </div>
 
       <section class="sre-self-test">
@@ -34989,6 +35253,1485 @@ ${items.join("\n")}
     return root26;
   }
 
+  // src/data/tddKatas.js
+  var FIZZBUZZ = {
+    id: "fizzbuzz",
+    titleKey: "tdd.kata.fizzbuzz",
+    steps: [
+      {
+        phase: "red",
+        testList: [{ name: 'fizzbuzz(1) === "1"', status: "red" }],
+        code: "",
+        suite: { passing: 0, failing: 1 },
+        noteKey: "tdd.kata.fizzbuzz.s1"
+      },
+      {
+        phase: "green",
+        testList: [{ name: 'fizzbuzz(1) === "1"', status: "green" }],
+        code: 'function fizzbuzz(n) {\n  return "1";\n}',
+        suite: { passing: 1, failing: 0 },
+        noteKey: "tdd.kata.fizzbuzz.s2"
+      },
+      {
+        phase: "red",
+        testList: [
+          { name: 'fizzbuzz(1) === "1"', status: "green" },
+          { name: 'fizzbuzz(3) === "Fizz"', status: "red" }
+        ],
+        code: 'function fizzbuzz(n) {\n  return "1";\n}',
+        suite: { passing: 1, failing: 1 },
+        noteKey: "tdd.kata.fizzbuzz.s3"
+      },
+      {
+        phase: "green",
+        testList: [
+          { name: 'fizzbuzz(1) === "1"', status: "green" },
+          { name: 'fizzbuzz(3) === "Fizz"', status: "green" }
+        ],
+        code: 'function fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  return String(n);\n}',
+        suite: { passing: 2, failing: 0 },
+        noteKey: "tdd.kata.fizzbuzz.s4"
+      },
+      {
+        phase: "red",
+        testList: [
+          { name: 'fizzbuzz(1) === "1"', status: "green" },
+          { name: 'fizzbuzz(3) === "Fizz"', status: "green" },
+          { name: 'fizzbuzz(5) === "Buzz"', status: "red" }
+        ],
+        code: 'function fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  return String(n);\n}',
+        suite: { passing: 2, failing: 1 },
+        noteKey: "tdd.kata.fizzbuzz.s5"
+      },
+      {
+        phase: "green",
+        testList: [
+          { name: 'fizzbuzz(1) === "1"', status: "green" },
+          { name: 'fizzbuzz(3) === "Fizz"', status: "green" },
+          { name: 'fizzbuzz(5) === "Buzz"', status: "green" }
+        ],
+        code: 'function fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  if (n % 5 === 0) return "Buzz";\n  return String(n);\n}',
+        suite: { passing: 3, failing: 0 },
+        noteKey: "tdd.kata.fizzbuzz.s6"
+      },
+      {
+        phase: "red",
+        testList: [
+          { name: 'fizzbuzz(1) === "1"', status: "green" },
+          { name: 'fizzbuzz(3) === "Fizz"', status: "green" },
+          { name: 'fizzbuzz(5) === "Buzz"', status: "green" },
+          { name: 'fizzbuzz(15) === "FizzBuzz"', status: "red" }
+        ],
+        code: 'function fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  if (n % 5 === 0) return "Buzz";\n  return String(n);\n}',
+        suite: { passing: 3, failing: 1 },
+        noteKey: "tdd.kata.fizzbuzz.s7"
+      },
+      {
+        phase: "green",
+        testList: [
+          { name: 'fizzbuzz(1) === "1"', status: "green" },
+          { name: 'fizzbuzz(3) === "Fizz"', status: "green" },
+          { name: 'fizzbuzz(5) === "Buzz"', status: "green" },
+          { name: 'fizzbuzz(15) === "FizzBuzz"', status: "green" }
+        ],
+        code: 'function fizzbuzz(n) {\n  if (n % 15 === 0) return "FizzBuzz";\n  if (n % 3 === 0) return "Fizz";\n  if (n % 5 === 0) return "Buzz";\n  return String(n);\n}',
+        suite: { passing: 4, failing: 0 },
+        noteKey: "tdd.kata.fizzbuzz.s8"
+      },
+      {
+        phase: "refactor",
+        testList: [
+          { name: 'fizzbuzz(1) === "1"', status: "green" },
+          { name: 'fizzbuzz(3) === "Fizz"', status: "green" },
+          { name: 'fizzbuzz(5) === "Buzz"', status: "green" },
+          { name: 'fizzbuzz(15) === "FizzBuzz"', status: "green" }
+        ],
+        code: 'function fizzbuzz(n) {\n  const fizz = n % 3 === 0 ? "Fizz" : "";\n  const buzz = n % 5 === 0 ? "Buzz" : "";\n  return (fizz + buzz) || String(n);\n}',
+        suite: { passing: 4, failing: 0 },
+        noteKey: "tdd.kata.fizzbuzz.s9"
+      }
+    ]
+  };
+  var STACK = {
+    id: "stack",
+    titleKey: "tdd.kata.stack",
+    steps: [
+      // Step 1 — red: write the first failing test; no implementation yet
+      {
+        phase: "red",
+        testList: [{ name: "new Stack().isEmpty() === true", status: "red" }],
+        code: "",
+        suite: { passing: 0, failing: 1 },
+        noteKey: "tdd.kata.stack.s1"
+      },
+      // Step 2 — green: fake it to make the test pass
+      {
+        phase: "green",
+        testList: [{ name: "new Stack().isEmpty() === true", status: "green" }],
+        code: "class Stack {\n  isEmpty() {\n    return true;\n  }\n}",
+        suite: { passing: 1, failing: 0 },
+        noteKey: "tdd.kata.stack.s2"
+      },
+      // Step 3 — red: add a second test that the fake implementation can't pass
+      {
+        phase: "red",
+        testList: [
+          { name: "new Stack().isEmpty() === true", status: "green" },
+          { name: "after push(1), isEmpty() === false", status: "red" }
+        ],
+        code: "class Stack {\n  isEmpty() {\n    return true;\n  }\n}",
+        suite: { passing: 1, failing: 1 },
+        noteKey: "tdd.kata.stack.s3"
+      },
+      // Step 4 — green: introduce real state to make both tests pass
+      {
+        phase: "green",
+        testList: [
+          { name: "new Stack().isEmpty() === true", status: "green" },
+          { name: "after push(1), isEmpty() === false", status: "green" }
+        ],
+        code: "class Stack {\n  constructor() {\n    this.items = [];\n  }\n  push(x) {\n    this.items.push(x);\n  }\n  isEmpty() {\n    return this.items.length === 0;\n  }\n}",
+        suite: { passing: 2, failing: 0 },
+        noteKey: "tdd.kata.stack.s4"
+      },
+      // Step 5 — red: add a test for pop()
+      {
+        phase: "red",
+        testList: [
+          { name: "new Stack().isEmpty() === true", status: "green" },
+          { name: "after push(1), isEmpty() === false", status: "green" },
+          { name: "push(1) then pop() === 1", status: "red" }
+        ],
+        code: "class Stack {\n  constructor() {\n    this.items = [];\n  }\n  push(x) {\n    this.items.push(x);\n  }\n  isEmpty() {\n    return this.items.length === 0;\n  }\n}",
+        suite: { passing: 2, failing: 1 },
+        noteKey: "tdd.kata.stack.s5"
+      },
+      // Step 6 — green: implement pop() to pass all three tests
+      {
+        phase: "green",
+        testList: [
+          { name: "new Stack().isEmpty() === true", status: "green" },
+          { name: "after push(1), isEmpty() === false", status: "green" },
+          { name: "push(1) then pop() === 1", status: "green" }
+        ],
+        code: "class Stack {\n  constructor() {\n    this.items = [];\n  }\n  push(x) {\n    this.items.push(x);\n  }\n  pop() {\n    return this.items.pop();\n  }\n  isEmpty() {\n    return this.items.length === 0;\n  }\n}",
+        suite: { passing: 3, failing: 0 },
+        noteKey: "tdd.kata.stack.s6"
+      },
+      // Step 7 — refactor: introduce size() and express isEmpty() through it
+      {
+        phase: "refactor",
+        testList: [
+          { name: "new Stack().isEmpty() === true", status: "green" },
+          { name: "after push(1), isEmpty() === false", status: "green" },
+          { name: "push(1) then pop() === 1", status: "green" }
+        ],
+        code: "class Stack {\n  constructor() {\n    this.items = [];\n  }\n  push(x) {\n    this.items.push(x);\n  }\n  pop() {\n    return this.items.pop();\n  }\n  size() {\n    return this.items.length;\n  }\n  isEmpty() {\n    return this.size() === 0;\n  }\n}",
+        suite: { passing: 3, failing: 0 },
+        noteKey: "tdd.kata.stack.s7"
+      }
+    ]
+  };
+  var TDD_KATAS = [FIZZBUZZ, STACK];
+
+  // src/components/TddCycleExplorer.js
+  var state27 = {
+    kataId: TDD_KATAS[0].id,
+    stepIndex: 0,
+    predict: true,
+    prediction: null,
+    predictResult: null,
+    // 'correct' | 'incorrect' | null
+    quiz: { active: false, phase: "idle", answer: "" }
+  };
+  var root27;
+  function esc13(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  function currentKata() {
+    return TDD_KATAS.find((k) => k.id === state27.kataId) || TDD_KATAS[0];
+  }
+  function renderKataChips() {
+    return `<div class="tdc-chip-bar" data-testid="tdd-kata-chips">
+    ${TDD_KATAS.map((kata) => `
+      <button type="button"
+        class="tdc-chip${state27.kataId === kata.id ? " tdc-chip--active" : ""}"
+        data-testid="tdd-kata-${esc13(kata.id)}"
+        data-tdc-kata-id="${esc13(kata.id)}">
+        ${t(kata.titleKey)}
+      </button>`).join("")}
+  </div>`;
+  }
+  function renderPhaseRing(step2) {
+    const phases = ["red", "green", "refactor"];
+    return `<div class="tdc-phase-ring" data-testid="tdd-phase-ring">
+    ${phases.map((ph) => `
+      <div class="tdc-phase-node tdc-phase-node--${ph}${step2.phase === ph ? " tdc-phase-node--active" : ""}"
+        data-testid="tdd-phase-${ph}">
+        ${esc13(ph)}
+      </div>`).join("")}
+  </div>`;
+  }
+  function renderTestList2(step2) {
+    const rows = step2.testList.map((test) => `
+    <div class="tdc-test-row tdc-test-row--${esc13(test.status)}">
+      <span class="tdc-test-name">${esc13(test.name)}</span>
+      <span class="tdc-test-status tdc-test-status--${esc13(test.status)}">${esc13(test.status)}</span>
+    </div>`).join("");
+    return `<div class="tdc-test-list" data-testid="tdd-test-list">
+    <h3 class="tdc-col-title">${t("tdd.testList")}</h3>
+    ${rows}
+  </div>`;
+  }
+  function renderCodePanel(step2) {
+    return `<div class="tdc-code-panel" data-testid="tdd-code">
+    <h3 class="tdc-col-title">${t("tdd.code")}</h3>
+    <pre class="tdc-code-pre">${esc13(step2.code) || '<em class="tdc-code-empty">' + esc13(t("tdd.noCode")) + "</em>"}</pre>
+  </div>`;
+  }
+  function renderSuiteBar(step2) {
+    const { passing, failing } = step2.suite;
+    const total = passing + failing;
+    const passPercent = total === 0 ? 0 : Math.round(passing / total * 100);
+    return `<div class="tdc-suite" data-testid="tdd-suite">
+    <h3 class="tdc-col-title">${t("tdd.suite")}</h3>
+    <div class="tdc-suite-counts">
+      <span class="tdc-suite-passing">${t("tdd.passing")}: ${passing}</span>
+      <span class="tdc-suite-failing">${t("tdd.failing")}: ${failing}</span>
+    </div>
+    <div class="tdc-suite-bar-track">
+      <div class="tdc-suite-bar-fill" style="width:${passPercent}%"></div>
+    </div>
+  </div>`;
+  }
+  function renderPredictControls(kata, step2) {
+    const isLast = state27.stepIndex >= kata.steps.length - 1;
+    const predictButtons = state27.predict && !isLast ? `
+    <div class="tdc-predict-btns" data-testid="tdd-predict-buttons">
+      <span class="tdc-predict-label">${t("tdd.predictNext")}</span>
+      ${["red", "green", "refactor"].map((ph) => `
+        <button type="button"
+          class="tdc-predict-btn tdc-predict-btn--${ph}${state27.prediction === ph ? " tdc-predict-btn--selected" : ""}"
+          data-testid="tdd-predict-${ph}"
+          data-tdc-predict="${ph}">
+          ${esc13(ph)}
+        </button>`).join("")}
+    </div>` : "";
+    const predictResult = state27.predictResult ? `
+    <div class="tdc-predict-result tdc-predict-result--${esc13(state27.predictResult)}"
+      data-testid="tdd-predict-result">
+      ${state27.predictResult === "correct" ? t("tdd.correct") : t("tdd.incorrect")}
+    </div>` : "";
+    const nextDisabled = isLast || state27.predict && state27.prediction === null;
+    const stepCount = kata.steps.length;
+    return `<div class="tdc-step-controls">
+    <span class="tdc-step-counter">${state27.stepIndex + 1} / ${stepCount}</span>
+    <button type="button" class="tdc-btn tdc-btn--reset" data-testid="tdd-reset">${t("tdd.reset")}</button>
+    <button type="button" class="tdc-btn tdc-btn--next" data-testid="tdd-next-step"
+      ${nextDisabled ? "disabled" : ""}>${t("tdd.nextStep")}</button>
+    <label class="tdc-predict-toggle-label">
+      <input type="checkbox" data-testid="tdd-predict-toggle" ${state27.predict ? "checked" : ""}>
+      ${t("tdd.predictMode")}
+    </label>
+    ${predictButtons}
+    ${predictResult}
+  </div>`;
+  }
+  function renderQuiz27() {
+    if (!state27.quiz.active) {
+      return `<button type="button" class="tdc-quiz-start" data-testid="tdd-cycle-quiz-start">${t("quiz.start")}</button>`;
+    }
+    if (state27.quiz.phase === "done") {
+      const correct = state27.quiz.answer === "c";
+      return `<div class="tdc-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="tdd-cycle-quiz-result">
+      <p>${correct ? t("tdd.quiz.correct") : t("tdd.quiz.wrong")}</p>
+      <button type="button" class="tdc-quiz-close" data-testid="tdd-cycle-quiz-close">${t("quiz.close")}</button>
+    </div>`;
+    }
+    return `<div class="tdc-quiz" data-testid="tdd-cycle-quiz">
+    <p class="tdc-quiz-prompt">${t("tdd.quiz.prompt")}</p>
+    ${["a", "b", "c", "d"].map((k) => `
+      <label class="tdc-quiz-option">
+        <input type="radio" name="tdc-quiz" value="${k}" ${state27.quiz.answer === k ? "checked" : ""}>
+        ${t("tdd.quiz." + k)}
+      </label>`).join("")}
+    <button type="button" class="tdc-quiz-submit" data-testid="tdd-cycle-quiz-submit"
+      ${!state27.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+  </div>`;
+  }
+  function render27() {
+    const kata = currentKata();
+    const step2 = kata.steps[state27.stepIndex];
+    root27.innerHTML = `
+    <div class="tdc-wrap">
+      <h2 class="tdc-title">${t("tdd.cycle.title")}</h2>
+      <p class="tdc-desc">${t("tdd.cycle.desc")}</p>
+
+      <section class="tdc-controls">
+        ${renderKataChips()}
+        ${renderPhaseRing(step2)}
+      </section>
+
+      <div class="tdc-panels-row">
+        ${renderTestList2(step2)}
+        ${renderCodePanel(step2)}
+        ${renderSuiteBar(step2)}
+      </div>
+
+      <div class="tdc-note">${t(step2.noteKey)}</div>
+
+      ${renderPredictControls(kata, step2)}
+
+      <section class="tdc-self-test">
+        <h3>${t("quiz.title")}</h3>
+        ${renderQuiz27()}
+      </section>
+    </div>`;
+    bindEvents27();
+  }
+  function bindEvents27() {
+    var _a, _b, _c, _d, _e, _f;
+    root27.querySelectorAll("[data-tdc-kata-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const newId = btn.dataset.tdcKataId;
+        if (newId === state27.kataId) return;
+        state27.kataId = newId;
+        state27.stepIndex = 0;
+        state27.prediction = null;
+        state27.predictResult = null;
+        render27();
+      });
+    });
+    root27.querySelectorAll("[data-tdc-predict]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state27.prediction = btn.dataset.tdcPredict;
+        state27.predictResult = null;
+        render27();
+      });
+    });
+    (_a = root27.querySelector('[data-testid="tdd-next-step"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      const kata = currentKata();
+      const isLast = state27.stepIndex >= kata.steps.length - 1;
+      if (isLast) return;
+      if (state27.predict && state27.prediction !== null) {
+        const nextPhase = kata.steps[state27.stepIndex + 1].phase;
+        state27.predictResult = state27.prediction === nextPhase ? "correct" : "incorrect";
+        state27.stepIndex += 1;
+        state27.prediction = null;
+      } else {
+        state27.stepIndex += 1;
+      }
+      render27();
+    });
+    (_b = root27.querySelector('[data-testid="tdd-reset"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state27.stepIndex = 0;
+      state27.prediction = null;
+      state27.predictResult = null;
+      render27();
+    });
+    (_c = root27.querySelector('[data-testid="tdd-predict-toggle"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
+      state27.predict = e.target.checked;
+      render27();
+    });
+    (_d = root27.querySelector('[data-testid="tdd-cycle-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state27.quiz = { active: true, phase: "question", answer: "" };
+      render27();
+    });
+    root27.querySelectorAll('input[name="tdc-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state27.quiz.answer = inp.value;
+        render27();
+      });
+    });
+    (_e = root27.querySelector('[data-testid="tdd-cycle-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state27.quiz.phase = "done";
+      render27();
+    });
+    (_f = root27.querySelector('[data-testid="tdd-cycle-quiz-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      state27.quiz = { active: false, phase: "idle", answer: "" };
+      render27();
+    });
+  }
+  function createTddCycleExplorer() {
+    state27.kataId = TDD_KATAS[0].id;
+    state27.stepIndex = 0;
+    state27.predict = true;
+    state27.prediction = null;
+    state27.predictResult = null;
+    state27.quiz = { active: false, phase: "idle", answer: "" };
+    root27 = document.createElement("div");
+    root27.dataset.testid = "tdd-cycle-explorer";
+    onLocaleChange(() => render27());
+    render27();
+    return root27;
+  }
+
+  // src/utils/tddRules.js
+  var ACTIONS = ["write-failing-test", "write-production-code", "refactor"];
+  function initialTddState() {
+    return { phase: "start", hasFailingTest: false, allGreen: true, cycleCount: 0 };
+  }
+  function isLegal(state36, action) {
+    if (action === "write-failing-test") return !state36.hasFailingTest;
+    if (action === "write-production-code") return state36.hasFailingTest;
+    if (action === "refactor") {
+      return state36.allGreen && !state36.hasFailingTest && state36.cycleCount > 0;
+    }
+    return false;
+  }
+  function legalActions(state36) {
+    return new Set(ACTIONS.filter((a) => isLegal(state36, a)));
+  }
+  function reasonKey(state36, action) {
+    if (action === "write-failing-test") return "tdd.rules.reason.alreadyRed";
+    if (action === "write-production-code") return "tdd.rules.reason.noRed";
+    if (state36.hasFailingTest) return "tdd.rules.reason.notGreen";
+    return "tdd.rules.reason.nothingYet";
+  }
+  function applyAction(state36, action) {
+    if (!ACTIONS.includes(action)) {
+      return { state: state36, blocked: true, reasonKey: "tdd.rules.reason.unknown" };
+    }
+    if (!isLegal(state36, action)) {
+      return { state: state36, blocked: true, reasonKey: reasonKey(state36, action) };
+    }
+    if (action === "write-failing-test") {
+      return {
+        state: { ...state36, phase: "red", hasFailingTest: true, allGreen: false },
+        blocked: false
+      };
+    }
+    if (action === "write-production-code") {
+      return {
+        state: {
+          ...state36,
+          phase: "green",
+          hasFailingTest: false,
+          allGreen: true,
+          cycleCount: state36.cycleCount + 1
+        },
+        blocked: false
+      };
+    }
+    return { state: { ...state36, phase: "refactor" }, blocked: false };
+  }
+
+  // src/components/TddRulesExplorer.js
+  var state28 = {
+    tdd: initialTddState(),
+    feedback: null,
+    // null | { blocked: bool, reasonKey?: string }
+    quiz: { active: false, phase: "idle", answer: "" }
+  };
+  var root28;
+  var ACTIONS2 = [
+    { id: "write-failing-test", labelKey: "tdd.rules.action.writeFailingTest" },
+    { id: "write-production-code", labelKey: "tdd.rules.action.writeProductionCode" },
+    { id: "refactor", labelKey: "tdd.rules.action.refactor" }
+  ];
+  function renderPhaseRing2() {
+    const phases = ["red", "green", "refactor"];
+    return `<div class="tdr-phase-ring" data-testid="tdd-phase-ring">
+    ${phases.map((ph) => `
+      <div class="tdr-phase-node tdr-phase-node--${ph}${state28.tdd.phase === ph ? " tdr-phase-node--active" : ""}"
+        data-testid="tdd-phase-${ph}">
+        ${ph}
+      </div>`).join("")}
+  </div>`;
+  }
+  function renderStatePanel() {
+    const { phase, hasFailingTest, allGreen, cycleCount } = state28.tdd;
+    return `<div class="tdr-state-panel" data-testid="tdd-rules-state">
+    <span class="tdr-state-item"><span class="tdr-state-label">${t("tdd.rules.state.phase")}:</span> ${phase}</span>
+    <span class="tdr-state-item"><span class="tdr-state-label">${t("tdd.rules.state.hasFailingTest")}:</span> ${hasFailingTest}</span>
+    <span class="tdr-state-item"><span class="tdr-state-label">${t("tdd.rules.state.allGreen")}:</span> ${allGreen}</span>
+    <span class="tdr-state-item"><span class="tdr-state-label">${t("tdd.rules.state.cycleCount")}:</span> ${cycleCount}</span>
+  </div>`;
+  }
+  function renderActionButtons() {
+    const legal = legalActions(state28.tdd);
+    return `<div class="tdr-actions" data-testid="tdd-rules-actions">
+    ${ACTIONS2.map((a) => {
+      const isLegal2 = legal.has(a.id);
+      return `<button type="button"
+        class="tdr-action-btn${isLegal2 ? "" : " tdr-action-btn--illegal"}"
+        data-testid="tdd-action-${a.id}"
+        data-tdr-action="${a.id}">
+        ${t(a.labelKey)}
+      </button>`;
+    }).join("")}
+  </div>`;
+  }
+  function renderFeedback2() {
+    var _a, _b;
+    let text = "";
+    if ((_a = state28.feedback) == null ? void 0 : _a.blocked) {
+      text = t(state28.feedback.reasonKey);
+    } else if (state28.feedback && !state28.feedback.blocked) {
+      text = t("tdd.rules.ok");
+    }
+    return `<div class="tdr-feedback${((_b = state28.feedback) == null ? void 0 : _b.blocked) ? " tdr-feedback--blocked" : state28.feedback ? " tdr-feedback--ok" : ""}" data-testid="tdd-rules-feedback">${text}</div>`;
+  }
+  function renderQuiz28() {
+    if (!state28.quiz.active) {
+      return `<button type="button" class="tdr-quiz-start" data-testid="tdd-rules-quiz-start">${t("quiz.start")}</button>`;
+    }
+    if (state28.quiz.phase === "done") {
+      const correct = state28.quiz.answer === "c";
+      return `<div class="tdr-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="tdd-rules-quiz-result">
+      <p>${correct ? t("tdd.rules.quiz.correct") : t("tdd.rules.quiz.wrong")}</p>
+      <button type="button" class="tdr-quiz-close" data-testid="tdd-rules-quiz-close">${t("quiz.close")}</button>
+    </div>`;
+    }
+    return `<div class="tdr-quiz" data-testid="tdd-rules-quiz">
+    <p class="tdr-quiz-prompt">${t("tdd.rules.quiz.prompt")}</p>
+    ${["a", "b", "c", "d"].map((k) => `
+      <label class="tdr-quiz-option">
+        <input type="radio" name="tdr-quiz" value="${k}" ${state28.quiz.answer === k ? "checked" : ""}>
+        ${t("tdd.rules.quiz." + k)}
+      </label>`).join("")}
+    <button type="button" class="tdr-quiz-submit" data-testid="tdd-rules-quiz-submit"
+      ${!state28.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+  </div>`;
+  }
+  function render28() {
+    root28.innerHTML = `
+    <div class="tdr-wrap">
+      <h2 class="tdr-title">${t("tdd.rules.title")}</h2>
+      <p class="tdr-desc">${t("tdd.rules.desc")}</p>
+
+      <section class="tdr-controls">
+        ${renderPhaseRing2()}
+        ${renderStatePanel()}
+      </section>
+
+      <section class="tdr-action-section">
+        <h3 class="tdr-col-title">${t("tdd.rules.actionsTitle")}</h3>
+        ${renderActionButtons()}
+      </section>
+
+      ${renderFeedback2()}
+
+      <button type="button" class="tdr-reset-btn" data-testid="tdd-rules-reset">${t("tdd.rules.reset")}</button>
+
+      <section class="tdr-self-test">
+        <h3>${t("quiz.title")}</h3>
+        ${renderQuiz28()}
+      </section>
+    </div>`;
+    bindEvents28();
+  }
+  function bindEvents28() {
+    var _a, _b, _c, _d;
+    root28.querySelectorAll("[data-tdr-action]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const action = btn.dataset.tdrAction;
+        const r = applyAction(state28.tdd, action);
+        state28.feedback = { blocked: r.blocked, reasonKey: r.reasonKey };
+        if (!r.blocked) {
+          state28.tdd = r.state;
+        }
+        render28();
+      });
+    });
+    (_a = root28.querySelector('[data-testid="tdd-rules-reset"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      state28.tdd = initialTddState();
+      state28.feedback = null;
+      render28();
+    });
+    (_b = root28.querySelector('[data-testid="tdd-rules-quiz-start"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state28.quiz = { active: true, phase: "question", answer: "" };
+      render28();
+    });
+    root28.querySelectorAll('input[name="tdr-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state28.quiz.answer = inp.value;
+        render28();
+      });
+    });
+    (_c = root28.querySelector('[data-testid="tdd-rules-quiz-submit"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state28.quiz.phase = "done";
+      render28();
+    });
+    (_d = root28.querySelector('[data-testid="tdd-rules-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state28.quiz = { active: false, phase: "idle", answer: "" };
+      render28();
+    });
+  }
+  function createTddRulesExplorer() {
+    state28.tdd = initialTddState();
+    state28.feedback = null;
+    state28.quiz = { active: false, phase: "idle", answer: "" };
+    root28 = document.createElement("div");
+    root28.dataset.testid = "tdd-rules-explorer";
+    onLocaleChange(() => render28());
+    render28();
+    return root28;
+  }
+
+  // src/data/exploitExamples.js
+  var EXPLOIT_EXAMPLES = {
+    overflow: {
+      cweKey: "exploit.overflow.cwe",
+      code: `void greet(const char *name) {
+  char buf[16];
+  // Vulnerability: no bounds check
+  strcpy(buf, name);
+  printf("Hello, %s\\n", buf);
+}`,
+      buggyLine: 4,
+      stack: [
+        { id: "buf", label: "buf[16]", bytes: 16 },
+        { id: "savedBp", label: "saved EBP", bytes: 4 },
+        { id: "retAddr", label: "return address", bytes: 4 }
+      ],
+      constraint: {
+        textKey: "exploit.overflow.constraint",
+        math: "strlen(name) \u2265 24"
+      },
+      payload: {
+        regions: [
+          { kind: "padding", bytes: 16, label: "'A' \xD7 16" },
+          { kind: "savedBp", bytes: 4, label: "0x41414141 (junk)" },
+          { kind: "retAddr", bytes: 4, label: "<landing-pad>" },
+          { kind: "shellcode", bytes: "N", label: "<shellcode-placeholder>" }
+        ]
+      },
+      defenses: [
+        { id: "canary", labelKey: "exploit.overflow.def.canary", gates: "padding-byte-match" },
+        { id: "dep", labelKey: "exploit.overflow.def.dep", gates: "shellcode-exec" },
+        { id: "aslr", labelKey: "exploit.overflow.def.aslr", gates: "landing-pad-prediction" }
+      ],
+      primaryDefenseId: "aslr",
+      quiz: {
+        promptKey: "exploit.overflow.quiz.prompt",
+        answer: "c",
+        optionKeys: ["a", "b", "c", "d"]
+      }
+    },
+    sqli: {
+      cweKey: "exploit.sqli.cwe",
+      code: `function findUser(name) {
+  // Vulnerability: string concatenation into SQL
+  const q = "SELECT * FROM users WHERE name = '" + name + "'";
+  return db.exec(q);
+}`,
+      buggyLine: 3,
+      query: "SELECT * FROM users WHERE name = '<input>'",
+      constraint: {
+        textKey: "exploit.sqli.constraint",
+        math: `input \u220B "'"`
+      },
+      payload: {
+        string: "' OR '1'='1' --",
+        regions: [
+          { kind: "break", range: [0, 1], label: "quote-break" },
+          { kind: "tautology", range: [1, 13], label: "OR '1'='1'" },
+          { kind: "comment", range: [13, 15], label: "-- (rest is comment)" }
+        ]
+      },
+      defenses: [
+        { id: "prepared", labelKey: "exploit.sqli.def.prepared", gates: "literal-as-string" },
+        { id: "allowlist", labelKey: "exploit.sqli.def.allowlist", gates: "metachar-rejected" },
+        { id: "waf", labelKey: "exploit.sqli.def.waf", gates: "pattern-match" }
+      ],
+      primaryDefenseId: "prepared",
+      quiz: {
+        promptKey: "exploit.sqli.quiz.prompt",
+        answer: "c",
+        optionKeys: ["a", "b", "c", "d"]
+      }
+    },
+    cmdi: {
+      cweKey: "exploit.cmdi.cwe",
+      code: `function pingHost(host) {
+  // Vulnerability: string-concat passed to shell
+  return execSync('ping -c 1 ' + host).toString();
+}`,
+      buggyLine: 3,
+      command: "ping -c 1 <input>",
+      constraint: {
+        textKey: "exploit.cmdi.constraint",
+        math: 'input \u220B {";","|","&&"}'
+      },
+      payload: {
+        string: "127.0.0.1; cat /etc/passwd",
+        regions: [
+          { kind: "primary", range: [0, 9], label: "expected arg" },
+          { kind: "separator", range: [9, 11], label: "; (metachar)" },
+          { kind: "secondary", range: [11, 26], label: "attacker command" }
+        ]
+      },
+      defenses: [
+        { id: "execv", labelKey: "exploit.cmdi.def.execv", gates: "arg-vector-no-shell" },
+        { id: "shellescape", labelKey: "exploit.cmdi.def.shellescape", gates: "metachar-escaped" },
+        { id: "allowlist", labelKey: "exploit.cmdi.def.allowlist", gates: "input-shape-validated" }
+      ],
+      primaryDefenseId: "execv",
+      quiz: {
+        promptKey: "exploit.cmdi.quiz.prompt",
+        answer: "c",
+        optionKeys: ["a", "b", "c", "d"]
+      }
+    }
+  };
+
+  // src/components/ExploitOverflowExplorer.js
+  var FAMILY = "overflow";
+  var PHASES3 = ["vuln", "constraint", "payload", "defense"];
+  var PREDICT_PHASE_INDEX = PHASES3.indexOf("payload");
+  var state29 = {
+    phaseIndex: 0,
+    predict: true,
+    prediction: null,
+    predictResult: null,
+    defenses: {},
+    quiz: { active: false, phase: "idle", answer: "" }
+  };
+  var root29;
+  function esc14(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  function example() {
+    return EXPLOIT_EXAMPLES[FAMILY];
+  }
+  function currentPhase() {
+    return PHASES3[state29.phaseIndex];
+  }
+  function phaseShown(name) {
+    return state29.phaseIndex >= PHASES3.indexOf(name);
+  }
+  function payloadStatusKey() {
+    const ex = example();
+    const activeCount = ex.defenses.filter((d) => state29.defenses[d.id]).length;
+    if (activeCount === 0) return "exploit.payloadStatus.succeeds";
+    if (activeCount === ex.defenses.length) return "exploit.payloadStatus.allActive";
+    return "exploit.payloadStatus.gated";
+  }
+  function renderPhaseRing3() {
+    const cur = currentPhase();
+    return `<div class="eog-phase-ring" data-testid="eog-phase-ring">
+    ${PHASES3.map((ph) => `
+      <div class="eog-phase-node eog-phase-node--${ph}${cur === ph ? " eog-phase-node--active" : ""}"
+        data-testid="exploit-phase-${ph}">
+        ${esc14(t(`exploit.phase.${ph}`))}
+      </div>`).join("")}
+  </div>`;
+  }
+  function renderCodePanel2() {
+    const ex = example();
+    const lines = ex.code.split("\n").map((line, i) => {
+      const n = i + 1;
+      const cls = n === ex.buggyLine ? "eog-code-line eog-code-line--bug" : "eog-code-line";
+      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc14(line)}</span>`;
+    }).join("\n");
+    return `<div class="eog-code-panel" data-testid="exploit-code">
+    <h3 class="eog-col-title">${esc14(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc14(t(ex.cweKey))}</span></h3>
+    <pre class="eog-code-pre">${lines}</pre>
+  </div>`;
+  }
+  function renderStackPanel() {
+    const ex = example();
+    if (!phaseShown("payload")) {
+      return `<div class="eog-stack-panel" data-testid="exploit-stack">
+      <h3 class="eog-col-title">${esc14(t("exploit.stackTitle"))}</h3>
+      ${ex.stack.map((slot) => `
+        <div class="eog-stack-slot" data-stack-slot="${esc14(slot.id)}">
+          <span class="eog-stack-slot__bytes">${esc14(String(slot.bytes))}B</span>
+          <span class="eog-stack-slot__label">${esc14(slot.label)}</span>
+        </div>`).join("")}
+    </div>`;
+    }
+    const regions = ex.payload.regions;
+    const slotsByKind = { padding: "buf", savedBp: "savedBp", retAddr: "retAddr" };
+    return `<div class="eog-stack-panel eog-stack-panel--colored" data-testid="exploit-stack">
+    <h3 class="eog-col-title">${esc14(t("exploit.payloadTitle"))}</h3>
+    ${ex.stack.map((slot) => {
+      const region = regions.find((r) => slotsByKind[r.kind] === slot.id);
+      const kindClass = region ? ` eog-stack-slot--${esc14(region.kind)}` : "";
+      const annotation = region ? `<span class="eog-stack-slot__payload">${esc14(region.label)}</span>` : "";
+      return `<div class="eog-stack-slot${kindClass}" data-stack-slot="${esc14(slot.id)}">
+        <span class="eog-stack-slot__bytes">${esc14(String(slot.bytes))}B</span>
+        <span class="eog-stack-slot__label">${esc14(slot.label)}</span>
+        ${annotation}
+      </div>`;
+    }).join("")}
+    <div class="eog-shellcode" data-testid="exploit-shellcode">
+      ${esc14(regions.find((r) => r.kind === "shellcode").label)}
+    </div>
+  </div>`;
+  }
+  function renderConstraint() {
+    if (!phaseShown("constraint")) return "";
+    const ex = example();
+    return `<div class="eog-constraint" data-testid="exploit-constraint">
+    <h3 class="eog-col-title">${esc14(t("exploit.constraintTitle"))}</h3>
+    <p class="eog-constraint__math"><code>${esc14(ex.constraint.math)}</code></p>
+    <p class="eog-constraint__text">${esc14(t(ex.constraint.textKey))}</p>
+  </div>`;
+  }
+  function renderDefensePanel() {
+    if (!phaseShown("defense")) return "";
+    const ex = example();
+    return `<div class="eog-defense" data-testid="exploit-defense">
+    <h3 class="eog-col-title">${esc14(t("exploit.defenseTitle"))}</h3>
+    ${ex.defenses.map((d) => `
+      <label class="eog-defense-row${d.id === ex.primaryDefenseId ? " eog-defense-row--primary" : ""}">
+        <input type="checkbox" data-testid="exploit-mit-${esc14(d.id)}"
+          data-eog-defense-id="${esc14(d.id)}"
+          ${state29.defenses[d.id] ? "checked" : ""}>
+        <span class="eog-defense-label">${esc14(t(d.labelKey))}</span>
+      </label>`).join("")}
+    <div class="eog-payload-status" data-testid="exploit-payload-status">
+      ${esc14(t(payloadStatusKey()))}
+    </div>
+  </div>`;
+  }
+  function renderPredictControls2() {
+    const ex = example();
+    const showButtons = state29.predict && state29.phaseIndex === PREDICT_PHASE_INDEX;
+    const buttons = showButtons ? `
+    <div class="eog-predict-btns" data-testid="exploit-predict-buttons">
+      <span class="eog-predict-label">${esc14(t("exploit.predictPrompt"))}</span>
+      ${ex.defenses.map((d) => `
+        <button type="button"
+          class="eog-predict-btn${state29.prediction === d.id ? " eog-predict-btn--selected" : ""}"
+          data-testid="exploit-predict-${esc14(d.id)}"
+          data-eog-predict="${esc14(d.id)}">
+          ${esc14(t(d.labelKey))}
+        </button>`).join("")}
+    </div>` : "";
+    const result = state29.predictResult ? `
+    <div class="eog-predict-result eog-predict-result--${esc14(state29.predictResult)}"
+      data-testid="exploit-predict-result">
+      ${state29.predictResult === "correct" ? esc14(t("exploit.predictCorrect")) : esc14(t("exploit.predictIncorrect"))}
+    </div>` : "";
+    const isLast = state29.phaseIndex >= PHASES3.length - 1;
+    return `<div class="eog-step-controls">
+    <span class="eog-step-counter">${state29.phaseIndex + 1} / ${PHASES3.length}</span>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc14(t("exploit.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--next" data-testid="exploit-next-phase"
+      ${isLast ? "disabled" : ""}>${esc14(t("exploit.nextPhase"))}</button>
+    <label class="eog-predict-toggle-label">
+      <input type="checkbox" data-testid="exploit-predict-toggle" ${state29.predict ? "checked" : ""}>
+      ${esc14(t("exploit.predictMode"))}
+    </label>
+    ${buttons}
+    ${result}
+  </div>`;
+  }
+  function renderQuiz29() {
+    const ex = example();
+    if (!state29.quiz.active) {
+      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY}-quiz-start">${esc14(t("quiz.start"))}</button>`;
+    }
+    if (state29.quiz.phase === "done") {
+      const correct = state29.quiz.answer === ex.quiz.answer;
+      return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="exploit-${FAMILY}-quiz-result">
+      <p>${correct ? esc14(t("quiz.correct")) : esc14(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="exploit-${FAMILY}-quiz-close">${esc14(t("quiz.close"))}</button>
+    </div>`;
+    }
+    return `<div class="eog-quiz" data-testid="exploit-${FAMILY}-quiz">
+    <p class="eog-quiz-prompt">${esc14(t(ex.quiz.promptKey))}</p>
+    ${ex.quiz.optionKeys.map((k) => `
+      <label class="eog-quiz-option">
+        <input type="radio" name="eog-quiz" value="${esc14(k)}" ${state29.quiz.answer === k ? "checked" : ""}>
+        ${esc14(t(`exploit.${FAMILY}.quiz.${k}`))}
+      </label>`).join("")}
+    <button type="button" data-testid="exploit-${FAMILY}-quiz-submit"
+      ${!state29.quiz.answer ? "disabled" : ""}>${esc14(t("quiz.submit"))}</button>
+  </div>`;
+  }
+  function render29() {
+    root29.innerHTML = `
+    <div class="eog-wrap">
+      <h2 class="eog-title">${esc14(t("section.exploit.title"))}</h2>
+      ${renderPhaseRing3()}
+      <div class="eog-panels-row">
+        ${renderCodePanel2()}
+        ${renderStackPanel()}
+      </div>
+      ${renderConstraint()}
+      ${renderDefensePanel()}
+      ${renderPredictControls2()}
+      <section class="eog-self-test">
+        <h3>${esc14(t("quiz.title"))}</h3>
+        ${renderQuiz29()}
+      </section>
+    </div>`;
+    bindEvents29();
+  }
+  function bindEvents29() {
+    var _a, _b, _c, _d, _e, _f;
+    (_a = root29.querySelector('[data-testid="exploit-next-phase"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      if (state29.phaseIndex >= PHASES3.length - 1) return;
+      if (state29.predict && state29.phaseIndex === PREDICT_PHASE_INDEX && state29.prediction !== null) {
+        state29.predictResult = state29.prediction === example().primaryDefenseId ? "correct" : "incorrect";
+      }
+      state29.phaseIndex += 1;
+      render29();
+    });
+    (_b = root29.querySelector('[data-testid="exploit-reset"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state29.phaseIndex = 0;
+      state29.prediction = null;
+      state29.predictResult = null;
+      state29.defenses = {};
+      render29();
+    });
+    (_c = root29.querySelector('[data-testid="exploit-predict-toggle"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
+      state29.predict = e.target.checked;
+      render29();
+    });
+    root29.querySelectorAll("[data-eog-predict]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state29.prediction = btn.dataset.eogPredict;
+        state29.predictResult = null;
+        render29();
+      });
+    });
+    root29.querySelectorAll("[data-eog-defense-id]").forEach((cb) => {
+      cb.addEventListener("change", () => {
+        state29.defenses[cb.dataset.eogDefenseId] = cb.checked;
+        const statusEl = root29.querySelector('[data-testid="exploit-payload-status"]');
+        if (statusEl) {
+          statusEl.textContent = t(payloadStatusKey());
+        }
+      });
+    });
+    (_d = root29.querySelector(`[data-testid="exploit-${FAMILY}-quiz-start"]`)) == null ? void 0 : _d.addEventListener("click", () => {
+      state29.quiz = { active: true, phase: "question", answer: "" };
+      render29();
+    });
+    root29.querySelectorAll('input[name="eog-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state29.quiz.answer = inp.value;
+        render29();
+      });
+    });
+    (_e = root29.querySelector(`[data-testid="exploit-${FAMILY}-quiz-submit"]`)) == null ? void 0 : _e.addEventListener("click", () => {
+      state29.quiz.phase = "done";
+      render29();
+    });
+    (_f = root29.querySelector(`[data-testid="exploit-${FAMILY}-quiz-close"]`)) == null ? void 0 : _f.addEventListener("click", () => {
+      state29.quiz = { active: false, phase: "idle", answer: "" };
+      render29();
+    });
+  }
+  function createExploitOverflowExplorer() {
+    state29.phaseIndex = 0;
+    state29.predict = true;
+    state29.prediction = null;
+    state29.predictResult = null;
+    state29.defenses = {};
+    state29.quiz = { active: false, phase: "idle", answer: "" };
+    root29 = document.createElement("div");
+    root29.dataset.testid = "exploit-overflow-explorer";
+    onLocaleChange(() => render29());
+    render29();
+    return root29;
+  }
+
+  // src/components/ExploitSqliExplorer.js
+  var FAMILY2 = "sqli";
+  var PHASES4 = ["vuln", "constraint", "payload", "defense"];
+  var PREDICT_PHASE_INDEX2 = PHASES4.indexOf("payload");
+  var state30 = {
+    phaseIndex: 0,
+    predict: true,
+    prediction: null,
+    predictResult: null,
+    defenses: {},
+    quiz: { active: false, phase: "idle", answer: "" }
+  };
+  var root30;
+  function esc15(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  function example2() {
+    return EXPLOIT_EXAMPLES[FAMILY2];
+  }
+  function currentPhase2() {
+    return PHASES4[state30.phaseIndex];
+  }
+  function phaseShown2(name) {
+    return state30.phaseIndex >= PHASES4.indexOf(name);
+  }
+  function payloadStatusKey2() {
+    const ex = example2();
+    const activeCount = ex.defenses.filter((d) => state30.defenses[d.id]).length;
+    if (activeCount === 0) return "exploit.payloadStatus.succeeds";
+    if (activeCount === ex.defenses.length) return "exploit.payloadStatus.allActive";
+    return "exploit.payloadStatus.gated";
+  }
+  function renderPhaseRing4() {
+    const cur = currentPhase2();
+    return `<div class="eog-phase-ring" data-testid="eog-phase-ring">
+    ${PHASES4.map((ph) => `
+      <div class="eog-phase-node eog-phase-node--${ph}${cur === ph ? " eog-phase-node--active" : ""}"
+        data-testid="exploit-phase-${ph}">
+        ${esc15(t(`exploit.phase.${ph}`))}
+      </div>`).join("")}
+  </div>`;
+  }
+  function renderCodePanel3() {
+    const ex = example2();
+    const lines = ex.code.split("\n").map((line, i) => {
+      const n = i + 1;
+      const cls = n === ex.buggyLine ? "eog-code-line eog-code-line--bug" : "eog-code-line";
+      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc15(line)}</span>`;
+    }).join("\n");
+    return `<div class="eog-code-panel" data-testid="exploit-code">
+    <h3 class="eog-col-title">${esc15(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc15(t(ex.cweKey))}</span></h3>
+    <pre class="eog-code-pre">${lines}</pre>
+  </div>`;
+  }
+  function renderSqlPanel() {
+    const ex = example2();
+    if (!phaseShown2("payload")) {
+      return `<div class="eog-sql-panel" data-testid="exploit-query">
+      <h3 class="eog-col-title">${esc15(t("exploit.queryTitle"))}</h3>
+      <pre class="eog-sql-pre">${esc15(ex.query)}</pre>
+    </div>`;
+    }
+    const payload = ex.payload.string;
+    const regions = ex.payload.regions;
+    const before = ex.query.split("<input>")[0];
+    const after = ex.query.split("<input>")[1] || "";
+    const payloadHtml = regions.map(
+      (r) => `<span class="eog-sql-region eog-sql-region--${esc15(r.kind)}"
+       data-testid="exploit-payload-region-${esc15(r.kind)}"
+       title="${esc15(r.label)}">${esc15(payload.slice(r.range[0], r.range[1]))}</span>`
+    ).join("");
+    return `<div class="eog-sql-panel eog-sql-panel--substituted" data-testid="exploit-query">
+    <h3 class="eog-col-title">${esc15(t("exploit.payloadTitle"))}</h3>
+    <pre class="eog-sql-pre">${esc15(before)}<span class="eog-sql-payload">${payloadHtml}</span>${esc15(after)}</pre>
+    <ul class="eog-sql-legend">
+      ${regions.map((r) => `<li class="eog-sql-legend-item eog-sql-legend-item--${esc15(r.kind)}">${esc15(r.label)}</li>`).join("")}
+    </ul>
+  </div>`;
+  }
+  function renderConstraint2() {
+    if (!phaseShown2("constraint")) return "";
+    const ex = example2();
+    return `<div class="eog-constraint" data-testid="exploit-constraint">
+    <h3 class="eog-col-title">${esc15(t("exploit.constraintTitle"))}</h3>
+    <p class="eog-constraint__math"><code>${esc15(ex.constraint.math)}</code></p>
+    <p class="eog-constraint__text">${esc15(t(ex.constraint.textKey))}</p>
+  </div>`;
+  }
+  function renderDefensePanel2() {
+    if (!phaseShown2("defense")) return "";
+    const ex = example2();
+    return `<div class="eog-defense" data-testid="exploit-defense">
+    <h3 class="eog-col-title">${esc15(t("exploit.defenseTitle"))}</h3>
+    ${ex.defenses.map((d) => `
+      <label class="eog-defense-row${d.id === ex.primaryDefenseId ? " eog-defense-row--primary" : ""}">
+        <input type="checkbox" data-testid="exploit-mit-${esc15(d.id)}"
+          data-eog-defense-id="${esc15(d.id)}"
+          ${state30.defenses[d.id] ? "checked" : ""}>
+        <span class="eog-defense-label">${esc15(t(d.labelKey))}</span>
+      </label>`).join("")}
+    <div class="eog-payload-status" data-testid="exploit-payload-status">
+      ${esc15(t(payloadStatusKey2()))}
+    </div>
+  </div>`;
+  }
+  function renderPredictControls3() {
+    const ex = example2();
+    const showButtons = state30.predict && state30.phaseIndex === PREDICT_PHASE_INDEX2;
+    const buttons = showButtons ? `
+    <div class="eog-predict-btns" data-testid="exploit-predict-buttons">
+      <span class="eog-predict-label">${esc15(t("exploit.predictPrompt"))}</span>
+      ${ex.defenses.map((d) => `
+        <button type="button"
+          class="eog-predict-btn${state30.prediction === d.id ? " eog-predict-btn--selected" : ""}"
+          data-testid="exploit-predict-${esc15(d.id)}"
+          data-eog-predict="${esc15(d.id)}">
+          ${esc15(t(d.labelKey))}
+        </button>`).join("")}
+    </div>` : "";
+    const result = state30.predictResult ? `
+    <div class="eog-predict-result eog-predict-result--${esc15(state30.predictResult)}"
+      data-testid="exploit-predict-result">
+      ${state30.predictResult === "correct" ? esc15(t("exploit.predictCorrect")) : esc15(t("exploit.predictIncorrect"))}
+    </div>` : "";
+    const isLast = state30.phaseIndex >= PHASES4.length - 1;
+    return `<div class="eog-step-controls">
+    <span class="eog-step-counter">${state30.phaseIndex + 1} / ${PHASES4.length}</span>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc15(t("exploit.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--next" data-testid="exploit-next-phase"
+      ${isLast ? "disabled" : ""}>${esc15(t("exploit.nextPhase"))}</button>
+    <label class="eog-predict-toggle-label">
+      <input type="checkbox" data-testid="exploit-predict-toggle" ${state30.predict ? "checked" : ""}>
+      ${esc15(t("exploit.predictMode"))}
+    </label>
+    ${buttons}
+    ${result}
+  </div>`;
+  }
+  function renderQuiz30() {
+    const ex = example2();
+    if (!state30.quiz.active) {
+      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY2}-quiz-start">${esc15(t("quiz.start"))}</button>`;
+    }
+    if (state30.quiz.phase === "done") {
+      const correct = state30.quiz.answer === ex.quiz.answer;
+      return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="exploit-${FAMILY2}-quiz-result">
+      <p>${correct ? esc15(t("quiz.correct")) : esc15(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="exploit-${FAMILY2}-quiz-close">${esc15(t("quiz.close"))}</button>
+    </div>`;
+    }
+    return `<div class="eog-quiz" data-testid="exploit-${FAMILY2}-quiz">
+    <p class="eog-quiz-prompt">${esc15(t(ex.quiz.promptKey))}</p>
+    ${ex.quiz.optionKeys.map((k) => `
+      <label class="eog-quiz-option">
+        <input type="radio" name="eog-quiz" value="${esc15(k)}" ${state30.quiz.answer === k ? "checked" : ""}>
+        ${esc15(t(`exploit.${FAMILY2}.quiz.${k}`))}
+      </label>`).join("")}
+    <button type="button" data-testid="exploit-${FAMILY2}-quiz-submit"
+      ${!state30.quiz.answer ? "disabled" : ""}>${esc15(t("quiz.submit"))}</button>
+  </div>`;
+  }
+  function render30() {
+    root30.innerHTML = `
+    <div class="eog-wrap">
+      <h2 class="eog-title">${esc15(t("section.exploit.title"))}</h2>
+      ${renderPhaseRing4()}
+      <div class="eog-panels-row">
+        ${renderCodePanel3()}
+        ${renderSqlPanel()}
+      </div>
+      ${renderConstraint2()}
+      ${renderDefensePanel2()}
+      ${renderPredictControls3()}
+      <section class="eog-self-test">
+        <h3>${esc15(t("quiz.title"))}</h3>
+        ${renderQuiz30()}
+      </section>
+    </div>`;
+    bindEvents30();
+  }
+  function bindEvents30() {
+    var _a, _b, _c, _d, _e, _f;
+    (_a = root30.querySelector('[data-testid="exploit-next-phase"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      if (state30.phaseIndex >= PHASES4.length - 1) return;
+      if (state30.predict && state30.phaseIndex === PREDICT_PHASE_INDEX2 && state30.prediction !== null) {
+        state30.predictResult = state30.prediction === example2().primaryDefenseId ? "correct" : "incorrect";
+      }
+      state30.phaseIndex += 1;
+      render30();
+    });
+    (_b = root30.querySelector('[data-testid="exploit-reset"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state30.phaseIndex = 0;
+      state30.prediction = null;
+      state30.predictResult = null;
+      state30.defenses = {};
+      render30();
+    });
+    (_c = root30.querySelector('[data-testid="exploit-predict-toggle"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
+      state30.predict = e.target.checked;
+      render30();
+    });
+    root30.querySelectorAll("[data-eog-predict]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state30.prediction = btn.dataset.eogPredict;
+        state30.predictResult = null;
+        render30();
+      });
+    });
+    root30.querySelectorAll("[data-eog-defense-id]").forEach((cb) => {
+      cb.addEventListener("change", () => {
+        state30.defenses[cb.dataset.eogDefenseId] = cb.checked;
+        const statusEl = root30.querySelector('[data-testid="exploit-payload-status"]');
+        if (statusEl) {
+          statusEl.textContent = t(payloadStatusKey2());
+        }
+      });
+    });
+    (_d = root30.querySelector(`[data-testid="exploit-${FAMILY2}-quiz-start"]`)) == null ? void 0 : _d.addEventListener("click", () => {
+      state30.quiz = { active: true, phase: "question", answer: "" };
+      render30();
+    });
+    root30.querySelectorAll('input[name="eog-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state30.quiz.answer = inp.value;
+        render30();
+      });
+    });
+    (_e = root30.querySelector(`[data-testid="exploit-${FAMILY2}-quiz-submit"]`)) == null ? void 0 : _e.addEventListener("click", () => {
+      state30.quiz.phase = "done";
+      render30();
+    });
+    (_f = root30.querySelector(`[data-testid="exploit-${FAMILY2}-quiz-close"]`)) == null ? void 0 : _f.addEventListener("click", () => {
+      state30.quiz = { active: false, phase: "idle", answer: "" };
+      render30();
+    });
+  }
+  function createExploitSqliExplorer() {
+    state30.phaseIndex = 0;
+    state30.predict = true;
+    state30.prediction = null;
+    state30.predictResult = null;
+    state30.defenses = {};
+    state30.quiz = { active: false, phase: "idle", answer: "" };
+    root30 = document.createElement("div");
+    root30.dataset.testid = "exploit-sqli-explorer";
+    onLocaleChange(() => render30());
+    render30();
+    return root30;
+  }
+
+  // src/components/ExploitCmdiExplorer.js
+  var FAMILY3 = "cmdi";
+  var PHASES5 = ["vuln", "constraint", "payload", "defense"];
+  var PREDICT_PHASE_INDEX3 = PHASES5.indexOf("payload");
+  var state31 = {
+    phaseIndex: 0,
+    predict: true,
+    prediction: null,
+    predictResult: null,
+    defenses: {},
+    quiz: { active: false, phase: "idle", answer: "" }
+  };
+  var root31;
+  function esc16(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  function example3() {
+    return EXPLOIT_EXAMPLES[FAMILY3];
+  }
+  function currentPhase3() {
+    return PHASES5[state31.phaseIndex];
+  }
+  function phaseShown3(name) {
+    return state31.phaseIndex >= PHASES5.indexOf(name);
+  }
+  function payloadStatusKey3() {
+    const ex = example3();
+    const activeCount = ex.defenses.filter((d) => state31.defenses[d.id]).length;
+    if (activeCount === 0) return "exploit.payloadStatus.succeeds";
+    if (activeCount === ex.defenses.length) return "exploit.payloadStatus.allActive";
+    return "exploit.payloadStatus.gated";
+  }
+  function renderPhaseRing5() {
+    const cur = currentPhase3();
+    return `<div class="eog-phase-ring" data-testid="eog-phase-ring">
+    ${PHASES5.map((ph) => `
+      <div class="eog-phase-node eog-phase-node--${ph}${cur === ph ? " eog-phase-node--active" : ""}"
+        data-testid="exploit-phase-${ph}">
+        ${esc16(t(`exploit.phase.${ph}`))}
+      </div>`).join("")}
+  </div>`;
+  }
+  function renderCodePanel4() {
+    const ex = example3();
+    const lines = ex.code.split("\n").map((line, i) => {
+      const n = i + 1;
+      const cls = n === ex.buggyLine ? "eog-code-line eog-code-line--bug" : "eog-code-line";
+      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc16(line)}</span>`;
+    }).join("\n");
+    return `<div class="eog-code-panel" data-testid="exploit-code">
+    <h3 class="eog-col-title">${esc16(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc16(t(ex.cweKey))}</span></h3>
+    <pre class="eog-code-pre">${lines}</pre>
+  </div>`;
+  }
+  function renderShellPanel() {
+    const ex = example3();
+    if (!phaseShown3("payload")) {
+      return `<div class="eog-shell-panel" data-testid="exploit-command">
+      <h3 class="eog-col-title">${esc16(t("exploit.commandTitle"))}</h3>
+      <pre class="eog-shell-pre">${esc16(ex.command)}</pre>
+    </div>`;
+    }
+    const payload = ex.payload.string;
+    const regions = ex.payload.regions;
+    const before = ex.command.split("<input>")[0];
+    const after = ex.command.split("<input>")[1] || "";
+    const payloadHtml = regions.map(
+      (r) => `<span class="eog-shell-region eog-shell-region--${esc16(r.kind)}"
+       data-testid="exploit-payload-region-${esc16(r.kind)}"
+       title="${esc16(r.label)}">${esc16(payload.slice(r.range[0], r.range[1]))}</span>`
+    ).join("");
+    return `<div class="eog-shell-panel eog-shell-panel--substituted" data-testid="exploit-command">
+    <h3 class="eog-col-title">${esc16(t("exploit.payloadTitle"))}</h3>
+    <pre class="eog-shell-pre">${esc16(before)}<span class="eog-shell-payload">${payloadHtml}</span>${esc16(after)}</pre>
+    <ul class="eog-shell-legend">
+      ${regions.map((r) => `<li class="eog-shell-legend-item eog-shell-legend-item--${esc16(r.kind)}">${esc16(r.label)}</li>`).join("")}
+    </ul>
+  </div>`;
+  }
+  function renderConstraint3() {
+    if (!phaseShown3("constraint")) return "";
+    const ex = example3();
+    return `<div class="eog-constraint" data-testid="exploit-constraint">
+    <h3 class="eog-col-title">${esc16(t("exploit.constraintTitle"))}</h3>
+    <p class="eog-constraint__math"><code>${esc16(ex.constraint.math)}</code></p>
+    <p class="eog-constraint__text">${esc16(t(ex.constraint.textKey))}</p>
+  </div>`;
+  }
+  function renderDefensePanel3() {
+    if (!phaseShown3("defense")) return "";
+    const ex = example3();
+    return `<div class="eog-defense" data-testid="exploit-defense">
+    <h3 class="eog-col-title">${esc16(t("exploit.defenseTitle"))}</h3>
+    ${ex.defenses.map((d) => `
+      <label class="eog-defense-row${d.id === ex.primaryDefenseId ? " eog-defense-row--primary" : ""}">
+        <input type="checkbox" data-testid="exploit-mit-${esc16(d.id)}"
+          data-eog-defense-id="${esc16(d.id)}"
+          ${state31.defenses[d.id] ? "checked" : ""}>
+        <span class="eog-defense-label">${esc16(t(d.labelKey))}</span>
+      </label>`).join("")}
+    <div class="eog-payload-status" data-testid="exploit-payload-status">
+      ${esc16(t(payloadStatusKey3()))}
+    </div>
+  </div>`;
+  }
+  function renderPredictControls4() {
+    const ex = example3();
+    const showButtons = state31.predict && state31.phaseIndex === PREDICT_PHASE_INDEX3;
+    const buttons = showButtons ? `
+    <div class="eog-predict-btns" data-testid="exploit-predict-buttons">
+      <span class="eog-predict-label">${esc16(t("exploit.predictPrompt"))}</span>
+      ${ex.defenses.map((d) => `
+        <button type="button"
+          class="eog-predict-btn${state31.prediction === d.id ? " eog-predict-btn--selected" : ""}"
+          data-testid="exploit-predict-${esc16(d.id)}"
+          data-eog-predict="${esc16(d.id)}">
+          ${esc16(t(d.labelKey))}
+        </button>`).join("")}
+    </div>` : "";
+    const result = state31.predictResult ? `
+    <div class="eog-predict-result eog-predict-result--${esc16(state31.predictResult)}"
+      data-testid="exploit-predict-result">
+      ${state31.predictResult === "correct" ? esc16(t("exploit.predictCorrect")) : esc16(t("exploit.predictIncorrect"))}
+    </div>` : "";
+    const isLast = state31.phaseIndex >= PHASES5.length - 1;
+    return `<div class="eog-step-controls">
+    <span class="eog-step-counter">${state31.phaseIndex + 1} / ${PHASES5.length}</span>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc16(t("exploit.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--next" data-testid="exploit-next-phase"
+      ${isLast ? "disabled" : ""}>${esc16(t("exploit.nextPhase"))}</button>
+    <label class="eog-predict-toggle-label">
+      <input type="checkbox" data-testid="exploit-predict-toggle" ${state31.predict ? "checked" : ""}>
+      ${esc16(t("exploit.predictMode"))}
+    </label>
+    ${buttons}
+    ${result}
+  </div>`;
+  }
+  function renderQuiz31() {
+    const ex = example3();
+    if (!state31.quiz.active) {
+      return `<button type="button" class="eog-quiz-start" data-testid="exploit-${FAMILY3}-quiz-start">${esc16(t("quiz.start"))}</button>`;
+    }
+    if (state31.quiz.phase === "done") {
+      const correct = state31.quiz.answer === ex.quiz.answer;
+      return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="exploit-${FAMILY3}-quiz-result">
+      <p>${correct ? esc16(t("quiz.correct")) : esc16(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="exploit-${FAMILY3}-quiz-close">${esc16(t("quiz.close"))}</button>
+    </div>`;
+    }
+    return `<div class="eog-quiz" data-testid="exploit-${FAMILY3}-quiz">
+    <p class="eog-quiz-prompt">${esc16(t(ex.quiz.promptKey))}</p>
+    ${ex.quiz.optionKeys.map((k) => `
+      <label class="eog-quiz-option">
+        <input type="radio" name="eog-quiz" value="${esc16(k)}" ${state31.quiz.answer === k ? "checked" : ""}>
+        ${esc16(t(`exploit.${FAMILY3}.quiz.${k}`))}
+      </label>`).join("")}
+    <button type="button" data-testid="exploit-${FAMILY3}-quiz-submit"
+      ${!state31.quiz.answer ? "disabled" : ""}>${esc16(t("quiz.submit"))}</button>
+  </div>`;
+  }
+  function render31() {
+    root31.innerHTML = `
+    <div class="eog-wrap">
+      <h2 class="eog-title">${esc16(t("section.exploit.title"))}</h2>
+      ${renderPhaseRing5()}
+      <div class="eog-panels-row">
+        ${renderCodePanel4()}
+        ${renderShellPanel()}
+      </div>
+      ${renderConstraint3()}
+      ${renderDefensePanel3()}
+      ${renderPredictControls4()}
+      <section class="eog-self-test">
+        <h3>${esc16(t("quiz.title"))}</h3>
+        ${renderQuiz31()}
+      </section>
+    </div>`;
+    bindEvents31();
+  }
+  function bindEvents31() {
+    var _a, _b, _c, _d, _e, _f;
+    (_a = root31.querySelector('[data-testid="exploit-next-phase"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      if (state31.phaseIndex >= PHASES5.length - 1) return;
+      if (state31.predict && state31.phaseIndex === PREDICT_PHASE_INDEX3 && state31.prediction !== null) {
+        state31.predictResult = state31.prediction === example3().primaryDefenseId ? "correct" : "incorrect";
+      }
+      state31.phaseIndex += 1;
+      render31();
+    });
+    (_b = root31.querySelector('[data-testid="exploit-reset"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state31.phaseIndex = 0;
+      state31.prediction = null;
+      state31.predictResult = null;
+      state31.defenses = {};
+      render31();
+    });
+    (_c = root31.querySelector('[data-testid="exploit-predict-toggle"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
+      state31.predict = e.target.checked;
+      render31();
+    });
+    root31.querySelectorAll("[data-eog-predict]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state31.prediction = btn.dataset.eogPredict;
+        state31.predictResult = null;
+        render31();
+      });
+    });
+    root31.querySelectorAll("[data-eog-defense-id]").forEach((cb) => {
+      cb.addEventListener("change", () => {
+        state31.defenses[cb.dataset.eogDefenseId] = cb.checked;
+        const statusEl = root31.querySelector('[data-testid="exploit-payload-status"]');
+        if (statusEl) {
+          statusEl.textContent = t(payloadStatusKey3());
+        }
+      });
+    });
+    (_d = root31.querySelector(`[data-testid="exploit-${FAMILY3}-quiz-start"]`)) == null ? void 0 : _d.addEventListener("click", () => {
+      state31.quiz = { active: true, phase: "question", answer: "" };
+      render31();
+    });
+    root31.querySelectorAll('input[name="eog-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state31.quiz.answer = inp.value;
+        render31();
+      });
+    });
+    (_e = root31.querySelector(`[data-testid="exploit-${FAMILY3}-quiz-submit"]`)) == null ? void 0 : _e.addEventListener("click", () => {
+      state31.quiz.phase = "done";
+      render31();
+    });
+    (_f = root31.querySelector(`[data-testid="exploit-${FAMILY3}-quiz-close"]`)) == null ? void 0 : _f.addEventListener("click", () => {
+      state31.quiz = { active: false, phase: "idle", answer: "" };
+      render31();
+    });
+  }
+  function createExploitCmdiExplorer() {
+    state31.phaseIndex = 0;
+    state31.predict = true;
+    state31.prediction = null;
+    state31.predictResult = null;
+    state31.defenses = {};
+    state31.quiz = { active: false, phase: "idle", answer: "" };
+    root31 = document.createElement("div");
+    root31.dataset.testid = "exploit-cmdi-explorer";
+    onLocaleChange(() => render31());
+    render31();
+    return root31;
+  }
+
   // src/components/DefinitionGatesExplorer.js
   var CRITERIA3 = [
     { id: "dor-criteria", gate: "dor" },
@@ -35019,13 +36762,13 @@ ${items.join("\n")}
     }
     return { caught, leaked };
   }
-  var state27 = {
+  var state32 = {
     // Start with two criteria off, so a leak is visible immediately.
     enabled: new Set(CRITERIA3.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review")),
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root27;
+  var root32;
   function renderGate(gate) {
     const crits = CRITERIA3.filter((c) => c.gate === gate);
     return `
@@ -35037,7 +36780,7 @@ ${items.join("\n")}
           <li>
             <label class="gate-crit">
               <input type="checkbox" data-crit="${c.id}" data-testid="gate-crit-${c.id}"
-                ${state27.enabled.has(c.id) ? "checked" : ""}>
+                ${state32.enabled.has(c.id) ? "checked" : ""}>
               ${t("gate.crit." + c.id)}
             </label>
           </li>`).join("")}
@@ -35045,7 +36788,7 @@ ${items.join("\n")}
     </div>`;
   }
   function renderResult2() {
-    const { caught, leaked } = evaluate(state27.enabled);
+    const { caught, leaked } = evaluate(state32.enabled);
     const issueRow = (issue, status) => `
     <li class="gate-issue gate-issue--${status}">
       <span class="gate-issue-icon">${status === "caught" ? "\u2705" : "\u26A0\uFE0F"}</span>
@@ -35079,12 +36822,12 @@ ${items.join("\n")}
         title="${t("gate.bridge.bdd.title")}">\u{1F517} \u2192 ${t("acceptanceTab.gherkin")}</button>
     </div>`;
   }
-  function renderQuiz27() {
-    if (!state27.quiz.active) {
+  function renderQuiz32() {
+    if (!state32.quiz.active) {
       return `<button type="button" class="gate-quiz-start" data-testid="gate-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state27.quiz.phase === "done") {
-      const correct = state27.quiz.answer === "c";
+    if (state32.quiz.phase === "done") {
+      const correct = state32.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "gate",
@@ -35096,7 +36839,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("gate.quiz.prompt"),
-          a: state27.quiz.answer ? t("gate.quiz." + state27.quiz.answer) : "",
+          a: state32.quiz.answer ? t("gate.quiz." + state32.quiz.answer) : "",
           expected: t("gate.quiz.c"),
           ok: correct
         }]
@@ -35111,26 +36854,26 @@ ${items.join("\n")}
       <p class="gate-quiz-prompt">${t("gate.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="gate-quiz-option">
-          <input type="radio" name="gate-quiz" value="${k}" ${state27.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="gate-quiz" value="${k}" ${state32.quiz.answer === k ? "checked" : ""}>
           ${t("gate.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="gate-quiz-submit" data-testid="gate-quiz-submit"
-        ${!state27.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state32.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab22() {
-    if (!state27.lab.active) {
+    if (!state32.lab.active) {
       return `<button type="button" class="gate-lab-start" data-testid="gate-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="gate-lab" data-testid="gate-lab">
       <p class="gate-lab-prompt">${t("gate.lab.prompt")}</p>
       <textarea class="gate-lab-textarea" data-testid="gate-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state27.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state32.lab.text}</textarea>
     </div>`;
   }
-  function render27() {
-    root27.innerHTML = `
+  function render32() {
+    root32.innerHTML = `
     <div class="gate-wrap" data-testid="gate-wrap">
       <h2 class="gate-title">${t("gate.title")}</h2>
       <p class="gate-desc">${t("gate.desc")}</p>
@@ -35142,61 +36885,61 @@ ${items.join("\n")}
       ${renderBridges9()}
       <section class="gate-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz27()}
+        ${renderQuiz32()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab22()}
       </section>
     </div>`;
-    bindEvents27();
+    bindEvents32();
   }
-  function bindEvents27() {
+  function bindEvents32() {
     var _a, _b, _c, _d, _e, _f;
-    root27.querySelectorAll("[data-crit]").forEach((inp) => {
+    root32.querySelectorAll("[data-crit]").forEach((inp) => {
       inp.addEventListener("change", () => {
-        if (inp.checked) state27.enabled.add(inp.dataset.crit);
-        else state27.enabled.delete(inp.dataset.crit);
-        render27();
+        if (inp.checked) state32.enabled.add(inp.dataset.crit);
+        else state32.enabled.delete(inp.dataset.crit);
+        render32();
       });
     });
-    (_a = root27.querySelector('[data-testid="gate-bridge-defectcost"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root32.querySelector('[data-testid="gate-bridge-defectcost"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="flow"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-flow-tab="defectCost"]')) == null ? void 0 : _b2.click();
     });
-    (_b = root27.querySelector('[data-testid="gate-bridge-bdd"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root32.querySelector('[data-testid="gate-bridge-bdd"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="gherkin"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root27.querySelector('[data-testid="gate-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state27.quiz = { active: true, phase: "question", answer: "" };
-      render27();
+    (_c = root32.querySelector('[data-testid="gate-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state32.quiz = { active: true, phase: "question", answer: "" };
+      render32();
     });
-    root27.querySelectorAll('input[name="gate-quiz"]').forEach((inp) => {
+    root32.querySelectorAll('input[name="gate-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state27.quiz.answer = inp.value;
-        render27();
+        state32.quiz.answer = inp.value;
+        render32();
       });
     });
-    (_d = root27.querySelector('[data-testid="gate-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state27.quiz.phase = "done";
-      render27();
+    (_d = root32.querySelector('[data-testid="gate-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state32.quiz.phase = "done";
+      render32();
     });
-    (_e = root27.querySelector('[data-testid="gate-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state27.lab.active = true;
-      render27();
+    (_e = root32.querySelector('[data-testid="gate-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state32.lab.active = true;
+      render32();
     });
-    (_f = root27.querySelector('[data-testid="gate-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state27.lab.text = e.target.value;
+    (_f = root32.querySelector('[data-testid="gate-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state32.lab.text = e.target.value;
     });
   }
   function createDefinitionGatesExplorer() {
-    state27.enabled = new Set(CRITERIA3.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review"));
-    state27.quiz = { active: false, phase: "idle", answer: "" };
-    state27.lab = { active: false, text: "" };
-    root27 = document.createElement("div");
-    render27();
-    return root27;
+    state32.enabled = new Set(CRITERIA3.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review"));
+    state32.quiz = { active: false, phase: "idle", answer: "" };
+    state32.lab = { active: false, text: "" };
+    root32 = document.createElement("div");
+    render32();
+    return root32;
   }
 
   // src/components/ExampleMappingExplorer.js
@@ -35207,25 +36950,25 @@ ${items.join("\n")}
   ];
   var QUESTIONS = ["q1", "q2", "q3"];
   var ROLES = ["ba", "dev", "tester"];
-  var state28 = {
+  var state33 = {
     role: "ba",
     resolved: /* @__PURE__ */ new Set(),
     activeExample: "e1",
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root28;
+  var root33;
   function openQuestionCount() {
-    return QUESTIONS.filter((q) => !state28.resolved.has(q)).length;
+    return QUESTIONS.filter((q) => !state33.resolved.has(q)).length;
   }
   function renderRoles() {
     return `
     <div class="emap-roles" data-testid="emap-roles">
       ${ROLES.map((r) => `
         <button type="button"
-          class="emap-role ${state28.role === r ? "emap-role--active" : ""}"
+          class="emap-role ${state33.role === r ? "emap-role--active" : ""}"
           data-role="${r}" data-testid="emap-role-${r}">${t("emap.role." + r)}</button>`).join("")}
-      <p class="emap-role-note">${t("emap.role." + state28.role + ".note")}</p>
+      <p class="emap-role-note">${t("emap.role." + state33.role + ".note")}</p>
     </div>`;
   }
   function renderMap() {
@@ -35245,7 +36988,7 @@ ${items.join("\n")}
             <div class="emap-examples">
               ${rule.examples.map((ex) => `
                 <button type="button"
-                  class="emap-card emap-card--example ${state28.activeExample === ex ? "emap-card--active" : ""}"
+                  class="emap-card emap-card--example ${state33.activeExample === ex ? "emap-card--active" : ""}"
                   data-example="${ex}" data-testid="emap-ex-${ex}">
                   <span class="emap-card-kind">${t("emap.kind.example")}</span>
                   ${t("emap.ex." + ex)}
@@ -35256,7 +36999,7 @@ ${items.join("\n")}
       <div class="emap-questions" data-testid="emap-questions">
         <span class="emap-card-kind">${t("emap.kind.question")}</span>
         ${QUESTIONS.map((q) => {
-      const done = state28.resolved.has(q);
+      const done = state33.resolved.has(q);
       return `<button type="button"
             class="emap-card emap-card--question ${done ? "emap-card--resolved" : ""}"
             data-question="${q}" data-testid="emap-q-${q}">
@@ -35276,7 +37019,7 @@ ${items.join("\n")}
     </div>`;
   }
   function renderGherkin() {
-    const ex = state28.activeExample;
+    const ex = state33.activeExample;
     return `
     <div class="emap-gherkin" data-testid="emap-gherkin">
       <h3>${t("emap.gherkin.title")}</h3>
@@ -35293,12 +37036,12 @@ ${items.join("\n")}
         title="${t("emap.bridge.gates.title")}">\u{1F517} \u2192 ${t("agileTab.gates")}</button>
     </div>`;
   }
-  function renderQuiz28() {
-    if (!state28.quiz.active) {
+  function renderQuiz33() {
+    if (!state33.quiz.active) {
       return `<button type="button" class="emap-quiz-start" data-testid="emap-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state28.quiz.phase === "done") {
-      const correct = state28.quiz.answer === "c";
+    if (state33.quiz.phase === "done") {
+      const correct = state33.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "emap",
@@ -35310,7 +37053,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("emap.quiz.prompt"),
-          a: state28.quiz.answer ? t("emap.quiz." + state28.quiz.answer) : "",
+          a: state33.quiz.answer ? t("emap.quiz." + state33.quiz.answer) : "",
           expected: t("emap.quiz.c"),
           ok: correct
         }]
@@ -35325,26 +37068,26 @@ ${items.join("\n")}
       <p class="emap-quiz-prompt">${t("emap.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="emap-quiz-option">
-          <input type="radio" name="emap-quiz" value="${k}" ${state28.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="emap-quiz" value="${k}" ${state33.quiz.answer === k ? "checked" : ""}>
           ${t("emap.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="emap-quiz-submit" data-testid="emap-quiz-submit"
-        ${!state28.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state33.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab23() {
-    if (!state28.lab.active) {
+    if (!state33.lab.active) {
       return `<button type="button" class="emap-lab-start" data-testid="emap-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="emap-lab" data-testid="emap-lab">
       <p class="emap-lab-prompt">${t("emap.lab.prompt")}</p>
       <textarea class="emap-lab-textarea" data-testid="emap-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state28.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state33.lab.text}</textarea>
     </div>`;
   }
-  function render28() {
-    root28.innerHTML = `
+  function render33() {
+    root33.innerHTML = `
     <div class="emap-wrap" data-testid="emap-wrap">
       <h2 class="emap-title">${t("emap.title")}</h2>
       <p class="emap-desc">${t("emap.desc")}</p>
@@ -35355,76 +37098,76 @@ ${items.join("\n")}
       ${renderBridges10()}
       <section class="emap-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz28()}
+        ${renderQuiz33()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab23()}
       </section>
     </div>`;
-    bindEvents28();
+    bindEvents33();
   }
-  function bindEvents28() {
+  function bindEvents33() {
     var _a, _b, _c, _d, _e, _f;
-    root28.querySelectorAll("[data-role]").forEach((btn) => {
+    root33.querySelectorAll("[data-role]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state28.role = btn.dataset.role;
-        render28();
+        state33.role = btn.dataset.role;
+        render33();
       });
     });
-    root28.querySelectorAll("[data-example]").forEach((btn) => {
+    root33.querySelectorAll("[data-example]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state28.activeExample = btn.dataset.example;
-        render28();
+        state33.activeExample = btn.dataset.example;
+        render33();
       });
     });
-    root28.querySelectorAll("[data-question]").forEach((btn) => {
+    root33.querySelectorAll("[data-question]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const q = btn.dataset.question;
-        if (state28.resolved.has(q)) state28.resolved.delete(q);
-        else state28.resolved.add(q);
-        render28();
+        if (state33.resolved.has(q)) state33.resolved.delete(q);
+        else state33.resolved.add(q);
+        render33();
       });
     });
-    (_a = root28.querySelector('[data-testid="emap-bridge-bdd"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root33.querySelector('[data-testid="emap-bridge-bdd"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="gherkin"]')) == null ? void 0 : _b2.click();
     });
-    (_b = root28.querySelector('[data-testid="emap-bridge-gates"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root33.querySelector('[data-testid="emap-bridge-gates"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="agile"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-agile-tab="gates"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root28.querySelector('[data-testid="emap-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state28.quiz = { active: true, phase: "question", answer: "" };
-      render28();
+    (_c = root33.querySelector('[data-testid="emap-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state33.quiz = { active: true, phase: "question", answer: "" };
+      render33();
     });
-    root28.querySelectorAll('input[name="emap-quiz"]').forEach((inp) => {
+    root33.querySelectorAll('input[name="emap-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state28.quiz.answer = inp.value;
-        render28();
+        state33.quiz.answer = inp.value;
+        render33();
       });
     });
-    (_d = root28.querySelector('[data-testid="emap-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state28.quiz.phase = "done";
-      render28();
+    (_d = root33.querySelector('[data-testid="emap-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state33.quiz.phase = "done";
+      render33();
     });
-    (_e = root28.querySelector('[data-testid="emap-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state28.lab.active = true;
-      render28();
+    (_e = root33.querySelector('[data-testid="emap-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state33.lab.active = true;
+      render33();
     });
-    (_f = root28.querySelector('[data-testid="emap-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state28.lab.text = e.target.value;
+    (_f = root33.querySelector('[data-testid="emap-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state33.lab.text = e.target.value;
     });
   }
   function createExampleMappingExplorer() {
-    state28.role = "ba";
-    state28.resolved = /* @__PURE__ */ new Set();
-    state28.activeExample = "e1";
-    state28.quiz = { active: false, phase: "idle", answer: "" };
-    state28.lab = { active: false, text: "" };
-    root28 = document.createElement("div");
-    render28();
-    return root28;
+    state33.role = "ba";
+    state33.resolved = /* @__PURE__ */ new Set();
+    state33.activeExample = "e1";
+    state33.quiz = { active: false, phase: "idle", answer: "" };
+    state33.lab = { active: false, text: "" };
+    root33 = document.createElement("div");
+    render33();
+    return root33;
   }
 
   // src/components/ContinuousTestingPipelineExplorer.js
@@ -35437,31 +37180,31 @@ ${items.join("\n")}
   var TIER_RANK = { commit: 0, pr: 1, nightly: 2 };
   var COMMIT_BUDGET = 120;
   var IMPACT_FRACTION = 0.15;
-  var state29 = {
+  var state34 = {
     tierOf: { unit: "commit", integration: "pr", e2e: "nightly" },
     flaky: 0,
     impact: false,
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root29;
+  var root34;
   function typesAtTier(tier) {
-    return TEST_TYPES.filter((tt) => TIER_RANK[state29.tierOf[tt.id]] <= TIER_RANK[tier]);
+    return TEST_TYPES.filter((tt) => TIER_RANK[state34.tierOf[tt.id]] <= TIER_RANK[tier]);
   }
   function tierStats(tier) {
     const types = typesAtTier(tier);
     let tests = 0;
     let seconds = 0;
     for (const tt of types) {
-      const factor = tier === "commit" && state29.impact ? IMPACT_FRACTION : 1;
+      const factor = tier === "commit" && state34.impact ? IMPACT_FRACTION : 1;
       tests += tt.count * factor;
       seconds += tt.count * tt.time * factor;
     }
     return { tests: Math.round(tests), seconds };
   }
   function falseFailureRate(n) {
-    if (!state29.flaky) return 0;
-    return 1 - Math.pow(1 - state29.flaky / 100, n);
+    if (!state34.flaky) return 0;
+    return 1 - Math.pow(1 - state34.flaky / 100, n);
   }
   function fmtTime(s) {
     if (s < 1) return s.toFixed(2) + "s";
@@ -35485,14 +37228,14 @@ ${items.join("\n")}
               <td>${fmtTime(tt.time)}</td>
               <td>
                 <select data-tier-of="${tt.id}" data-testid="ctp-tier-${tt.id}">
-                  ${TIERS.map((tr) => `<option value="${tr}" ${state29.tierOf[tt.id] === tr ? "selected" : ""}>${t("ctp.tier." + tr)}</option>`).join("")}
+                  ${TIERS.map((tr) => `<option value="${tr}" ${state34.tierOf[tt.id] === tr ? "selected" : ""}>${t("ctp.tier." + tr)}</option>`).join("")}
                 </select>
               </td>
             </tr>`).join("")}
         </tbody>
       </table>
       <label class="ctp-impact-toggle">
-        <input type="checkbox" data-testid="ctp-impact" ${state29.impact ? "checked" : ""}>
+        <input type="checkbox" data-testid="ctp-impact" ${state34.impact ? "checked" : ""}>
         ${t("ctp.impact.label")}
       </label>
     </div>`;
@@ -35526,7 +37269,7 @@ ${items.join("\n")}
         <span>${t("ctp.flaky.label")}</span>
         ${[0, 2, 5].map((f) => `
           <button type="button"
-            class="ctp-flaky-btn ${state29.flaky === f ? "ctp-flaky-btn--active" : ""}"
+            class="ctp-flaky-btn ${state34.flaky === f ? "ctp-flaky-btn--active" : ""}"
             data-flaky="${f}" data-testid="ctp-flaky-${f}">${f}%</button>`).join("")}
       </div>
       <p class="ctp-flaky-result ${rate > 0.3 ? "ctp-flaky-result--bad" : ""}">
@@ -35543,12 +37286,12 @@ ${items.join("\n")}
         title="${t("ctp.bridge.flaky.title")}">\u{1F517} \u2192 ${t("acceptanceTab.flaky")}</button>
     </div>`;
   }
-  function renderQuiz29() {
-    if (!state29.quiz.active) {
+  function renderQuiz34() {
+    if (!state34.quiz.active) {
       return `<button type="button" class="ctp-quiz-start" data-testid="ctp-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state29.quiz.phase === "done") {
-      const correct = state29.quiz.answer === "c";
+    if (state34.quiz.phase === "done") {
+      const correct = state34.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "ctp",
@@ -35560,7 +37303,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("ctp.quiz.prompt"),
-          a: state29.quiz.answer ? t("ctp.quiz." + state29.quiz.answer) : "",
+          a: state34.quiz.answer ? t("ctp.quiz." + state34.quiz.answer) : "",
           expected: t("ctp.quiz.c"),
           ok: correct
         }]
@@ -35575,26 +37318,26 @@ ${items.join("\n")}
       <p class="ctp-quiz-prompt">${t("ctp.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="ctp-quiz-option">
-          <input type="radio" name="ctp-quiz" value="${k}" ${state29.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="ctp-quiz" value="${k}" ${state34.quiz.answer === k ? "checked" : ""}>
           ${t("ctp.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="ctp-quiz-submit" data-testid="ctp-quiz-submit"
-        ${!state29.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state34.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab24() {
-    if (!state29.lab.active) {
+    if (!state34.lab.active) {
       return `<button type="button" class="ctp-lab-start" data-testid="ctp-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="ctp-lab" data-testid="ctp-lab">
       <p class="ctp-lab-prompt">${t("ctp.lab.prompt")}</p>
       <textarea class="ctp-lab-textarea" data-testid="ctp-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state29.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state34.lab.text}</textarea>
     </div>`;
   }
-  function render29() {
-    root29.innerHTML = `
+  function render34() {
+    root34.innerHTML = `
     <div class="ctp-wrap" data-testid="ctp-wrap">
       <h2 class="ctp-title">${t("ctp.title")}</h2>
       <p class="ctp-desc">${t("ctp.desc")}</p>
@@ -35604,72 +37347,72 @@ ${items.join("\n")}
       ${renderBridges11()}
       <section class="ctp-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz29()}
+        ${renderQuiz34()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab24()}
       </section>
     </div>`;
-    bindEvents29();
+    bindEvents34();
   }
-  function bindEvents29() {
+  function bindEvents34() {
     var _a, _b, _c, _d, _e, _f, _g;
-    root29.querySelectorAll("[data-tier-of]").forEach((sel) => {
+    root34.querySelectorAll("[data-tier-of]").forEach((sel) => {
       sel.addEventListener("change", () => {
-        state29.tierOf[sel.dataset.tierOf] = sel.value;
-        render29();
+        state34.tierOf[sel.dataset.tierOf] = sel.value;
+        render34();
       });
     });
-    (_a = root29.querySelector('[data-testid="ctp-impact"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
-      state29.impact = e.target.checked;
-      render29();
+    (_a = root34.querySelector('[data-testid="ctp-impact"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
+      state34.impact = e.target.checked;
+      render34();
     });
-    root29.querySelectorAll("[data-flaky]").forEach((btn) => {
+    root34.querySelectorAll("[data-flaky]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state29.flaky = Number(btn.dataset.flaky);
-        render29();
+        state34.flaky = Number(btn.dataset.flaky);
+        render34();
       });
     });
-    (_b = root29.querySelector('[data-testid="ctp-bridge-pyramid"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root34.querySelector('[data-testid="ctp-bridge-pyramid"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="types"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-types-tab="adjuster"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root29.querySelector('[data-testid="ctp-bridge-flaky"]')) == null ? void 0 : _c.addEventListener("click", () => {
+    (_c = root34.querySelector('[data-testid="ctp-bridge-flaky"]')) == null ? void 0 : _c.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="flaky"]')) == null ? void 0 : _b2.click();
     });
-    (_d = root29.querySelector('[data-testid="ctp-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state29.quiz = { active: true, phase: "question", answer: "" };
-      render29();
+    (_d = root34.querySelector('[data-testid="ctp-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state34.quiz = { active: true, phase: "question", answer: "" };
+      render34();
     });
-    root29.querySelectorAll('input[name="ctp-quiz"]').forEach((inp) => {
+    root34.querySelectorAll('input[name="ctp-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state29.quiz.answer = inp.value;
-        render29();
+        state34.quiz.answer = inp.value;
+        render34();
       });
     });
-    (_e = root29.querySelector('[data-testid="ctp-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state29.quiz.phase = "done";
-      render29();
+    (_e = root34.querySelector('[data-testid="ctp-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state34.quiz.phase = "done";
+      render34();
     });
-    (_f = root29.querySelector('[data-testid="ctp-lab-start"]')) == null ? void 0 : _f.addEventListener("click", () => {
-      state29.lab.active = true;
-      render29();
+    (_f = root34.querySelector('[data-testid="ctp-lab-start"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      state34.lab.active = true;
+      render34();
     });
-    (_g = root29.querySelector('[data-testid="ctp-lab-text"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
-      state29.lab.text = e.target.value;
+    (_g = root34.querySelector('[data-testid="ctp-lab-text"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      state34.lab.text = e.target.value;
     });
   }
   function createContinuousTestingPipelineExplorer() {
-    state29.tierOf = { unit: "commit", integration: "pr", e2e: "nightly" };
-    state29.flaky = 0;
-    state29.impact = false;
-    state29.quiz = { active: false, phase: "idle", answer: "" };
-    state29.lab = { active: false, text: "" };
-    root29 = document.createElement("div");
-    render29();
-    return root29;
+    state34.tierOf = { unit: "commit", integration: "pr", e2e: "nightly" };
+    state34.flaky = 0;
+    state34.impact = false;
+    state34.quiz = { active: false, phase: "idle", answer: "" };
+    state34.lab = { active: false, text: "" };
+    root34 = document.createElement("div");
+    render34();
+    return root34;
   }
 
   // src/components/RegressionDebtExplorer.js
@@ -35736,12 +37479,12 @@ ${items.join("\n")}
     const row = rows.find((r) => r.cost > r.value);
     return row ? row.sprint : null;
   }
-  var state30 = {
+  var state35 = {
     strategies: { prune: false, quarantine: false, riskBased: false },
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root30;
+  var root35;
   var STRATEGIES2 = ["prune", "quarantine", "riskBased"];
   function fmtTime2(s) {
     return s < 90 ? Math.round(s) + "s" : Math.floor(s / 60) + "m " + Math.round(s % 60) + "s";
@@ -35753,7 +37496,7 @@ ${items.join("\n")}
       ${STRATEGIES2.map((s) => `
         <label class="rdebt-strat">
           <input type="checkbox" data-strategy="${s}" data-testid="rdebt-strat-${s}"
-            ${state30.strategies[s] ? "checked" : ""}>
+            ${state35.strategies[s] ? "checked" : ""}>
           ${t("rdebt.strat." + s)}
         </label>`).join("")}
     </div>`;
@@ -35810,12 +37553,12 @@ ${items.join("\n")}
         title="${t("rdebt.bridge.flaky.title")}">\u{1F517} \u2192 ${t("acceptanceTab.flaky")}</button>
     </div>`;
   }
-  function renderQuiz30() {
-    if (!state30.quiz.active) {
+  function renderQuiz35() {
+    if (!state35.quiz.active) {
       return `<button type="button" class="rdebt-quiz-start" data-testid="rdebt-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state30.quiz.phase === "done") {
-      const correct = state30.quiz.answer === "c";
+    if (state35.quiz.phase === "done") {
+      const correct = state35.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "rdebt",
@@ -35827,7 +37570,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("rdebt.quiz.prompt"),
-          a: state30.quiz.answer ? t("rdebt.quiz." + state30.quiz.answer) : "",
+          a: state35.quiz.answer ? t("rdebt.quiz." + state35.quiz.answer) : "",
           expected: t("rdebt.quiz.c"),
           ok: correct
         }]
@@ -35842,27 +37585,27 @@ ${items.join("\n")}
       <p class="rdebt-quiz-prompt">${t("rdebt.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="rdebt-quiz-option">
-          <input type="radio" name="rdebt-quiz" value="${k}" ${state30.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="rdebt-quiz" value="${k}" ${state35.quiz.answer === k ? "checked" : ""}>
           ${t("rdebt.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="rdebt-quiz-submit" data-testid="rdebt-quiz-submit"
-        ${!state30.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state35.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab25() {
-    if (!state30.lab.active) {
+    if (!state35.lab.active) {
       return `<button type="button" class="rdebt-lab-start" data-testid="rdebt-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="rdebt-lab" data-testid="rdebt-lab">
       <p class="rdebt-lab-prompt">${t("rdebt.lab.prompt")}</p>
       <textarea class="rdebt-lab-textarea" data-testid="rdebt-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state30.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state35.lab.text}</textarea>
     </div>`;
   }
-  function render30() {
-    const rows = simulate(state30.strategies);
-    root30.innerHTML = `
+  function render35() {
+    const rows = simulate(state35.strategies);
+    root35.innerHTML = `
     <div class="rdebt-wrap" data-testid="rdebt-wrap">
       <h2 class="rdebt-title">${t("rdebt.title")}</h2>
       <p class="rdebt-desc">${t("rdebt.desc")}</p>
@@ -35872,59 +37615,59 @@ ${items.join("\n")}
       ${renderBridges12()}
       <section class="rdebt-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz30()}
+        ${renderQuiz35()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab25()}
       </section>
     </div>`;
-    bindEvents30();
+    bindEvents35();
   }
-  function bindEvents30() {
+  function bindEvents35() {
     var _a, _b, _c, _d, _e, _f;
-    root30.querySelectorAll("[data-strategy]").forEach((inp) => {
+    root35.querySelectorAll("[data-strategy]").forEach((inp) => {
       inp.addEventListener("change", () => {
-        state30.strategies[inp.dataset.strategy] = inp.checked;
-        render30();
+        state35.strategies[inp.dataset.strategy] = inp.checked;
+        render35();
       });
     });
-    (_a = root30.querySelector('[data-testid="rdebt-bridge-rbt"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root35.querySelector('[data-testid="rdebt-bridge-rbt"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2;
       (_a2 = document.querySelector('[data-section="rbt"]')) == null ? void 0 : _a2.click();
     });
-    (_b = root30.querySelector('[data-testid="rdebt-bridge-flaky"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root35.querySelector('[data-testid="rdebt-bridge-flaky"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="flaky"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root30.querySelector('[data-testid="rdebt-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state30.quiz = { active: true, phase: "question", answer: "" };
-      render30();
+    (_c = root35.querySelector('[data-testid="rdebt-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state35.quiz = { active: true, phase: "question", answer: "" };
+      render35();
     });
-    root30.querySelectorAll('input[name="rdebt-quiz"]').forEach((inp) => {
+    root35.querySelectorAll('input[name="rdebt-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state30.quiz.answer = inp.value;
-        render30();
+        state35.quiz.answer = inp.value;
+        render35();
       });
     });
-    (_d = root30.querySelector('[data-testid="rdebt-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state30.quiz.phase = "done";
-      render30();
+    (_d = root35.querySelector('[data-testid="rdebt-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state35.quiz.phase = "done";
+      render35();
     });
-    (_e = root30.querySelector('[data-testid="rdebt-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state30.lab.active = true;
-      render30();
+    (_e = root35.querySelector('[data-testid="rdebt-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state35.lab.active = true;
+      render35();
     });
-    (_f = root30.querySelector('[data-testid="rdebt-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state30.lab.text = e.target.value;
+    (_f = root35.querySelector('[data-testid="rdebt-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state35.lab.text = e.target.value;
     });
   }
   function createRegressionDebtExplorer() {
-    state30.strategies = { prune: false, quarantine: false, riskBased: false };
-    state30.quiz = { active: false, phase: "idle", answer: "" };
-    state30.lab = { active: false, text: "" };
-    root30 = document.createElement("div");
-    render30();
-    return root30;
+    state35.strategies = { prune: false, quarantine: false, riskBased: false };
+    state35.quiz = { active: false, phase: "idle", answer: "" };
+    state35.lab = { active: false, text: "" };
+    root35 = document.createElement("div");
+    render35();
+    return root35;
   }
 
   // src/data/slideDecks.generated.js
@@ -36477,6 +38220,15 @@ ${items.join("\n")}
       "titleZh": "\u8EDF\u9AD4\u6E2C\u8A66\u8996\u89BA\u5316 #61 \u2014 \u56DE\u6B78\u6E2C\u8A66\u9078\u64C7",
       "en": '---\nmarp: true\ntheme: default\npaginate: true\nsize: 16:9\ntitle: Software Testing Visualization #61 \u2014 Regression Test Selection\ndescription: Using forward slices to identify the subset of tests that must be re-run after an edit \u2014 safe, static, and dynamic regression test selection.\nlang: en\n---\n\n# Regression Test Selection\n### *Re-run only the tests that could be affected by an edit*\n\nSoftware Testing Visualization series #61 \xB7 Slice-Based Testing\nCompanion tool: `/section-slicing` \u2192 Regression tab ([SliceRegressionExplorer](https://github.com/skhuang/stvisual/blob/main/src/components/SliceRegressionExplorer.js))\n\n<!-- Final deck of the four-deck slicing section: #58 Program Slicing, #59 Fault Localization & Dicing, #60 Slice-Based Coverage, #61 Regression Test Selection. The key idea: after an edit we do not need to re-run every test \u2014 only those whose outcome the edit could have changed. Slicing tells us exactly which tests those are. -->\n\n---\n\n## The regression-testing problem\n\nAfter every code edit, the safe action is to re-run the entire test suite.\n\n**In practice this is expensive:**\n- Large systems have thousands of tests; a full run can take hours.\n- CI pipelines block on test time, slowing every developer feedback loop.\n- Most tests are completely unrelated to any given change.\n\n**Regression test selection (RTS)** asks: which subset of the test suite is it *necessary* to re-run after a specific edit?\n\nA test is safe to skip if the edit **cannot possibly change** its outcome. The challenge is determining that \u2014 cheaply and correctly.\n\n<!-- The cost problem is well documented. Google (Memon et al., 2017) reported that re-running all tests on every commit was infeasible at scale and adopted selection and prioritization. The academic literature on RTS dates to Rothermel and Harrold (1994, 1996) and remains active. The core tension is between precision (only re-run truly affected tests) and safety (never skip a test that could fail due to the edit). -->\n\n---\n\n## The safety requirement\n\n**Definition:** An RTS technique is *safe* if it never omits a test whose outcome the edit could change.\n\nFormally: let `E` be an edit and `T_i` a test. If there exists any execution of the modified program on the input of `T_i` that produces a different output than the original, then `T_i` must be in the selected set.\n\n**Why safety matters:** an unsafe technique can give a green signal even though the edit introduced a regression \u2014 the test that would have caught it was skipped.\n\nMost practical RTS techniques are *conservative* \u2014 they may include tests that turn out to be unaffected (false positives), but they never miss a truly affected test.\n\n<!-- The formal definition of safety comes from Rothermel and Harrold (1996). An unsafe technique can create a false sense of confidence \u2014 the CI pipeline passes, but a regression has been silently introduced. In practice, every team must decide their risk tolerance; conservative over-selection is common. -->\n\n---\n\n## Impact set \u2014 the forward slice of the edit\n\nAfter editing statement `s`, which other statements can be affected?\n\n**Forward slice** of statement `s` (notation: `FS(s)`):\n> The set of all statements that the change at `s` can *reach*, through data dependences (a value defined at `s` is used downstream) and control dependences (a branch at `s` controls whether downstream statements execute).\n\n`FS(s)` is the **impact set** \u2014 the exact set of statements whose behavior the edit at `s` can influence.\n\n**Key insight:** a test is potentially affected by the edit iff it executed at least one statement in `FS(s)`.\n\n<!-- The forward slice is the mirror image of the backward slice introduced in deck #58. The backward slice answers "what affected this output?"; the forward slice answers "what could this statement affect?" Both are reachability closures in the program dependence graph, but in opposite directions. For RTS we want the forward direction. -->\n\n---\n\n## Static selection \u2014 conservative, always safe\n\n**Algorithm:**\n\n1. Compute the forward slice (impact set) `FS(s)` of the changed statement `s`.\n2. For each test `T_i`, examine the set of statements it executed (its dynamic trace).\n3. **Select `T_i`** iff its trace intersects `FS(s)`.\n\nThis is *static* in the sense that the impact set is computed once over the program\'s structure, then compared against each test\'s recorded trace.\n\n**Safety guarantee:** if the edit at `s` can affect `T_i`, then `T_i` executed something in `FS(s)`, so `T_i` will be selected.\n\n**Trade-off:** any test that happened to execute a statement in `FS(s)` is selected, even if the change does not actually flow to that test\'s output on that particular input.\n\n<!-- Static selection (matching traces against the forward slice) corresponds to Rothermel and Harrold\'s safe static RTS. Traces must be stored from a previous run \u2014 this is the "test history" or "coverage profile" that modern CI systems maintain automatically. Tools such as Pytest-testmon and Jest\'s --changedSince implement variants of this idea. -->\n\n---\n\n## Dynamic selection \u2014 precise, still safe\n\nA test is selected statically if it *executed* something in `FS(s)`.\nBut executing a statement in `FS(s)` does not mean the edit\'s value actually *reached* the test\'s output on that run.\n\n**Dynamic selection uses the backward dynamic slice:**\n- A test `T_i` is affected iff the changed statement `s` is in the **dynamic backward slice** of the output criterion for `T_i`.\n- The dynamic slice only contains statements whose **values or control decisions** actually flowed to the output on that specific execution \u2014 not just any statement that could do so in theory.\n\n**Result:** dynamic selection is a strict subset of static selection.\n\n$$\\text{dynamic-affected} \\subseteq \\text{static-affected}$$\n\nDynamic selection is more precise (fewer tests re-run) but more expensive (requires per-trace dynamic slice computation).\n\n<!-- Dynamic selection was studied by Agrawal et al. (1993) and later formalized in the context of the program dependence graph. The dynamic backward slice is computed the same way as in deck #59 (Fault Localization & Dicing): replay the trace, track live data-dependence edges, and close over the PDG restricted to those live edges. -->\n\n---\n\n## Worked example \u2014 `classify`\n\n```javascript\nfunction classify(n) {\n  let label = "zero";       // s2\n  let sign = 0;             // s3  \u2190 edit here\n  if (n > 0) {              // s4\n    label = "positive";     // s5\n    sign = 1;               // s6\n  } else if (n < 0) {       // s7\n    label = "negative";     // s8\n    sign = -1;              // s9\n  }\n  return label;             // s11\n}\n```\n\nOutput criterion: `label` at `s11`.\n**Edit:** change statement `s3` (`sign = 0`).\n\nTraces: `pos` (n=5), `neg` (n=\u22123), `zero` (n=0).\n\n<!-- The classify function was introduced in deck #58 and used in decks #59 and #60. Here we use it for RTS: the edit is at s3 (sign = 0), and the output is label at s11. The sign variable has no data or control path to label, which will make the dynamic result instructive. -->\n\n---\n\n## Worked example \u2014 static selection\n\n**Impact set** (forward slice of `s3`): `{s3}` only.\n`sign` is never used in any computation that reaches `label` or controls any branch beyond what it already controls \u2014 `s3` has no successors in the forward direction.\n\nEvery trace executes `s3` (it is in every input\'s path), so every trace\'s steps intersect `{s3}`.\n\n| Trace | Executes s3? | Static verdict |\n|---|---|---|\n| `pos` (n=5) | yes | **re-run** |\n| `neg` (n=\u22123) | yes | **re-run** |\n| `zero` (n=0) | yes | **re-run** |\n\n**Static: re-run all 3 / 3 tests (0 safe to skip).**\n\n<!-- s3 defines `sign` but sign has no data-dep successors in classify\'s PDG \u2014 it is defined (s3, s6, s9) but never used in any computation that reaches the output. The forward slice of s3 over the classify PDG is therefore just {s3} itself \u2014 no successors. Yet every trace executes s3, so static selection must conservatively select all three traces. -->\n\n---\n\n## Worked example \u2014 dynamic selection\n\nFor each trace, compute the **dynamic backward slice** of `label` at `s11`.\nA trace is affected iff `s3` appears in its dynamic backward slice.\n\n| Trace | Dynamic backward slice of label@s11 | Contains s3? | Dynamic verdict |\n|---|---|---|---|\n| `pos` | s4, s5, s11 | no | **safe to skip** |\n| `neg` | s4, s7, s8, s11 | no | **safe to skip** |\n| `zero` | s2, s11 | no | **safe to skip** |\n\n**Dynamic: re-run 0 / 3 tests (all 3 safe to skip).**\n\n`s3` is never in any trace\'s dynamic backward slice because `sign` never flows to `label` on any execution \u2014 the value defined at `s3` is simply not used in the computation of the output.\n\n<!-- This is the key contrast with static: static is forced to select all traces because s3 is in every trace\'s execution steps. Dynamic looks at what actually flowed to the output and correctly identifies that sign is irrelevant to label on every input. The result: 3 safe skips vs 0 safe skips \u2014 a 100% reduction in test runs for this edit. This is a clean, pedagogically useful case where static over-selects and dynamic is exact. -->\n\n---\n\n## Static vs dynamic \u2014 summary comparison\n\n| Property | Static | Dynamic |\n|---|---|---|\n| Selection criterion | Trace executes any statement in `FS(s)` | Changed statement is in trace\'s dynamic backward slice |\n| Safety | Always safe (conservative) | Always safe (precise) |\n| False positives | Possible \u2014 may select unaffected tests | None \u2014 only truly affected tests selected |\n| `classify` (edit s3) | 3/3 re-run | 0/3 re-run |\n| Cost | Low \u2014 one forward-slice computation | Higher \u2014 per-trace dynamic slice |\n\nDynamic-affected \u2286 Static-affected \u2286 All tests.\n\n<!-- The hierarchy is strict in general: there exist edits and programs where dynamic-affected is a proper subset of static-affected. The classify/sign example is an extreme case (dynamic is empty). In practice, dynamic RTS is used when precision is critical and trace storage is available; static RTS is preferred when speed of selection is paramount. -->\n\n---\n\n## Tool demonstration \u2014 static selection\n\n![w:1000](./slide-assets/slice-regression-static-en.png)\n\nIn `/section-slicing`, open the **Regression** tab (Slice Regression Explorer):\n\n1. Select the `classify` scenario.\n   - The PDG is shown on the left with the current output criterion (`label` at `s11`).\n2. Click on statement `s3` (`sign = 0`) to mark it as the changed statement.\n   - The forward-slice impact set `{s3}` is highlighted.\n3. Switch to **Static** mode \u2014 all three traces (`pos`, `neg`, `zero`) are marked as affected (red).\n\n---\n\n## Tool demonstration \u2014 dynamic selection\n\n![w:1000](./slide-assets/slice-regression-dynamic-en.png)\n\n4. Switch to **Dynamic** mode \u2014 all three traces are marked safe (green); the dynamic backward slice of each trace does not contain `s3`.\n5. Try a different edit: click `s2` (`label = "zero"`) \u2014 observe that both static and dynamic now select all traces (because `s2` is in every trace\'s dynamic backward slice of `label`).\n\n<!-- The tool visualizes both the forward-slice impact set and the per-trace dynamic backward slices simultaneously. The color coding (red = re-run, green = skip) makes the static vs dynamic tradeoff concrete. Encourage students to try edits at s5, s7, s8 to see intermediate cases where dynamic is a strict subset of static. -->\n\n---\n\n## Summary\n\n- After an edit, **regression test selection (RTS)** identifies the subset of tests that must be re-run \u2014 those whose outcome the edit could change.\n- A technique is **safe** if it never skips a truly affected test; conservative techniques may over-select.\n- The **forward slice** of the changed statement is the impact set \u2014 all statements reachable through data and control dependences from the edit.\n- **Static selection:** re-run a test if its recorded trace intersects the impact set. Always safe; may over-select.\n- **Dynamic selection:** re-run a test only if the changed statement is in that test\'s dynamic backward slice from the output. Precise; dynamic-affected \u2286 static-affected.\n- This completes the four slice-based testing techniques: **program slicing** (#58), **fault localization & dicing** (#59), **slice-based coverage** (#60), **regression test selection** (#61).\n\n**In-class exercise:** for the `classify` function, find an edit where static and dynamic select the same set of tests, and an edit where dynamic selects strictly fewer.\n\n---\n\n## Further reading\n\n- Course specification \u2014 regression selection design ([2026-05-19-slicing-n4-regression-design.md](https://github.com/skhuang/stvisual/blob/main/docs/superpowers/specs/2026-05-19-slicing-n4-regression-design.md))\n- Rothermel, G., & Harrold, M. J. (1996). "Analyzing regression test selection techniques." *IEEE Transactions on Software Engineering*, 22(8), 529\u2013551.\n- Rothermel, G., & Harrold, M. J. (1994). "A framework for evaluating regression test selection techniques." *Proceedings of ICSE 1994*, 201\u2013210.\n- Agrawal, H., DeMillo, R. A., & Spafford, E. H. (1993). "Debugging with dynamic slicing and backtracking." *Software: Practice and Experience*, 23(6), 589\u2013616.\n- Memon, A., et al. (2017). "Taming Google-scale continuous testing." *Proceedings of ICSE 2017*, 1\u201310.\n- Tool source: [SliceRegressionExplorer.js](https://github.com/skhuang/stvisual/blob/main/src/components/SliceRegressionExplorer.js), [slicing.js](https://github.com/skhuang/stvisual/blob/main/src/utils/slicing.js)\n- Previous: **#60 Slice-Based Coverage** \u2014 coverage measured relative to the backward slice\n',
       "zh": '---\nmarp: true\ntheme: default\npaginate: true\nsize: 16:9\ntitle: \u8EDF\u9AD4\u6E2C\u8A66\u8996\u89BA\u5316 #61 \u2014 \u56DE\u6B78\u6E2C\u8A66\u9078\u64C7\ndescription: \u4F7F\u7528\u524D\u5411\u5207\u7247\u627E\u51FA\u7DE8\u8F2F\u5F8C\u5FC5\u9808\u91CD\u65B0\u57F7\u884C\u7684\u6E2C\u8A66\u5B50\u96C6\u2014\u2014\u5B89\u5168\u3001\u975C\u614B\u8207\u52D5\u614B\u7684\u56DE\u6B78\u6E2C\u8A66\u9078\u64C7\u3002\nlang: zh-TW\n---\n\n# \u56DE\u6B78\u6E2C\u8A66\u9078\u64C7\n### *\u53EA\u91CD\u65B0\u57F7\u884C\u53EF\u80FD\u53D7\u5230\u7DE8\u8F2F\u5F71\u97FF\u7684\u6E2C\u8A66*\n\n\u8EDF\u9AD4\u6E2C\u8A66\u8996\u89BA\u5316\u7CFB\u5217 #61 \xB7 \u5207\u7247\u5F0F\u6E2C\u8A66\n\u642D\u914D\u5DE5\u5177\uFF1A`/section-slicing` \u2192 \u56DE\u6B78\u5206\u9801\uFF08[SliceRegressionExplorer](https://github.com/skhuang/stvisual/blob/main/src/components/SliceRegressionExplorer.js)\uFF09\n\n<!-- \u5207\u7247\u5F0F\u6E2C\u8A66\u56DB\u8B1B\u7684\u6700\u5F8C\u4E00\u8B1B\uFF1A#58 \u7A0B\u5F0F\u5207\u7247\u3001#59 \u7F3A\u9677\u5B9A\u4F4D\u8207\u5207\u4E01\u3001#60 \u5207\u7247\u8986\u84CB\u3001#61 \u56DE\u6B78\u6E2C\u8A66\u9078\u64C7\u3002\u6838\u5FC3\u60F3\u6CD5\uFF1A\u6BCF\u6B21\u7A0B\u5F0F\u78BC\u7DE8\u8F2F\u5F8C\uFF0C\u4E0D\u9700\u8981\u91CD\u65B0\u57F7\u884C\u6574\u500B\u6E2C\u8A66\u5957\u4EF6\u2014\u2014\u53EA\u9700\u8981\u57F7\u884C\u90A3\u4E9B\u7D50\u679C\u53EF\u80FD\u56E0\u6B64\u6539\u8B8A\u7684\u6E2C\u8A66\u3002\u5207\u7247\u544A\u8A34\u6211\u5011\u6B63\u78BA\u7684\u9078\u64C7\u96C6\u5408\u3002 -->\n\n---\n\n## \u56DE\u6B78\u6E2C\u8A66\u554F\u984C\n\n\u6BCF\u6B21\u7A0B\u5F0F\u78BC\u7DE8\u8F2F\u5F8C\uFF0C\u6700\u5B89\u5168\u7684\u505A\u6CD5\u662F\u91CD\u65B0\u57F7\u884C\u6574\u500B\u6E2C\u8A66\u5957\u4EF6\u3002\n\n**\u4F46\u9019\u5728\u5BE6\u52D9\u4E0A\u4EE3\u50F9\u9AD8\u6602\uFF1A**\n- \u5927\u578B\u7CFB\u7D71\u6709\u6578\u5343\u500B\u6E2C\u8A66\uFF0C\u5B8C\u6574\u57F7\u884C\u53EF\u80FD\u9700\u8981\u6578\u5C0F\u6642\u3002\n- CI \u6D41\u6C34\u7DDA\u88AB\u6E2C\u8A66\u6642\u9593\u62D6\u6162\uFF0C\u5F71\u97FF\u6BCF\u4F4D\u958B\u767C\u8005\u7684\u56DE\u994B\u901F\u5EA6\u3002\n- \u5927\u591A\u6578\u6E2C\u8A66\u8207\u4EFB\u4F55\u7279\u5B9A\u7684\u8B8A\u66F4\u5B8C\u5168\u7121\u95DC\u3002\n\n**\u56DE\u6B78\u6E2C\u8A66\u9078\u64C7\uFF08RTS\uFF0CRegression Test Selection\uFF09** \u554F\u7684\u662F\uFF1A\u91DD\u5C0D\u67D0\u500B\u7279\u5B9A\u7DE8\u8F2F\uFF0C\u6E2C\u8A66\u5957\u4EF6\u4E2D\u54EA\u500B\u5B50\u96C6\u662F*\u5FC5\u8981*\u91CD\u65B0\u57F7\u884C\u7684\uFF1F\n\n\u5982\u679C\u4E00\u500B\u7DE8\u8F2F**\u4E0D\u53EF\u80FD\u6539\u8B8A**\u67D0\u500B\u6E2C\u8A66\u7684\u7D50\u679C\uFF0C\u5C31\u53EF\u4EE5\u5B89\u5168\u5730\u7565\u904E\u5B83\u3002\u6311\u6230\u5728\u65BC\u5982\u4F55\u2014\u2014\u5EC9\u50F9\u4E14\u6B63\u78BA\u5730\u2014\u2014\u505A\u51FA\u9019\u500B\u5224\u65B7\u3002\n\n<!-- \u6210\u672C\u554F\u984C\u6709\u5145\u5206\u7684\u6587\u737B\u8A18\u8F09\u3002Google\uFF08Memon \u7B49\u4EBA\uFF0C2017\uFF09\u5831\u544A\u6307\u51FA\uFF0C\u5728\u898F\u6A21\u5316\u74B0\u5883\u4E2D\u5C0D\u6BCF\u6B21\u63D0\u4EA4\u91CD\u65B0\u57F7\u884C\u6240\u6709\u6E2C\u8A66\u662F\u4E0D\u53EF\u884C\u7684\uFF0C\u56E0\u6B64\u63A1\u7528\u4E86\u9078\u64C7\u8207\u512A\u5148\u5316\u7B56\u7565\u3002RTS \u7684\u5B78\u8853\u6587\u737B\u53EF\u8FFD\u6EAF\u81F3 Rothermel \u8207 Harrold\uFF081994\u30011996\uFF09\uFF0C\u81F3\u4ECA\u4ECD\u662F\u6D3B\u8E8D\u7684\u7814\u7A76\u9818\u57DF\u3002\u6838\u5FC3\u5F35\u529B\u5728\u65BC\u7CBE\u78BA\u5EA6\uFF08\u53EA\u91CD\u65B0\u57F7\u884C\u771F\u6B63\u53D7\u5F71\u97FF\u7684\u6E2C\u8A66\uFF09\u8207\u5B89\u5168\u6027\uFF08\u7D55\u4E0D\u7565\u904E\u53EF\u80FD\u56E0\u7DE8\u8F2F\u800C\u5931\u6557\u7684\u6E2C\u8A66\uFF09\u4E4B\u9593\u3002 -->\n\n---\n\n## \u5B89\u5168\u6027\u9700\u6C42\n\n**\u5B9A\u7FA9\uFF1A** \u82E5\u4E00\u500B RTS \u6280\u8853\u5F9E\u4E0D\u907A\u6F0F\u4EFB\u4F55\u7D50\u679C\u53EF\u80FD\u56E0\u7DE8\u8F2F\u800C\u6539\u8B8A\u7684\u6E2C\u8A66\uFF0C\u5247\u7A31\u5B83\u662F*\u5B89\u5168\u7684*\u3002\n\n\u6B63\u5F0F\u5730\u8AAA\uFF1A\u8A2D `E` \u70BA\u4E00\u500B\u7DE8\u8F2F\uFF0C`T_i` \u70BA\u4E00\u500B\u6E2C\u8A66\u3002\u82E5\u5728\u4FEE\u6539\u5F8C\u7684\u7A0B\u5F0F\u5C0D `T_i` \u7684\u8F38\u5165\u57F7\u884C\u6642\uFF0C\u5B58\u5728\u4EFB\u4F55\u4E00\u7A2E\u57F7\u884C\u7D50\u679C\u8207\u539F\u59CB\u7A0B\u5F0F\u4E0D\u540C\uFF0C\u5247 `T_i` \u5FC5\u9808\u5305\u542B\u5728\u9078\u64C7\u96C6\u5408\u4E2D\u3002\n\n**\u70BA\u4EC0\u9EBC\u5B89\u5168\u6027\u5F88\u91CD\u8981\uFF1A** \u4E0D\u5B89\u5168\u7684\u6280\u8853\u53EF\u80FD\u5728\u7DE8\u8F2F\u5F15\u5165\u56DE\u6B78\u554F\u984C\u6642\u7D66\u51FA\u7DA0\u8272\u8A0A\u865F\u2014\u2014\u539F\u672C\u80FD\u5920\u6514\u622A\u554F\u984C\u7684\u6E2C\u8A66\u88AB\u7565\u904E\u4E86\u3002\n\n\u5927\u591A\u6578\u5BE6\u52D9\u7684 RTS \u6280\u8853\u662F*\u4FDD\u5B88\u7684*\u2014\u2014\u5B83\u5011\u53EF\u80FD\u5305\u542B\u7D50\u679C\u5BE6\u969B\u4E0A\u672A\u53D7\u5F71\u97FF\u7684\u6E2C\u8A66\uFF08\u5047\u967D\u6027\uFF09\uFF0C\u4F46\u7D55\u4E0D\u6703\u907A\u6F0F\u771F\u6B63\u53D7\u5F71\u97FF\u7684\u6E2C\u8A66\u3002\n\n<!-- \u5B89\u5168\u6027\u7684\u6B63\u5F0F\u5B9A\u7FA9\u4F86\u81EA Rothermel \u8207 Harrold\uFF081996\uFF09\u3002\u4E0D\u5B89\u5168\u7684\u6280\u8853\u53EF\u80FD\u9020\u6210\u865B\u5047\u7684\u4FE1\u5FC3\u2014\u2014CI \u6D41\u6C34\u7DDA\u901A\u904E\uFF0C\u4F46\u56DE\u6B78\u554F\u984C\u5DF2\u6084\u6084\u5730\u88AB\u5F15\u5165\u3002\u5728\u5BE6\u52D9\u4E2D\uFF0C\u6BCF\u500B\u5718\u968A\u90FD\u5FC5\u9808\u6C7A\u5B9A\u5176\u98A8\u96AA\u5BB9\u5FCD\u5EA6\uFF1B\u4FDD\u5B88\u7684\u904E\u9078\u64C7\u662F\u5E38\u898B\u505A\u6CD5\u3002 -->\n\n---\n\n## \u5F71\u97FF\u96C6\u5408 \u2014\u2014 \u7DE8\u8F2F\u7684\u524D\u5411\u5207\u7247\n\n\u7DE8\u8F2F\u9673\u8FF0\u5F0F `s` \u5F8C\uFF0C\u54EA\u4E9B\u5176\u4ED6\u9673\u8FF0\u5F0F\u53EF\u80FD\u53D7\u5230\u5F71\u97FF\uFF1F\n\n\u9673\u8FF0\u5F0F `s` \u7684**\u524D\u5411\u5207\u7247**\uFF08\u8A18\u70BA `FS(s)`\uFF09\uFF1A\n> \u6240\u6709\u7DE8\u8F2F `s` \u53EF\u80FD*\u5230\u9054*\u7684\u9673\u8FF0\u5F0F\u96C6\u5408\uFF0C\u900F\u904E\u8CC7\u6599\u76F8\u4F9D\uFF08`s` \u5B9A\u7FA9\u7684\u503C\u88AB\u4E0B\u6E38\u4F7F\u7528\uFF09\u8207\u63A7\u5236\u76F8\u4F9D\uFF08`s` \u8655\u7684\u5206\u652F\u63A7\u5236\u4E0B\u6E38\u9673\u8FF0\u5F0F\u662F\u5426\u57F7\u884C\uFF09\u3002\n\n`FS(s)` \u5C31\u662F**\u5F71\u97FF\u96C6\u5408**\u2014\u2014\u7DE8\u8F2F `s` \u53EF\u80FD\u5F71\u97FF\u5176\u884C\u70BA\u7684\u7CBE\u78BA\u9673\u8FF0\u5F0F\u96C6\u5408\u3002\n\n**\u6838\u5FC3\u6D1E\u898B\uFF1A** \u4E00\u500B\u6E2C\u8A66\u56E0\u8A72\u7DE8\u8F2F\u800C\u53EF\u80FD\u53D7\u5F71\u97FF\uFF0C\u82E5\u4E14\u552F\u82E5\u5B83\u57F7\u884C\u904E `FS(s)` \u4E2D\u7684\u81F3\u5C11\u4E00\u500B\u9673\u8FF0\u5F0F\u3002\n\n<!-- \u524D\u5411\u5207\u7247\u662F\u7B2C 58 \u8B1B\u4E2D\u4ECB\u7D39\u7684\u5411\u5F8C\u5207\u7247\u7684\u93E1\u50CF\u3002\u5411\u5F8C\u5207\u7247\u56DE\u7B54\u300C\u4EC0\u9EBC\u5F71\u97FF\u4E86\u9019\u500B\u8F38\u51FA\uFF1F\u300D\uFF1B\u524D\u5411\u5207\u7247\u56DE\u7B54\u300C\u9019\u500B\u9673\u8FF0\u5F0F\u53EF\u80FD\u5F71\u97FF\u4EC0\u9EBC\uFF1F\u300D\u5169\u8005\u90FD\u662F\u7A0B\u5F0F\u76F8\u4F9D\u5716\u4E2D\u7684\u53EF\u9054\u6027\u9589\u5305\uFF0C\u4F46\u65B9\u5411\u76F8\u53CD\u3002\u5728 RTS \u4E2D\uFF0C\u6211\u5011\u9700\u8981\u6B63\u5411\u65B9\u5411\u3002 -->\n\n---\n\n## \u975C\u614B\u9078\u64C7 \u2014\u2014 \u4FDD\u5B88\u3001\u6C38\u9060\u5B89\u5168\n\n**\u6F14\u7B97\u6CD5\uFF1A**\n\n1. \u8A08\u7B97\u5DF2\u8B8A\u66F4\u9673\u8FF0\u5F0F `s` \u7684\u524D\u5411\u5207\u7247\uFF08\u5F71\u97FF\u96C6\u5408\uFF09`FS(s)`\u3002\n2. \u5C0D\u6BCF\u500B\u6E2C\u8A66 `T_i`\uFF0C\u6AA2\u67E5\u5B83\u57F7\u884C\u7684\u9673\u8FF0\u5F0F\u96C6\u5408\uFF08\u5176\u52D5\u614B\u8ECC\u8DE1\uFF09\u3002\n3. **\u9078\u64C7 `T_i`**\uFF0C\u82E5\u4E14\u552F\u82E5\u5176\u8ECC\u8DE1\u8207 `FS(s)` \u6709\u4EA4\u96C6\u3002\n\n\u9019\u662F*\u975C\u614B*\u7684\uFF0C\u56E0\u70BA\u5F71\u97FF\u96C6\u5408\u53EA\u9700\u6839\u64DA\u7A0B\u5F0F\u7D50\u69CB\u8A08\u7B97\u4E00\u6B21\uFF0C\u7136\u5F8C\u8207\u6BCF\u500B\u6E2C\u8A66\u7684\u5DF2\u8A18\u9304\u8ECC\u8DE1\u6BD4\u8F03\u3002\n\n**\u5B89\u5168\u6027\u4FDD\u8B49\uFF1A** \u5982\u679C `s` \u8655\u7684\u7DE8\u8F2F\u53EF\u80FD\u5F71\u97FF `T_i`\uFF0C\u5247 `T_i` \u57F7\u884C\u904E `FS(s)` \u4E2D\u7684\u67D0\u500B\u9673\u8FF0\u5F0F\uFF0C\u56E0\u6B64 `T_i` \u5FC5\u5B9A\u6703\u88AB\u9078\u4E2D\u3002\n\n**\u53D6\u6368\uFF1A** \u4EFB\u4F55\u6070\u597D\u57F7\u884C\u4E86 `FS(s)` \u4E2D\u67D0\u500B\u9673\u8FF0\u5F0F\u7684\u6E2C\u8A66\u90FD\u6703\u88AB\u9078\u4E2D\uFF0C\u5373\u4F7F\u5728\u90A3\u500B\u7279\u5B9A\u8F38\u5165\u4E0A\uFF0C\u8B8A\u66F4\u7684\u503C\u5BE6\u969B\u4E0A\u4E26\u672A\u6D41\u5411\u8A72\u6E2C\u8A66\u7684\u8F38\u51FA\u3002\n\n<!-- \u975C\u614B\u9078\u64C7\uFF08\u5C07\u8ECC\u8DE1\u8207\u524D\u5411\u5207\u7247\u5339\u914D\uFF09\u5C0D\u61C9\u65BC Rothermel \u8207 Harrold \u7684\u5B89\u5168\u975C\u614B RTS\u3002\u8ECC\u8DE1\u5FC5\u9808\u5F9E\u5148\u524D\u7684\u57F7\u884C\u4E2D\u4FDD\u5B58\u2014\u2014\u9019\u662F\u73FE\u4EE3 CI \u7CFB\u7D71\u81EA\u52D5\u7DAD\u8B77\u7684\u300C\u6E2C\u8A66\u6B77\u53F2\u300D\u6216\u300C\u8986\u84CB\u7387\u8A2D\u5B9A\u6A94\u300D\u3002Pytest-testmon \u548C Jest \u7684 --changedSince \u7B49\u5DE5\u5177\u5BE6\u4F5C\u4E86\u6B64\u60F3\u6CD5\u7684\u8B8A\u9AD4\u3002 -->\n\n---\n\n## \u52D5\u614B\u9078\u64C7 \u2014\u2014 \u7CBE\u78BA\u3001\u4ECD\u7136\u5B89\u5168\n\n\u975C\u614B\u9078\u64C7\u5728\u6E2C\u8A66*\u57F7\u884C\u904E* `FS(s)` \u4E2D\u67D0\u500B\u9673\u8FF0\u5F0F\u6642\u9078\u64C7\u8A72\u6E2C\u8A66\u3002\n\u4F46\u57F7\u884C `FS(s)` \u4E2D\u7684\u9673\u8FF0\u5F0F\u4E26\u4E0D\u610F\u5473\u8457\u5728\u90A3\u6B21\u57F7\u884C\u4E2D\uFF0C\u7DE8\u8F2F\u7684\u503C\u78BA\u5BE6*\u5230\u9054*\u4E86\u6E2C\u8A66\u7684\u8F38\u51FA\u3002\n\n**\u52D5\u614B\u9078\u64C7\u4F7F\u7528\u52D5\u614B\u5411\u5F8C\u5207\u7247\uFF1A**\n- \u6E2C\u8A66 `T_i` \u53D7\u5F71\u97FF\uFF0C\u82E5\u4E14\u552F\u82E5\u5DF2\u8B8A\u66F4\u9673\u8FF0\u5F0F `s` \u5728 `T_i` \u8F38\u51FA\u6E96\u5247\u7684**\u52D5\u614B\u5411\u5F8C\u5207\u7247**\u4E2D\u3002\n- \u52D5\u614B\u5207\u7247\u53EA\u5305\u542B\u503C\u6216\u63A7\u5236\u6C7A\u7B56\u78BA\u5BE6\u5728\u90A3\u6B21\u7279\u5B9A\u57F7\u884C\u4E2D\u6D41\u5411\u8F38\u51FA\u7684\u9673\u8FF0\u5F0F\u2014\u2014\u800C\u975E\u4EFB\u4F55\u5728\u7406\u8AD6\u4E0A\u53EF\u80FD\u5982\u6B64\u7684\u9673\u8FF0\u5F0F\u3002\n\n**\u7D50\u679C\uFF1A** \u52D5\u614B\u9078\u64C7\u662F\u975C\u614B\u9078\u64C7\u7684\u56B4\u683C\u5B50\u96C6\u3002\n\n$$\\text{\u52D5\u614B\u53D7\u5F71\u97FF} \\subseteq \\text{\u975C\u614B\u53D7\u5F71\u97FF}$$\n\n\u52D5\u614B\u9078\u64C7\u66F4\u7CBE\u78BA\uFF08\u91CD\u65B0\u57F7\u884C\u7684\u6E2C\u8A66\u66F4\u5C11\uFF09\uFF0C\u4F46\u6210\u672C\u66F4\u9AD8\uFF08\u9700\u8981\u5C0D\u6BCF\u689D\u8ECC\u8DE1\u8A08\u7B97\u52D5\u614B\u5207\u7247\uFF09\u3002\n\n<!-- \u52D5\u614B\u9078\u64C7\u7531 Agrawal \u7B49\u4EBA\uFF081993\uFF09\u7814\u7A76\uFF0C\u5F8C\u4F86\u5728\u7A0B\u5F0F\u76F8\u4F9D\u5716\u7684\u6846\u67B6\u4E0B\u88AB\u6B63\u5F0F\u5316\u3002\u52D5\u614B\u5411\u5F8C\u5207\u7247\u7684\u8A08\u7B97\u65B9\u5F0F\u8207\u7B2C 59 \u8B1B\uFF08\u7F3A\u9677\u5B9A\u4F4D\u8207\u5207\u4E01\uFF09\u76F8\u540C\uFF1A\u56DE\u653E\u8ECC\u8DE1\u3001\u8FFD\u8E64\u6D3B\u8E8D\u8CC7\u6599\u76F8\u4F9D\u908A\uFF0C\u4E26\u5728\u9650\u7E2E\u5230\u90A3\u4E9B\u6D3B\u8E8D\u908A\u7684 PDG \u4E0A\u505A\u9589\u5305\u904B\u7B97\u3002 -->\n\n---\n\n## \u5BE6\u4F5C\u7BC4\u4F8B \u2014\u2014 `classify`\n\n```javascript\nfunction classify(n) {\n  let label = "zero";       // s2\n  let sign = 0;             // s3  \u2190 \u5728\u6B64\u7DE8\u8F2F\n  if (n > 0) {              // s4\n    label = "positive";     // s5\n    sign = 1;               // s6\n  } else if (n < 0) {       // s7\n    label = "negative";     // s8\n    sign = -1;              // s9\n  }\n  return label;             // s11\n}\n```\n\n\u8F38\u51FA\u6E96\u5247\uFF1A`s11` \u8655\u7684 `label`\u3002\n**\u7DE8\u8F2F\uFF1A** \u8B8A\u66F4\u9673\u8FF0\u5F0F `s3`\uFF08`sign = 0`\uFF09\u3002\n\n\u8ECC\u8DE1\uFF1A`pos`\uFF08n=5\uFF09\u3001`neg`\uFF08n=\u22123\uFF09\u3001`zero`\uFF08n=0\uFF09\u3002\n\n<!-- classify \u51FD\u5F0F\u5728\u7B2C 58 \u8B1B\u5F15\u5165\uFF0C\u4E26\u5728\u7B2C 59\u300160 \u8B1B\u4E2D\u4F7F\u7528\u3002\u6B64\u8655\u7528\u65BC RTS\uFF1A\u7DE8\u8F2F\u4F4D\u65BC s3\uFF08sign = 0\uFF09\uFF0C\u8F38\u51FA\u70BA s11 \u8655\u7684 label\u3002sign \u8B8A\u6578\u6C92\u6709\u901A\u5F80 label \u7684\u8CC7\u6599\u6216\u63A7\u5236\u8DEF\u5F91\uFF0C\u9019\u5C07\u4F7F\u52D5\u614B\u7D50\u679C\u66F4\u5177\u6559\u5B78\u610F\u7FA9\u3002 -->\n\n---\n\n## \u5BE6\u4F5C\u7BC4\u4F8B \u2014\u2014 \u975C\u614B\u9078\u64C7\n\n**\u5F71\u97FF\u96C6\u5408**\uFF08`s3` \u7684\u524D\u5411\u5207\u7247\uFF09\uFF1A\u50C5 `{s3}`\u3002\n`sign` \u5F9E\u672A\u88AB\u7528\u65BC\u4EFB\u4F55\u5230\u9054 `label` \u7684\u8A08\u7B97\uFF0C\u4E5F\u4E0D\u63A7\u5236\u4EFB\u4F55\u8D85\u51FA\u5176\u73FE\u6709\u7BC4\u570D\u7684\u5206\u652F\u2014\u2014`s3` \u5728\u524D\u5411\u65B9\u5411\u4E0A\u6C92\u6709\u5F8C\u7E7C\u8005\u3002\n\n\u6BCF\u689D\u8ECC\u8DE1\u90FD\u57F7\u884C\u4E86 `s3`\uFF08\u5B83\u51FA\u73FE\u5728\u6BCF\u500B\u8F38\u5165\u7684\u57F7\u884C\u8DEF\u5F91\u4E0A\uFF09\uFF0C\u56E0\u6B64\u6BCF\u689D\u8ECC\u8DE1\u7684\u6B65\u9A5F\u90FD\u8207 `{s3}` \u6709\u4EA4\u96C6\u3002\n\n| \u8ECC\u8DE1 | \u57F7\u884C s3\uFF1F | \u975C\u614B\u5224\u5B9A |\n|---|---|---|\n| `pos`\uFF08n=5\uFF09 | \u662F | **\u91CD\u65B0\u57F7\u884C** |\n| `neg`\uFF08n=\u22123\uFF09 | \u662F | **\u91CD\u65B0\u57F7\u884C** |\n| `zero`\uFF08n=0\uFF09 | \u662F | **\u91CD\u65B0\u57F7\u884C** |\n\n**\u975C\u614B\uFF1A\u91CD\u65B0\u57F7\u884C\u5168\u90E8 3 / 3 \u500B\u6E2C\u8A66\uFF080 \u500B\u53EF\u5B89\u5168\u7565\u904E\uFF09\u3002**\n\n<!-- s3 \u5B9A\u7FA9\u4E86 `sign`\uFF0C\u4F46\u5728 classify \u7684 PDG \u4E2D\uFF0Csign \u6C92\u6709\u8CC7\u6599\u76F8\u4F9D\u5F8C\u7E7C\u8005\u2014\u2014\u5B83\u88AB\u5B9A\u7FA9\uFF08s3\u3001s6\u3001s9\uFF09\u4F46\u5F9E\u672A\u88AB\u7528\u65BC\u4EFB\u4F55\u5230\u9054\u8F38\u51FA\u7684\u8A08\u7B97\u3002\u56E0\u6B64 s3 \u5728 classify PDG \u4E0A\u7684\u524D\u5411\u5207\u7247\u53EA\u6709 {s3} \u672C\u8EAB\u2014\u2014\u6C92\u6709\u5F8C\u7E7C\u8005\u3002\u7136\u800C\u6BCF\u689D\u8ECC\u8DE1\u90FD\u57F7\u884C\u4E86 s3\uFF0C\u6240\u4EE5\u975C\u614B\u9078\u64C7\u5FC5\u9808\u4FDD\u5B88\u5730\u9078\u64C7\u6240\u6709\u4E09\u689D\u8ECC\u8DE1\u3002 -->\n\n---\n\n## \u5BE6\u4F5C\u7BC4\u4F8B \u2014\u2014 \u52D5\u614B\u9078\u64C7\n\n\u5C0D\u6BCF\u689D\u8ECC\u8DE1\uFF0C\u8A08\u7B97 `s11` \u8655 `label` \u7684**\u52D5\u614B\u5411\u5F8C\u5207\u7247**\u3002\n\u82E5 `s3` \u51FA\u73FE\u5728\u67D0\u689D\u8ECC\u8DE1\u7684\u52D5\u614B\u5411\u5F8C\u5207\u7247\u4E2D\uFF0C\u5247\u8A72\u8ECC\u8DE1\u53D7\u5F71\u97FF\u3002\n\n| \u8ECC\u8DE1 | label@s11 \u7684\u52D5\u614B\u5411\u5F8C\u5207\u7247 | \u5305\u542B s3\uFF1F | \u52D5\u614B\u5224\u5B9A |\n|---|---|---|---|\n| `pos` | s4, s5, s11 | \u5426 | **\u53EF\u5B89\u5168\u7565\u904E** |\n| `neg` | s4, s7, s8, s11 | \u5426 | **\u53EF\u5B89\u5168\u7565\u904E** |\n| `zero` | s2, s11 | \u5426 | **\u53EF\u5B89\u5168\u7565\u904E** |\n\n**\u52D5\u614B\uFF1A\u91CD\u65B0\u57F7\u884C 0 / 3 \u500B\u6E2C\u8A66\uFF08\u5168\u90E8 3 \u500B\u53EF\u5B89\u5168\u7565\u904E\uFF09\u3002**\n\n`s3` \u5F9E\u672A\u51FA\u73FE\u5728\u4EFB\u4F55\u8ECC\u8DE1\u7684\u52D5\u614B\u5411\u5F8C\u5207\u7247\u4E2D\uFF0C\u56E0\u70BA `sign` \u5728\u4EFB\u4F55\u57F7\u884C\u4E2D\u90FD\u5F9E\u672A\u6D41\u5411 `label`\u2014\u2014\u5728 `s3` \u5B9A\u7FA9\u7684\u503C\u6839\u672C\u6C92\u6709\u88AB\u7528\u65BC\u8F38\u51FA\u7684\u8A08\u7B97\u3002\n\n<!-- \u9019\u662F\u8207\u975C\u614B\u9078\u64C7\u7684\u95DC\u9375\u5C0D\u6BD4\uFF1A\u975C\u614B\u88AB\u8FEB\u9078\u64C7\u6240\u6709\u8ECC\u8DE1\uFF0C\u56E0\u70BA s3 \u51FA\u73FE\u5728\u6BCF\u689D\u8ECC\u8DE1\u7684\u57F7\u884C\u6B65\u9A5F\u4E2D\u3002\u52D5\u614B\u5247\u5BE9\u8996\u4EC0\u9EBC\u503C\u5BE6\u969B\u4E0A\u6D41\u5411\u4E86\u8F38\u51FA\uFF0C\u4E26\u6B63\u78BA\u8B58\u5225\u51FA sign \u5728\u4EFB\u4F55\u8F38\u5165\u4E0A\u90FD\u8207 label \u7121\u95DC\u3002\u7D50\u679C\uFF1A\u76F8\u8F03\u65BC\u975C\u614B\u7684 0 \u500B\u53EF\u8DF3\u904E\uFF0C\u52D5\u614B\u53EF\u8DF3\u904E 3 \u500B\u2014\u2014\u5C0D\u6B64\u6B21\u7DE8\u8F2F\u6E1B\u5C11\u4E86 100% \u7684\u6E2C\u8A66\u57F7\u884C\u91CF\u3002\u9019\u662F\u4E00\u500B\u975C\u614B\u904E\u9078\u64C7\u800C\u52D5\u614B\u7CBE\u78BA\u7684\u6E05\u6670\u6559\u5B78\u6848\u4F8B\u3002 -->\n\n---\n\n## \u975C\u614B vs \u52D5\u614B \u2014\u2014 \u6458\u8981\u6BD4\u8F03\n\n| \u5C6C\u6027 | \u975C\u614B | \u52D5\u614B |\n|---|---|---|\n| \u9078\u64C7\u6E96\u5247 | \u8ECC\u8DE1\u57F7\u884C\u4E86 `FS(s)` \u4E2D\u7684\u4EFB\u4F55\u9673\u8FF0\u5F0F | \u5DF2\u8B8A\u66F4\u9673\u8FF0\u5F0F\u5728\u8ECC\u8DE1\u7684\u52D5\u614B\u5411\u5F8C\u5207\u7247\u4E2D |\n| \u5B89\u5168\u6027 | \u6C38\u9060\u5B89\u5168\uFF08\u4FDD\u5B88\uFF09 | \u6C38\u9060\u5B89\u5168\uFF08\u7CBE\u78BA\uFF09 |\n| \u5047\u967D\u6027 | \u53EF\u80FD\u2014\u2014\u53EF\u80FD\u9078\u64C7\u672A\u53D7\u5F71\u97FF\u7684\u6E2C\u8A66 | \u7121\u2014\u2014\u53EA\u9078\u64C7\u771F\u6B63\u53D7\u5F71\u97FF\u7684\u6E2C\u8A66 |\n| `classify`\uFF08\u7DE8\u8F2F s3\uFF09 | 3/3 \u91CD\u65B0\u57F7\u884C | 0/3 \u91CD\u65B0\u57F7\u884C |\n| \u6210\u672C | \u4F4E\u2014\u2014\u53EA\u9700\u4E00\u6B21\u524D\u5411\u5207\u7247\u8A08\u7B97 | \u8F03\u9AD8\u2014\u2014\u9700\u8981\u5C0D\u6BCF\u689D\u8ECC\u8DE1\u8A08\u7B97\u52D5\u614B\u5207\u7247 |\n\n\u52D5\u614B\u53D7\u5F71\u97FF \u2286 \u975C\u614B\u53D7\u5F71\u97FF \u2286 \u6240\u6709\u6E2C\u8A66\u3002\n\n<!-- \u9019\u500B\u5C64\u6B21\u95DC\u4FC2\u5728\u4E00\u822C\u60C5\u6CC1\u4E0B\u662F\u56B4\u683C\u7684\uFF1A\u5B58\u5728\u4F7F\u52D5\u614B\u53D7\u5F71\u97FF\u96C6\u5408\u771F\u5305\u542B\u65BC\u975C\u614B\u53D7\u5F71\u97FF\u96C6\u5408\u7684\u7DE8\u8F2F\u8207\u7A0B\u5F0F\u3002classify/sign \u7BC4\u4F8B\u662F\u4E00\u500B\u6975\u7AEF\u6848\u4F8B\uFF08\u52D5\u614B\u96C6\u5408\u70BA\u7A7A\uFF09\u3002\u5728\u5BE6\u52D9\u4E2D\uFF0C\u7576\u7CBE\u78BA\u5EA6\u81F3\u95DC\u91CD\u8981\u4E14\u8ECC\u8DE1\u5132\u5B58\u53EF\u7528\u6642\uFF0C\u4F7F\u7528\u52D5\u614B RTS\uFF1B\u7576\u9078\u64C7\u901F\u5EA6\u512A\u5148\u6642\uFF0C\u4F7F\u7528\u975C\u614B RTS\u3002 -->\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u975C\u614B\u9078\u64C7\n\n![w:1000](./slide-assets/slice-regression-static.png)\n\n\u5728 `/section-slicing` \u958B\u555F**\u56DE\u6B78**\u5206\u9801\uFF08\u5207\u7247\u56DE\u6B78\u63A2\u7D22\u5668\uFF09\uFF1A\n\n1. \u9078\u53D6 `classify` \u5834\u666F\u3002\n   - \u5DE6\u5074\u986F\u793A\u5E36\u6709\u7576\u524D\u8F38\u51FA\u6E96\u5247\uFF08`s11` \u8655\u7684 `label`\uFF09\u7684 PDG\u3002\n2. \u9EDE\u64CA\u9673\u8FF0\u5F0F `s3`\uFF08`sign = 0`\uFF09\u4EE5\u6A19\u8A18\u70BA\u5DF2\u8B8A\u66F4\u7684\u9673\u8FF0\u5F0F\u3002\n   - \u524D\u5411\u5207\u7247\u5F71\u97FF\u96C6\u5408 `{s3}` \u88AB\u9AD8\u4EAE\u986F\u793A\u3002\n3. \u5207\u63DB\u81F3**\u975C\u614B**\u6A21\u5F0F\u2014\u2014\u4E09\u689D\u8ECC\u8DE1\uFF08`pos`\u3001`neg`\u3001`zero`\uFF09\u5168\u90E8\u6A19\u8A18\u70BA\u53D7\u5F71\u97FF\uFF08\u7D05\u8272\uFF09\u3002\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u52D5\u614B\u9078\u64C7\n\n![w:1000](./slide-assets/slice-regression-dynamic.png)\n\n4. \u5207\u63DB\u81F3**\u52D5\u614B**\u6A21\u5F0F\u2014\u2014\u4E09\u689D\u8ECC\u8DE1\u5168\u90E8\u6A19\u8A18\u70BA\u5B89\u5168\uFF08\u7DA0\u8272\uFF09\uFF1B\u6BCF\u689D\u8ECC\u8DE1\u7684\u52D5\u614B\u5411\u5F8C\u5207\u7247\u90FD\u4E0D\u5305\u542B `s3`\u3002\n5. \u5617\u8A66\u4E0D\u540C\u7684\u7DE8\u8F2F\uFF1A\u9EDE\u64CA `s2`\uFF08`label = "zero"`\uFF09\u2014\u2014\u89C0\u5BDF\u975C\u614B\u548C\u52D5\u614B\u73FE\u5728\u90FD\u9078\u64C7\u6240\u6709\u8ECC\u8DE1\uFF08\u56E0\u70BA `s2` \u51FA\u73FE\u5728\u6BCF\u689D\u8ECC\u8DE1\u7684 `label` \u52D5\u614B\u5411\u5F8C\u5207\u7247\u4E2D\uFF09\u3002\n\n<!-- \u5DE5\u5177\u540C\u6642\u8996\u89BA\u5316\u524D\u5411\u5207\u7247\u5F71\u97FF\u96C6\u5408\u8207\u6BCF\u689D\u8ECC\u8DE1\u7684\u52D5\u614B\u5411\u5F8C\u5207\u7247\u3002\u8272\u5F69\u7DE8\u78BC\uFF08\u7D05\u8272\uFF1D\u91CD\u65B0\u57F7\u884C\uFF0C\u7DA0\u8272\uFF1D\u7565\u904E\uFF09\u4F7F\u975C\u614B\u8207\u52D5\u614B\u7684\u53D6\u6368\u8B8A\u5F97\u5177\u9AD4\u53EF\u611F\u3002\u9F13\u52F5\u5B78\u751F\u5617\u8A66\u7DE8\u8F2F s5\u3001s7\u3001s8\uFF0C\u4EE5\u89C0\u5BDF\u52D5\u614B\u662F\u975C\u614B\u7684\u771F\u5B50\u96C6\u7684\u4E2D\u9593\u6848\u4F8B\u3002 -->\n\n---\n\n## \u5C0F\u7D50\n\n- \u6BCF\u6B21\u7DE8\u8F2F\u5F8C\uFF0C**\u56DE\u6B78\u6E2C\u8A66\u9078\u64C7\uFF08RTS\uFF09** \u8B58\u5225\u5FC5\u9808\u91CD\u65B0\u57F7\u884C\u7684\u6E2C\u8A66\u5B50\u96C6\u2014\u2014\u90A3\u4E9B\u7D50\u679C\u53EF\u80FD\u56E0\u7DE8\u8F2F\u800C\u6539\u8B8A\u7684\u6E2C\u8A66\u3002\n- \u4E00\u500B\u6280\u8853\u662F**\u5B89\u5168\u7684**\uFF0C\u82E5\u5B83\u5F9E\u4E0D\u7565\u904E\u771F\u6B63\u53D7\u5F71\u97FF\u7684\u6E2C\u8A66\uFF1B\u4FDD\u5B88\u6280\u8853\u53EF\u80FD\u904E\u5EA6\u9078\u64C7\u3002\n- \u5DF2\u8B8A\u66F4\u9673\u8FF0\u5F0F\u7684**\u524D\u5411\u5207\u7247**\u662F\u5F71\u97FF\u96C6\u5408\u2014\u2014\u6240\u6709\u901A\u904E\u8CC7\u6599\u76F8\u4F9D\u8207\u63A7\u5236\u76F8\u4F9D\u5F9E\u7DE8\u8F2F\u53EF\u5230\u9054\u7684\u9673\u8FF0\u5F0F\u3002\n- **\u975C\u614B\u9078\u64C7\uFF1A** \u82E5\u6E2C\u8A66\u7684\u5DF2\u8A18\u9304\u8ECC\u8DE1\u8207\u5F71\u97FF\u96C6\u5408\u6709\u4EA4\u96C6\uFF0C\u5247\u91CD\u65B0\u57F7\u884C\u3002\u6C38\u9060\u5B89\u5168\uFF1B\u53EF\u80FD\u904E\u9078\u64C7\u3002\n- **\u52D5\u614B\u9078\u64C7\uFF1A** \u53EA\u6709\u5728\u5DF2\u8B8A\u66F4\u9673\u8FF0\u5F0F\u51FA\u73FE\u5728\u8A72\u6E2C\u8A66\u5C0D\u8F38\u51FA\u7684\u52D5\u614B\u5411\u5F8C\u5207\u7247\u4E2D\u6642\uFF0C\u624D\u91CD\u65B0\u57F7\u884C\u3002\u7CBE\u78BA\uFF1B\u52D5\u614B\u53D7\u5F71\u97FF \u2286 \u975C\u614B\u53D7\u5F71\u97FF\u3002\n- \u9019\u5B8C\u6210\u4E86\u56DB\u7A2E\u5207\u7247\u5F0F\u6E2C\u8A66\u6280\u8853\uFF1A**\u7A0B\u5F0F\u5207\u7247**\uFF08#58\uFF09\u3001**\u7F3A\u9677\u5B9A\u4F4D\u8207\u5207\u4E01**\uFF08#59\uFF09\u3001**\u5207\u7247\u8986\u84CB**\uFF08#60\uFF09\u3001**\u56DE\u6B78\u6E2C\u8A66\u9078\u64C7**\uFF08#61\uFF09\u3002\n\n**\u8AB2\u5802\u7DF4\u7FD2\uFF1A** \u5C0D `classify` \u51FD\u5F0F\uFF0C\u627E\u51FA\u4E00\u500B\u975C\u614B\u8207\u52D5\u614B\u9078\u64C7\u76F8\u540C\u6E2C\u8A66\u96C6\u5408\u7684\u7DE8\u8F2F\uFF0C\u4EE5\u53CA\u4E00\u500B\u52D5\u614B\u56B4\u683C\u9078\u64C7\u66F4\u5C11\u6E2C\u8A66\u7684\u7DE8\u8F2F\u3002\n\n---\n\n## \u5EF6\u4F38\u95B1\u8B80\n\n- \u8AB2\u7A0B\u898F\u683C \u2014\u2014 \u56DE\u6B78\u9078\u64C7\u8A2D\u8A08\uFF08[2026-05-19-slicing-n4-regression-design.md](https://github.com/skhuang/stvisual/blob/main/docs/superpowers/specs/2026-05-19-slicing-n4-regression-design.md)\uFF09\n- Rothermel, G., & Harrold, M. J.\uFF081996\uFF09\u3002\u3008Analyzing regression test selection techniques\u3009\u3002*IEEE Transactions on Software Engineering*\uFF0C22(8)\uFF0C529\u2013551\u3002\n- Rothermel, G., & Harrold, M. J.\uFF081994\uFF09\u3002\u3008A framework for evaluating regression test selection techniques\u3009\u3002*Proceedings of ICSE 1994*\uFF0C201\u2013210\u3002\n- Agrawal, H., DeMillo, R. A., & Spafford, E. H.\uFF081993\uFF09\u3002\u3008Debugging with dynamic slicing and backtracking\u3009\u3002*Software: Practice and Experience*\uFF0C23(6)\uFF0C589\u2013616\u3002\n- Memon, A., \u7B49\u4EBA\uFF082017\uFF09\u3002\u3008Taming Google-scale continuous testing\u3009\u3002*Proceedings of ICSE 2017*\uFF0C1\u201310\u3002\n- \u5DE5\u5177\u539F\u59CB\u78BC\uFF1A[SliceRegressionExplorer.js](https://github.com/skhuang/stvisual/blob/main/src/components/SliceRegressionExplorer.js)\u3001[slicing.js](https://github.com/skhuang/stvisual/blob/main/src/utils/slicing.js)\n- \u4E0A\u4E00\u8B1B\uFF1A**#60 \u5207\u7247\u8986\u84CB** \u2014\u2014 \u4EE5\u5411\u5F8C\u5207\u7247\u70BA\u57FA\u6E96\u8861\u91CF\u8986\u84CB\u7387\n'
+    },
+    {
+      "id": "test-driven-development",
+      "num": 62,
+      "section": "tdd",
+      "titleEn": "Software Testing Visualization #62 \u2014 Test-Driven Development",
+      "titleZh": "\u8EDF\u9AD4\u6E2C\u8A66\u8996\u89BA\u5316 #62 \u2014 \u6E2C\u8A66\u9A45\u52D5\u958B\u767C",
+      "en": '---\nmarp: true\ntheme: default\npaginate: true\nsize: 16:9\ntitle: Software Testing Visualization #62 \u2014 Test-Driven Development\ndescription: Test-first discipline \u2014 the red-green-refactor micro-cycle, discipline rules, triangulation, the test list, and a step-by-step FizzBuzz kata walkthrough.\nlang: en\n---\n\n# Test-Driven Development\n### *Write the test first; let it drive the design*\n\nSoftware Testing Visualization series #62 \xB7 TDD\nCompanion tool: `/section-tdd` \u2192 Cycle tab ([TddCycleExplorer](https://github.com/skhuang/stvisual/blob/main/src/components/TddCycleExplorer.js)) \xB7 Rules tab ([TddRulesExplorer](https://github.com/skhuang/stvisual/blob/main/src/components/TddRulesExplorer.js))\n\n<!-- Opening deck of the TDD section. TDD is a programming discipline, not just a testing technique \u2014 the tests come first, which turns them from a verification activity into a design activity. The deck covers the micro-cycle, the three discipline rules, the test list, the "fake it" and triangulation moves, and a nine-step FizzBuzz kata that demonstrates each move concretely. -->\n\n---\n\n## Why test-first?\n\nIn the conventional order: write code \u2192 then write tests.\n\n**Test-Driven Development flips the order:** write a failing test \u2192 then write the code that makes it pass.\n\nThis is not merely a stylistic change. Writing the test first:\n\n- **Specifies behavior** before implementation \u2014 the test *is* the specification.\n- **Forces a usable API** \u2014 you call the function before it exists, so the interface must be clean enough to test.\n- **Creates a safety net instantly** \u2014 you never write code that is not covered by at least one test.\n- **Keeps steps small** \u2014 each cycle adds exactly one small behavior, making errors easy to locate.\n\n<!-- The "test as specification" idea is central to Beck\'s original formulation. When you write the test first you are forced to think about what the code should do, not how it does it. This design pressure is the main benefit that experienced TDD practitioners cite. The safety net benefit is real but secondary \u2014 TDD\'s primary payoff is better-designed, more modular code. -->\n\n---\n\n## The red-green-refactor micro-cycle\n\nTDD proceeds in a strict three-phase loop:\n\n**RED** \u2014 Write one small failing test.\n- Run the suite; watch it fail (confirms the test is actually testing something).\n- Check that it fails *for the right reason* \u2014 a wrong error message is a warning sign.\n\n**GREEN** \u2014 Write the *minimal* code to make the test pass.\n- "Fake it" is allowed: `return "1"` passes `fizzbuzz(1) === "1"` and that is fine.\n- Do not add logic that is not yet demanded by a failing test.\n\n**REFACTOR** \u2014 Improve the code while keeping the suite green.\n- Remove duplication, rename, clarify structure.\n- No new behavior \u2014 stay green throughout.\n- Only safe to do because the test suite is your safety net.\n\nThe cycle time is typically seconds to minutes, not hours.\n\n<!-- Beck calls this the "red bar / green bar" rhythm. The physical metaphor \u2014 a progress bar in the test runner \u2014 is intentional. Red is danger; green is safe. The discipline of running the suite after every small edit is what makes the safety net real. Refactoring on red (broken tests) is forbidden \u2014 you cannot safely restructure code when you do not know which failures are pre-existing and which you just introduced. -->\n\n---\n\n## The three discipline rules\n\nRobert Martin distilled TDD into three rules that prevent the cycle from being circumvented:\n\n1. **No production code without a failing test.**\n   You may not write any implementation code unless you first have a test that fails because that code does not exist.\n\n2. **Write only enough test to have one failing test.**\n   A single assertion failing is enough. Do not write the next test yet.\n\n3. **Write only enough production code to pass the failing test.**\n   Stop as soon as the suite turns green. Do not write code for the next behavior yet.\n\nThese rules keep steps tiny and ensure that every line of production code is traceable to a failing test that demanded it.\n\n<!-- Martin\'s three rules appear in "The Three Rules of TDD" (Uncle Bob, 2014) and are also stated in "Clean Code". They are deliberately extreme \u2014 the intention is to make the ideal explicit, not to mandate that every keystroke be preceded by a failing test. In practice teams find a rhythm where the rules are followed at the level of "each small behavior", not "each line". The key invariant is: the suite is never broken for more than a minute or two. -->\n\n---\n\n## "Fake it till you make it" and triangulation\n\n**Fake it:** the minimal green code is often a hardcoded constant.\n\n```javascript\n// Test: fizzbuzz(1) === "1"\nfunction fizzbuzz(n) { return "1"; }   // fake \u2014 passes the one test\n```\n\nThis is legal. The rule says "write minimal code to pass the failing test." A constant is minimal.\n\n**Triangulation:** a second test with a different input *forces generalisation*.\n\n```javascript\n// Add test: fizzbuzz(3) === "Fizz"\n// Now return "1" fails. Must generalise:\nfunction fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  return String(n);                   // generalised \u2014 "1" was never correct for all n\n}\n```\n\nThe word "triangulation" comes from surveying: two fixed points fix a third. Two concrete test cases fix the general algorithm.\n\n<!-- Faking and triangulation are two of the three strategies Beck lists for getting to green (the third is "obvious implementation" \u2014 when the correct code is so clear that writing a fake would be silly). The pedagogical value of starting with a fake is that it separates the concern of "does the test work?" from "is the implementation correct?" Once the test infrastructure is confirmed working, the second test drives the real logic. -->\n\n---\n\n## The test list\n\nBefore starting any kata or feature, write a **test list** \u2014 a bullet list of behaviors to test:\n\n```\nfizzbuzz test list (initial):\n  - fizzbuzz(1)  \u2192 "1"      (plain number)\n  - fizzbuzz(3)  \u2192 "Fizz"   (multiple of 3)\n  - fizzbuzz(5)  \u2192 "Buzz"   (multiple of 5)\n  - fizzbuzz(15) \u2192 "FizzBuzz" (multiple of both)\n```\n\nRules for the test list:\n- It is not exhaustive upfront \u2014 you add to it as you discover new cases.\n- You pick one item, write that test, cycle through red-green-refactor, cross it off.\n- New tests you think of mid-cycle go on the list, not into the running code.\n- The list **grows and shrinks** \u2014 it is a living document, not a contract.\n\nThe test list keeps you focused: you always know what you are testing next and what is waiting.\n\n<!-- Beck\'s test list is one of the underappreciated insights of TDD by Example. It solves the "blank page" problem \u2014 before writing any code you have a plan. It also prevents mid-cycle distraction: when a new edge case occurs to you during a red-green cycle, you note it and keep going rather than context-switching. The list is usually a comment or sticky note, not a formal document. -->\n\n---\n\n## Worked example \u2014 FizzBuzz kata (steps 1\u20134)\n\n**Test list:** plain number \xB7 Fizz \xB7 Buzz \xB7 FizzBuzz.\n\n**s1 RED** \u2014 Add test `fizzbuzz(1) === "1"`. Suite: 0 passing, 1 failing.\nNo implementation yet: `code = \'\'`.\n\n**s2 GREEN** \u2014 Fake it:\n```javascript\nfunction fizzbuzz(n) { return "1"; }\n```\nSuite: 1 passing, 0 failing.\n\n**s3 RED** \u2014 Add test `fizzbuzz(3) === "Fizz"`. Suite: 1 passing, 1 failing.\nThe fake `"1"` still runs; the new test fails.\n\n**s4 GREEN** \u2014 Triangulate: a second test forces `String(n)`:\n```javascript\nfunction fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  return String(n);\n}\n```\nSuite: 2 passing, 0 failing. The `"1"` fake is now gone \u2014 `String(1)` gives `"1"`.\n\n<!-- s1\u2013s4 demonstrate the fake-it \u2192 triangulate pattern in its purest form. The key observation at s4: the triangulation move replaces the constant "1" with String(n), which is the correct general answer for non-multiples. We know String(n) is correct not because we reasoned about all inputs, but because the second test forced us off the constant. This is the discipline: let the tests drive the design. -->\n\n---\n\n## Worked example \u2014 FizzBuzz kata (steps 5\u20139)\n\n**s5 RED** \u2014 Add test `fizzbuzz(5) === "Buzz"`. Suite: 2 passing, 1 failing.\n\n**s6 GREEN** \u2014 Add Buzz branch:\n```javascript\nfunction fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  if (n % 5 === 0) return "Buzz";\n  return String(n);\n}\n```\nSuite: 3 passing, 0 failing.\n\n**s7 RED** \u2014 Add test `fizzbuzz(15) === "FizzBuzz"`. Suite: 3 passing, 1 failing.\nThe current code returns `"Fizz"` for 15 (the `%3` branch fires first).\n\n**s8 GREEN** \u2014 The `%15` branch must come first (ordering matters):\n```javascript\nfunction fizzbuzz(n) {\n  if (n % 15 === 0) return "FizzBuzz";\n  if (n % 3 === 0) return "Fizz";\n  if (n % 5 === 0) return "Buzz";\n  return String(n);\n}\n```\nSuite: 4 passing, 0 failing.\n\n**s9 REFACTOR** \u2014 Eliminate the separate `%15` check; express FizzBuzz as concatenation:\n```javascript\nfunction fizzbuzz(n) {\n  const fizz = n % 3 === 0 ? "Fizz" : "";\n  const buzz = n % 5 === 0 ? "Buzz" : "";\n  return (fizz + buzz) || String(n);\n}\n```\nSuite stays green: 4 passing, 0 failing. The `%15` case works for free: `"Fizz" + "Buzz" = "FizzBuzz"`.\n\n<!-- s7\u2013s9 show why ordering of branches in if-chains matters during the green phase, and how a refactor step can remove the need for the ordering constraint entirely. The refactored form is more general: it handles any combination of Fizz and Buzz without a special case. The suite being fully green at s8 makes the refactor safe \u2014 the tests will catch any mistake. -->\n\n---\n\n## TDD vs test-after\n\n| Property | Test-After | Test-Driven Development |\n|---|---|---|\n| Test timing | After implementation | Before implementation |\n| Tests as specification | No \u2014 code already exists | Yes \u2014 test *defines* desired behavior |\n| Design pressure | None \u2014 interface is already fixed | High \u2014 bad interfaces are painful to test |\n| Coverage guarantee | Dependent on discipline | Structural \u2014 every line has a test that demanded it |\n| Safety net availability | After a large batch of code | After every small step |\n| Refactoring safety | Risky if tests are thin | Built-in \u2014 suite is always runnable |\n\n**What test-first buys:** design pressure, always-runnable suite, small provable steps.\n**What it costs:** discipline, initial unfamiliarity, slightly slower on obvious code.\n\n<!-- The comparison is not meant to demonize test-after \u2014 well-written test-after tests are far better than no tests. The point is that test-first provides structural guarantees that test-after cannot: if you followed the three rules, coverage is 100% by construction, because no line of production code exists without a failing test that demanded it. This is a stronger claim than "we wrote tests for everything we could think of after the fact." -->\n\n---\n\n## Tool demonstration \u2014 Cycle tab \xB7 start\n\n<!-- The Cycle tab is designed so that students can pause at each step and predict the outcome before advancing. The phase color coding (red background / green background / yellow for refactor) makes the rhythm visceral. The test list panel shows items being added and crossed off in real time. Encourage students to use the kata as a template for their own TDD sessions. -->\n\nIn `/section-tdd`, open the **Cycle** tab (TDD Cycle Explorer).\n\n![w:1000](./slide-assets/tdd-cycle-fb-start-en.png)\n\nSelect the **FizzBuzz** kata from the kata picker. The test list panel shows the initial failing test (`fizzbuzz(1) === "1"`) and the phase indicator shows **RED** \u2014 no production code exists yet.\n\n---\n\n## Tool demonstration \u2014 Cycle tab \xB7 fake it\n\n![w:1000](./slide-assets/tdd-cycle-fb-fake-en.png)\n\nAfter adding the next test (`fizzbuzz(3) === "Fizz"`), the fake `return "1"` still passes the first test but fails the second \u2014 phase is back to **RED**, suite shows 1 passing, 1 failing.\n\n---\n\n## Tool demonstration \u2014 Cycle tab \xB7 triangulate\n\n![w:1000](./slide-assets/tdd-cycle-fb-triangulate-en.png)\n\nThe second test forces generalisation: `return "1"` is replaced by `String(n)` with the Fizz branch added \u2014 the s3 \u2192 s4 triangulation move. Both tests pass; phase returns to **GREEN**.\n\n---\n\n## Tool demonstration \u2014 Cycle tab \xB7 refactor\n\n![w:1000](./slide-assets/tdd-cycle-fb-refactor-en.png)\n\nContinue stepping through s5\u2013s9 \u2014 observe phase transitions: RED \u2192 GREEN \u2192 RED \u2192 GREEN \u2192 REFACTOR.\n\nAt each RED step, **predict** which test will fail before clicking Next \u2014 check your prediction against the suite counter.\n\n---\n\n## Tool demonstration \u2014 Cycle tab \xB7 different kata\n\n![w:1000](./slide-assets/tdd-cycle-stack-start-en.png)\n\nSwitch to the **Stack** kata and repeat \u2014 notice how isEmpty/push/pop are introduced one behavior at a time, following the same red-green-refactor rhythm.\n\n---\n\n## Tool demonstration \u2014 Rules tab \xB7 Rule 1\n\n<!-- The Rules tab gives students a way to experience the discipline by attempting to break it and seeing the guard rail activate. This is more memorable than reading the rules. The key insight students report: Rule 3 ("write only enough code") is the hardest to follow \u2014 the temptation to write the "obvious" next piece of code is strong, but the rule says to stop at green. -->\n\nIn `/section-tdd`, open the **Rules** tab (TDD Rules Explorer).\n\n![w:1000](./slide-assets/tdd-rules-block-r1-en.png)\n\nThe explorer shows the three TDD rules and a simulated code editor. Try **writing production code** when the suite is green and no failing test exists \u2014 the tool blocks the action and highlights **Rule 1**: "no production code without a failing test." Rule 2 fires similarly if you try to add a second failing test before the first passes.\n\n---\n\n## Tool demonstration \u2014 Rules tab \xB7 Rule 3\n\n![w:1000](./slide-assets/tdd-rules-block-r3-en.png)\n\nWith one failing test, try to **refactor** \u2014 the tool blocks with "A test is failing \u2014 get to GREEN before refactoring", a discipline cousin of **Rule 3**. Rule 3 itself says "write only enough production code to pass the failing test"; the engine generalises that principle: any work not demanded by the failing test \u2014 including a refactor \u2014 is premature. You must reach green before restructuring code.\n\n---\n\n## Tool demonstration \u2014 Rules tab \xB7 clean cycle\n\n![w:1000](./slide-assets/tdd-rules-cycle-done-en.png)\n\nFollow all three rules through a complete red-green-refactor cycle \u2014 observe that the suite stays clean throughout and the cycleCount advances to 1.\n\n---\n\n## Summary\n\n- **Test-Driven Development** reverses the conventional order: write a failing test first, then write the minimal code to pass it, then refactor \u2014 repeat.\n- The **red-green-refactor** micro-cycle keeps steps tiny and makes every line of code traceable to a failing test.\n- The **three rules** enforce the cycle: no production code without a failing test; one failing test at a time; minimal code to pass it.\n- **Fake it till you make it** \u2014 a hardcoded constant is a valid first green; the next test (triangulation) forces generalisation.\n- The **test list** is a living inventory of behaviors to test: you pick one, cycle, cross it off, and add new cases as you discover them.\n- The **FizzBuzz kata** demonstrates all nine moves: s1 red / s2 fake green / s3 red / s4 triangulate green / s5 red / s6 green / s7 red / s8 green (ordering matters) / s9 refactor.\n- **What test-first buys:** design pressure, structural coverage, always-runnable suite, small provable steps.\n\n**In-class exercise:** complete the Stack kata from the test list (isEmpty, push, pop, size) using strict TDD. Record each step: what test you added, what code you wrote, whether you faked it or used obvious implementation.\n\n---\n\n## Further reading\n\n- Course specification \u2014 TDD visualization design ([2026-05-19-tdd-visualization-design.md](https://github.com/skhuang/stvisual/blob/main/docs/superpowers/specs/2026-05-19-tdd-visualization-design.md))\n- Beck, K. (2002). *Test-Driven Development: By Example*. Addison-Wesley. \u2014 The canonical reference; introduces TDD through the Money (currency conversion) and xUnit (test framework) examples.\n- Martin, R. C. (2014). "The Three Rules of TDD." \u2014 Concise formulation of the three discipline rules.\n- Tool source: [TddCycleExplorer.js](https://github.com/skhuang/stvisual/blob/main/src/components/TddCycleExplorer.js), [TddRulesExplorer.js](https://github.com/skhuang/stvisual/blob/main/src/components/TddRulesExplorer.js), [tddKatas.js](https://github.com/skhuang/stvisual/blob/main/src/data/tddKatas.js)\n- FizzBuzz kata data: [tddKatas.js](https://github.com/skhuang/stvisual/blob/main/src/data/tddKatas.js) \u2014 9 steps, each a full snapshot of phase, test list, code, and suite state.\n- Stack kata data: [tddKatas.js](https://github.com/skhuang/stvisual/blob/main/src/data/tddKatas.js) \u2014 7 steps covering isEmpty, push, pop, refactor to size().\n- Next in series: future decks in the TDD section.\n',
+      "zh": '---\nmarp: true\ntheme: default\npaginate: true\nsize: 16:9\ntitle: \u8EDF\u9AD4\u6E2C\u8A66\u8996\u89BA\u5316 #62 \u2014 \u6E2C\u8A66\u9A45\u52D5\u958B\u767C\ndescription: \u5148\u5BEB\u6E2C\u8A66\u7684\u7D00\u5F8B\u2014\u2014\u7D05\u71C8\uFF0F\u7DA0\u71C8\uFF0F\u91CD\u69CB\u5FAE\u5FAA\u74B0\u3001\u898F\u5247\u3001\u4E09\u89D2\u6E2C\u91CF\u3001\u6E2C\u8A66\u6E05\u55AE\uFF0C\u4EE5\u53CA\u9010\u6B65\u7684 FizzBuzz kata \u793A\u7BC4\u3002\nlang: zh-TW\n---\n\n# \u6E2C\u8A66\u9A45\u52D5\u958B\u767C\n### *\u5148\u5BEB\u6E2C\u8A66\uFF0C\u8B93\u6E2C\u8A66\u5F15\u5C0E\u8A2D\u8A08*\n\n\u8EDF\u9AD4\u6E2C\u8A66\u8996\u89BA\u5316\u7CFB\u5217 #62 \xB7 TDD\n\u642D\u914D\u5DE5\u5177\uFF1A`/section-tdd` \u2192 \u5FAA\u74B0\u5206\u9801\uFF08[TddCycleExplorer](https://github.com/skhuang/stvisual/blob/main/src/components/TddCycleExplorer.js)\uFF09\xB7 \u898F\u5247\u5206\u9801\uFF08[TddRulesExplorer](https://github.com/skhuang/stvisual/blob/main/src/components/TddRulesExplorer.js)\uFF09\n\n<!-- TDD \u7AE0\u7BC0\u7684\u7B2C\u4E00\u8B1B\u3002TDD \u662F\u4E00\u7A2E\u7A0B\u5F0F\u8A2D\u8A08\u7D00\u5F8B\uFF0C\u4E0D\u50C5\u50C5\u662F\u6E2C\u8A66\u6280\u8853\u2014\u2014\u6E2C\u8A66\u5148\u884C\uFF0C\u4F7F\u6E2C\u8A66\u5F9E\u9A57\u8B49\u6D3B\u52D5\u8F49\u8B8A\u70BA\u8A2D\u8A08\u6D3B\u52D5\u3002\u672C\u8B1B\u6DB5\u84CB\u5FAE\u5FAA\u74B0\u3001\u4E09\u689D\u7D00\u5F8B\u898F\u5247\u3001\u6E2C\u8A66\u6E05\u55AE\u3001\u5047\u5BE6\u4F5C\u8207\u4E09\u89D2\u6E2C\u91CF\uFF0C\u4EE5\u53CA\u5177\u9AD4\u5C55\u793A\u6BCF\u500B\u6B65\u9A5F\u7684\u4E5D\u6B65 FizzBuzz kata\u3002 -->\n\n---\n\n## \u70BA\u4EC0\u9EBC\u8981\u5148\u5BEB\u6E2C\u8A66\uFF1F\n\n\u50B3\u7D71\u9806\u5E8F\uFF1A\u5BEB\u7A0B\u5F0F\u78BC \u2192 \u518D\u5BEB\u6E2C\u8A66\u3002\n\n**\u6E2C\u8A66\u9A45\u52D5\u958B\u767C\u985B\u8986\u4E86\u9019\u500B\u9806\u5E8F\uFF1A** \u5148\u5BEB\u4E00\u500B\u5931\u6557\u7684\u6E2C\u8A66 \u2192 \u518D\u5BEB\u8B93\u5B83\u901A\u904E\u7684\u7A0B\u5F0F\u78BC\u3002\n\n\u9019\u4E0D\u53EA\u662F\u98A8\u683C\u4E0A\u7684\u6539\u8B8A\u3002\u5148\u5BEB\u6E2C\u8A66\u80FD\uFF1A\n\n- **\u5728\u5BE6\u4F5C\u524D\u898F\u683C\u5316\u884C\u70BA** \u2500\u2500 \u6E2C\u8A66*\u672C\u8EAB\u5C31\u662F*\u898F\u683C\u3002\n- **\u5F37\u5236\u8A2D\u8A08\u51FA\u53EF\u7528\u7684 API** \u2500\u2500 \u4F60\u5728\u51FD\u5F0F\u5B58\u5728\u4E4B\u524D\u5C31\u547C\u53EB\u5B83\uFF0C\u4ECB\u9762\u5FC5\u9808\u4E7E\u6DE8\u5230\u8DB3\u4EE5\u6E2C\u8A66\u3002\n- **\u7ACB\u5373\u5EFA\u7ACB\u5B89\u5168\u7DB2** \u2500\u2500 \u4F60\u6C38\u9060\u4E0D\u6703\u5BEB\u51FA\u6C92\u6709\u4EFB\u4F55\u6E2C\u8A66\u8986\u84CB\u7684\u7A0B\u5F0F\u78BC\u3002\n- **\u4FDD\u6301\u6B65\u9A5F\u5FAE\u5C0F** \u2500\u2500 \u6BCF\u500B\u5FAA\u74B0\u53EA\u65B0\u589E\u4E00\u500B\u5C0F\u884C\u70BA\uFF0C\u932F\u8AA4\u5F88\u5BB9\u6613\u5B9A\u4F4D\u3002\n\n<!-- \u300C\u6E2C\u8A66\u5373\u898F\u683C\u300D\u7684\u6982\u5FF5\u662F Beck \u539F\u59CB\u8AD6\u8FF0\u7684\u6838\u5FC3\u3002\u7576\u4F60\u5148\u5BEB\u6E2C\u8A66\u6642\uFF0C\u4F60\u88AB\u8FEB\u601D\u8003\u7A0B\u5F0F\u78BC\u61C9\u8A72\u505A\u4EC0\u9EBC\uFF0C\u800C\u4E0D\u662F\u600E\u9EBC\u505A\u3002\u9019\u7A2E\u8A2D\u8A08\u58D3\u529B\u662F\u6709\u7D93\u9A57\u7684 TDD \u5BE6\u8E10\u8005\u6240\u5F15\u7528\u7684\u4E3B\u8981\u512A\u9EDE\u3002\u5B89\u5168\u7DB2\u7684\u597D\u8655\u662F\u771F\u5BE6\u7684\uFF0C\u4F46\u662F\u6B21\u8981\u7684\u2014\u2014TDD \u7684\u4E3B\u8981\u56DE\u5831\u662F\u8A2D\u8A08\u66F4\u597D\u3001\u66F4\u6A21\u7D44\u5316\u7684\u7A0B\u5F0F\u78BC\u3002 -->\n\n---\n\n## \u7D05\u71C8\uFF0F\u7DA0\u71C8\uFF0F\u91CD\u69CB\u5FAE\u5FAA\u74B0\n\nTDD \u4EE5\u56B4\u683C\u7684\u4E09\u968E\u6BB5\u8FF4\u5708\u9032\u884C\uFF1A\n\n**\u7D05\u71C8** \u2500\u2500 \u5BEB\u4E00\u500B\u5C0F\u7684\u5931\u6557\u6E2C\u8A66\u3002\n- \u57F7\u884C\u6E2C\u8A66\u5957\u4EF6\uFF1B\u770B\u5B83\u5931\u6557\uFF08\u78BA\u8A8D\u6E2C\u8A66\u78BA\u5BE6\u5728\u6E2C\u8A66\u67D0\u4E9B\u6771\u897F\uFF09\u3002\n- \u78BA\u8A8D\u5B83\u56E0\u70BA*\u6B63\u78BA\u7684\u539F\u56E0*\u5931\u6557\u2014\u2014\u932F\u8AA4\u7684\u932F\u8AA4\u8A0A\u606F\u662F\u8B66\u793A\u8A0A\u865F\u3002\n\n**\u7DA0\u71C8** \u2500\u2500 \u5BEB*\u6700\u5C11*\u7684\u7A0B\u5F0F\u78BC\u4F7F\u6E2C\u8A66\u901A\u904E\u3002\n- \u5141\u8A31\u300C\u5047\u5BE6\u4F5C\u300D\uFF1A`return "1"` \u80FD\u901A\u904E `fizzbuzz(1) === "1"`\uFF0C\u9019\u662F\u53EF\u4EE5\u7684\u3002\n- \u4E0D\u8981\u65B0\u589E\u5931\u6557\u6E2C\u8A66\u5C1A\u672A\u8981\u6C42\u7684\u908F\u8F2F\u3002\n\n**\u91CD\u69CB** \u2500\u2500 \u5728\u4FDD\u6301\u6E2C\u8A66\u5957\u4EF6\u70BA\u7DA0\u71C8\u7684\u60C5\u6CC1\u4E0B\u6539\u5584\u7A0B\u5F0F\u78BC\u3002\n- \u79FB\u9664\u91CD\u8907\u3001\u91CD\u65B0\u547D\u540D\u3001\u91D0\u6E05\u7D50\u69CB\u3002\n- \u4E0D\u65B0\u589E\u884C\u70BA\u2014\u2014\u5168\u7A0B\u4FDD\u6301\u7DA0\u71C8\u3002\n- \u53EA\u6709\u56E0\u70BA\u6E2C\u8A66\u5957\u4EF6\u662F\u4F60\u7684\u5B89\u5168\u7DB2\uFF0C\u624D\u53EF\u4EE5\u5B89\u5168\u5730\u9019\u6A23\u505A\u3002\n\n\u5FAA\u74B0\u6642\u9593\u901A\u5E38\u662F\u5E7E\u79D2\u5230\u5E7E\u5206\u9418\uFF0C\u800C\u4E0D\u662F\u5E7E\u5C0F\u6642\u3002\n\n<!-- Beck \u7A31\u4E4B\u70BA\u300C\u7D05\u8272\u689D\uFF0F\u7DA0\u8272\u689D\u300D\u7684\u7BC0\u594F\u3002\u5BE6\u9AD4\u7684\u6BD4\u55BB\u2014\u2014\u6E2C\u8A66\u57F7\u884C\u5668\u4E2D\u7684\u9032\u5EA6\u689D\u2014\u2014\u662F\u523B\u610F\u7684\u3002\u7D05\u8272\u4EE3\u8868\u5371\u96AA\uFF1B\u7DA0\u8272\u4EE3\u8868\u5B89\u5168\u3002\u6BCF\u6B21\u5C0F\u5E45\u7DE8\u8F2F\u5F8C\u57F7\u884C\u6E2C\u8A66\u5957\u4EF6\u7684\u7D00\u5F8B\uFF0C\u662F\u8B93\u5B89\u5168\u7DB2\u771F\u6B63\u767C\u63EE\u4F5C\u7528\u7684\u95DC\u9375\u3002\u5728\u7D05\u71C8\uFF08\u6E2C\u8A66\u5931\u6557\uFF09\u6642\u91CD\u69CB\u662F\u7981\u6B62\u7684\u2014\u2014\u7576\u4F60\u4E0D\u77E5\u9053\u54EA\u4E9B\u5931\u6557\u662F\u9810\u5148\u5B58\u5728\u7684\u3001\u54EA\u4E9B\u662F\u4F60\u525B\u525B\u5F15\u5165\u7684\uFF0C\u5C31\u7121\u6CD5\u5B89\u5168\u5730\u91CD\u69CB\u7A0B\u5F0F\u78BC\u3002 -->\n\n---\n\n## \u4E09\u689D\u7D00\u5F8B\u898F\u5247\n\nRobert Martin \u5C07 TDD \u63D0\u7149\u70BA\u4E09\u689D\u898F\u5247\uFF0C\u9632\u6B62\u5FAA\u74B0\u88AB\u898F\u907F\uFF1A\n\n1. **\u6C92\u6709\u5931\u6557\u6E2C\u8A66\uFF0C\u4E0D\u5BEB\u4EFB\u4F55\u751F\u7522\u7A0B\u5F0F\u78BC\u3002**\n   \u9664\u975E\u4F60\u5148\u6709\u4E00\u500B\u56E0\u70BA\u7A0B\u5F0F\u78BC\u4E0D\u5B58\u5728\u800C\u5931\u6557\u7684\u6E2C\u8A66\uFF0C\u5426\u5247\u4F60\u4E0D\u80FD\u5BEB\u4EFB\u4F55\u5BE6\u4F5C\u7A0B\u5F0F\u78BC\u3002\n\n2. **\u53EA\u5BEB\u525B\u597D\u8B93\u4E00\u500B\u6E2C\u8A66\u5931\u6557\u7684\u6E2C\u8A66\u7A0B\u5F0F\u78BC\u3002**\n   \u4E00\u500B\u65B7\u8A00\u5931\u6557\u5C31\u5920\u4E86\u3002\u9084\u4E0D\u8981\u5BEB\u4E0B\u4E00\u500B\u6E2C\u8A66\u3002\n\n3. **\u53EA\u5BEB\u525B\u597D\u8B93\u5931\u6557\u6E2C\u8A66\u901A\u904E\u7684\u751F\u7522\u7A0B\u5F0F\u78BC\u3002**\n   \u4E00\u65E6\u6E2C\u8A66\u5957\u4EF6\u8B8A\u70BA\u7DA0\u71C8\u5C31\u505C\u4E0B\u4F86\u3002\u9084\u4E0D\u8981\u70BA\u4E0B\u4E00\u500B\u884C\u70BA\u5BEB\u7A0B\u5F0F\u78BC\u3002\n\n\u9019\u4E9B\u898F\u5247\u4FDD\u6301\u6B65\u9A5F\u5FAE\u5C0F\uFF0C\u4E26\u78BA\u4FDD\u6BCF\u4E00\u884C\u751F\u7522\u7A0B\u5F0F\u78BC\u90FD\u53EF\u8FFD\u6EAF\u5230\u4E00\u500B\u8981\u6C42\u5B83\u7684\u5931\u6557\u6E2C\u8A66\u3002\n\n<!-- Martin \u7684\u4E09\u689D\u898F\u5247\u51FA\u73FE\u5728\u300CThe Three Rules of TDD\u300D\uFF08Uncle Bob\uFF0C2014\uFF09\u548C\u300CClean Code\u300D\u4E2D\u3002\u5B83\u5011\u523B\u610F\u6975\u7AEF\u2014\u2014\u76EE\u7684\u662F\u8B93\u7406\u60F3\u72C0\u614B\u660E\u78BA\uFF0C\u800C\u4E0D\u662F\u8981\u6C42\u6BCF\u6B21\u6309\u9375\u4E4B\u524D\u90FD\u8981\u6709\u4E00\u500B\u5931\u6557\u6E2C\u8A66\u3002\u5728\u5BE6\u8E10\u4E2D\uFF0C\u5718\u968A\u627E\u5230\u4E86\u4E00\u7A2E\u7BC0\u594F\uFF0C\u898F\u5247\u5728\u300C\u6BCF\u500B\u5C0F\u884C\u70BA\u300D\u5C64\u9762\u88AB\u9075\u5FAA\uFF0C\u800C\u4E0D\u662F\u300C\u6BCF\u4E00\u884C\u300D\u3002\u95DC\u9375\u4E0D\u8B8A\u91CF\u662F\uFF1A\u6E2C\u8A66\u5957\u4EF6\u4E0D\u80FD\u5728\u4E00\u5169\u5206\u9418\u4EE5\u4E0A\u7684\u6642\u9593\u8655\u65BC\u7834\u640D\u72C0\u614B\u3002 -->\n\n---\n\n## \u5047\u5BE6\u4F5C\u8207\u4E09\u89D2\u6E2C\u91CF\n\n**\u5047\u5BE6\u4F5C\uFF1A** \u6700\u5C11\u7684\u7DA0\u71C8\u7A0B\u5F0F\u78BC\u901A\u5E38\u662F\u4E00\u500B\u786C\u7DE8\u78BC\u7684\u5E38\u6578\u3002\n\n```javascript\n// \u6E2C\u8A66\uFF1Afizzbuzz(1) === "1"\nfunction fizzbuzz(n) { return "1"; }   // \u5047\u5BE6\u4F5C\u2014\u2014\u901A\u904E\u9019\u4E00\u500B\u6E2C\u8A66\n```\n\n\u9019\u662F\u5408\u6CD5\u7684\u3002\u898F\u5247\u8AAA\u300C\u5BEB\u6700\u5C11\u7684\u7A0B\u5F0F\u78BC\u901A\u904E\u5931\u6557\u7684\u6E2C\u8A66\u300D\u3002\u5E38\u6578\u5C31\u662F\u6700\u5C11\u7684\u3002\n\n**\u4E09\u89D2\u6E2C\u91CF\uFF1A** \u5177\u6709\u4E0D\u540C\u8F38\u5165\u7684\u7B2C\u4E8C\u500B\u6E2C\u8A66*\u8FEB\u4F7F\u6CDB\u5316*\u3002\n\n```javascript\n// \u65B0\u589E\u6E2C\u8A66\uFF1Afizzbuzz(3) === "Fizz"\n// \u73FE\u5728 return "1" \u5931\u6557\u4E86\u3002\u5FC5\u9808\u6CDB\u5316\uFF1A\nfunction fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  return String(n);                   // \u5DF2\u6CDB\u5316\u2014\u2014"1" \u5C0D\u6240\u6709 n \u4F86\u8AAA\u5F9E\u4F86\u90FD\u4E0D\u6B63\u78BA\n}\n```\n\n\u300C\u4E09\u89D2\u6E2C\u91CF\u300D\u9019\u500B\u8A5E\u4F86\u81EA\u6E2C\u91CF\u5B78\uFF1A\u5169\u500B\u56FA\u5B9A\u9EDE\u78BA\u5B9A\u7B2C\u4E09\u500B\u9EDE\u3002\u5169\u500B\u5177\u9AD4\u7684\u6E2C\u8A66\u6848\u4F8B\u78BA\u5B9A\u4E86\u901A\u7528\u6F14\u7B97\u6CD5\u3002\n\n<!-- \u5047\u5BE6\u4F5C\u548C\u4E09\u89D2\u6E2C\u91CF\u662F Beck \u5217\u51FA\u7684\u4E09\u7A2E\u9054\u5230\u7DA0\u71C8\u7B56\u7565\u4E2D\u7684\u5169\u7A2E\uFF08\u7B2C\u4E09\u7A2E\u662F\u300C\u986F\u7136\u7684\u5BE6\u4F5C\u300D\u2014\u2014\u7576\u6B63\u78BA\u7684\u7A0B\u5F0F\u78BC\u975E\u5E38\u6E05\u695A\uFF0C\u5BEB\u5047\u5BE6\u4F5C\u6703\u5F88\u611A\u8822\u6642\uFF09\u3002\u5F9E\u5047\u5BE6\u4F5C\u958B\u59CB\u7684\u6559\u5B78\u50F9\u503C\u5728\u65BC\u5B83\u5C07\u300C\u6E2C\u8A66\u662F\u5426\u6709\u6548\uFF1F\u300D\u548C\u300C\u5BE6\u4F5C\u662F\u5426\u6B63\u78BA\uFF1F\u300D\u9019\u5169\u500B\u95DC\u5207\u5206\u958B\u3002\u4E00\u65E6\u6E2C\u8A66\u57FA\u790E\u8A2D\u65BD\u88AB\u78BA\u8A8D\u6709\u6548\uFF0C\u7B2C\u4E8C\u500B\u6E2C\u8A66\u5C31\u9A45\u52D5\u771F\u6B63\u7684\u908F\u8F2F\u3002 -->\n\n---\n\n## \u6E2C\u8A66\u6E05\u55AE\n\n\u5728\u958B\u59CB\u4EFB\u4F55 kata \u6216\u529F\u80FD\u4E4B\u524D\uFF0C\u5BEB\u4E00\u500B**\u6E2C\u8A66\u6E05\u55AE**\u2014\u2014\u4E00\u4EFD\u8981\u6E2C\u8A66\u7684\u884C\u70BA\u6E05\u55AE\uFF1A\n\n```\nfizzbuzz \u6E2C\u8A66\u6E05\u55AE\uFF08\u521D\u59CB\uFF09\uFF1A\n  - fizzbuzz(1)  \u2192 "1"        \uFF08\u666E\u901A\u6578\u5B57\uFF09\n  - fizzbuzz(3)  \u2192 "Fizz"     \uFF083 \u7684\u500D\u6578\uFF09\n  - fizzbuzz(5)  \u2192 "Buzz"     \uFF085 \u7684\u500D\u6578\uFF09\n  - fizzbuzz(15) \u2192 "FizzBuzz" \uFF08\u5169\u8005\u7684\u500D\u6578\uFF09\n```\n\n\u6E2C\u8A66\u6E05\u55AE\u7684\u898F\u5247\uFF1A\n- \u5B83\u4E0D\u662F\u4E8B\u5148\u8A73\u76E1\u7684\u2014\u2014\u4F60\u6703\u5728\u767C\u73FE\u65B0\u6848\u4F8B\u6642\u52A0\u5165\u3002\n- \u4F60\u9078\u53D6\u4E00\u500B\u9805\u76EE\uFF0C\u5BEB\u90A3\u500B\u6E2C\u8A66\uFF0C\u5FAA\u74B0\u5B8C\u7D05\u71C8\uFF0D\u7DA0\u71C8\uFF0D\u91CD\u69CB\uFF0C\u5283\u6389\u5B83\u3002\n- \u4F60\u5728\u5FAA\u74B0\u4E2D\u9014\u60F3\u5230\u7684\u65B0\u6E2C\u8A66\u653E\u5230\u6E05\u55AE\u4E0A\uFF0C\u800C\u4E0D\u662F\u6B63\u5728\u57F7\u884C\u7684\u7A0B\u5F0F\u78BC\u4E2D\u3002\n- \u6E05\u55AE**\u6703\u589E\u9577\u4E5F\u6703\u7E2E\u77ED**\u2014\u2014\u5B83\u662F\u6D3B\u7684\u6587\u4EF6\uFF0C\u4E0D\u662F\u5408\u7D04\u3002\n\n\u6E2C\u8A66\u6E05\u55AE\u8B93\u4F60\u4FDD\u6301\u5C08\u6CE8\uFF1A\u4F60\u6C38\u9060\u77E5\u9053\u4E0B\u4E00\u500B\u8981\u6E2C\u8A66\u4EC0\u9EBC\uFF0C\u4EE5\u53CA\u4EC0\u9EBC\u5728\u7B49\u5F85\u4E2D\u3002\n\n<!-- Beck \u7684\u6E2C\u8A66\u6E05\u55AE\u662F\u300ATDD by Example\u300B\u4E2D\u88AB\u4F4E\u4F30\u7684\u6D1E\u898B\u4E4B\u4E00\u3002\u5B83\u89E3\u6C7A\u4E86\u300C\u7A7A\u767D\u9801\u9762\u300D\u554F\u984C\u2014\u2014\u5728\u5BEB\u4EFB\u4F55\u7A0B\u5F0F\u78BC\u4E4B\u524D\u4F60\u6709\u4E00\u500B\u8A08\u5283\u3002\u5B83\u4E5F\u9632\u6B62\u4E86\u5FAA\u74B0\u4E2D\u9014\u7684\u5206\u5FC3\uFF1A\u7576\u4F60\u5728\u7D05\u71C8\uFF0D\u7DA0\u71C8\u5FAA\u74B0\u4E2D\u60F3\u5230\u4E00\u500B\u65B0\u7684\u908A\u7DE3\u6848\u4F8B\u6642\uFF0C\u4F60\u8A18\u4E0B\u5B83\u7136\u5F8C\u7E7C\u7E8C\uFF0C\u800C\u4E0D\u662F\u5207\u63DB\u60C5\u5883\u3002\u6E05\u55AE\u901A\u5E38\u662F\u4E00\u500B\u6CE8\u91CB\u6216\u4FBF\u5229\u8CBC\uFF0C\u4E0D\u662F\u6B63\u5F0F\u6587\u4EF6\u3002 -->\n\n---\n\n## \u5BE6\u4F5C\u7BC4\u4F8B \u2014\u2014 FizzBuzz kata\uFF08\u6B65\u9A5F 1\u20134\uFF09\n\n**\u6E2C\u8A66\u6E05\u55AE\uFF1A** \u666E\u901A\u6578\u5B57 \xB7 Fizz \xB7 Buzz \xB7 FizzBuzz\u3002\n\n**s1 \u7D05\u71C8** \u2500\u2500 \u65B0\u589E\u6E2C\u8A66 `fizzbuzz(1) === "1"`\u3002\u5957\u4EF6\uFF1A0 \u901A\u904E\uFF0C1 \u5931\u6557\u3002\n\u5C1A\u7121\u5BE6\u4F5C\uFF1A`code = \'\'`\u3002\n\n**s2 \u7DA0\u71C8** \u2500\u2500 \u5047\u5BE6\u4F5C\uFF1A\n```javascript\nfunction fizzbuzz(n) { return "1"; }\n```\n\u5957\u4EF6\uFF1A1 \u901A\u904E\uFF0C0 \u5931\u6557\u3002\n\n**s3 \u7D05\u71C8** \u2500\u2500 \u65B0\u589E\u6E2C\u8A66 `fizzbuzz(3) === "Fizz"`\u3002\u5957\u4EF6\uFF1A1 \u901A\u904E\uFF0C1 \u5931\u6557\u3002\n\u5047\u5BE6\u4F5C `"1"` \u4ECD\u5728\u57F7\u884C\uFF1B\u65B0\u6E2C\u8A66\u5931\u6557\u3002\n\n**s4 \u7DA0\u71C8** \u2500\u2500 \u4E09\u89D2\u6E2C\u91CF\uFF1A\u7B2C\u4E8C\u500B\u6E2C\u8A66\u8FEB\u4F7F\u4F7F\u7528 `String(n)`\uFF1A\n```javascript\nfunction fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  return String(n);\n}\n```\n\u5957\u4EF6\uFF1A2 \u901A\u904E\uFF0C0 \u5931\u6557\u3002`"1"` \u5047\u5BE6\u4F5C\u5DF2\u6D88\u5931\u2014\u2014`String(1)` \u5F97\u5230 `"1"`\u3002\n\n<!-- s1\u2013s4 \u4EE5\u6700\u7D14\u7CB9\u7684\u5F62\u5F0F\u5C55\u793A\u4E86\u5047\u5BE6\u4F5C\u2192\u4E09\u89D2\u6E2C\u91CF\u7684\u6A21\u5F0F\u3002s4 \u7684\u95DC\u9375\u89C0\u5BDF\uFF1A\u4E09\u89D2\u6E2C\u91CF\u6B65\u9A5F\u5C07\u5E38\u6578 "1" \u66FF\u63DB\u70BA String(n)\uFF0C\u9019\u662F\u975E\u500D\u6578\u7684\u6B63\u78BA\u901A\u7528\u7B54\u6848\u3002\u6211\u5011\u77E5\u9053 String(n) \u662F\u6B63\u78BA\u7684\uFF0C\u4E0D\u662F\u56E0\u70BA\u6211\u5011\u5C0D\u6240\u6709\u8F38\u5165\u9032\u884C\u4E86\u63A8\u7406\uFF0C\u800C\u662F\u56E0\u70BA\u7B2C\u4E8C\u500B\u6E2C\u8A66\u8FEB\u4F7F\u6211\u5011\u96E2\u958B\u4E86\u5E38\u6578\u3002\u9019\u5C31\u662F\u7D00\u5F8B\uFF1A\u8B93\u6E2C\u8A66\u9A45\u52D5\u8A2D\u8A08\u3002 -->\n\n---\n\n## \u5BE6\u4F5C\u7BC4\u4F8B \u2014\u2014 FizzBuzz kata\uFF08\u6B65\u9A5F 5\u20139\uFF09\n\n**s5 \u7D05\u71C8** \u2500\u2500 \u65B0\u589E\u6E2C\u8A66 `fizzbuzz(5) === "Buzz"`\u3002\u5957\u4EF6\uFF1A2 \u901A\u904E\uFF0C1 \u5931\u6557\u3002\n\n**s6 \u7DA0\u71C8** \u2500\u2500 \u65B0\u589E Buzz \u5206\u652F\uFF1A\n```javascript\nfunction fizzbuzz(n) {\n  if (n % 3 === 0) return "Fizz";\n  if (n % 5 === 0) return "Buzz";\n  return String(n);\n}\n```\n\u5957\u4EF6\uFF1A3 \u901A\u904E\uFF0C0 \u5931\u6557\u3002\n\n**s7 \u7D05\u71C8** \u2500\u2500 \u65B0\u589E\u6E2C\u8A66 `fizzbuzz(15) === "FizzBuzz"`\u3002\u5957\u4EF6\uFF1A3 \u901A\u904E\uFF0C1 \u5931\u6557\u3002\n\u76EE\u524D\u7A0B\u5F0F\u78BC\u5C0D 15 \u8FD4\u56DE `"Fizz"`\uFF08`%3` \u5206\u652F\u5148\u89F8\u767C\uFF09\u3002\n\n**s8 \u7DA0\u71C8** \u2500\u2500 `%15` \u5206\u652F\u5FC5\u9808\u6392\u5728\u6700\u524D\u9762\uFF08\u9806\u5E8F\u5F88\u91CD\u8981\uFF09\uFF1A\n```javascript\nfunction fizzbuzz(n) {\n  if (n % 15 === 0) return "FizzBuzz";\n  if (n % 3 === 0) return "Fizz";\n  if (n % 5 === 0) return "Buzz";\n  return String(n);\n}\n```\n\u5957\u4EF6\uFF1A4 \u901A\u904E\uFF0C0 \u5931\u6557\u3002\n\n**s9 \u91CD\u69CB** \u2500\u2500 \u6D88\u9664\u7368\u7ACB\u7684 `%15` \u5224\u65B7\uFF1B\u4EE5\u4E32\u63A5\u8868\u9054 FizzBuzz\uFF1A\n```javascript\nfunction fizzbuzz(n) {\n  const fizz = n % 3 === 0 ? "Fizz" : "";\n  const buzz = n % 5 === 0 ? "Buzz" : "";\n  return (fizz + buzz) || String(n);\n}\n```\n\u5957\u4EF6\u4FDD\u6301\u7DA0\u71C8\uFF1A4 \u901A\u904E\uFF0C0 \u5931\u6557\u3002`%15` \u60C5\u6CC1\u81EA\u7136\u6210\u7ACB\uFF1A`"Fizz" + "Buzz" = "FizzBuzz"`\u3002\n\n<!-- s7\u2013s9 \u5C55\u793A\u4E86\u70BA\u4EC0\u9EBC if \u93C8\u4E2D\u5206\u652F\u7684\u9806\u5E8F\u5728\u7DA0\u71C8\u968E\u6BB5\u5F88\u91CD\u8981\uFF0C\u4EE5\u53CA\u91CD\u69CB\u6B65\u9A5F\u5982\u4F55\u5B8C\u5168\u6D88\u9664\u5C0D\u9806\u5E8F\u9650\u5236\u7684\u9700\u6C42\u3002\u91CD\u69CB\u5F8C\u7684\u5F62\u5F0F\u66F4\u901A\u7528\uFF1A\u5B83\u8655\u7406\u4EFB\u4F55 Fizz \u548C Buzz \u7684\u7D44\u5408\uFF0C\u4E0D\u9700\u8981\u7279\u6B8A\u60C5\u6CC1\u3002s8 \u6642\u5957\u4EF6\u5B8C\u5168\u70BA\u7DA0\u71C8\uFF0C\u4F7F\u91CD\u69CB\u5B89\u5168\u2014\u2014\u6E2C\u8A66\u6703\u6355\u6349\u4EFB\u4F55\u932F\u8AA4\u3002 -->\n\n---\n\n## TDD vs \u5F8C\u6E2C\u8A66\n\n| \u5C6C\u6027 | \u5F8C\u6E2C\u8A66 | \u6E2C\u8A66\u9A45\u52D5\u958B\u767C |\n|---|---|---|\n| \u6E2C\u8A66\u6642\u6A5F | \u5BE6\u4F5C\u4E4B\u5F8C | \u5BE6\u4F5C\u4E4B\u524D |\n| \u6E2C\u8A66\u5373\u898F\u683C | \u5426\u2014\u2014\u7A0B\u5F0F\u78BC\u5DF2\u5B58\u5728 | \u662F\u2014\u2014\u6E2C\u8A66*\u5B9A\u7FA9*\u671F\u671B\u7684\u884C\u70BA |\n| \u8A2D\u8A08\u58D3\u529B | \u7121\u2014\u2014\u4ECB\u9762\u5DF2\u56FA\u5B9A | \u9AD8\u2014\u2014\u96E3\u4EE5\u6E2C\u8A66\u7684\u4ECB\u9762\u5F88\u75DB\u82E6 |\n| \u8986\u84CB\u7387\u4FDD\u8B49 | \u4F9D\u8CF4\u7D00\u5F8B | \u7D50\u69CB\u6027\u2014\u2014\u6BCF\u4E00\u884C\u90FD\u6709\u8981\u6C42\u5B83\u7684\u6E2C\u8A66 |\n| \u5B89\u5168\u7DB2\u53EF\u7528\u6027 | \u4E00\u5927\u6279\u7A0B\u5F0F\u78BC\u4E4B\u5F8C | \u6BCF\u500B\u5C0F\u6B65\u9A5F\u4E4B\u5F8C |\n| \u91CD\u69CB\u5B89\u5168\u6027 | \u6E2C\u8A66\u8584\u5F31\u6642\u6709\u98A8\u96AA | \u5167\u5EFA\u2014\u2014\u5957\u4EF6\u6C38\u9060\u53EF\u57F7\u884C |\n\n**\u5148\u5BEB\u6E2C\u8A66\u7684\u6536\u7A6B\uFF1A** \u8A2D\u8A08\u58D3\u529B\u3001\u6C38\u9060\u53EF\u57F7\u884C\u7684\u5957\u4EF6\u3001\u5C0F\u800C\u53EF\u8B49\u660E\u7684\u6B65\u9A5F\u3002\n**\u4EE3\u50F9\uFF1A** \u7D00\u5F8B\u3001\u521D\u59CB\u7684\u4E0D\u719F\u6089\u611F\u3001\u5728\u986F\u7136\u7684\u7A0B\u5F0F\u78BC\u4E0A\u7A0D\u6162\u3002\n\n<!-- \u6B64\u6BD4\u8F03\u4E26\u975E\u8981\u5426\u5B9A\u5F8C\u6E2C\u8A66\u2014\u2014\u5BEB\u5F97\u597D\u7684\u5F8C\u6E2C\u8A66\u9060\u512A\u65BC\u6C92\u6709\u6E2C\u8A66\u3002\u91CD\u9EDE\u662F\u5148\u5BEB\u6E2C\u8A66\u63D0\u4F9B\u4E86\u5F8C\u6E2C\u8A66\u7121\u6CD5\u7D66\u4E88\u7684\u7D50\u69CB\u6027\u4FDD\u8B49\uFF1A\u5982\u679C\u4F60\u9075\u5B88\u4E86\u4E09\u689D\u898F\u5247\uFF0C\u8986\u84CB\u7387\u5728\u69CB\u9020\u4E0A\u5C31\u662F 100%\uFF0C\u56E0\u70BA\u6BCF\u4E00\u884C\u6B63\u5F0F\u7A0B\u5F0F\u78BC\uFF0C\u80CC\u5F8C\u90FD\u5FC5\u9808\u6709\u4E00\u500B\u5931\u6557\u7684\u6E2C\u8A66\u5728\u9A45\u52D5\u5B83\u3002\u9019\u6BD4\u300C\u6211\u5011\u4E8B\u5F8C\u76E1\u53EF\u80FD\u60F3\u5230\u7684\u90FD\u5BEB\u4E86\u6E2C\u8A66\u300D\u662F\u66F4\u5F37\u7684\u8072\u660E\u3002 -->\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u5FAA\u74B0\u5206\u9801 \xB7 \u8D77\u9EDE\n\n<!-- \u5FAA\u74B0\u5206\u9801\u7684\u8A2D\u8A08\u8B93\u5B78\u751F\u53EF\u4EE5\u5728\u6BCF\u500B\u6B65\u9A5F\u66AB\u505C\uFF0C\u5728\u524D\u9032\u4E4B\u524D\u9810\u6E2C\u7D50\u679C\u3002\u968E\u6BB5\u984F\u8272\u7DE8\u78BC\uFF08\u7D05\u8272\u80CC\u666F\uFF0F\u7DA0\u8272\u80CC\u666F\uFF0F\u91CD\u69CB\u7528\u9EC3\u8272\uFF09\u4F7F\u7BC0\u594F\u8B8A\u5F97\u76F4\u89C0\u3002\u6E2C\u8A66\u6E05\u55AE\u9762\u677F\u5BE6\u6642\u986F\u793A\u9805\u76EE\u7684\u65B0\u589E\u548C\u5283\u9664\u3002\u9F13\u52F5\u5B78\u751F\u5C07\u6B64 kata \u4F5C\u70BA\u4ED6\u5011\u81EA\u5DF1 TDD \u5DE5\u4F5C\u968E\u6BB5\u7684\u6A21\u677F\u3002 -->\n\n\u5728 `/section-tdd` \u958B\u555F**\u5FAA\u74B0**\u5206\u9801\uFF08TDD \u5FAA\u74B0\u63A2\u7D22\u5668\uFF09\u3002\n\n![w:1000](./slide-assets/tdd-cycle-fb-start.png)\n\n\u5F9E kata \u9078\u64C7\u5668\u9078\u53D6 **FizzBuzz** kata\u3002\u6E2C\u8A66\u6E05\u55AE\u9762\u677F\u986F\u793A\u521D\u59CB\u5931\u6557\u6E2C\u8A66\uFF08`fizzbuzz(1) === "1"`\uFF09\uFF0C\u968E\u6BB5\u6307\u793A\u5668\u986F\u793A**\u7D05\u71C8** \u2500\u2500 \u5C1A\u7121\u4EFB\u4F55\u751F\u7522\u7A0B\u5F0F\u78BC\u3002\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u5FAA\u74B0\u5206\u9801 \xB7 \u5047\u5BE6\u4F5C\n\n![w:1000](./slide-assets/tdd-cycle-fb-fake.png)\n\n\u65B0\u589E\u4E0B\u4E00\u500B\u6E2C\u8A66\uFF08`fizzbuzz(3) === "Fizz"`\uFF09\u5F8C\uFF0C\u5047\u5BE6\u4F5C `return "1"` \u4ECD\u901A\u904E\u7B2C\u4E00\u500B\u6E2C\u8A66\uFF0C\u537B\u8B93\u7B2C\u4E8C\u500B\u6E2C\u8A66\u5931\u6557 \u2500\u2500 \u968E\u6BB5\u56DE\u5230**\u7D05\u71C8**\uFF0C\u5957\u4EF6\u986F\u793A 1 \u901A\u904E\uFF0C1 \u5931\u6557\u3002\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u5FAA\u74B0\u5206\u9801 \xB7 \u4E09\u89D2\u6E2C\u91CF\n\n![w:1000](./slide-assets/tdd-cycle-fb-triangulate.png)\n\n\u7B2C\u4E8C\u500B\u6E2C\u8A66\u8FEB\u4F7F\u6CDB\u5316\uFF1A`return "1"` \u88AB\u66FF\u63DB\u70BA\u52A0\u4E0A Fizz \u5206\u652F\u7684 `String(n)` \u2500\u2500 \u5373 s3 \u2192 s4 \u7684\u4E09\u89D2\u6E2C\u91CF\u6B65\u9A5F\u3002\u5169\u500B\u6E2C\u8A66\u5747\u901A\u904E\uFF0C\u968E\u6BB5\u56DE\u5230**\u7DA0\u71C8**\u3002\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u5FAA\u74B0\u5206\u9801 \xB7 \u91CD\u69CB\n\n![w:1000](./slide-assets/tdd-cycle-fb-refactor.png)\n\n\u7E7C\u7E8C\u9010\u6B65\u57F7\u884C s5\u2013s9 \u2500\u2500 \u89C0\u5BDF\u968E\u6BB5\u8F49\u63DB\uFF1A\u7D05\u71C8\u2192\u7DA0\u71C8\u2192\u7D05\u71C8\u2192\u7DA0\u71C8\u2192\u91CD\u69CB\u3002\n\n\u5728\u6BCF\u500B\u7D05\u71C8\u6B65\u9A5F\uFF0C**\u9810\u6E2C**\u54EA\u500B\u6E2C\u8A66\u6703\u5931\u6557\uFF0C\u7136\u5F8C\u518D\u9EDE\u64CA\u4E0B\u4E00\u6B65 \u2500\u2500 \u5C0D\u7167\u5957\u4EF6\u8A08\u6578\u5668\u9A57\u8B49\u4F60\u7684\u9810\u6E2C\u3002\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u5FAA\u74B0\u5206\u9801 \xB7 \u53E6\u4E00\u500B kata\n\n![w:1000](./slide-assets/tdd-cycle-stack-start.png)\n\n\u5207\u63DB\u5230 **Stack** kata \u4E26\u91CD\u8907 \u2500\u2500 \u6CE8\u610F isEmpty\u3001push\u3001pop \u662F\u5982\u4F55\u9075\u5FAA\u76F8\u540C\u7684\u7D05\u71C8\uFF0D\u7DA0\u71C8\uFF0D\u91CD\u69CB\u7BC0\u594F\uFF0C\u4E00\u6B21\u4E00\u500B\u884C\u70BA\u5730\u5F15\u5165\u7684\u3002\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u898F\u5247\u5206\u9801 \xB7 \u898F\u5247 1\n\n<!-- \u898F\u5247\u5206\u9801\u8B93\u5B78\u751F\u901A\u904E\u5617\u8A66\u6253\u7834\u7D00\u5F8B\u4E26\u770B\u5230\u8B77\u6B04\u555F\u52D5\uFF0C\u4F86\u89AA\u8EAB\u9AD4\u9A57\u9019\u7A2E\u7D00\u5F8B\u3002\u9019\u6BD4\u95B1\u8B80\u898F\u5247\u66F4\u4EE4\u4EBA\u96E3\u5FD8\u3002\u5B78\u751F\u5831\u544A\u7684\u95DC\u9375\u6D1E\u898B\uFF1A\u898F\u5247 3\uFF08\u300C\u53EA\u5BEB\u8DB3\u5920\u7684\u7A0B\u5F0F\u78BC\u300D\uFF09\u662F\u6700\u96E3\u9075\u5B88\u7684\u2014\u2014\u5BEB\u300C\u986F\u7136\u7684\u300D\u4E0B\u4E00\u6BB5\u7A0B\u5F0F\u78BC\u7684\u8A98\u60D1\u5F88\u5F37\uFF0C\u4F46\u898F\u5247\u8AAA\u5728\u7DA0\u71C8\u6642\u505C\u4E0B\u4F86\u3002 -->\n\n\u5728 `/section-tdd` \u958B\u555F**\u898F\u5247**\u5206\u9801\uFF08TDD \u898F\u5247\u63A2\u7D22\u5668\uFF09\u3002\n\n![w:1000](./slide-assets/tdd-rules-block-r1.png)\n\n\u63A2\u7D22\u5668\u986F\u793A\u4E09\u689D TDD \u898F\u5247\u548C\u4E00\u500B\u6A21\u64EC\u7684\u7A0B\u5F0F\u78BC\u7DE8\u8F2F\u5668\u3002\u5617\u8A66\u5728\u6E2C\u8A66\u5957\u4EF6\u70BA\u7DA0\u71C8\u4E14\u4E0D\u5B58\u5728\u5931\u6557\u6E2C\u8A66\u6642**\u5BEB\u751F\u7522\u7A0B\u5F0F\u78BC** \u2500\u2500 \u5DE5\u5177\u963B\u6B62\u8A72\u52D5\u4F5C\u4E26\u9AD8\u4EAE\u986F\u793A**\u898F\u5247 1**\uFF1A\u300C\u6C92\u6709\u5931\u6557\u6E2C\u8A66\uFF0C\u4E0D\u5BEB\u4EFB\u4F55\u751F\u7522\u7A0B\u5F0F\u78BC\u3002\u300D\u82E5\u5728\u7B2C\u4E00\u500B\u6E2C\u8A66\u901A\u904E\u524D\u5617\u8A66\u65B0\u589E\u7B2C\u4E8C\u500B\u5931\u6557\u6E2C\u8A66\uFF0C\u898F\u5247 2 \u4E5F\u6703\u540C\u6A23\u89F8\u767C\u3002\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u898F\u5247\u5206\u9801 \xB7 \u898F\u5247 3\n\n![w:1000](./slide-assets/tdd-rules-block-r3.png)\n\n\u6709\u4E00\u500B\u5931\u6557\u6E2C\u8A66\u5F8C\uFF0C\u5617\u8A66**\u91CD\u69CB**\u2500\u2500\u5DE5\u5177\u963B\u6B62\u4E26\u986F\u793A\u300C\u6709\u6E2C\u8A66\u5931\u6557\u2500\u2500\u91CD\u69CB\u524D\u5148\u8B93\u5957\u4EF6\u8B8A\u7DA0\u71C8\u300D\uFF0C\u9019\u662F**\u898F\u5247 3**\u5BB6\u65CF\u7684\u7D00\u5F8B\u9055\u53CD\u3002\u898F\u5247 3 \u672C\u8EAB\u8AAA\u300C\u53EA\u5BEB\u525B\u597D\u8B93\u5931\u6557\u6E2C\u8A66\u901A\u904E\u7684\u751F\u7522\u7A0B\u5F0F\u78BC\u300D\uFF1B\u5F15\u64CE\u5C07\u6B64\u539F\u5247\u63A8\u5EE3\uFF1A\u4EFB\u4F55\u5931\u6557\u6E2C\u8A66\u672A\u8981\u6C42\u7684\u5DE5\u4F5C\u2500\u2500\u5305\u62EC\u91CD\u69CB\u2500\u2500\u90FD\u592A\u65E9\u4E86\u3002\u4F60\u5FC5\u9808\u5148\u8B93\u5957\u4EF6\u8B8A\u7DA0\uFF0C\u518D\u9032\u884C\u4EFB\u4F55\u7D50\u69CB\u6027\u6574\u7406\u3002\n\n---\n\n## \u5DE5\u5177\u6F14\u793A \u2014 \u898F\u5247\u5206\u9801 \xB7 \u5B8C\u6574\u5FAA\u74B0\n\n![w:1000](./slide-assets/tdd-rules-cycle-done.png)\n\n\u9075\u5B88\u5168\u90E8\u4E09\u689D\u898F\u5247\u5B8C\u6210\u4E00\u500B\u5B8C\u6574\u7684\u7D05\u71C8\uFF0D\u7DA0\u71C8\uFF0D\u91CD\u69CB\u5FAA\u74B0 \u2500\u2500 \u89C0\u5BDF\u5957\u4EF6\u5168\u7A0B\u4FDD\u6301\u4E7E\u6DE8\uFF0CcycleCount \u63A8\u9032\u81F3 1\u3002\n\n---\n\n## \u5C0F\u7D50\n\n- **\u6E2C\u8A66\u9A45\u52D5\u958B\u767C**\u985B\u8986\u50B3\u7D71\u9806\u5E8F\uFF1A\u5148\u5BEB\u5931\u6557\u6E2C\u8A66\uFF0C\u518D\u5BEB\u6700\u5C11\u7684\u7A0B\u5F0F\u78BC\u4F7F\u5176\u901A\u904E\uFF0C\u518D\u91CD\u69CB\u2014\u2014\u5982\u6B64\u5FAA\u74B0\u3002\n- **\u7D05\u71C8\uFF0F\u7DA0\u71C8\uFF0F\u91CD\u69CB**\u5FAE\u5FAA\u74B0\u4FDD\u6301\u6B65\u9A5F\u5FAE\u5C0F\uFF0C\u4F7F\u6BCF\u4E00\u884C\u7A0B\u5F0F\u78BC\u90FD\u53EF\u8FFD\u6EAF\u5230\u4E00\u500B\u8981\u6C42\u5B83\u7684\u5931\u6557\u6E2C\u8A66\u3002\n- **\u4E09\u689D\u898F\u5247**\u5F37\u5236\u57F7\u884C\u5FAA\u74B0\uFF1A\u6C92\u6709\u5931\u6557\u6E2C\u8A66\u4E0D\u5BEB\u751F\u7522\u7A0B\u5F0F\u78BC\uFF1B\u6BCF\u6B21\u53EA\u6709\u4E00\u500B\u5931\u6557\u6E2C\u8A66\uFF1B\u53EA\u5BEB\u6700\u5C11\u7684\u7A0B\u5F0F\u78BC\u901A\u904E\u5B83\u3002\n- **\u5047\u5BE6\u4F5C\uFF08Fake it till you make it\uFF09** \u2500\u2500 \u786C\u7DE8\u78BC\u5E38\u6578\u662F\u6709\u6548\u7684\u9996\u6B21\u7DA0\u71C8\uFF1B\u4E0B\u4E00\u500B\u6E2C\u8A66\uFF08\u4E09\u89D2\u6E2C\u91CF\uFF09\u8FEB\u4F7F\u6CDB\u5316\u3002\n- **\u6E2C\u8A66\u6E05\u55AE**\u662F\u8981\u6E2C\u8A66\u7684\u884C\u70BA\u7684\u6D3B\u8E8D\u6E05\u55AE\uFF1A\u4F60\u9078\u53D6\u4E00\u500B\uFF0C\u5FAA\u74B0\uFF0C\u5283\u6389\u5B83\uFF0C\u4E26\u5728\u767C\u73FE\u65B0\u6848\u4F8B\u6642\u65B0\u589E\u3002\n- **FizzBuzz kata** \u5C55\u793A\u4E86\u5168\u90E8\u4E5D\u500B\u6B65\u9A5F\uFF1As1 \u7D05\u71C8 / s2 \u5047\u5BE6\u4F5C\u7DA0\u71C8 / s3 \u7D05\u71C8 / s4 \u4E09\u89D2\u6E2C\u91CF\u7DA0\u71C8 / s5 \u7D05\u71C8 / s6 \u7DA0\u71C8 / s7 \u7D05\u71C8 / s8 \u7DA0\u71C8\uFF08\u9806\u5E8F\u5F88\u91CD\u8981\uFF09/ s9 \u91CD\u69CB\u3002\n- **\u5148\u5BEB\u6E2C\u8A66\u7684\u6536\u7A6B\uFF1A** \u8A2D\u8A08\u58D3\u529B\u3001\u7D50\u69CB\u6027\u8986\u84CB\u7387\u3001\u6C38\u9060\u53EF\u57F7\u884C\u7684\u5957\u4EF6\u3001\u5C0F\u800C\u53EF\u8B49\u660E\u7684\u6B65\u9A5F\u3002\n\n**\u8AB2\u5802\u7DF4\u7FD2\uFF1A** \u4F7F\u7528\u56B4\u683C\u7684 TDD \u5F9E\u6E2C\u8A66\u6E05\u55AE\u5B8C\u6210 Stack kata\uFF08isEmpty\u3001push\u3001pop\u3001size\uFF09\u3002\u8A18\u9304\u6BCF\u500B\u6B65\u9A5F\uFF1A\u4F60\u65B0\u589E\u4E86\u4EC0\u9EBC\u6E2C\u8A66\u3001\u4F60\u5BEB\u4E86\u4EC0\u9EBC\u7A0B\u5F0F\u78BC\u3001\u4F60\u662F\u5047\u5BE6\u4F5C\u9084\u662F\u7528\u4E86\u986F\u7136\u7684\u5BE6\u4F5C\u3002\n\n---\n\n## \u5EF6\u4F38\u95B1\u8B80\n\n- \u8AB2\u7A0B\u898F\u683C \u2014\u2014 TDD \u8996\u89BA\u5316\u8A2D\u8A08\uFF08[2026-05-19-tdd-visualization-design.md](https://github.com/skhuang/stvisual/blob/main/docs/superpowers/specs/2026-05-19-tdd-visualization-design.md)\uFF09\n- Beck, K.\uFF082002\uFF09\u3002*Test-Driven Development: By Example*\u3002Addison-Wesley\u3002\u2014\u2014 TDD \u7684\u7D93\u5178\u6559\u6750\uFF1B\u4EE5 Money\uFF08\u8CA8\u5E63\u8F49\u63DB\uFF09\u8207 xUnit\uFF08\u6E2C\u8A66\u6846\u67B6\uFF09\u5169\u500B\u6848\u4F8B\u8CAB\u7A7F\u6559\u5B78\u3002\n- Martin, R. C.\uFF082014\uFF09\u3002\u3008The Three Rules of TDD\u3009\u3002\u2014\u2014 \u4E09\u689D\u7D00\u5F8B\u898F\u5247\u7684\u7C21\u6F54\u8868\u8FF0\u3002\n- \u5DE5\u5177\u539F\u59CB\u78BC\uFF1A[TddCycleExplorer.js](https://github.com/skhuang/stvisual/blob/main/src/components/TddCycleExplorer.js)\u3001[TddRulesExplorer.js](https://github.com/skhuang/stvisual/blob/main/src/components/TddRulesExplorer.js)\u3001[tddKatas.js](https://github.com/skhuang/stvisual/blob/main/src/data/tddKatas.js)\n- FizzBuzz kata \u8CC7\u6599\uFF1A[tddKatas.js](https://github.com/skhuang/stvisual/blob/main/src/data/tddKatas.js) \u2014\u2014 9 \u500B\u6B65\u9A5F\uFF0C\u6BCF\u500B\u6B65\u9A5F\u90FD\u662F\u968E\u6BB5\u3001\u6E2C\u8A66\u6E05\u55AE\u3001\u7A0B\u5F0F\u78BC\u548C\u5957\u4EF6\u72C0\u614B\u7684\u5B8C\u6574\u5FEB\u7167\u3002\n- Stack kata \u8CC7\u6599\uFF1A[tddKatas.js](https://github.com/skhuang/stvisual/blob/main/src/data/tddKatas.js) \u2014\u2014 7 \u500B\u6B65\u9A5F\uFF0C\u6DB5\u84CB isEmpty\u3001push\u3001pop\u3001\u91CD\u69CB\u70BA size()\u3002\n- \u4E0B\u4E00\u8B1B\uFF1ATDD \u7AE0\u7BC0\u7684\u5F8C\u7E8C\u8B1B\u6B21\u3002\n'
     }
   ];
 
@@ -36945,7 +38697,9 @@ ${items.join("\n")}
     "process",
     "model-based",
     "agile",
-    "slicing"
+    "slicing",
+    "tdd",
+    "security"
   ];
   var TAG_SERIES = [
     "foundations",
@@ -36958,7 +38712,9 @@ ${items.join("\n")}
     "acceptance-e2e",
     "model-based",
     "agile",
-    "slicing"
+    "slicing",
+    "tdd",
+    "exploit"
   ];
   var TAG_DIFFICULTY = ["intro", "intermediate", "advanced", "research"];
   var ACH = "paper:arxiv-2501.12862";
@@ -37387,6 +39143,43 @@ ${items.join("\n")}
       series: ["slicing"],
       difficulty: "intermediate",
       source: [TEXTBOOK]
+    },
+    // ── Test-Driven Development (O-series) ───────────────────────────────
+    TddCycleExplorer: {
+      level: ["unit"],
+      technique: ["tdd"],
+      series: ["tdd"],
+      difficulty: "intro",
+      source: [TEXTBOOK]
+    },
+    TddRulesExplorer: {
+      level: ["unit"],
+      technique: ["tdd"],
+      series: ["tdd"],
+      difficulty: "intermediate",
+      source: [TEXTBOOK]
+    },
+    // ── Exploit Generation (P-series) ────────────────────────────────
+    ExploitOverflowExplorer: {
+      level: ["nonfunctional"],
+      technique: ["security"],
+      series: ["exploit"],
+      difficulty: "intermediate",
+      source: [TEXTBOOK]
+    },
+    ExploitSqliExplorer: {
+      level: ["unit"],
+      technique: ["security"],
+      series: ["exploit"],
+      difficulty: "intermediate",
+      source: [TEXTBOOK]
+    },
+    ExploitCmdiExplorer: {
+      level: ["unit"],
+      technique: ["security"],
+      series: ["exploit"],
+      difficulty: "intermediate",
+      source: [TEXTBOOK]
     }
   };
   var SECTION_EXPLORERS = {
@@ -37450,7 +39243,9 @@ ${items.join("\n")}
       "ContinuousTestingPipelineExplorer",
       "RegressionDebtExplorer"
     ],
-    slicing: ["ProgramSlicingExplorer", "SliceDicingExplorer", "SliceCoverageExplorer", "SliceRegressionExplorer"]
+    slicing: ["ProgramSlicingExplorer", "SliceDicingExplorer", "SliceCoverageExplorer", "SliceRegressionExplorer"],
+    tdd: ["TddCycleExplorer", "TddRulesExplorer"],
+    exploit: ["ExploitOverflowExplorer", "ExploitSqliExplorer", "ExploitCmdiExplorer"]
   };
   function getSectionTags(sectionId) {
     var _a, _b, _c, _d, _e;
@@ -37489,18 +39284,18 @@ ${items.join("\n")}
   ];
   var EMPTY_FILTER = () => ({ level: [], technique: [], series: [], difficulty: [] });
   function createTagFilterBar({ initial, onChange } = {}) {
-    const state31 = {
+    const state36 = {
       filter: normalizeFilter(initial),
       listener: typeof onChange === "function" ? onChange : () => {
       }
     };
-    const root32 = document.createElement("div");
-    root32.className = "tag-filter-bar";
-    root32.dataset.testid = "tag-filter-bar";
-    function render31() {
+    const root37 = document.createElement("div");
+    root37.className = "tag-filter-bar";
+    root37.dataset.testid = "tag-filter-bar";
+    function render36() {
       var _a;
-      const totalActive = Object.values(state31.filter).reduce((n, arr) => n + arr.length, 0);
-      root32.innerHTML = `
+      const totalActive = Object.values(state36.filter).reduce((n, arr) => n + arr.length, 0);
+      root37.innerHTML = `
       <div class="tag-filter-bar__header">
         <span class="tag-filter-bar__title">${t("filter.title")}</span>
         <button type="button" class="tag-filter-bar__clear"
@@ -37514,7 +39309,7 @@ ${items.join("\n")}
           <span class="tag-filter-row__label">${t("filter.dim." + dim.id)}</span>
           <div class="tag-filter-row__chips">
             ${dim.values.map((v) => {
-        const active = state31.filter[dim.id].includes(v);
+        const active = state36.filter[dim.id].includes(v);
         return `
                 <button type="button"
                   class="tag-chip${active ? " tag-chip--active" : ""}"
@@ -37527,40 +39322,40 @@ ${items.join("\n")}
           </div>
         </div>
       `).join("")}`;
-      root32.querySelectorAll("[data-dim][data-value]").forEach((btn) => {
+      root37.querySelectorAll("[data-dim][data-value]").forEach((btn) => {
         btn.addEventListener("click", () => toggle(btn.dataset.dim, btn.dataset.value));
       });
-      (_a = root32.querySelector('[data-testid="tag-filter-clear"]')) == null ? void 0 : _a.addEventListener("click", () => clear());
+      (_a = root37.querySelector('[data-testid="tag-filter-clear"]')) == null ? void 0 : _a.addEventListener("click", () => clear());
     }
     function toggle(dim, value) {
       var _a;
-      const arr = (_a = state31.filter[dim]) != null ? _a : [];
+      const arr = (_a = state36.filter[dim]) != null ? _a : [];
       const i = arr.indexOf(value);
       if (i === -1) arr.push(value);
       else arr.splice(i, 1);
-      state31.filter[dim] = arr;
-      render31();
-      state31.listener(getFilter());
+      state36.filter[dim] = arr;
+      render36();
+      state36.listener(getFilter());
     }
     function clear() {
-      state31.filter = EMPTY_FILTER();
-      render31();
-      state31.listener(getFilter());
+      state36.filter = EMPTY_FILTER();
+      render36();
+      state36.listener(getFilter());
     }
     function getFilter() {
       return {
-        level: [...state31.filter.level],
-        technique: [...state31.filter.technique],
-        series: [...state31.filter.series],
-        difficulty: [...state31.filter.difficulty]
+        level: [...state36.filter.level],
+        technique: [...state36.filter.technique],
+        series: [...state36.filter.series],
+        difficulty: [...state36.filter.difficulty]
       };
     }
     function setFilter(next) {
-      state31.filter = normalizeFilter(next);
-      render31();
+      state36.filter = normalizeFilter(next);
+      render36();
     }
-    render31();
-    return { element: root32, getFilter, setFilter, clear };
+    render36();
+    return { element: root37, getFilter, setFilter, clear };
   }
   function normalizeFilter(input) {
     const out = EMPTY_FILTER();
@@ -37675,7 +39470,11 @@ ${items.join("\n")}
     agile: { tabs: ["quadrants", "cadence", "gates", "examplemap", "pipeline", "regression"], default: "quadrants" },
     // Section N — slice-based testing. N1 ships 'program'; N2-N4 tabs are
     // added to this list as their plans land.
-    slicing: { tabs: ["program", "dicing", "coverage", "regression"], default: "program" }
+    slicing: { tabs: ["program", "dicing", "coverage", "regression"], default: "program" },
+    // Section O — TDD. O1 ships 'cycle'; O2 ships 'rules'.
+    tdd: { tabs: ["cycle", "rules"], default: "cycle" },
+    // Section P — Exploit Generation. P1 ships 'overflow'; P2-P3 will add 'sqli', 'cmdi'.
+    exploit: { tabs: ["overflow", "sqli", "cmdi"], default: "overflow" }
   };
   var EXPLORER_TO_LOCATION = {
     TestingMethodTree: { section: "methods" },
@@ -37736,7 +39535,12 @@ ${items.join("\n")}
     ProgramSlicingExplorer: { section: "slicing", tab: "program" },
     SliceDicingExplorer: { section: "slicing", tab: "dicing" },
     SliceCoverageExplorer: { section: "slicing", tab: "coverage" },
-    SliceRegressionExplorer: { section: "slicing", tab: "regression" }
+    SliceRegressionExplorer: { section: "slicing", tab: "regression" },
+    TddCycleExplorer: { section: "tdd", tab: "cycle" },
+    TddRulesExplorer: { section: "tdd", tab: "rules" },
+    ExploitOverflowExplorer: { section: "exploit", tab: "overflow" },
+    ExploitSqliExplorer: { section: "exploit", tab: "sqli" },
+    ExploitCmdiExplorer: { section: "exploit", tab: "cmdi" }
   };
   var FILTER_DIMS = ["level", "technique", "series", "difficulty"];
   function parseAppLocation(search, hash) {
@@ -37777,22 +39581,22 @@ ${items.join("\n")}
     }
     return out;
   }
-  function serializeLocation(state31) {
-    if (!state31) return "";
+  function serializeLocation(state36) {
+    if (!state36) return "";
     const params = new URLSearchParams();
-    if (state31.lang === "en" || state31.lang === "zh") params.set("lang", state31.lang);
-    if (state31.section && state31.section !== "all") {
-      params.set("section", state31.section);
-      const sectionInfo = TAB_SECTIONS[state31.section];
-      if (sectionInfo && state31.tab && sectionInfo.tabs.includes(state31.tab)) {
-        params.set("tab", state31.tab);
+    if (state36.lang === "en" || state36.lang === "zh") params.set("lang", state36.lang);
+    if (state36.section && state36.section !== "all") {
+      params.set("section", state36.section);
+      const sectionInfo = TAB_SECTIONS[state36.section];
+      if (sectionInfo && state36.tab && sectionInfo.tabs.includes(state36.tab)) {
+        params.set("tab", state36.tab);
       }
     }
-    if (state31.pack) {
-      params.set("pack", state31.pack);
-    } else if (state31.filter) {
+    if (state36.pack) {
+      params.set("pack", state36.pack);
+    } else if (state36.filter) {
       for (const dim of FILTER_DIMS) {
-        const arr = state31.filter[dim];
+        const arr = state36.filter[dim];
         if (Array.isArray(arr) && arr.length > 0) params.set(dim, arr.join(","));
       }
     }
@@ -37897,16 +39701,16 @@ ${items.join("\n")}
   // src/components/CoursePackBar.js
   function createCoursePackBar({ initial, onApplyFilter } = {}) {
     const validInitial = COURSE_PACKS.some((p) => p.id === initial);
-    const state31 = { activeId: validInitial ? initial : null };
-    const root32 = document.createElement("div");
-    root32.className = "course-pack-bar";
-    root32.dataset.testid = "course-pack-bar";
-    function render31() {
+    const state36 = { activeId: validInitial ? initial : null };
+    const root37 = document.createElement("div");
+    root37.className = "course-pack-bar";
+    root37.dataset.testid = "course-pack-bar";
+    function render36() {
       var _a;
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="course-pack-bar__header">
         <span class="course-pack-bar__title">${t("pack.title")}</span>
-        ${state31.activeId ? `
+        ${state36.activeId ? `
           <button type="button"
             class="course-pack-bar__export"
             data-testid="course-pack-export">
@@ -37916,7 +39720,7 @@ ${items.join("\n")}
       <div class="course-pack-bar__chips">
         ${COURSE_PACKS.map((pack) => {
         const count = getCoursePackExplorers(pack.id).length;
-        const active = state31.activeId === pack.id;
+        const active = state36.activeId === pack.id;
         return `
             <button type="button"
               class="course-pack-chip${active ? " course-pack-chip--active" : ""}"
@@ -37929,36 +39733,36 @@ ${items.join("\n")}
             </button>`;
       }).join("")}
       </div>
-      ${state31.activeId ? `
+      ${state36.activeId ? `
         <p class="course-pack-bar__desc" data-testid="course-pack-desc">
-          ${t(COURSE_PACKS.find((p) => p.id === state31.activeId).descKey)}
+          ${t(COURSE_PACKS.find((p) => p.id === state36.activeId).descKey)}
         </p>` : ""}`;
-      root32.querySelectorAll("[data-pack]").forEach((btn) => {
+      root37.querySelectorAll("[data-pack]").forEach((btn) => {
         btn.addEventListener("click", () => choose(btn.dataset.pack));
       });
-      (_a = root32.querySelector('[data-testid="course-pack-export"]')) == null ? void 0 : _a.addEventListener("click", () => {
-        if (state31.activeId) downloadCoursePackMarkdown(state31.activeId);
+      (_a = root37.querySelector('[data-testid="course-pack-export"]')) == null ? void 0 : _a.addEventListener("click", () => {
+        if (state36.activeId) downloadCoursePackMarkdown(state36.activeId);
       });
     }
     function choose(packId) {
-      if (state31.activeId === packId) {
-        state31.activeId = null;
+      if (state36.activeId === packId) {
+        state36.activeId = null;
         onApplyFilter == null ? void 0 : onApplyFilter(null);
       } else {
-        state31.activeId = packId;
+        state36.activeId = packId;
         onApplyFilter == null ? void 0 : onApplyFilter(getCoursePackFilter(packId));
       }
-      render31();
+      render36();
     }
     function clear() {
-      state31.activeId = null;
-      render31();
+      state36.activeId = null;
+      render36();
     }
     function getActiveId() {
-      return state31.activeId;
+      return state36.activeId;
     }
-    render31();
-    return { element: root32, choose, clear, getActiveId };
+    render36();
+    return { element: root37, choose, clear, getActiveId };
   }
 
   // src/components/ResultViewer.js
@@ -38081,9 +39885,9 @@ ${items.join("\n")}
     return `${score != null ? score : 0} / ${total}`;
   }
   function createTeacherDashboard() {
-    const root32 = document.createElement("div");
-    root32.dataset.testid = "teacher-dashboard";
-    root32.className = "td-overlay";
+    const root37 = document.createElement("div");
+    root37.dataset.testid = "teacher-dashboard";
+    root37.className = "td-overlay";
     const client = createCloudIntegrationClient();
     let classCode = "";
     let results = [];
@@ -38098,10 +39902,10 @@ ${items.join("\n")}
       if (!filterExplorer) return results;
       return results.filter((r) => r.explorer === filterExplorer);
     }
-    function render31() {
+    function render36() {
       const filtered = filteredResults();
       const explorerOpts = explorerOptions();
-      root32.innerHTML = `
+      root37.innerHTML = `
       <div class="td-panel" role="dialog" aria-modal="true" aria-label="${t("td.title")}" data-testid="td-panel">
         <div class="td-header">
           <div class="td-header-left">
@@ -38174,25 +39978,25 @@ ${items.join("\n")}
           </table>
         </div>` : ""}
       </div>`;
-      bindEvents31();
+      bindEvents36();
     }
-    function bindEvents31() {
+    function bindEvents36() {
       var _a;
-      root32.querySelector('[data-testid="td-close"]').addEventListener("click", () => {
-        root32.hidden = true;
+      root37.querySelector('[data-testid="td-close"]').addEventListener("click", () => {
+        root37.hidden = true;
       });
-      root32.querySelector('[data-testid="td-load-btn"]').addEventListener("click", async () => {
-        const inp = root32.querySelector('[data-testid="td-code-input"]');
+      root37.querySelector('[data-testid="td-load-btn"]').addEventListener("click", async () => {
+        const inp = root37.querySelector('[data-testid="td-code-input"]');
         classCode = ((inp == null ? void 0 : inp.value) || "").trim().toUpperCase();
         if (!classCode) {
           errorMsg = t("td.err.noCode");
-          render31();
+          render36();
           return;
         }
         loading = true;
         errorMsg = "";
         results = [];
-        render31();
+        render36();
         try {
           results = await client.loadCourseResults(classCode);
           filterExplorer = "";
@@ -38200,91 +40004,82 @@ ${items.join("\n")}
           errorMsg = err.message || t("td.err.loadFailed");
         }
         loading = false;
-        render31();
+        render36();
       });
-      (_a = root32.querySelector('[data-testid="td-filter-explorer"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
+      (_a = root37.querySelector('[data-testid="td-filter-explorer"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
         filterExplorer = e.target.value;
-        render31();
+        render36();
       });
     }
-    render31();
+    render36();
     window.addEventListener("stvisual:open-teacher-dashboard", (e) => {
       var _a;
       classCode = ((_a = e.detail) == null ? void 0 : _a.classCode) || classCode;
-      root32.hidden = false;
-      render31();
+      root37.hidden = false;
+      render36();
     });
-    return root32;
+    return root37;
   }
+
+  // src/data/sectionTaxonomy.js
+  var SECTION_TAXONOMY = [
+    {
+      id: "foundations",
+      labelKey: "taxonomy.foundations",
+      sectionIds: ["methods", "flow", "types", "codecov"]
+    },
+    {
+      id: "input-space",
+      labelKey: "taxonomy.input-space",
+      sectionIds: ["blackbox", "pbt"]
+    },
+    {
+      id: "graph-model",
+      labelKey: "taxonomy.graph-model",
+      sectionIds: ["graph", "mbt", "slicing"]
+    },
+    {
+      id: "logic",
+      labelKey: "taxonomy.logic",
+      sectionIds: ["logic", "groupth"]
+    },
+    {
+      id: "syntax",
+      labelKey: "taxonomy.syntax",
+      sectionIds: ["syntax"]
+    },
+    {
+      id: "generation",
+      labelKey: "taxonomy.generation",
+      sectionIds: ["symbex", "concolic", "fuzz", "testgen", "exploit"]
+    },
+    {
+      id: "process",
+      labelKey: "taxonomy.process",
+      sectionIds: ["tdd", "acceptance", "agile", "inttest"]
+    },
+    {
+      id: "strategy",
+      labelKey: "taxonomy.strategy",
+      sectionIds: ["advanced", "rbt"]
+    }
+  ];
+  var SECTION_ORDER = SECTION_TAXONOMY.flatMap((c) => c.sectionIds);
 
   // src/app.js
   var learningSectionsConfig = [
     { id: "all", key: "section.all" },
-    { id: "methods", key: "section.methods" },
-    { id: "graph", key: "section.graph" },
-    { id: "logic", key: "section.logic" },
-    { id: "syntax", key: "section.syntax" },
-    { id: "codecov", key: "section.codecov" },
-    { id: "groupth", key: "section.groupth" },
-    { id: "symbex", key: "section.symbex" },
-    { id: "concolic", key: "section.concolic" },
-    { id: "fuzz", key: "section.fuzz" },
-    { id: "testgen", key: "section.testgen" },
-    { id: "pbt", key: "section.pbt" },
-    { id: "inttest", key: "section.inttest" },
-    { id: "rbt", key: "section.rbt" },
-    { id: "advanced", key: "section.advanced" },
-    { id: "acceptance", key: "section.acceptance" },
-    { id: "mbt", key: "section.mbt" },
-    { id: "agile", key: "section.agile" },
-    { id: "slicing", key: "section.slicing" },
-    { id: "blackbox", key: "section.blackbox" },
-    { id: "flow", key: "section.flow" },
-    { id: "types", key: "section.types" }
+    ...SECTION_ORDER.map((id) => ({ id, key: `section.${id}` }))
   ];
   var utilitySectionsConfig = [
     { id: "cloud", key: "section.cloud" }
   ];
   var sectionSelectConfig = [...learningSectionsConfig, ...utilitySectionsConfig];
   var ACTIVE_SECTION_KEY = "stvisual.activeSection";
-  var overviewGroups = [
-    {
-      key: "overview.group.foundations",
-      sectionIds: ["methods", "flow", "types"]
-    },
-    {
-      key: "overview.group.coverage",
-      sectionIds: ["graph", "logic", "syntax", "codecov", "groupth"]
-    },
-    {
-      key: "overview.group.execution",
-      sectionIds: ["symbex", "concolic", "fuzz", "testgen", "pbt", "inttest", "rbt"]
-    },
-    {
-      key: "overview.group.blackbox",
-      sectionIds: ["blackbox"]
-    },
-    {
-      key: "overview.group.advanced",
-      sectionIds: ["advanced"]
-    },
-    {
-      key: "overview.group.acceptance",
-      sectionIds: ["acceptance"]
-    },
-    {
-      key: "overview.group.mbt",
-      sectionIds: ["mbt"]
-    },
-    {
-      key: "overview.group.agile",
-      sectionIds: ["agile"]
-    },
-    {
-      key: "overview.group.slicing",
-      sectionIds: ["slicing"]
-    }
-  ];
+  var overviewGroups = SECTION_TAXONOMY.map((cat) => ({
+    key: cat.labelKey,
+    sectionIds: cat.sectionIds
+  }));
   function loadSavedSection(urlSection) {
     var _a;
     if (urlSection && learningSectionsConfig.some((s) => s.id === urlSection)) return urlSection;
@@ -38309,7 +40104,7 @@ ${items.join("\n")}
     let langInUrl = false;
     let lastSearchSnapshot = (_b = (_a = globalThis.location) == null ? void 0 : _a.search) != null ? _b : "";
     function paint2() {
-      var _a2, _b2, _c2, _d2, _e2, _f2, _g2, _h2, _i, _j, _k, _l, _m;
+      var _a2, _b2, _c2, _d2, _e2, _f2, _g2, _h2, _i, _j, _k, _l, _m, _n, _o;
       const urlState = parseAppLocation(
         (_b2 = (_a2 = globalThis.location) == null ? void 0 : _a2.search) != null ? _b2 : "",
         (_d2 = (_c2 = globalThis.location) == null ? void 0 : _c2.hash) != null ? _d2 : ""
@@ -38350,26 +40145,28 @@ ${items.join("\n")}
             <div class="overview-grid" data-testid="overview-grid"></div>
           </section>
           <section data-testid="section-methods" tabindex="-1" aria-labelledby="section-methods-title"><h2 id="section-methods-title">${t("section.methods.title")}</h2><div data-slot="methods"></div></section>
-          <section data-testid="section-graph" tabindex="-1" aria-labelledby="section-graph-title"><h2 id="section-graph-title">${t("section.graph.title")}</h2><div data-slot="graph"></div></section>
-          <section data-testid="section-logic" tabindex="-1" aria-labelledby="section-logic-title"><h2 id="section-logic-title">${t("section.logic.title")}</h2><div data-slot="logic"></div></section>
-          <section data-testid="section-syntax" tabindex="-1" aria-labelledby="section-syntax-title"><h2 id="section-syntax-title">${t("section.syntax.title")}</h2><div data-slot="syntax"></div></section>
+          <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
+          <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t("section.types.title")}</h2><div data-slot="types"></div></section>
           <section data-testid="section-codecov" tabindex="-1" aria-labelledby="section-codecov-title"><h2 id="section-codecov-title">${t("section.codecov.title")}</h2><div data-slot="codecov"></div></section>
+          <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t("section.blackbox.title")}</h2><div data-slot="blackbox"></div></section>
+          <section data-testid="section-pbt" tabindex="-1" aria-labelledby="section-pbt-title"><h2 id="section-pbt-title">${t("section.pbt.title")}</h2><div data-slot="pbt"></div></section>
+          <section data-testid="section-graph" tabindex="-1" aria-labelledby="section-graph-title"><h2 id="section-graph-title">${t("section.graph.title")}</h2><div data-slot="graph"></div></section>
+          <section data-testid="section-mbt" tabindex="-1" aria-labelledby="section-mbt-title"><h2 id="section-mbt-title">${t("section.mbt.title")}</h2><div data-slot="mbt"></div></section>
+          <section data-testid="section-slicing" tabindex="-1" aria-labelledby="section-slicing-title"><h2 id="section-slicing-title">${t("section.slicing.title")}</h2><div data-slot="slicing"></div></section>
+          <section data-testid="section-logic" tabindex="-1" aria-labelledby="section-logic-title"><h2 id="section-logic-title">${t("section.logic.title")}</h2><div data-slot="logic"></div></section>
           <section data-testid="section-groupth" tabindex="-1" aria-labelledby="section-groupth-title"><h2 id="section-groupth-title">${t("section.groupth.title")}</h2><div data-slot="groupth"></div></section>
+          <section data-testid="section-syntax" tabindex="-1" aria-labelledby="section-syntax-title"><h2 id="section-syntax-title">${t("section.syntax.title")}</h2><div data-slot="syntax"></div></section>
           <section data-testid="section-symbex" tabindex="-1" aria-labelledby="section-symbex-title"><h2 id="section-symbex-title">${t("section.symbex.title")}</h2><div data-slot="symbex"></div></section>
           <section data-testid="section-concolic" tabindex="-1" aria-labelledby="section-concolic-title"><h2 id="section-concolic-title">${t("section.concolic.title")}</h2><div data-slot="concolic"></div></section>
           <section data-testid="section-fuzz" tabindex="-1" aria-labelledby="section-fuzz-title"><h2 id="section-fuzz-title">${t("section.fuzz.title")}</h2><div data-slot="fuzz"></div></section>
           <section data-testid="section-testgen" tabindex="-1" aria-labelledby="section-testgen-title"><h2 id="section-testgen-title">${t("section.testgen.title")}</h2><div data-slot="testgen"></div></section>
-          <section data-testid="section-pbt" tabindex="-1" aria-labelledby="section-pbt-title"><h2 id="section-pbt-title">${t("section.pbt.title")}</h2><div data-slot="pbt"></div></section>
-          <section data-testid="section-inttest" tabindex="-1" aria-labelledby="section-inttest-title"><h2 id="section-inttest-title">${t("section.inttest.title")}</h2><div data-slot="inttest"></div></section>
-          <section data-testid="section-rbt" tabindex="-1" aria-labelledby="section-rbt-title"><h2 id="section-rbt-title">${t("section.rbt.title")}</h2><div data-slot="rbt"></div></section>
-          <section data-testid="section-advanced" tabindex="-1" aria-labelledby="section-advanced-title"><h2 id="section-advanced-title">${t("section.advanced.title")}</h2><div data-slot="advanced"></div></section>
+          <section data-testid="section-exploit" tabindex="-1" aria-labelledby="section-exploit-title"><h2 id="section-exploit-title">${t("section.exploit.title")}</h2><div data-slot="exploit"></div></section>
+          <section data-testid="section-tdd" tabindex="-1" aria-labelledby="section-tdd-title"><h2 id="section-tdd-title">${t("section.tdd.title")}</h2><div data-slot="tdd"></div></section>
           <section data-testid="section-acceptance" tabindex="-1" aria-labelledby="section-acceptance-title"><h2 id="section-acceptance-title">${t("section.acceptance.title")}</h2><div data-slot="acceptance"></div></section>
-          <section data-testid="section-mbt" tabindex="-1" aria-labelledby="section-mbt-title"><h2 id="section-mbt-title">${t("section.mbt.title")}</h2><div data-slot="mbt"></div></section>
           <section data-testid="section-agile" tabindex="-1" aria-labelledby="section-agile-title"><h2 id="section-agile-title">${t("section.agile.title")}</h2><div data-slot="agile"></div></section>
-          <section data-testid="section-slicing" tabindex="-1" aria-labelledby="section-slicing-title"><h2 id="section-slicing-title">${t("section.slicing.title")}</h2><div data-slot="slicing"></div></section>
-          <section data-testid="section-blackbox" tabindex="-1" aria-labelledby="section-blackbox-title"><h2 id="section-blackbox-title">${t("section.blackbox.title")}</h2><div data-slot="blackbox"></div></section>
-          <section data-testid="section-flow" tabindex="-1" aria-labelledby="section-flow-title"><h2 id="section-flow-title">${t("section.flow.title")}</h2><div data-slot="flow"></div></section>
-          <section data-testid="section-types" tabindex="-1" aria-labelledby="section-types-title"><h2 id="section-types-title">${t("section.types.title")}</h2><div data-slot="types"></div></section>
+          <section data-testid="section-inttest" tabindex="-1" aria-labelledby="section-inttest-title"><h2 id="section-inttest-title">${t("section.inttest.title")}</h2><div data-slot="inttest"></div></section>
+          <section data-testid="section-advanced" tabindex="-1" aria-labelledby="section-advanced-title"><h2 id="section-advanced-title">${t("section.advanced.title")}</h2><div data-slot="advanced"></div></section>
+          <section data-testid="section-rbt" tabindex="-1" aria-labelledby="section-rbt-title"><h2 id="section-rbt-title">${t("section.rbt.title")}</h2><div data-slot="rbt"></div></section>
         </main>
 
         <div class="cloud-drawer" data-testid="cloud-settings-drawer" hidden>
@@ -38393,30 +40190,12 @@ ${items.join("\n")}
     `;
       const nav = container.querySelector(".app-nav");
       const main = container.querySelector(".app-main");
-      const sections = {
-        overview: main.querySelector('[data-testid="section-overview"]'),
-        methods: main.querySelector('[data-testid="section-methods"]'),
-        graph: main.querySelector('[data-testid="section-graph"]'),
-        logic: main.querySelector('[data-testid="section-logic"]'),
-        syntax: main.querySelector('[data-testid="section-syntax"]'),
-        codecov: main.querySelector('[data-testid="section-codecov"]'),
-        groupth: main.querySelector('[data-testid="section-groupth"]'),
-        symbex: main.querySelector('[data-testid="section-symbex"]'),
-        concolic: main.querySelector('[data-testid="section-concolic"]'),
-        fuzz: main.querySelector('[data-testid="section-fuzz"]'),
-        testgen: main.querySelector('[data-testid="section-testgen"]'),
-        pbt: main.querySelector('[data-testid="section-pbt"]'),
-        inttest: main.querySelector('[data-testid="section-inttest"]'),
-        rbt: main.querySelector('[data-testid="section-rbt"]'),
-        advanced: main.querySelector('[data-testid="section-advanced"]'),
-        acceptance: main.querySelector('[data-testid="section-acceptance"]'),
-        mbt: main.querySelector('[data-testid="section-mbt"]'),
-        agile: main.querySelector('[data-testid="section-agile"]'),
-        slicing: main.querySelector('[data-testid="section-slicing"]'),
-        blackbox: main.querySelector('[data-testid="section-blackbox"]'),
-        flow: main.querySelector('[data-testid="section-flow"]'),
-        types: main.querySelector('[data-testid="section-types"]')
-      };
+      const sections = Object.fromEntries(
+        ["overview", ...SECTION_ORDER].map((id) => [
+          id,
+          main.querySelector(`[data-testid="section-${id}"]`)
+        ])
+      );
       for (const [sectionId, el] of Object.entries(sections)) {
         if (el) el.id = `section-${sectionId}`;
       }
@@ -38488,6 +40267,11 @@ ${items.join("\n")}
         dicing: createSliceDicingExplorer(),
         coverage: createSliceCoverageExplorer(),
         regression: createSliceRegressionExplorer(),
+        tddcycle: createTddCycleExplorer(),
+        tddrules: createTddRulesExplorer(),
+        exploitoverflow: createExploitOverflowExplorer(),
+        exploitsqli: createExploitSqliExplorer(),
+        exploitcmdi: createExploitCmdiExplorer(),
         definitiongates: createDefinitionGatesExplorer(),
         examplemapping: createExampleMappingExplorer(),
         ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -38901,6 +40685,143 @@ ${items.join("\n")}
       }
       renderSlicingTabs();
       updateSlicingPanels();
+      const exploitSlot = container.querySelector('[data-slot="exploit"]');
+      const exploitTabBar = document.createElement("nav");
+      exploitTabBar.className = "syntax-tab-row";
+      exploitTabBar.dataset.testid = "exploit-tab-row";
+      exploitTabBar.setAttribute("role", "tablist");
+      exploitSlot.appendChild(exploitTabBar);
+      const exploitPanels = document.createElement("div");
+      exploitPanels.className = "syntax-tab-panels";
+      exploitSlot.appendChild(exploitPanels);
+      const exploitTabDefs = ["overflow", "sqli", "cmdi"];
+      for (const tabId of exploitTabDefs) {
+        const panel = document.createElement("div");
+        panel.className = "syntax-tab-panel";
+        panel.dataset.exploitPanel = tabId;
+        if (tabId === "overflow") {
+          panel.appendChild(components.exploitoverflow);
+        } else if (tabId === "sqli") {
+          panel.appendChild(components.exploitsqli);
+        } else if (tabId === "cmdi") {
+          panel.appendChild(components.exploitcmdi);
+        }
+        exploitPanels.appendChild(panel);
+      }
+      const EXPLOIT_TAB_KEY = "stvisual.exploitActiveTab";
+      let savedExploitTab = null;
+      try {
+        savedExploitTab = (_j = globalThis.localStorage) == null ? void 0 : _j.getItem(EXPLOIT_TAB_KEY);
+      } catch {
+      }
+      let activeExploitTab = resolveInitialTab({
+        sectionId: "exploit",
+        urlSection: urlState.section,
+        urlTab: urlState.tab,
+        saved: savedExploitTab
+      });
+      const exploitTabItems = [
+        { id: "overflow", key: "exploit.tab.overflow" },
+        { id: "sqli", key: "exploit.tab.sqli" },
+        { id: "cmdi", key: "exploit.tab.cmdi" }
+      ];
+      function renderExploitTabs() {
+        exploitTabBar.innerHTML = exploitTabItems.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeExploitTab === tab.id ? " active" : ""}"
+          data-exploit-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeExploitTab === tab.id ? "true" : "false"}"
+        >${t(tab.key)}</button>
+      `).join("");
+        exploitTabBar.querySelectorAll("[data-exploit-tab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            var _a3;
+            activeExploitTab = btn.dataset.exploitTab;
+            try {
+              (_a3 = globalThis.localStorage) == null ? void 0 : _a3.setItem(EXPLOIT_TAB_KEY, activeExploitTab);
+            } catch {
+            }
+            renderExploitTabs();
+            updateExploitPanels();
+            if (activeSection === "exploit") syncUrl();
+          });
+        });
+      }
+      function updateExploitPanels() {
+        exploitPanels.querySelectorAll("[data-exploit-panel]").forEach((panel) => {
+          panel.style.display = panel.dataset.exploitPanel === activeExploitTab ? "" : "none";
+        });
+      }
+      renderExploitTabs();
+      updateExploitPanels();
+      const tddSlot = container.querySelector('[data-slot="tdd"]');
+      const tddTabBar = document.createElement("nav");
+      tddTabBar.className = "syntax-tab-row";
+      tddTabBar.dataset.testid = "tdd-tab-row";
+      tddTabBar.setAttribute("role", "tablist");
+      tddSlot.appendChild(tddTabBar);
+      const tddPanels = document.createElement("div");
+      tddPanels.className = "syntax-tab-panels";
+      tddSlot.appendChild(tddPanels);
+      const tddTabDefs = ["cycle", "rules"];
+      for (const tabId of tddTabDefs) {
+        const panel = document.createElement("div");
+        panel.className = "syntax-tab-panel";
+        panel.dataset.tddPanel = tabId;
+        if (tabId === "cycle") {
+          panel.appendChild(components.tddcycle);
+        } else if (tabId === "rules") {
+          panel.appendChild(components.tddrules);
+        }
+        tddPanels.appendChild(panel);
+      }
+      const TDD_TAB_KEY = "stvisual.tddActiveTab";
+      let savedTddTab = null;
+      try {
+        savedTddTab = (_k = globalThis.localStorage) == null ? void 0 : _k.getItem(TDD_TAB_KEY);
+      } catch {
+      }
+      let activeTddTab = resolveInitialTab({
+        sectionId: "tdd",
+        urlSection: urlState.section,
+        urlTab: urlState.tab,
+        saved: savedTddTab
+      });
+      const tddTabItems = [
+        { id: "cycle", key: "tdd.tab.cycle" },
+        { id: "rules", key: "tdd.tab.rules" }
+      ];
+      function renderTddTabs() {
+        tddTabBar.innerHTML = tddTabItems.map((tab) => `
+        <button type="button"
+          class="syntax-tab-btn${activeTddTab === tab.id ? " active" : ""}"
+          data-tdd-tab="${tab.id}"
+          role="tab"
+          aria-selected="${activeTddTab === tab.id ? "true" : "false"}"
+        >${t(tab.key)}</button>
+      `).join("");
+        tddTabBar.querySelectorAll("[data-tdd-tab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            var _a3;
+            activeTddTab = btn.dataset.tddTab;
+            try {
+              (_a3 = globalThis.localStorage) == null ? void 0 : _a3.setItem(TDD_TAB_KEY, activeTddTab);
+            } catch {
+            }
+            renderTddTabs();
+            updateTddPanels();
+            if (activeSection === "tdd") syncUrl();
+          });
+        });
+      }
+      function updateTddPanels() {
+        tddPanels.querySelectorAll("[data-tdd-panel]").forEach((panel) => {
+          panel.style.display = panel.dataset.tddPanel === activeTddTab ? "" : "none";
+        });
+      }
+      renderTddTabs();
+      updateTddPanels();
       const syntaxTabs = [
         { id: "mutation", key: "syntaxTab.mutation", component: components.syntax },
         { id: "grammar", key: "syntaxTab.grammar", component: components.grammar },
@@ -38925,7 +40846,7 @@ ${items.join("\n")}
       const SYNTAX_TAB_KEY = "stvisual.syntaxActiveTab";
       let savedSyntaxTab = null;
       try {
-        savedSyntaxTab = (_j = globalThis.localStorage) == null ? void 0 : _j.getItem(SYNTAX_TAB_KEY);
+        savedSyntaxTab = (_l = globalThis.localStorage) == null ? void 0 : _l.getItem(SYNTAX_TAB_KEY);
       } catch {
       }
       let activeSyntaxTab = resolveInitialTab({
@@ -38994,7 +40915,7 @@ ${items.join("\n")}
       const BLACKBOX_TAB_KEY = "stvisual.blackboxActiveTab";
       let savedBlackboxTab = null;
       try {
-        savedBlackboxTab = (_k = globalThis.localStorage) == null ? void 0 : _k.getItem(BLACKBOX_TAB_KEY);
+        savedBlackboxTab = (_m = globalThis.localStorage) == null ? void 0 : _m.getItem(BLACKBOX_TAB_KEY);
       } catch {
       }
       let activeBlackboxTab = resolveInitialTab({
@@ -39062,7 +40983,7 @@ ${items.join("\n")}
       const FLOW_TAB_KEY = "stvisual.flowActiveTab";
       let savedFlowTab = null;
       try {
-        savedFlowTab = (_l = globalThis.localStorage) == null ? void 0 : _l.getItem(FLOW_TAB_KEY);
+        savedFlowTab = (_n = globalThis.localStorage) == null ? void 0 : _n.getItem(FLOW_TAB_KEY);
       } catch {
       }
       let activeFlowTab = resolveInitialTab({
@@ -39176,7 +41097,7 @@ ${items.join("\n")}
       });
       overviewFilterHost.appendChild(filterBar.element);
       const packBar = createCoursePackBar({
-        initial: (_m = urlState.pack) != null ? _m : null,
+        initial: (_o = urlState.pack) != null ? _o : null,
         onApplyFilter: (filter) => {
           const next = filter != null ? filter : { level: [], technique: [], series: [], difficulty: [] };
           activeFilter = { level: [], technique: [], series: [], difficulty: [], ...next };
@@ -39189,14 +41110,14 @@ ${items.join("\n")}
       function syncUrl(mode = "replace") {
         var _a3, _b3, _c3, _d3, _e3;
         try {
-          const state31 = {
+          const state36 = {
             section: activeSection,
             tab: getCurrentTabForSection(activeSection),
             pack: (_a3 = packBar == null ? void 0 : packBar.getActiveId()) != null ? _a3 : null,
             filter: activeFilter,
             lang: langInUrl ? getLocale() : void 0
           };
-          const qs = serializeLocation(state31);
+          const qs = serializeLocation(state36);
           const rawHash = globalThis.location.hash || "";
           const hash = /^#section-[a-z0-9-]+$/.test(rawHash) ? "" : rawHash;
           const url = `${globalThis.location.pathname}${qs}${hash}`;
@@ -39225,6 +41146,10 @@ ${items.join("\n")}
             return activeAgileTab;
           case "slicing":
             return activeSlicingTab;
+          case "tdd":
+            return activeTddTab;
+          case "exploit":
+            return activeExploitTab;
           case "flow":
             return activeFlowTab;
           case "types":
@@ -39288,15 +41213,24 @@ ${items.join("\n")}
           </select>
         </div>
         <div class="app-nav__buttons">
-          ${learningSectionsConfig.map((section) => `
+          <button
+            class="nav-btn${activeSection === "all" ? " active" : ""}"
+            data-testid="nav-btn-all"
+            data-section="all"
+            type="button"
+            aria-current="${activeSection === "all" ? "page" : "false"}"
+          >
+            ${t("section.all")}
+          </button>
+          ${SECTION_ORDER.map((sectionId) => `
             <button
-              class="nav-btn${activeSection === section.id ? " active" : ""}"
-              data-testid="nav-btn-${section.id}"
-              data-section="${section.id}"
+              class="nav-btn${activeSection === sectionId ? " active" : ""}"
+              data-testid="nav-btn-${sectionId}"
+              data-section="${sectionId}"
               type="button"
-              aria-current="${activeSection === section.id ? "page" : "false"}"
+              aria-current="${activeSection === sectionId ? "page" : "false"}"
             >
-              ${t(section.key)}
+              ${t(`section.${sectionId}`)}
             </button>
           `).join("")}
         </div>
@@ -39483,8 +41417,8 @@ ${items.join("\n")}
   }
 
   // src/main.js
-  var root31 = document.getElementById("root");
-  if (root31) {
-    renderApp(root31);
+  var root36 = document.getElementById("root");
+  if (root36) {
+    renderApp(root36);
   }
 })();
