@@ -1216,8 +1216,15 @@ git commit -m "feat(sbst): SbstSuiteExplorer — whole-suite evolution tab"
 **Files:**
 - Modify: `src/data/sectionTaxonomy.js`
 - Modify: `src/utils/urlRouter.js`
+- Modify: `src/data/explorerTags.js`
 - Modify: `src/app.js`
 - Modify: `src/i18n/dict.js`
+
+> **Context:** `src/tests/explorerTags.test.js` requires every explorer
+> component file under `src/components/` to have an `EXPLORER_TAGS` entry, and
+> requires an i18n key for every controlled-vocabulary tag value. After Tasks
+> 6–8 added three explorer components, that test is RED until Step 2b below
+> registers them. This task must end with the **full** suite green.
 
 - [ ] **Step 1: Add `sbst` to the taxonomy**
 
@@ -1246,6 +1253,38 @@ And add to `EXPLORER_TO_LOCATION` (after the `ExploitPathExplorer` entry):
   SbstSuiteExplorer:   { section: 'sbst', tab: 'suite' },
 ```
 
+- [ ] **Step 2b: Register the explorers in `src/data/explorerTags.js`**
+
+The vocabularies in this file are CLOSED; new tag values must be added to the
+vocab arrays first.
+
+1. Add `'search-based'` to the `TAG_TECHNIQUES` array (append at the end).
+2. Add `'sbst'` to the `TAG_SERIES` array (append at the end).
+3. Add three entries to `EXPLORER_TAGS`, after the `ExploitPathExplorer` entry
+   (just before the closing `};` of the object):
+
+```js
+  // ── Search-Based Software Testing ────────────────────────────────
+  SbstBranchExplorer: {
+    level: ['unit'], technique: ['search-based'], series: ['sbst'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
+  SbstCompareExplorer: {
+    level: ['unit'], technique: ['search-based'], series: ['sbst'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
+  SbstSuiteExplorer: {
+    level: ['unit'], technique: ['search-based'], series: ['sbst'],
+    difficulty: 'advanced', source: [TEXTBOOK],
+  },
+```
+
+4. Add to the `SECTION_EXPLORERS` map:
+
+```js
+  sbst: ['SbstBranchExplorer', 'SbstCompareExplorer', 'SbstSuiteExplorer'],
+```
+
 - [ ] **Step 3: Add the i18n strings**
 
 In `src/i18n/dict.js`, add these keys to **both** the `en` map and the `zh` map
@@ -1260,12 +1299,20 @@ In `src/i18n/dict.js`, add these keys to **both** the `en` map and the `zh` map
 'sbst.example.nestedGuard': 'Nested guard'
 'sbst.example.triangle': 'Triangle classifier'
 'sbst.example.multimodal': 'Multimodal (mod 20)'
+'tag.technique.search-based': 'Search-based'
+'tag.series.sbst': 'Search-Based Testing'
 ```
+
+The last two keys are required by `explorerTags.test.js`, which asserts an
+EN+ZH i18n key exists for every controlled-vocabulary tag value (`tag.technique.*`,
+`tag.series.*`) — they pair with the `TAG_TECHNIQUES`/`TAG_SERIES` additions in
+Step 2b.
 
 Also add any UI-copy keys the three explorers reference (panel headings, button
 labels, the comparison takeaway, the three quiz questions and their options).
-Place them next to the keys above, `en` and `zh` in parallel. Use the existing
-`exploit.*` keys as a naming and tone model.
+Place them next to the keys above, `en` and `zh` in parallel. To find them, grep
+the three `Sbst*Explorer.js` files for `t('sbst.` and add every key referenced.
+Use the existing `exploit.*` keys as a naming and tone model.
 
 - [ ] **Step 4: Wire the section into `app.js`**
 
@@ -1305,19 +1352,22 @@ import { createSbstSuiteExplorer } from './components/SbstSuiteExplorer.js';
     ];
 ```
 
-- [ ] **Step 5: Verify the app boots and the section is wired**
+- [ ] **Step 5: Verify the app boots and the full suite is green**
 
 Run: `npm run test:run`
-Expected: all existing tests still pass (no deck-count change yet — that is Task 11).
+Expected: **all tests pass**, including `src/tests/explorerTags.test.js` (its
+"matches the component files actually shipped" and "i18n keys exist" tests turn
+green now that Step 2b + Step 3 registered the three SBST explorers). No
+deck-count change yet — that is Task 11.
 
-Then manually: `npm run build:standalone` succeeds, and serving the app and
-opening `?explorer=SbstBranchExplorer` focuses the new section with three tabs.
+Then: `npm run build:standalone` succeeds, and serving the app and opening
+`?explorer=SbstBranchExplorer` focuses the new section with three working tabs.
 (A full browser check happens in Task 10.)
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/data/sectionTaxonomy.js src/utils/urlRouter.js src/app.js src/i18n/dict.js
+git add src/data/sectionTaxonomy.js src/utils/urlRouter.js src/data/explorerTags.js src/app.js src/i18n/dict.js
 git commit -m "feat(sbst): register and wire the Search-Based Testing section"
 ```
 
