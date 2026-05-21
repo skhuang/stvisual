@@ -356,6 +356,10 @@ export const EXPLORER_TAGS = {
     level: ['nonfunctional'], technique: ['security'], series: ['exploit'],
     difficulty: 'intermediate', source: [TEXTBOOK],
   },
+  ExploitSqliExplorer: {
+    level: ['unit'], technique: ['security'], series: ['exploit'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
 };
 
 // ── Section ↔ Explorer mapping (used by K2 Overview filter) ────────
@@ -427,7 +431,7 @@ export const SECTION_EXPLORERS = {
   ],
   slicing: ['ProgramSlicingExplorer', 'SliceDicingExplorer', 'SliceCoverageExplorer', 'SliceRegressionExplorer'],
   tdd: ['TddCycleExplorer', 'TddRulesExplorer'],
-  exploit: ['ExploitOverflowExplorer'],
+  exploit: ['ExploitOverflowExplorer', 'ExploitSqliExplorer'],
 };
 
 // ── Helpers ────────────────────────────────────────────────────────
