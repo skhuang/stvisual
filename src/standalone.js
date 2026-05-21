@@ -1558,6 +1558,47 @@
       "exploit.tab.overflow": "Stack Buffer Overflow",
       "exploit.tab.sqli": "SQL Injection",
       "exploit.tab.cmdi": "Command Injection",
+      "exploit.tab.path": "Path-Constrained Exploit",
+      "exploit.phase.path": "Path",
+      "exploit.path.iterationsTitle": "Concolic exploration",
+      "exploit.path.colInput": "Inputs tried",
+      "exploit.path.colReturn": "Return",
+      "exploit.path.exploitPathLabel": "\u2190 exploit path",
+      "exploit.path.constraintLabel": "Path constraint to reach the vulnerable line:",
+      "exploit.path.exploitInputLabel": "Exploit input:",
+      "exploit.path.packet.title": "Packet parser",
+      "exploit.path.packet.cwe": "CWE-787 (out-of-bounds write)",
+      "exploit.path.packet.payloadNote": "Concolic solved len > 16 \u2014 it returns the minimal witness len=17. But overwriting the saved return address needs len \u2265 24 (16 buffer + 4 saved EBP + 4 return address). The exploit input must satisfy the path constraint AND the payload's own length requirement.",
+      "exploit.path.packet.def.lencheck": "Validate len \u2264 sizeof(buf) before the copy",
+      "exploit.path.packet.def.boundedcopy": "Use a bounded copy API with an explicit destination size",
+      "exploit.path.packet.def.heapfit": "Allocate the destination on the heap sized to len",
+      "exploit.path.packet.quiz.prompt": "Concolic execution derived the path constraint len > 16. Why is that necessary but not sufficient to hijack control flow?",
+      "exploit.path.packet.quiz.a": "It is sufficient \u2014 len > 16 already hijacks control",
+      "exploit.path.packet.quiz.b": "The path constraint is irrelevant to exploitation",
+      "exploit.path.packet.quiz.c": "Reaching the copy needs len > 16, but overwriting the return address needs len \u2265 24 \u2014 the payload adds its own constraint",
+      "exploit.path.packet.quiz.d": "Concolic execution cannot derive path constraints",
+      "exploit.path.oob.title": "Array index",
+      "exploit.path.oob.cwe": "CWE-125 (out-of-bounds read)",
+      "exploit.path.oob.payloadNote": "The path constraint already pins idx > 7. Here the path constraint and the payload coincide \u2014 the out-of-bounds index IS the exploit value. idx=8 reads the first slot past the 8-entry table.",
+      "exploit.path.oob.def.boundscheck": "Check idx < table length before the read",
+      "exploit.path.oob.def.rangeallow": "Reject the request unless the index passes an allowlist range",
+      "exploit.path.oob.def.safeaccessor": "Use a bounds-checked accessor instead of raw indexing",
+      "exploit.path.oob.quiz.prompt": "In this example, how do the path constraint and the payload relate?",
+      "exploit.path.oob.quiz.a": "They are completely independent",
+      "exploit.path.oob.quiz.b": "The payload must be written before the path constraint is solved",
+      "exploit.path.oob.quiz.c": "They coincide \u2014 the out-of-bounds index is both the path-reaching condition and the exploit value",
+      "exploit.path.oob.quiz.d": "There is no path constraint for an out-of-bounds read",
+      "exploit.path.auth.title": "License check",
+      "exploit.path.auth.cwe": "CWE-489 (active debug code)",
+      "exploit.path.auth.payloadNote": "There is no separate payload. The debug-backdoor path has no memory corruption \u2014 reaching it is the entire exploit. The path constraint alone (tier=3 \u2227 region=1 \u2227 serial=7) is the exploit input.",
+      "exploit.path.auth.def.removebackdoor": "Remove the debug bypass from release builds",
+      "exploit.path.auth.def.compileflag": "Gate any debug path behind a compile-time flag stripped from release",
+      "exploit.path.auth.def.codereview": "Code review \u2014 no hardcoded magic credentials",
+      "exploit.path.auth.quiz.prompt": "This exploit writes no payload. What makes it still an exploit?",
+      "exploit.path.auth.quiz.a": "It is not actually an exploit without a payload",
+      "exploit.path.auth.quiz.b": "The payload is hidden inside the path constraint",
+      "exploit.path.auth.quiz.c": "Reaching the backdoor path is the entire exploit \u2014 the path constraint alone grants privileged access",
+      "exploit.path.auth.quiz.d": "Concolic execution always writes a payload",
       "exploit.phase.vuln": "Vuln",
       "exploit.phase.constraint": "Constraint",
       "exploit.phase.payload": "Payload",
@@ -4483,6 +4524,47 @@
       "exploit.tab.overflow": "\u5806\u758A\u7DE9\u885D\u5340\u6EA2\u4F4D",
       "exploit.tab.sqli": "SQL \u6CE8\u5165",
       "exploit.tab.cmdi": "\u547D\u4EE4\u6CE8\u5165",
+      "exploit.tab.path": "\u8DEF\u5F91\u7D04\u675F\u5229\u7528",
+      "exploit.phase.path": "\u8DEF\u5F91",
+      "exploit.path.iterationsTitle": "Concolic \u63A2\u7D22",
+      "exploit.path.colInput": "\u5617\u8A66\u7684\u8F38\u5165",
+      "exploit.path.colReturn": "\u56DE\u50B3\u503C",
+      "exploit.path.exploitPathLabel": "\u2190 \u653B\u64CA\u8DEF\u5F91",
+      "exploit.path.constraintLabel": "\u62B5\u9054\u5F31\u9EDE\u884C\u7684\u8DEF\u5F91\u7D04\u675F\uFF1A",
+      "exploit.path.exploitInputLabel": "\u653B\u64CA\u8F38\u5165\uFF1A",
+      "exploit.path.packet.title": "\u5C01\u5305\u89E3\u6790\u5668",
+      "exploit.path.packet.cwe": "CWE-787\uFF08\u8D8A\u754C\u5BEB\u5165\uFF09",
+      "exploit.path.packet.payloadNote": "Concolic \u89E3\u51FA len > 16\u2014\u2014\u5B83\u56DE\u50B3\u6700\u5C0F\u898B\u8B49 len=17\u3002\u4F46\u8981\u8986\u84CB\u4FDD\u5B58\u7684\u8FD4\u56DE\u4F4D\u5740\u9700\u8981 len \u2265 24\uFF0816 \u7DE9\u885D\u5340 + 4 \u4FDD\u5B58\u7684 EBP + 4 \u8FD4\u56DE\u4F4D\u5740\uFF09\u3002\u653B\u64CA\u8F38\u5165\u5FC5\u9808\u540C\u6642\u6EFF\u8DB3\u8DEF\u5F91\u7D04\u675F\u8207\u653B\u64CA\u8F09\u8377\u672C\u8EAB\u7684\u9577\u5EA6\u9700\u6C42\u3002",
+      "exploit.path.packet.def.lencheck": "\u8907\u88FD\u524D\u9A57\u8B49 len \u2264 sizeof(buf)",
+      "exploit.path.packet.def.boundedcopy": "\u4F7F\u7528\u5E36\u660E\u78BA\u76EE\u6A19\u5927\u5C0F\u7684\u6709\u754C\u8907\u88FD API",
+      "exploit.path.packet.def.heapfit": "\u5728\u5806\u7A4D\u4E0A\u914D\u7F6E\u8207 len \u7B49\u5927\u7684\u76EE\u6A19\u7DE9\u885D\u5340",
+      "exploit.path.packet.quiz.prompt": "Concolic \u57F7\u884C\u63A8\u5C0E\u51FA\u8DEF\u5F91\u7D04\u675F len > 16\u3002\u70BA\u4EC0\u9EBC\u9019\u5C0D\u52AB\u6301\u63A7\u5236\u6D41\u662F\u5FC5\u8981\u4F46\u4E0D\u5145\u5206\u7684\uFF1F",
+      "exploit.path.packet.quiz.a": "\u5B83\u662F\u5145\u5206\u7684\u2014\u2014len > 16 \u5DF2\u53EF\u52AB\u6301\u63A7\u5236",
+      "exploit.path.packet.quiz.b": "\u8DEF\u5F91\u7D04\u675F\u8207\u6F0F\u6D1E\u5229\u7528\u7121\u95DC",
+      "exploit.path.packet.quiz.c": "\u62B5\u9054\u8907\u88FD\u9700\u8981 len > 16\uFF0C\u4F46\u8986\u84CB\u8FD4\u56DE\u4F4D\u5740\u9700\u8981 len \u2265 24\u2014\u2014\u653B\u64CA\u8F09\u8377\u52A0\u4E0A\u5B83\u81EA\u5DF1\u7684\u7D04\u675F",
+      "exploit.path.packet.quiz.d": "Concolic \u57F7\u884C\u7121\u6CD5\u63A8\u5C0E\u8DEF\u5F91\u7D04\u675F",
+      "exploit.path.oob.title": "\u9663\u5217\u7D22\u5F15",
+      "exploit.path.oob.cwe": "CWE-125\uFF08\u8D8A\u754C\u8B80\u53D6\uFF09",
+      "exploit.path.oob.payloadNote": "\u8DEF\u5F91\u7D04\u675F\u5DF2\u56FA\u5B9A idx > 7\u3002\u9019\u88E1\u8DEF\u5F91\u7D04\u675F\u8207\u653B\u64CA\u8F09\u8377\u91CD\u5408\u2014\u2014\u8D8A\u754C\u7D22\u5F15\u672C\u8EAB\u5C31\u662F\u653B\u64CA\u503C\u3002idx=8 \u8B80\u53D6 8 \u683C\u8868\u683C\u4E4B\u5F8C\u7684\u7B2C\u4E00\u500B\u4F4D\u7F6E\u3002",
+      "exploit.path.oob.def.boundscheck": "\u8B80\u53D6\u524D\u6AA2\u67E5 idx < \u8868\u683C\u9577\u5EA6",
+      "exploit.path.oob.def.rangeallow": "\u9664\u975E\u7D22\u5F15\u901A\u904E\u767D\u540D\u55AE\u7BC4\u570D\uFF0C\u5426\u5247\u62D2\u7D55\u8ACB\u6C42",
+      "exploit.path.oob.def.safeaccessor": "\u4F7F\u7528\u5E36\u908A\u754C\u6AA2\u67E5\u7684\u5B58\u53D6\u5668\uFF0C\u800C\u975E\u539F\u59CB\u7D22\u5F15",
+      "exploit.path.oob.quiz.prompt": "\u5728\u6B64\u7BC4\u4F8B\u4E2D\uFF0C\u8DEF\u5F91\u7D04\u675F\u8207\u653B\u64CA\u8F09\u8377\u7684\u95DC\u4FC2\u70BA\u4F55\uFF1F",
+      "exploit.path.oob.quiz.a": "\u5169\u8005\u5B8C\u5168\u7368\u7ACB",
+      "exploit.path.oob.quiz.b": "\u653B\u64CA\u8F09\u8377\u5FC5\u9808\u5728\u89E3\u51FA\u8DEF\u5F91\u7D04\u675F\u4E4B\u524D\u5BEB\u5165",
+      "exploit.path.oob.quiz.c": "\u5169\u8005\u91CD\u5408\u2014\u2014\u8D8A\u754C\u7D22\u5F15\u65E2\u662F\u62B5\u9054\u8DEF\u5F91\u7684\u689D\u4EF6\uFF0C\u4E5F\u662F\u653B\u64CA\u503C",
+      "exploit.path.oob.quiz.d": "\u8D8A\u754C\u8B80\u53D6\u6C92\u6709\u8DEF\u5F91\u7D04\u675F",
+      "exploit.path.auth.title": "\u6388\u6B0A\u6AA2\u67E5",
+      "exploit.path.auth.cwe": "CWE-489\uFF08\u6B98\u7559\u5075\u932F\u7A0B\u5F0F\u78BC\uFF09",
+      "exploit.path.auth.payloadNote": "\u6C92\u6709\u7368\u7ACB\u7684\u653B\u64CA\u8F09\u8377\u3002\u5075\u932F\u5F8C\u9580\u8DEF\u5F91\u6C92\u6709\u8A18\u61B6\u9AD4\u7834\u58DE\u2014\u2014\u62B5\u9054\u5B83\u5C31\u662F\u5B8C\u6574\u7684\u653B\u64CA\u3002\u55AE\u6191\u8DEF\u5F91\u7D04\u675F\uFF08tier=3 \u2227 region=1 \u2227 serial=7\uFF09\u5C31\u662F\u653B\u64CA\u8F38\u5165\u3002",
+      "exploit.path.auth.def.removebackdoor": "\u5F9E\u767C\u884C\u7248\u79FB\u9664\u5075\u932F\u65C1\u8DEF",
+      "exploit.path.auth.def.compileflag": "\u5C07\u5075\u932F\u8DEF\u5F91\u7F6E\u65BC\u767C\u884C\u7248\u6703\u79FB\u9664\u7684\u7DE8\u8B6F\u671F\u65D7\u6A19\u4E4B\u5F8C",
+      "exploit.path.auth.def.codereview": "\u7A0B\u5F0F\u78BC\u5BE9\u67E5\u2014\u2014\u4E0D\u5F97\u6709\u5BEB\u6B7B\u7684\u9B54\u8853\u6191\u8B49",
+      "exploit.path.auth.quiz.prompt": "\u6B64\u653B\u64CA\u4E0D\u5BEB\u5165\u4EFB\u4F55\u653B\u64CA\u8F09\u8377\u3002\u70BA\u4EC0\u9EBC\u5B83\u4ECD\u662F\u4E00\u6B21\u6F0F\u6D1E\u5229\u7528\uFF1F",
+      "exploit.path.auth.quiz.a": "\u6C92\u6709\u653B\u64CA\u8F09\u8377\u5C31\u4E0D\u7B97\u771F\u6B63\u7684\u6F0F\u6D1E\u5229\u7528",
+      "exploit.path.auth.quiz.b": "\u653B\u64CA\u8F09\u8377\u85CF\u5728\u8DEF\u5F91\u7D04\u675F\u88E1",
+      "exploit.path.auth.quiz.c": "\u62B5\u9054\u5F8C\u9580\u8DEF\u5F91\u5C31\u662F\u5B8C\u6574\u7684\u653B\u64CA\u2014\u2014\u55AE\u6191\u8DEF\u5F91\u7D04\u675F\u5373\u53EF\u53D6\u5F97\u7279\u6B0A\u5B58\u53D6",
+      "exploit.path.auth.quiz.d": "Concolic \u57F7\u884C\u7E3D\u662F\u6703\u5BEB\u5165\u653B\u64CA\u8F09\u8377",
       "exploit.phase.vuln": "\u5F31\u9EDE",
       "exploit.phase.constraint": "\u524D\u7F6E\u689D\u4EF6",
       "exploit.phase.payload": "\u653B\u64CA\u8F09\u8377",
@@ -6263,13 +6345,13 @@
 
   // src/components/TestingMethodTree.js
   function createTestingMethodTree() {
-    const root37 = document.createElement("div");
+    const root38 = document.createElement("div");
     let expandedIds = /* @__PURE__ */ new Set();
-    function render36() {
+    function render37() {
       const allExpanded = expandedIds.size === testingMethods.length;
-      root37.className = "testing-method-tree";
-      root37.dataset.testid = "testing-method-tree";
-      root37.innerHTML = `
+      root38.className = "testing-method-tree";
+      root38.dataset.testid = "testing-method-tree";
+      root38.innerHTML = `
       <div class="tree-controls">
         <button class="btn-toggle-all" type="button" data-testid="toggle-all-btn">
           ${allExpanded ? t("methods.collapseAll") : t("methods.expandAll")}
@@ -6331,12 +6413,12 @@
       }).join("")}
       </div>
     `;
-      root37.querySelector('[data-testid="toggle-all-btn"]').addEventListener("click", () => {
+      root38.querySelector('[data-testid="toggle-all-btn"]').addEventListener("click", () => {
         expandedIds = allExpanded ? /* @__PURE__ */ new Set() : new Set(testingMethods.map((method) => method.id));
-        render36();
+        render37();
       });
       testingMethods.forEach((method) => {
-        root37.querySelector(`[data-testid="method-card-btn-${method.id}"]`).addEventListener("click", () => {
+        root38.querySelector(`[data-testid="method-card-btn-${method.id}"]`).addEventListener("click", () => {
           const next = new Set(expandedIds);
           if (next.has(method.id)) {
             next.delete(method.id);
@@ -6344,12 +6426,12 @@
             next.add(method.id);
           }
           expandedIds = next;
-          render36();
+          render37();
         });
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/dataFlow.js
@@ -7099,12 +7181,12 @@
   function createParserState(lines) {
     return { lines, index: 0 };
   }
-  function currentLine(state36) {
-    return state36.lines[state36.index] || null;
+  function currentLine(state37) {
+    return state37.lines[state37.index] || null;
   }
-  function consumeLine(state36) {
-    const line = currentLine(state36);
-    state36.index += 1;
+  function consumeLine(state37) {
+    const line = currentLine(state37);
+    state37.index += 1;
     return line;
   }
   function createAstNode(type, line, extra = {}) {
@@ -7127,50 +7209,50 @@
       return line.text.startsWith(token);
     });
   }
-  function parseJavascriptSingleStatement(state36) {
-    const line = currentLine(state36);
+  function parseJavascriptSingleStatement(state37) {
+    const line = currentLine(state37);
     if (!line) {
       return [];
     }
     if (line.text.startsWith("if")) {
-      return [parseJavascriptIf(state36)];
+      return [parseJavascriptIf(state37)];
     }
     if (line.text.startsWith("while")) {
-      return [parseJavascriptLoop(state36, "while")];
+      return [parseJavascriptLoop(state37, "while")];
     }
     if (line.text.startsWith("for")) {
-      return [parseJavascriptLoop(state36, "for")];
+      return [parseJavascriptLoop(state37, "for")];
     }
     if (line.text.startsWith("switch")) {
-      return [parseJavascriptSwitch(state36)];
+      return [parseJavascriptSwitch(state37)];
     }
     if (line.text.startsWith("return")) {
-      consumeLine(state36);
+      consumeLine(state37);
       return [createAstNode("return", line, { text: line.text.replace(/;$/, "") })];
     }
     if (line.text.startsWith("break")) {
-      consumeLine(state36);
+      consumeLine(state37);
       return [createAstNode("break", line, { text: line.text.replace(/;$/, "") })];
     }
     if (line.text.startsWith("continue")) {
-      consumeLine(state36);
+      consumeLine(state37);
       return [createAstNode("continue", line, { text: line.text.replace(/;$/, "") })];
     }
-    consumeLine(state36);
+    consumeLine(state37);
     return [createAstNode("statement", line, { text: line.text.replace(/;$/, "") })];
   }
-  function parseJavascriptIf(state36) {
-    const line = consumeLine(state36);
+  function parseJavascriptIf(state37) {
+    const line = consumeLine(state37);
     const condition = extractParenthesizedContent(line.text) || line.text.replace(/^if\s*/, "").replace(/\{$/, "").trim();
-    const consequent = line.text.endsWith("{") ? parseJavascriptStatements(state36) : parseJavascriptSingleStatement(state36);
+    const consequent = line.text.endsWith("{") ? parseJavascriptStatements(state37) : parseJavascriptSingleStatement(state37);
     let alternate = [];
-    const nextLine = currentLine(state36);
+    const nextLine = currentLine(state37);
     if (nextLine == null ? void 0 : nextLine.text.startsWith("else if")) {
-      state36.lines[state36.index] = { ...nextLine, text: nextLine.text.replace(/^else\s+/, "") };
-      alternate = [parseJavascriptIf(state36)];
+      state37.lines[state37.index] = { ...nextLine, text: nextLine.text.replace(/^else\s+/, "") };
+      alternate = [parseJavascriptIf(state37)];
     } else if (nextLine == null ? void 0 : nextLine.text.startsWith("else")) {
-      const elseLine = consumeLine(state36);
-      alternate = elseLine.text.endsWith("{") ? parseJavascriptStatements(state36) : parseJavascriptSingleStatement(state36);
+      const elseLine = consumeLine(state37);
+      alternate = elseLine.text.endsWith("{") ? parseJavascriptStatements(state37) : parseJavascriptSingleStatement(state37);
     }
     return createAstNode("if", line, {
       condition,
@@ -7178,33 +7260,33 @@
       alternate
     });
   }
-  function parseJavascriptLoop(state36, type) {
-    const line = consumeLine(state36);
+  function parseJavascriptLoop(state37, type) {
+    const line = consumeLine(state37);
     const condition = extractParenthesizedContent(line.text) || line.text.replace(new RegExp(`^${type}\\s*`), "").replace(/\{$/, "").trim();
-    const body = line.text.endsWith("{") ? parseJavascriptStatements(state36) : parseJavascriptSingleStatement(state36);
+    const body = line.text.endsWith("{") ? parseJavascriptStatements(state37) : parseJavascriptSingleStatement(state37);
     return createAstNode(type, line, {
       condition,
       body
     });
   }
-  function parseJavascriptSwitch(state36) {
-    const line = consumeLine(state36);
+  function parseJavascriptSwitch(state37) {
+    const line = consumeLine(state37);
     const expression = extractParenthesizedContent(line.text) || line.text.replace(/^switch\s*/, "").replace(/\{$/, "").trim();
     const cases = [];
-    while (state36.index < state36.lines.length) {
-      const nextLine = currentLine(state36);
+    while (state37.index < state37.lines.length) {
+      const nextLine = currentLine(state37);
       if (!nextLine) {
         break;
       }
       if (nextLine.text === "}") {
-        consumeLine(state36);
+        consumeLine(state37);
         break;
       }
       if (/^(case\s+.+:|default:)$/i.test(nextLine.text)) {
-        const caseLine = consumeLine(state36);
+        const caseLine = consumeLine(state37);
         const isDefault = caseLine.text.startsWith("default:");
         const label = isDefault ? "default" : caseLine.text.replace(/^case\s+/i, "").replace(/:$/, "").trim();
-        const statements = parseJavascriptStatements(state36, ["case ", "default:", "}"]);
+        const statements = parseJavascriptStatements(state37, ["case ", "default:", "}"]);
         cases.push(createAstNode("case", caseLine, {
           label,
           isDefault,
@@ -7212,40 +7294,40 @@
         }));
         continue;
       }
-      consumeLine(state36);
+      consumeLine(state37);
     }
     return createAstNode("switch", line, {
       expression,
       cases
     });
   }
-  function parseJavascriptStatements(state36, stopWhen = ["}"]) {
+  function parseJavascriptStatements(state37, stopWhen = ["}"]) {
     const statements = [];
-    while (state36.index < state36.lines.length) {
-      const line = currentLine(state36);
+    while (state37.index < state37.lines.length) {
+      const line = currentLine(state37);
       if (!line) {
         break;
       }
       if (isJavascriptStop(line, stopWhen)) {
         if (line.text === "}") {
-          consumeLine(state36);
+          consumeLine(state37);
         }
         break;
       }
       if ((line.text.startsWith("function ") || line.text.startsWith("export function ")) && line.text.endsWith("{")) {
-        consumeLine(state36);
+        consumeLine(state37);
         statements.push(createAstNode("statement", line, {
           text: line.text.replace(/\{$/, "").trim()
         }));
-        statements.push(...parseJavascriptStatements(state36));
+        statements.push(...parseJavascriptStatements(state37));
         continue;
       }
       if (line.text === "{") {
-        consumeLine(state36);
-        statements.push(...parseJavascriptStatements(state36));
+        consumeLine(state37);
+        statements.push(...parseJavascriptStatements(state37));
         continue;
       }
-      statements.push(...parseJavascriptSingleStatement(state36));
+      statements.push(...parseJavascriptSingleStatement(state37));
     }
     return statements;
   }
@@ -7256,22 +7338,22 @@
     const upper = line.text.toUpperCase();
     return stopWhen.some((token) => upper.startsWith(token));
   }
-  function parsePseudocodeIf(state36) {
+  function parsePseudocodeIf(state37) {
     var _a;
-    const line = consumeLine(state36);
+    const line = consumeLine(state37);
     const condition = line.text.replace(/^IF\s*/i, "").replace(/\s*THEN$/i, "").trim();
-    const consequent = parsePseudocodeStatements(state36, ["ELSE", "ELSE IF", "END IF", "ENDIF", "END"]);
+    const consequent = parsePseudocodeStatements(state37, ["ELSE", "ELSE IF", "END IF", "ENDIF", "END"]);
     let alternate = [];
-    const nextLine = currentLine(state36);
+    const nextLine = currentLine(state37);
     if (/^ELSE IF\b/i.test((nextLine == null ? void 0 : nextLine.text) || "")) {
-      state36.lines[state36.index] = { ...nextLine, text: nextLine.text.replace(/^ELSE\s+/i, "") };
-      alternate = [parsePseudocodeIf(state36)];
+      state37.lines[state37.index] = { ...nextLine, text: nextLine.text.replace(/^ELSE\s+/i, "") };
+      alternate = [parsePseudocodeIf(state37)];
     } else if (/^ELSE\b/i.test((nextLine == null ? void 0 : nextLine.text) || "")) {
-      consumeLine(state36);
-      alternate = parsePseudocodeStatements(state36, ["END IF", "ENDIF", "END"]);
+      consumeLine(state37);
+      alternate = parsePseudocodeStatements(state37, ["END IF", "ENDIF", "END"]);
     }
-    if (/^(END IF|ENDIF|END)$/i.test(((_a = currentLine(state36)) == null ? void 0 : _a.text) || "")) {
-      consumeLine(state36);
+    if (/^(END IF|ENDIF|END)$/i.test(((_a = currentLine(state37)) == null ? void 0 : _a.text) || "")) {
+      consumeLine(state37);
     }
     return createAstNode("if", line, {
       condition,
@@ -7279,51 +7361,51 @@
       alternate
     });
   }
-  function parsePseudocodeLoop(state36) {
+  function parsePseudocodeLoop(state37) {
     var _a;
-    const line = consumeLine(state36);
+    const line = consumeLine(state37);
     const condition = line.text.replace(/^(WHILE|FOR)\s*/i, "").replace(/\s*DO$/i, "").trim();
-    const body = parsePseudocodeStatements(state36, ["END WHILE", "END FOR", "END"]);
-    if (/^(END WHILE|END FOR|END)$/i.test(((_a = currentLine(state36)) == null ? void 0 : _a.text) || "")) {
-      consumeLine(state36);
+    const body = parsePseudocodeStatements(state37, ["END WHILE", "END FOR", "END"]);
+    if (/^(END WHILE|END FOR|END)$/i.test(((_a = currentLine(state37)) == null ? void 0 : _a.text) || "")) {
+      consumeLine(state37);
     }
     return createAstNode(/^WHILE\b/i.test(line.text) ? "while" : "for", line, {
       condition,
       body
     });
   }
-  function parsePseudocodeStatements(state36, stopWhen = []) {
+  function parsePseudocodeStatements(state37, stopWhen = []) {
     const statements = [];
-    while (state36.index < state36.lines.length) {
-      const line = currentLine(state36);
+    while (state37.index < state37.lines.length) {
+      const line = currentLine(state37);
       if (!line || isPseudocodeStop(line, stopWhen)) {
         break;
       }
       if (/^FUNCTION\b/i.test(line.text)) {
-        consumeLine(state36);
+        consumeLine(state37);
         continue;
       }
       if (/^IF\b/i.test(line.text)) {
-        statements.push(parsePseudocodeIf(state36));
+        statements.push(parsePseudocodeIf(state37));
         continue;
       }
       if (/^(WHILE|FOR)\b/i.test(line.text)) {
-        statements.push(parsePseudocodeLoop(state36));
+        statements.push(parsePseudocodeLoop(state37));
         continue;
       }
       if (/^RETURN\b/i.test(line.text)) {
-        statements.push(createAstNode("return", consumeLine(state36), { text: line.text }));
+        statements.push(createAstNode("return", consumeLine(state37), { text: line.text }));
         continue;
       }
       if (/^BREAK\b/i.test(line.text)) {
-        statements.push(createAstNode("break", consumeLine(state36), { text: line.text }));
+        statements.push(createAstNode("break", consumeLine(state37), { text: line.text }));
         continue;
       }
       if (/^CONTINUE\b/i.test(line.text)) {
-        statements.push(createAstNode("continue", consumeLine(state36), { text: line.text }));
+        statements.push(createAstNode("continue", consumeLine(state37), { text: line.text }));
         continue;
       }
-      statements.push(createAstNode("statement", consumeLine(state36), { text: line.text }));
+      statements.push(createAstNode("statement", consumeLine(state37), { text: line.text }));
     }
     return statements;
   }
@@ -8102,7 +8184,7 @@
   `;
   }
   function createGraphCoverageExplorer() {
-    const root37 = document.createElement("div");
+    const root38 = document.createElement("div");
     const defaultGraph = cloneGraph(graphCoverageGraph);
     const defaultProgram = {
       id: "default-sample",
@@ -8154,7 +8236,7 @@
         userCount: userPaths.length
       };
       graphQuiz.phase = "graded";
-      render36();
+      render37();
     }
     function renderGraphLabReflectPanel() {
       if (!graphLabReflect.active) return "";
@@ -8228,7 +8310,7 @@
       parseError = "";
       sourceStatus = statusMessage;
       selectedRequirementId = null;
-      render36();
+      render37();
     }
     function scheduleAutoApply() {
       if (autoApplyTimer) {
@@ -8243,10 +8325,10 @@
           parseError = "";
           sourceStatus = t("graph.status.recomputed", { name: activeProgram.name });
           selectedRequirementId = null;
-          render36();
+          render37();
         } catch (error) {
           parseError = error.message;
-          render36();
+          render37();
         }
       }, 300);
     }
@@ -8256,7 +8338,7 @@
       parseError = "";
       sourceStatus = t("graph.status.reset", { name: activeProgram.name });
       selectedRequirementId = null;
-      render36();
+      render37();
     }
     function getState() {
       var _a;
@@ -8274,7 +8356,7 @@
         pathPlan
       };
     }
-    function render36() {
+    function render37() {
       var _a, _b, _c, _d, _e, _f, _g, _h;
       const { requirements, selectedRequirement, selectedCriterion, pathPlan } = getState();
       const selectedSourceNodes = getSelectedSourceNodes(graph, selectedRequirement);
@@ -8291,17 +8373,17 @@
         total: 1,
         items: [{ q: t("lab.metric.graph.label", { criterion: (selectedCriterion == null ? void 0 : selectedCriterion.label) || criterionId, paths: pathPlan.selectedPaths.length }), a: "", ok: true }]
       });
-      root37.className = "graph-coverage";
-      root37.dataset.testid = "graph-coverage-explorer";
-      root37.innerHTML = `
+      root38.className = "graph-coverage";
+      root38.dataset.testid = "graph-coverage-explorer";
+      root38.innerHTML = `
       <div class="graph-source-card" data-testid="graph-source-card">
         <div class="graph-source-toolbar">
           <label>
             Program Example
             <select data-testid="program-example-select">
               <option value="${defaultProgram.id}"${selectedProgramId === defaultProgram.id ? " selected" : ""}>Default CFG Sample</option>
-              ${graphCoverageProgramExamples.map((example4) => `
-                <option value="${example4.id}"${selectedProgramId === example4.id ? " selected" : ""}>${example4.name}</option>
+              ${graphCoverageProgramExamples.map((example5) => `
+                <option value="${example5.id}"${selectedProgramId === example5.id ? " selected" : ""}>${example5.name}</option>
               `).join("")}
               <option value="uploaded-code"${selectedProgramId === "uploaded-code" ? " selected" : ""}>Uploaded Source Code</option>
               <option value="uploaded-spec"${selectedProgramId === "uploaded-spec" ? " selected" : ""}>Uploaded Graph Spec</option>
@@ -8495,10 +8577,10 @@
       ${quizPanel}
       ${labReflectPanel}
     `;
-      root37.querySelector('[data-testid="graph-reset-btn"]').addEventListener("click", () => {
+      root38.querySelector('[data-testid="graph-reset-btn"]').addEventListener("click", () => {
         resetGraph();
       });
-      root37.querySelector('[data-testid="program-example-select"]').addEventListener("change", (event) => {
+      root38.querySelector('[data-testid="program-example-select"]').addEventListener("change", (event) => {
         const nextProgramId = event.target.value;
         if (nextProgramId === defaultProgram.id) {
           loadGraphSource(defaultProgram, defaultGraph, t("graph.status.defaultLoaded"));
@@ -8507,32 +8589,32 @@
         if (nextProgramId === "uploaded-spec") {
           selectedProgramId = nextProgramId;
           sourceStatus = t("graph.status.pickJson");
-          render36();
+          render37();
           return;
         }
         if (nextProgramId === "uploaded-code") {
           selectedProgramId = nextProgramId;
           sourceStatus = t("graph.status.pickCode");
-          render36();
+          render37();
           return;
         }
-        const example4 = graphCoverageProgramExamples.find((item) => item.id === nextProgramId);
-        if (example4) {
-          const nextGraph = resolveProgramGraph(example4);
-          selectedCodeLanguage = example4.language || selectedCodeLanguage;
-          loadGraphSource(example4, nextGraph, t("graph.status.exampleLoaded", { name: example4.name }));
+        const example5 = graphCoverageProgramExamples.find((item) => item.id === nextProgramId);
+        if (example5) {
+          const nextGraph = resolveProgramGraph(example5);
+          selectedCodeLanguage = example5.language || selectedCodeLanguage;
+          loadGraphSource(example5, nextGraph, t("graph.status.exampleLoaded", { name: example5.name }));
         }
       });
-      root37.querySelector('[data-testid="program-language-select"]').addEventListener("change", (event) => {
+      root38.querySelector('[data-testid="program-language-select"]').addEventListener("change", (event) => {
         selectedCodeLanguage = event.target.value;
       });
-      root37.querySelector('[data-testid="graph-upload-btn"]').addEventListener("click", () => {
-        root37.querySelector('[data-testid="graph-upload-input"]').click();
+      root38.querySelector('[data-testid="graph-upload-btn"]').addEventListener("click", () => {
+        root38.querySelector('[data-testid="graph-upload-input"]').click();
       });
-      root37.querySelector('[data-testid="code-upload-btn"]').addEventListener("click", () => {
-        root37.querySelector('[data-testid="code-upload-input"]').click();
+      root38.querySelector('[data-testid="code-upload-btn"]').addEventListener("click", () => {
+        root38.querySelector('[data-testid="code-upload-input"]').click();
       });
-      root37.querySelector('[data-testid="graph-upload-input"]').addEventListener("change", async (event) => {
+      root38.querySelector('[data-testid="graph-upload-input"]').addEventListener("change", async (event) => {
         const [file] = event.target.files || [];
         if (!file) {
           return;
@@ -8547,10 +8629,10 @@
         } catch (error) {
           selectedProgramId = "uploaded-spec";
           parseError = error.message;
-          render36();
+          render37();
         }
       });
-      root37.querySelector('[data-testid="code-upload-input"]').addEventListener("change", async (event) => {
+      root38.querySelector('[data-testid="code-upload-input"]').addEventListener("change", async (event) => {
         const [file] = event.target.files || [];
         if (!file) {
           return;
@@ -8570,10 +8652,10 @@
         } catch (error) {
           parseError = error.message;
           sourceStatus = t("graph.status.codeFailed");
-          render36();
+          render37();
         }
       });
-      root37.querySelectorAll("[data-draft-field]").forEach((input) => {
+      root38.querySelectorAll("[data-draft-field]").forEach((input) => {
         input.addEventListener("input", () => {
           draft = {
             ...draft,
@@ -8582,70 +8664,70 @@
           scheduleAutoApply();
         });
       });
-      root37.querySelectorAll("[data-criterion]").forEach((button) => {
+      root38.querySelectorAll("[data-criterion]").forEach((button) => {
         button.addEventListener("click", () => {
           criterionId = button.dataset.criterion;
           selectedRequirementId = null;
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-requirement-id]").forEach((button) => {
+      root38.querySelectorAll("[data-requirement-id]").forEach((button) => {
         button.addEventListener("click", () => {
           selectedRequirementId = button.dataset.requirementId;
-          render36();
+          render37();
         });
       });
-      (_a = root37.querySelector('[data-testid="graph-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root38.querySelector('[data-testid="graph-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         graphQuiz.active = true;
         graphQuiz.selectedPaths = /* @__PURE__ */ new Set();
         graphQuiz.phase = "question";
         graphQuiz.result = null;
-        render36();
+        render37();
       });
-      (_b = root37.querySelector('[data-testid="graph-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root38.querySelector('[data-testid="graph-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         graphQuiz.active = false;
-        render36();
+        render37();
       });
-      root37.querySelectorAll("[data-quiz-path]").forEach((cb) => {
+      root38.querySelectorAll("[data-quiz-path]").forEach((cb) => {
         cb.addEventListener("change", () => {
           const key = cb.dataset.quizPath;
           if (cb.checked) graphQuiz.selectedPaths.add(key);
           else graphQuiz.selectedPaths.delete(key);
         });
       });
-      (_c = root37.querySelector('[data-testid="graph-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root38.querySelector('[data-testid="graph-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
         const { pathPlan: pathPlan2 } = getState();
         gradeGraphQuiz(pathPlan2);
       });
-      (_d = root37.querySelector('[data-testid="graph-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root38.querySelector('[data-testid="graph-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
         graphQuiz.selectedPaths = /* @__PURE__ */ new Set();
         graphQuiz.phase = "question";
         graphQuiz.result = null;
-        render36();
+        render37();
       });
-      (_e = root37.querySelector('[data-testid="graph-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root38.querySelector('[data-testid="graph-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
         graphLabReflect.active = true;
-        render36();
+        render37();
       });
-      (_f = root37.querySelector('[data-testid="graph-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root38.querySelector('[data-testid="graph-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a2, _b2;
-        graphLabReflect.a1 = ((_a2 = root37.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || graphLabReflect.a1;
-        graphLabReflect.a2 = ((_b2 = root37.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || graphLabReflect.a2;
+        graphLabReflect.a1 = ((_a2 = root38.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || graphLabReflect.a1;
+        graphLabReflect.a2 = ((_b2 = root38.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || graphLabReflect.a2;
         graphLabReflect.active = false;
-        render36();
+        render37();
       });
-      (_g = root37.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root38.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         graphLabReflect.a1 = e.target.value;
       });
-      (_h = root37.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
+      (_h = root38.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
         graphLabReflect.a2 = e.target.value;
       });
-      const lrShare = root37.querySelector('[data-testid="graph-lab-reflect-share"]');
+      const lrShare = root38.querySelector('[data-testid="graph-lab-reflect-share"]');
       if (lrShare) {
         lrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root37.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root37.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root38.querySelector('[data-testid="graph-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root38.querySelector('[data-testid="graph-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "graph",
@@ -8680,11 +8762,11 @@
         });
       }
     }
-    render36();
+    render37();
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a;
-        if (!root37.isConnected) return;
+        if (!root38.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "graph") return;
         const content = String((_a = detail.content) != null ? _a : "");
@@ -8702,11 +8784,11 @@
         } catch (error) {
           parseError = error.message;
           sourceStatus = t("graph.status.codeFailed");
-          render36();
+          render37();
         }
       });
     }
-    return root37;
+    return root38;
   }
 
   // src/utils/logicCoverage.js
@@ -10774,10 +10856,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     });
   }
   function createLogicCoverageExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "logic-coverage";
-    root37.dataset.testid = "logic-coverage";
-    const state36 = {
+    const root38 = document.createElement("div");
+    root38.className = "logic-coverage";
+    root38.dataset.testid = "logic-coverage";
+    const state37 = {
       expression: logicCoveragePredicates[0].expression,
       selectedCriterion: "pc",
       error: null,
@@ -10825,8 +10907,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function renderLogicQuizPanel() {
       if (!logicQuiz.active) return "";
-      const criterion = logicCoverageCriteria.find((c) => c.id === state36.selectedCriterion);
-      const criterionLabel = pickField(criterion, "label") || (criterion == null ? void 0 : criterion.id) || state36.selectedCriterion;
+      const criterion = logicCoverageCriteria.find((c) => c.id === state37.selectedCriterion);
+      const criterionLabel = pickField(criterion, "label") || (criterion == null ? void 0 : criterion.id) || state37.selectedCriterion;
       const uniqueCount = getQuizUniqueCount();
       if (uniqueCount === null) return "";
       const isGraded = logicQuiz.phase === "graded";
@@ -10837,7 +10919,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <h4>${t("quiz.logic.title")}</h4>
           <button type="button" class="quiz-close-btn" data-testid="logic-quiz-close">${t("quiz.close")}</button>
         </div>
-        <p class="quiz-prompt">${t("quiz.logic.prompt").replace("{expr}", escapeHtml2(state36.expression)).replace("{criterion}", escapeHtml2(criterionLabel))}</p>
+        <p class="quiz-prompt">${t("quiz.logic.prompt").replace("{expr}", escapeHtml2(state37.expression)).replace("{criterion}", escapeHtml2(criterionLabel))}</p>
         <div class="quiz-bva-inputs">
           <label class="quiz-bva-field">
             <span>${t("quiz.logic.label")}</span>
@@ -10852,7 +10934,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <p class="quiz-score" data-testid="logic-quiz-score">
             ${correct ? `<strong>${t("quiz.bva.perfect")}</strong>` : `${t("quiz.ec.wrong")} ${t("quiz.ec.answer").replace("{count}", uniqueCount)}`}
           </p>
-          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: "logic", explorerLabel: t("quiz.logic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: correct ? 1 : 0, total: 1, items: [{ q: t("quiz.logic.prompt").replace("{expr}", state36.expression).replace("{criterion}", criterionLabel), a: String(logicQuiz.answer), expected: String(uniqueCount), ok: correct }] })}" data-testid="logic-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
+          <button type="button" class="quiz-share-btn" data-share-payload="${encodeResult({ v: 1, explorer: "logic", explorerLabel: t("quiz.logic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: correct ? 1 : 0, total: 1, items: [{ q: t("quiz.logic.prompt").replace("{expr}", state37.expression).replace("{criterion}", criterionLabel), a: String(logicQuiz.answer), expected: String(uniqueCount), ok: correct }] })}" data-testid="logic-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
           <button type="button" class="quiz-start-btn" data-testid="logic-quiz-reset">${t("quiz.reset")}</button>
         ` : `
           <button type="button" class="quiz-start-btn" data-testid="logic-quiz-check">${t("quiz.check")}</button>
@@ -10867,65 +10949,65 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       cloudClient = null;
     }
     function pushRecentToCloud(list) {
-      if (!cloudClient || !state36.cloudUser || typeof cloudClient.saveLogicRecent !== "function") return;
-      cloudClient.saveLogicRecent(state36.cloudUser.uid, list).catch(() => {
+      if (!cloudClient || !state37.cloudUser || typeof cloudClient.saveLogicRecent !== "function") return;
+      cloudClient.saveLogicRecent(state37.cloudUser.uid, list).catch(() => {
       });
     }
     function persistRecent() {
-      saveRecent(state36.recent);
-      pushRecentToCloud(state36.recent);
+      saveRecent(state37.recent);
+      pushRecentToCloud(state37.recent);
     }
     function rememberCurrentExpression() {
-      const expr = state36.expression.trim();
-      if (!expr || state36.error) return false;
+      const expr = state37.expression.trim();
+      if (!expr || state37.error) return false;
       if (isBuiltinExpression(expr)) return false;
-      const next = [expr, ...state36.recent.filter((item) => item !== expr)].slice(0, RECENT_LIMIT);
-      if (next.length === state36.recent.length && next[0] === state36.recent[0]) {
+      const next = [expr, ...state37.recent.filter((item) => item !== expr)].slice(0, RECENT_LIMIT);
+      if (next.length === state37.recent.length && next[0] === state37.recent[0]) {
         return false;
       }
-      state36.recent = next;
+      state37.recent = next;
       persistRecent();
       return true;
     }
     function removeRecent(expr) {
-      const next = state36.recent.filter((item) => item !== expr);
-      if (next.length === state36.recent.length) return;
-      state36.recent = next;
+      const next = state37.recent.filter((item) => item !== expr);
+      if (next.length === state37.recent.length) return;
+      state37.recent = next;
       persistRecent();
-      render36();
+      render37();
     }
     function recompute() {
       try {
-        state36.parsed = parsePredicate(state36.expression);
-        if (state36.parsed.clauses.length > 6) {
+        state37.parsed = parsePredicate(state37.expression);
+        if (state37.parsed.clauses.length > 6) {
           throw new Error(t("logic.err.tooManyClauses"));
         }
-        state36.analysis = buildAllCoverageSets(state36.parsed);
-        state36.error = null;
-        const clauseSet = new Set(state36.parsed.clauses);
-        for (const k of Object.keys(state36.bindings)) {
-          if (!clauseSet.has(k)) delete state36.bindings[k];
+        state37.analysis = buildAllCoverageSets(state37.parsed);
+        state37.error = null;
+        const clauseSet = new Set(state37.parsed.clauses);
+        for (const k of Object.keys(state37.bindings)) {
+          if (!clauseSet.has(k)) delete state37.bindings[k];
         }
       } catch (err) {
-        state36.parsed = null;
-        state36.analysis = null;
-        state36.error = err.message || String(err);
+        state37.parsed = null;
+        state37.analysis = null;
+        state37.error = err.message || String(err);
       }
     }
     function getActiveSet() {
-      if (!state36.analysis) return null;
-      return state36.analysis.sets[state36.selectedCriterion] || null;
+      if (!state37.analysis) return null;
+      return state37.analysis.sets[state37.selectedCriterion] || null;
     }
     function activeRowIds() {
       const set = getActiveSet();
       if (!set) return /* @__PURE__ */ new Set();
       return new Set(set.tests.map((t2) => `r${t2.row.index}`));
     }
-    function render36() {
+    function render37() {
       const examplesMarkup = logicCoveragePredicates.map((p) => `
         <button
           type="button"
-          class="logic-example-btn${state36.expression === p.expression ? " active" : ""}"
+          class="logic-example-btn${state37.expression === p.expression ? " active" : ""}"
           data-expression="${escapeHtml2(p.expression)}"
           data-testid="logic-example-${p.id}"
           title="${escapeHtml2(pickField(p, "description") || "")}"
@@ -10933,11 +11015,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           ${escapeHtml2(p.name)}
         </button>
       `).join("");
-      const recentMarkup = state36.recent.length ? `
+      const recentMarkup = state37.recent.length ? `
         <div class="logic-recent" data-testid="logic-recent">
           <span class="logic-recent-label">${t("logic.recent")}</span>
-          ${state36.recent.map((expr) => `
-              <span class="logic-recent-chip${state36.expression === expr ? " active" : ""}" data-testid="logic-recent-chip">
+          ${state37.recent.map((expr) => `
+              <span class="logic-recent-chip${state37.expression === expr ? " active" : ""}" data-testid="logic-recent-chip">
                 <button
                   type="button"
                   class="logic-recent-select"
@@ -10958,7 +11040,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const criteriaMarkup = logicCoverageCriteria.map((c) => `
         <button
           type="button"
-          class="logic-criterion-btn${state36.selectedCriterion === c.id ? " active" : ""}"
+          class="logic-criterion-btn${state37.selectedCriterion === c.id ? " active" : ""}"
           data-criterion="${c.id}"
           data-testid="logic-criterion-${c.id}"
         >
@@ -10968,14 +11050,14 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       `).join("");
       const truthTableMarkup = renderTruthTable();
       const summaryMarkup = renderSummary2();
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="logic-toolbar">
         <label class="logic-input-label" for="logic-expression-input">Predicate</label>
         <input
           id="logic-expression-input"
           class="logic-expression-input"
           type="text"
-          value="${escapeHtml2(state36.expression)}"
+          value="${escapeHtml2(state37.expression)}"
           spellcheck="false"
           autocomplete="off"
           data-testid="logic-expression-input"
@@ -10985,12 +11067,12 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         ${recentMarkup}
       </div>
 
-      ${state36.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state36.error)}</div>` : ""}
+      ${state37.error ? `<div class="logic-error" data-testid="logic-error">${escapeHtml2(state37.error)}</div>` : ""}
 
       <div class="logic-criteria" role="tablist" aria-label="${t("logic.aria.criteria")}">
         <div class="graph-criterion-row">
           ${criteriaMarkup}
-          ${!state36.error && state36.analysis ? `
+          ${!state37.error && state37.analysis ? `
             <button type="button" class="quiz-start-btn" data-testid="logic-quiz-start">
               ${t("quiz.start")}
             </button>
@@ -11010,13 +11092,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
 
       <div class="logic-truth-table-wrap">${truthTableMarkup}</div>
     `;
-      bindEvents36();
+      bindEvents37();
     }
     function renderTruthTable() {
-      if (!state36.analysis) {
+      if (!state37.analysis) {
         return "";
       }
-      const { rows, clauses } = state36.analysis;
+      const { rows, clauses } = state37.analysis;
       const highlighted = activeRowIds();
       const activeSet = getActiveSet();
       const majorByRow = /* @__PURE__ */ new Map();
@@ -11066,7 +11148,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function renderSummary2() {
       var _a;
-      if (state36.error || !state36.analysis) {
+      if (state37.error || !state37.analysis) {
         return "";
       }
       const set = getActiveSet();
@@ -11084,48 +11166,48 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const testList = annotated.map(({ test, isDuplicate }) => `
         <li class="logic-test-item${isDuplicate ? " duplicate" : ""}" data-testid="logic-test-${escapeHtml2(test.id)}">
           <span class="logic-test-row">#${test.row.index}</span>
-          <span class="logic-test-values">${state36.analysis.clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ")}</span>
+          <span class="logic-test-values">${state37.analysis.clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ")}</span>
           <span class="logic-test-pred ${test.row.predicate ? "is-true" : "is-false"}">P=${test.row.predicate ? "T" : "F"}</span>
           <span class="logic-test-label">${escapeHtml2(test.label)}</span>
           ${isDuplicate ? `<span class="logic-test-dup-tag" aria-label="${t("logic.duplicate")}">${t("logic.duplicate")}</span>` : ""}
         </li>
       `).join("");
       const unsatisfied = ((_a = set.unsatisfied) == null ? void 0 : _a.length) ? `<p class="logic-unsatisfied" data-testid="logic-unsatisfied">${t("logic.unsatisfied", { items: set.unsatisfied.join(", ") })}</p>` : "";
-      const dnfMarkup = ["ic", "utpc", "mutpc", "nfpc", "mnfpc", "cutpnfp"].includes(set.id) && state36.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">${t("logic.dnfPrefix")}${dnfToHtml(state36.analysis.dnf)}
-          <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state36.analysis.dnf)}${t("logic.textbookClose")}</span>
-        </p>${set.id === "ic" && state36.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">${t("logic.dnfNegPrefix")}${dnfToHtml(state36.analysis.negDnf)}
-                <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state36.analysis.negDnf)}${t("logic.textbookClose")}</span>
+      const dnfMarkup = ["ic", "utpc", "mutpc", "nfpc", "mnfpc", "cutpnfp"].includes(set.id) && state37.analysis.dnf ? `<p class="logic-dnf" data-testid="logic-dnf">${t("logic.dnfPrefix")}${dnfToHtml(state37.analysis.dnf)}
+          <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state37.analysis.dnf)}${t("logic.textbookClose")}</span>
+        </p>${set.id === "ic" && state37.analysis.negDnf ? `<p class="logic-dnf" data-testid="logic-dnf-neg">${t("logic.dnfNegPrefix")}${dnfToHtml(state37.analysis.negDnf)}
+                <span class="logic-dnf-alt">${t("logic.textbookOpen")}${dnfToCompactHtml(state37.analysis.negDnf)}${t("logic.textbookClose")}</span>
               </p>` : ""}` : "";
-      const kmapMarkup = state36.parsed && (set.id === "ic" || set.id === "utpc" || set.id === "mutpc" || set.id === "nfpc" || set.id === "mnfpc" || set.id === "cutpnfp") ? set.id === "ic" ? (() => {
+      const kmapMarkup = state37.parsed && (set.id === "ic" || set.id === "utpc" || set.id === "mutpc" || set.id === "nfpc" || set.id === "mnfpc" || set.id === "cutpnfp") ? set.id === "ic" ? (() => {
         const posTests = set.tests.filter((t2) => t2.polarity === "pos");
         const negTests = set.tests.filter((t2) => t2.polarity === "neg");
         const posGroups = buildImplicantGroups(
-          state36.analysis.rows,
-          state36.analysis.dnf || [],
+          state37.analysis.rows,
+          state37.analysis.dnf || [],
           true,
           0,
           posTests
         );
         const negGroups = buildImplicantGroups(
-          state36.analysis.rows,
-          state36.analysis.negDnf || [],
+          state37.analysis.rows,
+          state37.analysis.negDnf || [],
           false,
-          (state36.analysis.dnf || []).length,
+          (state37.analysis.dnf || []).length,
           negTests
         );
         const posTestSet = new Set(posTests.map((t2) => t2.row.index));
         const negTestSet = new Set(negTests.map((t2) => t2.row.index));
         return `<div class="logic-kmap-row">
                 ${renderKMap(
-          state36.analysis.rows,
-          state36.parsed.clauses,
+          state37.analysis.rows,
+          state37.parsed.clauses,
           true,
           t("logic.kmap.title.fStar"),
           { highlightedMinterms: posTestSet, implicantGroups: posGroups, highlightLabel: "test" }
         )}
                 ${renderKMap(
-          state36.analysis.rows,
-          state36.parsed.clauses,
+          state37.analysis.rows,
+          state37.parsed.clauses,
           false,
           t("logic.kmap.title.fNegStar"),
           { highlightedMinterms: negTestSet, implicantGroups: negGroups, highlightLabel: "test" }
@@ -11133,19 +11215,19 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               </div>`;
       })() : set.id === "utpc" ? `<div class="logic-kmap-row">
                 ${renderKMap(
-        state36.analysis.rows,
-        state36.parsed.clauses,
+        state37.analysis.rows,
+        state37.parsed.clauses,
         true,
         t("logic.kmap.title.utp"),
         { highlightedMinterms: new Set(set.tests.map((t2) => t2.row.index)) }
       )}
               </div>` : set.id === "mutpc" ? (() => {
-        const dnf = state36.analysis.dnf || [];
-        const groups = buildImplicantGroups(state36.analysis.rows, dnf, true, 0, set.tests);
+        const dnf = state37.analysis.dnf || [];
+        const groups = buildImplicantGroups(state37.analysis.rows, dnf, true, 0, set.tests);
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state36.analysis.rows,
-          state36.parsed.clauses,
+          state37.analysis.rows,
+          state37.parsed.clauses,
           true,
           t("logic.kmap.title.mutp"),
           {
@@ -11156,8 +11238,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         )}
                 </div>`;
       })() : set.id === "nfpc" || set.id === "mnfpc" ? (() => {
-        const dnf = state36.analysis.dnf || [];
-        const groups = buildImplicantGroups(state36.analysis.rows, dnf, true, 0, []);
+        const dnf = state37.analysis.dnf || [];
+        const groups = buildImplicantGroups(state37.analysis.rows, dnf, true, 0, []);
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
         set.tests.forEach((test) => {
@@ -11173,16 +11255,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const titleText = set.id === "mnfpc" ? t("logic.kmap.title.mnfp") : t("logic.kmap.title.nfp");
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state36.analysis.rows,
-          state36.parsed.clauses,
+          state37.analysis.rows,
+          state37.parsed.clauses,
           true,
           titleText,
           { implicantGroups: groups, nfpMarks, ntpMarks, highlightLabel: "test" }
         )}
                 </div>`;
       })() : (() => {
-        const dnf = state36.analysis.dnf || [];
-        const groups = buildImplicantGroups(state36.analysis.rows, dnf, true, 0, []);
+        const dnf = state37.analysis.dnf || [];
+        const groups = buildImplicantGroups(state37.analysis.rows, dnf, true, 0, []);
         const nfpMarks = /* @__PURE__ */ new Map();
         const ntpMarks = /* @__PURE__ */ new Map();
         const testRowSet = /* @__PURE__ */ new Set();
@@ -11200,8 +11282,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
         return `<div class="logic-kmap-row">
                   ${renderKMap(
-          state36.analysis.rows,
-          state36.parsed.clauses,
+          state37.analysis.rows,
+          state37.parsed.clauses,
           true,
           t("logic.kmap.title.cutpnfp"),
           {
@@ -11233,16 +11315,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     `;
     }
     function buildBindingResultsHTML() {
-      if (!state36.analysis) return "";
-      const { clauses } = state36.analysis;
+      if (!state37.analysis) return "";
+      const { clauses } = state37.analysis;
       const hasAnyBinding = clauses.some((c) => {
         var _a;
-        return (_a = state36.bindings[c]) == null ? void 0 : _a.trim();
+        return (_a = state37.bindings[c]) == null ? void 0 : _a.trim();
       });
       if (!hasAnyBinding) {
         return `<p class="logic-binding-hint-noentry" data-testid="logic-binding-no-entry">${t("logic.binding.noBinding")}</p>`;
       }
-      const vars = extractVarsFromBindings(state36.bindings);
+      const vars = extractVarsFromBindings(state37.bindings);
       const activeSet = getActiveSet();
       if (!activeSet) return "";
       const seenRows = /* @__PURE__ */ new Set();
@@ -11257,13 +11339,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         const valStr = clauses.map((c) => `${c}=${test.row.values[c] ? "T" : "F"}`).join(", ");
         const boundClauseValues = {};
         for (const c of clauses) {
-          if ((_a = state36.bindings[c]) == null ? void 0 : _a.trim()) boundClauseValues[c] = test.row.values[c];
+          if ((_a = state37.bindings[c]) == null ? void 0 : _a.trim()) boundClauseValues[c] = test.row.values[c];
         }
-        const constraintStr = buildConstraintStr(boundClauseValues, state36.bindings);
+        const constraintStr = buildConstraintStr(boundClauseValues, state37.bindings);
         const result = solveBinding({
           clauseValues: boundClauseValues,
-          bindings: state36.bindings,
-          searchRange: state36.bindingRange
+          bindings: state37.bindings,
+          searchRange: state37.bindingRange
         });
         const witnessCell = result.witness ? `<code class="logic-binding-witness" data-testid="logic-binding-witness-${test.row.index}">${escapeHtml2(formatWitnessStr(result.witness))}</code>` : `<span class="logic-binding-infeasible" data-testid="logic-binding-infeasible-${test.row.index}">${t("logic.binding.infeasible")}</span>`;
         return `
@@ -11294,8 +11376,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     function renderSymmetryBridge() {
       const activeSet = getActiveSet();
       if (!activeSet || !["cacc", "racc"].includes(activeSet.id)) return "";
-      if (!state36.analysis || state36.error) return "";
-      const { clauses, rows } = state36.analysis;
+      if (!state37.analysis || state37.error) return "";
+      const { clauses, rows } = state37.analysis;
       if (!clauses || clauses.length < 2 || clauses.length > 6) return "";
       const table = /* @__PURE__ */ new Map();
       for (const row of rows) {
@@ -11319,13 +11401,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       </div>`;
     }
     function activePredicateExample() {
-      return logicCoveragePredicates.find((p) => p.expression === state36.expression) || null;
+      return logicCoveragePredicates.find((p) => p.expression === state37.expression) || null;
     }
     function renderBindingPanel() {
-      if (!state36.analysis || state36.error) return "";
-      const { clauses } = state36.analysis;
-      const example4 = activePredicateExample();
-      const hasDefaults = (example4 == null ? void 0 : example4.defaultBindings) && clauses.some((c) => example4.defaultBindings[c]);
+      if (!state37.analysis || state37.error) return "";
+      const { clauses } = state37.analysis;
+      const example5 = activePredicateExample();
+      const hasDefaults = (example5 == null ? void 0 : example5.defaultBindings) && clauses.some((c) => example5.defaultBindings[c]);
       const inputRows = clauses.map((c) => `
       <label class="logic-binding-clause-row">
         <span class="logic-binding-clause-name" aria-label="${t("logic.binding.clause")} ${escapeHtml2(c)}">${escapeHtml2(c)}</span>
@@ -11335,7 +11417,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           class="logic-binding-expr-input"
           data-testid="logic-binding-input-${escapeHtml2(c)}"
           data-binding-clause="${escapeHtml2(c)}"
-          value="${escapeHtml2(state36.bindings[c] || "")}"
+          value="${escapeHtml2(state37.bindings[c] || "")}"
           placeholder="${t("logic.binding.placeholder")}"
           spellcheck="false"
           autocomplete="off"
@@ -11346,8 +11428,8 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       const restoreBtn = hasDefaults ? `<button type="button" class="logic-binding-restore-btn"
            data-testid="logic-binding-restore"
            title="${t("logic.binding.restore")}">${t("logic.binding.restore")}</button>` : "";
-      const paramsHint = (example4 == null ? void 0 : example4.bindingParams) ? `<span class="logic-binding-params-hint">${t("logic.binding.params")} <code>${escapeHtml2(example4.bindingParams)}</code></span>` : "";
-      const sourceBlock = (example4 == null ? void 0 : example4.sourceCode) ? `<pre class="logic-binding-source" data-testid="logic-binding-source"><code>${escapeHtml2(example4.sourceCode)}</code></pre>` : "";
+      const paramsHint = (example5 == null ? void 0 : example5.bindingParams) ? `<span class="logic-binding-params-hint">${t("logic.binding.params")} <code>${escapeHtml2(example5.bindingParams)}</code></span>` : "";
+      const sourceBlock = (example5 == null ? void 0 : example5.sourceCode) ? `<pre class="logic-binding-source" data-testid="logic-binding-source"><code>${escapeHtml2(example5.sourceCode)}</code></pre>` : "";
       return `
       <details class="logic-binding" data-testid="logic-binding" open>
         <summary class="logic-binding-summary">${t("logic.binding.title")}</summary>
@@ -11361,10 +11443,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <div class="logic-binding-range-row">
           <span class="logic-binding-range-label">${t("logic.binding.range")}</span>
           <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-min"
-            data-binding-range="min" value="${state36.bindingRange[0]}" min="-1000" max="0" step="1" />
+            data-binding-range="min" value="${state37.bindingRange[0]}" min="-1000" max="0" step="1" />
           <span class="logic-binding-range-sep">${t("logic.binding.rangeTo")}</span>
           <input type="number" class="logic-binding-range-input" data-testid="logic-binding-range-max"
-            data-binding-range="max" value="${state36.bindingRange[1]}" min="0" max="1000" step="1" />
+            data-binding-range="max" value="${state37.bindingRange[1]}" min="0" max="1000" step="1" />
         </div>
         <div class="logic-binding-results" data-testid="logic-binding-results">
           ${buildBindingResultsHTML()}
@@ -11373,116 +11455,116 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     `;
     }
     function refreshBindingResults() {
-      const el = root37.querySelector('[data-testid="logic-binding-results"]');
+      const el = root38.querySelector('[data-testid="logic-binding-results"]');
       if (el) el.innerHTML = buildBindingResultsHTML();
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i;
-      const input = root37.querySelector('[data-testid="logic-expression-input"]');
+      const input = root38.querySelector('[data-testid="logic-expression-input"]');
       if (input) {
         input.addEventListener("input", (event) => {
-          state36.expression = event.target.value;
+          state37.expression = event.target.value;
           recompute();
           renderPreservingFocus("logic-expression-input");
         });
         input.addEventListener("blur", () => {
-          if (rememberCurrentExpression()) render36();
+          if (rememberCurrentExpression()) render37();
         });
         input.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
             event.preventDefault();
-            if (rememberCurrentExpression()) render36();
+            if (rememberCurrentExpression()) render37();
           }
         });
       }
-      root37.querySelectorAll("[data-expression]").forEach((btn) => {
+      root38.querySelectorAll("[data-expression]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.expression = btn.dataset.expression;
+          state37.expression = btn.dataset.expression;
           recompute();
-          const example4 = activePredicateExample();
-          if (example4 == null ? void 0 : example4.defaultBindings) {
-            state36.bindings = { ...example4.defaultBindings };
+          const example5 = activePredicateExample();
+          if (example5 == null ? void 0 : example5.defaultBindings) {
+            state37.bindings = { ...example5.defaultBindings };
           }
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-recent-select]").forEach((btn) => {
+      root38.querySelectorAll("[data-recent-select]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.expression = btn.dataset.recentSelect;
+          state37.expression = btn.dataset.recentSelect;
           recompute();
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-recent-remove]").forEach((btn) => {
+      root38.querySelectorAll("[data-recent-remove]").forEach((btn) => {
         btn.addEventListener("click", (event) => {
           event.stopPropagation();
           removeRecent(btn.dataset.recentRemove);
         });
       });
-      root37.querySelectorAll("[data-criterion]").forEach((btn) => {
+      root38.querySelectorAll("[data-criterion]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.selectedCriterion = btn.dataset.criterion;
+          state37.selectedCriterion = btn.dataset.criterion;
           logicQuiz.active = false;
           logicQuiz.phase = "question";
           logicQuiz.answer = "";
           logicQuiz.result = null;
-          render36();
+          render37();
         });
       });
-      (_a = root37.querySelector('[data-testid="logic-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root38.querySelector('[data-testid="logic-quiz-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         logicQuiz.active = true;
         logicQuiz.phase = "question";
         logicQuiz.answer = "";
         logicQuiz.result = null;
-        const quizEl = root37.querySelector('[data-testid="logic-quiz"]');
+        const quizEl = root38.querySelector('[data-testid="logic-quiz"]');
         if (!quizEl) {
-          render36();
+          render37();
           return;
         }
         quizEl.outerHTML = renderLogicQuizPanel();
-        render36();
+        render37();
       });
-      (_b = root37.querySelector('[data-testid="logic-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root38.querySelector('[data-testid="logic-quiz-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         logicQuiz.active = false;
-        render36();
+        render37();
       });
-      (_c = root37.querySelector('[data-testid="logic-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root38.querySelector('[data-testid="logic-quiz-check"]')) == null ? void 0 : _c.addEventListener("click", () => {
         var _a2;
-        const inp = root37.querySelector('[data-testid="logic-quiz-answer"]');
+        const inp = root38.querySelector('[data-testid="logic-quiz-answer"]');
         logicQuiz.answer = (_a2 = inp == null ? void 0 : inp.value) != null ? _a2 : "";
         logicQuiz.phase = "graded";
-        const panel = root37.querySelector('[data-testid="logic-quiz"]');
+        const panel = root38.querySelector('[data-testid="logic-quiz"]');
         if (panel) panel.outerHTML = renderLogicQuizPanel();
-        render36();
+        render37();
       });
-      (_d = root37.querySelector('[data-testid="logic-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root38.querySelector('[data-testid="logic-quiz-reset"]')) == null ? void 0 : _d.addEventListener("click", () => {
         logicQuiz.phase = "question";
         logicQuiz.answer = "";
-        render36();
+        render37();
       });
-      (_e = root37.querySelector('[data-testid="logic-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root38.querySelector('[data-testid="logic-lab-reflect-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
         logicLabReflect.active = true;
-        render36();
+        render37();
       });
-      (_f = root37.querySelector('[data-testid="logic-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root38.querySelector('[data-testid="logic-lab-reflect-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a2, _b2;
-        logicLabReflect.a1 = ((_a2 = root37.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || logicLabReflect.a1;
-        logicLabReflect.a2 = ((_b2 = root37.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || logicLabReflect.a2;
+        logicLabReflect.a1 = ((_a2 = root38.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || logicLabReflect.a1;
+        logicLabReflect.a2 = ((_b2 = root38.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || logicLabReflect.a2;
         logicLabReflect.active = false;
-        render36();
+        render37();
       });
-      (_g = root37.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root38.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         logicLabReflect.a1 = e.target.value;
       });
-      (_h = root37.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
+      (_h = root38.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _h.addEventListener("input", (e) => {
         logicLabReflect.a2 = e.target.value;
       });
-      const logicLrShare = root37.querySelector('[data-testid="logic-lab-reflect-share"]');
+      const logicLrShare = root38.querySelector('[data-testid="logic-lab-reflect-share"]');
       if (logicLrShare) {
         logicLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root37.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root37.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root38.querySelector('[data-testid="logic-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root38.querySelector('[data-testid="logic-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "logic",
@@ -11517,47 +11599,47 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
       }
       let bindingTimer = null;
-      root37.querySelectorAll("[data-binding-clause]").forEach((input2) => {
+      root38.querySelectorAll("[data-binding-clause]").forEach((input2) => {
         input2.addEventListener("input", () => {
           const clause = input2.dataset.bindingClause;
-          state36.bindings[clause] = input2.value;
+          state37.bindings[clause] = input2.value;
           if (bindingTimer) clearTimeout(bindingTimer);
           bindingTimer = setTimeout(() => refreshBindingResults(), 200);
         });
       });
-      const restoreBtn = root37.querySelector('[data-testid="logic-binding-restore"]');
+      const restoreBtn = root38.querySelector('[data-testid="logic-binding-restore"]');
       if (restoreBtn) {
         restoreBtn.addEventListener("click", () => {
-          const example4 = activePredicateExample();
-          if (example4 == null ? void 0 : example4.defaultBindings) {
-            state36.bindings = { ...example4.defaultBindings };
-            render36();
+          const example5 = activePredicateExample();
+          if (example5 == null ? void 0 : example5.defaultBindings) {
+            state37.bindings = { ...example5.defaultBindings };
+            render37();
           }
         });
       }
-      (_i = root37.querySelector('[data-testid="logic-bridge-groupth"]')) == null ? void 0 : _i.addEventListener("click", () => {
+      (_i = root38.querySelector('[data-testid="logic-bridge-groupth"]')) == null ? void 0 : _i.addEventListener("click", () => {
         var _a2;
         (_a2 = document.querySelector('[data-section="groupth"]')) == null ? void 0 : _a2.click();
       });
-      root37.querySelectorAll("[data-binding-range]").forEach((input2) => {
+      root38.querySelectorAll("[data-binding-range]").forEach((input2) => {
         input2.addEventListener("change", () => {
           const v = parseInt(input2.value, 10);
           if (Number.isNaN(v)) return;
           if (input2.dataset.bindingRange === "min") {
-            state36.bindingRange = [Math.min(v, state36.bindingRange[1] - 1), state36.bindingRange[1]];
+            state37.bindingRange = [Math.min(v, state37.bindingRange[1] - 1), state37.bindingRange[1]];
           } else {
-            state36.bindingRange = [state36.bindingRange[0], Math.max(v, state36.bindingRange[0] + 1)];
+            state37.bindingRange = [state37.bindingRange[0], Math.max(v, state37.bindingRange[0] + 1)];
           }
           refreshBindingResults();
         });
       });
     }
     function renderPreservingFocus(testid) {
-      const previouslyFocused = root37.querySelector(`[data-testid="${testid}"]`);
+      const previouslyFocused = root38.querySelector(`[data-testid="${testid}"]`);
       const selectionStart = previouslyFocused == null ? void 0 : previouslyFocused.selectionStart;
       const selectionEnd = previouslyFocused == null ? void 0 : previouslyFocused.selectionEnd;
-      render36();
-      const next = root37.querySelector(`[data-testid="${testid}"]`);
+      render37();
+      const next = root38.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof selectionStart === "number" && typeof selectionEnd === "number" && next.setSelectionRange) {
@@ -11566,10 +11648,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }
     }
     recompute();
-    render36();
+    render37();
     if (cloudClient && typeof cloudClient.subscribeAuthState === "function") {
       cloudClient.subscribeAuthState(async (user) => {
-        state36.cloudUser = user || null;
+        state37.cloudUser = user || null;
         if (!user || typeof cloudClient.loadLogicRecent !== "function") {
           return;
         }
@@ -11577,30 +11659,30 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           const remote = await cloudClient.loadLogicRecent(user.uid);
           const merged = [];
           const seen = /* @__PURE__ */ new Set();
-          [...remote, ...state36.recent].forEach((expr) => {
+          [...remote, ...state37.recent].forEach((expr) => {
             if (typeof expr !== "string") return;
             if (seen.has(expr)) return;
             seen.add(expr);
             merged.push(expr);
           });
           const next = merged.slice(0, RECENT_LIMIT);
-          const changed = next.length !== state36.recent.length || next.some((v, i) => v !== state36.recent[i]);
-          state36.recent = next;
-          saveRecent(state36.recent);
+          const changed = next.length !== state37.recent.length || next.some((v, i) => v !== state37.recent[i]);
+          state37.recent = next;
+          saveRecent(state37.recent);
           if (next.length !== remote.length || next.some((v, i) => v !== remote[i])) {
-            pushRecentToCloud(state36.recent);
+            pushRecentToCloud(state37.recent);
           }
-          if (changed) render36();
+          if (changed) render37();
         } catch {
         }
       });
     }
-    return root37;
+    return root38;
   }
 
   // src/components/TestingFlow.js
   function createTestingFlow() {
-    const root37 = document.createElement("div");
+    const root38 = document.createElement("div");
     let activeStep = 0;
     let isPlaying = true;
     let hoveredStep = null;
@@ -11618,13 +11700,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }
     }
     function updateState() {
-      const playBtn = root37.querySelector('[data-testid="flow-play-btn"]');
+      const playBtn = root38.querySelector('[data-testid="flow-play-btn"]');
       if (playBtn) {
         playBtn.className = `flow-play-btn${isPlaying ? " playing" : ""}`;
         playBtn.setAttribute("aria-label", isPlaying ? t("flow.pause") : t("flow.play"));
         playBtn.innerHTML = isPlaying ? `\u23F8 ${t("flow.pause")}` : `\u25B6 ${t("flow.play")}`;
       }
-      root37.querySelectorAll("[data-step-index]").forEach((el) => {
+      root38.querySelectorAll("[data-step-index]").forEach((el) => {
         const idx = Number(el.dataset.stepIndex);
         const step2 = testingFlow[idx];
         const isActive = idx === activeStep;
@@ -11654,7 +11736,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           tooltip.textContent = pickField(step2, "description");
         }
       });
-      root37.querySelectorAll('[data-testid^="flow-arrow-"]').forEach((arrow) => {
+      root38.querySelectorAll('[data-testid^="flow-arrow-"]').forEach((arrow) => {
         const idx = Number(arrow.dataset.testid.replace("flow-arrow-", ""));
         arrow.className = [
           "flow-arrow",
@@ -11662,9 +11744,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           activeStep === idx ? "flow-arrow--active" : ""
         ].filter(Boolean).join(" ");
       });
-      const fill = root37.querySelector('[data-testid="flow-progress-fill"]');
+      const fill = root38.querySelector('[data-testid="flow-progress-fill"]');
       if (fill) fill.style.width = `${(activeStep + 1) / testingFlow.length * 100}%`;
-      const progressLabel = root37.querySelector(".flow-progress-label");
+      const progressLabel = root38.querySelector(".flow-progress-label");
       if (progressLabel) {
         progressLabel.textContent = t("flow.progress", {
           current: activeStep + 1,
@@ -11673,10 +11755,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         });
       }
     }
-    function render36() {
-      root37.className = "testing-flow";
-      root37.dataset.testid = "testing-flow";
-      root37.innerHTML = `
+    function render37() {
+      root38.className = "testing-flow";
+      root38.dataset.testid = "testing-flow";
+      root38.innerHTML = `
       <div class="flow-controls">
         <button
           class="flow-play-btn${isPlaying ? " playing" : ""}"
@@ -11728,12 +11810,12 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       </div>
       <div class="flow-progress-label">${t("flow.progress", { current: activeStep + 1, total: testingFlow.length, label: pickField(testingFlow[activeStep], "label") })}</div>
     `;
-      root37.querySelector('[data-testid="flow-play-btn"]').addEventListener("click", () => {
+      root38.querySelector('[data-testid="flow-play-btn"]').addEventListener("click", () => {
         isPlaying = !isPlaying;
         restartTimer();
         updateState();
       });
-      root37.querySelectorAll("[data-step-index]").forEach((element) => {
+      root38.querySelectorAll("[data-step-index]").forEach((element) => {
         const stepIndex = Number(element.dataset.stepIndex);
         element.addEventListener("mouseenter", () => {
           hoveredStep = stepIndex;
@@ -11754,21 +11836,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       });
     }
     restartTimer();
-    render36();
-    root37.cleanup = () => {
+    render37();
+    root38.cleanup = () => {
       if (timerId) {
         clearInterval(timerId);
       }
     };
-    return root37;
+    return root38;
   }
 
   // src/components/TestingTypesTable.js
   function createTestingTypesTable() {
-    const root37 = document.createElement("div");
-    root37.className = "testing-types";
-    root37.dataset.testid = "testing-types";
-    root37.innerHTML = `
+    const root38 = document.createElement("div");
+    root38.className = "testing-types";
+    root38.dataset.testid = "testing-types";
+    root38.innerHTML = `
     <div class="pyramid-section">
       <h3 class="pyramid-title">${t("types.pyramid.title")}</h3>
       <div class="pyramid" data-testid="pyramid">
@@ -11813,7 +11895,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       `).join("")}
     </div>
   `;
-    return root37;
+    return root38;
   }
 
   // src/components/CloudStoragePanel.js
@@ -11833,7 +11915,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   }
   function createCloudStoragePanel() {
     var _a;
-    const root37 = document.createElement("div");
+    const root38 = document.createElement("div");
     const client = createCloudIntegrationClient();
     const canUseCloudAuth = client.isConfigured && client.isSupportedOrigin;
     let user = null;
@@ -11851,11 +11933,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     let uploadCount = 0;
     const uploadedResultIds = /* @__PURE__ */ new Set();
-    function render36() {
+    function render37() {
       var _a2, _b, _c, _d;
-      root37.className = "cloud-storage";
-      root37.dataset.testid = "cloud-storage-panel";
-      root37.innerHTML = `
+      root38.className = "cloud-storage";
+      root38.dataset.testid = "cloud-storage-panel";
+      root38.innerHTML = `
       <div class="cloud-card">
         <div class="cloud-header">
           <div>
@@ -11975,45 +12057,45 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     `;
-      (_a2 = root37.querySelector('[data-testid="cloud-signin-btn"]')) == null ? void 0 : _a2.addEventListener("click", async () => {
+      (_a2 = root38.querySelector('[data-testid="cloud-signin-btn"]')) == null ? void 0 : _a2.addEventListener("click", async () => {
         try {
           const result = await client.signInWithGoogle();
           user = result.user;
           status = result.hasDriveToken ? t("cloud.signedInOk") : t("cloud.signedInNoDrive");
           ;
-          render36();
+          render37();
         } catch (error) {
           status = error.message;
-          render36();
+          render37();
         }
       });
-      root37.querySelector('[data-testid="cloud-signout-btn"]').addEventListener("click", async () => {
+      root38.querySelector('[data-testid="cloud-signout-btn"]').addEventListener("click", async () => {
         try {
           await client.signOutGoogle();
           user = null;
           selectedFile = null;
           status = t("cloud.signedOut");
           ;
-          render36();
+          render37();
         } catch (error) {
           status = error.message;
-          render36();
+          render37();
         }
       });
-      root37.querySelector('[data-testid="cloud-criterion-select"]').addEventListener("change", (event) => {
+      root38.querySelector('[data-testid="cloud-criterion-select"]').addEventListener("change", (event) => {
         settings.preferredCriterion = event.target.value;
       });
-      root37.querySelector('[data-testid="cloud-notes-input"]').addEventListener("input", (event) => {
+      root38.querySelector('[data-testid="cloud-notes-input"]').addEventListener("input", (event) => {
         settings.notes = event.target.value;
       });
-      root37.querySelector('[data-testid="cloud-file-btn"]').addEventListener("click", () => {
-        root37.querySelector('[data-testid="cloud-file-input"]').click();
+      root38.querySelector('[data-testid="cloud-file-btn"]').addEventListener("click", () => {
+        root38.querySelector('[data-testid="cloud-file-input"]').click();
       });
-      root37.querySelector('[data-testid="cloud-file-input"]').addEventListener("change", (event) => {
+      root38.querySelector('[data-testid="cloud-file-input"]').addEventListener("change", (event) => {
         [selectedFile] = event.target.files || [];
-        render36();
+        render37();
       });
-      root37.querySelector('[data-testid="cloud-load-settings-btn"]').addEventListener("click", async () => {
+      root38.querySelector('[data-testid="cloud-load-settings-btn"]').addEventListener("click", async () => {
         try {
           const loaded = await client.loadSettings(user.uid);
           if (loaded) {
@@ -12026,25 +12108,25 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           } else {
             status = t("cloud.noSavedSettings");
           }
-          render36();
+          render37();
         } catch (error) {
           status = error.message;
-          render36();
+          render37();
         }
       });
-      root37.querySelector('[data-testid="cloud-save-settings-btn"]').addEventListener("click", async () => {
+      root38.querySelector('[data-testid="cloud-save-settings-btn"]').addEventListener("click", async () => {
         try {
-          const extras = parseJson(root37.querySelector('[data-testid="cloud-extras-input"]').value);
+          const extras = parseJson(root38.querySelector('[data-testid="cloud-extras-input"]').value);
           settings.extras = extras;
           await client.saveSettings(user.uid, settings);
           status = t("cloud.savedOk");
-          render36();
+          render37();
         } catch (error) {
           status = error.message.includes("JSON") ? t("cloud.extrasJsonError") : error.message;
-          render36();
+          render37();
         }
       });
-      root37.querySelector('[data-testid="cloud-upload-btn"]').addEventListener("click", async () => {
+      root38.querySelector('[data-testid="cloud-upload-btn"]').addEventListener("click", async () => {
         try {
           const fileToUpload = selectedFile;
           let content = null;
@@ -12066,13 +12148,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           uploadedFiles = [{ ...uploaded, content, fileName: fileToUpload.name, file: fileToUpload }, ...uploadedFiles].slice(0, 8);
           status = t("cloud.uploadedOk", { name: uploaded.name });
           selectedFile = null;
-          render36();
+          render37();
         } catch (error) {
           status = error.message;
-          render36();
+          render37();
         }
       });
-      root37.querySelectorAll("[data-use-target]").forEach((btn) => {
+      root38.querySelectorAll("[data-use-target]").forEach((btn) => {
         btn.addEventListener("click", async () => {
           var _a3, _b2;
           const idx = Number(btn.dataset.useIdx);
@@ -12091,13 +12173,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               item.content = content;
             } catch (err) {
               status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
-              render36();
+              render37();
               return;
             }
           }
           if (content == null) {
             status = t("cloud.noContent");
-            render36();
+            render37();
             return;
           }
           const sectionId = target === "graph" ? "section-graph" : "section-syntax";
@@ -12107,30 +12189,30 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             detail: { target, name: item.fileName || item.name, content }
           }));
           status = target === "mutation" ? t("cloud.sentToMutation", { name: item.name }) : target === "grammar" ? t("cloud.sentToGrammar", { name: item.name }) : t("cloud.sentToGraph", { name: item.name });
-          render36();
+          render37();
         });
       });
-      (_b = root37.querySelector('[data-testid="cloud-class-save"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root38.querySelector('[data-testid="cloud-class-save"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a3;
-        const inp = root37.querySelector('[data-testid="cloud-class-code-input"]');
+        const inp = root38.querySelector('[data-testid="cloud-class-code-input"]');
         classCode = ((inp == null ? void 0 : inp.value) || "").trim().toUpperCase();
         try {
           (_a3 = globalThis.localStorage) == null ? void 0 : _a3.setItem(CLASS_CODE_KEY, classCode);
         } catch {
         }
-        render36();
+        render37();
       });
-      (_c = root37.querySelector('[data-testid="cloud-view-results"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root38.querySelector('[data-testid="cloud-view-results"]')) == null ? void 0 : _c.addEventListener("click", () => {
         var _a3;
         (_a3 = globalThis.dispatchEvent) == null ? void 0 : _a3.call(globalThis, new CustomEvent("stvisual:open-teacher-dashboard", {
           detail: { classCode }
         }));
       });
-      (_d = root37.querySelector('[data-testid="cloud-refresh-drive-btn"]')) == null ? void 0 : _d.addEventListener("click", async () => {
+      (_d = root38.querySelector('[data-testid="cloud-refresh-drive-btn"]')) == null ? void 0 : _d.addEventListener("click", async () => {
         if (!user || typeof client.listDriveFiles !== "function") return;
         driveFilesLoading = true;
         status = t("cloud.refreshing");
-        render36();
+        render37();
         try {
           driveFiles = await client.listDriveFiles();
           status = t("cloud.driveListed", { count: driveFiles.length });
@@ -12138,10 +12220,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           status = t("cloud.driveListError", { msg: (err == null ? void 0 : err.message) || err });
         } finally {
           driveFilesLoading = false;
-          render36();
+          render37();
         }
       });
-      root37.querySelectorAll("[data-drive-target]").forEach((btn) => {
+      root38.querySelectorAll("[data-drive-target]").forEach((btn) => {
         btn.addEventListener("click", async () => {
           var _a3, _b2;
           const idx = Number(btn.dataset.driveIdx);
@@ -12150,7 +12232,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           if (!f) return;
           try {
             status = t("cloud.downloading", { name: f.name });
-            render36();
+            render37();
             const content = await client.downloadDriveFile(f.id);
             const sectionId = target === "graph" ? "section-graph" : "section-syntax";
             const targetSection = (_a3 = globalThis.document) == null ? void 0 : _a3.querySelector(`[data-testid="${sectionId}"]`);
@@ -12162,7 +12244,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           } catch (err) {
             status = t("cloud.readError", { msg: (err == null ? void 0 : err.message) || err });
           }
-          render36();
+          render37();
         });
       });
     }
@@ -12177,7 +12259,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         uploadedResultIds.add(payloadStr);
         await client.saveResult(user.uid, user.displayName || "", user.email || "", classCode, payload);
         uploadCount++;
-        const badge = root37.querySelector('[data-testid="cloud-upload-count"]');
+        const badge = root38.querySelector('[data-testid="cloud-upload-count"]');
         if (badge) badge.textContent = uploadCount;
       } catch {
       }
@@ -12193,10 +12275,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         } catch {
         }
       }
-      render36();
+      render37();
     });
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/data/mutationData.js
@@ -13037,13 +13119,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   }
   function createSyntaxCoverageExplorer() {
     var _a;
-    const root37 = document.createElement("div");
-    root37.className = "syntax-coverage";
-    root37.dataset.testid = "syntax-coverage";
+    const root38 = document.createElement("div");
+    root38.className = "syntax-coverage";
+    root38.dataset.testid = "syntax-coverage";
     const initial = programExamples[0];
     const localPrograms = loadLocalPrograms();
     const initialSnapshot = localPrograms[initial.id] || defaultProgramSnapshot(initial);
-    const state36 = {
+    const state37 = {
       exampleId: initial.id,
       params: initialSnapshot.params,
       body: initialSnapshot.body,
@@ -13071,9 +13153,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     }
     function snapshotCurrent() {
       return {
-        params: state36.params,
-        body: state36.body,
-        tests: state36.tests.map((t2) => ({
+        params: state37.params,
+        body: state37.body,
+        tests: state37.tests.map((t2) => ({
           id: t2.id,
           argsText: t2.argsText,
           expectedText: t2.expectedText
@@ -13081,28 +13163,28 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       };
     }
     function persistCurrent() {
-      state36.programs[state36.exampleId] = snapshotCurrent();
-      saveLocalPrograms(state36.programs);
+      state37.programs[state37.exampleId] = snapshotCurrent();
+      saveLocalPrograms(state37.programs);
       pushToCloud();
     }
     const syntaxQuiz = { active: false, phase: "question", answer: "", result: null };
     function renderSyntaxQuizPanel() {
       if (!syntaxQuiz.active) return "";
       if (syntaxQuiz.phase === "graded") {
-        const correct = state36.score.killed;
+        const correct = state37.score.killed;
         const userAns = parseInt(syntaxQuiz.answer, 10);
         const ok = userAns === correct;
-        const shareEncoded = encodeResult({ v: 1, explorer: "syntax", explorerLabel: t("quiz.syntax.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.syntax.prompt", { program: state36.exampleId }), a: String(syntaxQuiz.answer), expected: String(correct), ok }] });
+        const shareEncoded = encodeResult({ v: 1, explorer: "syntax", explorerLabel: t("quiz.syntax.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.syntax.prompt", { program: state37.exampleId }), a: String(syntaxQuiz.answer), expected: String(correct), ok }] });
         return `
         <div class="quiz-panel" data-testid="syntax-quiz-panel">
           <div class="quiz-header">
             <span>${t("quiz.syntax.title")}</span>
             <button type="button" class="quiz-close-btn" data-testid="syntax-quiz-close">\u2715</button>
           </div>
-          <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state36.exampleId) })}</p>
+          <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state37.exampleId) })}</p>
           <p class="quiz-score ${ok ? "quiz-score--perfect" : "quiz-score--wrong"}">
             ${ok ? t("quiz.graph.perfect") : ""}
-            ${t("quiz.syntax.answer", { killed: correct, total: state36.score.total })}
+            ${t("quiz.syntax.answer", { killed: correct, total: state37.score.total })}
           </p>
           <button type="button" class="quiz-share-btn" data-share-payload="${shareEncoded}" data-testid="syntax-quiz-share">\u{1F4CB} ${t("quiz.share.btn")}</button>
           <button type="button" class="quiz-start-btn" data-testid="syntax-quiz-reset">${t("quiz.retry")}</button>
@@ -13115,7 +13197,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <span>${t("quiz.syntax.title")}</span>
           <button type="button" class="quiz-close-btn" data-testid="syntax-quiz-close">\u2715</button>
         </div>
-        <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state36.exampleId) })}</p>
+        <p class="quiz-prompt">${t("quiz.syntax.prompt", { program: escapeHtml3(state37.exampleId) })}</p>
         <div class="quiz-bva-inputs">
           <label class="quiz-bva-field">
             ${t("quiz.syntax.label")}
@@ -13129,21 +13211,21 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     let saveTimer = null;
     let pendingSave = null;
     function pushToCloud() {
-      if (!cloudClient || !state36.cloudUser || typeof cloudClient.saveSyntaxTests !== "function") return;
+      if (!cloudClient || !state37.cloudUser || typeof cloudClient.saveSyntaxTests !== "function") return;
       if (saveTimer) clearTimeout(saveTimer);
-      state36.cloudStatus = "syncing";
-      state36.cloudMessage = "";
+      state37.cloudStatus = "syncing";
+      state37.cloudMessage = "";
       updateCloudIndicator();
       pendingSave = new Promise((resolve) => {
         saveTimer = setTimeout(async () => {
           saveTimer = null;
           try {
-            await cloudClient.saveSyntaxTests(state36.cloudUser.uid, state36.programs);
-            state36.cloudStatus = "synced";
-            state36.cloudMessage = t("syntax.cloud.synced");
+            await cloudClient.saveSyntaxTests(state37.cloudUser.uid, state37.programs);
+            state37.cloudStatus = "synced";
+            state37.cloudMessage = t("syntax.cloud.synced");
           } catch (err) {
-            state36.cloudStatus = "error";
-            state36.cloudMessage = t("syntax.cloud.saveError", { msg: (err == null ? void 0 : err.message) || err });
+            state37.cloudStatus = "error";
+            state37.cloudMessage = t("syntax.cloud.saveError", { msg: (err == null ? void 0 : err.message) || err });
           }
           updateCloudIndicator();
           resolve();
@@ -13157,7 +13239,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         clearTimeout(saveTimer);
         saveTimer = null;
         try {
-          await cloudClient.saveSyntaxTests(state36.cloudUser.uid, state36.programs);
+          await cloudClient.saveSyntaxTests(state37.cloudUser.uid, state37.programs);
         } catch {
         }
       } else {
@@ -13166,152 +13248,152 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       pendingSave = null;
     }
     function updateCloudIndicator() {
-      const node = root37.querySelector('[data-testid="syntax-cloud-indicator"]');
+      const node = root38.querySelector('[data-testid="syntax-cloud-indicator"]');
       if (!node) return;
-      node.dataset.status = state36.cloudStatus;
+      node.dataset.status = state37.cloudStatus;
       node.textContent = cloudIndicatorText();
     }
     function cloudIndicatorText() {
-      if (!state36.cloudUser) return t("syntax.cloud.notSignedIn");
-      switch (state36.cloudStatus) {
+      if (!state37.cloudUser) return t("syntax.cloud.notSignedIn");
+      switch (state37.cloudStatus) {
         case "syncing":
           return t("syntax.cloud.syncing");
         case "synced":
-          return `\u2601 ${state36.cloudMessage || t("syntax.cloud.synced")}`;
+          return `\u2601 ${state37.cloudMessage || t("syntax.cloud.synced")}`;
         case "error":
-          return `\u2601 ${state36.cloudMessage || t("syntax.cloud.failed")}`;
+          return `\u2601 ${state37.cloudMessage || t("syntax.cloud.failed")}`;
         default:
-          return `\u2601 ${t("syntax.cloud.linked", { name: state36.cloudUser.email || state36.cloudUser.uid })}`;
+          return `\u2601 ${t("syntax.cloud.linked", { name: state37.cloudUser.email || state37.cloudUser.uid })}`;
       }
     }
     async function reloadFromCloud({ force = false } = {}) {
       var _a2, _b;
-      if (!cloudClient || !state36.cloudUser) return;
+      if (!cloudClient || !state37.cloudUser) return;
       if (typeof cloudClient.loadSyntaxTests !== "function") return;
       await flushPendingSave();
-      state36.cloudStatus = "syncing";
-      state36.cloudMessage = force ? t("syntax.cloud.reloading") : "";
+      state37.cloudStatus = "syncing";
+      state37.cloudMessage = force ? t("syntax.cloud.reloading") : "";
       updateCloudIndicator();
       try {
-        const remote = await cloudClient.loadSyntaxTests(state36.cloudUser.uid);
+        const remote = await cloudClient.loadSyntaxTests(state37.cloudUser.uid);
         const remoteObj = remote && typeof remote === "object" ? remote : {};
-        const localOnly = Object.keys(state36.programs).filter((k) => !(k in remoteObj));
+        const localOnly = Object.keys(state37.programs).filter((k) => !(k in remoteObj));
         const merged = { ...remoteObj };
         localOnly.forEach((k) => {
-          merged[k] = state36.programs[k];
+          merged[k] = state37.programs[k];
         });
-        state36.programs = merged;
-        saveLocalPrograms(state36.programs);
-        const current2 = state36.programs[state36.exampleId];
+        state37.programs = merged;
+        saveLocalPrograms(state37.programs);
+        const current2 = state37.programs[state37.exampleId];
         if (current2) {
-          state36.params = (_a2 = current2.params) != null ? _a2 : state36.params;
-          state36.body = (_b = current2.body) != null ? _b : state36.body;
-          state36.tests = Array.isArray(current2.tests) ? current2.tests.map((t2) => ({ ...t2 })) : state36.tests;
-          state36.selectedMutantId = null;
+          state37.params = (_a2 = current2.params) != null ? _a2 : state37.params;
+          state37.body = (_b = current2.body) != null ? _b : state37.body;
+          state37.tests = Array.isArray(current2.tests) ? current2.tests.map((t2) => ({ ...t2 })) : state37.tests;
+          state37.selectedMutantId = null;
         }
-        state36.cloudStatus = "synced";
-        state36.cloudMessage = t("syntax.cloud.loaded");
-        render36();
+        state37.cloudStatus = "synced";
+        state37.cloudMessage = t("syntax.cloud.loaded");
+        render37();
         if (localOnly.length > 0) pushToCloud();
       } catch (err) {
-        state36.cloudStatus = "error";
-        state36.cloudMessage = t("syntax.cloud.loadError", { msg: (err == null ? void 0 : err.message) || err });
+        state37.cloudStatus = "error";
+        state37.cloudMessage = t("syntax.cloud.loadError", { msg: (err == null ? void 0 : err.message) || err });
         updateCloudIndicator();
       }
     }
     function recompute() {
       var _a2;
-      state36.error = null;
+      state37.error = null;
       let params;
       try {
-        params = state36.params.split(",").map((s) => s.trim()).filter(Boolean);
+        params = state37.params.split(",").map((s) => s.trim()).filter(Boolean);
       } catch (err) {
-        state36.error = t("syntax.err.argsParse", { msg: err.message });
+        state37.error = t("syntax.err.argsParse", { msg: err.message });
         return;
       }
       let parsedTests;
       try {
-        parsedTests = state36.tests.map((t2) => ({
+        parsedTests = state37.tests.map((t2) => ({
           id: t2.id,
           args: parseTestArgs(t2.argsText),
           expected: parseExpected(t2.expectedText)
         }));
       } catch (err) {
-        state36.error = err.message;
+        state37.error = err.message;
         return;
       }
       let suiteResults;
       try {
-        suiteResults = runTestSuite(params, state36.body, parsedTests);
+        suiteResults = runTestSuite(params, state37.body, parsedTests);
       } catch (err) {
-        state36.error = t("syntax.err.compile", { msg: err.message });
+        state37.error = t("syntax.err.compile", { msg: err.message });
         return;
       }
-      const operators = [...state36.operators];
-      const generated = generateMutants(state36.body, operators);
-      const evaluated = evaluateMutants(params, state36.body, parsedTests, generated);
+      const operators = [...state37.operators];
+      const generated = generateMutants(state37.body, operators);
+      const evaluated = evaluateMutants(params, state37.body, parsedTests, generated);
       const prevEquivalent = new Set(
-        state36.mutants.filter((m) => m.status === "equivalent").map((m) => m.id)
+        state37.mutants.filter((m) => m.status === "equivalent").map((m) => m.id)
       );
       const finalMutants = evaluated.map(
         (m) => prevEquivalent.has(m.id) ? { ...m, status: "equivalent", killedBy: [] } : m
       );
-      state36.suiteResults = suiteResults;
-      state36.parsedTests = parsedTests;
-      state36.parsedParams = params;
-      state36.mutants = finalMutants;
-      state36.score = computeMutationScore(finalMutants);
-      if (!state36.mutants.find((m) => m.id === state36.selectedMutantId)) {
-        state36.selectedMutantId = ((_a2 = finalMutants[0]) == null ? void 0 : _a2.id) || null;
+      state37.suiteResults = suiteResults;
+      state37.parsedTests = parsedTests;
+      state37.parsedParams = params;
+      state37.mutants = finalMutants;
+      state37.score = computeMutationScore(finalMutants);
+      if (!state37.mutants.find((m) => m.id === state37.selectedMutantId)) {
+        state37.selectedMutantId = ((_a2 = finalMutants[0]) == null ? void 0 : _a2.id) || null;
       }
     }
     function loadExample(id) {
-      const ex = programExamples.find((e) => e.id === id) || state36.customExamples.find((e) => e.id === id);
+      const ex = programExamples.find((e) => e.id === id) || state37.customExamples.find((e) => e.id === id);
       if (!ex) return;
-      state36.exampleId = id;
-      const snap = state36.programs[id] || defaultProgramSnapshot(ex);
-      state36.params = snap.params;
-      state36.body = snap.body;
-      state36.tests = snap.tests.map((t2) => ({ ...t2 }));
-      state36.selectedMutantId = null;
+      state37.exampleId = id;
+      const snap = state37.programs[id] || defaultProgramSnapshot(ex);
+      state37.params = snap.params;
+      state37.body = snap.body;
+      state37.tests = snap.tests.map((t2) => ({ ...t2 }));
+      state37.selectedMutantId = null;
     }
-    function render36() {
+    function render37() {
       recompute();
-      const allExamples = [...programExamples, ...state36.customExamples];
+      const allExamples = [...programExamples, ...state37.customExamples];
       const exampleButtons = allExamples.map((ex) => `
       <button
         type="button"
-        class="syntax-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+        class="syntax-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-example="${ex.id}"
         title="${escapeHtml3(getLocale() === "en" ? ex.descriptionEn || ex.description : ex.description)}"
         data-testid="syntax-example-${ex.id}"
       >${escapeHtml3(ex.name)}</button>
     `).join("");
       const operatorButtons = mutationOperators.map((op) => `
-      <label class="syntax-op-btn${state36.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(getLocale() === "en" ? op.descEn || op.desc : op.desc)}">
-        <input type="checkbox" data-operator="${op.id}" ${state36.operators.has(op.id) ? "checked" : ""} />
+      <label class="syntax-op-btn${state37.operators.has(op.id) ? " active" : ""}" title="${escapeHtml3(getLocale() === "en" ? op.descEn || op.desc : op.desc)}">
+        <input type="checkbox" data-operator="${op.id}" ${state37.operators.has(op.id) ? "checked" : ""} />
         <span>${escapeHtml3(op.id)}</span>
       </label>
     `).join("");
-      const selectedMutant = state36.mutants.find((m) => m.id === state36.selectedMutantId) || null;
+      const selectedMutant = state37.mutants.find((m) => m.id === state37.selectedMutantId) || null;
       let mutantSuiteResults = null;
       if (selectedMutant) {
         try {
           mutantSuiteResults = runTestSuite(
-            state36.parsedParams,
+            state37.parsedParams,
             selectedMutant.source,
-            state36.parsedTests
+            state37.parsedTests
           );
         } catch {
-          mutantSuiteResults = state36.parsedTests.map(() => ({
+          mutantSuiteResults = state37.parsedTests.map(() => ({
             outcome: { ok: false, error: "compile error" }
           }));
         }
       }
       const showMutantCol = !!selectedMutant;
       const killedByIds = selectedMutant ? new Set(selectedMutant.killedBy) : /* @__PURE__ */ new Set();
-      const testRows = state36.tests.map((tc, i) => {
-        const result = state36.suiteResults[i];
+      const testRows = state37.tests.map((tc, i) => {
+        const result = state37.suiteResults[i];
         const passClass = (result == null ? void 0 : result.passed) ? "pass" : result ? "fail" : "";
         const actual = (result == null ? void 0 : result.outcome.ok) ? formatValue(result.outcome.value) : `\u26A0 ${(result == null ? void 0 : result.outcome.error) || ""}`;
         let mutantCell = "";
@@ -13338,13 +13420,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       }).join("");
       const mutantHeaderCol = showMutantCol ? `<th class="syntax-test-mutant-head">mutant actual${selectedMutant ? `<br><small>(${escapeHtml3(selectedMutant.id)})</small>` : ""}</th>` : "";
       const grouped = /* @__PURE__ */ new Map();
-      state36.mutants.forEach((m) => {
+      state37.mutants.forEach((m) => {
         if (!grouped.has(m.operator)) grouped.set(m.operator, []);
         grouped.get(m.operator).push(m);
       });
       const mutantList = [...grouped.entries()].map(([op, list]) => {
         const items = list.map((m) => `
-        <li class="syntax-mutant-item ${m.status}${state36.selectedMutantId === m.id ? " selected" : ""}" data-mutant-id="${m.id}" data-testid="syntax-mutant-${m.id}">
+        <li class="syntax-mutant-item ${m.status}${state37.selectedMutantId === m.id ? " selected" : ""}" data-mutant-id="${m.id}" data-testid="syntax-mutant-${m.id}">
           <span class="syntax-mutant-id">${escapeHtml3(m.id)}</span>
           <span class="syntax-mutant-loc">L${m.line}:${m.col}</span>
           <span class="syntax-mutant-diff"><code>${escapeHtml3(m.original)}</code> \u2192 <code>${escapeHtml3(m.mutated)}</code></span>
@@ -13374,7 +13456,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     ` : `<p class="syntax-mutant-empty">${t("syntax.mutant.empty")}</p>`;
-      const scorePct = Math.round(state36.score.score * 100);
+      const scorePct = Math.round(state37.score.score * 100);
       const SYNTAX_THRESHOLD = 75;
       const syntaxMetricEncoded = encodeResult({
         v: 1,
@@ -13387,7 +13469,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         total: 1,
         items: [{ q: t("lab.metric.syntax.label", { pct: scorePct }), a: `${scorePct}%`, ok: scorePct >= SYNTAX_THRESHOLD }]
       });
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="syntax-toolbar">
         <div class="syntax-examples" role="tablist">${exampleButtons}</div>
         <div class="syntax-operators" data-testid="syntax-operators">${operatorButtons}</div>
@@ -13396,10 +13478,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <span
           class="syntax-cloud-indicator"
           data-testid="syntax-cloud-indicator"
-          data-status="${state36.cloudStatus}"
+          data-status="${state37.cloudStatus}"
         >${escapeHtml3(cloudIndicatorText())}</span>
         <span class="syntax-cloud-actions">
-          ${state36.cloudUser ? `<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB ${t("syntax.cloud.reload")}</button>` : ""}
+          ${state37.cloudUser ? `<button type="button" class="syntax-reload-btn" data-testid="syntax-cloud-reload">\u21BB ${t("syntax.cloud.reload")}</button>` : ""}
           <button type="button" class="syntax-reset-btn" data-testid="syntax-reset-program">\u21BA ${t("syntax.reset")}</button>
         </span>
       </div>
@@ -13407,9 +13489,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       <div class="syntax-grid">
         <section class="syntax-program">
           <label class="syntax-label">${t("syntax.params")}</label>
-          <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml3(state36.params)}" />
+          <input type="text" class="syntax-params" data-testid="syntax-params" value="${escapeHtml3(state37.params)}" />
           <label class="syntax-label">${t("syntax.body")}</label>
-          <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml3(state36.body)}</textarea>
+          <textarea class="syntax-body" rows="8" data-testid="syntax-body">${escapeHtml3(state37.body)}</textarea>
         </section>
 
         <section class="syntax-tests">
@@ -13433,7 +13515,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </section>
       </div>
 
-      ${state36.error ? `<p class="syntax-error" data-testid="syntax-error">${escapeHtml3(state36.error)}</p>` : ""}
+      ${state37.error ? `<p class="syntax-error" data-testid="syntax-error">${escapeHtml3(state37.error)}</p>` : ""}
 
       <section class="syntax-score-section">
         <div class="syntax-score-bar">
@@ -13442,13 +13524,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <p class="syntax-score-stats" data-testid="syntax-score-stats">
           ${t("syntax.score")}: <strong>${scorePct}%</strong>
           <span class="syntax-divider">\xB7</span>
-          ${t("syntax.totalLabel")} ${state36.score.total}
+          ${t("syntax.totalLabel")} ${state37.score.total}
           <span class="syntax-divider">\xB7</span>
-          killed <strong>${state36.score.killed}</strong>
+          killed <strong>${state37.score.killed}</strong>
           <span class="syntax-divider">\xB7</span>
-          live <strong>${state36.score.live}</strong>
+          live <strong>${state37.score.live}</strong>
           <span class="syntax-divider">\xB7</span>
-          equivalent <strong>${state36.score.equivalent}</strong>
+          equivalent <strong>${state37.score.equivalent}</strong>
           <span class="syntax-divider">\xB7</span>
           ${!syntaxQuiz.active ? `<button type="button" class="quiz-start-btn" data-testid="syntax-quiz-start">${t("quiz.start")}</button>` : ""}
           <button type="button" class="quiz-share-btn" data-share-payload="${syntaxMetricEncoded}" data-testid="syntax-lab-metric">\u{1F4CA} ${t("lab.metric.record")}</button>
@@ -13461,179 +13543,179 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         ${selectedDetail}
       </section>
     `;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
-      root37.querySelectorAll("[data-example]").forEach((btn) => {
+    function bindEvents37() {
+      root38.querySelectorAll("[data-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           loadExample(btn.dataset.example);
-          render36();
+          render37();
         });
       });
-      const resetBtn = root37.querySelector('[data-testid="syntax-reset-program"]');
+      const resetBtn = root38.querySelector('[data-testid="syntax-reset-program"]');
       if (resetBtn) {
         resetBtn.addEventListener("click", () => {
-          const ex = programExamples.find((e) => e.id === state36.exampleId);
+          const ex = programExamples.find((e) => e.id === state37.exampleId);
           if (!ex) return;
           const snap = defaultProgramSnapshot(ex);
-          state36.params = snap.params;
-          state36.body = snap.body;
-          state36.tests = snap.tests.map((t2) => ({ ...t2 }));
-          state36.selectedMutantId = null;
+          state37.params = snap.params;
+          state37.body = snap.body;
+          state37.tests = snap.tests.map((t2) => ({ ...t2 }));
+          state37.selectedMutantId = null;
           persistCurrent();
-          render36();
+          render37();
         });
       }
-      const reloadBtn = root37.querySelector('[data-testid="syntax-cloud-reload"]');
+      const reloadBtn = root38.querySelector('[data-testid="syntax-cloud-reload"]');
       if (reloadBtn) {
         reloadBtn.addEventListener("click", () => {
           reloadFromCloud({ force: true });
         });
       }
-      root37.querySelectorAll("[data-operator]").forEach((cb) => {
+      root38.querySelectorAll("[data-operator]").forEach((cb) => {
         cb.addEventListener("change", () => {
           const op = cb.dataset.operator;
-          if (cb.checked) state36.operators.add(op);
-          else state36.operators.delete(op);
-          render36();
+          if (cb.checked) state37.operators.add(op);
+          else state37.operators.delete(op);
+          render37();
         });
       });
-      const params = root37.querySelector('[data-testid="syntax-params"]');
+      const params = root38.querySelector('[data-testid="syntax-params"]');
       if (params) {
         params.addEventListener("input", (e) => {
-          state36.params = e.target.value;
+          state37.params = e.target.value;
           persistCurrent();
         });
         params.addEventListener("change", (e) => {
-          state36.params = e.target.value;
+          state37.params = e.target.value;
           persistCurrent();
-          render36();
+          render37();
         });
       }
-      const body = root37.querySelector('[data-testid="syntax-body"]');
+      const body = root38.querySelector('[data-testid="syntax-body"]');
       if (body) {
         body.addEventListener("input", (e) => {
-          state36.body = e.target.value;
+          state37.body = e.target.value;
           persistCurrent();
         });
         body.addEventListener("change", (e) => {
-          state36.body = e.target.value;
+          state37.body = e.target.value;
           persistCurrent();
-          render36();
+          render37();
         });
       }
-      root37.querySelectorAll("[data-test-args]").forEach((input) => {
+      root38.querySelectorAll("[data-test-args]").forEach((input) => {
         input.addEventListener("input", (e) => {
           const id = input.dataset.testArgs;
-          const t2 = state36.tests.find((x) => x.id === id);
+          const t2 = state37.tests.find((x) => x.id === id);
           if (t2) t2.argsText = e.target.value;
           persistCurrent();
         });
         input.addEventListener("change", (e) => {
           const id = input.dataset.testArgs;
-          const t2 = state36.tests.find((x) => x.id === id);
+          const t2 = state37.tests.find((x) => x.id === id);
           if (t2) t2.argsText = e.target.value;
           persistCurrent();
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-test-expected]").forEach((input) => {
+      root38.querySelectorAll("[data-test-expected]").forEach((input) => {
         input.addEventListener("input", (e) => {
           const id = input.dataset.testExpected;
-          const t2 = state36.tests.find((x) => x.id === id);
+          const t2 = state37.tests.find((x) => x.id === id);
           if (t2) t2.expectedText = e.target.value;
           persistCurrent();
         });
         input.addEventListener("change", (e) => {
           const id = input.dataset.testExpected;
-          const t2 = state36.tests.find((x) => x.id === id);
+          const t2 = state37.tests.find((x) => x.id === id);
           if (t2) t2.expectedText = e.target.value;
           persistCurrent();
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-remove-test]").forEach((btn) => {
+      root38.querySelectorAll("[data-remove-test]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.tests = state36.tests.filter((t2) => t2.id !== btn.dataset.removeTest);
+          state37.tests = state37.tests.filter((t2) => t2.id !== btn.dataset.removeTest);
           persistCurrent();
-          render36();
+          render37();
         });
       });
-      const addBtn = root37.querySelector('[data-testid="syntax-test-add"]');
+      const addBtn = root38.querySelector('[data-testid="syntax-test-add"]');
       if (addBtn) {
         addBtn.addEventListener("click", () => {
-          const next = `t${state36.tests.length + 1}`;
-          state36.tests.push({ id: next, argsText: "", expectedText: "" });
+          const next = `t${state37.tests.length + 1}`;
+          state37.tests.push({ id: next, argsText: "", expectedText: "" });
           persistCurrent();
-          render36();
+          render37();
         });
       }
-      root37.querySelectorAll("[data-mutant-id]").forEach((li) => {
+      root38.querySelectorAll("[data-mutant-id]").forEach((li) => {
         li.addEventListener("click", () => {
-          state36.selectedMutantId = li.dataset.mutantId;
-          render36();
+          state37.selectedMutantId = li.dataset.mutantId;
+          render37();
         });
       });
-      root37.querySelectorAll("[data-toggle-equivalent]").forEach((btn) => {
+      root38.querySelectorAll("[data-toggle-equivalent]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const m = state36.mutants.find((x) => x.id === btn.dataset.toggleEquivalent);
+          const m = state37.mutants.find((x) => x.id === btn.dataset.toggleEquivalent);
           if (!m) return;
           m.status = m.status === "equivalent" ? m.killedBy.length ? "killed" : "live" : "equivalent";
-          state36.score = computeMutationScore(state36.mutants);
-          render36();
+          state37.score = computeMutationScore(state37.mutants);
+          render37();
         });
       });
-      const sqStart = root37.querySelector('[data-testid="syntax-quiz-start"]');
+      const sqStart = root38.querySelector('[data-testid="syntax-quiz-start"]');
       if (sqStart) {
         sqStart.addEventListener("click", () => {
           syntaxQuiz.active = true;
           syntaxQuiz.phase = "question";
           syntaxQuiz.answer = "";
           syntaxQuiz.result = null;
-          render36();
+          render37();
         });
       }
-      const sqClose = root37.querySelector('[data-testid="syntax-quiz-close"]');
+      const sqClose = root38.querySelector('[data-testid="syntax-quiz-close"]');
       if (sqClose) {
         sqClose.addEventListener("click", () => {
           syntaxQuiz.active = false;
-          render36();
+          render37();
         });
       }
-      const sqCheck = root37.querySelector('[data-testid="syntax-quiz-check"]');
+      const sqCheck = root38.querySelector('[data-testid="syntax-quiz-check"]');
       if (sqCheck) {
         sqCheck.addEventListener("click", () => {
-          const inp = root37.querySelector('[data-testid="syntax-quiz-input"]');
+          const inp = root38.querySelector('[data-testid="syntax-quiz-input"]');
           syntaxQuiz.answer = inp ? inp.value : "";
           syntaxQuiz.phase = "graded";
-          render36();
+          render37();
         });
       }
-      const sqReset = root37.querySelector('[data-testid="syntax-quiz-reset"]');
+      const sqReset = root38.querySelector('[data-testid="syntax-quiz-reset"]');
       if (sqReset) {
         sqReset.addEventListener("click", () => {
           syntaxQuiz.phase = "question";
           syntaxQuiz.answer = "";
           syntaxQuiz.result = null;
-          render36();
+          render37();
         });
       }
     }
-    render36();
+    render37();
     if (cloudClient && typeof cloudClient.subscribeAuthState === "function") {
       cloudClient.subscribeAuthState(async (user) => {
-        state36.cloudUser = user || null;
+        state37.cloudUser = user || null;
         if (!user) {
-          state36.cloudStatus = "idle";
-          state36.cloudMessage = "";
-          render36();
+          state37.cloudStatus = "idle";
+          state37.cloudMessage = "";
+          render37();
           return;
         }
         await reloadFromCloud();
       });
       if (typeof ((_a = globalThis.document) == null ? void 0 : _a.addEventListener) === "function") {
         globalThis.document.addEventListener("visibilitychange", () => {
-          if (globalThis.document.visibilityState === "visible" && state36.cloudUser) {
+          if (globalThis.document.visibilityState === "visible" && state37.cloudUser) {
             reloadFromCloud();
           }
         });
@@ -13650,7 +13732,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a2;
-        if (!root37.isConnected) return;
+        if (!root38.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "mutation") return;
         const content = String((_a2 = detail.content) != null ? _a2 : "");
@@ -13669,18 +13751,18 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           body,
           tests: []
         };
-        state36.customExamples = [...state36.customExamples, newExample];
-        state36.programs[id] = { params, body, tests: [] };
-        state36.exampleId = id;
-        state36.params = params;
-        state36.body = body;
-        state36.tests = [];
-        state36.selectedMutantId = null;
+        state37.customExamples = [...state37.customExamples, newExample];
+        state37.programs[id] = { params, body, tests: [] };
+        state37.exampleId = id;
+        state37.params = params;
+        state37.body = body;
+        state37.tests = [];
+        state37.selectedMutantId = null;
         persistCurrent();
-        render36();
+        render37();
       });
     }
-    return root37;
+    return root38;
   }
 
   // src/data/grammarData.js
@@ -14232,13 +14314,13 @@ Content-Type: ${file.type || "application/octet-stream"}\r
   </div>`;
   }
   function createGrammarCoverageExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "grammar-coverage";
-    root37.dataset.testid = "grammar-coverage";
+    const root38 = document.createElement("div");
+    root38.className = "grammar-coverage";
+    root38.dataset.testid = "grammar-coverage";
     const initial = grammarExamples[0];
     const localPrograms = loadLocalGrammars();
     const initialText = localPrograms[initial.id] || initial.text;
-    const state36 = {
+    const state37 = {
       exampleId: initial.id,
       text: initialText,
       programs: localPrograms,
@@ -14263,98 +14345,98 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       activeTab: loadActiveTab()
     };
     function persistCurrent() {
-      state36.programs[state36.exampleId] = state36.text;
-      saveLocalGrammars(state36.programs);
+      state37.programs[state37.exampleId] = state37.text;
+      saveLocalGrammars(state37.programs);
     }
     function recompute() {
       var _a, _b;
-      state36.parseError = null;
-      state36.grammar = null;
-      state36.derivations = [];
-      state36.coverage = null;
-      state36.mutants = [];
+      state37.parseError = null;
+      state37.grammar = null;
+      state37.derivations = [];
+      state37.coverage = null;
+      state37.mutants = [];
       try {
-        const g = parseGrammar(state36.text);
-        state36.grammar = g;
-        state36.derivations = generateDerivations(g, {
-          maxStrings: state36.maxStrings,
-          maxDepth: state36.maxDepth
+        const g = parseGrammar(state37.text);
+        state37.grammar = g;
+        state37.derivations = generateDerivations(g, {
+          maxStrings: state37.maxStrings,
+          maxDepth: state37.maxDepth
         });
-        state36.coverage = computeCoverage(state36.derivations, g);
-        const ops = [...state36.operators];
+        state37.coverage = computeCoverage(state37.derivations, g);
+        const ops = [...state37.operators];
         if (ops.length > 0) {
           const generated = generateGrammarMutants(g, ops);
           const allTestStrings = [
-            ...state36.derivations.map((d) => d.string),
-            ...state36.extraTests.split("\n").map((s) => s).filter((_, idx, arr) => arr.indexOf(arr[idx]) === idx)
+            ...state37.derivations.map((d) => d.string),
+            ...state37.extraTests.split("\n").map((s) => s).filter((_, idx, arr) => arr.indexOf(arr[idx]) === idx)
           ];
-          state36.mutants = evaluateMutantsAgainstStrings(g, generated, allTestStrings);
+          state37.mutants = evaluateMutantsAgainstStrings(g, generated, allTestStrings);
         }
-        if (!state36.mutants.find((m) => m.id === state36.selectedMutantId)) {
-          state36.selectedMutantId = ((_a = state36.mutants[0]) == null ? void 0 : _a.id) || null;
+        if (!state37.mutants.find((m) => m.id === state37.selectedMutantId)) {
+          state37.selectedMutantId = ((_a = state37.mutants[0]) == null ? void 0 : _a.id) || null;
         }
-        state36.stringMutants = [];
-        if (state36.derivations.length > 0 && state36.stringOperators.size > 0) {
-          const idx = Math.min(state36.seedIndex, state36.derivations.length - 1);
-          const seed = state36.derivations[idx].string;
-          const alphabet = deriveAlphabet(g, state36.derivations.map((d) => d.string));
-          const raw = generateStringMutants(seed, [...state36.stringOperators], {
+        state37.stringMutants = [];
+        if (state37.derivations.length > 0 && state37.stringOperators.size > 0) {
+          const idx = Math.min(state37.seedIndex, state37.derivations.length - 1);
+          const seed = state37.derivations[idx].string;
+          const alphabet = deriveAlphabet(g, state37.derivations.map((d) => d.string));
+          const raw = generateStringMutants(seed, [...state37.stringOperators], {
             alphabet,
-            maxPerOp: state36.maxPerStringOp
+            maxPerOp: state37.maxPerStringOp
           });
-          state36.stringMutants = classifyStringMutants(g, raw);
+          state37.stringMutants = classifyStringMutants(g, raw);
         }
-        if (!state36.stringMutants.find((m) => m.id === state36.selectedStringMutantId)) {
-          state36.selectedStringMutantId = ((_b = state36.stringMutants[0]) == null ? void 0 : _b.id) || null;
+        if (!state37.stringMutants.find((m) => m.id === state37.selectedStringMutantId)) {
+          state37.selectedStringMutantId = ((_b = state37.stringMutants[0]) == null ? void 0 : _b.id) || null;
         }
       } catch (err) {
-        state36.parseError = err.message || String(err);
+        state37.parseError = err.message || String(err);
       }
     }
     function loadExample(id) {
-      const ex = grammarExamples.find((e) => e.id === id) || state36.customExamples.find((e) => e.id === id);
+      const ex = grammarExamples.find((e) => e.id === id) || state37.customExamples.find((e) => e.id === id);
       if (!ex) return;
-      state36.exampleId = id;
-      state36.text = state36.programs[id] || ex.text;
-      state36.selectedMutantId = null;
+      state37.exampleId = id;
+      state37.text = state37.programs[id] || ex.text;
+      state37.selectedMutantId = null;
     }
-    function render36() {
+    function render37() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
       recompute();
-      const allExamples = [...grammarExamples, ...state36.customExamples];
+      const allExamples = [...grammarExamples, ...state37.customExamples];
       const exampleButtons = allExamples.map((ex) => `
       <button
         type="button"
-        class="grammar-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+        class="grammar-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-grammar-example="${ex.id}"
         title="${escapeHtml4(getLocale() === "en" ? ex.descriptionEn || ex.description : ex.description)}"
       >${escapeHtml4(pickField(ex, "name"))}</button>
     `).join("");
       const operatorButtons = GRAMMAR_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state36.operators.has(op) ? " active" : ""}">
-        <input type="checkbox" data-grammar-op="${op}" ${state36.operators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state37.operators.has(op) ? " active" : ""}">
+        <input type="checkbox" data-grammar-op="${op}" ${state37.operators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const productionsHtml = state36.grammar ? state36.grammar.productions.map((p) => {
+      const productionsHtml = state37.grammar ? state37.grammar.productions.map((p) => {
         var _a2;
-        return formatProductionHtml(p, (_a2 = state36.coverage) == null ? void 0 : _a2.pdc.covered.has(p.id));
+        return formatProductionHtml(p, (_a2 = state37.coverage) == null ? void 0 : _a2.pdc.covered.has(p.id));
       }).join("") : "";
-      const derivationsHtml = state36.derivations.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noDerivations"))}</p>` : `<ol class="grammar-derivations">
-          ${state36.derivations.map((d) => `<li><code>${escapeHtml4(d.string === "" ? "\u2205" : d.string)}</code>
+      const derivationsHtml = state37.derivations.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noDerivations"))}</p>` : `<ol class="grammar-derivations">
+          ${state37.derivations.map((d) => `<li><code>${escapeHtml4(d.string === "" ? "\u2205" : d.string)}</code>
             <span class="grammar-derivation-meta">depth ${d.depth} \xB7 p[${d.productionsUsed.join(", ")}]</span></li>`).join("")}
          </ol>`;
-      const pdcRatio = state36.coverage ? Math.round(state36.coverage.pdc.ratio * 100) : 0;
-      const tscRatio = state36.coverage ? Math.round(state36.coverage.tsc.ratio * 100) : 0;
-      const terminalsHtml = state36.grammar ? [...state36.grammar.terminals].map((tm) => {
+      const pdcRatio = state37.coverage ? Math.round(state37.coverage.pdc.ratio * 100) : 0;
+      const tscRatio = state37.coverage ? Math.round(state37.coverage.tsc.ratio * 100) : 0;
+      const terminalsHtml = state37.grammar ? [...state37.grammar.terminals].map((tm) => {
         var _a2;
-        const covered = (_a2 = state36.coverage) == null ? void 0 : _a2.tsc.covered.has(tm);
+        const covered = (_a2 = state37.coverage) == null ? void 0 : _a2.tsc.covered.has(tm);
         return `<span class="grammar-terminal-chip${covered ? " covered" : ""}">"${escapeHtml4(tm)}"</span>`;
       }).join("") : "";
-      const mutantsHtml = state36.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noMutants"))}</p>` : `<ul class="grammar-mutant-list">
-          ${state36.mutants.map((m) => `<li>
+      const mutantsHtml = state37.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.noMutants"))}</p>` : `<ul class="grammar-mutant-list">
+          ${state37.mutants.map((m) => `<li>
             <button type="button"
-              class="grammar-mutant-btn${state36.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
+              class="grammar-mutant-btn${state37.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
               data-grammar-mutant="${escapeHtml4(m.id)}">
               <span class="grammar-mutant-op">${m.operator}</span>
               <span class="grammar-mutant-status">${m.killed ? t("grammar.killed") : t("grammar.live")}</span>
@@ -14362,33 +14444,33 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             </button>
           </li>`).join("")}
          </ul>`;
-      const selectedMutant = state36.mutants.find((m) => m.id === state36.selectedMutantId) || null;
+      const selectedMutant = state37.mutants.find((m) => m.id === state37.selectedMutantId) || null;
       const selectedMutantDetailHtml = selectedMutant ? `<div class="grammar-mutant-detail">
           <h5>${escapeHtml4(selectedMutant.id)}</h5>
           <p>${escapeHtml4(selectedMutant.description)}</p>
           ${selectedMutant.killed ? `<p class="grammar-mutant-killers"><strong>${escapeHtml4(t("grammar.killedBy"))}</strong></p>
                <ul class="grammar-killer-list">${selectedMutant.killers.slice(0, 8).map((k) => `<li><code>${escapeHtml4(k.string === "" ? "\u2205" : k.string)}</code> \xB7 ${k.origAccepts ? t("grammar.origAccepts") : t("grammar.origRejects")} \xB7 ${k.mutAccepts ? t("grammar.mutAccepts") : t("grammar.mutRejects")}</li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml4(t("grammar.liveHint"))}</p>`}
         </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.selectMutantHint"))}</p>`;
-      const score = state36.mutants.length === 0 ? null : { killed: state36.mutants.filter((m) => m.killed).length, total: state36.mutants.length };
-      const seedOptionsHtml = state36.derivations.map((d, idx) => `
-      <option value="${idx}" ${idx === Math.min(state36.seedIndex, state36.derivations.length - 1) ? "selected" : ""}>
+      const score = state37.mutants.length === 0 ? null : { killed: state37.mutants.filter((m) => m.killed).length, total: state37.mutants.length };
+      const seedOptionsHtml = state37.derivations.map((d, idx) => `
+      <option value="${idx}" ${idx === Math.min(state37.seedIndex, state37.derivations.length - 1) ? "selected" : ""}>
         #${idx + 1}: ${escapeHtml4(d.string === "" ? "\u2205" : d.string)}
       </option>`).join("");
       const stringOpButtons = STRING_MUTATION_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state36.stringOperators.has(op) ? " active" : ""}">
-        <input type="checkbox" data-grammar-string-op="${op}" ${state36.stringOperators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state37.stringOperators.has(op) ? " active" : ""}">
+        <input type="checkbox" data-grammar-string-op="${op}" ${state37.stringOperators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const stringMutantsHtml = state36.stringMutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.string.empty"))}</p>` : `<table class="grammar-string-mutant-table" data-testid="grammar-string-mutant-table">
+      const stringMutantsHtml = state37.stringMutants.length === 0 ? `<p class="grammar-empty">${escapeHtml4(t("grammar.string.empty"))}</p>` : `<table class="grammar-string-mutant-table" data-testid="grammar-string-mutant-table">
           <thead><tr>
             <th>Op</th>
             <th>${escapeHtml4(t("grammar.string.colMutated"))}</th>
             <th>${escapeHtml4(t("grammar.string.colKind"))}</th>
           </tr></thead>
           <tbody>
-            ${state36.stringMutants.map((m) => `<tr
-                class="grammar-string-row ${m.kind === "positive" ? "positive" : "negative"}${state36.selectedStringMutantId === m.id ? " active" : ""}"
+            ${state37.stringMutants.map((m) => `<tr
+                class="grammar-string-row ${m.kind === "positive" ? "positive" : "negative"}${state37.selectedStringMutantId === m.id ? " active" : ""}"
                 data-grammar-string-mutant="${escapeHtml4(m.id)}">
                 <td><span class="grammar-op-tag">${m.operator}</span></td>
                 <td><code>${escapeHtml4(m.mutated === "" ? "\u2205" : m.mutated)}</code></td>
@@ -14396,19 +14478,19 @@ Content-Type: ${file.type || "application/octet-stream"}\r
               </tr>`).join("")}
           </tbody>
          </table>`;
-      const positives = state36.stringMutants.filter((m) => m.kind === "positive").length;
-      const negatives = state36.stringMutants.length - positives;
-      const stringStats = state36.stringMutants.length === 0 ? null : `<span class="grammar-string-stats" data-testid="grammar-string-stats">
+      const positives = state37.stringMutants.filter((m) => m.kind === "positive").length;
+      const negatives = state37.stringMutants.length - positives;
+      const stringStats = state37.stringMutants.length === 0 ? null : `<span class="grammar-string-stats" data-testid="grammar-string-stats">
           ${escapeHtml4(t("grammar.string.statsPositive"))}: ${positives} \xB7 ${escapeHtml4(t("grammar.string.statsNegative"))}: ${negatives}
         </span>`;
-      const selectedStringMutant = state36.stringMutants.find((m) => m.id === state36.selectedStringMutantId) || null;
+      const selectedStringMutant = state37.stringMutants.find((m) => m.id === state37.selectedStringMutantId) || null;
       const selectedStringDetailHtml = selectedStringMutant ? `<div class="grammar-string-detail">
           <p><strong>${escapeHtml4(selectedStringMutant.operator)}</strong> \xB7 ${escapeHtml4(selectedStringMutant.description)}</p>
           <p>${escapeHtml4(t("grammar.string.original"))}: <code>${escapeHtml4(selectedStringMutant.original === "" ? "\u2205" : selectedStringMutant.original)}</code></p>
           <p>${escapeHtml4(t("grammar.string.mutated"))}: <code>${escapeHtml4(selectedStringMutant.mutated === "" ? "\u2205" : selectedStringMutant.mutated)}</code></p>
           <p>${selectedStringMutant.flipped ? `<span class="grammar-string-flip">\u26A1 ${escapeHtml4(t("grammar.string.flipped"))}</span>` : `<span class="grammar-string-same">${escapeHtml4(t("grammar.string.sameLang"))}</span>`}</p>
         </div>` : `<p class="grammar-empty">${escapeHtml4(t("grammar.string.selectHint"))}</p>`;
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="grammar-card">
         <header class="grammar-header">
           <p class="grammar-kicker">${escapeHtml4(t("grammar.kicker"))}</p>
@@ -14424,20 +14506,20 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <div class="grammar-editor-col">
             <label class="grammar-editor-label">
               ${escapeHtml4(t("grammar.bnfEditor"))}
-              <textarea data-testid="grammar-text" rows="8" spellcheck="false">${escapeHtml4(state36.text)}</textarea>
+              <textarea data-testid="grammar-text" rows="8" spellcheck="false">${escapeHtml4(state37.text)}</textarea>
             </label>
-            ${state36.parseError ? `<p class="grammar-error" data-testid="grammar-parse-error">${escapeHtml4(state36.parseError)}</p>` : ""}
+            ${state37.parseError ? `<p class="grammar-error" data-testid="grammar-parse-error">${escapeHtml4(state37.parseError)}</p>` : ""}
             <div class="grammar-controls-row">
               <label>${escapeHtml4(t("grammar.maxStrings"))}
-                <input type="number" min="1" max="40" value="${state36.maxStrings}" data-grammar-max-strings />
+                <input type="number" min="1" max="40" value="${state37.maxStrings}" data-grammar-max-strings />
               </label>
               <label>${escapeHtml4(t("grammar.maxDepth"))}
-                <input type="number" min="1" max="40" value="${state36.maxDepth}" data-grammar-max-depth />
+                <input type="number" min="1" max="40" value="${state37.maxDepth}" data-grammar-max-depth />
               </label>
             </div>
             <label class="grammar-editor-label">
               ${escapeHtml4(t("grammar.extraTests"))}
-              <textarea data-testid="grammar-extra-tests" rows="3" spellcheck="false" placeholder="${escapeHtml4(t("grammar.extraTestsHint"))}">${escapeHtml4(state36.extraTests)}</textarea>
+              <textarea data-testid="grammar-extra-tests" rows="3" spellcheck="false" placeholder="${escapeHtml4(t("grammar.extraTestsHint"))}">${escapeHtml4(state37.extraTests)}</textarea>
             </label>
           </div>
 
@@ -14447,11 +14529,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
             <div class="grammar-coverage-summary">
               <div class="grammar-metric">
                 <span class="grammar-metric-label">PDC</span>
-                <span class="grammar-metric-value" data-testid="grammar-pdc">${((_a = state36.coverage) == null ? void 0 : _a.pdc.covered.size) || 0} / ${((_b = state36.coverage) == null ? void 0 : _b.pdc.all.size) || 0} (${pdcRatio}%)</span>
+                <span class="grammar-metric-value" data-testid="grammar-pdc">${((_a = state37.coverage) == null ? void 0 : _a.pdc.covered.size) || 0} / ${((_b = state37.coverage) == null ? void 0 : _b.pdc.all.size) || 0} (${pdcRatio}%)</span>
               </div>
               <div class="grammar-metric">
                 <span class="grammar-metric-label">TSC</span>
-                <span class="grammar-metric-value" data-testid="grammar-tsc">${((_c = state36.coverage) == null ? void 0 : _c.tsc.covered.size) || 0} / ${((_d = state36.coverage) == null ? void 0 : _d.tsc.all.size) || 0} (${tscRatio}%)</span>
+                <span class="grammar-metric-value" data-testid="grammar-tsc">${((_c = state37.coverage) == null ? void 0 : _c.tsc.covered.size) || 0} / ${((_d = state37.coverage) == null ? void 0 : _d.tsc.all.size) || 0} (${tscRatio}%)</span>
               </div>
             </div>
             <div class="grammar-terminals">${terminalsHtml}</div>
@@ -14461,20 +14543,20 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         <nav class="grammar-subtab-row" data-testid="grammar-subtab-row" role="tablist">
           ${GRAMMAR_TABS.map((tab) => `
             <button type="button"
-              class="grammar-subtab-btn${state36.activeTab === tab.id ? " active" : ""}"
+              class="grammar-subtab-btn${state37.activeTab === tab.id ? " active" : ""}"
               data-grammar-subtab="${tab.id}"
               role="tab"
-              aria-selected="${state36.activeTab === tab.id ? "true" : "false"}"
+              aria-selected="${state37.activeTab === tab.id ? "true" : "false"}"
             >${escapeHtml4(t(tab.labelKey))}</button>
           `).join("")}
         </nav>
 
-        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state36.activeTab === "derivations" ? "" : "none"}">
+        <div class="grammar-derivation-block" data-grammar-panel="derivations" style="display:${state37.activeTab === "derivations" ? "" : "none"}">
           <h4>${escapeHtml4(t("grammar.derivations"))}</h4>
           ${derivationsHtml}
         </div>
 
-        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state36.activeTab === "mutation" ? "" : "none"}">
+        <div class="grammar-mutation-block" data-grammar-panel="mutation" style="display:${state37.activeTab === "mutation" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.mutations"))}</h4>
             ${score ? `<span class="grammar-score" data-testid="grammar-mutation-score">${t("grammar.scoreLabel")}: ${score.killed} / ${score.total} (${Math.round(score.killed / score.total * 100)}%)</span>` : ""}
@@ -14486,7 +14568,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           </div>
         </div>
 
-        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state36.activeTab === "string" ? "" : "none"}">
+        <div class="grammar-string-block" data-testid="grammar-string-block" data-grammar-panel="string" style="display:${state37.activeTab === "string" ? "" : "none"}">
           <div class="grammar-mutation-header">
             <h4>${escapeHtml4(t("grammar.string.title"))}</h4>
             ${stringStats || ""}
@@ -14494,10 +14576,10 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           <p class="grammar-string-subtitle">${escapeHtml4(t("grammar.string.subtitle"))}</p>
           <div class="grammar-string-controls">
             <label>${escapeHtml4(t("grammar.string.seed"))}
-              <select data-grammar-seed-select ${state36.derivations.length === 0 ? "disabled" : ""}>${seedOptionsHtml}</select>
+              <select data-grammar-seed-select ${state37.derivations.length === 0 ? "disabled" : ""}>${seedOptionsHtml}</select>
             </label>
             <label>${escapeHtml4(t("grammar.string.maxPerOp"))}
-              <input type="number" min="1" max="50" value="${state36.maxPerStringOp}" data-grammar-max-per-string-op />
+              <input type="number" min="1" max="50" value="${state37.maxPerStringOp}" data-grammar-max-per-string-op />
             </label>
           </div>
           <div class="grammar-op-row">${stringOpButtons}</div>
@@ -14508,82 +14590,82 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         </div>
       </div>
     `;
-      root37.querySelectorAll("[data-grammar-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-grammar-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           loadExample(btn.dataset.grammarExample);
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-grammar-subtab]").forEach((btn) => {
+      root38.querySelectorAll("[data-grammar-subtab]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.activeTab = btn.dataset.grammarSubtab;
-          saveActiveTab(state36.activeTab);
-          render36();
+          state37.activeTab = btn.dataset.grammarSubtab;
+          saveActiveTab(state37.activeTab);
+          render37();
         });
       });
-      const ta = root37.querySelector('[data-testid="grammar-text"]');
+      const ta = root38.querySelector('[data-testid="grammar-text"]');
       ta == null ? void 0 : ta.addEventListener("input", (e) => {
-        state36.text = e.target.value;
+        state37.text = e.target.value;
         persistCurrent();
       });
       ta == null ? void 0 : ta.addEventListener("change", () => {
-        render36();
+        render37();
       });
-      (_e = root37.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
-        state36.extraTests = e.target.value;
+      (_e = root38.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
+        state37.extraTests = e.target.value;
       });
-      (_f = root37.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _f.addEventListener("change", () => render36());
-      (_g = root37.querySelector("[data-grammar-max-strings]")) == null ? void 0 : _g.addEventListener("change", (e) => {
-        state36.maxStrings = Math.max(1, Math.min(40, Number(e.target.value) || 1));
-        render36();
+      (_f = root38.querySelector('[data-testid="grammar-extra-tests"]')) == null ? void 0 : _f.addEventListener("change", () => render37());
+      (_g = root38.querySelector("[data-grammar-max-strings]")) == null ? void 0 : _g.addEventListener("change", (e) => {
+        state37.maxStrings = Math.max(1, Math.min(40, Number(e.target.value) || 1));
+        render37();
       });
-      (_h = root37.querySelector("[data-grammar-max-depth]")) == null ? void 0 : _h.addEventListener("change", (e) => {
-        state36.maxDepth = Math.max(1, Math.min(40, Number(e.target.value) || 1));
-        render36();
+      (_h = root38.querySelector("[data-grammar-max-depth]")) == null ? void 0 : _h.addEventListener("change", (e) => {
+        state37.maxDepth = Math.max(1, Math.min(40, Number(e.target.value) || 1));
+        render37();
       });
-      root37.querySelectorAll("[data-grammar-op]").forEach((cb) => {
+      root38.querySelectorAll("[data-grammar-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.grammarOp;
-          if (e.target.checked) state36.operators.add(op);
-          else state36.operators.delete(op);
-          render36();
+          if (e.target.checked) state37.operators.add(op);
+          else state37.operators.delete(op);
+          render37();
         });
       });
-      root37.querySelectorAll("[data-grammar-mutant]").forEach((btn) => {
+      root38.querySelectorAll("[data-grammar-mutant]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.selectedMutantId = btn.dataset.grammarMutant;
-          render36();
+          state37.selectedMutantId = btn.dataset.grammarMutant;
+          render37();
         });
       });
-      (_i = root37.querySelector("[data-grammar-seed-select]")) == null ? void 0 : _i.addEventListener("change", (e) => {
-        state36.seedIndex = Math.max(0, Number(e.target.value) || 0);
-        state36.selectedStringMutantId = null;
-        render36();
+      (_i = root38.querySelector("[data-grammar-seed-select]")) == null ? void 0 : _i.addEventListener("change", (e) => {
+        state37.seedIndex = Math.max(0, Number(e.target.value) || 0);
+        state37.selectedStringMutantId = null;
+        render37();
       });
-      (_j = root37.querySelector("[data-grammar-max-per-string-op]")) == null ? void 0 : _j.addEventListener("change", (e) => {
-        state36.maxPerStringOp = Math.max(1, Math.min(50, Number(e.target.value) || 1));
-        render36();
+      (_j = root38.querySelector("[data-grammar-max-per-string-op]")) == null ? void 0 : _j.addEventListener("change", (e) => {
+        state37.maxPerStringOp = Math.max(1, Math.min(50, Number(e.target.value) || 1));
+        render37();
       });
-      root37.querySelectorAll("[data-grammar-string-op]").forEach((cb) => {
+      root38.querySelectorAll("[data-grammar-string-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.grammarStringOp;
-          if (e.target.checked) state36.stringOperators.add(op);
-          else state36.stringOperators.delete(op);
-          render36();
+          if (e.target.checked) state37.stringOperators.add(op);
+          else state37.stringOperators.delete(op);
+          render37();
         });
       });
-      root37.querySelectorAll("[data-grammar-string-mutant]").forEach((row) => {
+      root38.querySelectorAll("[data-grammar-string-mutant]").forEach((row) => {
         row.addEventListener("click", () => {
-          state36.selectedStringMutantId = row.dataset.grammarStringMutant;
-          render36();
+          state37.selectedStringMutantId = row.dataset.grammarStringMutant;
+          render37();
         });
       });
     }
-    render36();
+    render37();
     if (typeof globalThis.addEventListener === "function") {
       globalThis.addEventListener("stvisual:load-program-source", (event) => {
         var _a;
-        if (!root37.isConnected) return;
+        if (!root38.isConnected) return;
         const detail = event.detail || {};
         if (detail.target !== "grammar") return;
         const content = String((_a = detail.content) != null ? _a : "");
@@ -14597,16 +14679,16 @@ Content-Type: ${file.type || "application/octet-stream"}\r
           descriptionEn: `Uploaded from cloud: ${detail.name || baseName}`,
           text: content
         };
-        state36.customExamples = [...state36.customExamples, newExample];
-        state36.programs[id] = content;
-        state36.exampleId = id;
-        state36.text = content;
-        state36.selectedMutantId = null;
+        state37.customExamples = [...state37.customExamples, newExample];
+        state37.programs[id] = content;
+        state37.exampleId = id;
+        state37.text = content;
+        state37.selectedMutantId = null;
         persistCurrent();
-        render36();
+        render37();
       });
     }
-    return root37;
+    return root38;
   }
 
   // src/utils/specMutation.js
@@ -14672,7 +14754,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         throw new Error(`Unknown AST node: ${node.type}`);
     }
   }
-  function* walkWithReplacers(root37) {
+  function* walkWithReplacers(root38) {
     function* walk(node, replaceInParent) {
       yield [node, replaceInParent];
       if (node.type === "not") {
@@ -14694,7 +14776,7 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     function topReplace(newRoot) {
       return cloneAst(newRoot);
     }
-    yield* walk(root37, topReplace);
+    yield* walk(root38, topReplace);
   }
   function generateSpecMutants(parsed, opIds = SPEC_MUTATION_OPERATORS) {
     if (!(parsed == null ? void 0 : parsed.ast)) throw new Error("parsed.ast is required");
@@ -15151,14 +15233,14 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist(state36) {
+  function persist(state37) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY4, JSON.stringify({
-        text: state36.text,
-        operators: [...state36.operators],
-        activeCategory: state36.activeCategory,
-        tests: state36.tests
+        text: state37.text,
+        operators: [...state37.operators],
+        activeCategory: state37.activeCategory,
+        tests: state37.tests
       }));
     } catch {
     }
@@ -15167,11 +15249,11 @@ INVARSPEC !w | (i & (l | h))`
     return Object.entries(values).map(([k, v]) => `${k}=${v ? "T" : "F"}`).join(", ");
   }
   function createSpecMutationExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "spec-mutation";
-    root37.dataset.testid = "spec-mutation";
+    const root38 = document.createElement("div");
+    root38.className = "spec-mutation";
+    root38.dataset.testid = "spec-mutation";
     const saved = loadSaved();
-    const state36 = {
+    const state37 = {
       text: (saved == null ? void 0 : saved.text) || DEFAULT_PREDICATE,
       operators: new Set((saved == null ? void 0 : saved.operators) || DEFAULT_OPS2),
       activeCategory: (saved == null ? void 0 : saved.activeCategory) || DEFAULT_CATEGORY,
@@ -15186,59 +15268,59 @@ INVARSPEC !w | (i & (l | h))`
     };
     function recompute() {
       var _a;
-      state36.parseError = null;
-      state36.parsed = null;
-      state36.mutants = [];
+      state37.parseError = null;
+      state37.parsed = null;
+      state37.mutants = [];
       try {
-        const parsed = parsePredicate(state36.text);
-        state36.parsed = parsed;
-        const ops = [...state36.operators];
+        const parsed = parsePredicate(state37.text);
+        state37.parsed = parsed;
+        const ops = [...state37.operators];
         const generated = ops.length > 0 ? generateSpecMutants(parsed, ops) : [];
         let tests;
-        if (state36.useFullTable) {
+        if (state37.useFullTable) {
           tests = buildAssignmentSpace(parsed.clauses);
         } else {
-          tests = (state36.tests || []).map((t2) => {
+          tests = (state37.tests || []).map((t2) => {
             var _a2;
             const v = {};
             for (const c of parsed.clauses) v[c] = !!((_a2 = t2.values) == null ? void 0 : _a2[c]);
             return v;
           });
         }
-        state36.mutants = evaluateSpecMutants(parsed, generated, tests);
-        if (!state36.mutants.find((m) => m.id === state36.selectedMutantId)) {
-          state36.selectedMutantId = ((_a = state36.mutants[0]) == null ? void 0 : _a.id) || null;
+        state37.mutants = evaluateSpecMutants(parsed, generated, tests);
+        if (!state37.mutants.find((m) => m.id === state37.selectedMutantId)) {
+          state37.selectedMutantId = ((_a = state37.mutants[0]) == null ? void 0 : _a.id) || null;
         }
       } catch (err) {
-        state36.parseError = err.message || String(err);
+        state37.parseError = err.message || String(err);
       }
-      persist(state36);
+      persist(state37);
     }
-    function render36() {
+    function render37() {
       var _a, _b, _c;
       recompute();
-      const currentExample4 = SPEC_EXAMPLES.find((ex) => state36.text.trim() === ex.text) || null;
+      const currentExample4 = SPEC_EXAMPLES.find((ex) => state37.text.trim() === ex.text) || null;
       const categoryButtons = SPEC_CATEGORIES.map((cat) => `
       <button type="button"
-        class="spec-category-btn${state36.activeCategory === cat.id ? " active" : ""}"
+        class="spec-category-btn${state37.activeCategory === cat.id ? " active" : ""}"
         data-spec-category="${cat.id}">${escapeHtml5(t(cat.labelKey))}</button>
     `).join("");
-      const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state36.activeCategory);
+      const visibleExamples = SPEC_EXAMPLES.filter((ex) => ex.category === state37.activeCategory);
       const exampleButtons = visibleExamples.map((ex) => `
-      <button type="button" class="spec-example-btn${state36.text.trim() === ex.text ? " active" : ""}"
+      <button type="button" class="spec-example-btn${state37.text.trim() === ex.text ? " active" : ""}"
         data-spec-example="${ex.id}" title="${escapeHtml5(ex.description || "")}">${escapeHtml5(ex.name)}</button>
     `).join("");
       const operatorButtons = SPEC_MUTATION_OPERATORS.map((op) => `
-      <label class="grammar-op-btn${state36.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
-        <input type="checkbox" data-spec-op="${op}" ${state36.operators.has(op) ? "checked" : ""} />
+      <label class="grammar-op-btn${state37.operators.has(op) ? " active" : ""}" title="${escapeHtml5(t(`spec.op.${op}`))}">
+        <input type="checkbox" data-spec-op="${op}" ${state37.operators.has(op) ? "checked" : ""} />
         <span>${op}</span>
       </label>
     `).join("");
-      const score = state36.mutants.length === 0 ? null : { killed: state36.mutants.filter((m) => m.killed).length, total: state36.mutants.length };
-      const mutantsHtml = state36.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml5(t("spec.noMutants"))}</p>` : `<ul class="grammar-mutant-list" data-testid="spec-mutant-list">
-          ${state36.mutants.map((m) => `<li>
+      const score = state37.mutants.length === 0 ? null : { killed: state37.mutants.filter((m) => m.killed).length, total: state37.mutants.length };
+      const mutantsHtml = state37.mutants.length === 0 ? `<p class="grammar-empty">${escapeHtml5(t("spec.noMutants"))}</p>` : `<ul class="grammar-mutant-list" data-testid="spec-mutant-list">
+          ${state37.mutants.map((m) => `<li>
             <button type="button"
-              class="grammar-mutant-btn${state36.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
+              class="grammar-mutant-btn${state37.selectedMutantId === m.id ? " active" : ""} ${m.killed ? "killed" : "live"}"
               data-spec-mutant="${escapeHtml5(m.id)}">
               <span class="grammar-mutant-op">${m.operator}</span>
               <span class="grammar-mutant-status">${m.killed ? t("grammar.killed") : t("grammar.live")}</span>
@@ -15249,19 +15331,19 @@ INVARSPEC !w | (i & (l | h))`
             </button>
           </li>`).join("")}
          </ul>`;
-      const selected = state36.mutants.find((m) => m.id === state36.selectedMutantId) || null;
-      const flippedSet = selected ? flippedKeysFromKillers(selected.killers, ((_a = state36.parsed) == null ? void 0 : _a.clauses) || []) : null;
-      const fsmHtml = state36.parsed ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
+      const selected = state37.mutants.find((m) => m.id === state37.selectedMutantId) || null;
+      const flippedSet = selected ? flippedKeysFromKillers(selected.killers, ((_a = state37.parsed) == null ? void 0 : _a.clauses) || []) : null;
+      const fsmHtml = state37.parsed ? `<div class="spec-fsm-grid" data-testid="spec-fsm-grid">
           ${renderMonitorSvg({
-        ast: state36.parsed.ast,
-        clauses: state36.parsed.clauses,
+        ast: state37.parsed.ast,
+        clauses: state37.parsed.clauses,
         title: t("spec.fsm.original"),
         flippedSet: null,
         testId: "spec-fsm-original"
       })}
           ${renderMonitorSvg({
-        ast: selected ? selected.ast : state36.parsed.ast,
-        clauses: state36.parsed.clauses,
+        ast: selected ? selected.ast : state37.parsed.ast,
+        clauses: state37.parsed.clauses,
         title: selected ? `${t("spec.fsm.mutant")}: ${selected.id}` : t("spec.fsm.pickMutant"),
         flippedSet,
         testId: "spec-fsm-mutant"
@@ -15278,7 +15360,7 @@ INVARSPEC !w | (i & (l | h))`
                  \xB7 orig=${k.orig ? "T" : "F"} \xB7 mut=${k.mut ? "T" : "F"}
                </li>`).join("")}</ul>` : `<p class="grammar-mutant-live">${escapeHtml5(t("spec.equivalentHint"))}</p>`}
         </div>` : `<p class="grammar-empty">${escapeHtml5(t("grammar.selectMutantHint"))}</p>`;
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="grammar-card spec-card">
         <header class="grammar-header">
           <p class="grammar-kicker">${escapeHtml5(t("spec.kicker"))}</p>
@@ -15297,12 +15379,12 @@ INVARSPEC !w | (i & (l | h))`
         <div class="spec-editor-row">
           <label class="grammar-editor-label">
             ${escapeHtml5(t("spec.predicateLabel"))}
-            <input type="text" data-testid="spec-text" value="${escapeHtml5(state36.text)}" spellcheck="false" />
+            <input type="text" data-testid="spec-text" value="${escapeHtml5(state37.text)}" spellcheck="false" />
           </label>
-          ${state36.parseError ? `<p class="grammar-error" data-testid="spec-parse-error">${escapeHtml5(state36.parseError)}</p>` : ""}
-          ${state36.parsed ? `<p class="spec-clauses">
-            <strong>${escapeHtml5(t("spec.clauses"))}:</strong> ${state36.parsed.clauses.map((c) => `<code>${escapeHtml5(c)}</code>`).join(", ") || "\u2014"}
-            \xB7 <strong>${escapeHtml5(t("spec.canonical"))}:</strong> <code>${escapeHtml5(astToString(state36.parsed.ast))}</code>
+          ${state37.parseError ? `<p class="grammar-error" data-testid="spec-parse-error">${escapeHtml5(state37.parseError)}</p>` : ""}
+          ${state37.parsed ? `<p class="spec-clauses">
+            <strong>${escapeHtml5(t("spec.clauses"))}:</strong> ${state37.parsed.clauses.map((c) => `<code>${escapeHtml5(c)}</code>`).join(", ") || "\u2014"}
+            \xB7 <strong>${escapeHtml5(t("spec.canonical"))}:</strong> <code>${escapeHtml5(astToString(state37.parsed.ast))}</code>
           </p>` : ""}
         </div>
 
@@ -15321,46 +15403,46 @@ INVARSPEC !w | (i & (l | h))`
         </div>
       </div>
     `;
-      root37.querySelectorAll("[data-spec-category]").forEach((btn) => {
+      root38.querySelectorAll("[data-spec-category]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.activeCategory = btn.dataset.specCategory;
-          render36();
+          state37.activeCategory = btn.dataset.specCategory;
+          render37();
         });
       });
-      root37.querySelectorAll("[data-spec-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-spec-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = SPEC_EXAMPLES.find((e) => e.id === btn.dataset.specExample);
           if (!ex) return;
-          state36.text = ex.text;
-          state36.activeCategory = ex.category || state36.activeCategory;
-          state36.selectedMutantId = null;
-          render36();
+          state37.text = ex.text;
+          state37.activeCategory = ex.category || state37.activeCategory;
+          state37.selectedMutantId = null;
+          render37();
         });
       });
-      (_b = root37.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("input", (e) => {
-        state36.text = e.target.value;
+      (_b = root38.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _b.addEventListener("input", (e) => {
+        state37.text = e.target.value;
       });
-      (_c = root37.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _c.addEventListener("change", () => {
-        state36.selectedMutantId = null;
-        render36();
+      (_c = root38.querySelector('[data-testid="spec-text"]')) == null ? void 0 : _c.addEventListener("change", () => {
+        state37.selectedMutantId = null;
+        render37();
       });
-      root37.querySelectorAll("[data-spec-op]").forEach((cb) => {
+      root38.querySelectorAll("[data-spec-op]").forEach((cb) => {
         cb.addEventListener("change", (e) => {
           const op = e.target.dataset.specOp;
-          if (e.target.checked) state36.operators.add(op);
-          else state36.operators.delete(op);
-          render36();
+          if (e.target.checked) state37.operators.add(op);
+          else state37.operators.delete(op);
+          render37();
         });
       });
-      root37.querySelectorAll("[data-spec-mutant]").forEach((btn) => {
+      root38.querySelectorAll("[data-spec-mutant]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.selectedMutantId = btn.dataset.specMutant;
-          render36();
+          state37.selectedMutantId = btn.dataset.specMutant;
+          render37();
         });
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/symbolicExecution.js
@@ -16153,25 +16235,25 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist2(state36) {
+  function persist2(state37) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY5, JSON.stringify({
-        sourceCode: state36.sourceCode,
-        exampleId: state36.exampleId,
-        maxLoopUnroll: state36.maxLoopUnroll,
-        cfgZoom: state36.cfgZoom
+        sourceCode: state37.sourceCode,
+        exampleId: state37.exampleId,
+        maxLoopUnroll: state37.maxLoopUnroll,
+        cfgZoom: state37.cfgZoom
       }));
     } catch {
     }
   }
   function createSymbolicExecutionExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "symbex-explorer";
-    root37.dataset.testid = "symbex-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "symbex-explorer";
+    root38.dataset.testid = "symbex-explorer";
     const saved = loadSaved2();
     const defaultExample = symbolicExecutionExamples[0];
-    const state36 = {
+    const state37 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       maxLoopUnroll: typeof (saved == null ? void 0 : saved.maxLoopUnroll) === "number" ? saved.maxLoopUnroll : 3,
@@ -16209,7 +16291,7 @@ INVARSPEC !w | (i & (l | h))`
     function renderSymbexQuizPanel() {
       if (!symbexQuiz.active) return "";
       if (symbexQuiz.phase === "graded") {
-        const correct = state36.result ? state36.result.paths.filter((p) => p.feasible).length : 0;
+        const correct = state37.result ? state37.result.paths.filter((p) => p.feasible).length : 0;
         const userAns = parseInt(symbexQuiz.answer, 10);
         const ok = userAns === correct;
         const shareEncoded = encodeResult({ v: 1, explorer: "symbex", explorerLabel: t("quiz.symbex.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.symbex.prompt"), a: String(symbexQuiz.answer), expected: String(correct), ok }] });
@@ -16248,52 +16330,52 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a, _b;
-      state36.result = null;
-      state36.error = null;
-      state36.cfg = null;
-      state36.cfgError = null;
+      state37.result = null;
+      state37.error = null;
+      state37.cfg = null;
+      state37.cfgError = null;
       try {
-        state36.result = symbolicExecute(state36.sourceCode, { maxLoopUnroll: state36.maxLoopUnroll });
+        state37.result = symbolicExecute(state37.sourceCode, { maxLoopUnroll: state37.maxLoopUnroll });
       } catch (err) {
-        state36.error = err.message || String(err);
+        state37.error = err.message || String(err);
       }
       try {
-        state36.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state36.sourceCode,
+        state37.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state37.sourceCode,
           language: "javascript",
           title: "Symbolic Execution CFG"
         });
       } catch (err) {
-        state36.cfgError = err.message || String(err);
+        state37.cfgError = err.message || String(err);
       }
-      if ((_b = (_a = state36.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.length) {
-        const stillExists = state36.result.paths.some((p) => p.id === state36.selectedPathId);
+      if ((_b = (_a = state37.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.length) {
+        const stillExists = state37.result.paths.some((p) => p.id === state37.selectedPathId);
         if (!stillExists) {
-          const firstFeasible = state36.result.paths.find((p) => p.feasible) || state36.result.paths[0];
-          state36.selectedPathId = firstFeasible.id;
+          const firstFeasible = state37.result.paths.find((p) => p.feasible) || state37.result.paths[0];
+          state37.selectedPathId = firstFeasible.id;
         }
       } else {
-        state36.selectedPathId = null;
+        state37.selectedPathId = null;
       }
-      persist2(state36);
+      persist2(state37);
     }
-    function render36() {
+    function render37() {
       recompute();
       const exampleButtons = symbolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="symbex-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+        class="symbex-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-symbex-example="${ex.id}"
         data-testid="symbex-example-${ex.id}"
         title="${escapeHtml6(pickField(ex, "description") || "")}">
         ${escapeHtml6(pickField(ex, "name") || ex.name)}
       </button>
     `).join("");
-      const pathsMarkup = state36.error ? `<div class="symbex-error" data-testid="symbex-error">${escapeHtml6(state36.error)}</div>` : renderPaths2(state36.result);
-      const summary = state36.result ? `${t("symbex.summary.paths")}<strong data-testid="symbex-path-count">${state36.result.paths.length}</strong>
+      const pathsMarkup = state37.error ? `<div class="symbex-error" data-testid="symbex-error">${escapeHtml6(state37.error)}</div>` : renderPaths2(state37.result);
+      const summary = state37.result ? `${t("symbex.summary.paths")}<strong data-testid="symbex-path-count">${state37.result.paths.length}</strong>
          <span class="symbex-divider">\xB7</span>
-         ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state36.result.paths.filter((p) => p.feasible).length}</strong>
-         ${state36.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
-      root37.innerHTML = `
+         ${t("symbex.summary.feasible")}<strong data-testid="symbex-feasible-count">${state37.result.paths.filter((p) => p.feasible).length}</strong>
+         ${state37.result.truncated ? `<span class="symbex-divider">\xB7</span><span class="symbex-truncated">${t("symbex.summary.truncated")}</span>` : ""}` : "";
+      root38.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="symbex-mobile-nav">
         <a href="#symbex-input-panel">${t("explorer.panel.input")}</a>
         <a href="#symbex-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -16310,7 +16392,7 @@ INVARSPEC !w | (i & (l | h))`
             <label class="symbex-control">
               <span>${t("symbex.maxUnroll")}</span>
               <input type="number" min="0" max="6" step="1"
-                value="${state36.maxLoopUnroll}"
+                value="${state37.maxLoopUnroll}"
                 data-testid="symbex-max-unroll" />
             </label>
           </div>
@@ -16322,7 +16404,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="symbex-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml6(state36.sourceCode)}</textarea>
+            rows="14">${escapeHtml6(state37.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -16350,24 +16432,24 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="symbex-hint">${t("symbex.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
     function renderCfgPane() {
       var _a, _b;
-      if (state36.cfgError) {
+      if (state37.cfgError) {
         return `<div class="symbex-cfg" data-testid="symbex-cfg">
-        <p class="symbex-cfg-error">${escapeHtml6(state36.cfgError)}</p>
+        <p class="symbex-cfg-error">${escapeHtml6(state37.cfgError)}</p>
       </div>`;
       }
-      if (!state36.cfg) return "";
-      const selected = (_b = (_a = state36.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.find((p) => p.id === state36.selectedPathId);
-      const mapping = selected ? mapBranchesToCfg(state36.cfg, selected.branches) : { nodes: [], edges: [] };
-      const svg = renderCfgSvg(state36.cfg, mapping, {
+      if (!state37.cfg) return "";
+      const selected = (_b = (_a = state37.result) == null ? void 0 : _a.paths) == null ? void 0 : _b.find((p) => p.id === state37.selectedPathId);
+      const mapping = selected ? mapBranchesToCfg(state37.cfg, selected.branches) : { nodes: [], edges: [] };
+      const svg = renderCfgSvg(state37.cfg, mapping, {
         idPrefix: "symbex-cfg",
         ariaLabel: "Symbolic execution CFG",
-        zoom: state36.cfgZoom
+        zoom: state37.cfgZoom
       });
-      const zoomPct = Math.round(state36.cfgZoom * 100);
+      const zoomPct = Math.round(state37.cfgZoom * 100);
       return `
       <div class="symbex-cfg" data-testid="symbex-cfg">
         <div class="symbex-cfg-header">
@@ -16396,7 +16478,7 @@ INVARSPEC !w | (i & (l | h))`
              <dd><code>${escapeHtml6(formatReturn(p.returnExpression, p.concreteReturn))}</code></dd>
            </dl>` : `<p class="symbex-infeasible">${t("symbex.infeasible")}</p>`;
         return `
-        <li class="symbex-path${p.feasible ? "" : " infeasible"}${state36.selectedPathId === p.id ? " selected" : ""}"
+        <li class="symbex-path${p.feasible ? "" : " infeasible"}${state37.selectedPathId === p.id ? " selected" : ""}"
           data-testid="symbex-${p.id}"
           data-symbex-path="${p.id}"
           tabindex="0"
@@ -16421,24 +16503,24 @@ INVARSPEC !w | (i & (l | h))`
       if (concrete === null || concrete === void 0) return expr;
       return `${expr}  \u2192  ${concrete}`;
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a, _b, _c, _d;
-      root37.querySelectorAll("[data-symbex-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-symbex-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.symbexExample;
           const ex = symbolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state36.exampleId = ex.id;
-          state36.sourceCode = ex.sourceCode;
-          state36.selectedPathId = null;
+          state37.exampleId = ex.id;
+          state37.sourceCode = ex.sourceCode;
+          state37.selectedPathId = null;
           symbexQuiz.active = false;
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-symbex-path]").forEach((el) => {
+      root38.querySelectorAll("[data-symbex-path]").forEach((el) => {
         const select = () => {
-          state36.selectedPathId = el.dataset.symbexPath;
-          render36();
+          state37.selectedPathId = el.dataset.symbexPath;
+          render37();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -16448,92 +16530,92 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root37.querySelector('[data-testid="symbex-source"]');
+      const editor = root38.querySelector('[data-testid="symbex-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state36.sourceCode = editor.value;
+          state37.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => {
             renderPreservingFocus("symbex-source");
           }, 220);
         });
       }
-      const unroll = root37.querySelector('[data-testid="symbex-max-unroll"]');
+      const unroll = root38.querySelector('[data-testid="symbex-max-unroll"]');
       if (unroll) {
         unroll.addEventListener("change", () => {
           const n = Number(unroll.value);
           if (Number.isFinite(n) && n >= 0 && n <= 12) {
-            state36.maxLoopUnroll = n;
-            render36();
+            state37.maxLoopUnroll = n;
+            render37();
           }
         });
       }
-      root37.querySelectorAll("[data-symbex-zoom]").forEach((btn) => {
+      root38.querySelectorAll("[data-symbex-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.symbexZoom;
-          if (action === "in") state36.cfgZoom = Math.min(4, +(state36.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(state36.cfgZoom - 0.25).toFixed(2));
-          else state36.cfgZoom = 1;
-          render36();
+          if (action === "in") state37.cfgZoom = Math.min(4, +(state37.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(state37.cfgZoom - 0.25).toFixed(2));
+          else state37.cfgZoom = 1;
+          render37();
         });
       });
-      const sqStart = root37.querySelector('[data-testid="symbex-quiz-start"]');
+      const sqStart = root38.querySelector('[data-testid="symbex-quiz-start"]');
       if (sqStart) {
         sqStart.addEventListener("click", () => {
           symbexQuiz.active = true;
           symbexQuiz.phase = "question";
           symbexQuiz.answer = "";
-          render36();
+          render37();
         });
       }
-      const sqClose = root37.querySelector('[data-testid="symbex-quiz-close"]');
+      const sqClose = root38.querySelector('[data-testid="symbex-quiz-close"]');
       if (sqClose) {
         sqClose.addEventListener("click", () => {
           symbexQuiz.active = false;
-          render36();
+          render37();
         });
       }
-      const sqCheck = root37.querySelector('[data-testid="symbex-quiz-check"]');
+      const sqCheck = root38.querySelector('[data-testid="symbex-quiz-check"]');
       if (sqCheck) {
         sqCheck.addEventListener("click", () => {
-          const inp = root37.querySelector('[data-testid="symbex-quiz-input"]');
+          const inp = root38.querySelector('[data-testid="symbex-quiz-input"]');
           symbexQuiz.answer = inp ? inp.value : "";
           symbexQuiz.phase = "graded";
-          render36();
+          render37();
         });
       }
-      const sqReset = root37.querySelector('[data-testid="symbex-quiz-reset"]');
+      const sqReset = root38.querySelector('[data-testid="symbex-quiz-reset"]');
       if (sqReset) {
         sqReset.addEventListener("click", () => {
           symbexQuiz.phase = "question";
           symbexQuiz.answer = "";
-          render36();
+          render37();
         });
       }
-      (_a = root37.querySelector('[data-testid="symbex-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root38.querySelector('[data-testid="symbex-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         symbexLabReflect.active = true;
-        render36();
+        render37();
       });
-      (_b = root37.querySelector('[data-testid="symbex-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root38.querySelector('[data-testid="symbex-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a2, _b2;
-        symbexLabReflect.a1 = ((_a2 = root37.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || symbexLabReflect.a1;
-        symbexLabReflect.a2 = ((_b2 = root37.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || symbexLabReflect.a2;
+        symbexLabReflect.a1 = ((_a2 = root38.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || symbexLabReflect.a1;
+        symbexLabReflect.a2 = ((_b2 = root38.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || symbexLabReflect.a2;
         symbexLabReflect.active = false;
-        render36();
+        render37();
       });
-      (_c = root37.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
+      (_c = root38.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
         symbexLabReflect.a1 = e.target.value;
       });
-      (_d = root37.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root38.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         symbexLabReflect.a2 = e.target.value;
       });
-      const symbexLrShare = root37.querySelector('[data-testid="symbex-lab-reflect-share"]');
+      const symbexLrShare = root38.querySelector('[data-testid="symbex-lab-reflect-share"]');
       if (symbexLrShare) {
         symbexLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root37.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root37.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root38.querySelector('[data-testid="symbex-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root38.querySelector('[data-testid="symbex-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "symbex",
@@ -16569,11 +16651,11 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root37.querySelector(`[data-testid="${testid}"]`);
+      const previously = root38.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render36();
-      const next = root37.querySelector(`[data-testid="${testid}"]`);
+      render37();
+      const next = root38.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -16581,8 +16663,8 @@ INVARSPEC !w | (i & (l | h))`
         }
       }
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/concolicExecution.js
@@ -16776,15 +16858,15 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist3(state36) {
+  function persist3(state37) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY6, JSON.stringify({
-        sourceCode: state36.sourceCode,
-        exampleId: state36.exampleId,
-        seedText: state36.seedText,
-        maxIterations: state36.maxIterations,
-        cfgZoom: state36.cfgZoom
+        sourceCode: state37.sourceCode,
+        exampleId: state37.exampleId,
+        seedText: state37.seedText,
+        maxIterations: state37.maxIterations,
+        cfgZoom: state37.cfgZoom
       }));
     } catch {
     }
@@ -16803,12 +16885,12 @@ INVARSPEC !w | (i & (l | h))`
     return out;
   }
   function createConcolicExecutionExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "concolic-explorer";
-    root37.dataset.testid = "concolic-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "concolic-explorer";
+    root38.dataset.testid = "concolic-explorer";
     const saved = loadSaved3();
     const defaultExample = concolicExecutionExamples[0];
-    const state36 = {
+    const state37 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       seedText: (saved == null ? void 0 : saved.seedText) || defaultExample.seed || "",
@@ -16824,7 +16906,7 @@ INVARSPEC !w | (i & (l | h))`
     function renderConcolicQuizPanel() {
       if (!concolicQuiz.active) return "";
       if (concolicQuiz.phase === "graded") {
-        const correct = state36.result ? state36.result.uniquePathCount : 0;
+        const correct = state37.result ? state37.result.uniquePathCount : 0;
         const userAns = parseInt(concolicQuiz.answer, 10);
         const ok = userAns === correct;
         const shareEncoded = encodeResult({ v: 1, explorer: "concolic", explorerLabel: t("quiz.concolic.title"), mode: "quiz", ts: Date.now(), lang: getLocale(), score: ok ? 1 : 0, total: 1, items: [{ q: t("quiz.concolic.prompt"), a: String(concolicQuiz.answer), expected: String(correct), ok }] });
@@ -16863,57 +16945,57 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a, _b;
-      state36.result = null;
-      state36.error = null;
-      state36.cfg = null;
-      state36.cfgError = null;
+      state37.result = null;
+      state37.error = null;
+      state37.cfg = null;
+      state37.cfgError = null;
       try {
-        const initialInputs = parseSeed(state36.seedText);
-        state36.result = concolicExecute(state36.sourceCode, {
+        const initialInputs = parseSeed(state37.seedText);
+        state37.result = concolicExecute(state37.sourceCode, {
           initialInputs,
-          maxIterations: state36.maxIterations
+          maxIterations: state37.maxIterations
         });
       } catch (err) {
-        state36.error = err.message || String(err);
+        state37.error = err.message || String(err);
       }
       try {
-        state36.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state36.sourceCode,
+        state37.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state37.sourceCode,
           language: "javascript",
           title: "Concolic Execution CFG"
         });
       } catch (err) {
-        state36.cfgError = err.message || String(err);
+        state37.cfgError = err.message || String(err);
       }
-      if ((_b = (_a = state36.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.length) {
-        const stillExists = state36.result.iterations.some((it) => it.id === state36.selectedIterId);
+      if ((_b = (_a = state37.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.length) {
+        const stillExists = state37.result.iterations.some((it) => it.id === state37.selectedIterId);
         if (!stillExists) {
-          state36.selectedIterId = state36.result.iterations[0].id;
+          state37.selectedIterId = state37.result.iterations[0].id;
         }
       } else {
-        state36.selectedIterId = null;
+        state37.selectedIterId = null;
       }
-      persist3(state36);
+      persist3(state37);
     }
-    function render36() {
+    function render37() {
       recompute();
       const exampleButtons = concolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="concolic-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+        class="concolic-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-concolic-example="${ex.id}"
         data-testid="concolic-example-${ex.id}"
         title="${escapeHtml7(pickField(ex, "description") || "")}">
         ${escapeHtml7(pickField(ex, "name") || ex.name)}
       </button>
     `).join("");
-      const body = state36.error ? `<div class="concolic-error" data-testid="concolic-error">${escapeHtml7(state36.error)}</div>` : renderIterations(state36.result);
-      const summary = state36.result ? `${t("concolic.summary.iterations")}<strong data-testid="concolic-iter-count">${state36.result.iterations.length}</strong>
+      const body = state37.error ? `<div class="concolic-error" data-testid="concolic-error">${escapeHtml7(state37.error)}</div>` : renderIterations(state37.result);
+      const summary = state37.result ? `${t("concolic.summary.iterations")}<strong data-testid="concolic-iter-count">${state37.result.iterations.length}</strong>
          <span class="concolic-divider">\xB7</span>
-         ${t("concolic.summary.uniquePaths")}<strong data-testid="concolic-path-count">${state36.result.uniquePathCount}</strong>
+         ${t("concolic.summary.uniquePaths")}<strong data-testid="concolic-path-count">${state37.result.uniquePathCount}</strong>
          <span class="concolic-divider">\xB7</span>
-         ${t("concolic.summary.uniqueInputs")}<strong>${state36.result.uniqueInputCount}</strong>
-         ${state36.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
-      root37.innerHTML = `
+         ${t("concolic.summary.uniqueInputs")}<strong>${state37.result.uniqueInputCount}</strong>
+         ${state37.result.truncated ? `<span class="concolic-divider">\xB7</span><span class="concolic-truncated">${t("concolic.summary.truncated")}</span>` : ""}` : "";
+      root38.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="concolic-mobile-nav">
         <a href="#concolic-input-panel">${t("explorer.panel.input")}</a>
         <a href="#concolic-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -16929,14 +17011,14 @@ INVARSPEC !w | (i & (l | h))`
           <div class="concolic-controls">
             <label class="concolic-control">
               <span>${t("concolic.seed")}</span>
-              <input type="text" value="${escapeHtml7(state36.seedText)}"
+              <input type="text" value="${escapeHtml7(state37.seedText)}"
                 data-testid="concolic-seed"
                 placeholder="a=1, b=1, c=1" />
             </label>
             <label class="concolic-control">
               <span>${t("concolic.maxIterations")}</span>
               <input type="number" min="1" max="64" step="1"
-                value="${state36.maxIterations}"
+                value="${state37.maxIterations}"
                 data-testid="concolic-max-iter" />
             </label>
           </div>
@@ -16948,7 +17030,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="concolic-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml7(state36.sourceCode)}</textarea>
+            rows="14">${escapeHtml7(state37.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -16974,24 +17056,24 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="concolic-hint">${t("concolic.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
     function renderCfgPane() {
       var _a, _b;
-      if (state36.cfgError) {
+      if (state37.cfgError) {
         return `<div class="concolic-cfg" data-testid="concolic-cfg">
-        <p class="concolic-cfg-error">${escapeHtml7(state36.cfgError)}</p>
+        <p class="concolic-cfg-error">${escapeHtml7(state37.cfgError)}</p>
       </div>`;
       }
-      if (!state36.cfg) return "";
-      const selected = (_b = (_a = state36.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.find((it) => it.id === state36.selectedIterId);
-      const mapping = selected ? mapBranchesToCfg(state36.cfg, selected.branches) : { nodes: [], edges: [] };
-      const svg = renderCfgSvg(state36.cfg, mapping, {
+      if (!state37.cfg) return "";
+      const selected = (_b = (_a = state37.result) == null ? void 0 : _a.iterations) == null ? void 0 : _b.find((it) => it.id === state37.selectedIterId);
+      const mapping = selected ? mapBranchesToCfg(state37.cfg, selected.branches) : { nodes: [], edges: [] };
+      const svg = renderCfgSvg(state37.cfg, mapping, {
         idPrefix: "concolic-cfg",
         ariaLabel: "Concolic execution CFG",
-        zoom: state36.cfgZoom
+        zoom: state37.cfgZoom
       });
-      const zoomPct = Math.round(state36.cfgZoom * 100);
+      const zoomPct = Math.round(state37.cfgZoom * 100);
       return `
       <div class="concolic-cfg" data-testid="concolic-cfg">
         <div class="concolic-cfg-header">
@@ -17038,7 +17120,7 @@ INVARSPEC !w | (i & (l | h))`
             `}
           </dl>`;
         return `
-        <li class="concolic-iter${state36.selectedIterId === it.id ? " selected" : ""}"
+        <li class="concolic-iter${state37.selectedIterId === it.id ? " selected" : ""}"
           data-testid="concolic-${it.id}"
           data-concolic-iter="${it.id}"
           tabindex="0"
@@ -17067,24 +17149,24 @@ INVARSPEC !w | (i & (l | h))`
       if (concrete == null) return expr;
       return `${expr}  \u2192  ${concrete}`;
     }
-    function bindEvents36() {
-      root37.querySelectorAll("[data-concolic-example]").forEach((btn) => {
+    function bindEvents37() {
+      root38.querySelectorAll("[data-concolic-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.concolicExample;
           const ex = concolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state36.exampleId = ex.id;
-          state36.sourceCode = ex.sourceCode;
-          state36.seedText = ex.seed || "";
-          state36.selectedIterId = null;
+          state37.exampleId = ex.id;
+          state37.sourceCode = ex.sourceCode;
+          state37.seedText = ex.seed || "";
+          state37.selectedIterId = null;
           concolicQuiz.active = false;
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-concolic-iter]").forEach((el) => {
+      root38.querySelectorAll("[data-concolic-iter]").forEach((el) => {
         const select = () => {
-          state36.selectedIterId = el.dataset.concolicIter;
-          render36();
+          state37.selectedIterId = el.dataset.concolicIter;
+          render37();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -17094,83 +17176,83 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root37.querySelector('[data-testid="concolic-source"]');
+      const editor = root38.querySelector('[data-testid="concolic-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state36.sourceCode = editor.value;
+          state37.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => renderPreservingFocus("concolic-source"), 220);
         });
       }
-      const seed = root37.querySelector('[data-testid="concolic-seed"]');
+      const seed = root38.querySelector('[data-testid="concolic-seed"]');
       if (seed) {
         let timer = null;
         seed.addEventListener("input", () => {
-          state36.seedText = seed.value;
+          state37.seedText = seed.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => renderPreservingFocus("concolic-seed"), 220);
         });
       }
-      const iter = root37.querySelector('[data-testid="concolic-max-iter"]');
+      const iter = root38.querySelector('[data-testid="concolic-max-iter"]');
       if (iter) {
         iter.addEventListener("change", () => {
           const n = Number(iter.value);
           if (Number.isFinite(n) && n >= 1 && n <= 128) {
-            state36.maxIterations = n;
-            render36();
+            state37.maxIterations = n;
+            render37();
           }
         });
       }
-      root37.querySelectorAll("[data-concolic-zoom]").forEach((btn) => {
+      root38.querySelectorAll("[data-concolic-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.concolicZoom;
-          if (action === "in") state36.cfgZoom = Math.min(4, +(state36.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(state36.cfgZoom - 0.25).toFixed(2));
-          else state36.cfgZoom = 1;
-          render36();
+          if (action === "in") state37.cfgZoom = Math.min(4, +(state37.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(state37.cfgZoom - 0.25).toFixed(2));
+          else state37.cfgZoom = 1;
+          render37();
         });
       });
-      const cqStart = root37.querySelector('[data-testid="concolic-quiz-start"]');
+      const cqStart = root38.querySelector('[data-testid="concolic-quiz-start"]');
       if (cqStart) {
         cqStart.addEventListener("click", () => {
           concolicQuiz.active = true;
           concolicQuiz.phase = "question";
           concolicQuiz.answer = "";
-          render36();
+          render37();
         });
       }
-      const cqClose = root37.querySelector('[data-testid="concolic-quiz-close"]');
+      const cqClose = root38.querySelector('[data-testid="concolic-quiz-close"]');
       if (cqClose) {
         cqClose.addEventListener("click", () => {
           concolicQuiz.active = false;
-          render36();
+          render37();
         });
       }
-      const cqCheck = root37.querySelector('[data-testid="concolic-quiz-check"]');
+      const cqCheck = root38.querySelector('[data-testid="concolic-quiz-check"]');
       if (cqCheck) {
         cqCheck.addEventListener("click", () => {
-          const inp = root37.querySelector('[data-testid="concolic-quiz-input"]');
+          const inp = root38.querySelector('[data-testid="concolic-quiz-input"]');
           concolicQuiz.answer = inp ? inp.value : "";
           concolicQuiz.phase = "graded";
-          render36();
+          render37();
         });
       }
-      const cqReset = root37.querySelector('[data-testid="concolic-quiz-reset"]');
+      const cqReset = root38.querySelector('[data-testid="concolic-quiz-reset"]');
       if (cqReset) {
         cqReset.addEventListener("click", () => {
           concolicQuiz.phase = "question";
           concolicQuiz.answer = "";
-          render36();
+          render37();
         });
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root37.querySelector(`[data-testid="${testid}"]`);
+      const previously = root38.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render36();
-      const next = root37.querySelector(`[data-testid="${testid}"]`);
+      render37();
+      const next = root38.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -17178,8 +17260,8 @@ INVARSPEC !w | (i & (l | h))`
         }
       }
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/fuzzTesting.js
@@ -17381,28 +17463,28 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist4(state36) {
+  function persist4(state37) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(
         STORAGE_KEY7,
         JSON.stringify({
-          sourceCode: state36.sourceCode,
-          exampleId: state36.exampleId,
-          testCount: state36.testCount,
-          cfgZoom: state36.cfgZoom
+          sourceCode: state37.sourceCode,
+          exampleId: state37.exampleId,
+          testCount: state37.testCount,
+          cfgZoom: state37.cfgZoom
         })
       );
     } catch {
     }
   }
   function createFuzzTestingExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "fuzz-explorer";
-    root37.dataset.testid = "fuzz-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "fuzz-explorer";
+    root38.dataset.testid = "fuzz-explorer";
     const saved = loadSaved4();
     const defaultExample = fuzzTestingExamples[0];
-    const state36 = {
+    const state37 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       testCount: typeof (saved == null ? void 0 : saved.testCount) === "number" ? saved.testCount : 50,
@@ -17443,7 +17525,7 @@ INVARSPEC !w | (i & (l | h))`
     }
     function renderFuzzQuizPanel() {
       if (!fuzzQuiz.active) return "";
-      const nodeCov = state36.totalNodes > 0 ? Math.round(state36.coveredNodes.length / state36.totalNodes * 100) : 0;
+      const nodeCov = state37.totalNodes > 0 ? Math.round(state37.coveredNodes.length / state37.totalNodes * 100) : 0;
       if (fuzzQuiz.phase === "graded") {
         const userAns = parseInt(fuzzQuiz.answer, 10);
         const ok = userAns === nodeCov;
@@ -17483,33 +17565,33 @@ INVARSPEC !w | (i & (l | h))`
     }
     function recompute() {
       var _a;
-      state36.result = null;
-      state36.cfg = null;
-      state36.cfgError = null;
-      state36.error = null;
-      state36.coveredNodes = [];
-      state36.coveredEdges = [];
-      state36.totalNodes = 0;
-      state36.totalEdges = 0;
+      state37.result = null;
+      state37.cfg = null;
+      state37.cfgError = null;
+      state37.error = null;
+      state37.coveredNodes = [];
+      state37.coveredEdges = [];
+      state37.totalNodes = 0;
+      state37.totalEdges = 0;
       try {
-        state36.result = fuzzTest(state36.sourceCode, state36.testCount);
+        state37.result = fuzzTest(state37.sourceCode, state37.testCount);
       } catch (err) {
-        state36.error = err instanceof Error ? err.message : String(err);
+        state37.error = err instanceof Error ? err.message : String(err);
       }
       try {
-        state36.cfg = generateControlFlowGraphFromProgram({
-          sourceCode: state36.sourceCode,
+        state37.cfg = generateControlFlowGraphFromProgram({
+          sourceCode: state37.sourceCode,
           language: "javascript",
           title: "Fuzz Testing CFG"
         });
       } catch (err) {
-        state36.cfgError = err instanceof Error ? err.message : String(err);
+        state37.cfgError = err instanceof Error ? err.message : String(err);
       }
-      const cfg = state36.cfg;
-      const result = state36.result;
+      const cfg = state37.cfg;
+      const result = state37.result;
       if (cfg && result) {
-        state36.totalNodes = cfg.nodes.length;
-        state36.totalEdges = cfg.edges.length;
+        state37.totalNodes = cfg.nodes.length;
+        state37.totalEdges = cfg.edges.length;
         const allNodes = /* @__PURE__ */ new Set();
         const allEdges = /* @__PURE__ */ new Set();
         for (const tc of result.testCases) {
@@ -17517,23 +17599,23 @@ INVARSPEC !w | (i & (l | h))`
           for (const n of mapping.nodes) allNodes.add(n);
           for (const e of mapping.edges) allEdges.add(e);
         }
-        state36.coveredNodes = [...allNodes];
-        state36.coveredEdges = [...allEdges];
+        state37.coveredNodes = [...allNodes];
+        state37.coveredEdges = [...allEdges];
       }
       if ((_a = result == null ? void 0 : result.testCases) == null ? void 0 : _a.length) {
-        const stillExists = result.testCases.some((tc) => tc.id === state36.selectedCaseId);
-        if (!stillExists) state36.selectedCaseId = null;
+        const stillExists = result.testCases.some((tc) => tc.id === state37.selectedCaseId);
+        if (!stillExists) state37.selectedCaseId = null;
       } else {
-        state36.selectedCaseId = null;
+        state37.selectedCaseId = null;
       }
-      persist4(state36);
+      persist4(state37);
     }
-    function render36() {
+    function render37() {
       recompute();
       const exampleButtons = fuzzTestingExamples.map(
         (ex) => `
       <button type="button"
-        class="fuzz-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+        class="fuzz-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-fuzz-example="${ex.id}"
         data-testid="fuzz-example-${ex.id}"
         title="${escapeHtml8(pickField(ex, "description"))}">
@@ -17541,12 +17623,12 @@ INVARSPEC !w | (i & (l | h))`
       </button>
     `
       ).join("");
-      const result = state36.result;
-      const error = state36.error;
+      const result = state37.result;
+      const error = state37.error;
       const crashCount = (result == null ? void 0 : result.crashes) || 0;
-      const nodeCov = state36.totalNodes > 0 ? Math.round(state36.coveredNodes.length / state36.totalNodes * 100) : 0;
-      const edgeCov = state36.totalEdges > 0 ? Math.round(state36.coveredEdges.length / state36.totalEdges * 100) : 0;
-      const coverageMarkup = result && state36.cfg ? `<span class="fuzz-divider">\xB7</span>
+      const nodeCov = state37.totalNodes > 0 ? Math.round(state37.coveredNodes.length / state37.totalNodes * 100) : 0;
+      const edgeCov = state37.totalEdges > 0 ? Math.round(state37.coveredEdges.length / state37.totalEdges * 100) : 0;
+      const coverageMarkup = result && state37.cfg ? `<span class="fuzz-divider">\xB7</span>
          <span class="fuzz-coverage-badge" data-testid="fuzz-node-cov" title="Node coverage">N ${nodeCov}%</span>
          <span class="fuzz-coverage-badge" data-testid="fuzz-edge-cov" title="Edge coverage">E ${edgeCov}%</span>` : "";
       const summary = result ? `${t("fuzz.summary.tests")}<strong data-testid="fuzz-test-count">${result.totalTests}</strong>
@@ -17558,7 +17640,7 @@ INVARSPEC !w | (i & (l | h))`
          ${result.truncated ? `<span class="fuzz-divider">\xB7</span><span class="fuzz-truncated">${t("fuzz.summary.truncated")}</span>` : ""}` : "";
       const testCasesMarkup = error ? `<div class="fuzz-error" data-testid="fuzz-error">${escapeHtml8(error)}</div>` : renderTestCases3(result);
       const FUZZ_THRESHOLD = 80;
-      const fuzzMetricEncoded = state36.result ? encodeResult({
+      const fuzzMetricEncoded = state37.result ? encodeResult({
         v: 1,
         explorer: "fuzz",
         explorerLabel: t("section.fuzz"),
@@ -17569,7 +17651,7 @@ INVARSPEC !w | (i & (l | h))`
         total: 1,
         items: [{ q: t("lab.metric.fuzz.label", { pct: nodeCov }), a: `${nodeCov}%`, ok: nodeCov >= FUZZ_THRESHOLD }]
       }) : null;
-      root37.innerHTML = `
+      root38.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="fuzz-mobile-nav">
         <a href="#fuzz-input-panel">${t("explorer.panel.input")}</a>
         <a href="#fuzz-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -17586,7 +17668,7 @@ INVARSPEC !w | (i & (l | h))`
             <label class="fuzz-control">
               <span>${t("fuzz.testCount")}</span>
               <input type="number" min="10" max="500" step="10"
-                value="${state36.testCount}"
+                value="${state37.testCount}"
                 data-testid="fuzz-test-count-input" />
             </label>
             <button type="button"
@@ -17604,7 +17686,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="fuzz-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml8(state36.sourceCode)}</textarea>
+            rows="14">${escapeHtml8(state37.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -17622,8 +17704,8 @@ INVARSPEC !w | (i & (l | h))`
           </header>
           <p class="fuzz-summary" data-testid="fuzz-summary">
             ${summary}
-            ${!fuzzQuiz.active && state36.result ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-start" style="margin-left:0.5rem">${t("quiz.start")}</button>` : ""}
-            ${state36.result && !fuzzLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-lab-reflect-start" style="margin-left:0.5rem">${t("lab.reflect.start")}</button>` : ""}
+            ${!fuzzQuiz.active && state37.result ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-quiz-start" style="margin-left:0.5rem">${t("quiz.start")}</button>` : ""}
+            ${state37.result && !fuzzLabReflect.active ? `<button type="button" class="quiz-start-btn" data-testid="fuzz-lab-reflect-start" style="margin-left:0.5rem">${t("lab.reflect.start")}</button>` : ""}
             ${fuzzMetricEncoded ? `<button type="button" class="quiz-share-btn" data-share-payload="${fuzzMetricEncoded}" data-testid="fuzz-lab-metric" style="margin-left:0.5rem">\u{1F4CA} ${t("lab.metric.record")}</button>` : ""}
           </p>
           ${renderFuzzQuizPanel()}
@@ -17634,20 +17716,20 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="fuzz-hint">${t("fuzz.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
     function renderCfgPane() {
-      if (state36.cfgError) {
+      if (state37.cfgError) {
         return `<div class="fuzz-cfg" data-testid="fuzz-cfg">
-        <p class="fuzz-cfg-error">${escapeHtml8(state36.cfgError)}</p>
+        <p class="fuzz-cfg-error">${escapeHtml8(state37.cfgError)}</p>
       </div>`;
       }
-      if (!state36.cfg) {
+      if (!state37.cfg) {
         return `<div class="fuzz-cfg" data-testid="fuzz-cfg"></div>`;
       }
-      const cfg = state36.cfg;
-      const result = state36.result;
-      const selectedCase = state36.selectedCaseId ? result == null ? void 0 : result.testCases.find((tc) => tc.id === state36.selectedCaseId) : null;
+      const cfg = state37.cfg;
+      const result = state37.result;
+      const selectedCase = state37.selectedCaseId ? result == null ? void 0 : result.testCases.find((tc) => tc.id === state37.selectedCaseId) : null;
       let highlight;
       let cfgSubtitle;
       if (selectedCase) {
@@ -17656,19 +17738,19 @@ INVARSPEC !w | (i & (l | h))`
         cfgSubtitle = `<span class="fuzz-cfg-selected" data-testid="fuzz-cfg-selected">${escapeHtml8(selectedCase.id)}</span>`;
       } else {
         highlight = {
-          nodes: state36.coveredNodes,
-          edges: state36.coveredEdges
+          nodes: state37.coveredNodes,
+          edges: state37.coveredEdges
         };
-        const nodeCov = cfg.nodes.length > 0 ? Math.round(state36.coveredNodes.length / cfg.nodes.length * 100) : 0;
-        const edgeCov = cfg.edges.length > 0 ? Math.round(state36.coveredEdges.length / cfg.edges.length * 100) : 0;
+        const nodeCov = cfg.nodes.length > 0 ? Math.round(state37.coveredNodes.length / cfg.nodes.length * 100) : 0;
+        const edgeCov = cfg.edges.length > 0 ? Math.round(state37.coveredEdges.length / cfg.edges.length * 100) : 0;
         cfgSubtitle = result ? `<span class="fuzz-cfg-metric">N ${nodeCov}%  E ${edgeCov}%</span>` : "";
       }
       const svg = renderCfgSvg(cfg, highlight, {
         idPrefix: "fuzz-cfg",
         ariaLabel: "Fuzz testing CFG",
-        zoom: state36.cfgZoom
+        zoom: state37.cfgZoom
       });
-      const zoomPct = Math.round(state36.cfgZoom * 100);
+      const zoomPct = Math.round(state37.cfgZoom * 100);
       return `
       <div class="fuzz-cfg" data-testid="fuzz-cfg">
         <div class="fuzz-cfg-header">
@@ -17690,7 +17772,7 @@ INVARSPEC !w | (i & (l | h))`
       }
       const items = result.testCases.slice(0, 50).map((tc) => {
         const statusClass = tc.crashed ? "crash" : "pass";
-        const isSelected = state36.selectedCaseId === tc.id;
+        const isSelected = state37.selectedCaseId === tc.id;
         const statusLabel = tc.crashed ? t("fuzz.crash") : t("fuzz.pass");
         const mutBadge = tc.mutated ? `<span class="fuzz-case-mut" title="${t("fuzz.mutated.title")}">${t("fuzz.mutated")}</span>` : "";
         return `
@@ -17718,24 +17800,24 @@ INVARSPEC !w | (i & (l | h))`
       }).join("");
       return `<ol class="fuzz-cases" data-testid="fuzz-cases">${items}</ol>`;
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a, _b, _c, _d;
-      root37.querySelectorAll("[data-fuzz-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-fuzz-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.fuzzExample;
           const ex = fuzzTestingExamples.find((x) => x.id === id);
           if (!ex) return;
-          state36.exampleId = ex.id;
-          state36.sourceCode = ex.sourceCode;
-          state36.selectedCaseId = null;
+          state37.exampleId = ex.id;
+          state37.sourceCode = ex.sourceCode;
+          state37.selectedCaseId = null;
           fuzzQuiz.active = false;
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-fuzz-case]").forEach((el) => {
+      root38.querySelectorAll("[data-fuzz-case]").forEach((el) => {
         const selectCase = () => {
           const id = el.dataset.fuzzCase;
-          state36.selectedCaseId = state36.selectedCaseId === id ? null : id;
+          state37.selectedCaseId = state37.selectedCaseId === id ? null : id;
           renderLight();
         };
         el.addEventListener("click", selectCase);
@@ -17746,11 +17828,11 @@ INVARSPEC !w | (i & (l | h))`
           }
         });
       });
-      const editor = root37.querySelector('[data-testid="fuzz-source"]');
+      const editor = root38.querySelector('[data-testid="fuzz-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state36.sourceCode = editor.value;
+          state37.sourceCode = editor.value;
           if (timer) {
             globalThis.clearTimeout(timer);
           }
@@ -17759,88 +17841,88 @@ INVARSPEC !w | (i & (l | h))`
           }, 220);
         });
       }
-      const countInput = root37.querySelector('[data-testid="fuzz-test-count-input"]');
+      const countInput = root38.querySelector('[data-testid="fuzz-test-count-input"]');
       if (countInput) {
         countInput.addEventListener("change", () => {
           const n = Number(countInput.value);
           if (Number.isFinite(n) && n >= 10 && n <= 500) {
-            state36.testCount = n;
-            render36();
+            state37.testCount = n;
+            render37();
           }
         });
       }
-      const runBtn = root37.querySelector('[data-testid="fuzz-run-btn"]');
+      const runBtn = root38.querySelector('[data-testid="fuzz-run-btn"]');
       if (runBtn) {
         runBtn.addEventListener("click", () => {
-          render36();
+          render37();
         });
       }
-      root37.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
+      root38.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.fuzzZoom;
-          const zoom = state36.cfgZoom;
-          if (action === "in") state36.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
-          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
-          else state36.cfgZoom = 1;
-          render36();
+          const zoom = state37.cfgZoom;
+          if (action === "in") state37.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
+          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
+          else state37.cfgZoom = 1;
+          render37();
         });
       });
-      const fqStart = root37.querySelector('[data-testid="fuzz-quiz-start"]');
+      const fqStart = root38.querySelector('[data-testid="fuzz-quiz-start"]');
       if (fqStart) {
         fqStart.addEventListener("click", () => {
           fuzzQuiz.active = true;
           fuzzQuiz.phase = "question";
           fuzzQuiz.answer = "";
-          render36();
+          render37();
         });
       }
-      const fqClose = root37.querySelector('[data-testid="fuzz-quiz-close"]');
+      const fqClose = root38.querySelector('[data-testid="fuzz-quiz-close"]');
       if (fqClose) {
         fqClose.addEventListener("click", () => {
           fuzzQuiz.active = false;
-          render36();
+          render37();
         });
       }
-      const fqCheck = root37.querySelector('[data-testid="fuzz-quiz-check"]');
+      const fqCheck = root38.querySelector('[data-testid="fuzz-quiz-check"]');
       if (fqCheck) {
         fqCheck.addEventListener("click", () => {
-          const inp = root37.querySelector('[data-testid="fuzz-quiz-input"]');
+          const inp = root38.querySelector('[data-testid="fuzz-quiz-input"]');
           fuzzQuiz.answer = inp ? inp.value : "";
           fuzzQuiz.phase = "graded";
-          render36();
+          render37();
         });
       }
-      const fqReset = root37.querySelector('[data-testid="fuzz-quiz-reset"]');
+      const fqReset = root38.querySelector('[data-testid="fuzz-quiz-reset"]');
       if (fqReset) {
         fqReset.addEventListener("click", () => {
           fuzzQuiz.phase = "question";
           fuzzQuiz.answer = "";
-          render36();
+          render37();
         });
       }
-      (_a = root37.querySelector('[data-testid="fuzz-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root38.querySelector('[data-testid="fuzz-lab-reflect-start"]')) == null ? void 0 : _a.addEventListener("click", () => {
         fuzzLabReflect.active = true;
-        render36();
+        render37();
       });
-      (_b = root37.querySelector('[data-testid="fuzz-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      (_b = root38.querySelector('[data-testid="fuzz-lab-reflect-close"]')) == null ? void 0 : _b.addEventListener("click", () => {
         var _a2, _b2;
-        fuzzLabReflect.a1 = ((_a2 = root37.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || fuzzLabReflect.a1;
-        fuzzLabReflect.a2 = ((_b2 = root37.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || fuzzLabReflect.a2;
+        fuzzLabReflect.a1 = ((_a2 = root38.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || fuzzLabReflect.a1;
+        fuzzLabReflect.a2 = ((_b2 = root38.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || fuzzLabReflect.a2;
         fuzzLabReflect.active = false;
-        render36();
+        render37();
       });
-      (_c = root37.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
+      (_c = root38.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _c.addEventListener("input", (e) => {
         fuzzLabReflect.a1 = e.target.value;
       });
-      (_d = root37.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root38.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         fuzzLabReflect.a2 = e.target.value;
       });
-      const fuzzLrShare = root37.querySelector('[data-testid="fuzz-lab-reflect-share"]');
+      const fuzzLrShare = root38.querySelector('[data-testid="fuzz-lab-reflect-share"]');
       if (fuzzLrShare) {
         fuzzLrShare.addEventListener("click", async () => {
           var _a2, _b2;
-          const a1 = ((_a2 = root37.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
-          const a2 = ((_b2 = root37.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
+          const a1 = ((_a2 = root38.querySelector('[data-testid="fuzz-lab-reflect-a1"]')) == null ? void 0 : _a2.value) || "";
+          const a2 = ((_b2 = root38.querySelector('[data-testid="fuzz-lab-reflect-a2"]')) == null ? void 0 : _b2.value) || "";
           const url = buildShareUrl(encodeResult({
             v: 1,
             explorer: "fuzz",
@@ -17876,11 +17958,11 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderPreservingFocus(testid) {
-      const previously = root37.querySelector(`[data-testid="${testid}"]`);
+      const previously = root38.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render36();
-      const next = root37.querySelector(`[data-testid="${testid}"]`);
+      render37();
+      const next = root38.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number") {
@@ -17889,31 +17971,31 @@ INVARSPEC !w | (i & (l | h))`
       }
     }
     function renderLight() {
-      const cfgPaneEl = root37.querySelector(".fuzz-cfg-pane");
+      const cfgPaneEl = root38.querySelector(".fuzz-cfg-pane");
       if (cfgPaneEl) {
         cfgPaneEl.innerHTML = renderCfgPane();
       }
-      root37.querySelectorAll("[data-fuzz-case]").forEach((el) => {
+      root38.querySelectorAll("[data-fuzz-case]").forEach((el) => {
         const id = el.dataset.fuzzCase;
-        if (id === state36.selectedCaseId) {
+        if (id === state37.selectedCaseId) {
           el.classList.add("selected");
         } else {
           el.classList.remove("selected");
         }
       });
-      root37.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
+      root38.querySelectorAll("[data-fuzz-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.fuzzZoom;
-          const zoom = state36.cfgZoom;
-          if (action === "in") state36.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
-          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
-          else state36.cfgZoom = 1;
+          const zoom = state37.cfgZoom;
+          if (action === "in") state37.cfgZoom = Math.min(4, +(zoom + 0.25).toFixed(2));
+          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(zoom - 0.25).toFixed(2));
+          else state37.cfgZoom = 1;
           renderLight();
         });
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/testGeneration.js
@@ -18143,25 +18225,25 @@ INVARSPEC !w | (i & (l | h))`
       return null;
     }
   }
-  function persist5(state36) {
+  function persist5(state37) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY8, JSON.stringify({
-        exampleId: state36.exampleId,
-        sourceCode: state36.sourceCode,
-        criterion: state36.criterion,
-        cfgZoom: state36.cfgZoom
+        exampleId: state37.exampleId,
+        sourceCode: state37.sourceCode,
+        criterion: state37.criterion,
+        cfgZoom: state37.cfgZoom
       }));
     } catch {
     }
   }
   function createTestGenerationExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "testgen-explorer";
-    root37.dataset.testid = "testgen-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "testgen-explorer";
+    root38.dataset.testid = "testgen-explorer";
     const saved = loadSaved5();
     const defaultExample = symbolicExecutionExamples[0];
-    const state36 = {
+    const state37 = {
       exampleId: (saved == null ? void 0 : saved.exampleId) || defaultExample.id,
       sourceCode: (saved == null ? void 0 : saved.sourceCode) || defaultExample.sourceCode,
       criterion: (saved == null ? void 0 : saved.criterion) || DEFAULT_CRITERION,
@@ -18172,29 +18254,29 @@ INVARSPEC !w | (i & (l | h))`
     };
     function recompute() {
       var _a, _b, _c, _d;
-      state36.result = generateTestsFromCoverage({
-        sourceCode: state36.sourceCode,
-        criterion: state36.criterion
+      state37.result = generateTestsFromCoverage({
+        sourceCode: state37.sourceCode,
+        criterion: state37.criterion
       });
-      if ((_b = (_a = state36.result) == null ? void 0 : _a.requirements) == null ? void 0 : _b.length) {
-        const exists = state36.result.requirements.some((r) => r.id === state36.selectedRequirementId);
-        if (!exists) state36.selectedRequirementId = state36.result.requirements[0].id;
+      if ((_b = (_a = state37.result) == null ? void 0 : _a.requirements) == null ? void 0 : _b.length) {
+        const exists = state37.result.requirements.some((r) => r.id === state37.selectedRequirementId);
+        if (!exists) state37.selectedRequirementId = state37.result.requirements[0].id;
       } else {
-        state36.selectedRequirementId = null;
+        state37.selectedRequirementId = null;
       }
-      if ((_d = (_c = state36.result) == null ? void 0 : _c.selectedTests) == null ? void 0 : _d.length) {
-        const exists = state36.result.selectedTests.some((t2) => t2.pathId === state36.selectedTestPathId);
-        if (!exists) state36.selectedTestPathId = state36.result.selectedTests[0].pathId;
+      if ((_d = (_c = state37.result) == null ? void 0 : _c.selectedTests) == null ? void 0 : _d.length) {
+        const exists = state37.result.selectedTests.some((t2) => t2.pathId === state37.selectedTestPathId);
+        if (!exists) state37.selectedTestPathId = state37.result.selectedTests[0].pathId;
       } else {
-        state36.selectedTestPathId = null;
+        state37.selectedTestPathId = null;
       }
-      persist5(state36);
+      persist5(state37);
     }
-    function render36() {
+    function render37() {
       recompute();
       const exampleButtons = symbolicExecutionExamples.map((ex) => `
       <button type="button"
-        class="testgen-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+        class="testgen-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-testgen-example="${ex.id}"
         data-testid="testgen-example-${ex.id}"
         title="${escapeHtml9(pickField(ex, "description") || "")}">
@@ -18202,11 +18284,11 @@ INVARSPEC !w | (i & (l | h))`
       </button>
     `).join("");
       const criterionOptions = CRITERIA.map((c) => `
-      <option value="${c.id}"${state36.criterion === c.id ? " selected" : ""}>
+      <option value="${c.id}"${state37.criterion === c.id ? " selected" : ""}>
         ${escapeHtml9(t(c.labelKey))}
       </option>
     `).join("");
-      root37.innerHTML = `
+      root38.innerHTML = `
       <nav class="explorer-mobile-nav" aria-label="${t("explorer.mobileNav")}" data-testid="testgen-mobile-nav">
         <a href="#testgen-input-panel">${t("explorer.panel.input")}</a>
         <a href="#testgen-cfg-panel">${t("explorer.panel.cfg")}</a>
@@ -18233,7 +18315,7 @@ INVARSPEC !w | (i & (l | h))`
             data-testid="testgen-source"
             spellcheck="false"
             autocomplete="off"
-            rows="14">${escapeHtml9(state36.sourceCode)}</textarea>
+            rows="14">${escapeHtml9(state37.sourceCode)}</textarea>
         </div>
       </section>
 
@@ -18265,10 +18347,10 @@ INVARSPEC !w | (i & (l | h))`
 
       <p class="testgen-hint">${t("testgen.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
     function renderSummary2() {
-      const r = state36.result;
+      const r = state37.result;
       if (!r || r.error) return "";
       return `
       <p class="testgen-summary" data-testid="testgen-summary">
@@ -18282,19 +18364,19 @@ INVARSPEC !w | (i & (l | h))`
     `;
     }
     function renderError() {
-      const r = state36.result;
+      const r = state37.result;
       if (!(r == null ? void 0 : r.error)) return "";
       return `<div class="testgen-error" data-testid="testgen-error">${escapeHtml9(r.error)}</div>`;
     }
     function renderRequirements() {
-      const r = state36.result;
+      const r = state37.result;
       if (!r || r.error) return "";
       if (!r.requirementCoverage.length) {
         return `<p class="testgen-empty">${t("testgen.empty")}</p>`;
       }
       const items = r.requirementCoverage.map((rc) => {
         const cls = rc.feasible ? "feasible" : "infeasible";
-        const active = state36.selectedRequirementId === rc.requirementId ? " selected" : "";
+        const active = state37.selectedRequirementId === rc.requirementId ? " selected" : "";
         const witness = rc.feasible && rc.representativeWitness ? formatConcreteCall(r.function.name, r.function.params, rc.representativeWitness) : `<span class="testgen-no-witness">${t("testgen.requirements.noWitness")}</span>`;
         return `
         <li class="testgen-req ${cls}${active}"
@@ -18315,7 +18397,7 @@ INVARSPEC !w | (i & (l | h))`
     }
     function buildVitestFile() {
       var _a, _b;
-      const r = state36.result;
+      const r = state37.result;
       if (!r || r.error || !r.selectedTests.length) return null;
       const fn = ((_a = r.function) == null ? void 0 : _a.name) || "fn";
       const params = ((_b = r.function) == null ? void 0 : _b.params) || [];
@@ -18335,14 +18417,14 @@ INVARSPEC !w | (i & (l | h))`
 import { ${fn} } from './${fn}.js';
 
 // Generated by stvisual TestGenerationExplorer
-// criterion: ${state36.criterion}
+// criterion: ${state37.criterion}
 describe('${fn} \u2013 generated tests', () => {
 ${cases}
 });
 `;
     }
     function renderSelectedTests() {
-      const r = state36.result;
+      const r = state37.result;
       if (!r || r.error) return "";
       if (!r.selectedTests.length) {
         return `<p class="testgen-empty">${t("testgen.tests.empty")}</p>`;
@@ -18352,7 +18434,7 @@ ${cases}
       const items = r.selectedTests.map((tc, i) => {
         const call = formatConcreteCall(r.function.name, r.function.params, tc.witness);
         const ret = formatExpectedReturn(tc.concreteReturn);
-        const active = state36.selectedTestPathId === tc.pathId ? " selected" : "";
+        const active = state37.selectedTestPathId === tc.pathId ? " selected" : "";
         const covers = tc.coveredRequirementIds.join(", ");
         return `
         <li class="testgen-test${active}"
@@ -18372,7 +18454,7 @@ ${cases}
       return `${downloadBtn}<ol class="testgen-test-list" data-testid="testgen-test-list">${items}</ol>`;
     }
     function renderCfgPane() {
-      const r = state36.result;
+      const r = state37.result;
       if (!r) return "";
       if (r.error && !r.cfg) {
         return `<div class="testgen-cfg" data-testid="testgen-cfg">
@@ -18382,13 +18464,13 @@ ${cases}
       if (!r.cfg) return "";
       let mapping = { nodes: [], edges: [] };
       let selectedLabel = t("testgen.cfg.none");
-      const selectedTest = r.selectedTests.find((tc) => tc.pathId === state36.selectedTestPathId);
+      const selectedTest = r.selectedTests.find((tc) => tc.pathId === state37.selectedTestPathId);
       if (selectedTest) {
         const wp = r.witnessedPaths.find((w) => w.id === selectedTest.pathId);
         if (wp) mapping = { nodes: wp.cfgNodes, edges: wp.cfgEdges };
         selectedLabel = `T${r.selectedTests.indexOf(selectedTest) + 1} (${selectedTest.pathId})`;
-      } else if (state36.selectedRequirementId) {
-        const req = r.requirements.find((q) => q.id === state36.selectedRequirementId);
+      } else if (state37.selectedRequirementId) {
+        const req = r.requirements.find((q) => q.id === state37.selectedRequirementId);
         if (req) {
           mapping = {
             nodes: req.nodes || (req.path ? [...new Set(req.path)] : []),
@@ -18400,9 +18482,9 @@ ${cases}
       const svg = renderCfgSvg(r.cfg, mapping, {
         idPrefix: "testgen-cfg",
         ariaLabel: "Test generation CFG",
-        zoom: state36.cfgZoom
+        zoom: state37.cfgZoom
       });
-      const zoomPct = Math.round(state36.cfgZoom * 100);
+      const zoomPct = Math.round(state37.cfgZoom * 100);
       return `
       <div class="testgen-cfg" data-testid="testgen-cfg">
         <div class="testgen-cfg-header">
@@ -18418,33 +18500,33 @@ ${cases}
       </div>
     `;
     }
-    function bindEvents36() {
-      root37.querySelectorAll("[data-testgen-example]").forEach((btn) => {
+    function bindEvents37() {
+      root38.querySelectorAll("[data-testgen-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.testgenExample;
           const ex = symbolicExecutionExamples.find((x) => x.id === id);
           if (!ex) return;
-          state36.exampleId = ex.id;
-          state36.sourceCode = ex.sourceCode;
-          state36.selectedRequirementId = null;
-          state36.selectedTestPathId = null;
-          render36();
+          state37.exampleId = ex.id;
+          state37.sourceCode = ex.sourceCode;
+          state37.selectedRequirementId = null;
+          state37.selectedTestPathId = null;
+          render37();
         });
       });
-      const criterionSelect = root37.querySelector('[data-testid="testgen-criterion"]');
+      const criterionSelect = root38.querySelector('[data-testid="testgen-criterion"]');
       if (criterionSelect) {
         criterionSelect.addEventListener("change", () => {
-          state36.criterion = criterionSelect.value;
-          state36.selectedRequirementId = null;
-          state36.selectedTestPathId = null;
-          render36();
+          state37.criterion = criterionSelect.value;
+          state37.selectedRequirementId = null;
+          state37.selectedTestPathId = null;
+          render37();
         });
       }
-      root37.querySelectorAll("[data-testgen-req]").forEach((el) => {
+      root38.querySelectorAll("[data-testgen-req]").forEach((el) => {
         const select = () => {
-          state36.selectedRequirementId = el.dataset.testgenReq;
-          state36.selectedTestPathId = null;
-          render36();
+          state37.selectedRequirementId = el.dataset.testgenReq;
+          state37.selectedTestPathId = null;
+          render37();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -18454,10 +18536,10 @@ ${cases}
           }
         });
       });
-      root37.querySelectorAll("[data-testgen-test]").forEach((el) => {
+      root38.querySelectorAll("[data-testgen-test]").forEach((el) => {
         const select = () => {
-          state36.selectedTestPathId = el.dataset.testgenTest;
-          render36();
+          state37.selectedTestPathId = el.dataset.testgenTest;
+          render37();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (event) => {
@@ -18467,24 +18549,24 @@ ${cases}
           }
         });
       });
-      const editor = root37.querySelector('[data-testid="testgen-source"]');
+      const editor = root38.querySelector('[data-testid="testgen-source"]');
       if (editor) {
         let timer = null;
         editor.addEventListener("input", () => {
-          state36.sourceCode = editor.value;
+          state37.sourceCode = editor.value;
           if (timer) clearTimeout(timer);
           timer = setTimeout(() => {
             renderPreservingFocus("testgen-source");
           }, 280);
         });
       }
-      const downloadBtn = root37.querySelector('[data-testid="testgen-download-btn"]');
+      const downloadBtn = root38.querySelector('[data-testid="testgen-download-btn"]');
       if (downloadBtn) {
         downloadBtn.addEventListener("click", () => {
           var _a, _b;
           const content = buildVitestFile();
           if (!content) return;
-          const fn = ((_b = (_a = state36.result) == null ? void 0 : _a.function) == null ? void 0 : _b.name) || "generated";
+          const fn = ((_b = (_a = state37.result) == null ? void 0 : _a.function) == null ? void 0 : _b.name) || "generated";
           const blob = new Blob([content], { type: "text/javascript" });
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
@@ -18496,22 +18578,22 @@ ${cases}
           URL.revokeObjectURL(url);
         });
       }
-      root37.querySelectorAll("[data-testgen-zoom]").forEach((btn) => {
+      root38.querySelectorAll("[data-testgen-zoom]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const action = btn.dataset.testgenZoom;
-          if (action === "in") state36.cfgZoom = Math.min(4, +(state36.cfgZoom + 0.25).toFixed(2));
-          else if (action === "out") state36.cfgZoom = Math.max(0.25, +(state36.cfgZoom - 0.25).toFixed(2));
-          else state36.cfgZoom = 1;
-          render36();
+          if (action === "in") state37.cfgZoom = Math.min(4, +(state37.cfgZoom + 0.25).toFixed(2));
+          else if (action === "out") state37.cfgZoom = Math.max(0.25, +(state37.cfgZoom - 0.25).toFixed(2));
+          else state37.cfgZoom = 1;
+          render37();
         });
       });
     }
     function renderPreservingFocus(testid) {
-      const previously = root37.querySelector(`[data-testid="${testid}"]`);
+      const previously = root38.querySelector(`[data-testid="${testid}"]`);
       const start = previously == null ? void 0 : previously.selectionStart;
       const end = previously == null ? void 0 : previously.selectionEnd;
-      render36();
-      const next = root37.querySelector(`[data-testid="${testid}"]`);
+      render37();
+      const next = root38.querySelector(`[data-testid="${testid}"]`);
       if (next) {
         next.focus();
         if (typeof start === "number" && typeof end === "number" && next.setSelectionRange) {
@@ -18519,8 +18601,8 @@ ${cases}
         }
       }
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/blackboxTesting.js
@@ -18792,13 +18874,13 @@ ${cases}
       return null;
     }
   }
-  function persist6(state36) {
+  function persist6(state37) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY9, JSON.stringify({
-        exampleId: state36.exampleId,
-        params: state36.params,
-        robust: state36.robust
+        exampleId: state37.exampleId,
+        params: state37.params,
+        robust: state37.robust
       }));
     } catch {
     }
@@ -18810,24 +18892,24 @@ ${cases}
   }
   function createBoundaryValueExplorer() {
     var _a, _b, _c;
-    const root37 = document.createElement("div");
-    root37.className = "bva-explorer";
-    root37.dataset.testid = "bva-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "bva-explorer";
+    root38.dataset.testid = "bva-explorer";
     const saved = loadSaved6();
     const defaultEx = EXAMPLES[0];
-    const state36 = {
+    const state37 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       params: (_b = saved == null ? void 0 : saved.params) != null ? _b : defaultEx.params.map((p) => ({ ...p })),
       robust: (_c = saved == null ? void 0 : saved.robust) != null ? _c : false
     };
     const quiz = { active: false, paramIdx: 0, answers: ["", "", "", "", ""], phase: "question", result: null };
     function getTests() {
-      const valid = state36.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
+      const valid = state37.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
       if (!valid.length) return [];
-      return state36.robust ? generateRobustBvaTests(valid) : generateBvaTests(valid);
+      return state37.robust ? generateRobustBvaTests(valid) : generateBvaTests(valid);
     }
     function validParams() {
-      return state36.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
+      return state37.params.filter((p) => p.name && isFinite(p.min) && isFinite(p.max) && p.min < p.max);
     }
     function pickQuizParam() {
       const vp = validParams();
@@ -18846,7 +18928,7 @@ ${cases}
       const correct = expected.map((e, i) => userNums[i] === e);
       quiz.result = { expected, correct, score: correct.filter(Boolean).length };
       quiz.phase = "graded";
-      render36();
+      render37();
     }
     function renderQuizPanel() {
       var _a2;
@@ -18893,7 +18975,7 @@ ${cases}
     </div>`;
     }
     function renderParamRows() {
-      return state36.params.map((p, i) => `
+      return state37.params.map((p, i) => `
       <tr>
         <td><input class="bva-param-name" data-idx="${i}" value="${escapeHtml10(p.name)}"
             placeholder="param" aria-label="${t("bva.param.name")}" data-testid="bva-param-name-${i}"/></td>
@@ -18902,7 +18984,7 @@ ${cases}
         <td><input class="bva-param-num" type="number" data-idx="${i}" data-field="max"
             value="${p.max}" aria-label="${t("bva.param.max")}" data-testid="bva-param-max-${i}"/></td>
         <td><button class="bva-del-btn" data-del="${i}" aria-label="${t("common.remove")}"
-            data-testid="bva-del-${i}" ${state36.params.length <= 1 ? "disabled" : ""}>\xD7</button></td>
+            data-testid="bva-del-${i}" ${state37.params.length <= 1 ? "disabled" : ""}>\xD7</button></td>
       </tr>
     `).join("");
     }
@@ -18910,7 +18992,7 @@ ${cases}
       if (!tests.length) {
         return `<p class="bva-empty" data-testid="bva-empty">${t("bva.empty")}</p>`;
       }
-      const paramNames = state36.params.filter((p) => p.name).map((p) => p.name);
+      const paramNames = state37.params.filter((p) => p.name).map((p) => p.name);
       const headerCols = paramNames.map((n) => `<th>${escapeHtml10(n)}</th>`).join("");
       const rows = tests.map((tc) => {
         const valCells = paramNames.map((n) => {
@@ -18931,19 +19013,19 @@ ${cases}
       </table>
     `;
     }
-    function render36() {
+    function render37() {
       const exBtns = EXAMPLES.map((ex) => `
-      <button type="button" class="bva-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="bva-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-bva-example="${ex.id}" data-testid="bva-example-${ex.id}">${escapeHtml10(ex.name)}</button>
     `).join("");
       const tests = getTests();
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="bva-panel">
         <div class="bva-toolbar">
           <div class="bva-examples" data-testid="bva-examples">${exBtns}</div>
           <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
             <label class="bva-robust-label">
-              <input type="checkbox" data-testid="bva-robust-toggle" ${state36.robust ? "checked" : ""}/>
+              <input type="checkbox" data-testid="bva-robust-toggle" ${state37.robust ? "checked" : ""}/>
               ${t("bva.robust")}
             </label>
             <button type="button" class="quiz-start-btn" data-testid="bva-quiz-start">${t("quiz.start")}</button>
@@ -18963,7 +19045,7 @@ ${cases}
               <tbody>${renderParamRows()}</tbody>
             </table>
             <button type="button" class="bva-add-btn" data-testid="bva-add-param"
-              ${state36.params.length >= PARAM_LIMIT ? "disabled" : ""}>
+              ${state37.params.length >= PARAM_LIMIT ? "disabled" : ""}>
               + ${t("bva.param.add")}
             </button>
             <p class="bva-hint">${t("bva.hint")}</p>
@@ -18980,89 +19062,89 @@ ${cases}
         ${renderQuizPanel()}
       </div>
     `;
-      bindEvents36();
-      persist6(state36);
+      bindEvents37();
+      persist6(state37);
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a2, _b2, _c2, _d, _e, _f;
-      root37.querySelectorAll("[data-bva-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-bva-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES.find((e) => e.id === btn.dataset.bvaExample);
           if (!ex) return;
-          state36.exampleId = ex.id;
-          state36.params = ex.params.map((p) => ({ ...p }));
-          render36();
+          state37.exampleId = ex.id;
+          state37.params = ex.params.map((p) => ({ ...p }));
+          render37();
         });
       });
-      (_a2 = root37.querySelector('[data-testid="bva-robust-toggle"]')) == null ? void 0 : _a2.addEventListener("change", (e) => {
-        state36.robust = e.target.checked;
-        render36();
+      (_a2 = root38.querySelector('[data-testid="bva-robust-toggle"]')) == null ? void 0 : _a2.addEventListener("change", (e) => {
+        state37.robust = e.target.checked;
+        render37();
       });
-      root37.querySelectorAll(".bva-param-name").forEach((input) => {
+      root38.querySelectorAll(".bva-param-name").forEach((input) => {
         input.addEventListener("input", (e) => {
           const idx = Number(e.target.dataset.idx);
-          state36.params[idx].name = e.target.value;
+          state37.params[idx].name = e.target.value;
           const tests = getTests();
-          const resultsPane = root37.querySelector('[data-testid="bva-results"]');
+          const resultsPane = root38.querySelector('[data-testid="bva-results"]');
           if (resultsPane) {
             resultsPane.innerHTML = `<h3>${t("bva.results.title")}
             <span class="bva-count">${tests.length} ${t("bva.results.count")}</span>
           </h3>${renderTestTable(tests)}`;
           }
-          persist6(state36);
+          persist6(state37);
         });
       });
-      root37.querySelectorAll(".bva-param-num").forEach((input) => {
+      root38.querySelectorAll(".bva-param-num").forEach((input) => {
         input.addEventListener("change", (e) => {
           const idx = Number(e.target.dataset.idx);
           const field = e.target.dataset.field;
-          state36.params[idx][field] = Number(e.target.value);
+          state37.params[idx][field] = Number(e.target.value);
           const tests = getTests();
-          const resultsPane = root37.querySelector('[data-testid="bva-results"]');
+          const resultsPane = root38.querySelector('[data-testid="bva-results"]');
           if (resultsPane) {
             resultsPane.innerHTML = `<h3>${t("bva.results.title")}
             <span class="bva-count">${tests.length} ${t("bva.results.count")}</span>
           </h3>${renderTestTable(tests)}`;
           }
-          persist6(state36);
+          persist6(state37);
         });
       });
-      root37.querySelectorAll("[data-del]").forEach((btn) => {
+      root38.querySelectorAll("[data-del]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.del);
-          state36.params.splice(idx, 1);
-          render36();
+          state37.params.splice(idx, 1);
+          render37();
         });
       });
-      (_b2 = root37.querySelector('[data-testid="bva-add-param"]')) == null ? void 0 : _b2.addEventListener("click", () => {
-        if (state36.params.length >= PARAM_LIMIT) return;
-        state36.params.push({ name: `p${state36.params.length + 1}`, min: 0, max: 100 });
-        render36();
+      (_b2 = root38.querySelector('[data-testid="bva-add-param"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+        if (state37.params.length >= PARAM_LIMIT) return;
+        state37.params.push({ name: `p${state37.params.length + 1}`, min: 0, max: 100 });
+        render37();
       });
-      (_c2 = root37.querySelector('[data-testid="bva-quiz-start"]')) == null ? void 0 : _c2.addEventListener("click", () => {
+      (_c2 = root38.querySelector('[data-testid="bva-quiz-start"]')) == null ? void 0 : _c2.addEventListener("click", () => {
         quiz.active = true;
         pickQuizParam();
-        render36();
+        render37();
       });
-      (_d = root37.querySelector('[data-testid="bva-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root38.querySelector('[data-testid="bva-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
         quiz.active = false;
-        render36();
+        render37();
       });
-      root37.querySelectorAll("[data-qi]").forEach((input) => {
+      root38.querySelectorAll("[data-qi]").forEach((input) => {
         input.addEventListener("input", (e) => {
           quiz.answers[Number(e.target.dataset.qi)] = e.target.value;
         });
       });
-      (_e = root37.querySelector('[data-testid="bva-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root38.querySelector('[data-testid="bva-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
         gradeQuiz();
       });
-      (_f = root37.querySelector('[data-testid="bva-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root38.querySelector('[data-testid="bva-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         pickQuizParam();
-        render36();
+        render37();
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/EquivalenceClassExplorer.js
@@ -19156,25 +19238,25 @@ ${cases}
       return null;
     }
   }
-  function persist7(state36) {
+  function persist7(state37) {
     var _a;
     try {
       (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY10, JSON.stringify({
-        exampleId: state36.exampleId,
-        params: state36.params,
-        mode: state36.mode
+        exampleId: state37.exampleId,
+        params: state37.params,
+        mode: state37.mode
       }));
     } catch {
     }
   }
   function createEquivalenceClassExplorer() {
     var _a, _b, _c;
-    const root37 = document.createElement("div");
-    root37.className = "ec-explorer";
-    root37.dataset.testid = "ec-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "ec-explorer";
+    root38.dataset.testid = "ec-explorer";
     const saved = loadSaved7();
     const defaultEx = EXAMPLES2[0];
-    const state36 = {
+    const state37 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       params: (_b = saved == null ? void 0 : saved.params) != null ? _b : defaultEx.params.map((p) => ({ ...p, classes: p.classes.map((c) => ({ ...c })) })),
       mode: (_c = saved == null ? void 0 : saved.mode) != null ? _c : "wect"
@@ -19182,12 +19264,12 @@ ${cases}
     };
     const quiz = { active: false, wectAnswer: "", sectAnswer: "", phase: "question", result: null };
     function getTests() {
-      const valid = state36.params.filter((p) => p.name && p.classes.length);
+      const valid = state37.params.filter((p) => p.name && p.classes.length);
       if (!valid.length) return [];
-      return state36.mode === "sect" ? generateSectTests(valid) : generateWectTests(valid);
+      return state37.mode === "sect" ? generateSectTests(valid) : generateWectTests(valid);
     }
     function gradeEcQuiz() {
-      const valid = state36.params.filter((p) => p.name && p.classes.length);
+      const valid = state37.params.filter((p) => p.name && p.classes.length);
       const wectCount = generateWectTests(valid).length;
       const sectCount = generateSectTests(valid).length;
       const wectUser = Number(quiz.wectAnswer);
@@ -19199,7 +19281,7 @@ ${cases}
         sectCorrect: sectUser === sectCount
       };
       quiz.phase = "graded";
-      render36();
+      render37();
     }
     function renderQuizPanel() {
       if (!quiz.active) return "";
@@ -19269,13 +19351,13 @@ ${cases}
     `;
     }
     function renderParams() {
-      return state36.params.map((p, i) => `
+      return state37.params.map((p, i) => `
       <div class="ec-param-block" data-testid="ec-param-${i}">
         <div class="ec-param-header">
           <input class="ec-param-name-input" data-pidx="${i}" value="${escapeHtml11(p.name)}"
               placeholder="${t("ec.param.name")}" data-testid="ec-param-name-${i}"/>
           <button class="ec-del-param-btn" data-del-param="${i}" aria-label="${t("common.remove")}"
-              data-testid="ec-del-param-${i}" ${state36.params.length <= 1 ? "disabled" : ""}>\xD7</button>
+              data-testid="ec-del-param-${i}" ${state37.params.length <= 1 ? "disabled" : ""}>\xD7</button>
         </div>
         ${renderClassTable(i, p.classes)}
       </div>
@@ -19285,7 +19367,7 @@ ${cases}
       if (!tests.length) {
         return `<p class="ec-empty" data-testid="ec-empty">${t("ec.empty")}</p>`;
       }
-      const paramNames = state36.params.map((p) => p.name);
+      const paramNames = state37.params.map((p) => p.name);
       const headerCols = paramNames.map((n) => `<th>${escapeHtml11(n)}</th>`).join("");
       const rows = tests.map((tc) => {
         const valCells = paramNames.map((n) => {
@@ -19309,21 +19391,21 @@ ${cases}
       </table>
     `;
     }
-    function render36() {
+    function render37() {
       const tests = getTests();
       const exBtns = EXAMPLES2.map((ex) => `
-      <button type="button" class="ec-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="ec-example-btn${state37.exampleId === ex.id ? " active" : ""}"
           data-ec-example="${ex.id}" data-testid="ec-example-${ex.id}">${escapeHtml11(ex.name)}</button>
     `).join("");
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="ec-panel">
         <div class="ec-toolbar">
           <div class="ec-examples" data-testid="ec-examples">${exBtns}</div>
           <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
             <div class="ec-mode-toggle" role="group">
-              <button type="button" class="ec-mode-btn${state36.mode === "wect" ? " active" : ""}"
+              <button type="button" class="ec-mode-btn${state37.mode === "wect" ? " active" : ""}"
                   data-mode="wect" data-testid="ec-mode-wect">WECT</button>
-              <button type="button" class="ec-mode-btn${state36.mode === "sect" ? " active" : ""}"
+              <button type="button" class="ec-mode-btn${state37.mode === "sect" ? " active" : ""}"
                   data-mode="sect" data-testid="ec-mode-sect">SECT</button>
             </div>
             <button type="button" class="quiz-start-btn" data-testid="ec-quiz-start">${t("quiz.start")}</button>
@@ -19335,7 +19417,7 @@ ${cases}
             <h3>${t("ec.params.title")}</h3>
             <div class="ec-params-list">${renderParams()}</div>
             <button class="ec-add-param-btn" data-testid="ec-add-param"
-                ${state36.params.length >= 5 ? "disabled" : ""}>
+                ${state37.params.length >= 5 ? "disabled" : ""}>
               + ${t("ec.param.add")}
             </button>
             <p class="ec-hint">${t("ec.hint")}</p>
@@ -19352,132 +19434,132 @@ ${cases}
         ${renderQuizPanel()}
       </div>
     `;
-      bindEvents36();
-      persist7(state36);
+      bindEvents37();
+      persist7(state37);
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a2, _b2, _c2, _d, _e, _f, _g;
-      root37.querySelectorAll("[data-ec-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-ec-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES2.find((e) => e.id === btn.dataset.ecExample);
           if (!ex) return;
-          state36.exampleId = ex.id;
-          state36.params = ex.params.map((p) => ({
+          state37.exampleId = ex.id;
+          state37.params = ex.params.map((p) => ({
             ...p,
             classes: p.classes.map((c) => ({ ...c }))
           }));
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-mode]").forEach((btn) => {
+      root38.querySelectorAll("[data-mode]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.mode = btn.dataset.mode;
-          render36();
+          state37.mode = btn.dataset.mode;
+          render37();
         });
       });
-      root37.querySelectorAll(".ec-param-name-input").forEach((input) => {
+      root38.querySelectorAll(".ec-param-name-input").forEach((input) => {
         input.addEventListener("input", (e) => {
-          state36.params[Number(e.target.dataset.pidx)].name = e.target.value;
+          state37.params[Number(e.target.dataset.pidx)].name = e.target.value;
           refreshResults();
-          persist7(state36);
+          persist7(state37);
         });
       });
-      root37.querySelectorAll(".ec-class-name").forEach((input) => {
+      root38.querySelectorAll(".ec-class-name").forEach((input) => {
         input.addEventListener("input", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
-          state36.params[pi].classes[ci].name = e.target.value;
+          state37.params[pi].classes[ci].name = e.target.value;
           refreshResults();
-          persist7(state36);
+          persist7(state37);
         });
       });
-      root37.querySelectorAll(".ec-class-rep").forEach((input) => {
+      root38.querySelectorAll(".ec-class-rep").forEach((input) => {
         input.addEventListener("change", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
           const v = e.target.value;
-          state36.params[pi].classes[ci].representative = isNaN(Number(v)) ? v : Number(v);
+          state37.params[pi].classes[ci].representative = isNaN(Number(v)) ? v : Number(v);
           refreshResults();
-          persist7(state36);
+          persist7(state37);
         });
       });
-      root37.querySelectorAll(".ec-class-kind").forEach((sel) => {
+      root38.querySelectorAll(".ec-class-kind").forEach((sel) => {
         sel.addEventListener("change", (e) => {
           const pi = Number(e.target.dataset.pidx), ci = Number(e.target.dataset.cidx);
-          state36.params[pi].classes[ci].kind = e.target.value;
+          state37.params[pi].classes[ci].kind = e.target.value;
           refreshResults();
-          persist7(state36);
+          persist7(state37);
         });
       });
-      root37.querySelectorAll("[data-del-class]").forEach((btn) => {
+      root38.querySelectorAll("[data-del-class]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const pi = Number(btn.dataset.pidx), ci = Number(btn.dataset.cidx);
-          state36.params[pi].classes.splice(ci, 1);
-          render36();
+          state37.params[pi].classes.splice(ci, 1);
+          render37();
         });
       });
-      root37.querySelectorAll("[data-add-class]").forEach((btn) => {
+      root38.querySelectorAll("[data-add-class]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const pi = Number(btn.dataset.pidx);
-          state36.params[pi].classes.push({ name: "new class", kind: "valid", representative: 0 });
-          render36();
+          state37.params[pi].classes.push({ name: "new class", kind: "valid", representative: 0 });
+          render37();
         });
       });
-      root37.querySelectorAll("[data-del-param]").forEach((btn) => {
+      root38.querySelectorAll("[data-del-param]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.params.splice(Number(btn.dataset.delParam), 1);
-          render36();
+          state37.params.splice(Number(btn.dataset.delParam), 1);
+          render37();
         });
       });
-      (_a2 = root37.querySelector('[data-testid="ec-add-param"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state36.params.length >= 5) return;
-        state36.params.push({
-          name: `param${state36.params.length + 1}`,
+      (_a2 = root38.querySelector('[data-testid="ec-add-param"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state37.params.length >= 5) return;
+        state37.params.push({
+          name: `param${state37.params.length + 1}`,
           classes: [
             { name: "valid", kind: "valid", representative: 1 },
             { name: "invalid", kind: "invalid", representative: -1 }
           ]
         });
-        render36();
+        render37();
       });
-      (_b2 = root37.querySelector('[data-testid="ec-quiz-start"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+      (_b2 = root38.querySelector('[data-testid="ec-quiz-start"]')) == null ? void 0 : _b2.addEventListener("click", () => {
         quiz.active = true;
         quiz.wectAnswer = "";
         quiz.sectAnswer = "";
         quiz.phase = "question";
         quiz.result = null;
-        render36();
+        render37();
       });
-      (_c2 = root37.querySelector('[data-testid="ec-quiz-close"]')) == null ? void 0 : _c2.addEventListener("click", () => {
+      (_c2 = root38.querySelector('[data-testid="ec-quiz-close"]')) == null ? void 0 : _c2.addEventListener("click", () => {
         quiz.active = false;
-        render36();
+        render37();
       });
-      (_d = root37.querySelector('[data-testid="ec-quiz-wect"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
+      (_d = root38.querySelector('[data-testid="ec-quiz-wect"]')) == null ? void 0 : _d.addEventListener("input", (e) => {
         quiz.wectAnswer = e.target.value;
       });
-      (_e = root37.querySelector('[data-testid="ec-quiz-sect"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
+      (_e = root38.querySelector('[data-testid="ec-quiz-sect"]')) == null ? void 0 : _e.addEventListener("input", (e) => {
         quiz.sectAnswer = e.target.value;
       });
-      (_f = root37.querySelector('[data-testid="ec-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root38.querySelector('[data-testid="ec-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
         gradeEcQuiz();
       });
-      (_g = root37.querySelector('[data-testid="ec-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
+      (_g = root38.querySelector('[data-testid="ec-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
         quiz.wectAnswer = "";
         quiz.sectAnswer = "";
         quiz.phase = "question";
         quiz.result = null;
-        render36();
+        render37();
       });
     }
     function refreshResults() {
       const tests = getTests();
-      const pane = root37.querySelector('[data-testid="ec-results"]');
+      const pane = root38.querySelector('[data-testid="ec-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("ec.results.title")}
         <span class="ec-count">${tests.length} ${t("ec.results.count")}</span>
       </h3>${renderResultTable(tests)}`;
       }
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/DecisionTableExplorer.js
@@ -19566,21 +19648,21 @@ ${cases}
       return null;
     }
   }
-  function persist8(state36) {
+  function persist8(state37) {
     var _a;
     try {
-      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY11, JSON.stringify({ exampleId: state36.exampleId, conditions: state36.conditions, actions: state36.actions, rules: state36.rules }));
+      (_a = globalThis.localStorage) == null ? void 0 : _a.setItem(STORAGE_KEY11, JSON.stringify({ exampleId: state37.exampleId, conditions: state37.conditions, actions: state37.actions, rules: state37.rules }));
     } catch {
     }
   }
   function createDecisionTableExplorer() {
     var _a;
-    const root37 = document.createElement("div");
-    root37.className = "dt-explorer";
-    root37.dataset.testid = "dt-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "dt-explorer";
+    root38.dataset.testid = "dt-explorer";
     const saved = loadSaved8();
     const defaultEx = EXAMPLES3[0];
-    const state36 = {
+    const state37 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       conditions: (saved == null ? void 0 : saved.conditions) ? deepClone(saved.conditions) : deepClone(defaultEx.conditions),
       actions: (saved == null ? void 0 : saved.actions) ? deepClone(saved.actions) : deepClone(defaultEx.actions),
@@ -19592,7 +19674,7 @@ ${cases}
     const dtQuiz = { active: false, phase: "question", ansCovered: "", ansDup: "", result: null };
     function renderDtQuizPanel() {
       if (!dtQuiz.active) return "";
-      const validation = validateDecisionTable(state36.conditions, state36.rules);
+      const validation = validateDecisionTable(state37.conditions, state37.rules);
       const isGraded = dtQuiz.phase === "graded";
       const covCorrect = isGraded && parseInt(dtQuiz.ansCovered, 10) === validation.covered;
       const dupCorrect = isGraded && parseInt(dtQuiz.ansDup, 10) === validation.duplicate.length;
@@ -19631,19 +19713,19 @@ ${cases}
     `;
     }
     function renderTable() {
-      const tests = generateDecisionTableTests(state36.conditions, state36.actions, state36.rules);
-      const validation = validateDecisionTable(state36.conditions, state36.rules);
-      const condHead = state36.conditions.map((c) => `<th class="dt-cond-head">${esc(c.name)}</th>`).join("");
-      const actHead = state36.actions.map((a) => `<th class="dt-act-head">${esc(a.name)}</th>`).join("");
+      const tests = generateDecisionTableTests(state37.conditions, state37.actions, state37.rules);
+      const validation = validateDecisionTable(state37.conditions, state37.rules);
+      const condHead = state37.conditions.map((c) => `<th class="dt-cond-head">${esc(c.name)}</th>`).join("");
+      const actHead = state37.actions.map((a) => `<th class="dt-act-head">${esc(a.name)}</th>`).join("");
       const rows = tests.map((tc, i) => {
-        const rule = state36.rules[i];
-        const condCells = state36.conditions.map((c) => {
+        const rule = state37.rules[i];
+        const condCells = state37.conditions.map((c) => {
           var _a2;
           const val = (_a2 = tc.conditions[c.id]) != null ? _a2 : "\u2013";
           const cls = val === "T" || val === "Y" ? " dt-val-true" : val === "F" || val === "N" ? " dt-val-false" : " dt-val-dc";
           return `<td class="dt-cell${cls}">${esc(val)}</td>`;
         }).join("");
-        const actCells = state36.actions.map((a) => {
+        const actCells = state37.actions.map((a) => {
           const fires = tc.actions.includes(a.id);
           return `<td class="dt-cell${fires ? " dt-act-fire" : ""}">${fires ? "\u2713" : ""}</td>`;
         }).join("");
@@ -19654,7 +19736,7 @@ ${cases}
         ${actCells}
         <td>
           <button class="dt-del-rule-btn" data-del-rule="${i}" aria-label="${t("common.remove")}"
-            ${state36.rules.length <= 1 ? "disabled" : ""}>\xD7</button>
+            ${state37.rules.length <= 1 ? "disabled" : ""}>\xD7</button>
         </td>
       </tr>`;
       }).join("");
@@ -19681,31 +19763,31 @@ ${cases}
     </div>`;
     }
     function renderConditions() {
-      return state36.conditions.map((c, i) => `
+      return state37.conditions.map((c, i) => `
       <div class="dt-cond-block" data-testid="dt-cond-${i}">
         <input class="dt-cond-name" data-cidx="${i}" value="${esc(c.name)}"
           placeholder="${t("dt.condition.name")}" data-testid="dt-cond-name-${i}"/>
         <button class="dt-del-cond-btn" data-del-cond="${i}" aria-label="${t("common.remove")}"
-          ${state36.conditions.length <= 1 ? "disabled" : ""} data-testid="dt-del-cond-${i}">\xD7</button>
+          ${state37.conditions.length <= 1 ? "disabled" : ""} data-testid="dt-del-cond-${i}">\xD7</button>
       </div>
     `).join("");
     }
     function renderActions() {
-      return state36.actions.map((a, i) => `
+      return state37.actions.map((a, i) => `
       <div class="dt-act-block" data-testid="dt-action-${i}">
         <input class="dt-act-name" data-aidx="${i}" value="${esc(a.name)}"
           placeholder="${t("dt.action.name")}" data-testid="dt-act-name-${i}"/>
         <button class="dt-del-act-btn" data-del-act="${i}" aria-label="${t("common.remove")}"
-          ${state36.actions.length <= 1 ? "disabled" : ""} data-testid="dt-del-act-${i}">\xD7</button>
+          ${state37.actions.length <= 1 ? "disabled" : ""} data-testid="dt-del-act-${i}">\xD7</button>
       </div>
     `).join("");
     }
-    function render36() {
+    function render37() {
       const exBtns = EXAMPLES3.map((ex) => `
-      <button type="button" class="dt-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="dt-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-dt-example="${ex.id}" data-testid="dt-example-${ex.id}">${esc(ex.name)}</button>
     `).join("");
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="dt-panel">
         <div class="dt-toolbar">
           <div class="dt-examples" data-testid="dt-examples">${exBtns}</div>
@@ -19717,7 +19799,7 @@ ${cases}
               <h4>${t("dt.conditions.title")}</h4>
               <div class="dt-cond-list">${renderConditions()}</div>
               <button class="dt-add-cond-btn" data-testid="dt-add-cond"
-                ${state36.conditions.length >= 6 ? "disabled" : ""}>
+                ${state37.conditions.length >= 6 ? "disabled" : ""}>
                 + ${t("dt.condition.add")}
               </button>
             </div>
@@ -19725,7 +19807,7 @@ ${cases}
               <h4>${t("dt.actions.title")}</h4>
               <div class="dt-act-list">${renderActions()}</div>
               <button class="dt-add-act-btn" data-testid="dt-add-act"
-                ${state36.actions.length >= 6 ? "disabled" : ""}>
+                ${state37.actions.length >= 6 ? "disabled" : ""}>
                 + ${t("dt.action.add")}
               </button>
             </div>
@@ -19734,7 +19816,7 @@ ${cases}
 
           <div class="dt-results-pane" data-testid="dt-results">
             <h3>${t("dt.results.title")}
-              <span class="dt-count">${state36.rules.length} ${t("dt.results.count")}</span>
+              <span class="dt-count">${state37.rules.length} ${t("dt.results.count")}</span>
             </h3>
             ${renderTable()}
             ${renderDtQuizPanel()}
@@ -19742,161 +19824,161 @@ ${cases}
         </div>
       </div>
     `;
-      bindEvents36();
-      persist8(state36);
+      bindEvents37();
+      persist8(state37);
     }
     function addDefaultRule() {
       const conditions = {};
-      for (const c of state36.conditions) conditions[c.id] = "T";
-      state36.rules.push({ id: `r${nextRuleId++}`, conditions, actions: [] });
+      for (const c of state37.conditions) conditions[c.id] = "T";
+      state37.rules.push({ id: `r${nextRuleId++}`, conditions, actions: [] });
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a2, _b, _c, _d, _e, _f, _g;
-      root37.querySelectorAll("[data-dt-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-dt-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES3.find((e) => e.id === btn.dataset.dtExample);
           if (!ex) return;
-          state36.exampleId = ex.id;
-          state36.conditions = deepClone(ex.conditions);
-          state36.actions = deepClone(ex.actions);
-          state36.rules = deepClone(ex.rules);
-          render36();
+          state37.exampleId = ex.id;
+          state37.conditions = deepClone(ex.conditions);
+          state37.actions = deepClone(ex.actions);
+          state37.rules = deepClone(ex.rules);
+          render37();
         });
       });
-      root37.querySelectorAll(".dt-cond-name").forEach((inp) => {
+      root38.querySelectorAll(".dt-cond-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state36.conditions[Number(e.target.dataset.cidx)].name = e.target.value;
+          state37.conditions[Number(e.target.dataset.cidx)].name = e.target.value;
           refreshResults();
-          persist8(state36);
+          persist8(state37);
         });
       });
-      root37.querySelectorAll(".dt-act-name").forEach((inp) => {
+      root38.querySelectorAll(".dt-act-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state36.actions[Number(e.target.dataset.aidx)].name = e.target.value;
+          state37.actions[Number(e.target.dataset.aidx)].name = e.target.value;
           refreshResults();
-          persist8(state36);
+          persist8(state37);
         });
       });
-      root37.querySelectorAll("[data-del-cond]").forEach((btn) => {
+      root38.querySelectorAll("[data-del-cond]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delCond);
-          const cid = state36.conditions[idx].id;
-          state36.conditions.splice(idx, 1);
-          for (const r of state36.rules) delete r.conditions[cid];
-          render36();
+          const cid = state37.conditions[idx].id;
+          state37.conditions.splice(idx, 1);
+          for (const r of state37.rules) delete r.conditions[cid];
+          render37();
         });
       });
-      root37.querySelectorAll("[data-del-act]").forEach((btn) => {
+      root38.querySelectorAll("[data-del-act]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delAct);
-          const aid = state36.actions[idx].id;
-          state36.actions.splice(idx, 1);
-          for (const r of state36.rules) r.actions = r.actions.filter((a) => a !== aid);
-          render36();
+          const aid = state37.actions[idx].id;
+          state37.actions.splice(idx, 1);
+          for (const r of state37.rules) r.actions = r.actions.filter((a) => a !== aid);
+          render37();
         });
       });
-      (_a2 = root37.querySelector('[data-testid="dt-add-cond"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state36.conditions.length >= 6) return;
+      (_a2 = root38.querySelector('[data-testid="dt-add-cond"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state37.conditions.length >= 6) return;
         const id = `c${nextCondId++}`;
-        state36.conditions.push({ id, name: `Condition ${state36.conditions.length + 1}`, values: ["T", "F"] });
-        for (const r of state36.rules) r.conditions[id] = "T";
-        render36();
+        state37.conditions.push({ id, name: `Condition ${state37.conditions.length + 1}`, values: ["T", "F"] });
+        for (const r of state37.rules) r.conditions[id] = "T";
+        render37();
       });
-      (_b = root37.querySelector('[data-testid="dt-add-act"]')) == null ? void 0 : _b.addEventListener("click", () => {
-        if (state36.actions.length >= 6) return;
+      (_b = root38.querySelector('[data-testid="dt-add-act"]')) == null ? void 0 : _b.addEventListener("click", () => {
+        if (state37.actions.length >= 6) return;
         const id = `a${nextActId++}`;
-        state36.actions.push({ id, name: `Action ${state36.actions.length + 1}` });
-        render36();
+        state37.actions.push({ id, name: `Action ${state37.actions.length + 1}` });
+        render37();
       });
-      (_c = root37.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root38.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _c.addEventListener("click", () => {
         addDefaultRule();
-        render36();
+        render37();
       });
-      root37.querySelectorAll("[data-del-rule]").forEach((btn) => {
+      root38.querySelectorAll("[data-del-rule]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.rules.splice(Number(btn.dataset.delRule), 1);
-          render36();
+          state37.rules.splice(Number(btn.dataset.delRule), 1);
+          render37();
         });
       });
-      root37.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
+      root38.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
         td.addEventListener("click", () => {
           var _a3, _b2;
           const row = td.closest("tr");
           if (!row) return;
-          const ruleIdx = [...root37.querySelectorAll("tbody tr")].indexOf(row);
+          const ruleIdx = [...root38.querySelectorAll("tbody tr")].indexOf(row);
           const allCells = [...row.querySelectorAll('.dt-cell[class*="dt-val"]')];
           const colIdx = allCells.indexOf(td);
           if (ruleIdx < 0 || colIdx < 0) return;
-          const cid = (_a3 = state36.conditions[colIdx]) == null ? void 0 : _a3.id;
+          const cid = (_a3 = state37.conditions[colIdx]) == null ? void 0 : _a3.id;
           if (!cid) return;
-          const cur = state36.rules[ruleIdx].conditions[cid];
+          const cur = state37.rules[ruleIdx].conditions[cid];
           const cycle = { "T": "F", "F": "\u2013", "\u2013": "T" };
-          state36.rules[ruleIdx].conditions[cid] = (_b2 = cycle[cur]) != null ? _b2 : "T";
+          state37.rules[ruleIdx].conditions[cid] = (_b2 = cycle[cur]) != null ? _b2 : "T";
           refreshResults();
-          persist8(state36);
+          persist8(state37);
         });
       });
-      root37.querySelectorAll('.dt-cell.dt-act-fire, .dt-cell:not([class*="dt-val"]):not(.dt-separator):not(.dt-rule-label)').forEach((td) => {
+      root38.querySelectorAll('.dt-cell.dt-act-fire, .dt-cell:not([class*="dt-val"]):not(.dt-separator):not(.dt-rule-label)').forEach((td) => {
         var _a3;
         if (!td.closest("tbody")) return;
         const row = td.closest("tr");
         if (!row) return;
-        const ruleIdx = [...root37.querySelectorAll("tbody tr")].indexOf(row);
+        const ruleIdx = [...root38.querySelectorAll("tbody tr")].indexOf(row);
         if (ruleIdx < 0) return;
         const condCells = row.querySelectorAll('[class*="dt-val"]').length;
         const allTds = [...row.querySelectorAll("td")];
         const tdIdx = allTds.indexOf(td);
         const actColIdx = tdIdx - condCells - 2;
-        if (actColIdx < 0 || actColIdx >= state36.actions.length) return;
-        const aid = (_a3 = state36.actions[actColIdx]) == null ? void 0 : _a3.id;
+        if (actColIdx < 0 || actColIdx >= state37.actions.length) return;
+        const aid = (_a3 = state37.actions[actColIdx]) == null ? void 0 : _a3.id;
         if (!aid) return;
-        const r = state36.rules[ruleIdx];
+        const r = state37.rules[ruleIdx];
         if (r.actions.includes(aid)) r.actions = r.actions.filter((a) => a !== aid);
         else r.actions.push(aid);
         refreshResults();
-        persist8(state36);
+        persist8(state37);
       });
-      (_d = root37.querySelector('[data-testid="dt-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root38.querySelector('[data-testid="dt-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
         dtQuiz.active = true;
         dtQuiz.phase = "question";
         dtQuiz.ansCovered = "";
         dtQuiz.ansDup = "";
-        render36();
+        render37();
       });
-      (_e = root37.querySelector('[data-testid="dt-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root38.querySelector('[data-testid="dt-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
         dtQuiz.active = false;
-        render36();
+        render37();
       });
-      (_f = root37.querySelector('[data-testid="dt-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root38.querySelector('[data-testid="dt-quiz-check"]')) == null ? void 0 : _f.addEventListener("click", () => {
         var _a3, _b2, _c2, _d2;
-        dtQuiz.ansCovered = (_b2 = (_a3 = root37.querySelector('[data-testid="dt-quiz-covered"]')) == null ? void 0 : _a3.value) != null ? _b2 : "";
-        dtQuiz.ansDup = (_d2 = (_c2 = root37.querySelector('[data-testid="dt-quiz-dup"]')) == null ? void 0 : _c2.value) != null ? _d2 : "";
+        dtQuiz.ansCovered = (_b2 = (_a3 = root38.querySelector('[data-testid="dt-quiz-covered"]')) == null ? void 0 : _a3.value) != null ? _b2 : "";
+        dtQuiz.ansDup = (_d2 = (_c2 = root38.querySelector('[data-testid="dt-quiz-dup"]')) == null ? void 0 : _c2.value) != null ? _d2 : "";
         dtQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      (_g = root37.querySelector('[data-testid="dt-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
+      (_g = root38.querySelector('[data-testid="dt-quiz-reset"]')) == null ? void 0 : _g.addEventListener("click", () => {
         dtQuiz.phase = "question";
         dtQuiz.ansCovered = "";
         dtQuiz.ansDup = "";
-        render36();
+        render37();
       });
     }
     function refreshResults() {
       var _a2;
-      const pane = root37.querySelector('[data-testid="dt-results"]');
+      const pane = root38.querySelector('[data-testid="dt-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("dt.results.title")}
-        <span class="dt-count">${state36.rules.length} ${t("dt.results.count")}</span>
+        <span class="dt-count">${state37.rules.length} ${t("dt.results.count")}</span>
       </h3>${renderTable()}`;
         pane.querySelectorAll("[data-del-rule]").forEach((btn) => {
           btn.addEventListener("click", () => {
-            state36.rules.splice(Number(btn.dataset.delRule), 1);
-            render36();
+            state37.rules.splice(Number(btn.dataset.delRule), 1);
+            render37();
           });
         });
         (_a2 = pane.querySelector('[data-testid="dt-add-rule"]')) == null ? void 0 : _a2.addEventListener("click", () => {
           addDefaultRule();
-          render36();
+          render37();
         });
         pane.querySelectorAll(".dt-cell.dt-val-true, .dt-cell.dt-val-false, .dt-cell.dt-val-dc").forEach((td) => {
           td.addEventListener("click", () => {
@@ -19906,19 +19988,19 @@ ${cases}
             const ruleIdx = [...pane.querySelectorAll("tbody tr")].indexOf(row);
             const colIdx = [...row.querySelectorAll('.dt-cell[class*="dt-val"]')].indexOf(td);
             if (ruleIdx < 0 || colIdx < 0) return;
-            const cid = (_a3 = state36.conditions[colIdx]) == null ? void 0 : _a3.id;
+            const cid = (_a3 = state37.conditions[colIdx]) == null ? void 0 : _a3.id;
             if (!cid) return;
-            const cur = state36.rules[ruleIdx].conditions[cid];
+            const cur = state37.rules[ruleIdx].conditions[cid];
             const cycle = { "T": "F", "F": "\u2013", "\u2013": "T" };
-            state36.rules[ruleIdx].conditions[cid] = (_b = cycle[cur]) != null ? _b : "T";
+            state37.rules[ruleIdx].conditions[cid] = (_b = cycle[cur]) != null ? _b : "T";
             refreshResults();
-            persist8(state36);
+            persist8(state37);
           });
         });
       }
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/StateTransitionExplorer.js
@@ -20002,12 +20084,12 @@ ${cases}
   }
   function createStateTransitionExplorer() {
     var _a, _b;
-    const root37 = document.createElement("div");
-    root37.className = "st-explorer";
-    root37.dataset.testid = "st-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "st-explorer";
+    root38.dataset.testid = "st-explorer";
     const saved = loadSaved9();
     const defaultEx = EXAMPLES4[0];
-    const state36 = {
+    const state37 = {
       exampleId: (_a = saved == null ? void 0 : saved.exampleId) != null ? _a : defaultEx.id,
       states: (saved == null ? void 0 : saved.states) ? deepClone2(saved.states) : deepClone2(defaultEx.states),
       transitions: (saved == null ? void 0 : saved.transitions) ? deepClone2(saved.transitions) : deepClone2(defaultEx.transitions),
@@ -20021,7 +20103,7 @@ ${cases}
       if (!stQuiz.active) return "";
       const tests = getTests();
       const count = tests.length;
-      const modeLabel = state36.mode === "sequence" ? t("st.mode.sequence") : t("st.mode.transition");
+      const modeLabel = state37.mode === "sequence" ? t("st.mode.sequence") : t("st.mode.transition");
       const isGraded = stQuiz.phase === "graded";
       const correct = isGraded && parseInt(stQuiz.answer, 10) === count;
       return `
@@ -20052,15 +20134,15 @@ ${cases}
     `;
     }
     function getTests() {
-      if (!state36.states.length || !state36.transitions.length) return [];
-      return state36.mode === "sequence" ? generateStSequenceTests(state36.states, state36.transitions) : generateStTransitionTests(state36.states, state36.transitions);
+      if (!state37.states.length || !state37.transitions.length) return [];
+      return state37.mode === "sequence" ? generateStSequenceTests(state37.states, state37.transitions) : generateStTransitionTests(state37.states, state37.transitions);
     }
     function renderDiagram() {
       const W = 520, H = 220, R = 28;
-      const n = state36.states.length;
+      const n = state37.states.length;
       if (!n) return "";
       const cx = W / 2, cy = H / 2, radius = Math.min(W, H) / 2 - R - 16;
-      const positions = state36.states.map((s, i) => {
+      const positions = state37.states.map((s, i) => {
         const angle = 2 * Math.PI * i / n - Math.PI / 2;
         return { id: s.id, x: cx + radius * Math.cos(angle), y: cy + radius * Math.sin(angle) };
       });
@@ -20069,7 +20151,7 @@ ${cases}
       let defs = `<defs><marker id="${arrowId}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
     </marker></defs>`;
-      const edges = state36.transitions.map((tr, i) => {
+      const edges = state37.transitions.map((tr, i) => {
         const from = pos[tr.from];
         const to = pos[tr.to];
         if (!from || !to) return "";
@@ -20091,7 +20173,7 @@ ${cases}
         fill="none" stroke="#6366f1" stroke-width="1.5" marker-end="url(#${arrowId})"/>
         <text x="${mx2}" y="${my2 - 4}" text-anchor="middle" font-size="10" fill="#374151">${esc2(tr.event)}</text>`;
       }).join("");
-      const nodes = state36.states.map((s) => {
+      const nodes = state37.states.map((s) => {
         const p = pos[s.id];
         if (!p) return "";
         const stroke = s.initial ? "#0f4c81" : "#9ca3af";
@@ -20105,21 +20187,21 @@ ${cases}
     </svg>`;
     }
     function renderStateList() {
-      return state36.states.map((s, i) => `
+      return state37.states.map((s, i) => `
       <div class="st-state-row" data-testid="st-state-${i}">
         ${s.initial ? `<span class="st-initial-dot" title="${t("st.initial")}">\u25CF</span>` : `<span class="st-initial-dot st-initial-dot--empty" title="${t("st.set.initial")}" data-set-initial="${i}">\u25CB</span>`}
         <input class="st-state-name" data-sidx="${i}" value="${esc2(s.name)}"
           placeholder="${t("st.state.name")}" data-testid="st-state-name-${i}"/>
         <button class="st-del-btn" data-del-state="${i}" aria-label="${t("common.remove")}"
-          ${state36.states.length <= 1 ? "disabled" : ""} data-testid="st-del-state-${i}">\xD7</button>
+          ${state37.states.length <= 1 ? "disabled" : ""} data-testid="st-del-state-${i}">\xD7</button>
       </div>
     `).join("");
     }
     function renderTransitionList() {
-      return state36.transitions.map((tr, i) => {
+      return state37.transitions.map((tr, i) => {
         var _a2;
-        const fromNames = state36.states.map((s) => `<option value="${esc2(s.id)}"${tr.from === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
-        const toNames = state36.states.map((s) => `<option value="${esc2(s.id)}"${tr.to === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
+        const fromNames = state37.states.map((s) => `<option value="${esc2(s.id)}"${tr.from === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
+        const toNames = state37.states.map((s) => `<option value="${esc2(s.id)}"${tr.to === s.id ? " selected" : ""}>${esc2(s.name)}</option>`).join("");
         return `<tr class="st-tr-row" data-testid="st-transition-${i}">
         <td><select class="st-from-sel" data-tidx="${i}" data-testid="st-from-${i}">${fromNames}</select></td>
         <td>\u2192</td>
@@ -20129,13 +20211,13 @@ ${cases}
         <td><input class="st-action-inp" data-tidx="${i}" value="${esc2((_a2 = tr.action) != null ? _a2 : "")}"
           placeholder="${t("st.transition.action")}" data-testid="st-action-${i}"/></td>
         <td><button class="st-del-btn" data-del-tr="${i}" aria-label="${t("common.remove")}"
-          ${state36.transitions.length <= 1 ? "disabled" : ""} data-testid="st-del-tr-${i}">\xD7</button></td>
+          ${state37.transitions.length <= 1 ? "disabled" : ""} data-testid="st-del-tr-${i}">\xD7</button></td>
       </tr>`;
       }).join("");
     }
     function renderTestTable(tests) {
       if (!tests.length) return `<p class="st-empty" data-testid="st-empty">${t("st.empty")}</p>`;
-      if (state36.mode === "sequence") {
+      if (state37.mode === "sequence") {
         const rows2 = tests.map((tc) => `
         <tr class="st-test-row" data-testid="st-test-${tc.id}">
           <td class="st-test-label">${esc2(tc.label)}</td>
@@ -20172,20 +20254,20 @@ ${cases}
       <tbody>${rows}</tbody>
     </table>`;
     }
-    function render36() {
+    function render37() {
       const tests = getTests();
       const exBtns = EXAMPLES4.map((ex) => `
-      <button type="button" class="st-example-btn${state36.exampleId === ex.id ? " active" : ""}"
+      <button type="button" class="st-example-btn${state37.exampleId === ex.id ? " active" : ""}"
         data-st-example="${ex.id}" data-testid="st-example-${ex.id}">${esc2(ex.name)}</button>
     `).join("");
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="st-panel">
         <div class="st-toolbar">
           <div class="st-examples" data-testid="st-examples">${exBtns}</div>
           <div class="st-mode-toggle" role="group">
-            <button type="button" class="st-mode-btn${state36.mode === "transition" ? " active" : ""}"
+            <button type="button" class="st-mode-btn${state37.mode === "transition" ? " active" : ""}"
               data-mode="transition" data-testid="st-mode-transition">${t("st.mode.transition")}</button>
-            <button type="button" class="st-mode-btn${state36.mode === "sequence" ? " active" : ""}"
+            <button type="button" class="st-mode-btn${state37.mode === "sequence" ? " active" : ""}"
               data-mode="sequence" data-testid="st-mode-sequence">${t("st.mode.sequence")}</button>
             <button type="button" class="quiz-start-btn" data-testid="st-quiz-start">${t("quiz.start")}</button>
           </div>
@@ -20201,7 +20283,7 @@ ${cases}
               <h4>${t("st.states.title")}</h4>
               <div class="st-state-list">${renderStateList()}</div>
               <button class="st-add-state-btn" data-testid="st-add-state"
-                ${state36.states.length >= 8 ? "disabled" : ""}>
+                ${state37.states.length >= 8 ? "disabled" : ""}>
                 + ${t("st.state.add")}
               </button>
             </div>
@@ -20210,7 +20292,7 @@ ${cases}
               <h4>${t("st.transitions.title")}</h4>
               <table class="st-tr-table"><tbody>${renderTransitionList()}</tbody></table>
               <button class="st-add-tr-btn" data-testid="st-add-transition"
-                ${state36.transitions.length >= 16 ? "disabled" : ""}>
+                ${state37.transitions.length >= 16 ? "disabled" : ""}>
                 + ${t("st.transition.add")}
               </button>
             </div>
@@ -20226,128 +20308,128 @@ ${cases}
         </div>
       </div>
     `;
-      bindEvents36();
-      persist9(state36);
+      bindEvents37();
+      persist9(state37);
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a2, _b2, _c, _d, _e, _f;
-      root37.querySelectorAll("[data-st-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-st-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const ex = EXAMPLES4.find((e) => e.id === btn.dataset.stExample);
           if (!ex) return;
-          state36.exampleId = ex.id;
-          state36.states = deepClone2(ex.states);
-          state36.transitions = deepClone2(ex.transitions);
-          render36();
+          state37.exampleId = ex.id;
+          state37.states = deepClone2(ex.states);
+          state37.transitions = deepClone2(ex.transitions);
+          render37();
         });
       });
-      root37.querySelectorAll("[data-mode]").forEach((btn) => {
+      root38.querySelectorAll("[data-mode]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.mode = btn.dataset.mode;
-          render36();
+          state37.mode = btn.dataset.mode;
+          render37();
         });
       });
-      root37.querySelectorAll(".st-state-name").forEach((inp) => {
+      root38.querySelectorAll(".st-state-name").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state36.states[Number(e.target.dataset.sidx)].name = e.target.value;
+          state37.states[Number(e.target.dataset.sidx)].name = e.target.value;
           refreshResults();
-          persist9(state36);
+          persist9(state37);
         });
       });
-      root37.querySelectorAll("[data-set-initial]").forEach((dot) => {
+      root38.querySelectorAll("[data-set-initial]").forEach((dot) => {
         dot.addEventListener("click", () => {
           const idx = Number(dot.dataset.setInitial);
-          state36.states.forEach((s, i) => {
+          state37.states.forEach((s, i) => {
             s.initial = i === idx;
           });
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-del-state]").forEach((btn) => {
+      root38.querySelectorAll("[data-del-state]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delState);
-          const sid = state36.states[idx].id;
-          state36.states.splice(idx, 1);
-          state36.transitions = state36.transitions.filter((tr) => tr.from !== sid && tr.to !== sid);
-          if (state36.states.length && !state36.states.some((s) => s.initial)) state36.states[0].initial = true;
-          render36();
+          const sid = state37.states[idx].id;
+          state37.states.splice(idx, 1);
+          state37.transitions = state37.transitions.filter((tr) => tr.from !== sid && tr.to !== sid);
+          if (state37.states.length && !state37.states.some((s) => s.initial)) state37.states[0].initial = true;
+          render37();
         });
       });
-      (_a2 = root37.querySelector('[data-testid="st-add-state"]')) == null ? void 0 : _a2.addEventListener("click", () => {
-        if (state36.states.length >= 8) return;
-        state36.states.push({ id: `s${nextSId++}`, name: `State ${state36.states.length + 1}` });
-        render36();
+      (_a2 = root38.querySelector('[data-testid="st-add-state"]')) == null ? void 0 : _a2.addEventListener("click", () => {
+        if (state37.states.length >= 8) return;
+        state37.states.push({ id: `s${nextSId++}`, name: `State ${state37.states.length + 1}` });
+        render37();
       });
-      root37.querySelectorAll(".st-from-sel, .st-to-sel").forEach((sel) => {
+      root38.querySelectorAll(".st-from-sel, .st-to-sel").forEach((sel) => {
         sel.addEventListener("change", (e) => {
           const idx = Number(e.target.dataset.tidx);
           const field = e.target.classList.contains("st-from-sel") ? "from" : "to";
-          state36.transitions[idx][field] = e.target.value;
+          state37.transitions[idx][field] = e.target.value;
           refreshResults();
-          persist9(state36);
+          persist9(state37);
         });
       });
-      root37.querySelectorAll(".st-event-inp").forEach((inp) => {
+      root38.querySelectorAll(".st-event-inp").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state36.transitions[Number(e.target.dataset.tidx)].event = e.target.value;
+          state37.transitions[Number(e.target.dataset.tidx)].event = e.target.value;
           refreshResults();
-          persist9(state36);
+          persist9(state37);
         });
       });
-      root37.querySelectorAll(".st-action-inp").forEach((inp) => {
+      root38.querySelectorAll(".st-action-inp").forEach((inp) => {
         inp.addEventListener("input", (e) => {
-          state36.transitions[Number(e.target.dataset.tidx)].action = e.target.value;
+          state37.transitions[Number(e.target.dataset.tidx)].action = e.target.value;
           refreshResults();
-          persist9(state36);
+          persist9(state37);
         });
       });
-      root37.querySelectorAll("[data-del-tr]").forEach((btn) => {
+      root38.querySelectorAll("[data-del-tr]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.transitions.splice(Number(btn.dataset.delTr), 1);
-          render36();
+          state37.transitions.splice(Number(btn.dataset.delTr), 1);
+          render37();
         });
       });
-      (_b2 = root37.querySelector('[data-testid="st-add-transition"]')) == null ? void 0 : _b2.addEventListener("click", () => {
+      (_b2 = root38.querySelector('[data-testid="st-add-transition"]')) == null ? void 0 : _b2.addEventListener("click", () => {
         var _a3, _b3, _c2, _d2;
-        if (state36.transitions.length >= 16) return;
-        const from = (_b3 = (_a3 = state36.states[0]) == null ? void 0 : _a3.id) != null ? _b3 : "";
-        const to = (_d2 = (_c2 = state36.states[1]) == null ? void 0 : _c2.id) != null ? _d2 : from;
-        state36.transitions.push({ id: `t${nextTId++}`, from, to, event: "event", action: "" });
-        render36();
+        if (state37.transitions.length >= 16) return;
+        const from = (_b3 = (_a3 = state37.states[0]) == null ? void 0 : _a3.id) != null ? _b3 : "";
+        const to = (_d2 = (_c2 = state37.states[1]) == null ? void 0 : _c2.id) != null ? _d2 : from;
+        state37.transitions.push({ id: `t${nextTId++}`, from, to, event: "event", action: "" });
+        render37();
       });
-      (_c = root37.querySelector('[data-testid="st-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      (_c = root38.querySelector('[data-testid="st-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
         stQuiz.active = true;
         stQuiz.phase = "question";
         stQuiz.answer = "";
-        render36();
+        render37();
       });
-      (_d = root37.querySelector('[data-testid="st-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      (_d = root38.querySelector('[data-testid="st-quiz-close"]')) == null ? void 0 : _d.addEventListener("click", () => {
         stQuiz.active = false;
-        render36();
+        render37();
       });
-      (_e = root37.querySelector('[data-testid="st-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root38.querySelector('[data-testid="st-quiz-check"]')) == null ? void 0 : _e.addEventListener("click", () => {
         var _a3, _b3;
-        stQuiz.answer = (_b3 = (_a3 = root37.querySelector('[data-testid="st-quiz-answer"]')) == null ? void 0 : _a3.value) != null ? _b3 : "";
+        stQuiz.answer = (_b3 = (_a3 = root38.querySelector('[data-testid="st-quiz-answer"]')) == null ? void 0 : _a3.value) != null ? _b3 : "";
         stQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      (_f = root37.querySelector('[data-testid="st-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root38.querySelector('[data-testid="st-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         stQuiz.phase = "question";
         stQuiz.answer = "";
-        render36();
+        render37();
       });
     }
     function refreshResults() {
       const tests = getTests();
-      const pane = root37.querySelector('[data-testid="st-results"]');
+      const pane = root38.querySelector('[data-testid="st-results"]');
       if (pane) {
         pane.innerHTML = `<h3>${t("st.results.title")}
         <span class="st-count">${tests.length} ${t("st.results.count")}</span>
       </h3>${renderTestTable(tests)}`;
       }
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/metamorphicTesting.js
@@ -20695,8 +20777,8 @@ function linearSearch(arr, target) {
       makeRunner: () => makeRunner2(SEARCH_SRC, "(arr, target) => linearSearch(arr, target)")
     }
   ];
-  function generateMrTests(example4, relation, count = 8) {
-    const runner = example4.makeRunner();
+  function generateMrTests(example5, relation, count = 8) {
+    const runner = example5.makeRunner();
     const results = [];
     for (let i = 0; i < count; i++) {
       try {
@@ -20738,7 +20820,7 @@ function linearSearch(arr, target) {
           continue;
         }
         if (relation.isSearch) {
-          const runner2 = example4.makeRunner();
+          const runner2 = example5.makeRunner();
           const input2 = relation.generateInput();
           const [arr, target] = input2;
           const [transArr, transTgt] = relation.transformInput(input2);
@@ -20821,9 +20903,9 @@ function linearSearch(arr, target) {
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createMetamorphicTestingExplorer() {
-    const root37 = document.createElement("div");
-    root37.dataset.testid = "mt-explorer";
-    let state36 = {
+    const root38 = document.createElement("div");
+    root38.dataset.testid = "mt-explorer";
+    let state37 = {
       exampleId: metamorphicExamples[0].id,
       relationId: metamorphicExamples[0].relations[0].id,
       results: null
@@ -20874,25 +20956,25 @@ function linearSearch(arr, target) {
     }
     function getExample() {
       var _a;
-      return (_a = metamorphicExamples.find((e) => e.id === state36.exampleId)) != null ? _a : metamorphicExamples[0];
+      return (_a = metamorphicExamples.find((e) => e.id === state37.exampleId)) != null ? _a : metamorphicExamples[0];
     }
     function getRelation() {
       var _a;
       const ex = getExample();
-      return (_a = ex.relations.find((r) => r.id === state36.relationId)) != null ? _a : ex.relations[0];
+      return (_a = ex.relations.find((r) => r.id === state37.relationId)) != null ? _a : ex.relations[0];
     }
-    function render36() {
+    function render37() {
       const ex = getExample();
       const rel = getRelation();
       const isZh = getLocale() === "zh";
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="mt-layout">
         <div class="mt-sidebar">
           <h3 class="mt-section-title">${t("mt.examples.title")}</h3>
           <div class="mt-example-btns" data-testid="mt-examples">
             ${metamorphicExamples.map((e) => `
               <button type="button"
-                class="mt-example-btn${e.id === state36.exampleId ? " active" : ""}"
+                class="mt-example-btn${e.id === state37.exampleId ? " active" : ""}"
                 data-testid="mt-example-${e.id}"
                 data-example="${e.id}"
               >${e.name}</button>
@@ -20903,7 +20985,7 @@ function linearSearch(arr, target) {
           <div class="mt-relation-list" data-testid="mt-relations">
             ${ex.relations.map((r) => `
               <button type="button"
-                class="mt-rel-btn${r.id === state36.relationId ? " active" : ""}"
+                class="mt-rel-btn${r.id === state37.relationId ? " active" : ""}"
                 data-testid="mt-rel-${r.id}"
                 data-rel="${r.id}"
               >
@@ -20940,12 +21022,12 @@ function linearSearch(arr, target) {
           ${renderMtQuizPanel()}
 
           <div class="mt-results" data-testid="mt-results">
-            ${state36.results ? renderResults(state36.results) : `<p class="mt-hint">${t("mt.hint")}</p>`}
+            ${state37.results ? renderResults(state37.results) : `<p class="mt-hint">${t("mt.hint")}</p>`}
           </div>
         </div>
       </div>
     `;
-      bindEvents36();
+      bindEvents37();
     }
     function renderResults(results) {
       const passing = results.filter((r) => r.holds).length;
@@ -20986,40 +21068,40 @@ function linearSearch(arr, target) {
       </div>
     `;
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a;
-      root37.querySelectorAll("[data-example]").forEach((btn) => {
+      root38.querySelectorAll("[data-example]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.exampleId = btn.dataset.example;
+          state37.exampleId = btn.dataset.example;
           const ex = getExample();
-          state36.relationId = ex.relations[0].id;
-          state36.results = null;
+          state37.relationId = ex.relations[0].id;
+          state37.results = null;
           mtQuiz.active = false;
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-rel]").forEach((btn) => {
+      root38.querySelectorAll("[data-rel]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.relationId = btn.dataset.rel;
-          state36.results = null;
+          state37.relationId = btn.dataset.rel;
+          state37.results = null;
           mtQuiz.active = false;
-          render36();
+          render37();
         });
       });
-      const generateBtn = root37.querySelector('[data-testid="mt-generate"]');
+      const generateBtn = root38.querySelector('[data-testid="mt-generate"]');
       if (generateBtn) {
         generateBtn.addEventListener("click", () => {
           const ex = getExample();
           const rel = getRelation();
-          state36.results = generateMrTests(ex, rel, 8);
-          const resultsEl = root37.querySelector('[data-testid="mt-results"]');
-          if (resultsEl) resultsEl.innerHTML = renderResults(state36.results);
+          state37.results = generateMrTests(ex, rel, 8);
+          const resultsEl = root38.querySelector('[data-testid="mt-results"]');
+          if (resultsEl) resultsEl.innerHTML = renderResults(state37.results);
         });
       }
-      (_a = root37.querySelector('[data-testid="mt-bridge-groupth"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root38.querySelector('[data-testid="mt-bridge-groupth"]')) == null ? void 0 : _a.addEventListener("click", () => {
         scrollToSection("section-groupth");
       });
-      const mqStart = root37.querySelector('[data-testid="mt-quiz-start"]');
+      const mqStart = root38.querySelector('[data-testid="mt-quiz-start"]');
       if (mqStart) {
         mqStart.addEventListener("click", () => {
           const ex = getExample();
@@ -21028,26 +21110,26 @@ function linearSearch(arr, target) {
           mtQuiz.active = true;
           mtQuiz.phase = "question";
           mtQuiz.answer = "";
-          render36();
+          render37();
         });
       }
-      const mqClose = root37.querySelector('[data-testid="mt-quiz-close"]');
+      const mqClose = root38.querySelector('[data-testid="mt-quiz-close"]');
       if (mqClose) {
         mqClose.addEventListener("click", () => {
           mtQuiz.active = false;
-          render36();
+          render37();
         });
       }
-      const mqCheck = root37.querySelector('[data-testid="mt-quiz-check"]');
+      const mqCheck = root38.querySelector('[data-testid="mt-quiz-check"]');
       if (mqCheck) {
         mqCheck.addEventListener("click", () => {
-          const inp = root37.querySelector('[data-testid="mt-quiz-input"]');
+          const inp = root38.querySelector('[data-testid="mt-quiz-input"]');
           mtQuiz.answer = inp ? inp.value : "";
           mtQuiz.phase = "graded";
-          render36();
+          render37();
         });
       }
-      const mqReset = root37.querySelector('[data-testid="mt-quiz-reset"]');
+      const mqReset = root38.querySelector('[data-testid="mt-quiz-reset"]');
       if (mqReset) {
         mqReset.addEventListener("click", () => {
           const ex = getExample();
@@ -21055,12 +21137,12 @@ function linearSearch(arr, target) {
           mtQuiz.autoResults = generateMrTests(ex, rel, 8);
           mtQuiz.phase = "question";
           mtQuiz.answer = "";
-          render36();
+          render37();
         });
       }
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/ExploratoryTestingExplorer.js
@@ -21105,10 +21187,10 @@ function linearSearch(arr, target) {
     }
   }
   function createExploratoryTestingExplorer() {
-    const root37 = document.createElement("div");
-    root37.dataset.testid = "et-explorer";
+    const root38 = document.createElement("div");
+    root38.dataset.testid = "et-explorer";
     const saved = loadSaved10();
-    let state36 = saved != null ? saved : {
+    let state37 = saved != null ? saved : {
       charter: "",
       timebox: 60,
       sfdipot: [],
@@ -21117,20 +21199,20 @@ function linearSearch(arr, target) {
       timerRemaining: 60 * 60,
       timerEnd: null
     };
-    state36.timerRunning = false;
-    state36.timerEnd = null;
-    if (!state36.timerRemaining || state36.timerRemaining <= 0) {
-      state36.timerRemaining = (state36.timebox || 60) * 60;
+    state37.timerRunning = false;
+    state37.timerEnd = null;
+    if (!state37.timerRemaining || state37.timerRemaining <= 0) {
+      state37.timerRemaining = (state37.timebox || 60) * 60;
     }
     let timerInterval = null;
     function save() {
       persist10({
-        charter: state36.charter,
-        timebox: state36.timebox,
-        sfdipot: state36.sfdipot,
-        notes: state36.notes,
+        charter: state37.charter,
+        timebox: state37.timebox,
+        sfdipot: state37.sfdipot,
+        notes: state37.notes,
         timerRunning: false,
-        timerRemaining: state36.timerRemaining,
+        timerRemaining: state37.timerRemaining,
         timerEnd: null
       });
     }
@@ -21140,64 +21222,64 @@ function linearSearch(arr, target) {
       return `${m}:${s}`;
     }
     function tickTimer() {
-      if (!state36.timerRunning) return;
+      if (!state37.timerRunning) return;
       const now = Date.now();
-      state36.timerRemaining = Math.max(0, Math.round((state36.timerEnd - now) / 1e3));
-      const display = root37.querySelector('[data-testid="et-timer-display"]');
-      if (display) display.textContent = formatTime(state36.timerRemaining);
-      const bar = root37.querySelector('[data-testid="et-timer-bar"]');
+      state37.timerRemaining = Math.max(0, Math.round((state37.timerEnd - now) / 1e3));
+      const display = root38.querySelector('[data-testid="et-timer-display"]');
+      if (display) display.textContent = formatTime(state37.timerRemaining);
+      const bar = root38.querySelector('[data-testid="et-timer-bar"]');
       if (bar) {
-        const total = (state36.timebox || 60) * 60;
-        bar.style.width = `${state36.timerRemaining / total * 100}%`;
-        bar.className = `et-timer-bar${state36.timerRemaining < 60 ? " et-timer-bar--warn" : ""}`;
+        const total = (state37.timebox || 60) * 60;
+        bar.style.width = `${state37.timerRemaining / total * 100}%`;
+        bar.className = `et-timer-bar${state37.timerRemaining < 60 ? " et-timer-bar--warn" : ""}`;
       }
-      if (state36.timerRemaining <= 0) {
+      if (state37.timerRemaining <= 0) {
         stopTimer();
-        const display2 = root37.querySelector('[data-testid="et-timer-display"]');
+        const display2 = root38.querySelector('[data-testid="et-timer-display"]');
         if (display2) display2.textContent = t("et.timer.done");
       }
     }
     function startTimer() {
-      if (state36.timerRunning) return;
-      if (state36.timerRemaining <= 0) state36.timerRemaining = (state36.timebox || 60) * 60;
-      state36.timerRunning = true;
-      state36.timerEnd = Date.now() + state36.timerRemaining * 1e3;
-      const startBtn = root37.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root37.querySelector('[data-testid="et-timer-stop"]');
+      if (state37.timerRunning) return;
+      if (state37.timerRemaining <= 0) state37.timerRemaining = (state37.timebox || 60) * 60;
+      state37.timerRunning = true;
+      state37.timerEnd = Date.now() + state37.timerRemaining * 1e3;
+      const startBtn = root38.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root38.querySelector('[data-testid="et-timer-stop"]');
       if (startBtn) startBtn.disabled = true;
       if (stopBtn) stopBtn.disabled = false;
       timerInterval = setInterval(tickTimer, 500);
     }
     function stopTimer() {
-      state36.timerRunning = false;
-      state36.timerEnd = null;
+      state37.timerRunning = false;
+      state37.timerEnd = null;
       if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
       }
-      const startBtn = root37.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root37.querySelector('[data-testid="et-timer-stop"]');
+      const startBtn = root38.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root38.querySelector('[data-testid="et-timer-stop"]');
       if (startBtn) startBtn.disabled = false;
       if (stopBtn) stopBtn.disabled = true;
     }
     function resetTimer() {
       stopTimer();
-      state36.timerRemaining = (state36.timebox || 60) * 60;
-      const display = root37.querySelector('[data-testid="et-timer-display"]');
-      if (display) display.textContent = formatTime(state36.timerRemaining);
-      const bar = root37.querySelector('[data-testid="et-timer-bar"]');
+      state37.timerRemaining = (state37.timebox || 60) * 60;
+      const display = root38.querySelector('[data-testid="et-timer-display"]');
+      if (display) display.textContent = formatTime(state37.timerRemaining);
+      const bar = root38.querySelector('[data-testid="et-timer-bar"]');
       if (bar) {
         bar.style.width = "100%";
         bar.className = "et-timer-bar";
       }
       save();
     }
-    function render36() {
+    function render37() {
       const isZh = getLocale() === "zh";
-      const total = (state36.timebox || 60) * 60;
-      const barPct = state36.timerRemaining / total * 100;
-      const notesByType = (type) => state36.notes.filter((n) => n.type === type);
-      root37.innerHTML = `
+      const total = (state37.timebox || 60) * 60;
+      const barPct = state37.timerRemaining / total * 100;
+      const notesByType = (type) => state37.notes.filter((n) => n.type === type);
+      root38.innerHTML = `
       <div class="et-layout">
 
         <!-- LEFT: Charter + SFDIPOT -->
@@ -21210,7 +21292,7 @@ function linearSearch(arr, target) {
               data-testid="et-charter"
               rows="4"
               placeholder="${t("et.charter.placeholder")}"
-            >${escapeHtml13(state36.charter)}</textarea>
+            >${escapeHtml13(state37.charter)}</textarea>
           </section>
 
           <section class="et-card" data-testid="et-sfdipot-section">
@@ -21218,10 +21300,10 @@ function linearSearch(arr, target) {
             <p class="et-card-hint">${t("et.sfdipot.hint")}</p>
             <div class="et-sfdipot-list">
               ${SFDIPOT_ITEMS.map((item) => `
-                <label class="et-sfdipot-item${state36.sfdipot.includes(item.id) ? " checked" : ""}"
+                <label class="et-sfdipot-item${state37.sfdipot.includes(item.id) ? " checked" : ""}"
                   data-testid="et-sfdipot-${item.id}">
                   <input type="checkbox" value="${item.id}"
-                    ${state36.sfdipot.includes(item.id) ? "checked" : ""}
+                    ${state37.sfdipot.includes(item.id) ? "checked" : ""}
                     data-sfdipot="${item.id}">
                   <span class="et-sfdipot-letter">${item.id.replace("2", "")}</span>
                   <span class="et-sfdipot-desc">
@@ -21252,16 +21334,16 @@ function linearSearch(arr, target) {
             <h3 class="et-card-title">${t("et.timer.title")}</h3>
             <div class="et-timebox-row">
               <label for="et-timebox">${t("et.timer.timebox")}</label>
-              <input id="et-timebox" type="number" min="1" max="240" value="${state36.timebox}"
+              <input id="et-timebox" type="number" min="1" max="240" value="${state37.timebox}"
                 class="et-timebox-input" data-testid="et-timebox-input">
               <span>${t("et.timer.minutes")}</span>
             </div>
             <div class="et-timer-track">
-              <div class="et-timer-bar${state36.timerRemaining < 60 ? " et-timer-bar--warn" : ""}"
+              <div class="et-timer-bar${state37.timerRemaining < 60 ? " et-timer-bar--warn" : ""}"
                 data-testid="et-timer-bar"
                 style="width:${barPct}%"></div>
             </div>
-            <div class="et-timer-display" data-testid="et-timer-display">${formatTime(state36.timerRemaining)}</div>
+            <div class="et-timer-display" data-testid="et-timer-display">${formatTime(state37.timerRemaining)}</div>
             <div class="et-timer-btns">
               <button type="button" class="et-timer-btn et-timer-btn--start"
                 data-testid="et-timer-start">${t("et.timer.start")}</button>
@@ -21294,7 +21376,7 @@ function linearSearch(arr, target) {
             </div>
 
             <div class="et-notes-list" data-testid="et-notes-list">
-              ${state36.notes.length === 0 ? `<p class="et-notes-empty">${t("et.notes.empty")}</p>` : state36.notes.map((note, i) => `
+              ${state37.notes.length === 0 ? `<p class="et-notes-empty">${t("et.notes.empty")}</p>` : state37.notes.map((note, i) => `
                   <div class="et-note-item et-note-item--${note.type}" data-testid="et-note-${i}">
                     <span class="et-note-badge et-note-badge--${note.type}">${t(`et.note.${note.type}`)}</span>
                     <span class="et-note-body">${escapeHtml13(note.text)}</span>
@@ -21305,7 +21387,7 @@ function linearSearch(arr, target) {
                 `).join("")}
             </div>
 
-            ${state36.notes.length > 0 ? `
+            ${state37.notes.length > 0 ? `
               <div class="et-notes-actions">
                 <button type="button" class="et-clear-btn" data-testid="et-clear-notes">
                   ${t("et.notes.clear")}
@@ -21320,26 +21402,26 @@ function linearSearch(arr, target) {
 
       </div>
     `;
-      bindEvents36();
+      bindEvents37();
     }
     function addNote() {
-      const typeEl = root37.querySelector('[data-testid="et-note-type"]');
-      const textEl = root37.querySelector('[data-testid="et-note-text"]');
+      const typeEl = root38.querySelector('[data-testid="et-note-type"]');
+      const textEl = root38.querySelector('[data-testid="et-note-text"]');
       if (!typeEl || !textEl) return;
       const text = textEl.value.trim();
       if (!text) return;
       const now = /* @__PURE__ */ new Date();
       const time = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-      state36.notes.unshift({ type: typeEl.value, text, time });
+      state37.notes.unshift({ type: typeEl.value, text, time });
       save();
-      render36();
-      const newText = root37.querySelector('[data-testid="et-note-text"]');
+      render37();
+      const newText = root38.querySelector('[data-testid="et-note-text"]');
       if (newText) newText.focus();
     }
     function exportNotes() {
-      const lines = [`# Exploratory Test Session`, `Charter: ${state36.charter}`, ""];
+      const lines = [`# Exploratory Test Session`, `Charter: ${state37.charter}`, ""];
       for (const ty of NOTE_TYPES) {
-        const items = state36.notes.filter((n) => n.type === ty);
+        const items = state37.notes.filter((n) => n.type === ty);
         if (items.length) {
           lines.push(`## ${ty.toUpperCase()}`);
           items.forEach((n) => lines.push(`- [${n.time}] ${n.text}`));
@@ -21352,45 +21434,45 @@ function linearSearch(arr, target) {
       a.download = "session-notes.md";
       a.click();
     }
-    function bindEvents36() {
-      const charterEl = root37.querySelector('[data-testid="et-charter"]');
+    function bindEvents37() {
+      const charterEl = root38.querySelector('[data-testid="et-charter"]');
       if (charterEl) {
         charterEl.addEventListener("input", () => {
-          state36.charter = charterEl.value;
+          state37.charter = charterEl.value;
           save();
         });
       }
-      root37.querySelectorAll("[data-sfdipot]").forEach((cb) => {
+      root38.querySelectorAll("[data-sfdipot]").forEach((cb) => {
         cb.addEventListener("change", () => {
           if (cb.checked) {
-            if (!state36.sfdipot.includes(cb.value)) state36.sfdipot.push(cb.value);
+            if (!state37.sfdipot.includes(cb.value)) state37.sfdipot.push(cb.value);
           } else {
-            state36.sfdipot = state36.sfdipot.filter((v) => v !== cb.value);
+            state37.sfdipot = state37.sfdipot.filter((v) => v !== cb.value);
           }
           const label = cb.closest("label");
           if (label) label.classList.toggle("checked", cb.checked);
           save();
         });
       });
-      const timeboxInput = root37.querySelector('[data-testid="et-timebox-input"]');
+      const timeboxInput = root38.querySelector('[data-testid="et-timebox-input"]');
       if (timeboxInput) {
         timeboxInput.addEventListener("change", () => {
           const v = parseInt(timeboxInput.value, 10);
           if (v > 0) {
-            state36.timebox = v;
+            state37.timebox = v;
             resetTimer();
           }
         });
       }
-      const startBtn = root37.querySelector('[data-testid="et-timer-start"]');
-      const stopBtn = root37.querySelector('[data-testid="et-timer-stop"]');
-      const resetBtn = root37.querySelector('[data-testid="et-timer-reset"]');
+      const startBtn = root38.querySelector('[data-testid="et-timer-start"]');
+      const stopBtn = root38.querySelector('[data-testid="et-timer-stop"]');
+      const resetBtn = root38.querySelector('[data-testid="et-timer-reset"]');
       if (startBtn) startBtn.addEventListener("click", startTimer);
       if (stopBtn) stopBtn.addEventListener("click", stopTimer);
       if (resetBtn) resetBtn.addEventListener("click", resetTimer);
-      const addBtn = root37.querySelector('[data-testid="et-note-add"]');
+      const addBtn = root38.querySelector('[data-testid="et-note-add"]');
       if (addBtn) addBtn.addEventListener("click", addNote);
-      const textEl = root37.querySelector('[data-testid="et-note-text"]');
+      const textEl = root38.querySelector('[data-testid="et-note-text"]');
       if (textEl) {
         textEl.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
@@ -21399,29 +21481,29 @@ function linearSearch(arr, target) {
           }
         });
       }
-      root37.querySelectorAll("[data-delete]").forEach((btn) => {
+      root38.querySelectorAll("[data-delete]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const idx = parseInt(btn.dataset.delete, 10);
-          state36.notes.splice(idx, 1);
+          state37.notes.splice(idx, 1);
           save();
-          render36();
+          render37();
         });
       });
-      const clearBtn = root37.querySelector('[data-testid="et-clear-notes"]');
+      const clearBtn = root38.querySelector('[data-testid="et-clear-notes"]');
       if (clearBtn) {
         clearBtn.addEventListener("click", () => {
           if (window.confirm(t("et.notes.confirm.clear"))) {
-            state36.notes = [];
+            state37.notes = [];
             save();
-            render36();
+            render37();
           }
         });
       }
-      const exportBtn = root37.querySelector('[data-testid="et-export-notes"]');
+      const exportBtn = root38.querySelector('[data-testid="et-export-notes"]');
       if (exportBtn) exportBtn.addEventListener("click", exportNotes);
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/TestDoublesExplorer.js
@@ -21997,9 +22079,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     }
   ];
   function createTestDoublesExplorer() {
-    const root37 = document.createElement("div");
-    root37.dataset.testid = "td-explorer";
-    let state36 = {
+    const root38 = document.createElement("div");
+    root38.dataset.testid = "td-explorer";
+    let state37 = {
       typeId: "dummy",
       scenarioId: "order",
       result: null
@@ -22055,16 +22137,16 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     }
     function getType() {
       var _a;
-      return (_a = DOUBLE_TYPES.find((d) => d.id === state36.typeId)) != null ? _a : DOUBLE_TYPES[0];
+      return (_a = DOUBLE_TYPES.find((d) => d.id === state37.typeId)) != null ? _a : DOUBLE_TYPES[0];
     }
     function getScenario() {
       var _a;
       const ty = getType();
-      return (_a = ty.scenarios.find((s) => s.id === state36.scenarioId)) != null ? _a : ty.scenarios[0];
+      return (_a = ty.scenarios.find((s) => s.id === state37.scenarioId)) != null ? _a : ty.scenarios[0];
     }
     function getCode() {
       var _a;
-      return (_a = SCENARIO_CODE[`${state36.typeId}/${state36.scenarioId}`]) != null ? _a : {};
+      return (_a = SCENARIO_CODE[`${state37.typeId}/${state37.scenarioId}`]) != null ? _a : {};
     }
     function formatArg(v) {
       if (v === null || v === void 0) return String(v);
@@ -22120,13 +22202,13 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
     `;
     }
-    function render36() {
+    function render37() {
       var _a, _b, _c;
       const isZh = getLocale() === "zh";
       const ty = getType();
       const code = getCode();
       const scen = getScenario();
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="td-layout">
         <!-- Sidebar: double types -->
         <div class="td-sidebar">
@@ -22134,7 +22216,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           <div class="td-type-list" data-testid="td-types">
             ${DOUBLE_TYPES.map((d) => `
               <button type="button"
-                class="td-type-btn${d.id === state36.typeId ? " active" : ""}"
+                class="td-type-btn${d.id === state37.typeId ? " active" : ""}"
                 data-testid="td-type-${d.id}"
                 data-type="${d.id}"
                 style="--td-color:${d.color}"
@@ -22146,14 +22228,14 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           </div>
 
           <div class="td-type-info" data-testid="td-type-info">
-            <p class="td-type-def">${t(`td.def.${state36.typeId}`)}</p>
-            <p class="td-type-when"><strong>${t("td.whenToUse")}</strong> ${t(`td.when.${state36.typeId}`)}</p>
+            <p class="td-type-def">${t(`td.def.${state37.typeId}`)}</p>
+            <p class="td-type-when"><strong>${t("td.whenToUse")}</strong> ${t(`td.when.${state37.typeId}`)}</p>
           </div>
 
           <div class="td-comparison">
             <h4 class="td-comparison-title">${t("td.comparison.title")}</h4>
             ${DOUBLE_TYPES.map((d) => `
-              <div class="td-comparison-row${d.id === state36.typeId ? " active" : ""}">
+              <div class="td-comparison-row${d.id === state37.typeId ? " active" : ""}">
                 <span class="td-comparison-dot" style="background:${d.color}"></span>
                 <span class="td-comparison-name">${t(`td.type.${d.id}`)}</span>
                 <span class="td-comparison-trait">${t(`td.trait.${d.id}`)}</span>
@@ -22169,10 +22251,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
             <span class="td-scenario-label">${t("td.scenarios.label")}</span>
             ${ty.scenarios.map((s) => `
               <button type="button"
-                class="td-scenario-btn${s.id === state36.scenarioId ? " active" : ""}"
+                class="td-scenario-btn${s.id === state37.scenarioId ? " active" : ""}"
                 data-testid="td-scenario-${s.id}"
                 data-scenario="${s.id}"
-              >${t(`td.scenario.${state36.typeId}.${s.id}`)}</button>
+              >${t(`td.scenario.${state37.typeId}.${s.id}`)}</button>
             `).join("")}
           </div>
 
@@ -22183,7 +22265,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
               <pre class="td-pre"><code>${escapeHtml14((_a = code.sutCode) != null ? _a : "")}</code></pre>
             </div>
             <div class="td-code-panel">
-              <div class="td-code-header td-code-header--double">${t(`td.type.${state36.typeId}`)}</div>
+              <div class="td-code-header td-code-header--double">${t(`td.type.${state37.typeId}`)}</div>
               <pre class="td-pre"><code>${escapeHtml14((_b = code.doubleCode) != null ? _b : "")}</code></pre>
             </div>
             <div class="td-code-panel">
@@ -22204,46 +22286,46 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
           <!-- Results -->
           <div class="td-result-panel" data-testid="td-result">
-            ${state36.result ? renderResult3(state36.result) : `<p class="td-hint">${t("td.hint")}</p>`}
+            ${state37.result ? renderResult3(state37.result) : `<p class="td-hint">${t("td.hint")}</p>`}
           </div>
         </div>
       </div>
     `;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
-      root37.querySelectorAll("[data-type]").forEach((btn) => {
+    function bindEvents37() {
+      root38.querySelectorAll("[data-type]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.typeId = btn.dataset.type;
+          state37.typeId = btn.dataset.type;
           const ty = getType();
-          state36.scenarioId = ty.scenarios[0].id;
-          state36.result = null;
-          render36();
+          state37.scenarioId = ty.scenarios[0].id;
+          state37.result = null;
+          render37();
         });
       });
-      root37.querySelectorAll("[data-scenario]").forEach((btn) => {
+      root38.querySelectorAll("[data-scenario]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          state36.scenarioId = btn.dataset.scenario;
-          state36.result = null;
-          render36();
+          state37.scenarioId = btn.dataset.scenario;
+          state37.result = null;
+          render37();
         });
       });
-      const runBtn = root37.querySelector('[data-testid="td-run"]');
+      const runBtn = root38.querySelector('[data-testid="td-run"]');
       if (runBtn) {
         runBtn.addEventListener("click", () => {
           try {
-            state36.result = getScenario().run();
+            state37.result = getScenario().run();
           } catch (e) {
-            state36.result = {
+            state37.result = {
               callLog: [],
               assertions: [{ desc: `Error: ${e.message}`, passed: false }]
             };
           }
-          const panel = root37.querySelector('[data-testid="td-result"]');
-          if (panel) panel.innerHTML = renderResult3(state36.result);
+          const panel = root38.querySelector('[data-testid="td-result"]');
+          if (panel) panel.innerHTML = renderResult3(state37.result);
         });
       }
-      const tqStart = root37.querySelector('[data-testid="td-quiz-start"]');
+      const tqStart = root38.querySelector('[data-testid="td-quiz-start"]');
       if (tqStart) {
         tqStart.addEventListener("click", () => {
           tdQuizScenarioIdx = Math.floor(Math.random() * TD_QUIZ_SCENARIOS.length);
@@ -22251,47 +22333,47 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           tdQuiz.phase = "question";
           tdQuiz.selected = "";
           tdQuiz.result = null;
-          render36();
+          render37();
         });
       }
-      const tqClose = root37.querySelector('[data-testid="td-quiz-close"]');
+      const tqClose = root38.querySelector('[data-testid="td-quiz-close"]');
       if (tqClose) {
         tqClose.addEventListener("click", () => {
           tdQuiz.active = false;
-          render36();
+          render37();
         });
       }
-      root37.querySelectorAll("[data-quiz-choice]").forEach((btn) => {
+      root38.querySelectorAll("[data-quiz-choice]").forEach((btn) => {
         btn.addEventListener("click", () => {
           tdQuiz.selected = btn.dataset.quizChoice;
-          const panel = root37.querySelector('[data-testid="td-quiz-panel"]');
+          const panel = root38.querySelector('[data-testid="td-quiz-panel"]');
           if (panel) {
-            root37.querySelectorAll("[data-quiz-choice]").forEach((b) => b.classList.toggle("active", b.dataset.quizChoice === tdQuiz.selected));
-            const checkBtn = root37.querySelector('[data-testid="td-quiz-check"]');
+            root38.querySelectorAll("[data-quiz-choice]").forEach((b) => b.classList.toggle("active", b.dataset.quizChoice === tdQuiz.selected));
+            const checkBtn = root38.querySelector('[data-testid="td-quiz-check"]');
             if (checkBtn) checkBtn.disabled = false;
           }
         });
       });
-      const tqCheck = root37.querySelector('[data-testid="td-quiz-check"]');
+      const tqCheck = root38.querySelector('[data-testid="td-quiz-check"]');
       if (tqCheck) {
         tqCheck.addEventListener("click", () => {
           tdQuiz.phase = "graded";
-          render36();
+          render37();
         });
       }
-      const tqReset = root37.querySelector('[data-testid="td-quiz-reset"]');
+      const tqReset = root38.querySelector('[data-testid="td-quiz-reset"]');
       if (tqReset) {
         tqReset.addEventListener("click", () => {
           tdQuizScenarioIdx = (tdQuizScenarioIdx + 1) % TD_QUIZ_SCENARIOS.length;
           tdQuiz.phase = "question";
           tdQuiz.selected = "";
           tdQuiz.result = null;
-          render36();
+          render37();
         });
       }
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/DefectCostExplorer.js
@@ -22351,11 +22433,11 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createDefectCostExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "dce-root";
-    root37.dataset.testid = "defect-cost-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "dce-root";
+    root38.dataset.testid = "defect-cost-explorer";
     let selectedId = null;
-    function render36() {
+    function render37() {
       const isZh = getLocale() === "zh";
       const selected = PHASES.find((p) => p.id === selectedId) || null;
       const bars = PHASES.map((phase, i) => {
@@ -22392,7 +22474,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>
     ` : `<p class="dce-hint" data-testid="dce-hint">${t("dce.hint")}</p>`;
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="dce-header">
         <h3 class="dce-title">${t("dce.title")}</h3>
         <p class="dce-subtitle">${t("dce.subtitle")}</p>
@@ -22408,10 +22490,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       <div class="dce-disclaimer">${t("dce.disclaimer")}</div>
       ${detailHtml}
     `;
-      root37.querySelectorAll("[data-dce-phase]").forEach((el) => {
+      root38.querySelectorAll("[data-dce-phase]").forEach((el) => {
         const select = () => {
           selectedId = selectedId === el.dataset.dcePhase ? null : el.dataset.dcePhase;
-          render36();
+          render37();
         };
         el.addEventListener("click", select);
         el.addEventListener("keydown", (e) => {
@@ -22422,8 +22504,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         });
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/VModelExplorer.js
@@ -22466,11 +22548,11 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createVModelExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "vme-root";
-    root37.dataset.testid = "vmodel-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "vme-root";
+    root38.dataset.testid = "vmodel-explorer";
     let selectedId = null;
-    function render36() {
+    function render37() {
       const isZh = getLocale() === "zh";
       const selected = V_PAIRS.find((p) => p.id === selectedId) || (selectedId === "implementation" ? IMPL : null);
       const rows = V_PAIRS.map((pair, i) => {
@@ -22538,7 +22620,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         <p class="vme-detail-desc">${escapeHtml16(isZh ? t("vme.desc.implementation") : t("vme.desc.implementation.en"))}</p>
       </div>
     ` : `<p class="vme-hint" data-testid="vme-hint">${t("vme.hint")}</p>`;
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="vme-header">
         <h3 class="vme-title">${t("vme.title")}</h3>
         <p class="vme-subtitle">${t("vme.subtitle")}</p>
@@ -22561,15 +22643,15 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
       ${detailHtml}
     `;
-      root37.querySelectorAll("[data-vme-id]").forEach((btn) => {
+      root38.querySelectorAll("[data-vme-id]").forEach((btn) => {
         btn.addEventListener("click", () => {
           selectedId = selectedId === btn.dataset.vmeId ? null : btn.dataset.vmeId;
-          render36();
+          render37();
         });
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/PyramidAdjusterExplorer.js
@@ -22604,9 +22686,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
   function createPyramidAdjusterExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "pya-root";
-    root37.dataset.testid = "pyramid-adjuster";
+    const root38 = document.createElement("div");
+    root38.className = "pya-root";
+    root38.dataset.testid = "pyramid-adjuster";
     let unit = 70;
     let integration = 20;
     let e2e = 10;
@@ -22640,7 +22722,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       const sum = unit + integration + e2e;
       if (sum !== 100) unit += 100 - sum;
     }
-    function render36() {
+    function render37() {
       const isZh = getLocale() === "zh";
       const traits = computeTraits(unit, integration, e2e);
       const pyramidLayers = LAYERS.map((layer) => {
@@ -22692,7 +22774,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         ${escapeHtml17(isZh ? t(`pya.preset.${p.id}`) : t(`pya.preset.${p.id}.en`))}
       </button>
     `).join("");
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="pya-header">
         <h3 class="pya-title">${t("pya.title")}</h3>
         <p class="pya-subtitle">${t("pya.subtitle")}</p>
@@ -22714,25 +22796,25 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
       </div>
       <p class="pya-disclaimer">${t("pya.disclaimer")}</p>
     `;
-      root37.querySelectorAll("[data-pya-layer]").forEach((input) => {
+      root38.querySelectorAll("[data-pya-layer]").forEach((input) => {
         input.addEventListener("input", () => {
           adjustRatios(input.dataset.pyaLayer, Number(input.value));
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-pya-preset]").forEach((btn) => {
+      root38.querySelectorAll("[data-pya-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const p = PRESETS.find((x) => x.id === btn.dataset.pyaPreset);
           if (!p) return;
           unit = p.unit;
           integration = p.integration;
           e2e = p.e2e;
-          render36();
+          render37();
         });
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/pairwise.js
@@ -22883,9 +22965,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return preset.params.map((p) => ({ id: uid(), name: p.name, values: [...p.values] }));
   }
   function createPairwiseExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "pairwise-explorer";
-    root37.dataset.testid = "pairwise-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "pairwise-explorer";
+    root38.dataset.testid = "pairwise-explorer";
     let params = freshParams(PRESETS2[1]);
     let newValueDraft = {};
     const pairwiseQuiz = { active: false, phase: "question", answer: "" };
@@ -22947,7 +23029,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         <button type="button" class="quiz-start-btn" data-testid="pairwise-quiz-check">${t("quiz.check")}</button>
       </div>`;
     }
-    function render36() {
+    function render37() {
       const { tests, exhaustive, pairCount, pairCoverage } = computeResults();
       const vp = validParams();
       const reductionPct = exhaustive > 0 && tests.length < exhaustive ? Math.round((1 - tests.length / exhaustive) * 100) : 0;
@@ -23017,7 +23099,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           <tbody>${tbodyRows}</tbody>
         </table>
       </div>` : `<p class="pairwise-empty">${t("pairwise.empty")}</p>`;
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="pairwise-params-card">
         <p class="pairwise-params-title">${t("pairwise.params.title")}</p>
         <div class="pairwise-presets">${presetBtns}</div>
@@ -23042,45 +23124,45 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="pairwise-hint">${t("pairwise.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
-      root37.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents37() {
+      root38.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           params = freshParams(PRESETS2[parseInt(btn.dataset.preset)]);
           newValueDraft = {};
-          render36();
+          render37();
         });
       });
-      root37.querySelector('[data-testid="pairwise-add-param"]').addEventListener("click", () => {
+      root38.querySelector('[data-testid="pairwise-add-param"]').addEventListener("click", () => {
         params.push({ id: uid(), name: "", values: ["A", "B"] });
-        render36();
+        render37();
       });
-      root37.querySelectorAll("[data-remove-param]").forEach((btn) => {
+      root38.querySelectorAll("[data-remove-param]").forEach((btn) => {
         btn.addEventListener("click", () => {
           params = params.filter((p) => p.id !== btn.dataset.removeParam);
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-param-name]").forEach((input) => {
+      root38.querySelectorAll("[data-param-name]").forEach((input) => {
         input.addEventListener("change", () => {
           const p = params.find((x) => x.id === input.dataset.paramName);
           if (p) {
             p.name = input.value;
-            render36();
+            render37();
           }
         });
       });
-      root37.querySelectorAll("[data-remove-val]").forEach((btn) => {
+      root38.querySelectorAll("[data-remove-val]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const p = params.find((x) => x.id === btn.dataset.removeVal);
           if (p) {
             p.values.splice(parseInt(btn.dataset.valIdx), 1);
-            render36();
+            render37();
           }
         });
       });
-      root37.querySelectorAll("[data-new-val]").forEach((input) => {
+      root38.querySelectorAll("[data-new-val]").forEach((input) => {
         input.addEventListener("input", () => {
           newValueDraft[input.dataset.newVal] = input.value;
         });
@@ -23091,36 +23173,36 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
           }
         });
       });
-      root37.querySelectorAll("[data-add-val]").forEach((btn) => {
+      root38.querySelectorAll("[data-add-val]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const input = root37.querySelector(`[data-new-val="${btn.dataset.addVal}"]`);
+          const input = root38.querySelector(`[data-new-val="${btn.dataset.addVal}"]`);
           addValue(btn.dataset.addVal, input ? input.value : "");
         });
       });
-      const qStart = root37.querySelector('[data-testid="pairwise-quiz-start"]');
+      const qStart = root38.querySelector('[data-testid="pairwise-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         pairwiseQuiz.active = true;
         pairwiseQuiz.phase = "question";
         pairwiseQuiz.answer = "";
-        render36();
+        render37();
       });
-      const qClose = root37.querySelector('[data-testid="pairwise-quiz-close"]');
+      const qClose = root38.querySelector('[data-testid="pairwise-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         pairwiseQuiz.active = false;
-        render36();
+        render37();
       });
-      const qCheck = root37.querySelector('[data-testid="pairwise-quiz-check"]');
+      const qCheck = root38.querySelector('[data-testid="pairwise-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root37.querySelector('[data-testid="pairwise-quiz-input"]');
+        const inp = root38.querySelector('[data-testid="pairwise-quiz-input"]');
         pairwiseQuiz.answer = inp ? inp.value : "";
         pairwiseQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      const qReset = root37.querySelector('[data-testid="pairwise-quiz-reset"]');
+      const qReset = root38.querySelector('[data-testid="pairwise-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         pairwiseQuiz.phase = "question";
         pairwiseQuiz.answer = "";
-        render36();
+        render37();
       });
     }
     function addValue(paramId, raw) {
@@ -23131,10 +23213,10 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         p.values.push(val);
       }
       delete newValueDraft[paramId];
-      render36();
+      render37();
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/CauseEffectExplorer.js
@@ -23146,9 +23228,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
   function createCauseEffectExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "ceg-explorer";
-    root37.dataset.testid = "ceg-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "ceg-explorer";
+    root38.dataset.testid = "ceg-explorer";
     let causes = [
       { id: uid2(), name: "C1", label: "User logged in" },
       { id: uid2(), name: "C2", label: "Cart not empty" },
@@ -23298,7 +23380,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>`;
     }
-    function render36() {
+    function render37() {
       const { validCauses, validEffects, rows } = buildTable();
       const activeCount = rows.filter((r) => r.active).length;
       const causeRows = causes.map((c, i) => `
@@ -23372,7 +23454,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         total: 1,
         items: [{ q: t("ceg.rows.active", { n: activeCount }), a: String(activeCount), ok: true }]
       }) : null;
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="ceg-editors">
         <div class="ceg-editor-card">
           <p class="ceg-editor-title">${t("ceg.causes.title")}</p>
@@ -23408,110 +23490,110 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="ceg-hint">${t("ceg.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
-      root37.querySelector('[data-testid="ceg-cause-add"]').addEventListener("click", () => {
+    function bindEvents37() {
+      root38.querySelector('[data-testid="ceg-cause-add"]').addEventListener("click", () => {
         const n = causes.length + 1;
         causes.push({ id: uid2(), name: `C${n}`, label: "" });
-        render36();
+        render37();
       });
-      root37.querySelectorAll("[data-remove-cause]").forEach((btn) => {
+      root38.querySelectorAll("[data-remove-cause]").forEach((btn) => {
         btn.addEventListener("click", () => {
           causes = causes.filter((c) => c.id !== btn.dataset.removeCause);
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-cause-label]").forEach((input) => {
+      root38.querySelectorAll("[data-cause-label]").forEach((input) => {
         input.addEventListener("change", () => {
           const c = causes.find((x) => x.id === input.dataset.causeLabel);
           if (c) {
             c.label = input.value;
-            render36();
+            render37();
           }
         });
       });
-      root37.querySelector('[data-testid="ceg-effect-add"]').addEventListener("click", () => {
+      root38.querySelector('[data-testid="ceg-effect-add"]').addEventListener("click", () => {
         const n = effects.length + 1;
         effects.push({ id: uid2(), name: `E${n}`, label: "", formula: "" });
-        render36();
+        render37();
       });
-      root37.querySelectorAll("[data-remove-effect]").forEach((btn) => {
+      root38.querySelectorAll("[data-remove-effect]").forEach((btn) => {
         btn.addEventListener("click", () => {
           effects = effects.filter((e) => e.id !== btn.dataset.removeEffect);
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-effect-label]").forEach((input) => {
+      root38.querySelectorAll("[data-effect-label]").forEach((input) => {
         input.addEventListener("change", () => {
           const e = effects.find((x) => x.id === input.dataset.effectLabel);
           if (e) {
             e.label = input.value;
-            render36();
+            render37();
           }
         });
       });
-      root37.querySelectorAll("[data-effect-formula]").forEach((input) => {
+      root38.querySelectorAll("[data-effect-formula]").forEach((input) => {
         input.addEventListener("input", () => {
           const e = effects.find((x) => x.id === input.dataset.effectFormula);
           if (e) {
             e.formula = input.value;
-            render36();
+            render37();
           }
         });
       });
-      const qStart = root37.querySelector('[data-testid="ceg-quiz-start"]');
+      const qStart = root38.querySelector('[data-testid="ceg-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         cegQuiz.active = true;
         cegQuiz.phase = "question";
         cegQuiz.answer = "";
-        render36();
+        render37();
       });
-      const qClose = root37.querySelector('[data-testid="ceg-quiz-close"]');
+      const qClose = root38.querySelector('[data-testid="ceg-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         cegQuiz.active = false;
-        render36();
+        render37();
       });
-      const qCheck = root37.querySelector('[data-testid="ceg-quiz-check"]');
+      const qCheck = root38.querySelector('[data-testid="ceg-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root37.querySelector('[data-testid="ceg-quiz-input"]');
+        const inp = root38.querySelector('[data-testid="ceg-quiz-input"]');
         cegQuiz.answer = inp ? inp.value : "";
         cegQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      const qReset = root37.querySelector('[data-testid="ceg-quiz-reset"]');
+      const qReset = root38.querySelector('[data-testid="ceg-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         cegQuiz.phase = "question";
         cegQuiz.answer = "";
-        render36();
+        render37();
       });
-      const lrStart = root37.querySelector('[data-testid="ceg-lab-reflect-start"]');
+      const lrStart = root38.querySelector('[data-testid="ceg-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         cegLabReflect.active = true;
-        render36();
+        render37();
       });
-      const lrClose = root37.querySelector('[data-testid="ceg-lab-reflect-close"]');
+      const lrClose = root38.querySelector('[data-testid="ceg-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root37.querySelector('[data-testid="ceg-lab-reflect-a1"]');
-        const a2el = root37.querySelector('[data-testid="ceg-lab-reflect-a2"]');
+        const a1el = root38.querySelector('[data-testid="ceg-lab-reflect-a1"]');
+        const a2el = root38.querySelector('[data-testid="ceg-lab-reflect-a2"]');
         if (a1el) cegLabReflect.a1 = a1el.value;
         if (a2el) cegLabReflect.a2 = a2el.value;
         cegLabReflect.active = false;
-        render36();
+        render37();
       });
-      const lrA1 = root37.querySelector('[data-testid="ceg-lab-reflect-a1"]');
+      const lrA1 = root38.querySelector('[data-testid="ceg-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         cegLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root37.querySelector('[data-testid="ceg-lab-reflect-a2"]');
+      const lrA2 = root38.querySelector('[data-testid="ceg-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         cegLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root37.querySelector('[data-testid="ceg-lab-reflect-share"]');
+      const lrShare = root38.querySelector('[data-testid="ceg-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root37.querySelector('[data-testid="ceg-lab-reflect-a1"]')) == null ? void 0 : _a.value) || cegLabReflect.a1;
-        const a2 = ((_b = root37.querySelector('[data-testid="ceg-lab-reflect-a2"]')) == null ? void 0 : _b.value) || cegLabReflect.a2;
+        const a1 = ((_a = root38.querySelector('[data-testid="ceg-lab-reflect-a1"]')) == null ? void 0 : _a.value) || cegLabReflect.a1;
+        const a2 = ((_b = root38.querySelector('[data-testid="ceg-lab-reflect-a2"]')) == null ? void 0 : _b.value) || cegLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "ceg",
@@ -23534,8 +23616,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         }, 1800);
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/codeCoverage.js
@@ -23866,9 +23948,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
     maxOf3: [["1", "2", "3"], ["3", "2", "1"], ["2", "3", "1"]]
   };
   function createCodeCoverageExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "codecov-explorer";
-    root37.dataset.testid = "codecov-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "codecov-explorer";
+    root38.dataset.testid = "codecov-explorer";
     let activePresetId = COVERAGE_PRESETS[0].id;
     let testCases = DEFAULT_TESTS_BY_PRESET[activePresetId].map((args) => ({ id: uid3(), args: [...args], active: true }));
     let activeCriterion = "stmt";
@@ -23993,7 +24075,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         </div>
       </div>`;
     }
-    function render36() {
+    function render37() {
       const p = preset();
       const { results, stmt, branch, cond, mcdc } = computeCoverage3();
       const strongest = strongestCriterion(stmt, branch, cond, mcdc);
@@ -24059,7 +24141,7 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         total: 1,
         items: [{ q: `${t("codecov.crit.stmt")} ${stmt.pct}% \xB7 ${t("codecov.crit.branch")} ${branch.pct}% \xB7 ${t("codecov.crit.cond")} ${cond.pct}% \xB7 ${t("codecov.crit.mcdc")} ${mcdc.pct}%`, a: strongest, ok: true }]
       });
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="codecov-presets">
         <span class="codecov-preset-label">Program:</span>
         ${presetBtns}
@@ -24108,90 +24190,90 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
 
       <p class="codecov-hint">${t("codecov.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
-      root37.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents37() {
+      root38.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePresetId = btn.dataset.preset;
           testCases = (DEFAULT_TESTS_BY_PRESET[activePresetId] || [["0"]]).map((args) => ({ id: uid3(), args: [...args], active: true }));
           codecovQuiz.active = false;
           codecovLabReflect.active = false;
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-tc][data-arg]").forEach((input) => {
+      root38.querySelectorAll("[data-tc][data-arg]").forEach((input) => {
         input.addEventListener("change", () => {
           const tc = testCases.find((x) => x.id === input.dataset.tc);
           if (tc) {
             tc.args[parseInt(input.dataset.arg)] = input.value;
-            render36();
+            render37();
           }
         });
       });
-      root37.querySelectorAll("[data-remove-tc]").forEach((btn) => {
+      root38.querySelectorAll("[data-remove-tc]").forEach((btn) => {
         btn.addEventListener("click", () => {
           testCases = testCases.filter((tc) => tc.id !== btn.dataset.removeTc);
-          render36();
+          render37();
         });
       });
-      root37.querySelector('[data-testid="codecov-add-test"]').addEventListener("click", () => {
+      root38.querySelector('[data-testid="codecov-add-test"]').addEventListener("click", () => {
         const p = preset();
         testCases.push({ id: uid3(), args: p.params.map(() => "0"), active: true });
-        render36();
+        render37();
       });
-      const qStart = root37.querySelector('[data-testid="codecov-quiz-start"]');
+      const qStart = root38.querySelector('[data-testid="codecov-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         codecovQuiz.active = true;
         codecovQuiz.phase = "question";
         codecovQuiz.answer = "";
-        render36();
+        render37();
       });
-      const qClose = root37.querySelector('[data-testid="codecov-quiz-close"]');
+      const qClose = root38.querySelector('[data-testid="codecov-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         codecovQuiz.active = false;
-        render36();
+        render37();
       });
-      const qCheck = root37.querySelector('[data-testid="codecov-quiz-check"]');
+      const qCheck = root38.querySelector('[data-testid="codecov-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const sel = root37.querySelector('[name="codecov-quiz"]:checked');
+        const sel = root38.querySelector('[name="codecov-quiz"]:checked');
         codecovQuiz.answer = sel ? sel.value : "";
         codecovQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      const qReset = root37.querySelector('[data-testid="codecov-quiz-reset"]');
+      const qReset = root38.querySelector('[data-testid="codecov-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         codecovQuiz.phase = "question";
         codecovQuiz.answer = "";
-        render36();
+        render37();
       });
-      const lrStart = root37.querySelector('[data-testid="codecov-lab-reflect-start"]');
+      const lrStart = root38.querySelector('[data-testid="codecov-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         codecovLabReflect.active = true;
-        render36();
+        render37();
       });
-      const lrClose = root37.querySelector('[data-testid="codecov-lab-reflect-close"]');
+      const lrClose = root38.querySelector('[data-testid="codecov-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root37.querySelector('[data-testid="codecov-lab-reflect-a1"]');
-        const a2el = root37.querySelector('[data-testid="codecov-lab-reflect-a2"]');
+        const a1el = root38.querySelector('[data-testid="codecov-lab-reflect-a1"]');
+        const a2el = root38.querySelector('[data-testid="codecov-lab-reflect-a2"]');
         if (a1el) codecovLabReflect.a1 = a1el.value;
         if (a2el) codecovLabReflect.a2 = a2el.value;
         codecovLabReflect.active = false;
-        render36();
+        render37();
       });
-      const lrA1 = root37.querySelector('[data-testid="codecov-lab-reflect-a1"]');
+      const lrA1 = root38.querySelector('[data-testid="codecov-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         codecovLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root37.querySelector('[data-testid="codecov-lab-reflect-a2"]');
+      const lrA2 = root38.querySelector('[data-testid="codecov-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         codecovLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root37.querySelector('[data-testid="codecov-lab-reflect-share"]');
+      const lrShare = root38.querySelector('[data-testid="codecov-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root37.querySelector('[data-testid="codecov-lab-reflect-a1"]')) == null ? void 0 : _a.value) || codecovLabReflect.a1;
-        const a2 = ((_b = root37.querySelector('[data-testid="codecov-lab-reflect-a2"]')) == null ? void 0 : _b.value) || codecovLabReflect.a2;
+        const a1 = ((_a = root38.querySelector('[data-testid="codecov-lab-reflect-a1"]')) == null ? void 0 : _a.value) || codecovLabReflect.a1;
+        const a2 = ((_b = root38.querySelector('[data-testid="codecov-lab-reflect-a2"]')) == null ? void 0 : _b.value) || codecovLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "codecov",
@@ -24214,8 +24296,8 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
         }, 1800);
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/IntegrationTestingExplorer.js
@@ -24355,9 +24437,9 @@ assert(callLog.filter(c => c.method === 'warn').length === 1);`
   var SVG_W2 = 400;
   var SVG_H2 = 280;
   function createIntegrationTestingExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "inttest-explorer";
-    root37.dataset.testid = "inttest-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "inttest-explorer";
+    root38.dataset.testid = "inttest-explorer";
     let activeStrategy = "topdown";
     let activeStep = 0;
     const inttestQuiz = { active: false, phase: "question", answer: "" };
@@ -24486,7 +24568,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render36() {
+    function render37() {
       const strategy = STRATEGIES[activeStrategy];
       const step2 = strategy.steps[activeStep];
       const locale = getLocale();
@@ -24526,7 +24608,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `Strategy: ${t(strategy.key)} \xB7 Stubs: ${strategy.stubCount} \xB7 Drivers: ${strategy.driverCount}`, a: "", ok: true }]
       });
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="inttest-strategy-tabs" data-testid="inttest-strategy-tabs">
         ${stratTabs}
       </div>
@@ -24591,83 +24673,83 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="inttest-hint">${t("codecov.hint").replace("MC/DC \u2287 Condition \u2287 Branch \u2287 Statement", "Big Bang \u2192 Top-down \u2192 Bottom-up \u2192 Sandwich: each adds more structure and isolation.")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
-      root37.querySelectorAll("[data-strategy]").forEach((btn) => {
+    function bindEvents37() {
+      root38.querySelectorAll("[data-strategy]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeStrategy = btn.dataset.strategy;
           activeStep = 0;
-          render36();
+          render37();
         });
       });
-      const prevBtn = root37.querySelector('[data-testid="inttest-prev"]');
+      const prevBtn = root38.querySelector('[data-testid="inttest-prev"]');
       if (prevBtn) prevBtn.addEventListener("click", () => {
         if (activeStep > 0) {
           activeStep--;
-          render36();
+          render37();
         }
       });
-      const nextBtn = root37.querySelector('[data-testid="inttest-next"]');
+      const nextBtn = root38.querySelector('[data-testid="inttest-next"]');
       if (nextBtn) nextBtn.addEventListener("click", () => {
         const s = STRATEGIES[activeStrategy];
         if (activeStep < s.steps.length - 1) {
           activeStep++;
-          render36();
+          render37();
         }
       });
-      const qStart = root37.querySelector('[data-testid="inttest-quiz-start"]');
+      const qStart = root38.querySelector('[data-testid="inttest-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         inttestQuiz.active = true;
         inttestQuiz.phase = "question";
         inttestQuiz.answer = "";
-        render36();
+        render37();
       });
-      const qClose = root37.querySelector('[data-testid="inttest-quiz-close"]');
+      const qClose = root38.querySelector('[data-testid="inttest-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         inttestQuiz.active = false;
-        render36();
+        render37();
       });
-      const qCheck = root37.querySelector('[data-testid="inttest-quiz-check"]');
+      const qCheck = root38.querySelector('[data-testid="inttest-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root37.querySelector('[data-testid="inttest-quiz-input"]');
+        const inp = root38.querySelector('[data-testid="inttest-quiz-input"]');
         inttestQuiz.answer = inp ? inp.value : "";
         inttestQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      const qReset = root37.querySelector('[data-testid="inttest-quiz-reset"]');
+      const qReset = root38.querySelector('[data-testid="inttest-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         inttestQuiz.phase = "question";
         inttestQuiz.answer = "";
-        render36();
+        render37();
       });
-      const lrStart = root37.querySelector('[data-testid="inttest-lab-reflect-start"]');
+      const lrStart = root38.querySelector('[data-testid="inttest-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         inttestLabReflect.active = true;
-        render36();
+        render37();
       });
-      const lrClose = root37.querySelector('[data-testid="inttest-lab-reflect-close"]');
+      const lrClose = root38.querySelector('[data-testid="inttest-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root37.querySelector('[data-testid="inttest-lab-reflect-a1"]');
-        const a2el = root37.querySelector('[data-testid="inttest-lab-reflect-a2"]');
+        const a1el = root38.querySelector('[data-testid="inttest-lab-reflect-a1"]');
+        const a2el = root38.querySelector('[data-testid="inttest-lab-reflect-a2"]');
         if (a1el) inttestLabReflect.a1 = a1el.value;
         if (a2el) inttestLabReflect.a2 = a2el.value;
         inttestLabReflect.active = false;
-        render36();
+        render37();
       });
-      const lrA1 = root37.querySelector('[data-testid="inttest-lab-reflect-a1"]');
+      const lrA1 = root38.querySelector('[data-testid="inttest-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         inttestLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root37.querySelector('[data-testid="inttest-lab-reflect-a2"]');
+      const lrA2 = root38.querySelector('[data-testid="inttest-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         inttestLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root37.querySelector('[data-testid="inttest-lab-reflect-share"]');
+      const lrShare = root38.querySelector('[data-testid="inttest-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root37.querySelector('[data-testid="inttest-lab-reflect-a1"]')) == null ? void 0 : _a.value) || inttestLabReflect.a1;
-        const a2 = ((_b = root37.querySelector('[data-testid="inttest-lab-reflect-a2"]')) == null ? void 0 : _b.value) || inttestLabReflect.a2;
+        const a1 = ((_a = root38.querySelector('[data-testid="inttest-lab-reflect-a1"]')) == null ? void 0 : _a.value) || inttestLabReflect.a1;
+        const a2 = ((_b = root38.querySelector('[data-testid="inttest-lab-reflect-a2"]')) == null ? void 0 : _b.value) || inttestLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "inttest",
@@ -24690,8 +24772,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/utils/propertyTesting.js
@@ -24984,9 +25066,9 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   }
   function createPropertyBasedTestingExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "pbt-explorer";
-    root37.dataset.testid = "pbt-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "pbt-explorer";
+    root38.dataset.testid = "pbt-explorer";
     let activePresetId = PBT_PRESETS[0].id;
     let numTests = 100;
     let lastResult = null;
@@ -25066,7 +25148,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render36() {
+    function render37() {
       const p = preset();
       const presetBtns = PBT_PRESETS.map((pr) => {
         const isBug = pr.expectsCounterexample;
@@ -25128,7 +25210,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `${activePresetId} \xB7 ${numTests} tests`, a: lastResult && lastResult.counterexample ? "fail" : "pass", ok: true }]
       });
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="pbt-presets" data-testid="pbt-preset-bar">${presetBtns}</div>
 
       <div class="pbt-main">
@@ -25178,84 +25260,84 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="pbt-hint">${t("pbt.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
-      root37.querySelectorAll("[data-preset]").forEach((btn) => {
+    function bindEvents37() {
+      root38.querySelectorAll("[data-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePresetId = btn.dataset.preset;
           lastResult = null;
-          render36();
+          render37();
         });
       });
-      const numInput = root37.querySelector('[data-testid="pbt-numtests-input"]');
+      const numInput = root38.querySelector('[data-testid="pbt-numtests-input"]');
       if (numInput) numInput.addEventListener("change", () => {
         const v = parseInt(numInput.value, 10);
         if (v >= 10 && v <= 500) numTests = v;
-        render36();
+        render37();
       });
-      const runBtn = root37.querySelector('[data-testid="pbt-run-btn"]');
+      const runBtn = root38.querySelector('[data-testid="pbt-run-btn"]');
       if (runBtn) runBtn.addEventListener("click", () => {
         const p = preset();
         lastResult = runPropertyTests(p, numTests);
-        render36();
+        render37();
       });
-      const qStart = root37.querySelector('[data-testid="pbt-quiz-start"]');
+      const qStart = root38.querySelector('[data-testid="pbt-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         pbtQuiz.active = true;
         pbtQuiz.phase = "question";
         pbtQuiz.gotAnswer = "";
         pbtQuiz.expectedAnswer = "";
-        render36();
+        render37();
       });
-      const qClose = root37.querySelector('[data-testid="pbt-quiz-close"]');
+      const qClose = root38.querySelector('[data-testid="pbt-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         pbtQuiz.active = false;
-        render36();
+        render37();
       });
-      const qCheck = root37.querySelector('[data-testid="pbt-quiz-check"]');
+      const qCheck = root38.querySelector('[data-testid="pbt-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const gotEl = root37.querySelector('[data-testid="pbt-quiz-got"]');
-        const expEl = root37.querySelector('[data-testid="pbt-quiz-expected"]');
+        const gotEl = root38.querySelector('[data-testid="pbt-quiz-got"]');
+        const expEl = root38.querySelector('[data-testid="pbt-quiz-expected"]');
         pbtQuiz.gotAnswer = gotEl ? gotEl.value : "";
         pbtQuiz.expectedAnswer = expEl ? expEl.value : "";
         pbtQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      const qReset = root37.querySelector('[data-testid="pbt-quiz-reset"]');
+      const qReset = root38.querySelector('[data-testid="pbt-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         pbtQuiz.phase = "question";
         pbtQuiz.gotAnswer = "";
         pbtQuiz.expectedAnswer = "";
-        render36();
+        render37();
       });
-      const lrStart = root37.querySelector('[data-testid="pbt-lab-reflect-start"]');
+      const lrStart = root38.querySelector('[data-testid="pbt-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         pbtLabReflect.active = true;
-        render36();
+        render37();
       });
-      const lrClose = root37.querySelector('[data-testid="pbt-lab-reflect-close"]');
+      const lrClose = root38.querySelector('[data-testid="pbt-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root37.querySelector('[data-testid="pbt-lab-reflect-a1"]');
-        const a2el = root37.querySelector('[data-testid="pbt-lab-reflect-a2"]');
+        const a1el = root38.querySelector('[data-testid="pbt-lab-reflect-a1"]');
+        const a2el = root38.querySelector('[data-testid="pbt-lab-reflect-a2"]');
         if (a1el) pbtLabReflect.a1 = a1el.value;
         if (a2el) pbtLabReflect.a2 = a2el.value;
         pbtLabReflect.active = false;
-        render36();
+        render37();
       });
-      const lrA1 = root37.querySelector('[data-testid="pbt-lab-reflect-a1"]');
+      const lrA1 = root38.querySelector('[data-testid="pbt-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         pbtLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root37.querySelector('[data-testid="pbt-lab-reflect-a2"]');
+      const lrA2 = root38.querySelector('[data-testid="pbt-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         pbtLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root37.querySelector('[data-testid="pbt-lab-reflect-share"]');
+      const lrShare = root38.querySelector('[data-testid="pbt-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root37.querySelector('[data-testid="pbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || pbtLabReflect.a1;
-        const a2 = ((_b = root37.querySelector('[data-testid="pbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || pbtLabReflect.a2;
+        const a1 = ((_a = root38.querySelector('[data-testid="pbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || pbtLabReflect.a1;
+        const a2 = ((_b = root38.querySelector('[data-testid="pbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || pbtLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "pbt",
@@ -25278,8 +25360,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/RiskBasedTestingExplorer.js
@@ -25299,9 +25381,9 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
   var HEAT_PAD = 32;
   var SVG_SIZE = 5 * HEAT_CELL + HEAT_PAD * 2;
   function createRiskBasedTestingExplorer() {
-    const root37 = document.createElement("div");
-    root37.className = "rbt-explorer";
-    root37.dataset.testid = "rbt-explorer";
+    const root38 = document.createElement("div");
+    root38.className = "rbt-explorer";
+    root38.dataset.testid = "rbt-explorer";
     let modules = [
       { id: uid4(), name: "Login", likelihood: 5, impact: 5 },
       { id: uid4(), name: "Payment", likelihood: 4, impact: 5 },
@@ -25421,7 +25503,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         </div>
       </div>`;
     }
-    function render36() {
+    function render37() {
       const moduleRows = modules.map((m, i) => `
       <div class="rbt-module-row" data-module-id="${m.id}">
         <input type="text" class="rbt-module-name-input" value="${escapeHtml23(m.name)}"
@@ -25462,7 +25544,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `High-risk: ${highCount} \xB7 Modules: ${modules.length}`, a: String(highCount), ok: true }]
       });
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="rbt-modules-card">
         <p class="rbt-modules-title">${t("rbt.modules.title")}</p>
         <div data-testid="rbt-module-list">${moduleRows}</div>
@@ -25513,103 +25595,103 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
       <p class="rbt-hint">${t("rbt.hint")}</p>
     `;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
-      root37.querySelector('[data-testid="rbt-add-module"]').addEventListener("click", () => {
+    function bindEvents37() {
+      root38.querySelector('[data-testid="rbt-add-module"]').addEventListener("click", () => {
         modules.push({ id: uid4(), name: `Module${modules.length + 1}`, likelihood: 3, impact: 3 });
-        render36();
+        render37();
       });
-      root37.querySelectorAll("[data-remove-module]").forEach((btn) => {
+      root38.querySelectorAll("[data-remove-module]").forEach((btn) => {
         btn.addEventListener("click", () => {
           modules = modules.filter((m) => m.id !== btn.dataset.removeModule);
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-module-name]").forEach((input) => {
+      root38.querySelectorAll("[data-module-name]").forEach((input) => {
         input.addEventListener("change", () => {
           const m = modules.find((x) => x.id === input.dataset.moduleName);
           if (m) {
             m.name = input.value;
-            render36();
+            render37();
           }
         });
       });
-      root37.querySelectorAll("[data-module-likelihood]").forEach((slider) => {
+      root38.querySelectorAll("[data-module-likelihood]").forEach((slider) => {
         slider.addEventListener("input", () => {
           const m = modules.find((x) => x.id === slider.dataset.moduleLikelihood);
           if (m) {
             m.likelihood = parseInt(slider.value);
-            render36();
+            render37();
           }
         });
       });
-      root37.querySelectorAll("[data-module-impact]").forEach((slider) => {
+      root38.querySelectorAll("[data-module-impact]").forEach((slider) => {
         slider.addEventListener("input", () => {
           const m = modules.find((x) => x.id === slider.dataset.moduleImpact);
           if (m) {
             m.impact = parseInt(slider.value);
-            render36();
+            render37();
           }
         });
       });
-      const filterSel = root37.querySelector('[data-testid="rbt-filter"]');
+      const filterSel = root38.querySelector('[data-testid="rbt-filter"]');
       if (filterSel) filterSel.addEventListener("change", () => {
         filter = filterSel.value;
-        render36();
+        render37();
       });
-      const qStart = root37.querySelector('[data-testid="rbt-quiz-start"]');
+      const qStart = root38.querySelector('[data-testid="rbt-quiz-start"]');
       if (qStart) qStart.addEventListener("click", () => {
         rbtQuiz.active = true;
         rbtQuiz.phase = "question";
         rbtQuiz.answer = "";
-        render36();
+        render37();
       });
-      const qClose = root37.querySelector('[data-testid="rbt-quiz-close"]');
+      const qClose = root38.querySelector('[data-testid="rbt-quiz-close"]');
       if (qClose) qClose.addEventListener("click", () => {
         rbtQuiz.active = false;
-        render36();
+        render37();
       });
-      const qCheck = root37.querySelector('[data-testid="rbt-quiz-check"]');
+      const qCheck = root38.querySelector('[data-testid="rbt-quiz-check"]');
       if (qCheck) qCheck.addEventListener("click", () => {
-        const inp = root37.querySelector('[data-testid="rbt-quiz-input"]');
+        const inp = root38.querySelector('[data-testid="rbt-quiz-input"]');
         rbtQuiz.answer = inp ? inp.value : "";
         rbtQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      const qReset = root37.querySelector('[data-testid="rbt-quiz-reset"]');
+      const qReset = root38.querySelector('[data-testid="rbt-quiz-reset"]');
       if (qReset) qReset.addEventListener("click", () => {
         rbtQuiz.phase = "question";
         rbtQuiz.answer = "";
-        render36();
+        render37();
       });
-      const lrStart = root37.querySelector('[data-testid="rbt-lab-reflect-start"]');
+      const lrStart = root38.querySelector('[data-testid="rbt-lab-reflect-start"]');
       if (lrStart) lrStart.addEventListener("click", () => {
         rbtLabReflect.active = true;
-        render36();
+        render37();
       });
-      const lrClose = root37.querySelector('[data-testid="rbt-lab-reflect-close"]');
+      const lrClose = root38.querySelector('[data-testid="rbt-lab-reflect-close"]');
       if (lrClose) lrClose.addEventListener("click", () => {
-        const a1el = root37.querySelector('[data-testid="rbt-lab-reflect-a1"]');
-        const a2el = root37.querySelector('[data-testid="rbt-lab-reflect-a2"]');
+        const a1el = root38.querySelector('[data-testid="rbt-lab-reflect-a1"]');
+        const a2el = root38.querySelector('[data-testid="rbt-lab-reflect-a2"]');
         if (a1el) rbtLabReflect.a1 = a1el.value;
         if (a2el) rbtLabReflect.a2 = a2el.value;
         rbtLabReflect.active = false;
-        render36();
+        render37();
       });
-      const lrA1 = root37.querySelector('[data-testid="rbt-lab-reflect-a1"]');
+      const lrA1 = root38.querySelector('[data-testid="rbt-lab-reflect-a1"]');
       if (lrA1) lrA1.addEventListener("input", () => {
         rbtLabReflect.a1 = lrA1.value;
       });
-      const lrA2 = root37.querySelector('[data-testid="rbt-lab-reflect-a2"]');
+      const lrA2 = root38.querySelector('[data-testid="rbt-lab-reflect-a2"]');
       if (lrA2) lrA2.addEventListener("input", () => {
         rbtLabReflect.a2 = lrA2.value;
       });
-      const lrShare = root37.querySelector('[data-testid="rbt-lab-reflect-share"]');
+      const lrShare = root38.querySelector('[data-testid="rbt-lab-reflect-share"]');
       if (lrShare) lrShare.addEventListener("click", () => {
         var _a, _b, _c;
-        const a1 = ((_a = root37.querySelector('[data-testid="rbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || rbtLabReflect.a1;
-        const a2 = ((_b = root37.querySelector('[data-testid="rbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || rbtLabReflect.a2;
+        const a1 = ((_a = root38.querySelector('[data-testid="rbt-lab-reflect-a1"]')) == null ? void 0 : _a.value) || rbtLabReflect.a1;
+        const a2 = ((_b = root38.querySelector('[data-testid="rbt-lab-reflect-a2"]')) == null ? void 0 : _b.value) || rbtLabReflect.a2;
         const url = buildShareUrl(encodeResult({
           v: 1,
           explorer: "rbt",
@@ -25632,8 +25714,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         }, 1800);
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
 
   // src/components/GroupTheoryExplorer.js
@@ -25673,8 +25755,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
     return Array.from({ length: n }, (_, i) => !!(mask & 1 << n - 1 - i));
   }
   function createGroupTheoryExplorer() {
-    const root37 = document.createElement("div");
-    root37.dataset.testid = "gth-explorer";
+    const root38 = document.createElement("div");
+    root38.dataset.testid = "gth-explorer";
     let formula = "A AND B";
     let activeTab = "orbits";
     let covP = 2;
@@ -25978,7 +26060,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         <button type="button" class="quiz-share-btn" data-share-payload="${reflectEncoded}" data-testid="gth-lab-reflect-share">\u{1F4CB} ${t("lab.reflect.record")}</button>
       </div>`;
     }
-    function render36() {
+    function render37() {
       const result = computeOrbits();
       const { vars, valid } = parseDNF(formula);
       let orbitContent = "";
@@ -26008,7 +26090,7 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         total: 1,
         items: [{ q: `Orbits: ${metricData.orbits}/${metricData.total} \xB7 |Aut(f)|=${metricData.autOrder}`, a: String(metricData.orbits), ok: true }]
       });
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="gth-explorer">
         <div class="gth-input-card">
           <label class="gth-label">${t("groupth.formula.label")}</label>
@@ -26053,30 +26135,30 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
 
         <p class="gth-hint">${t("groupth.hint")}</p>
       </div>`;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-      const inp = root37.querySelector('[data-testid="gth-formula-input"]');
+      const inp = root38.querySelector('[data-testid="gth-formula-input"]');
       if (inp) {
         inp.addEventListener("change", () => {
           formula = inp.value;
-          render36();
+          render37();
         });
       }
-      root37.querySelectorAll(".gth-example-btn").forEach((btn) => {
+      root38.querySelectorAll(".gth-example-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           formula = btn.dataset.formula;
-          render36();
+          render37();
         });
       });
-      root37.querySelectorAll("[data-tab]").forEach((btn) => {
+      root38.querySelectorAll("[data-tab]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeTab = btn.dataset.tab;
-          render36();
+          render37();
         });
       });
-      const copyBtn = root37.querySelector('[data-testid="gth-copy"]');
+      const copyBtn = root38.querySelector('[data-testid="gth-copy"]');
       if (copyBtn) {
         copyBtn.addEventListener("click", () => {
           var _a2;
@@ -26099,66 +26181,66 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
           });
         });
       }
-      (_a = root37.querySelector('[data-testid="gth-bridge-mt"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      (_a = root38.querySelector('[data-testid="gth-bridge-mt"]')) == null ? void 0 : _a.addEventListener("click", () => {
         var _a2, _b2;
         (_a2 = document.querySelector('[data-section="blackbox"]')) == null ? void 0 : _a2.click();
         (_b2 = document.querySelector('[data-blackbox-tab="mt"]')) == null ? void 0 : _b2.click();
       });
-      (_b = root37.querySelector('[data-testid="gth-cov-p"]')) == null ? void 0 : _b.addEventListener("change", (e) => {
+      (_b = root38.querySelector('[data-testid="gth-cov-p"]')) == null ? void 0 : _b.addEventListener("change", (e) => {
         covP = Number(e.target.value);
-        render36();
+        render37();
       });
-      const covKSlider = root37.querySelector('[data-testid="gth-cov-k"]');
+      const covKSlider = root38.querySelector('[data-testid="gth-cov-k"]');
       if (covKSlider) {
         covKSlider.addEventListener("input", (e) => {
           covK = Number(e.target.value);
-          const val = root37.querySelector('[data-testid="gth-cov-k-val"]');
+          const val = root38.querySelector('[data-testid="gth-cov-k-val"]');
           if (val) val.textContent = covK;
         });
-        covKSlider.addEventListener("change", () => render36());
+        covKSlider.addEventListener("change", () => render37());
       }
-      (_c = root37.querySelector('[data-testid="gth-cov-t"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
+      (_c = root38.querySelector('[data-testid="gth-cov-t"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
         covT = Number(e.target.value);
-        render36();
+        render37();
       });
-      (_d = root37.querySelector('[data-testid="gth-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", (e) => {
+      (_d = root38.querySelector('[data-testid="gth-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", (e) => {
         gthQuiz.tab = e.currentTarget.dataset.quizTab || activeTab;
         gthQuiz.active = true;
         gthQuiz.phase = "question";
         gthQuiz.answer = "";
-        render36();
+        render37();
       });
-      (_e = root37.querySelector('[data-testid="gth-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      (_e = root38.querySelector('[data-testid="gth-quiz-close"]')) == null ? void 0 : _e.addEventListener("click", () => {
         gthQuiz.active = false;
-        render36();
+        render37();
       });
-      (_f = root37.querySelector('[data-testid="gth-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      (_f = root38.querySelector('[data-testid="gth-quiz-reset"]')) == null ? void 0 : _f.addEventListener("click", () => {
         gthQuiz.phase = "question";
         gthQuiz.answer = "";
-        render36();
+        render37();
       });
-      (_g = root37.querySelector('[data-testid="gth-quiz-input"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      (_g = root38.querySelector('[data-testid="gth-quiz-input"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
         gthQuiz.answer = e.target.value;
       });
-      (_h = root37.querySelector('[data-testid="gth-quiz-submit"]')) == null ? void 0 : _h.addEventListener("click", () => {
+      (_h = root38.querySelector('[data-testid="gth-quiz-submit"]')) == null ? void 0 : _h.addEventListener("click", () => {
         gthQuiz.phase = "graded";
-        render36();
+        render37();
       });
-      (_i = root37.querySelector('[data-testid="gth-lab-reflect-start"]')) == null ? void 0 : _i.addEventListener("click", () => {
+      (_i = root38.querySelector('[data-testid="gth-lab-reflect-start"]')) == null ? void 0 : _i.addEventListener("click", () => {
         gthLabReflect.active = true;
-        render36();
+        render37();
       });
-      (_j = root37.querySelector('[data-testid="gth-lab-reflect-close"]')) == null ? void 0 : _j.addEventListener("click", () => {
+      (_j = root38.querySelector('[data-testid="gth-lab-reflect-close"]')) == null ? void 0 : _j.addEventListener("click", () => {
         gthLabReflect.active = false;
-        render36();
+        render37();
       });
-      (_k = root37.querySelector('[data-testid="gth-lab-reflect-text"]')) == null ? void 0 : _k.addEventListener("input", (e) => {
+      (_k = root38.querySelector('[data-testid="gth-lab-reflect-text"]')) == null ? void 0 : _k.addEventListener("input", (e) => {
         gthLabReflect.text = e.target.value;
       });
-      (_l = root37.querySelector('[data-testid="gth-lab-reflect-text2"]')) == null ? void 0 : _l.addEventListener("input", (e) => {
+      (_l = root38.querySelector('[data-testid="gth-lab-reflect-text2"]')) == null ? void 0 : _l.addEventListener("input", (e) => {
         gthLabReflect.text2 = e.target.value;
       });
-      root37.querySelectorAll("[data-share-payload]").forEach((btn) => {
+      root38.querySelectorAll("[data-share-payload]").forEach((btn) => {
         btn.addEventListener("click", () => {
           var _a2;
           const url = (window.__buildShareUrl__ || (() => btn.dataset.sharePayload))(btn.dataset.sharePayload);
@@ -26166,8 +26248,8 @@ ${badgeText ? `<text x="${n.x}" y="${n.y + 12}" text-anchor="middle" font-size="
         });
       });
     }
-    render36();
-    return root37;
+    render37();
+    return root38;
   }
   function _evalFormula(formula, env) {
     try {
@@ -29193,10 +29275,10 @@ CONFIRMED \u2014 real crash, not a harness artifact`,
     return journey.steps.reduce((p, s) => p * stepPassProbability(s), 1);
   }
   function simulateRuns(journey, runs, seed = 1) {
-    let state36 = seed;
+    let state37 = seed;
     function rand() {
-      state36 = state36 * 1103515245 + 12345 & 2147483647;
-      return state36 / 2147483647;
+      state37 = state37 * 1103515245 + 12345 & 2147483647;
+      return state37 / 2147483647;
     }
     const reached = journey.steps.map(() => 0);
     let fullPasses = 0;
@@ -33712,10 +33794,10 @@ VERDICT: pass  (conformance holds)`,
     }
     return map;
   }
-  function renderSliceCodeListing(example4, sliceSet, options = {}) {
+  function renderSliceCodeListing(example5, sliceSet, options = {}) {
     const secondary = options.secondary || /* @__PURE__ */ new Set();
-    const lineIndex = buildLineIndex(example4.statements);
-    const items = example4.source.map((rawLine, i) => {
+    const lineIndex = buildLineIndex(example5.statements);
+    const items = example5.source.map((rawLine, i) => {
       const lineNum = i + 1;
       const stmtId = lineIndex.get(lineNum);
       const escaped = escapeSourceLine(rawLine);
@@ -33750,15 +33832,15 @@ ${items.join("\n")}
     const len = Math.hypot(dx, dy) || 1;
     return { x: to.x - dx / len * radius, y: to.y - dy / len * radius };
   }
-  function renderSlicePdgGraph(example4, sliceSet, options = {}) {
+  function renderSlicePdgGraph(example5, sliceSet, options = {}) {
     const idPrefix = options.idPrefix || "slice";
     const zoom = Number.isFinite(options.zoom) && options.zoom > 0 ? options.zoom : 1;
     const secondary = options.secondary || /* @__PURE__ */ new Set();
-    const stmts = example4.statements;
+    const stmts = example5.statements;
     const positions = new Map(stmts.map((s, i) => [s.id, nodePos(i)]));
     const svgWidth = SVG_X * 2 + SVG_PAD;
     const svgHeight = SVG_Y_START + stmts.length * SVG_Y_STEP + SVG_PAD;
-    const controlEdges = (example4.controlDeps || []).map(([from, to]) => {
+    const controlEdges = (example5.controlDeps || []).map(([from, to]) => {
       const fPos = positions.get(from);
       const tPos = positions.get(to);
       if (!fPos || !tPos) return "";
@@ -33771,7 +33853,7 @@ ${items.join("\n")}
       const marker = `url(#pdg-arrow-ctrl-${escapeAttr(idPrefix)})`;
       return `<path class="pdg-edge pdg-edge--control" d="M ${startTrimmed.x} ${startTrimmed.y} Q ${cpX} ${cpY} ${endTrimmed.x} ${endTrimmed.y}" marker-end="${marker}"></path>`;
     }).join("");
-    const dataEdges = (example4.dataDeps || []).map(([from, to, variable]) => {
+    const dataEdges = (example5.dataDeps || []).map(([from, to, variable]) => {
       const fPos = positions.get(from);
       const tPos = positions.get(to);
       if (!fPos || !tPos) return "";
@@ -34745,28 +34827,28 @@ ${items.join("\n")}
   function currentExample2() {
     return SLICING_EXAMPLES.find((e) => e.id === state25.exampleId) || SLICING_EXAMPLES[0];
   }
-  function allTraceIds(example4) {
-    return new Set(example4.traces.map((tr) => tr.id));
+  function allTraceIds(example5) {
+    return new Set(example5.traces.map((tr) => tr.id));
   }
-  function outputStatement(example4) {
-    return example4.statements.find((s) => s.kind === "output") || null;
+  function outputStatement(example5) {
+    return example5.statements.find((s) => s.kind === "output") || null;
   }
-  function computeSlice2(example4) {
-    const outStmt = outputStatement(example4);
+  function computeSlice2(example5) {
+    const outStmt = outputStatement(example5);
     if (!outStmt) {
-      console.warn(`[SliceCoverageExplorer] example "${example4.id}" has no output statement \u2014 slice will be empty`);
+      console.warn(`[SliceCoverageExplorer] example "${example5.id}" has no output statement \u2014 slice will be empty`);
       return /* @__PURE__ */ new Set();
     }
     const variable = outStmt.uses[0];
     if (!variable) {
-      console.warn(`[SliceCoverageExplorer] example "${example4.id}" output statement has no uses \u2014 slice will be empty`);
+      console.warn(`[SliceCoverageExplorer] example "${example5.id}" output statement has no uses \u2014 slice will be empty`);
       return /* @__PURE__ */ new Set();
     }
-    return backwardSlice(example4, { stmtId: outStmt.id, variable });
+    return backwardSlice(example5, { stmtId: outStmt.id, variable });
   }
-  function computeExecuted(example4) {
+  function computeExecuted(example5) {
     const executed = /* @__PURE__ */ new Set();
-    for (const tr of example4.traces) {
+    for (const tr of example5.traces) {
       if (state25.activeTraceIds.has(tr.id)) {
         for (const s of tr.steps) executed.add(s);
       }
@@ -34784,10 +34866,10 @@ ${items.join("\n")}
       </button>`).join("")}
   </div>`;
   }
-  function renderTraceChips(example4) {
+  function renderTraceChips(example5) {
     return `<div class="sce-chip-bar sce-trace-bar">
     <span class="sce-toggle-label">${t("coverage.traceLabel")}</span>
-    ${example4.traces.map((tr) => {
+    ${example5.traces.map((tr) => {
       const active = state25.activeTraceIds.has(tr.id);
       const label = esc11(tr.inputLabel || tr.label || tr.id);
       return `<button type="button"
@@ -34799,8 +34881,8 @@ ${items.join("\n")}
     }).join("")}
   </div>`;
   }
-  function renderMetrics2(cov, example4, executed) {
-    const stmtPct = example4.statements.length === 0 ? 100 : Math.round(executed.size / example4.statements.length * 100);
+  function renderMetrics2(cov, example5, executed) {
+    const stmtPct = example5.statements.length === 0 ? 100 : Math.round(executed.size / example5.statements.length * 100);
     return `<div class="sce-metrics" data-testid="coverage-metrics">
     <div class="sce-metric-row">
       <span class="sce-metric-label">${t("coverage.sliceCoverage")}</span>
@@ -34816,13 +34898,13 @@ ${items.join("\n")}
         <div class="sce-meter-fill sce-meter-fill--stmt" style="width:${stmtPct}%"></div>
       </div>
       <span class="sce-metric-pct" data-testid="coverage-stmt-pct">${stmtPct}%</span>
-      <span class="sce-metric-detail">(${executed.size}/${example4.statements.length})</span>
+      <span class="sce-metric-detail">(${executed.size}/${example5.statements.length})</span>
     </div>
   </div>`;
   }
-  function renderGaps(cov, example4, slice, executed) {
-    const uncoveredStmts = example4.statements.filter((s) => cov.uncovered.has(s.id));
-    const outsideSlice = example4.statements.filter(
+  function renderGaps(cov, example5, slice, executed) {
+    const uncoveredStmts = example5.statements.filter((s) => cov.uncovered.has(s.id));
+    const outsideSlice = example5.statements.filter(
       (s) => executed.has(s.id) && !slice.has(s.id)
     );
     let gapBody;
@@ -34850,7 +34932,7 @@ ${items.join("\n")}
     ${outsideBody}
   </div>`;
   }
-  function renderGraphPanel3(example4, cov) {
+  function renderGraphPanel3(example5, cov) {
     return `<div class="sce-graph" data-testid="coverage-graph">
     <div class="sce-graph-head">
       <h3 class="sce-col-title">${t("slicing.pdgTitle")}</h3>
@@ -34865,7 +34947,7 @@ ${items.join("\n")}
       </div>
     </div>
     <div class="sce-graph-scroll">
-      ${renderSlicePdgGraph(example4, cov.uncovered, { secondary: cov.covered, zoom: state25.pdgZoom, idPrefix: "coverage" })}
+      ${renderSlicePdgGraph(example5, cov.uncovered, { secondary: cov.covered, zoom: state25.pdgZoom, idPrefix: "coverage" })}
     </div>
   </div>`;
   }
@@ -34892,9 +34974,9 @@ ${items.join("\n")}
   </div>`;
   }
   function render25() {
-    const example4 = currentExample2();
-    const slice = computeSlice2(example4);
-    const executed = computeExecuted(example4);
+    const example5 = currentExample2();
+    const slice = computeSlice2(example5);
+    const executed = computeExecuted(example5);
     const cov = sliceCoverage(slice, executed);
     root25.innerHTML = `
     <div class="sce-wrap">
@@ -34903,19 +34985,19 @@ ${items.join("\n")}
 
       <section class="sce-controls">
         ${renderExampleChips2()}
-        ${renderTraceChips(example4)}
+        ${renderTraceChips(example5)}
       </section>
 
-      ${renderMetrics2(cov, example4, executed)}
+      ${renderMetrics2(cov, example5, executed)}
 
       <div class="sce-code-wrap">
         <h3 class="sce-col-title">${t("slicing.codeTitle")}</h3>
-        ${renderSliceCodeListing(example4, cov.uncovered, { secondary: cov.covered })}
+        ${renderSliceCodeListing(example5, cov.uncovered, { secondary: cov.covered })}
       </div>
 
       <div class="sce-graph-row">
-        ${renderGraphPanel3(example4, cov)}
-        ${renderGaps(cov, example4, slice, executed)}
+        ${renderGraphPanel3(example5, cov)}
+        ${renderGaps(cov, example5, slice, executed)}
       </div>
 
       <section class="sce-self-test">
@@ -35006,11 +35088,11 @@ ${items.join("\n")}
   function currentExample3() {
     return SLICING_EXAMPLES.find((e) => e.id === state26.exampleId) || SLICING_EXAMPLES[0];
   }
-  function outputStatement2(example4) {
-    return example4.statements.find((s) => s.kind === "output") || null;
+  function outputStatement2(example5) {
+    return example5.statements.find((s) => s.kind === "output") || null;
   }
-  function outputCriterion(example4) {
-    const outStmt = outputStatement2(example4);
+  function outputCriterion(example5) {
+    const outStmt = outputStatement2(example5);
     if (!outStmt) return null;
     const variable = outStmt.uses[0];
     if (!variable) return null;
@@ -35044,8 +35126,8 @@ ${items.join("\n")}
     </button>
   </div>`;
   }
-  function renderCriterionBadge(example4) {
-    const criterion = outputCriterion(example4);
+  function renderCriterionBadge(example5) {
+    const criterion = outputCriterion(example5);
     if (!criterion) return "";
     return `<div class="sre-criterion">
     <span class="sre-criterion-label">${t("regression.criterionLabel")}</span>
@@ -35054,7 +35136,7 @@ ${items.join("\n")}
     <code class="sre-criterion-val">${esc12(criterion.variable)}</code>
   </div>`;
   }
-  function renderGraphPanel4(example4, sliceSet, impact) {
+  function renderGraphPanel4(example5, sliceSet, impact) {
     return `<div class="sre-graph" data-testid="regression-graph">
     <div class="sre-graph-head">
       <h3 class="sre-col-title">${t("slicing.pdgTitle")}</h3>
@@ -35069,17 +35151,17 @@ ${items.join("\n")}
       </div>
     </div>
     <div class="sre-graph-scroll">
-      ${renderSlicePdgGraph(example4, sliceSet, { secondary: impact, zoom: state26.pdgZoom, idPrefix: "regression" })}
+      ${renderSlicePdgGraph(example5, sliceSet, { secondary: impact, zoom: state26.pdgZoom, idPrefix: "regression" })}
     </div>
   </div>`;
   }
-  function renderTestPanel(example4, affected, safe) {
+  function renderTestPanel(example5, affected, safe) {
     let body;
     if (!state26.changedStmtId) {
       body = `<p class="sre-pick-prompt">${t("regression.pickPrompt")}</p>`;
     } else {
       body = `<ul class="sre-test-list">
-      ${example4.traces.map((tr) => {
+      ${example5.traces.map((tr) => {
         const label = esc12(tr.inputLabel || tr.label || tr.id);
         let badge = "";
         if (affected.has(tr.id)) {
@@ -35099,11 +35181,11 @@ ${items.join("\n")}
     ${body}
   </div>`;
   }
-  function renderMetric(example4, affected, safe) {
+  function renderMetric(example5, affected, safe) {
     if (!state26.changedStmtId) {
       return `<div class="sre-metric" data-testid="regression-metric">${t("regression.pickPrompt")}</div>`;
     }
-    const N = example4.traces.length;
+    const N = example5.traces.length;
     const A = affected.size;
     const X = N === 0 ? 0 : Math.round(safe.size / N * 100);
     return `<div class="sre-metric" data-testid="regression-metric">${t("regression.metric", { A, N, X })}</div>`;
@@ -35131,13 +35213,13 @@ ${items.join("\n")}
   </div>`;
   }
   function render26() {
-    const example4 = currentExample3();
-    const criterion = outputCriterion(example4);
+    const example5 = currentExample3();
+    const criterion = outputCriterion(example5);
     let affected = /* @__PURE__ */ new Set();
     let safe = /* @__PURE__ */ new Set();
     let impact = /* @__PURE__ */ new Set();
     if (state26.changedStmtId && criterion) {
-      const result = affectedTests(example4, criterion, state26.changedStmtId, state26.mode);
+      const result = affectedTests(example5, criterion, state26.changedStmtId, state26.mode);
       affected = result.affected;
       safe = result.safe;
       impact = result.impact;
@@ -35151,20 +35233,20 @@ ${items.join("\n")}
       <section class="sre-controls">
         ${renderExampleChips3()}
         ${renderModeToggle4()}
-        ${renderCriterionBadge(example4)}
+        ${renderCriterionBadge(example5)}
       </section>
 
       <div class="sre-code-wrap">
         <h3 class="sre-col-title">${t("slicing.codeTitle")}</h3>
         <p class="sre-pick-hint">${state26.changedStmtId ? "" : t("regression.pickStmtHint")}</p>
-        ${renderSliceCodeListing(example4, sliceSet, { secondary: impact })}
+        ${renderSliceCodeListing(example5, sliceSet, { secondary: impact })}
       </div>
 
-      ${renderMetric(example4, affected, safe)}
+      ${renderMetric(example5, affected, safe)}
 
       <div class="sre-graph-row">
-        ${renderGraphPanel4(example4, sliceSet, impact)}
-        ${renderTestPanel(example4, affected, safe)}
+        ${renderGraphPanel4(example5, sliceSet, impact)}
+        ${renderTestPanel(example5, affected, safe)}
       </div>
 
       <section class="sre-self-test">
@@ -35671,49 +35753,49 @@ ${items.join("\n")}
   function initialTddState() {
     return { phase: "start", hasFailingTest: false, allGreen: true, cycleCount: 0 };
   }
-  function isLegal(state36, action) {
-    if (action === "write-failing-test") return !state36.hasFailingTest;
-    if (action === "write-production-code") return state36.hasFailingTest;
+  function isLegal(state37, action) {
+    if (action === "write-failing-test") return !state37.hasFailingTest;
+    if (action === "write-production-code") return state37.hasFailingTest;
     if (action === "refactor") {
-      return state36.allGreen && !state36.hasFailingTest && state36.cycleCount > 0;
+      return state37.allGreen && !state37.hasFailingTest && state37.cycleCount > 0;
     }
     return false;
   }
-  function legalActions(state36) {
-    return new Set(ACTIONS.filter((a) => isLegal(state36, a)));
+  function legalActions(state37) {
+    return new Set(ACTIONS.filter((a) => isLegal(state37, a)));
   }
-  function reasonKey(state36, action) {
+  function reasonKey(state37, action) {
     if (action === "write-failing-test") return "tdd.rules.reason.alreadyRed";
     if (action === "write-production-code") return "tdd.rules.reason.noRed";
-    if (state36.hasFailingTest) return "tdd.rules.reason.notGreen";
+    if (state37.hasFailingTest) return "tdd.rules.reason.notGreen";
     return "tdd.rules.reason.nothingYet";
   }
-  function applyAction(state36, action) {
+  function applyAction(state37, action) {
     if (!ACTIONS.includes(action)) {
-      return { state: state36, blocked: true, reasonKey: "tdd.rules.reason.unknown" };
+      return { state: state37, blocked: true, reasonKey: "tdd.rules.reason.unknown" };
     }
-    if (!isLegal(state36, action)) {
-      return { state: state36, blocked: true, reasonKey: reasonKey(state36, action) };
+    if (!isLegal(state37, action)) {
+      return { state: state37, blocked: true, reasonKey: reasonKey(state37, action) };
     }
     if (action === "write-failing-test") {
       return {
-        state: { ...state36, phase: "red", hasFailingTest: true, allGreen: false },
+        state: { ...state37, phase: "red", hasFailingTest: true, allGreen: false },
         blocked: false
       };
     }
     if (action === "write-production-code") {
       return {
         state: {
-          ...state36,
+          ...state37,
           phase: "green",
           hasFailingTest: false,
           allGreen: true,
-          cycleCount: state36.cycleCount + 1
+          cycleCount: state37.cycleCount + 1
         },
         blocked: false
       };
     }
-    return { state: { ...state36, phase: "refactor" }, blocked: false };
+    return { state: { ...state37, phase: "refactor" }, blocked: false };
   }
 
   // src/components/TddRulesExplorer.js
@@ -36732,6 +36814,414 @@ ${items.join("\n")}
     return root31;
   }
 
+  // src/data/exploitPathExamples.js
+  var EXPLOIT_PATH_EXAMPLES = {
+    packet: {
+      id: "packet",
+      titleKey: "exploit.path.packet.title",
+      cweKey: "exploit.path.packet.cwe",
+      source: `function handleRequest(type, len, flag) {
+  if (type == 7) {
+    if (len > 16) {
+      if (flag == 1) {
+        // VULNERABLE: memcpy(buf16, body, len) \u2014 overflow when len > 16
+        return 911;
+      }
+      return 2;
+    }
+    return 1;
+  }
+  return 0;
+}`,
+      buggyLine: 5,
+      seed: { type: 0, len: 0, flag: 0 },
+      concolicOptions: { searchDomain: { min: -5, max: 24 }, maxIterations: 16 },
+      vulnerableReturn: 911,
+      payloadNoteKey: "exploit.path.packet.payloadNote",
+      exploitInput: 'type=7, len=24, flag=1, body="A"\xD724 + <retaddr> + <shellcode>',
+      defenses: [
+        { id: "lencheck", labelKey: "exploit.path.packet.def.lencheck", gates: "oversized-copy" },
+        { id: "boundedcopy", labelKey: "exploit.path.packet.def.boundedcopy", gates: "unbounded-api" },
+        { id: "heapfit", labelKey: "exploit.path.packet.def.heapfit", gates: "fixed-buffer" }
+      ],
+      primaryDefenseId: "lencheck",
+      quiz: {
+        promptKey: "exploit.path.packet.quiz.prompt",
+        answer: "c",
+        optionKeys: ["a", "b", "c", "d"]
+      }
+    },
+    oob: {
+      id: "oob",
+      titleKey: "exploit.path.oob.title",
+      cweKey: "exploit.path.oob.cwe",
+      source: `function lookup(idx, mode) {
+  if (mode == 2) {
+    if (idx >= 0) {
+      if (idx > 7) {
+        // VULNERABLE: return table[idx] \u2014 out-of-bounds read when idx > 7
+        return 911;
+      }
+      return 100;
+    }
+    return 1;
+  }
+  return 0;
+}`,
+      buggyLine: 5,
+      seed: { idx: 0, mode: 0 },
+      concolicOptions: { searchDomain: { min: -5, max: 16 }, maxIterations: 16 },
+      vulnerableReturn: 911,
+      payloadNoteKey: "exploit.path.oob.payloadNote",
+      exploitInput: "idx=8, mode=2",
+      defenses: [
+        { id: "boundscheck", labelKey: "exploit.path.oob.def.boundscheck", gates: "unchecked-index" },
+        { id: "rangeallow", labelKey: "exploit.path.oob.def.rangeallow", gates: "no-allowlist" },
+        { id: "safeaccessor", labelKey: "exploit.path.oob.def.safeaccessor", gates: "raw-indexing" }
+      ],
+      primaryDefenseId: "boundscheck",
+      quiz: {
+        promptKey: "exploit.path.oob.quiz.prompt",
+        answer: "c",
+        optionKeys: ["a", "b", "c", "d"]
+      }
+    },
+    auth: {
+      id: "auth",
+      titleKey: "exploit.path.auth.title",
+      cweKey: "exploit.path.auth.cwe",
+      source: `function checkLicense(tier, serial, region) {
+  if (tier == 3) {
+    if (region == 1) {
+      if (serial == 7) {
+        // VULNERABLE: debug backdoor left in the build \u2014 privileged access
+        return 911;
+      }
+      return 1;
+    }
+    return 0;
+  }
+  return 0;
+}`,
+      buggyLine: 5,
+      seed: { tier: 0, serial: 0, region: 0 },
+      concolicOptions: { searchDomain: { min: -5, max: 12 }, maxIterations: 16 },
+      vulnerableReturn: 911,
+      payloadNoteKey: "exploit.path.auth.payloadNote",
+      exploitInput: "tier=3, region=1, serial=7",
+      defenses: [
+        { id: "removebackdoor", labelKey: "exploit.path.auth.def.removebackdoor", gates: "debug-path-shipped" },
+        { id: "compileflag", labelKey: "exploit.path.auth.def.compileflag", gates: "no-build-gate" },
+        { id: "codereview", labelKey: "exploit.path.auth.def.codereview", gates: "hardcoded-magic" }
+      ],
+      primaryDefenseId: "removebackdoor",
+      quiz: {
+        promptKey: "exploit.path.auth.quiz.prompt",
+        answer: "c",
+        optionKeys: ["a", "b", "c", "d"]
+      }
+    }
+  };
+
+  // src/components/ExploitPathExplorer.js
+  var PHASES6 = ["vuln", "path", "payload", "defense"];
+  var PREDICT_PHASE_INDEX4 = PHASES6.indexOf("payload");
+  var EXAMPLE_IDS = ["packet", "oob", "auth"];
+  var state32 = {
+    exampleId: "packet",
+    phaseIndex: 0,
+    predict: true,
+    prediction: null,
+    predictResult: null,
+    defenses: {},
+    quiz: { active: false, phase: "idle", answer: "" },
+    concolic: {}
+    // exampleId -> concolicExecute result, cached
+  };
+  var root32;
+  function esc17(value = "") {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  function example4() {
+    return EXPLOIT_PATH_EXAMPLES[state32.exampleId];
+  }
+  function currentPhase4() {
+    return PHASES6[state32.phaseIndex];
+  }
+  function phaseShown4(name) {
+    return state32.phaseIndex >= PHASES6.indexOf(name);
+  }
+  function concolicResult() {
+    const id = state32.exampleId;
+    if (!state32.concolic[id]) {
+      const ex = EXPLOIT_PATH_EXAMPLES[id];
+      state32.concolic[id] = concolicExecute(ex.source, {
+        initialInputs: ex.seed,
+        ...ex.concolicOptions
+      });
+    }
+    return state32.concolic[id];
+  }
+  function vulnIteration() {
+    const ex = example4();
+    return concolicResult().iterations.find((it) => it.returnValue === ex.vulnerableReturn) || null;
+  }
+  function payloadStatusKey4() {
+    const ex = example4();
+    const activeCount = ex.defenses.filter((d) => state32.defenses[d.id]).length;
+    if (activeCount === 0) return "exploit.payloadStatus.succeeds";
+    if (activeCount === ex.defenses.length) return "exploit.payloadStatus.allActive";
+    return "exploit.payloadStatus.gated";
+  }
+  function renderExampleChips4() {
+    return `<div class="eog-chip-bar" data-testid="exploit-path-examples">
+    ${EXAMPLE_IDS.map((id) => `
+      <button type="button"
+        class="eog-chip${state32.exampleId === id ? " eog-chip--active" : ""}"
+        data-testid="exploit-path-example-${esc17(id)}"
+        data-eog-example="${esc17(id)}">
+        ${esc17(t(EXPLOIT_PATH_EXAMPLES[id].titleKey))}
+      </button>`).join("")}
+  </div>`;
+  }
+  function renderPhaseRing6() {
+    const cur = currentPhase4();
+    return `<div class="eog-phase-ring" data-testid="eog-phase-ring">
+    ${PHASES6.map((ph) => `
+      <div class="eog-phase-node eog-phase-node--${ph}${cur === ph ? " eog-phase-node--active" : ""}"
+        data-testid="exploit-phase-${ph}">
+        ${esc17(t(`exploit.phase.${ph}`))}
+      </div>`).join("")}
+  </div>`;
+  }
+  function renderCodePanel5() {
+    const ex = example4();
+    const lines = ex.source.split("\n").map((line, i) => {
+      const n = i + 1;
+      const cls = n === ex.buggyLine ? "eog-code-line eog-code-line--bug" : "eog-code-line";
+      return `<span class="${cls}"><span class="eog-code-lineno">${n}</span>${esc17(line)}</span>`;
+    }).join("\n");
+    return `<div class="eog-code-panel" data-testid="exploit-code">
+    <h3 class="eog-col-title">${esc17(t("exploit.codeTitle"))} \xB7 <span class="eog-cwe">${esc17(t(ex.cweKey))}</span></h3>
+    <pre class="eog-code-pre">${lines}</pre>
+  </div>`;
+  }
+  function renderPathPanel() {
+    if (!phaseShown4("path")) return "";
+    const ex = example4();
+    const result = concolicResult();
+    const vuln = vulnIteration();
+    const rows = result.iterations.map((it, idx) => {
+      const isVuln = it.returnValue === ex.vulnerableReturn;
+      const inputStr = Object.entries(it.inputs).map(([k, v]) => `${k}=${v}`).join(", ");
+      return `<tr class="eog-path-row${isVuln ? " eog-path-row--vuln" : ""}" data-testid="exploit-path-iteration-${idx}">
+      <td>${idx + 1}</td>
+      <td><code>${esc17(inputStr)}</code></td>
+      <td><code>${esc17(String(it.returnValue))}</code></td>
+      <td>${isVuln ? esc17(t("exploit.path.exploitPathLabel")) : ""}</td>
+    </tr>`;
+    }).join("");
+    const constraint = vuln ? vuln.pathCondition.join("  \u2227  ") : "";
+    return `<div class="eog-path-panel" data-testid="exploit-path">
+    <h3 class="eog-col-title">${esc17(t("exploit.path.iterationsTitle"))}</h3>
+    <table class="eog-path-table">
+      <thead><tr>
+        <th>#</th><th>${esc17(t("exploit.path.colInput"))}</th>
+        <th>${esc17(t("exploit.path.colReturn"))}</th><th></th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="eog-path-constraint" data-testid="exploit-path-constraint">
+      <span class="eog-path-constraint__label">${esc17(t("exploit.path.constraintLabel"))}</span>
+      <code>${esc17(constraint)}</code>
+    </div>
+  </div>`;
+  }
+  function renderPayloadPanel() {
+    if (!phaseShown4("payload")) return "";
+    const ex = example4();
+    return `<div class="eog-payload-panel" data-testid="exploit-path-payload">
+    <h3 class="eog-col-title">${esc17(t("exploit.payloadTitle"))}</h3>
+    <p class="eog-payload-note">${esc17(t(ex.payloadNoteKey))}</p>
+    <div class="eog-exploit-input">
+      <span class="eog-exploit-input__label">${esc17(t("exploit.path.exploitInputLabel"))}</span>
+      <code>${esc17(ex.exploitInput)}</code>
+    </div>
+  </div>`;
+  }
+  function renderDefensePanel4() {
+    if (!phaseShown4("defense")) return "";
+    const ex = example4();
+    return `<div class="eog-defense" data-testid="exploit-defense">
+    <h3 class="eog-col-title">${esc17(t("exploit.defenseTitle"))}</h3>
+    ${ex.defenses.map((d) => `
+      <label class="eog-defense-row${d.id === ex.primaryDefenseId ? " eog-defense-row--primary" : ""}">
+        <input type="checkbox" data-testid="exploit-mit-${esc17(d.id)}"
+          data-eog-defense-id="${esc17(d.id)}"
+          ${state32.defenses[d.id] ? "checked" : ""}>
+        <span class="eog-defense-label">${esc17(t(d.labelKey))}</span>
+      </label>`).join("")}
+    <div class="eog-payload-status" data-testid="exploit-payload-status">
+      ${esc17(t(payloadStatusKey4()))}
+    </div>
+  </div>`;
+  }
+  function renderPredictControls5() {
+    const ex = example4();
+    const showButtons = state32.predict && state32.phaseIndex === PREDICT_PHASE_INDEX4;
+    const buttons = showButtons ? `
+    <div class="eog-predict-btns" data-testid="exploit-predict-buttons">
+      <span class="eog-predict-label">${esc17(t("exploit.predictPrompt"))}</span>
+      ${ex.defenses.map((d) => `
+        <button type="button"
+          class="eog-predict-btn${state32.prediction === d.id ? " eog-predict-btn--selected" : ""}"
+          data-testid="exploit-predict-${esc17(d.id)}"
+          data-eog-predict="${esc17(d.id)}">
+          ${esc17(t(d.labelKey))}
+        </button>`).join("")}
+    </div>` : "";
+    const result = state32.predictResult ? `
+    <div class="eog-predict-result eog-predict-result--${esc17(state32.predictResult)}"
+      data-testid="exploit-predict-result">
+      ${state32.predictResult === "correct" ? esc17(t("exploit.predictCorrect")) : esc17(t("exploit.predictIncorrect"))}
+    </div>` : "";
+    const isLast = state32.phaseIndex >= PHASES6.length - 1;
+    return `<div class="eog-step-controls">
+    <span class="eog-step-counter">${state32.phaseIndex + 1} / ${PHASES6.length}</span>
+    <button type="button" class="eog-btn eog-btn--reset" data-testid="exploit-reset">${esc17(t("exploit.reset"))}</button>
+    <button type="button" class="eog-btn eog-btn--next" data-testid="exploit-next-phase"
+      ${isLast ? "disabled" : ""}>${esc17(t("exploit.nextPhase"))}</button>
+    <label class="eog-predict-toggle-label">
+      <input type="checkbox" data-testid="exploit-predict-toggle" ${state32.predict ? "checked" : ""}>
+      ${esc17(t("exploit.predictMode"))}
+    </label>
+    ${buttons}
+    ${result}
+  </div>`;
+  }
+  function renderQuiz32() {
+    const ex = example4();
+    if (!state32.quiz.active) {
+      return `<button type="button" class="eog-quiz-start" data-testid="exploit-path-quiz-start">${esc17(t("quiz.start"))}</button>`;
+    }
+    if (state32.quiz.phase === "done") {
+      const correct = state32.quiz.answer === ex.quiz.answer;
+      return `<div class="eog-quiz-result ${correct ? "quiz-correct" : "quiz-wrong"}" data-testid="exploit-path-quiz-result">
+      <p>${correct ? esc17(t("quiz.correct")) : esc17(t("quiz.wrong"))}</p>
+      <button type="button" data-testid="exploit-path-quiz-close">${esc17(t("quiz.close"))}</button>
+    </div>`;
+    }
+    return `<div class="eog-quiz" data-testid="exploit-path-quiz">
+    <p class="eog-quiz-prompt">${esc17(t(ex.quiz.promptKey))}</p>
+    ${ex.quiz.optionKeys.map((k) => `
+      <label class="eog-quiz-option">
+        <input type="radio" name="eog-quiz" value="${esc17(k)}" ${state32.quiz.answer === k ? "checked" : ""}>
+        ${esc17(t(`exploit.path.${state32.exampleId}.quiz.${k}`))}
+      </label>`).join("")}
+    <button type="button" data-testid="exploit-path-quiz-submit"
+      ${!state32.quiz.answer ? "disabled" : ""}>${esc17(t("quiz.submit"))}</button>
+  </div>`;
+  }
+  function render32() {
+    root32.innerHTML = `
+    <div class="eog-wrap">
+      <h2 class="eog-title">${esc17(t("section.exploit.title"))}</h2>
+      ${renderExampleChips4()}
+      ${renderPhaseRing6()}
+      ${renderCodePanel5()}
+      ${renderPathPanel()}
+      ${renderPayloadPanel()}
+      ${renderDefensePanel4()}
+      ${renderPredictControls5()}
+      <section class="eog-self-test">
+        <h3>${esc17(t("quiz.title"))}</h3>
+        ${renderQuiz32()}
+      </section>
+    </div>`;
+    bindEvents32();
+  }
+  function bindEvents32() {
+    var _a, _b, _c, _d, _e, _f;
+    root32.querySelectorAll("[data-eog-example]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.eogExample;
+        if (id === state32.exampleId) return;
+        state32.exampleId = id;
+        state32.phaseIndex = 0;
+        state32.prediction = null;
+        state32.predictResult = null;
+        state32.defenses = {};
+        render32();
+      });
+    });
+    (_a = root32.querySelector('[data-testid="exploit-next-phase"]')) == null ? void 0 : _a.addEventListener("click", () => {
+      if (state32.phaseIndex >= PHASES6.length - 1) return;
+      if (state32.predict && state32.phaseIndex === PREDICT_PHASE_INDEX4 && state32.prediction !== null) {
+        state32.predictResult = state32.prediction === example4().primaryDefenseId ? "correct" : "incorrect";
+      }
+      state32.phaseIndex += 1;
+      render32();
+    });
+    (_b = root32.querySelector('[data-testid="exploit-reset"]')) == null ? void 0 : _b.addEventListener("click", () => {
+      state32.phaseIndex = 0;
+      state32.prediction = null;
+      state32.predictResult = null;
+      state32.defenses = {};
+      render32();
+    });
+    (_c = root32.querySelector('[data-testid="exploit-predict-toggle"]')) == null ? void 0 : _c.addEventListener("change", (e) => {
+      state32.predict = e.target.checked;
+      render32();
+    });
+    root32.querySelectorAll("[data-eog-predict]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state32.prediction = btn.dataset.eogPredict;
+        state32.predictResult = null;
+        render32();
+      });
+    });
+    root32.querySelectorAll("[data-eog-defense-id]").forEach((cb) => {
+      cb.addEventListener("change", () => {
+        state32.defenses[cb.dataset.eogDefenseId] = cb.checked;
+        const statusEl = root32.querySelector('[data-testid="exploit-payload-status"]');
+        if (statusEl) statusEl.textContent = t(payloadStatusKey4());
+      });
+    });
+    (_d = root32.querySelector('[data-testid="exploit-path-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state32.quiz = { active: true, phase: "question", answer: "" };
+      render32();
+    });
+    root32.querySelectorAll('input[name="eog-quiz"]').forEach((inp) => {
+      inp.addEventListener("change", () => {
+        state32.quiz.answer = inp.value;
+        render32();
+      });
+    });
+    (_e = root32.querySelector('[data-testid="exploit-path-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state32.quiz.phase = "done";
+      render32();
+    });
+    (_f = root32.querySelector('[data-testid="exploit-path-quiz-close"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      state32.quiz = { active: false, phase: "idle", answer: "" };
+      render32();
+    });
+  }
+  function createExploitPathExplorer() {
+    state32.exampleId = "packet";
+    state32.phaseIndex = 0;
+    state32.predict = true;
+    state32.prediction = null;
+    state32.predictResult = null;
+    state32.defenses = {};
+    state32.quiz = { active: false, phase: "idle", answer: "" };
+    state32.concolic = {};
+    root32 = document.createElement("div");
+    root32.dataset.testid = "exploit-path-explorer";
+    onLocaleChange(() => render32());
+    render32();
+    return root32;
+  }
+
   // src/components/DefinitionGatesExplorer.js
   var CRITERIA3 = [
     { id: "dor-criteria", gate: "dor" },
@@ -36762,13 +37252,13 @@ ${items.join("\n")}
     }
     return { caught, leaked };
   }
-  var state32 = {
+  var state33 = {
     // Start with two criteria off, so a leak is visible immediately.
     enabled: new Set(CRITERIA3.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review")),
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root32;
+  var root33;
   function renderGate(gate) {
     const crits = CRITERIA3.filter((c) => c.gate === gate);
     return `
@@ -36780,7 +37270,7 @@ ${items.join("\n")}
           <li>
             <label class="gate-crit">
               <input type="checkbox" data-crit="${c.id}" data-testid="gate-crit-${c.id}"
-                ${state32.enabled.has(c.id) ? "checked" : ""}>
+                ${state33.enabled.has(c.id) ? "checked" : ""}>
               ${t("gate.crit." + c.id)}
             </label>
           </li>`).join("")}
@@ -36788,7 +37278,7 @@ ${items.join("\n")}
     </div>`;
   }
   function renderResult2() {
-    const { caught, leaked } = evaluate(state32.enabled);
+    const { caught, leaked } = evaluate(state33.enabled);
     const issueRow = (issue, status) => `
     <li class="gate-issue gate-issue--${status}">
       <span class="gate-issue-icon">${status === "caught" ? "\u2705" : "\u26A0\uFE0F"}</span>
@@ -36822,12 +37312,12 @@ ${items.join("\n")}
         title="${t("gate.bridge.bdd.title")}">\u{1F517} \u2192 ${t("acceptanceTab.gherkin")}</button>
     </div>`;
   }
-  function renderQuiz32() {
-    if (!state32.quiz.active) {
+  function renderQuiz33() {
+    if (!state33.quiz.active) {
       return `<button type="button" class="gate-quiz-start" data-testid="gate-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state32.quiz.phase === "done") {
-      const correct = state32.quiz.answer === "c";
+    if (state33.quiz.phase === "done") {
+      const correct = state33.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "gate",
@@ -36839,7 +37329,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("gate.quiz.prompt"),
-          a: state32.quiz.answer ? t("gate.quiz." + state32.quiz.answer) : "",
+          a: state33.quiz.answer ? t("gate.quiz." + state33.quiz.answer) : "",
           expected: t("gate.quiz.c"),
           ok: correct
         }]
@@ -36854,26 +37344,26 @@ ${items.join("\n")}
       <p class="gate-quiz-prompt">${t("gate.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="gate-quiz-option">
-          <input type="radio" name="gate-quiz" value="${k}" ${state32.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="gate-quiz" value="${k}" ${state33.quiz.answer === k ? "checked" : ""}>
           ${t("gate.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="gate-quiz-submit" data-testid="gate-quiz-submit"
-        ${!state32.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state33.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab22() {
-    if (!state32.lab.active) {
+    if (!state33.lab.active) {
       return `<button type="button" class="gate-lab-start" data-testid="gate-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="gate-lab" data-testid="gate-lab">
       <p class="gate-lab-prompt">${t("gate.lab.prompt")}</p>
       <textarea class="gate-lab-textarea" data-testid="gate-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state32.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state33.lab.text}</textarea>
     </div>`;
   }
-  function render32() {
-    root32.innerHTML = `
+  function render33() {
+    root33.innerHTML = `
     <div class="gate-wrap" data-testid="gate-wrap">
       <h2 class="gate-title">${t("gate.title")}</h2>
       <p class="gate-desc">${t("gate.desc")}</p>
@@ -36885,61 +37375,61 @@ ${items.join("\n")}
       ${renderBridges9()}
       <section class="gate-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz32()}
+        ${renderQuiz33()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab22()}
       </section>
     </div>`;
-    bindEvents32();
+    bindEvents33();
   }
-  function bindEvents32() {
+  function bindEvents33() {
     var _a, _b, _c, _d, _e, _f;
-    root32.querySelectorAll("[data-crit]").forEach((inp) => {
+    root33.querySelectorAll("[data-crit]").forEach((inp) => {
       inp.addEventListener("change", () => {
-        if (inp.checked) state32.enabled.add(inp.dataset.crit);
-        else state32.enabled.delete(inp.dataset.crit);
-        render32();
+        if (inp.checked) state33.enabled.add(inp.dataset.crit);
+        else state33.enabled.delete(inp.dataset.crit);
+        render33();
       });
     });
-    (_a = root32.querySelector('[data-testid="gate-bridge-defectcost"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root33.querySelector('[data-testid="gate-bridge-defectcost"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="flow"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-flow-tab="defectCost"]')) == null ? void 0 : _b2.click();
     });
-    (_b = root32.querySelector('[data-testid="gate-bridge-bdd"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root33.querySelector('[data-testid="gate-bridge-bdd"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="gherkin"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root32.querySelector('[data-testid="gate-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state32.quiz = { active: true, phase: "question", answer: "" };
-      render32();
+    (_c = root33.querySelector('[data-testid="gate-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state33.quiz = { active: true, phase: "question", answer: "" };
+      render33();
     });
-    root32.querySelectorAll('input[name="gate-quiz"]').forEach((inp) => {
+    root33.querySelectorAll('input[name="gate-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state32.quiz.answer = inp.value;
-        render32();
+        state33.quiz.answer = inp.value;
+        render33();
       });
     });
-    (_d = root32.querySelector('[data-testid="gate-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state32.quiz.phase = "done";
-      render32();
+    (_d = root33.querySelector('[data-testid="gate-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state33.quiz.phase = "done";
+      render33();
     });
-    (_e = root32.querySelector('[data-testid="gate-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state32.lab.active = true;
-      render32();
+    (_e = root33.querySelector('[data-testid="gate-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state33.lab.active = true;
+      render33();
     });
-    (_f = root32.querySelector('[data-testid="gate-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state32.lab.text = e.target.value;
+    (_f = root33.querySelector('[data-testid="gate-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state33.lab.text = e.target.value;
     });
   }
   function createDefinitionGatesExplorer() {
-    state32.enabled = new Set(CRITERIA3.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review"));
-    state32.quiz = { active: false, phase: "idle", answer: "" };
-    state32.lab = { active: false, text: "" };
-    root32 = document.createElement("div");
-    render32();
-    return root32;
+    state33.enabled = new Set(CRITERIA3.map((c) => c.id).filter((id) => id !== "dor-data" && id !== "dod-review"));
+    state33.quiz = { active: false, phase: "idle", answer: "" };
+    state33.lab = { active: false, text: "" };
+    root33 = document.createElement("div");
+    render33();
+    return root33;
   }
 
   // src/components/ExampleMappingExplorer.js
@@ -36950,25 +37440,25 @@ ${items.join("\n")}
   ];
   var QUESTIONS = ["q1", "q2", "q3"];
   var ROLES = ["ba", "dev", "tester"];
-  var state33 = {
+  var state34 = {
     role: "ba",
     resolved: /* @__PURE__ */ new Set(),
     activeExample: "e1",
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root33;
+  var root34;
   function openQuestionCount() {
-    return QUESTIONS.filter((q) => !state33.resolved.has(q)).length;
+    return QUESTIONS.filter((q) => !state34.resolved.has(q)).length;
   }
   function renderRoles() {
     return `
     <div class="emap-roles" data-testid="emap-roles">
       ${ROLES.map((r) => `
         <button type="button"
-          class="emap-role ${state33.role === r ? "emap-role--active" : ""}"
+          class="emap-role ${state34.role === r ? "emap-role--active" : ""}"
           data-role="${r}" data-testid="emap-role-${r}">${t("emap.role." + r)}</button>`).join("")}
-      <p class="emap-role-note">${t("emap.role." + state33.role + ".note")}</p>
+      <p class="emap-role-note">${t("emap.role." + state34.role + ".note")}</p>
     </div>`;
   }
   function renderMap() {
@@ -36988,7 +37478,7 @@ ${items.join("\n")}
             <div class="emap-examples">
               ${rule.examples.map((ex) => `
                 <button type="button"
-                  class="emap-card emap-card--example ${state33.activeExample === ex ? "emap-card--active" : ""}"
+                  class="emap-card emap-card--example ${state34.activeExample === ex ? "emap-card--active" : ""}"
                   data-example="${ex}" data-testid="emap-ex-${ex}">
                   <span class="emap-card-kind">${t("emap.kind.example")}</span>
                   ${t("emap.ex." + ex)}
@@ -36999,7 +37489,7 @@ ${items.join("\n")}
       <div class="emap-questions" data-testid="emap-questions">
         <span class="emap-card-kind">${t("emap.kind.question")}</span>
         ${QUESTIONS.map((q) => {
-      const done = state33.resolved.has(q);
+      const done = state34.resolved.has(q);
       return `<button type="button"
             class="emap-card emap-card--question ${done ? "emap-card--resolved" : ""}"
             data-question="${q}" data-testid="emap-q-${q}">
@@ -37019,7 +37509,7 @@ ${items.join("\n")}
     </div>`;
   }
   function renderGherkin() {
-    const ex = state33.activeExample;
+    const ex = state34.activeExample;
     return `
     <div class="emap-gherkin" data-testid="emap-gherkin">
       <h3>${t("emap.gherkin.title")}</h3>
@@ -37036,12 +37526,12 @@ ${items.join("\n")}
         title="${t("emap.bridge.gates.title")}">\u{1F517} \u2192 ${t("agileTab.gates")}</button>
     </div>`;
   }
-  function renderQuiz33() {
-    if (!state33.quiz.active) {
+  function renderQuiz34() {
+    if (!state34.quiz.active) {
       return `<button type="button" class="emap-quiz-start" data-testid="emap-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state33.quiz.phase === "done") {
-      const correct = state33.quiz.answer === "c";
+    if (state34.quiz.phase === "done") {
+      const correct = state34.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "emap",
@@ -37053,7 +37543,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("emap.quiz.prompt"),
-          a: state33.quiz.answer ? t("emap.quiz." + state33.quiz.answer) : "",
+          a: state34.quiz.answer ? t("emap.quiz." + state34.quiz.answer) : "",
           expected: t("emap.quiz.c"),
           ok: correct
         }]
@@ -37068,26 +37558,26 @@ ${items.join("\n")}
       <p class="emap-quiz-prompt">${t("emap.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="emap-quiz-option">
-          <input type="radio" name="emap-quiz" value="${k}" ${state33.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="emap-quiz" value="${k}" ${state34.quiz.answer === k ? "checked" : ""}>
           ${t("emap.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="emap-quiz-submit" data-testid="emap-quiz-submit"
-        ${!state33.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state34.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab23() {
-    if (!state33.lab.active) {
+    if (!state34.lab.active) {
       return `<button type="button" class="emap-lab-start" data-testid="emap-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="emap-lab" data-testid="emap-lab">
       <p class="emap-lab-prompt">${t("emap.lab.prompt")}</p>
       <textarea class="emap-lab-textarea" data-testid="emap-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state33.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state34.lab.text}</textarea>
     </div>`;
   }
-  function render33() {
-    root33.innerHTML = `
+  function render34() {
+    root34.innerHTML = `
     <div class="emap-wrap" data-testid="emap-wrap">
       <h2 class="emap-title">${t("emap.title")}</h2>
       <p class="emap-desc">${t("emap.desc")}</p>
@@ -37098,76 +37588,76 @@ ${items.join("\n")}
       ${renderBridges10()}
       <section class="emap-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz33()}
+        ${renderQuiz34()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab23()}
       </section>
     </div>`;
-    bindEvents33();
+    bindEvents34();
   }
-  function bindEvents33() {
+  function bindEvents34() {
     var _a, _b, _c, _d, _e, _f;
-    root33.querySelectorAll("[data-role]").forEach((btn) => {
+    root34.querySelectorAll("[data-role]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state33.role = btn.dataset.role;
-        render33();
+        state34.role = btn.dataset.role;
+        render34();
       });
     });
-    root33.querySelectorAll("[data-example]").forEach((btn) => {
+    root34.querySelectorAll("[data-example]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state33.activeExample = btn.dataset.example;
-        render33();
+        state34.activeExample = btn.dataset.example;
+        render34();
       });
     });
-    root33.querySelectorAll("[data-question]").forEach((btn) => {
+    root34.querySelectorAll("[data-question]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const q = btn.dataset.question;
-        if (state33.resolved.has(q)) state33.resolved.delete(q);
-        else state33.resolved.add(q);
-        render33();
+        if (state34.resolved.has(q)) state34.resolved.delete(q);
+        else state34.resolved.add(q);
+        render34();
       });
     });
-    (_a = root33.querySelector('[data-testid="emap-bridge-bdd"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root34.querySelector('[data-testid="emap-bridge-bdd"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="gherkin"]')) == null ? void 0 : _b2.click();
     });
-    (_b = root33.querySelector('[data-testid="emap-bridge-gates"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root34.querySelector('[data-testid="emap-bridge-gates"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="agile"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-agile-tab="gates"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root33.querySelector('[data-testid="emap-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state33.quiz = { active: true, phase: "question", answer: "" };
-      render33();
+    (_c = root34.querySelector('[data-testid="emap-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state34.quiz = { active: true, phase: "question", answer: "" };
+      render34();
     });
-    root33.querySelectorAll('input[name="emap-quiz"]').forEach((inp) => {
+    root34.querySelectorAll('input[name="emap-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state33.quiz.answer = inp.value;
-        render33();
+        state34.quiz.answer = inp.value;
+        render34();
       });
     });
-    (_d = root33.querySelector('[data-testid="emap-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state33.quiz.phase = "done";
-      render33();
+    (_d = root34.querySelector('[data-testid="emap-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state34.quiz.phase = "done";
+      render34();
     });
-    (_e = root33.querySelector('[data-testid="emap-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state33.lab.active = true;
-      render33();
+    (_e = root34.querySelector('[data-testid="emap-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state34.lab.active = true;
+      render34();
     });
-    (_f = root33.querySelector('[data-testid="emap-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state33.lab.text = e.target.value;
+    (_f = root34.querySelector('[data-testid="emap-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state34.lab.text = e.target.value;
     });
   }
   function createExampleMappingExplorer() {
-    state33.role = "ba";
-    state33.resolved = /* @__PURE__ */ new Set();
-    state33.activeExample = "e1";
-    state33.quiz = { active: false, phase: "idle", answer: "" };
-    state33.lab = { active: false, text: "" };
-    root33 = document.createElement("div");
-    render33();
-    return root33;
+    state34.role = "ba";
+    state34.resolved = /* @__PURE__ */ new Set();
+    state34.activeExample = "e1";
+    state34.quiz = { active: false, phase: "idle", answer: "" };
+    state34.lab = { active: false, text: "" };
+    root34 = document.createElement("div");
+    render34();
+    return root34;
   }
 
   // src/components/ContinuousTestingPipelineExplorer.js
@@ -37180,31 +37670,31 @@ ${items.join("\n")}
   var TIER_RANK = { commit: 0, pr: 1, nightly: 2 };
   var COMMIT_BUDGET = 120;
   var IMPACT_FRACTION = 0.15;
-  var state34 = {
+  var state35 = {
     tierOf: { unit: "commit", integration: "pr", e2e: "nightly" },
     flaky: 0,
     impact: false,
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root34;
+  var root35;
   function typesAtTier(tier) {
-    return TEST_TYPES.filter((tt) => TIER_RANK[state34.tierOf[tt.id]] <= TIER_RANK[tier]);
+    return TEST_TYPES.filter((tt) => TIER_RANK[state35.tierOf[tt.id]] <= TIER_RANK[tier]);
   }
   function tierStats(tier) {
     const types = typesAtTier(tier);
     let tests = 0;
     let seconds = 0;
     for (const tt of types) {
-      const factor = tier === "commit" && state34.impact ? IMPACT_FRACTION : 1;
+      const factor = tier === "commit" && state35.impact ? IMPACT_FRACTION : 1;
       tests += tt.count * factor;
       seconds += tt.count * tt.time * factor;
     }
     return { tests: Math.round(tests), seconds };
   }
   function falseFailureRate(n) {
-    if (!state34.flaky) return 0;
-    return 1 - Math.pow(1 - state34.flaky / 100, n);
+    if (!state35.flaky) return 0;
+    return 1 - Math.pow(1 - state35.flaky / 100, n);
   }
   function fmtTime(s) {
     if (s < 1) return s.toFixed(2) + "s";
@@ -37228,14 +37718,14 @@ ${items.join("\n")}
               <td>${fmtTime(tt.time)}</td>
               <td>
                 <select data-tier-of="${tt.id}" data-testid="ctp-tier-${tt.id}">
-                  ${TIERS.map((tr) => `<option value="${tr}" ${state34.tierOf[tt.id] === tr ? "selected" : ""}>${t("ctp.tier." + tr)}</option>`).join("")}
+                  ${TIERS.map((tr) => `<option value="${tr}" ${state35.tierOf[tt.id] === tr ? "selected" : ""}>${t("ctp.tier." + tr)}</option>`).join("")}
                 </select>
               </td>
             </tr>`).join("")}
         </tbody>
       </table>
       <label class="ctp-impact-toggle">
-        <input type="checkbox" data-testid="ctp-impact" ${state34.impact ? "checked" : ""}>
+        <input type="checkbox" data-testid="ctp-impact" ${state35.impact ? "checked" : ""}>
         ${t("ctp.impact.label")}
       </label>
     </div>`;
@@ -37269,7 +37759,7 @@ ${items.join("\n")}
         <span>${t("ctp.flaky.label")}</span>
         ${[0, 2, 5].map((f) => `
           <button type="button"
-            class="ctp-flaky-btn ${state34.flaky === f ? "ctp-flaky-btn--active" : ""}"
+            class="ctp-flaky-btn ${state35.flaky === f ? "ctp-flaky-btn--active" : ""}"
             data-flaky="${f}" data-testid="ctp-flaky-${f}">${f}%</button>`).join("")}
       </div>
       <p class="ctp-flaky-result ${rate > 0.3 ? "ctp-flaky-result--bad" : ""}">
@@ -37286,12 +37776,12 @@ ${items.join("\n")}
         title="${t("ctp.bridge.flaky.title")}">\u{1F517} \u2192 ${t("acceptanceTab.flaky")}</button>
     </div>`;
   }
-  function renderQuiz34() {
-    if (!state34.quiz.active) {
+  function renderQuiz35() {
+    if (!state35.quiz.active) {
       return `<button type="button" class="ctp-quiz-start" data-testid="ctp-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state34.quiz.phase === "done") {
-      const correct = state34.quiz.answer === "c";
+    if (state35.quiz.phase === "done") {
+      const correct = state35.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "ctp",
@@ -37303,7 +37793,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("ctp.quiz.prompt"),
-          a: state34.quiz.answer ? t("ctp.quiz." + state34.quiz.answer) : "",
+          a: state35.quiz.answer ? t("ctp.quiz." + state35.quiz.answer) : "",
           expected: t("ctp.quiz.c"),
           ok: correct
         }]
@@ -37318,26 +37808,26 @@ ${items.join("\n")}
       <p class="ctp-quiz-prompt">${t("ctp.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="ctp-quiz-option">
-          <input type="radio" name="ctp-quiz" value="${k}" ${state34.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="ctp-quiz" value="${k}" ${state35.quiz.answer === k ? "checked" : ""}>
           ${t("ctp.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="ctp-quiz-submit" data-testid="ctp-quiz-submit"
-        ${!state34.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state35.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab24() {
-    if (!state34.lab.active) {
+    if (!state35.lab.active) {
       return `<button type="button" class="ctp-lab-start" data-testid="ctp-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="ctp-lab" data-testid="ctp-lab">
       <p class="ctp-lab-prompt">${t("ctp.lab.prompt")}</p>
       <textarea class="ctp-lab-textarea" data-testid="ctp-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state34.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state35.lab.text}</textarea>
     </div>`;
   }
-  function render34() {
-    root34.innerHTML = `
+  function render35() {
+    root35.innerHTML = `
     <div class="ctp-wrap" data-testid="ctp-wrap">
       <h2 class="ctp-title">${t("ctp.title")}</h2>
       <p class="ctp-desc">${t("ctp.desc")}</p>
@@ -37347,72 +37837,72 @@ ${items.join("\n")}
       ${renderBridges11()}
       <section class="ctp-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz34()}
+        ${renderQuiz35()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab24()}
       </section>
     </div>`;
-    bindEvents34();
+    bindEvents35();
   }
-  function bindEvents34() {
+  function bindEvents35() {
     var _a, _b, _c, _d, _e, _f, _g;
-    root34.querySelectorAll("[data-tier-of]").forEach((sel) => {
+    root35.querySelectorAll("[data-tier-of]").forEach((sel) => {
       sel.addEventListener("change", () => {
-        state34.tierOf[sel.dataset.tierOf] = sel.value;
-        render34();
+        state35.tierOf[sel.dataset.tierOf] = sel.value;
+        render35();
       });
     });
-    (_a = root34.querySelector('[data-testid="ctp-impact"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
-      state34.impact = e.target.checked;
-      render34();
+    (_a = root35.querySelector('[data-testid="ctp-impact"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
+      state35.impact = e.target.checked;
+      render35();
     });
-    root34.querySelectorAll("[data-flaky]").forEach((btn) => {
+    root35.querySelectorAll("[data-flaky]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        state34.flaky = Number(btn.dataset.flaky);
-        render34();
+        state35.flaky = Number(btn.dataset.flaky);
+        render35();
       });
     });
-    (_b = root34.querySelector('[data-testid="ctp-bridge-pyramid"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root35.querySelector('[data-testid="ctp-bridge-pyramid"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="types"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-types-tab="adjuster"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root34.querySelector('[data-testid="ctp-bridge-flaky"]')) == null ? void 0 : _c.addEventListener("click", () => {
+    (_c = root35.querySelector('[data-testid="ctp-bridge-flaky"]')) == null ? void 0 : _c.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="flaky"]')) == null ? void 0 : _b2.click();
     });
-    (_d = root34.querySelector('[data-testid="ctp-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state34.quiz = { active: true, phase: "question", answer: "" };
-      render34();
+    (_d = root35.querySelector('[data-testid="ctp-quiz-start"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state35.quiz = { active: true, phase: "question", answer: "" };
+      render35();
     });
-    root34.querySelectorAll('input[name="ctp-quiz"]').forEach((inp) => {
+    root35.querySelectorAll('input[name="ctp-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state34.quiz.answer = inp.value;
-        render34();
+        state35.quiz.answer = inp.value;
+        render35();
       });
     });
-    (_e = root34.querySelector('[data-testid="ctp-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state34.quiz.phase = "done";
-      render34();
+    (_e = root35.querySelector('[data-testid="ctp-quiz-submit"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state35.quiz.phase = "done";
+      render35();
     });
-    (_f = root34.querySelector('[data-testid="ctp-lab-start"]')) == null ? void 0 : _f.addEventListener("click", () => {
-      state34.lab.active = true;
-      render34();
+    (_f = root35.querySelector('[data-testid="ctp-lab-start"]')) == null ? void 0 : _f.addEventListener("click", () => {
+      state35.lab.active = true;
+      render35();
     });
-    (_g = root34.querySelector('[data-testid="ctp-lab-text"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
-      state34.lab.text = e.target.value;
+    (_g = root35.querySelector('[data-testid="ctp-lab-text"]')) == null ? void 0 : _g.addEventListener("input", (e) => {
+      state35.lab.text = e.target.value;
     });
   }
   function createContinuousTestingPipelineExplorer() {
-    state34.tierOf = { unit: "commit", integration: "pr", e2e: "nightly" };
-    state34.flaky = 0;
-    state34.impact = false;
-    state34.quiz = { active: false, phase: "idle", answer: "" };
-    state34.lab = { active: false, text: "" };
-    root34 = document.createElement("div");
-    render34();
-    return root34;
+    state35.tierOf = { unit: "commit", integration: "pr", e2e: "nightly" };
+    state35.flaky = 0;
+    state35.impact = false;
+    state35.quiz = { active: false, phase: "idle", answer: "" };
+    state35.lab = { active: false, text: "" };
+    root35 = document.createElement("div");
+    render35();
+    return root35;
   }
 
   // src/components/RegressionDebtExplorer.js
@@ -37479,12 +37969,12 @@ ${items.join("\n")}
     const row = rows.find((r) => r.cost > r.value);
     return row ? row.sprint : null;
   }
-  var state35 = {
+  var state36 = {
     strategies: { prune: false, quarantine: false, riskBased: false },
     quiz: { active: false, phase: "idle", answer: "" },
     lab: { active: false, text: "" }
   };
-  var root35;
+  var root36;
   var STRATEGIES2 = ["prune", "quarantine", "riskBased"];
   function fmtTime2(s) {
     return s < 90 ? Math.round(s) + "s" : Math.floor(s / 60) + "m " + Math.round(s % 60) + "s";
@@ -37496,7 +37986,7 @@ ${items.join("\n")}
       ${STRATEGIES2.map((s) => `
         <label class="rdebt-strat">
           <input type="checkbox" data-strategy="${s}" data-testid="rdebt-strat-${s}"
-            ${state35.strategies[s] ? "checked" : ""}>
+            ${state36.strategies[s] ? "checked" : ""}>
           ${t("rdebt.strat." + s)}
         </label>`).join("")}
     </div>`;
@@ -37553,12 +38043,12 @@ ${items.join("\n")}
         title="${t("rdebt.bridge.flaky.title")}">\u{1F517} \u2192 ${t("acceptanceTab.flaky")}</button>
     </div>`;
   }
-  function renderQuiz35() {
-    if (!state35.quiz.active) {
+  function renderQuiz36() {
+    if (!state36.quiz.active) {
       return `<button type="button" class="rdebt-quiz-start" data-testid="rdebt-quiz-start">${t("quiz.start")}</button>`;
     }
-    if (state35.quiz.phase === "done") {
-      const correct = state35.quiz.answer === "c";
+    if (state36.quiz.phase === "done") {
+      const correct = state36.quiz.answer === "c";
       const shareEncoded = encodeResult({
         v: 1,
         explorer: "rdebt",
@@ -37570,7 +38060,7 @@ ${items.join("\n")}
         total: 1,
         items: [{
           q: t("rdebt.quiz.prompt"),
-          a: state35.quiz.answer ? t("rdebt.quiz." + state35.quiz.answer) : "",
+          a: state36.quiz.answer ? t("rdebt.quiz." + state36.quiz.answer) : "",
           expected: t("rdebt.quiz.c"),
           ok: correct
         }]
@@ -37585,27 +38075,27 @@ ${items.join("\n")}
       <p class="rdebt-quiz-prompt">${t("rdebt.quiz.prompt")}</p>
       ${["a", "b", "c", "d"].map((k) => `
         <label class="rdebt-quiz-option">
-          <input type="radio" name="rdebt-quiz" value="${k}" ${state35.quiz.answer === k ? "checked" : ""}>
+          <input type="radio" name="rdebt-quiz" value="${k}" ${state36.quiz.answer === k ? "checked" : ""}>
           ${t("rdebt.quiz." + k)}
         </label>`).join("")}
       <button type="button" class="rdebt-quiz-submit" data-testid="rdebt-quiz-submit"
-        ${!state35.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
+        ${!state36.quiz.answer ? "disabled" : ""}>${t("quiz.submit")}</button>
     </div>`;
   }
   function renderLab25() {
-    if (!state35.lab.active) {
+    if (!state36.lab.active) {
       return `<button type="button" class="rdebt-lab-start" data-testid="rdebt-lab-start">${t("lab.start")}</button>`;
     }
     return `
     <div class="rdebt-lab" data-testid="rdebt-lab">
       <p class="rdebt-lab-prompt">${t("rdebt.lab.prompt")}</p>
       <textarea class="rdebt-lab-textarea" data-testid="rdebt-lab-text" rows="5"
-        placeholder="${t("lab.reflect.placeholder")}">${state35.lab.text}</textarea>
+        placeholder="${t("lab.reflect.placeholder")}">${state36.lab.text}</textarea>
     </div>`;
   }
-  function render35() {
-    const rows = simulate(state35.strategies);
-    root35.innerHTML = `
+  function render36() {
+    const rows = simulate(state36.strategies);
+    root36.innerHTML = `
     <div class="rdebt-wrap" data-testid="rdebt-wrap">
       <h2 class="rdebt-title">${t("rdebt.title")}</h2>
       <p class="rdebt-desc">${t("rdebt.desc")}</p>
@@ -37615,59 +38105,59 @@ ${items.join("\n")}
       ${renderBridges12()}
       <section class="rdebt-self-test">
         <h3>${t("quiz.title")}</h3>
-        ${renderQuiz35()}
+        ${renderQuiz36()}
         <h3>${t("lab.reflect.title")}</h3>
         ${renderLab25()}
       </section>
     </div>`;
-    bindEvents35();
+    bindEvents36();
   }
-  function bindEvents35() {
+  function bindEvents36() {
     var _a, _b, _c, _d, _e, _f;
-    root35.querySelectorAll("[data-strategy]").forEach((inp) => {
+    root36.querySelectorAll("[data-strategy]").forEach((inp) => {
       inp.addEventListener("change", () => {
-        state35.strategies[inp.dataset.strategy] = inp.checked;
-        render35();
+        state36.strategies[inp.dataset.strategy] = inp.checked;
+        render36();
       });
     });
-    (_a = root35.querySelector('[data-testid="rdebt-bridge-rbt"]')) == null ? void 0 : _a.addEventListener("click", () => {
+    (_a = root36.querySelector('[data-testid="rdebt-bridge-rbt"]')) == null ? void 0 : _a.addEventListener("click", () => {
       var _a2;
       (_a2 = document.querySelector('[data-section="rbt"]')) == null ? void 0 : _a2.click();
     });
-    (_b = root35.querySelector('[data-testid="rdebt-bridge-flaky"]')) == null ? void 0 : _b.addEventListener("click", () => {
+    (_b = root36.querySelector('[data-testid="rdebt-bridge-flaky"]')) == null ? void 0 : _b.addEventListener("click", () => {
       var _a2, _b2;
       (_a2 = document.querySelector('[data-section="acceptance"]')) == null ? void 0 : _a2.click();
       (_b2 = document.querySelector('[data-acceptance-tab="flaky"]')) == null ? void 0 : _b2.click();
     });
-    (_c = root35.querySelector('[data-testid="rdebt-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
-      state35.quiz = { active: true, phase: "question", answer: "" };
-      render35();
+    (_c = root36.querySelector('[data-testid="rdebt-quiz-start"]')) == null ? void 0 : _c.addEventListener("click", () => {
+      state36.quiz = { active: true, phase: "question", answer: "" };
+      render36();
     });
-    root35.querySelectorAll('input[name="rdebt-quiz"]').forEach((inp) => {
+    root36.querySelectorAll('input[name="rdebt-quiz"]').forEach((inp) => {
       inp.addEventListener("change", () => {
-        state35.quiz.answer = inp.value;
-        render35();
+        state36.quiz.answer = inp.value;
+        render36();
       });
     });
-    (_d = root35.querySelector('[data-testid="rdebt-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
-      state35.quiz.phase = "done";
-      render35();
+    (_d = root36.querySelector('[data-testid="rdebt-quiz-submit"]')) == null ? void 0 : _d.addEventListener("click", () => {
+      state36.quiz.phase = "done";
+      render36();
     });
-    (_e = root35.querySelector('[data-testid="rdebt-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
-      state35.lab.active = true;
-      render35();
+    (_e = root36.querySelector('[data-testid="rdebt-lab-start"]')) == null ? void 0 : _e.addEventListener("click", () => {
+      state36.lab.active = true;
+      render36();
     });
-    (_f = root35.querySelector('[data-testid="rdebt-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
-      state35.lab.text = e.target.value;
+    (_f = root36.querySelector('[data-testid="rdebt-lab-text"]')) == null ? void 0 : _f.addEventListener("input", (e) => {
+      state36.lab.text = e.target.value;
     });
   }
   function createRegressionDebtExplorer() {
-    state35.strategies = { prune: false, quarantine: false, riskBased: false };
-    state35.quiz = { active: false, phase: "idle", answer: "" };
-    state35.lab = { active: false, text: "" };
-    root35 = document.createElement("div");
-    render35();
-    return root35;
+    state36.strategies = { prune: false, quarantine: false, riskBased: false };
+    state36.quiz = { active: false, phase: "idle", answer: "" };
+    state36.lab = { active: false, text: "" };
+    root36 = document.createElement("div");
+    render36();
+    return root36;
   }
 
   // src/data/slideDecks.generated.js
@@ -39180,6 +39670,13 @@ ${items.join("\n")}
       series: ["exploit"],
       difficulty: "intermediate",
       source: [TEXTBOOK]
+    },
+    ExploitPathExplorer: {
+      level: ["unit"],
+      technique: ["security"],
+      series: ["exploit"],
+      difficulty: "advanced",
+      source: [TEXTBOOK]
     }
   };
   var SECTION_EXPLORERS = {
@@ -39245,7 +39742,7 @@ ${items.join("\n")}
     ],
     slicing: ["ProgramSlicingExplorer", "SliceDicingExplorer", "SliceCoverageExplorer", "SliceRegressionExplorer"],
     tdd: ["TddCycleExplorer", "TddRulesExplorer"],
-    exploit: ["ExploitOverflowExplorer", "ExploitSqliExplorer", "ExploitCmdiExplorer"]
+    exploit: ["ExploitOverflowExplorer", "ExploitSqliExplorer", "ExploitCmdiExplorer", "ExploitPathExplorer"]
   };
   function getSectionTags(sectionId) {
     var _a, _b, _c, _d, _e;
@@ -39284,18 +39781,18 @@ ${items.join("\n")}
   ];
   var EMPTY_FILTER = () => ({ level: [], technique: [], series: [], difficulty: [] });
   function createTagFilterBar({ initial, onChange } = {}) {
-    const state36 = {
+    const state37 = {
       filter: normalizeFilter(initial),
       listener: typeof onChange === "function" ? onChange : () => {
       }
     };
-    const root37 = document.createElement("div");
-    root37.className = "tag-filter-bar";
-    root37.dataset.testid = "tag-filter-bar";
-    function render36() {
+    const root38 = document.createElement("div");
+    root38.className = "tag-filter-bar";
+    root38.dataset.testid = "tag-filter-bar";
+    function render37() {
       var _a;
-      const totalActive = Object.values(state36.filter).reduce((n, arr) => n + arr.length, 0);
-      root37.innerHTML = `
+      const totalActive = Object.values(state37.filter).reduce((n, arr) => n + arr.length, 0);
+      root38.innerHTML = `
       <div class="tag-filter-bar__header">
         <span class="tag-filter-bar__title">${t("filter.title")}</span>
         <button type="button" class="tag-filter-bar__clear"
@@ -39309,7 +39806,7 @@ ${items.join("\n")}
           <span class="tag-filter-row__label">${t("filter.dim." + dim.id)}</span>
           <div class="tag-filter-row__chips">
             ${dim.values.map((v) => {
-        const active = state36.filter[dim.id].includes(v);
+        const active = state37.filter[dim.id].includes(v);
         return `
                 <button type="button"
                   class="tag-chip${active ? " tag-chip--active" : ""}"
@@ -39322,40 +39819,40 @@ ${items.join("\n")}
           </div>
         </div>
       `).join("")}`;
-      root37.querySelectorAll("[data-dim][data-value]").forEach((btn) => {
+      root38.querySelectorAll("[data-dim][data-value]").forEach((btn) => {
         btn.addEventListener("click", () => toggle(btn.dataset.dim, btn.dataset.value));
       });
-      (_a = root37.querySelector('[data-testid="tag-filter-clear"]')) == null ? void 0 : _a.addEventListener("click", () => clear());
+      (_a = root38.querySelector('[data-testid="tag-filter-clear"]')) == null ? void 0 : _a.addEventListener("click", () => clear());
     }
     function toggle(dim, value) {
       var _a;
-      const arr = (_a = state36.filter[dim]) != null ? _a : [];
+      const arr = (_a = state37.filter[dim]) != null ? _a : [];
       const i = arr.indexOf(value);
       if (i === -1) arr.push(value);
       else arr.splice(i, 1);
-      state36.filter[dim] = arr;
-      render36();
-      state36.listener(getFilter());
+      state37.filter[dim] = arr;
+      render37();
+      state37.listener(getFilter());
     }
     function clear() {
-      state36.filter = EMPTY_FILTER();
-      render36();
-      state36.listener(getFilter());
+      state37.filter = EMPTY_FILTER();
+      render37();
+      state37.listener(getFilter());
     }
     function getFilter() {
       return {
-        level: [...state36.filter.level],
-        technique: [...state36.filter.technique],
-        series: [...state36.filter.series],
-        difficulty: [...state36.filter.difficulty]
+        level: [...state37.filter.level],
+        technique: [...state37.filter.technique],
+        series: [...state37.filter.series],
+        difficulty: [...state37.filter.difficulty]
       };
     }
     function setFilter(next) {
-      state36.filter = normalizeFilter(next);
-      render36();
+      state37.filter = normalizeFilter(next);
+      render37();
     }
-    render36();
-    return { element: root37, getFilter, setFilter, clear };
+    render37();
+    return { element: root38, getFilter, setFilter, clear };
   }
   function normalizeFilter(input) {
     const out = EMPTY_FILTER();
@@ -39474,7 +39971,7 @@ ${items.join("\n")}
     // Section O — TDD. O1 ships 'cycle'; O2 ships 'rules'.
     tdd: { tabs: ["cycle", "rules"], default: "cycle" },
     // Section P — Exploit Generation. P1 ships 'overflow'; P2-P3 will add 'sqli', 'cmdi'.
-    exploit: { tabs: ["overflow", "sqli", "cmdi"], default: "overflow" }
+    exploit: { tabs: ["overflow", "sqli", "cmdi", "path"], default: "overflow" }
   };
   var EXPLORER_TO_LOCATION = {
     TestingMethodTree: { section: "methods" },
@@ -39540,7 +40037,8 @@ ${items.join("\n")}
     TddRulesExplorer: { section: "tdd", tab: "rules" },
     ExploitOverflowExplorer: { section: "exploit", tab: "overflow" },
     ExploitSqliExplorer: { section: "exploit", tab: "sqli" },
-    ExploitCmdiExplorer: { section: "exploit", tab: "cmdi" }
+    ExploitCmdiExplorer: { section: "exploit", tab: "cmdi" },
+    ExploitPathExplorer: { section: "exploit", tab: "path" }
   };
   var FILTER_DIMS = ["level", "technique", "series", "difficulty"];
   function parseAppLocation(search, hash) {
@@ -39581,22 +40079,22 @@ ${items.join("\n")}
     }
     return out;
   }
-  function serializeLocation(state36) {
-    if (!state36) return "";
+  function serializeLocation(state37) {
+    if (!state37) return "";
     const params = new URLSearchParams();
-    if (state36.lang === "en" || state36.lang === "zh") params.set("lang", state36.lang);
-    if (state36.section && state36.section !== "all") {
-      params.set("section", state36.section);
-      const sectionInfo = TAB_SECTIONS[state36.section];
-      if (sectionInfo && state36.tab && sectionInfo.tabs.includes(state36.tab)) {
-        params.set("tab", state36.tab);
+    if (state37.lang === "en" || state37.lang === "zh") params.set("lang", state37.lang);
+    if (state37.section && state37.section !== "all") {
+      params.set("section", state37.section);
+      const sectionInfo = TAB_SECTIONS[state37.section];
+      if (sectionInfo && state37.tab && sectionInfo.tabs.includes(state37.tab)) {
+        params.set("tab", state37.tab);
       }
     }
-    if (state36.pack) {
-      params.set("pack", state36.pack);
-    } else if (state36.filter) {
+    if (state37.pack) {
+      params.set("pack", state37.pack);
+    } else if (state37.filter) {
       for (const dim of FILTER_DIMS) {
-        const arr = state36.filter[dim];
+        const arr = state37.filter[dim];
         if (Array.isArray(arr) && arr.length > 0) params.set(dim, arr.join(","));
       }
     }
@@ -39701,16 +40199,16 @@ ${items.join("\n")}
   // src/components/CoursePackBar.js
   function createCoursePackBar({ initial, onApplyFilter } = {}) {
     const validInitial = COURSE_PACKS.some((p) => p.id === initial);
-    const state36 = { activeId: validInitial ? initial : null };
-    const root37 = document.createElement("div");
-    root37.className = "course-pack-bar";
-    root37.dataset.testid = "course-pack-bar";
-    function render36() {
+    const state37 = { activeId: validInitial ? initial : null };
+    const root38 = document.createElement("div");
+    root38.className = "course-pack-bar";
+    root38.dataset.testid = "course-pack-bar";
+    function render37() {
       var _a;
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="course-pack-bar__header">
         <span class="course-pack-bar__title">${t("pack.title")}</span>
-        ${state36.activeId ? `
+        ${state37.activeId ? `
           <button type="button"
             class="course-pack-bar__export"
             data-testid="course-pack-export">
@@ -39720,7 +40218,7 @@ ${items.join("\n")}
       <div class="course-pack-bar__chips">
         ${COURSE_PACKS.map((pack) => {
         const count = getCoursePackExplorers(pack.id).length;
-        const active = state36.activeId === pack.id;
+        const active = state37.activeId === pack.id;
         return `
             <button type="button"
               class="course-pack-chip${active ? " course-pack-chip--active" : ""}"
@@ -39733,36 +40231,36 @@ ${items.join("\n")}
             </button>`;
       }).join("")}
       </div>
-      ${state36.activeId ? `
+      ${state37.activeId ? `
         <p class="course-pack-bar__desc" data-testid="course-pack-desc">
-          ${t(COURSE_PACKS.find((p) => p.id === state36.activeId).descKey)}
+          ${t(COURSE_PACKS.find((p) => p.id === state37.activeId).descKey)}
         </p>` : ""}`;
-      root37.querySelectorAll("[data-pack]").forEach((btn) => {
+      root38.querySelectorAll("[data-pack]").forEach((btn) => {
         btn.addEventListener("click", () => choose(btn.dataset.pack));
       });
-      (_a = root37.querySelector('[data-testid="course-pack-export"]')) == null ? void 0 : _a.addEventListener("click", () => {
-        if (state36.activeId) downloadCoursePackMarkdown(state36.activeId);
+      (_a = root38.querySelector('[data-testid="course-pack-export"]')) == null ? void 0 : _a.addEventListener("click", () => {
+        if (state37.activeId) downloadCoursePackMarkdown(state37.activeId);
       });
     }
     function choose(packId) {
-      if (state36.activeId === packId) {
-        state36.activeId = null;
+      if (state37.activeId === packId) {
+        state37.activeId = null;
         onApplyFilter == null ? void 0 : onApplyFilter(null);
       } else {
-        state36.activeId = packId;
+        state37.activeId = packId;
         onApplyFilter == null ? void 0 : onApplyFilter(getCoursePackFilter(packId));
       }
-      render36();
+      render37();
     }
     function clear() {
-      state36.activeId = null;
-      render36();
+      state37.activeId = null;
+      render37();
     }
     function getActiveId() {
-      return state36.activeId;
+      return state37.activeId;
     }
-    render36();
-    return { element: root37, choose, clear, getActiveId };
+    render37();
+    return { element: root38, choose, clear, getActiveId };
   }
 
   // src/components/ResultViewer.js
@@ -39885,9 +40383,9 @@ ${items.join("\n")}
     return `${score != null ? score : 0} / ${total}`;
   }
   function createTeacherDashboard() {
-    const root37 = document.createElement("div");
-    root37.dataset.testid = "teacher-dashboard";
-    root37.className = "td-overlay";
+    const root38 = document.createElement("div");
+    root38.dataset.testid = "teacher-dashboard";
+    root38.className = "td-overlay";
     const client = createCloudIntegrationClient();
     let classCode = "";
     let results = [];
@@ -39902,10 +40400,10 @@ ${items.join("\n")}
       if (!filterExplorer) return results;
       return results.filter((r) => r.explorer === filterExplorer);
     }
-    function render36() {
+    function render37() {
       const filtered = filteredResults();
       const explorerOpts = explorerOptions();
-      root37.innerHTML = `
+      root38.innerHTML = `
       <div class="td-panel" role="dialog" aria-modal="true" aria-label="${t("td.title")}" data-testid="td-panel">
         <div class="td-header">
           <div class="td-header-left">
@@ -39978,25 +40476,25 @@ ${items.join("\n")}
           </table>
         </div>` : ""}
       </div>`;
-      bindEvents36();
+      bindEvents37();
     }
-    function bindEvents36() {
+    function bindEvents37() {
       var _a;
-      root37.querySelector('[data-testid="td-close"]').addEventListener("click", () => {
-        root37.hidden = true;
+      root38.querySelector('[data-testid="td-close"]').addEventListener("click", () => {
+        root38.hidden = true;
       });
-      root37.querySelector('[data-testid="td-load-btn"]').addEventListener("click", async () => {
-        const inp = root37.querySelector('[data-testid="td-code-input"]');
+      root38.querySelector('[data-testid="td-load-btn"]').addEventListener("click", async () => {
+        const inp = root38.querySelector('[data-testid="td-code-input"]');
         classCode = ((inp == null ? void 0 : inp.value) || "").trim().toUpperCase();
         if (!classCode) {
           errorMsg = t("td.err.noCode");
-          render36();
+          render37();
           return;
         }
         loading = true;
         errorMsg = "";
         results = [];
-        render36();
+        render37();
         try {
           results = await client.loadCourseResults(classCode);
           filterExplorer = "";
@@ -40004,21 +40502,21 @@ ${items.join("\n")}
           errorMsg = err.message || t("td.err.loadFailed");
         }
         loading = false;
-        render36();
+        render37();
       });
-      (_a = root37.querySelector('[data-testid="td-filter-explorer"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
+      (_a = root38.querySelector('[data-testid="td-filter-explorer"]')) == null ? void 0 : _a.addEventListener("change", (e) => {
         filterExplorer = e.target.value;
-        render36();
+        render37();
       });
     }
-    render36();
+    render37();
     window.addEventListener("stvisual:open-teacher-dashboard", (e) => {
       var _a;
       classCode = ((_a = e.detail) == null ? void 0 : _a.classCode) || classCode;
-      root37.hidden = false;
-      render36();
+      root38.hidden = false;
+      render37();
     });
-    return root37;
+    return root38;
   }
 
   // src/data/sectionTaxonomy.js
@@ -40272,6 +40770,7 @@ ${items.join("\n")}
         exploitoverflow: createExploitOverflowExplorer(),
         exploitsqli: createExploitSqliExplorer(),
         exploitcmdi: createExploitCmdiExplorer(),
+        exploitpath: createExploitPathExplorer(),
         definitiongates: createDefinitionGatesExplorer(),
         examplemapping: createExampleMappingExplorer(),
         ctpipeline: createContinuousTestingPipelineExplorer(),
@@ -40694,7 +41193,7 @@ ${items.join("\n")}
       const exploitPanels = document.createElement("div");
       exploitPanels.className = "syntax-tab-panels";
       exploitSlot.appendChild(exploitPanels);
-      const exploitTabDefs = ["overflow", "sqli", "cmdi"];
+      const exploitTabDefs = ["overflow", "sqli", "cmdi", "path"];
       for (const tabId of exploitTabDefs) {
         const panel = document.createElement("div");
         panel.className = "syntax-tab-panel";
@@ -40705,6 +41204,8 @@ ${items.join("\n")}
           panel.appendChild(components.exploitsqli);
         } else if (tabId === "cmdi") {
           panel.appendChild(components.exploitcmdi);
+        } else if (tabId === "path") {
+          panel.appendChild(components.exploitpath);
         }
         exploitPanels.appendChild(panel);
       }
@@ -40723,7 +41224,8 @@ ${items.join("\n")}
       const exploitTabItems = [
         { id: "overflow", key: "exploit.tab.overflow" },
         { id: "sqli", key: "exploit.tab.sqli" },
-        { id: "cmdi", key: "exploit.tab.cmdi" }
+        { id: "cmdi", key: "exploit.tab.cmdi" },
+        { id: "path", key: "exploit.tab.path" }
       ];
       function renderExploitTabs() {
         exploitTabBar.innerHTML = exploitTabItems.map((tab) => `
@@ -41110,14 +41612,14 @@ ${items.join("\n")}
       function syncUrl(mode = "replace") {
         var _a3, _b3, _c3, _d3, _e3;
         try {
-          const state36 = {
+          const state37 = {
             section: activeSection,
             tab: getCurrentTabForSection(activeSection),
             pack: (_a3 = packBar == null ? void 0 : packBar.getActiveId()) != null ? _a3 : null,
             filter: activeFilter,
             lang: langInUrl ? getLocale() : void 0
           };
-          const qs = serializeLocation(state36);
+          const qs = serializeLocation(state37);
           const rawHash = globalThis.location.hash || "";
           const hash = /^#section-[a-z0-9-]+$/.test(rawHash) ? "" : rawHash;
           const url = `${globalThis.location.pathname}${qs}${hash}`;
@@ -41417,8 +41919,8 @@ ${items.join("\n")}
   }
 
   // src/main.js
-  var root36 = document.getElementById("root");
-  if (root36) {
-    renderApp(root36);
+  var root37 = document.getElementById("root");
+  if (root37) {
+    renderApp(root37);
   }
 })();

@@ -37,7 +37,7 @@ export const TAB_SECTIONS = {
   // Section O — TDD. O1 ships 'cycle'; O2 ships 'rules'.
   tdd: { tabs: ['cycle', 'rules'], default: 'cycle' },
   // Section P — Exploit Generation. P1 ships 'overflow'; P2-P3 will add 'sqli', 'cmdi'.
-  exploit: { tabs: ['overflow', 'sqli', 'cmdi'], default: 'overflow' },
+  exploit: { tabs: ['overflow', 'sqli', 'cmdi', 'path'], default: 'overflow' },
 };
 
 // ── ComponentName → { section, tab? } ────────────────────────────────
@@ -108,6 +108,7 @@ export const EXPLORER_TO_LOCATION = {
   ExploitOverflowExplorer:     { section: 'exploit', tab: 'overflow' },
   ExploitSqliExplorer:         { section: 'exploit', tab: 'sqli' },
   ExploitCmdiExplorer:         { section: 'exploit', tab: 'cmdi' },
+  ExploitPathExplorer:         { section: 'exploit', tab: 'path' },
 };
 
 const FILTER_DIMS = ['level', 'technique', 'series', 'difficulty'];
