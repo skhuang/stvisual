@@ -100,11 +100,15 @@ export function tWise(characteristics, t) {
   }
 
   const tests = [];
+  // Safety bound: for the course's IDM sizes (≤ ~6 characteristics × ≤ ~5
+  // blocks) this loop terminates in well under 1000 iterations. Exhausting
+  // the guard would mean a bug in the greedy logic, not a legitimate input.
   let guard = 100000;
   while (uncovered.size > 0 && guard > 0) {
     guard -= 1;
     const test = {};
-    // Greedily pick each characteristic's block to maximise newly-covered tuples.
+    // One-pass left-to-right greedy: pick each characteristic's block to
+    // maximise newly-covered tuples given the choices already committed.
     for (let ci = 0; ci < n; ci += 1) {
       const c = characteristics[ci];
       let bestBlock = c.blocks[0].id;
@@ -126,6 +130,8 @@ export function tWise(characteristics, t) {
     }
     tests.push(test);
   }
+  // Fail loud rather than silently return an incomplete covering array.
+  if (guard <= 0) throw new Error('tWise: guard exhausted — possible infinite loop');
   return tests;
 }
 
