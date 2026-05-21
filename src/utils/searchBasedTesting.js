@@ -147,7 +147,7 @@ export function geneticAlgorithm(example, { seed, budget, populationSize = 20 })
     const cost = evaluate(example, ind).cost;
     evals++;
     if (cost < bestCost) { bestCost = cost; bestIndividual = ind; }
-    history.push({ evaluation: evals, generation: gen, bestCost, bestIndividual, covered: bestCost === 0 });
+    history.push({ evaluation: evals, generation: gen, individual: ind, cost, bestCost, bestIndividual, covered: bestCost === 0 });
     return cost;
   }
   function tournament(pop, costs) {
