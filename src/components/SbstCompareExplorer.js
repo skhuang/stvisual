@@ -1,7 +1,6 @@
 import { t, onLocaleChange } from '../i18n/index.js';
 import { SBST_EXAMPLES } from '../data/sbstExamples.js';
 import { randomSearch, hillClimb, geneticAlgorithm } from '../utils/searchBasedTesting.js';
-import './SbstCompareExplorer.css';
 
 // SBST Compare Explorer — metaheuristic comparison tab.
 // Runs randomSearch, hillClimb and geneticAlgorithm side-by-side on a selected

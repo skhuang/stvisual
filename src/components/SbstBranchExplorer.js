@@ -1,7 +1,6 @@
 import { t, onLocaleChange } from '../i18n/index.js';
 import { SBST_EXAMPLES } from '../data/sbstExamples.js';
 import { geneticAlgorithm, randomSearch } from '../utils/searchBasedTesting.js';
-import './SbstBranchExplorer.css';
 
 // SBST Branch Explorer — GA branch-search tab.
 // Runs geneticAlgorithm on a selected example and replays its history

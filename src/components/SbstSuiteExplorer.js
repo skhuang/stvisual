@@ -1,7 +1,6 @@
 import { t, onLocaleChange } from '../i18n/index.js';
 import { SBST_EXAMPLES } from '../data/sbstExamples.js';
 import { wholeSuiteGA } from '../utils/searchBasedTesting.js';
-import './SbstSuiteExplorer.css';
 
 // SBST Suite Explorer — whole-suite evolution tab.
 // Runs wholeSuiteGA on a selected example and replays its history
