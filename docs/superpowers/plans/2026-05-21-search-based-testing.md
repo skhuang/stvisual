@@ -890,8 +890,28 @@ git commit -m "feat(sbst): whole-suite fitness, whole-suite GA, minimisation"
 ## Task 6: SbstBranchExplorer (tab 1 — GA branch search)
 
 **Files:**
+- Modify: `src/utils/searchBasedTesting.js` — one-line engine prerequisite (see below)
 - Create: `src/components/SbstBranchExplorer.js`, `src/components/SbstBranchExplorer.css`
 - Test: `src/tests/SbstBranchExplorer.test.js`
+
+**Engine prerequisite (do this first).** The population panel needs each GA
+history entry to carry the individual that was scored and its own cost. In
+`src/utils/searchBasedTesting.js`, inside `geneticAlgorithm`'s `score(ind)`
+function, change the `history.push` to also record `individual` and `cost`:
+
+```js
+  function score(ind) {
+    const cost = evaluate(example, ind).cost;
+    evals++;
+    if (cost < bestCost) { bestCost = cost; bestIndividual = ind; }
+    history.push({ evaluation: evals, generation: gen, individual: ind, cost, bestCost, bestIndividual, covered: bestCost === 0 });
+    return cost;
+  }
+```
+
+This is purely additive (two new fields) — the existing engine tests still pass.
+Run `npx vitest run src/tests/searchBasedTesting.test.js` after the change to
+confirm all 29 tests still pass, then proceed with the explorer.
 
 **Read `src/components/ExploitOverflowExplorer.js` first** — mirror its shape:
 module-level `state`, `esc()` helper, `render()` → `root.innerHTML` → `bindEvents()`,
@@ -908,9 +928,13 @@ State: `{ exampleId, genIndex, gaResult, randomResult, quiz }`.
   `randomSearch(example, { seed: 1, budget: 8000 })`, store both; reset `genIndex` to 0.
   (Budget 8000 matches the engine test that guarantees the GA covers every example.)
 - `genIndex` selects a generation. `gaResult.history` entries each carry a
-  `generation` field (0 = the initial population); group entries by it. The view
-  for generation N shows that generation's best individual and best cost, and the
-  total generation count is `max(generation) + 1`.
+  `generation` field (0 = the initial population) plus `individual` and `cost`
+  (the population member scored at that evaluation) and `bestCost` (running
+  best). Group entries by `generation`: the entries for generation N are that
+  generation's scored population members. The total generation count is
+  `max(generation) + 1`. (Note: generation 0 has `populationSize` entries;
+  later generations have `populationSize − 1`, because the elite is carried
+  forward without re-evaluation — that is expected.)
 
 Rendered structure (testids in **bold**):
 - A title (`t('section.sbst.title')`).
@@ -919,9 +943,10 @@ Rendered structure (testids in **bold**):
 - A code panel — **`sbst-branch-code`** — `example.source` with the line of the
   target branch highlighted (match the line containing `← target`).
 - The GA population panel — **`sbst-branch-population`** — for the current
-  generation, list each individual's input values and `evaluate(...).cost`,
-  the best-of-generation marked; a success banner — **`sbst-branch-covered`** —
-  when the best cost is 0.
+  generation, list each scored member: its `individual` input values and its
+  `cost` (both read straight from that generation's history entries), with the
+  lowest-cost member of the generation marked. A success banner —
+  **`sbst-branch-covered`** — appears when the generation's best `bestCost` is 0.
 - A best-cost sparkline — **`sbst-branch-sparkline`** — best cost per generation.
 - The random-search baseline panel — **`sbst-branch-random`** — best cost at the
   same evaluation budget, with text noting whether it covered the target.
