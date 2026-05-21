@@ -116,8 +116,10 @@ export function hillClimb(example, { seed, budget }) {
         n[d] = clamp(n[d] + delta, schema[d].min, schema[d].max);
         const cost = evaluate(example, n).cost;
         evals++;
-        history.push({ evaluation: evals, bestCost: Math.min(currentCost, bestNeighbourCost, cost),
-          bestIndividual: cost < bestNeighbourCost ? n : (bestNeighbour || current), covered: cost === 0 });
+        const entryBest = Math.min(currentCost, bestNeighbourCost, cost);
+        history.push({ evaluation: evals, bestCost: entryBest,
+          bestIndividual: cost < bestNeighbourCost ? n : (bestNeighbour || current),
+          covered: entryBest === 0 });
         if (cost < bestNeighbourCost) { bestNeighbourCost = cost; bestNeighbour = n; }
       }
     }
@@ -169,7 +171,11 @@ export function geneticAlgorithm(example, { seed, budget, populationSize = 20 })
   }
 
   let population = Array.from({ length: populationSize }, () => randomIndividual(rng, schema));
-  let costs = population.map(score);                // generation 0
+  let costs = [];                                   // generation 0 — budget-capped
+  for (const ind of population) {
+    if (evals >= budget) break;
+    costs.push(score(ind));
+  }
   while (evals < budget && bestCost > 0) {
     gen++;
     const eliteIdx = costs.indexOf(Math.min(...costs));
@@ -179,7 +185,12 @@ export function geneticAlgorithm(example, { seed, budget, populationSize = 20 })
       next.push(child);
     }
     population = next;
-    costs = [costs[eliteIdx], ...population.slice(1).map(score)];
+    const nextCosts = [costs[eliteIdx]];   // elite cost carried forward — no re-evaluation
+    for (let k = 1; k < population.length; k++) {
+      if (evals >= budget) break;
+      nextCosts.push(score(population[k]));
+    }
+    costs = nextCosts;
     if (bestCost === 0) break;
   }
   return { strategy: 'genetic', history, covered: bestCost === 0, bestIndividual, bestCost };

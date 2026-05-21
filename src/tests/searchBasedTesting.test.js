@@ -137,6 +137,21 @@ describe('hillClimb', () => {
   });
 });
 
+describe('driver invariants', () => {
+  it('hillClimb history never pairs bestCost 0 with covered false', () => {
+    const { history } = hillClimb(nested, { seed: 5, budget: 2000 });
+    for (const h of history) {
+      expect(h.covered).toBe(h.bestCost === 0);
+    }
+  });
+  it('geneticAlgorithm treats budget as a hard cap', () => {
+    for (const budget of [10, 50, 137]) {
+      const r = geneticAlgorithm(nested, { seed: 1, budget, populationSize: 20 });
+      expect(r.history.length).toBeLessThanOrEqual(budget);
+    }
+  });
+});
+
 describe('strategy comparison', () => {
   it('the genetic algorithm covers every example within budget', () => {
     for (const ex of SBST_EXAMPLES) {
