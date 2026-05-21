@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { makeRng, rngInt, branchDistance, normalize } from '../utils/searchBasedTesting.js';
 import { trace, evaluate } from '../utils/searchBasedTesting.js';
+import { suiteFitness, wholeSuiteGA } from '../utils/searchBasedTesting.js';
 import { SBST_EXAMPLES } from '../data/sbstExamples.js';
 
 describe('makeRng', () => {
@@ -169,5 +170,37 @@ describe('strategy comparison', () => {
       if (hc.stuck && !hc.covered) sawTrap = true;
     }
     expect(sawTrap).toBe(true);
+  });
+});
+
+describe('suiteFitness', () => {
+  it('reports full coverage when tests cover every branch outcome', () => {
+    // nested-guard outcomes: b1 true/false, b2 true/false.
+    const suite = [[17, 150], [17, 10], [3, 0]];
+    const r = suiteFitness(nested, suite);
+    expect(r.coverage).toBe(1);
+    expect(r.cost).toBe(0);
+  });
+  it('reports partial coverage and positive cost when outcomes are missed', () => {
+    const r = suiteFitness(nested, [[3, 0]]);   // only b1=false reached
+    expect(r.coverage).toBeLessThan(1);
+    expect(r.cost).toBeGreaterThan(0);
+  });
+});
+
+describe('wholeSuiteGA', () => {
+  it('evolves a suite to full coverage of nested-guard within budget', () => {
+    const r = wholeSuiteGA(nested, { seed: 1, budget: 3000, populationSize: 16, suiteSize: 4 });
+    expect(r.coverage).toBe(1);
+  });
+  it('is deterministic for a fixed seed', () => {
+    const a = wholeSuiteGA(nested, { seed: 7, budget: 3000, populationSize: 16, suiteSize: 4 });
+    const b = wholeSuiteGA(nested, { seed: 7, budget: 3000, populationSize: 16, suiteSize: 4 });
+    expect(a.coverage).toEqual(b.coverage);
+    expect(a.history.length).toEqual(b.history.length);
+  });
+  it('returns a minimised suite no larger than the evolved suite', () => {
+    const r = wholeSuiteGA(nested, { seed: 1, budget: 3000, populationSize: 16, suiteSize: 4 });
+    expect(r.minimisedSuite.length).toBeLessThanOrEqual(r.bestSuite.length);
   });
 });

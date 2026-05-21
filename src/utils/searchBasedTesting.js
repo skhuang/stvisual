@@ -195,3 +195,110 @@ export function geneticAlgorithm(example, { seed, budget, populationSize = 20 })
   }
   return { strategy: 'genetic', history, covered: bestCost === 0, bestIndividual, bestCost };
 }
+
+// ── Whole-suite search ──────────────────────────────────────────────────────
+// Every branch's two outcomes are coverage goals. A suite's cost is the sum,
+// over all goals, of the best cost any test achieves toward that goal.
+function coverageGoals(example) {
+  const goals = [];
+  for (const b of example.branches) {
+    goals.push({ branchId: b.id, outcome: true });
+    goals.push({ branchId: b.id, outcome: false });
+  }
+  return goals;
+}
+
+// Cost of one test toward one goal: 0 if the test takes that branch outcome,
+// else approachLevel + normalised branch distance, using the same divergence
+// walk as evaluate() but against an arbitrary goal.
+function costForGoal(example, inputs, goal) {
+  const events = trace(example, inputs);
+  const branch = example.branches.find((b) => b.id === goal.branchId);
+  const required = [...branch.requires, { branchId: goal.branchId, outcome: goal.outcome }];
+  for (let i = 0; i < required.length; i++) {
+    const req = required[i];
+    const ev = events.find((e) => e.branchId === req.branchId);
+    if (ev && ev.outcome === req.outcome) continue;
+    const approachLevel = required.length - i - 1;
+    let raw;
+    if (ev) { raw = branchDistance(req.outcome ? ev.op : NEGATE[ev.op], ev.lhs, ev.rhs); }
+    else { raw = Infinity; }
+    return approachLevel + (raw === Infinity ? 1 : normalize(raw));
+  }
+  return 0;
+}
+
+export function suiteFitness(example, suite) {
+  const goals = coverageGoals(example);
+  let cost = 0, covered = 0;
+  for (const goal of goals) {
+    let best = Infinity;
+    for (const test of suite) best = Math.min(best, costForGoal(example, test, goal));
+    cost += best;
+    if (best === 0) covered++;
+  }
+  return { cost, coverage: covered / goals.length, goals: goals.length, covered };
+}
+
+// Drop tests that do not change the set of covered goals.
+function minimiseSuite(example, suite) {
+  const goals = coverageGoals(example);
+  const covers = (s) => goals.filter((g) => s.some((t) => costForGoal(example, t, g) === 0)).length;
+  const full = covers(suite);
+  const kept = suite.slice();
+  for (let i = kept.length - 1; i >= 0; i--) {
+    const without = kept.slice(0, i).concat(kept.slice(i + 1));
+    if (covers(without) === full) kept.splice(i, 1);
+  }
+  return kept;
+}
+
+// Genetic algorithm where each individual is a whole suite of `suiteSize` tests.
+export function wholeSuiteGA(example, { seed, budget, populationSize = 16, suiteSize = 4 }) {
+  const rng = makeRng(seed);
+  const schema = example.inputSchema;
+  const history = [];
+  let evals = 0;
+  let gen = 0;
+  let bestCost = Infinity, bestSuite = null, bestCoverage = 0;
+
+  const randomTest = () => schema.map((s) => rngInt(rng, s.min, s.max));
+  const randomSuite = () => Array.from({ length: suiteSize }, randomTest);
+  function score(suite) {
+    const f = suiteFitness(example, suite);
+    evals++;
+    if (f.cost < bestCost) { bestCost = f.cost; bestSuite = suite; bestCoverage = f.coverage; }
+    history.push({ evaluation: evals, generation: gen, bestCost, coverage: bestCoverage, bestSuite });
+    return f.cost;
+  }
+  function tournament(pop, costs) {
+    const a = Math.floor(rng() * pop.length);
+    const b = Math.floor(rng() * pop.length);
+    return costs[a] <= costs[b] ? pop[a] : pop[b];
+  }
+  function crossover(s1, s2) {
+    const cut = 1 + Math.floor(rng() * (suiteSize - 1));
+    return s1.slice(0, cut).concat(s2.slice(cut));
+  }
+  function mutate(suite) {
+    return suite.map((test) => (rng() < 1 / suiteSize ? randomTest() : test));
+  }
+
+  let population = Array.from({ length: populationSize }, randomSuite);
+  let costs = population.map(score);                // generation 0
+  while (evals < budget && bestCost > 0) {
+    gen++;
+    const eliteIdx = costs.indexOf(Math.min(...costs));
+    const next = [population[eliteIdx]];
+    while (next.length < populationSize) {
+      next.push(mutate(crossover(tournament(population, costs), tournament(population, costs))));
+    }
+    population = next;
+    costs = [costs[eliteIdx], ...population.slice(1).map(score)];
+    if (bestCost === 0) break;
+  }
+  return {
+    strategy: 'wholeSuite', history, bestSuite, bestCost, coverage: bestCoverage,
+    minimisedSuite: minimiseSuite(example, bestSuite),
+  };
+}
