@@ -89,10 +89,7 @@ export function createInputSpacePartitioningExplorer() {
     const baseInteractive = criterion === 'bcc' || criterion === 'mbcc';
     const rows = idm.map((c, ci) => `
       <div class="isp-char-row" data-testid="isp-characteristic-${ci}">
-        <label class="isp-char-name-wrap">
-          <span class="isp-char-name-text">${esc(c.name)}</span>
-          <input class="isp-char-name" data-isp-char-name="${esc(c.id)}" value="${esc(c.name)}" />
-        </label>
+        <input class="isp-char-name" data-isp-char-name="${esc(c.id)}" value="${esc(c.name)}" />
         <div class="isp-block-bar">
           ${c.blocks.map((b) => `
             <span class="isp-block${c.baseBlockIds.includes(b.id) ? ' isp-block--base' : ''}${baseInteractive ? ' isp-block--base-interactive' : ''}"

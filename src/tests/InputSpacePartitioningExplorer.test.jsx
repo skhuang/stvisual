@@ -65,7 +65,8 @@ describe('InputSpacePartitioningExplorer', () => {
   it('switching the example reloads the IDM', () => {
     const root = mount();
     root.querySelector('[data-testid="isp-example-password"]').click();
-    expect(root.querySelector('[data-testid="isp-characteristic-0"]').textContent).toContain('length');
+    const nameInput = root.querySelector('[data-testid="isp-characteristic-0"] .isp-char-name');
+    expect(nameInput.value).toContain('length');
   });
 
   it('adding a block to a characteristic changes the ACoC count', () => {
