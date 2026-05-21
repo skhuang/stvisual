@@ -17,7 +17,8 @@ function uid() { _uid += 1; return `i${_uid}`; }
 
 function esc(value = '') {
   return String(value)
-    .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+    .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 }
 
 // Build a runtime IDM (with per-instance ids) from an authored example.
@@ -140,11 +141,16 @@ export function createInputSpacePartitioningExplorer() {
       return `<div class="isp-test-set" data-testid="isp-test-set">
         <p class="isp-invalid">${esc(t(err))}</p></div>`;
     }
-    const count = countFor(criterion);
-    if (count > MAX_ENUMERATE) {
-      return `<div class="isp-test-set" data-testid="isp-test-set">
-        <h3>${esc(t('isp.testSetTitle'))} — ${count} ${esc(t('isp.testCountUnit'))}</h3>
-        <p class="isp-invalid">${esc(t('isp.tooLarge'))}</p></div>`;
+    // ACoC's count is ∏ kᵢ — check it via the formula so a huge product is
+    // never enumerated. The other criteria's covering arrays stay small, so
+    // generating them once is safe.
+    if (criterion === 'acoc') {
+      const acocCount = countFor('acoc');
+      if (acocCount > MAX_ENUMERATE) {
+        return `<div class="isp-test-set" data-testid="isp-test-set">
+          <h3>${esc(t('isp.testSetTitle'))} — ${acocCount} ${esc(t('isp.testCountUnit'))}</h3>
+          <p class="isp-invalid">${esc(t('isp.tooLarge'))}</p></div>`;
+      }
     }
     const tests = generate(criterion);
     const shown = tests.slice(0, MAX_ROWS);
