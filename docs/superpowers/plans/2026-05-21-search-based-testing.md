@@ -1352,7 +1352,7 @@ import { createSbstSuiteExplorer } from './components/SbstSuiteExplorer.js';
     ];
 ```
 
-- [ ] **Step 5: Verify the app boots and the full suite is green**
+- [ ] **Step 5: Verify the full suite is green**
 
 Run: `npm run test:run`
 Expected: **all tests pass**, including `src/tests/explorerTags.test.js` (its
@@ -1360,14 +1360,19 @@ Expected: **all tests pass**, including `src/tests/explorerTags.test.js` (its
 green now that Step 2b + Step 3 registered the three SBST explorers). No
 deck-count change yet — that is Task 11.
 
-Then: `npm run build:standalone` succeeds, and serving the app and opening
-`?explorer=SbstBranchExplorer` focuses the new section with three working tabs.
-(A full browser check happens in Task 10.)
+- [ ] **Step 6: Rebuild the standalone bundle**
 
-- [ ] **Step 6: Commit**
+This task changed bundled source (`app.js`, `urlRouter.js`, `dict.js`, …), so
+the bundle must be regenerated and committed (the CI `standalone-bundle` job
+guards `src/standalone.js` freshness).
+
+Run: `npm run build:standalone`
+Expected: completes without error; `src/standalone.js` is updated.
+
+- [ ] **Step 7: Commit**
 
 ```bash
-git add src/data/sectionTaxonomy.js src/utils/urlRouter.js src/data/explorerTags.js src/app.js src/i18n/dict.js
+git add src/data/sectionTaxonomy.js src/utils/urlRouter.js src/data/explorerTags.js src/app.js src/i18n/dict.js src/standalone.js
 git commit -m "feat(sbst): register and wire the Search-Based Testing section"
 ```
 
