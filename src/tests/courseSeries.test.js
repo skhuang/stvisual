@@ -45,9 +45,9 @@ describe('K3 — course packs', () => {
     expect(ids).toContain('FaultDirectedTestingExplorer');
   });
 
-  it('Black-box pack covers the nine black-box explorers', () => {
+  it('Black-box pack covers the ten black-box explorers', () => {
     const ids = getCoursePackExplorers('blackbox');
-    expect(ids.length).toBe(9);
+    expect(ids.length).toBe(10);
   });
 
   it('getCoursePack returns null for unknown id', () => {

@@ -21,7 +21,7 @@
 // validation so `?tab=` from an outdated URL never enters an unknown state.
 export const TAB_SECTIONS = {
   syntax:   { tabs: ['mutation', 'grammar', 'spec'],                                                  default: 'mutation' },
-  blackbox: { tabs: ['bva', 'ec', 'dt', 'st', 'mt', 'et', 'td', 'pairwise', 'ceg'],                   default: 'bva' },
+  blackbox: { tabs: ['bva', 'ec', 'isp', 'dt', 'st', 'mt', 'et', 'td', 'pairwise', 'ceg'],              default: 'bva' },
   advanced: { tabs: ['equivmutant', 'mutationscore', 'llmpipeline', 'testquality', 'faultdirected', 'sailor'], default: 'equivmutant' },
   flow:     { tabs: ['flow', 'defectCost', 'vmodel'],                                                 default: 'flow' },
   types:    { tabs: ['pyramid', 'adjuster'],                                                          default: 'pyramid' },
@@ -65,6 +65,7 @@ export const EXPLORER_TO_LOCATION = {
   RiskBasedTestingExplorer:    { section: 'rbt' },
   BoundaryValueExplorer:       { section: 'blackbox', tab: 'bva' },
   EquivalenceClassExplorer:    { section: 'blackbox', tab: 'ec' },
+  InputSpacePartitioningExplorer: { section: 'blackbox', tab: 'isp' },
   DecisionTableExplorer:       { section: 'blackbox', tab: 'dt' },
   StateTransitionExplorer:     { section: 'blackbox', tab: 'st' },
   PairwiseExplorer:            { section: 'blackbox', tab: 'pairwise' },

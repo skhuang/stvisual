@@ -89,11 +89,12 @@ describe('Explorer tag metadata (K1)', () => {
     expect(ai.length).toBe(6);
   });
 
-  it('listExplorersInSeries(\'blackbox\') returns the nine black-box explorers', () => {
+  it('listExplorersInSeries(\'blackbox\') returns the ten black-box explorers', () => {
     const bb = listExplorersInSeries('blackbox');
-    expect(bb.length).toBe(9);
+    expect(bb.length).toBe(10);
     expect(bb).toContain('BoundaryValueExplorer');
     expect(bb).toContain('PairwiseExplorer');
+    expect(bb).toContain('InputSpacePartitioningExplorer');
   });
 
   it('getExplorerTags returns null for unknown id', () => {

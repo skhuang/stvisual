@@ -164,6 +164,10 @@ export const EXPLORER_TAGS = {
     level: ['unit'], technique: ['equivalence'], series: ['blackbox'],
     difficulty: 'intro', source: [TEXTBOOK],
   },
+  InputSpacePartitioningExplorer: {
+    level: ['unit'], technique: ['equivalence', 'pairwise'], series: ['blackbox'],
+    difficulty: 'intermediate', source: [TEXTBOOK],
+  },
   DecisionTableExplorer: {
     level: ['unit'], technique: ['decision-table'], series: ['blackbox'],
     difficulty: 'intro', source: [TEXTBOOK],
@@ -395,6 +399,7 @@ export const SECTION_EXPLORERS = {
   blackbox: [
     'BoundaryValueExplorer',
     'EquivalenceClassExplorer',
+    'InputSpacePartitioningExplorer',
     'DecisionTableExplorer',
     'StateTransitionExplorer',
     'PairwiseExplorer',
