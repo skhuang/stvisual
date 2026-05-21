@@ -79,6 +79,7 @@ const DECKS = [
   { base: '61-regression-test-selection',   id: 'regression-test-selection', num: 61, section: 'slicing' },
   { base: '62-test-driven-development', id: 'test-driven-development', num: 62, section: 'tdd' },
   { base: '63-exploit-generation', id: 'exploit-generation', num: 63, section: 'exploit' },
+  { base: '64-input-space-partitioning', id: 'input-space-partitioning', num: 64, section: 'blackbox' },
 ];
 
 function frontMatterTitle(md) {
