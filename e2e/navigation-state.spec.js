@@ -22,6 +22,21 @@ test.describe('Navigation state', () => {
     await expect(page.getByTestId('nav-btn-fuzz')).toHaveClass(/active/);
   });
 
+  test('category hover menu keeps section options selectable across the trigger gap', async ({ page }) => {
+    await page.goto('/index.html');
+
+    const category = page.getByTestId('nav-category-generation');
+    await category.hover();
+
+    const box = await category.boundingBox();
+    expect(box).not.toBeNull();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height + 4);
+    await page.getByTestId('nav-btn-fuzz').click();
+
+    await expect(page.getByTestId('section-fuzz')).toBeVisible();
+    await expect(page.getByTestId('nav-btn-fuzz')).toHaveClass(/active/);
+  });
+
   test('keeps the saved Syntax-Based Testing tab after reload', async ({ page }) => {
     await page.goto('/index.html');
 

@@ -183,6 +183,16 @@ textarea:focus-visible {
 .nav-category-menu.open {
   z-index: 130;
 }
+.nav-category-menu:hover::after,
+.nav-category-menu:focus-within::after,
+.nav-category-menu.open::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 8px;
+}
 .nav-category-btn {
   padding: 7px 13px;
   border: 1px solid var(--app-border);
