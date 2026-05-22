@@ -44200,19 +44200,52 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
           >
             ${t("section.all")}
           </button>
-          ${SECTION_ORDER.map((sectionId) => `
-            <button
-              class="nav-btn${activeSection === sectionId ? " active" : ""}"
-              data-testid="nav-btn-${sectionId}"
-              data-section="${sectionId}"
-              type="button"
-              aria-current="${activeSection === sectionId ? "page" : "false"}"
-            >
-              ${t(`section.${sectionId}`)}
-            </button>
-          `).join("")}
+          ${SECTION_TAXONOMY.map((cat) => {
+          const categoryActive = cat.sectionIds.includes(activeSection);
+          return `
+            <div class="nav-category-menu${categoryActive ? " active" : ""}" data-nav-category="${cat.id}">
+              <button
+                class="nav-category-btn"
+                data-testid="nav-category-${cat.id}"
+                data-nav-category-trigger
+                type="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                ${t(cat.labelKey)}
+              </button>
+              <div class="nav-category-panel" role="menu" aria-label="${t(cat.labelKey)}">
+                ${cat.sectionIds.map((sectionId) => `
+                  <button
+                    class="nav-btn${activeSection === sectionId ? " active" : ""}"
+                    data-testid="nav-btn-${sectionId}"
+                    data-section="${sectionId}"
+                    type="button"
+                    role="menuitem"
+                    aria-current="${activeSection === sectionId ? "page" : "false"}"
+                  >
+                    ${t(`section.${sectionId}`)}
+                  </button>
+                `).join("")}
+              </div>
+            </div>`;
+        }).join("")}
         </div>
       `;
+        nav.querySelectorAll("[data-nav-category-trigger]").forEach((button) => {
+          const menu = button.closest("[data-nav-category]");
+          button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const nextOpen = !menu.classList.contains("open");
+            nav.querySelectorAll("[data-nav-category]").forEach((node) => {
+              var _a3;
+              node.classList.remove("open");
+              (_a3 = node.querySelector("[data-nav-category-trigger]")) == null ? void 0 : _a3.setAttribute("aria-expanded", "false");
+            });
+            menu.classList.toggle("open", nextOpen);
+            button.setAttribute("aria-expanded", nextOpen ? "true" : "false");
+          });
+        });
         nav.querySelectorAll("[data-section]").forEach((button) => {
           button.addEventListener("click", () => {
             setActiveSection(button.dataset.section, true);
