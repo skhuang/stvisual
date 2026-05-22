@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openSectionFromNav } from './helpers/navigation.js';
 
 test.beforeEach(async ({ context }) => {
   await context.addInitScript(() => {
@@ -18,7 +19,7 @@ test.describe('Accessibility navigation', () => {
     await page.keyboard.press('Enter');
     await expect(page.locator('#app-main')).toBeFocused();
 
-    await page.getByTestId('nav-btn-logic').click();
+    await openSectionFromNav(page, 'logic');
     await expect(page.getByTestId('section-logic')).toBeFocused();
     await expect(page.getByTestId('nav-btn-logic')).toHaveAttribute('aria-current', 'page');
     await expect(page.getByTestId('nav-btn-graph')).toHaveAttribute('aria-current', 'false');

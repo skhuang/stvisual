@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openSectionFromNav } from './helpers/navigation.js';
 
 test.beforeEach(async ({ context }) => {
   await context.addInitScript(() => {
@@ -12,7 +13,7 @@ test.describe('Navigation state', () => {
   test('restores the last learning section after reload', async ({ page }) => {
     await page.goto('/index.html');
 
-    await page.getByTestId('nav-btn-fuzz').click();
+    await openSectionFromNav(page, 'fuzz');
     await expect(page.getByTestId('section-fuzz')).toBeVisible();
 
     await page.reload();
@@ -24,7 +25,7 @@ test.describe('Navigation state', () => {
   test('keeps the saved Syntax-Based Testing tab after reload', async ({ page }) => {
     await page.goto('/index.html');
 
-    await page.getByTestId('nav-btn-syntax').click();
+    await openSectionFromNav(page, 'syntax');
     await page.getByRole('tab', { name: /Grammar Coverage|Grammar/ }).click();
     await page.reload();
 
@@ -99,7 +100,7 @@ test.describe('Navigation state', () => {
     await expect(page.locator('[data-advanced-paper="sailor"]')).toHaveAttribute('aria-selected', 'true');
 
     // Bridge from J3 E2E → TestQuality (an ACH-paper tab).
-    await page.locator('[data-section="acceptance"]').click();
+    await openSectionFromNav(page, 'acceptance');
     await page.locator('[data-acceptance-tab="e2ejourney"]').click();
     await page.getByTestId('e2e-bridge-tqx').click();
 
@@ -146,7 +147,7 @@ test.describe('Navigation state', () => {
   test('does not save the Cloud utility drawer as the active learning section', async ({ page }) => {
     await page.goto('/index.html');
 
-    await page.getByTestId('nav-btn-logic').click();
+    await openSectionFromNav(page, 'logic');
     await page.getByTestId('app-cloud-link').click();
     await expect(page.getByTestId('cloud-settings-drawer')).toBeVisible();
 

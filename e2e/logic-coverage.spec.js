@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openSectionFromNav } from './helpers/navigation.js';
 
 test.beforeEach(async ({ context }) => {
   await context.addInitScript(() => {
@@ -9,7 +10,7 @@ test.beforeEach(async ({ context }) => {
 test.describe('Logic Coverage Explorer', () => {
   test('default predicate renders truth table with 8 rows', async ({ page }) => {
     await page.goto('/index.html');
-    await page.getByTestId('nav-btn-logic').click();
+    await openSectionFromNav(page, 'logic');
 
     const explorer = page.getByTestId('logic-coverage');
     await expect(explorer).toBeVisible();
@@ -20,7 +21,7 @@ test.describe('Logic Coverage Explorer', () => {
 
   test('Implicant Coverage tab shows K-maps with columns=ab, rows=c', async ({ page }) => {
     await page.goto('/index.html');
-    await page.getByTestId('nav-btn-logic').click();
+    await openSectionFromNav(page, 'logic');
 
     await page.getByTestId('logic-criterion-ic').click();
 
@@ -51,7 +52,7 @@ test.describe('Logic Coverage Explorer', () => {
 
   test('switching to a 4-clause predicate yields a 4x4 K-map', async ({ page }) => {
     await page.goto('/index.html');
-    await page.getByTestId('nav-btn-logic').click();
+    await openSectionFromNav(page, 'logic');
 
     await page.getByTestId('logic-example-four-clause').click();
     await page.getByTestId('logic-criterion-ic').click();

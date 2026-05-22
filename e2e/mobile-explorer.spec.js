@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openSectionFromNav } from './helpers/navigation.js';
 
 test.beforeEach(async ({ context }) => {
   await context.addInitScript(() => {
@@ -31,7 +32,7 @@ test.describe('Mobile explorer navigation', () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/index.html');
 
-    await page.getByTestId('nav-btn-fuzz').click();
+    await openSectionFromNav(page, 'fuzz');
     await expect(page.getByTestId('section-fuzz')).toBeVisible();
     await expect(page.getByTestId('fuzz-mobile-nav')).toBeHidden();
   });
