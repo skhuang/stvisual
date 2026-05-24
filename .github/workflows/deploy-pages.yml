@@ -45,6 +45,7 @@ jobs:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           DRIVE_UPLOAD_FOLDER_ID: ${{ secrets.DRIVE_UPLOAD_FOLDER_ID }}
+          DRIVE_PRIVATE_SLIDES_FOLDER_ID: ${{ secrets.DRIVE_PRIVATE_SLIDES_FOLDER_ID }}
         run: npm run pages:prepare
 
       - name: Upload pages artifact
