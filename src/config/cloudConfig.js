@@ -10,6 +10,7 @@ export const cloudConfig = {
   },
   drive: {
     uploadFolderId: '__DRIVE_UPLOAD_FOLDER_ID__',
+    privateSlidesFolderId: '__DRIVE_PRIVATE_SLIDES_FOLDER_ID__',
   },
 };
 
