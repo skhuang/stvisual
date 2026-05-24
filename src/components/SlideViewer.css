@@ -249,3 +249,18 @@
     flex: 1 1 0;
   }
 }
+
+/* ── Private slides (Drive-gated) ── */
+.slideviewer-deck-btn--private { background: #faf5ff; color: #6b21a8; }
+.slideviewer-deck-btn--private.slideviewer-deck-btn--active {
+  background: #6b21a8; color: #fff;
+}
+.slideviewer-deck-btn--signin {
+  background: #fef3c7; color: #92400e; font-style: italic; font-weight: 600;
+}
+.slideviewer-deck-btn--signin:hover { background: #fde68a; }
+.slideviewer-deck-btn--denied,
+.slideviewer-deck-btn--error {
+  background: #f1f5f9; color: #94a3b8; cursor: not-allowed;
+}
+.slideviewer-deck-btn__sub { font-size: 0.72rem; opacity: 0.85; margin-left: 0.25rem; }

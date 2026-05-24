@@ -1,22 +1,37 @@
 import { t, getLocale } from '../i18n/index.js';
 import { SLIDE_DECKS } from '../data/slideDecks.generated.js';
 import { parseDeck } from '../utils/slideMarkdown.js';
+import { fetchPrivateDecks } from '../utils/privateDecks.js';
+import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
+import { getResolvedCloudConfig } from '../config/cloudConfig.js';
 
 // One reused overlay node, lazily created and appended to <body>.
 let overlay = null;
 let returnFocusTo = null;
-const view = { decks: [], deckIndex: 0, slideIndex: 0, slides: [], notesOn: false };
+const view = { decks: [], deckIndex: 0, slideIndex: 0, slides: [], notesOn: false, privateSignInNeeded: false };
 const FOCUSABLE_SELECTOR = [
   'button:not([disabled])',
   'a[href]',
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
-function decksForSection(sectionId) {
+function publicDecksForSection(sectionId) {
   return SLIDE_DECKS.filter((d) => d.section === sectionId);
 }
+
+function getPrivateContext() {
+  const config = getResolvedCloudConfig();
+  const raw = config?.drive?.privateSlidesFolderId || '';
+  // Treat a literal `__…__` placeholder (e.g. when inject-env didn't run or the
+  // env var is unset) as "not configured" — feature disabled, no Drive calls.
+  const folderId = /^__.+__$/.test(raw) ? '' : raw;
+  if (!folderId) return { folderId: '', token: null };
+  const token = createCloudIntegrationClient().getAccessToken();
+  return { folderId, token };
+}
 function deckTitle(deck) {
-  return getLocale() === 'en' ? deck.titleEn : deck.titleZh;
+  const base = getLocale() === 'en' ? deck.titleEn : deck.titleZh;
+  return deck.private ? `🔒 ${base}` : base;
 }
 function loadDeck(index) {
   view.deckIndex = index;
@@ -74,16 +89,43 @@ function go(delta, focusTestId) {
   goTo(next, focusTestId);
 }
 
+function renderDeckBar() {
+  const items = [...view.decks];
+  if (view.privateSignInNeeded) {
+    items.push({ __signInRow: true });
+  }
+  if (items.length <= 1 && !view.privateSignInNeeded) {
+    return '<span class="slideviewer-title">' + deckTitle(view.decks[view.deckIndex]) + '</span>';
+  }
+  return `<div class="slideviewer-decks" role="tablist" aria-label="${t('slides.deckSelector')}">${items.map((d, i) => {
+    if (d.__signInRow) {
+      return `<button type="button" class="slideviewer-deck-btn slideviewer-deck-btn--signin"
+        data-testid="slideviewer-signin-row">${t('slides.private.signInRow')}</button>`;
+    }
+    const classes = ['slideviewer-deck-btn'];
+    if (i === view.deckIndex) classes.push('slideviewer-deck-btn--active');
+    if (d.private) classes.push('slideviewer-deck-btn--private');
+    if (d.private && d.access === 'denied') classes.push('slideviewer-deck-btn--denied');
+    if (d.private && d.access === 'error') classes.push('slideviewer-deck-btn--error');
+    const denied = d.private && (d.access === 'denied' || d.access === 'error');
+    const ariaLabel = d.private ? ` aria-label="${t('slides.private.chipAria')}: ${deckTitle(d).replace(/^🔒 /, '')}"` : '';
+    return `<button type="button" class="${classes.join(' ')}"
+      data-deck="${i}" data-testid="slideviewer-deck-${i}" role="tab"
+      aria-selected="${i === view.deckIndex ? 'true' : 'false'}"
+      ${denied ? 'disabled' : ''}${ariaLabel}>${deckTitle(d)}${
+        d.private && d.access === 'denied' ? ` <span class="slideviewer-deck-btn__sub">— ${t('slides.private.noAccess')}</span>` : ''
+      }${
+        d.private && d.access === 'error' ? ` <span class="slideviewer-deck-btn__sub">— ${t('slides.private.fetchError')}</span>` : ''
+      }</button>`;
+  }).join('')}</div>`;
+}
+
 function paint(focusTestId) {
   const slide = view.slides[view.slideIndex] || { html: `<p>${t('slides.empty')}</p>`, notes: '' };
-  const multi = view.decks.length > 1;
   overlay.innerHTML = `
     <div class="slideviewer-panel" role="dialog" aria-modal="true" aria-label="${t('slides.dialog')}" tabindex="-1">
       <div class="slideviewer-bar">
-        ${multi ? `<div class="slideviewer-decks" role="tablist" aria-label="${t('slides.deckSelector')}">${view.decks.map((d, i) => `
-          <button type="button" class="slideviewer-deck-btn ${i === view.deckIndex ? 'slideviewer-deck-btn--active' : ''}"
-            data-deck="${i}" data-testid="slideviewer-deck-${i}" role="tab"
-            aria-selected="${i === view.deckIndex ? 'true' : 'false'}">${deckTitle(d)}</button>`).join('')}</div>` : '<span class="slideviewer-title">' + deckTitle(view.decks[view.deckIndex]) + '</span>'}
+        ${renderDeckBar()}
         <button type="button" class="slideviewer-close" data-testid="slideviewer-close"
           aria-label="${t('slides.close')}">✕</button>
       </div>
@@ -117,12 +159,24 @@ function paint(focusTestId) {
   overlay.querySelectorAll('[data-deck]').forEach((btn) => {
     btn.addEventListener('click', () => { loadDeck(Number(btn.dataset.deck)); paint(btn.dataset.testid); });
   });
+  const signinRow = overlay.querySelector('[data-testid="slideviewer-signin-row"]');
+  if (signinRow) {
+    signinRow.addEventListener('click', () => {
+      const cloudBtn = document.querySelector('[data-app-cloud]');
+      closeSlideViewer();
+      cloudBtn?.click();
+    });
+  }
   if (focusTestId) focusInViewer(focusTestId);
 }
 
 export function openSlideViewer(sectionId) {
-  const decks = decksForSection(sectionId);
-  if (!decks.length) return;
+  const publicDecks = publicDecksForSection(sectionId);
+  const { folderId, token } = getPrivateContext();
+  const privateConfigured = Boolean(folderId);
+
+  if (!publicDecks.length) return;
+
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.className = 'slideviewer-overlay';
@@ -133,11 +187,25 @@ export function openSlideViewer(sectionId) {
   }
   returnFocusTo = document.activeElement;
   overlay.hidden = false;
-  view.decks = decks;
+  view.decks = publicDecks;
   view.notesOn = false;
+  view.privateSignInNeeded = privateConfigured && !token;
   loadDeck(0);
   paint();
   focusInViewer('slideviewer-close');
+
+  if (privateConfigured && token) {
+    fetchPrivateDecks({ accessToken: token, folderId }).then((all) => {
+      if (!overlay || overlay.hidden) return;
+      const privateForSection = all.filter((d) => d.section === sectionId);
+      if (!privateForSection.length) return;
+      view.decks = [...publicDecks, ...privateForSection];
+      view.privateSignInNeeded = false;
+      paint();
+    }).catch(() => {
+      // silent — leave the picker as public-only
+    });
+  }
 }
 
 export function closeSlideViewer() {
