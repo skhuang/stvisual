@@ -2072,6 +2072,11 @@
       "slides.notes.hide": "\u{1F5D2} Hide notes",
       "slides.counter": "Slide {n} / {total}",
       "slides.empty": "No slides available.",
+      "slides.private.chipAria": "Private deck",
+      "slides.private.signInRow": "\u{1F512} Sign in to see private slides",
+      "slides.private.noAccess": "no access",
+      "slides.private.fetchError": "couldn't load \u2014 retry",
+      "slides.private.retryBtn": "Retry",
       "rdebt.title": "Regression & Test-Debt Explorer",
       "rdebt.desc": "An agile regression suite grows every sprint. Left unmanaged, obsolete and flaky tests pile up \u2014 maintenance cost climbs while the value the suite delivers flattens out. Where the lines cross is test debt. Pruning, quarantine and risk-based selection push that crossover back, or remove it.",
       "rdebt.strategies": "Maintenance strategies:",
@@ -4532,6 +4537,11 @@
       "slides.notes.hide": "\u{1F5D2} \u96B1\u85CF\u5099\u8A3B",
       "slides.counter": "\u7B2C {n} / {total} \u5F35",
       "slides.empty": "\u5C1A\u7121\u7C21\u5831\u3002",
+      "slides.private.chipAria": "\u79C1\u4EBA\u6295\u5F71\u7247",
+      "slides.private.signInRow": "\u{1F512} \u767B\u5165\u4EE5\u6AA2\u8996\u79C1\u4EBA\u6295\u5F71\u7247",
+      "slides.private.noAccess": "\u7121\u5B58\u53D6\u6B0A",
+      "slides.private.fetchError": "\u8F09\u5165\u5931\u6557 \u2014\u2014 \u91CD\u8A66",
+      "slides.private.retryBtn": "\u91CD\u8A66",
       "rdebt.title": "\u56DE\u6B78\u6E2C\u8A66\u8207\u6E2C\u8A66\u50B5\u63A2\u7D22\u5668",
       "rdebt.desc": "\u654F\u6377\u7684\u56DE\u6B78\u5957\u4EF6\u6BCF\u500B sprint \u90FD\u5728\u9577\u5927\u3002\u82E5\u4E0D\u7167\u6599\uFF0C\u904E\u6642\u8207 flaky \u6E2C\u8A66\u6703\u5806\u7A4D\u2014\u2014\u7DAD\u8B77\u6210\u672C\u6500\u5347\uFF0C\u800C\u5957\u4EF6\u5E36\u4F86\u7684\u50F9\u503C\u537B\u8DA8\u65BC\u5E73\u7DE9\u3002\u5169\u689D\u7DDA\u4EA4\u53C9\u4E4B\u8655\u5C31\u662F\u6E2C\u8A66\u50B5\u3002\u4FEE\u526A\u3001\u9694\u96E2\u8207\u98A8\u96AA\u5C0E\u5411\u6311\u9078\u80FD\u628A\u4EA4\u53C9\u9EDE\u5F80\u5F8C\u63A8\uFF0C\u6216\u8B93\u5B83\u6D88\u5931\u3002",
       "rdebt.strategies": "\u7DAD\u8B77\u7B56\u7565\uFF1A",
@@ -10042,7 +10052,8 @@
       measurementId: "__FIREBASE_MEASUREMENT_ID__"
     },
     drive: {
-      uploadFolderId: "__DRIVE_UPLOAD_FOLDER_ID__"
+      uploadFolderId: "__DRIVE_UPLOAD_FOLDER_ID__",
+      privateSlidesFolderId: "__DRIVE_PRIVATE_SLIDES_FOLDER_ID__"
     }
   };
   function getResolvedCloudConfig() {
@@ -10063,7 +10074,11 @@
 
   // src/utils/cloudIntegration.js
   var REQUIRED_FIREBASE_KEYS = ["apiKey", "authDomain", "projectId", "appId"];
-  var DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
+  var DRIVE_SCOPES = [
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive.readonly"
+  ];
+  var cachedClient = null;
   function getMissingFirebaseKeys(firebaseConfig) {
     return REQUIRED_FIREBASE_KEYS.filter((key) => !(firebaseConfig == null ? void 0 : firebaseConfig[key]));
   }
@@ -10086,6 +10101,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     };
   }
   function createCloudIntegrationClient() {
+    if (cachedClient) return cachedClient;
+    cachedClient = buildClient();
+    return cachedClient;
+  }
+  function buildClient() {
     var _a;
     const config = getResolvedCloudConfig();
     const missingKeys = getMissingFirebaseKeys(config.firebase);
@@ -10101,6 +10121,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         isSupportedOrigin,
         originWarning: originMessage,
         getUser() {
+          return null;
+        },
+        getAccessToken() {
           return null;
         },
         subscribeAuthState(callback) {
@@ -10141,6 +10164,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         getUser() {
           return null;
         },
+        getAccessToken() {
+          return null;
+        },
         subscribeAuthState(callback) {
           callback(null);
           return () => {
@@ -10177,6 +10203,9 @@ Content-Type: ${file.type || "application/octet-stream"}\r
         isSupportedOrigin,
         originWarning: "",
         getUser() {
+          return null;
+        },
+        getAccessToken() {
           return null;
         },
         subscribeAuthState(callback) {
@@ -10223,12 +10252,15 @@ Content-Type: ${file.type || "application/octet-stream"}\r
       getUser() {
         return auth.currentUser;
       },
+      getAccessToken() {
+        return driveAccessToken;
+      },
       subscribeAuthState(callback) {
         return auth.onAuthStateChanged(callback);
       },
       async signInWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope(DRIVE_SCOPE);
+        DRIVE_SCOPES.forEach((scope) => provider.addScope(scope));
         const result = await auth.signInWithPopup(provider);
         const credential = result.credential;
         driveAccessToken = (credential == null ? void 0 : credential.accessToken) || null;
@@ -14445,11 +14477,11 @@ Content-Type: ${file.type || "application/octet-stream"}\r
     return out;
   }
   function classifyStringMutants(grammar, mutants, recOptions) {
-    const cache = /* @__PURE__ */ new Map();
+    const cache2 = /* @__PURE__ */ new Map();
     const accepts = (s) => {
-      if (cache.has(s)) return cache.get(s);
+      if (cache2.has(s)) return cache2.get(s);
       const v = recognizes(grammar, s, recOptions);
-      cache.set(s, v);
+      cache2.set(s, v);
       return v;
     };
     return mutants.map((m) => {
@@ -22504,10 +22536,10 @@ function linearSearch(arr, target) {
                 return result;
               }
             }
-            const cache = new InMemoryCache();
-            cache.set("user:1", { name: "Dave" }, 6e4);
-            const hit = cache.get("user:1");
-            const miss = cache.get("user:99");
+            const cache2 = new InMemoryCache();
+            cache2.set("user:1", { name: "Dave" }, 6e4);
+            const hit = cache2.get("user:1");
+            const miss = cache2.get("user:99");
             const assertions = [
               { desc: "cache hit returns user", passed: (hit == null ? void 0 : hit.name) === "Dave" },
               { desc: "cache miss returns null", passed: miss === null },
@@ -41361,20 +41393,139 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     return { slides };
   }
 
+  // src/utils/privateDecks.js
+  var PRIVATE_NUM_OFFSET = 1e3;
+  var DRIVE_API = "https://www.googleapis.com/drive/v3/files";
+  var cache = { token: null, decks: null };
+  async function fetchPrivateDecks({ accessToken, folderId }) {
+    if (!folderId || !accessToken) return [];
+    if (cache.token === accessToken && cache.decks !== null) return cache.decks;
+    const manifest = await fetchManifest({ accessToken, folderId });
+    if (!manifest || !Array.isArray(manifest.decks)) {
+      cache = { token: accessToken, decks: [] };
+      return [];
+    }
+    const decks = [];
+    for (let i = 0; i < manifest.decks.length; i++) {
+      const entry = manifest.decks[i];
+      const num = PRIVATE_NUM_OFFSET + i + 1;
+      const deck = await fetchDeck({ accessToken, folderId, entry, num });
+      if (deck) decks.push(deck);
+    }
+    cache = { token: accessToken, decks };
+    return decks;
+  }
+  async function fetchManifest({ accessToken, folderId }) {
+    const listed = await listByName({ accessToken, folderId, names: ["private-decks.json"] });
+    if (listed === null) return null;
+    const file = listed.find((f) => f.name === "private-decks.json");
+    if (!file) return null;
+    const text = await getFileMedia({ accessToken, fileId: file.id });
+    if (text === null) return null;
+    try {
+      return JSON.parse(text);
+    } catch {
+      return null;
+    }
+  }
+  async function fetchDeck({ accessToken, folderId, entry, num }) {
+    var _a, _b;
+    const enName = (_a = entry.files) == null ? void 0 : _a.en;
+    const zhName = (_b = entry.files) == null ? void 0 : _b["zh-TW"];
+    if (!entry.id || !entry.section || !enName || !zhName) return null;
+    const listed = await listByName({ accessToken, folderId, names: [enName, zhName] });
+    if (listed === null) {
+      return shellDeck(entry, num, "error", "", "");
+    }
+    const enFile = listed.find((f) => f.name === enName);
+    const zhFile = listed.find((f) => f.name === zhName);
+    if (!enFile || !zhFile) {
+      return shellDeck(entry, num, "denied", "", "");
+    }
+    const [enResult, zhResult] = await Promise.all([
+      getFileMediaWithStatus({ accessToken, fileId: enFile.id }),
+      getFileMediaWithStatus({ accessToken, fileId: zhFile.id })
+    ]);
+    const worst = pickWorstStatus(enResult.status, zhResult.status);
+    return shellDeck(entry, num, worst, enResult.text || "", zhResult.text || "");
+  }
+  function shellDeck(entry, num, access, enText, zhText) {
+    return {
+      id: entry.id,
+      section: entry.section,
+      num,
+      titleEn: entry.titleEn || entry.id,
+      titleZh: entry.titleZh || entry.id,
+      en: enText,
+      zh: zhText,
+      private: true,
+      access
+    };
+  }
+  function pickWorstStatus(a, b) {
+    if (a === "error" || b === "error") return "error";
+    if (a === "denied" || b === "denied") return "denied";
+    return "ok";
+  }
+  async function listByName({ accessToken, folderId, names }) {
+    const nameClauses = names.map((n) => `name='${n.replace(/'/g, "\\'")}'`).join(" or ");
+    const q = `'${folderId}' in parents and (${nameClauses}) and trashed=false`;
+    const params = new URLSearchParams({ q, fields: "files(id,name)", pageSize: "50" });
+    try {
+      const resp = await fetch(`${DRIVE_API}?${params.toString()}`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+      if (resp.status === 403 || resp.status === 401) return null;
+      if (!resp.ok) return [];
+      const payload = await resp.json();
+      return Array.isArray(payload.files) ? payload.files : [];
+    } catch {
+      return null;
+    }
+  }
+  async function getFileMedia({ accessToken, fileId }) {
+    const { text, status } = await getFileMediaWithStatus({ accessToken, fileId });
+    return status === "ok" ? text : null;
+  }
+  async function getFileMediaWithStatus({ accessToken, fileId }) {
+    try {
+      const resp = await fetch(`${DRIVE_API}/${encodeURIComponent(fileId)}?alt=media`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+      if (resp.status === 403 || resp.status === 404 || resp.status === 401) {
+        return { status: "denied", text: null };
+      }
+      if (!resp.ok) return { status: "error", text: null };
+      return { status: "ok", text: await resp.text() };
+    } catch {
+      return { status: "error", text: null };
+    }
+  }
+
   // src/components/SlideViewer.js
   var overlay = null;
   var returnFocusTo = null;
-  var view = { decks: [], deckIndex: 0, slideIndex: 0, slides: [], notesOn: false };
+  var view = { decks: [], deckIndex: 0, slideIndex: 0, slides: [], notesOn: false, privateSignInNeeded: false };
   var FOCUSABLE_SELECTOR = [
     "button:not([disabled])",
     "a[href]",
     '[tabindex]:not([tabindex="-1"])'
   ].join(",");
-  function decksForSection(sectionId) {
+  function publicDecksForSection(sectionId) {
     return SLIDE_DECKS.filter((d) => d.section === sectionId);
   }
+  function getPrivateContext() {
+    var _a;
+    const config = getResolvedCloudConfig();
+    const raw = ((_a = config == null ? void 0 : config.drive) == null ? void 0 : _a.privateSlidesFolderId) || "";
+    const folderId = /^__.+__$/.test(raw) ? "" : raw;
+    if (!folderId) return { folderId: "", token: null };
+    const token = createCloudIntegrationClient().getAccessToken();
+    return { folderId, token };
+  }
   function deckTitle(deck) {
-    return getLocale() === "en" ? deck.titleEn : deck.titleZh;
+    const base = getLocale() === "en" ? deck.titleEn : deck.titleZh;
+    return deck.private ? `\u{1F512} ${base}` : base;
   }
   function loadDeck(index) {
     view.deckIndex = index;
@@ -41433,16 +41584,38 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     const next = view.slideIndex + delta;
     goTo(next, focusTestId);
   }
+  function renderDeckBar() {
+    const items = [...view.decks];
+    if (view.privateSignInNeeded) {
+      items.push({ __signInRow: true });
+    }
+    if (items.length <= 1 && !view.privateSignInNeeded) {
+      return '<span class="slideviewer-title">' + deckTitle(view.decks[view.deckIndex]) + "</span>";
+    }
+    return `<div class="slideviewer-decks" role="tablist" aria-label="${t("slides.deckSelector")}">${items.map((d, i) => {
+      if (d.__signInRow) {
+        return `<button type="button" class="slideviewer-deck-btn slideviewer-deck-btn--signin"
+        data-testid="slideviewer-signin-row">${t("slides.private.signInRow")}</button>`;
+      }
+      const classes = ["slideviewer-deck-btn"];
+      if (i === view.deckIndex) classes.push("slideviewer-deck-btn--active");
+      if (d.private) classes.push("slideviewer-deck-btn--private");
+      if (d.private && d.access === "denied") classes.push("slideviewer-deck-btn--denied");
+      if (d.private && d.access === "error") classes.push("slideviewer-deck-btn--error");
+      const denied = d.private && (d.access === "denied" || d.access === "error");
+      const ariaLabel = d.private ? ` aria-label="${t("slides.private.chipAria")}: ${deckTitle(d).replace(/^🔒 /, "")}"` : "";
+      return `<button type="button" class="${classes.join(" ")}"
+      data-deck="${i}" data-testid="slideviewer-deck-${i}" role="tab"
+      aria-selected="${i === view.deckIndex ? "true" : "false"}"
+      ${denied ? "disabled" : ""}${ariaLabel}>${deckTitle(d)}${d.private && d.access === "denied" ? ` <span class="slideviewer-deck-btn__sub">\u2014 ${t("slides.private.noAccess")}</span>` : ""}${d.private && d.access === "error" ? ` <span class="slideviewer-deck-btn__sub">\u2014 ${t("slides.private.fetchError")}</span>` : ""}</button>`;
+    }).join("")}</div>`;
+  }
   function paint(focusTestId) {
     const slide = view.slides[view.slideIndex] || { html: `<p>${t("slides.empty")}</p>`, notes: "" };
-    const multi = view.decks.length > 1;
     overlay.innerHTML = `
     <div class="slideviewer-panel" role="dialog" aria-modal="true" aria-label="${t("slides.dialog")}" tabindex="-1">
       <div class="slideviewer-bar">
-        ${multi ? `<div class="slideviewer-decks" role="tablist" aria-label="${t("slides.deckSelector")}">${view.decks.map((d, i) => `
-          <button type="button" class="slideviewer-deck-btn ${i === view.deckIndex ? "slideviewer-deck-btn--active" : ""}"
-            data-deck="${i}" data-testid="slideviewer-deck-${i}" role="tab"
-            aria-selected="${i === view.deckIndex ? "true" : "false"}">${deckTitle(d)}</button>`).join("")}</div>` : '<span class="slideviewer-title">' + deckTitle(view.decks[view.deckIndex]) + "</span>"}
+        ${renderDeckBar()}
         <button type="button" class="slideviewer-close" data-testid="slideviewer-close"
           aria-label="${t("slides.close")}">\u2715</button>
       </div>
@@ -41479,11 +41652,21 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
         paint(btn.dataset.testid);
       });
     });
+    const signinRow = overlay.querySelector('[data-testid="slideviewer-signin-row"]');
+    if (signinRow) {
+      signinRow.addEventListener("click", () => {
+        const cloudBtn = document.querySelector("[data-app-cloud]");
+        closeSlideViewer();
+        cloudBtn == null ? void 0 : cloudBtn.click();
+      });
+    }
     if (focusTestId) focusInViewer(focusTestId);
   }
   function openSlideViewer(sectionId) {
-    const decks = decksForSection(sectionId);
-    if (!decks.length) return;
+    const publicDecks = publicDecksForSection(sectionId);
+    const { folderId, token } = getPrivateContext();
+    const privateConfigured = Boolean(folderId);
+    if (!publicDecks.length) return;
     if (!overlay) {
       overlay = document.createElement("div");
       overlay.className = "slideviewer-overlay";
@@ -41496,11 +41679,23 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
     }
     returnFocusTo = document.activeElement;
     overlay.hidden = false;
-    view.decks = decks;
+    view.decks = publicDecks;
     view.notesOn = false;
+    view.privateSignInNeeded = privateConfigured && !token;
     loadDeck(0);
     paint();
     focusInViewer("slideviewer-close");
+    if (privateConfigured && token) {
+      fetchPrivateDecks({ accessToken: token, folderId }).then((all) => {
+        if (!overlay || overlay.hidden) return;
+        const privateForSection = all.filter((d) => d.section === sectionId);
+        if (!privateForSection.length) return;
+        view.decks = [...publicDecks, ...privateForSection];
+        view.privateSignInNeeded = false;
+        paint();
+      }).catch(() => {
+      });
+    }
   }
   function closeSlideViewer() {
     if (!overlay) return;
