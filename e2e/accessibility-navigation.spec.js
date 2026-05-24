@@ -25,6 +25,22 @@ test.describe('Accessibility navigation', () => {
     await expect(page.getByTestId('nav-btn-graph')).toHaveAttribute('aria-current', 'false');
   });
 
+  test('language hover menu switches locale after selecting an option', async ({ page }) => {
+    await page.goto('/index.html');
+
+    const trigger = page.getByTestId('app-lang-select');
+    await trigger.hover();
+
+    const box = await trigger.boundingBox();
+    expect(box).not.toBeNull();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height + 3);
+    await page.getByTestId('app-lang-option-en').click();
+
+    await expect(page.getByTestId('app-lang-select')).toContainText('English');
+    await expect.poll(() => page.evaluate(() => window.localStorage.getItem('stvisual.locale'))).toBe('en');
+    await expect.poll(() => new URL(page.url()).searchParams.get('lang')).toBe('en');
+  });
+
   test('keeps keyboard focus inside the cloud drawer and restores it on close', async ({ page }) => {
     await page.goto('/index.html');
 

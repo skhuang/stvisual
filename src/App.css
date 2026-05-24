@@ -99,18 +99,94 @@ textarea:focus-visible {
   align-items: center;
   gap: 8px;
   font-size: 0.85rem;
+  position: relative;
 }
 .app-lang__label {
   opacity: 0.85;
 }
-.app-lang select {
+.app-lang-menu {
+  position: relative;
+}
+.app-lang-menu:hover,
+.app-lang-menu:focus-within,
+.app-lang-menu.open {
+  z-index: 150;
+}
+.app-lang-menu:hover::after,
+.app-lang-menu:focus-within::after,
+.app-lang-menu.open::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 6px;
+}
+.app-lang__trigger {
   background: rgba(255, 255, 255, 0.95);
   color: var(--app-header-ink);
   border: none;
   border-radius: var(--app-radius-sm);
   padding: 4px 8px;
   font-size: 0.85rem;
+  font-family: inherit;
   cursor: pointer;
+}
+.app-lang__trigger::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 6px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  vertical-align: middle;
+}
+.app-lang__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 140;
+  min-width: 128px;
+  display: grid;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: var(--app-radius-md);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: var(--app-shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-3px);
+  transition: opacity 0.14s, transform 0.14s;
+}
+.app-lang-menu:hover .app-lang__panel,
+.app-lang-menu:focus-within .app-lang__panel,
+.app-lang-menu.open .app-lang__panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.app-lang__option {
+  border: none;
+  border-radius: var(--app-radius-sm);
+  background: transparent;
+  color: var(--app-header-ink);
+  cursor: pointer;
+  font: inherit;
+  padding: 6px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+.app-lang__option:hover,
+.app-lang__option:focus-visible {
+  background: rgba(52, 152, 219, 0.12);
+  outline: none;
+}
+.app-lang__option.active {
+  background: var(--app-primary-strong);
+  color: #fff;
 }
 .app-cloud-link {
   border: 1px solid rgba(255, 255, 255, 0.45);

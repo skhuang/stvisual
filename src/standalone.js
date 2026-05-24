@@ -43018,11 +43018,34 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
               ${t("section.cloud")}
             </button>
             <div class="app-lang" role="group" aria-label="${t("app.lang.label")}">
-              <label class="app-lang__label" for="app-lang-select">${t("app.lang.label")}</label>
-              <select id="app-lang-select" data-testid="app-lang-select">
-                <option value="en"${getLocale() === "en" ? " selected" : ""}>${t("app.lang.en")}</option>
-                <option value="zh"${getLocale() === "zh" ? " selected" : ""}>${t("app.lang.zh")}</option>
-              </select>
+              <span class="app-lang__label" id="app-lang-label">${t("app.lang.label")}</span>
+              <div class="app-lang-menu">
+                <button
+                  type="button"
+                  class="app-lang__trigger"
+                  id="app-lang-select"
+                  data-testid="app-lang-select"
+                  aria-haspopup="menu"
+                  aria-expanded="false"
+                  aria-labelledby="app-lang-label app-lang-select"
+                >
+                  ${t(getLocale() === "en" ? "app.lang.en" : "app.lang.zh")}
+                </button>
+                <div class="app-lang__panel" role="menu" aria-label="${t("app.lang.label")}">
+                  ${["en", "zh"].map((locale) => `
+                    <button
+                      type="button"
+                      class="app-lang__option${getLocale() === locale ? " active" : ""}"
+                      data-lang-option="${locale}"
+                      data-testid="app-lang-option-${locale}"
+                      role="menuitemradio"
+                      aria-checked="${getLocale() === locale ? "true" : "false"}"
+                    >
+                      ${t(`app.lang.${locale}`)}
+                    </button>
+                  `).join("")}
+                </div>
+              </div>
             </div>
           </div>
         </header>
@@ -44323,9 +44346,34 @@ The lattice panel draws the subsumption order \u2014 ACoC \u2192 TWC \u2192 PWC 
           });
         }
       }
-      container.querySelector("#app-lang-select").addEventListener("change", (e) => {
-        langInUrl = true;
-        setLocale(e.target.value);
+      const langMenu = container.querySelector(".app-lang-menu");
+      const langTrigger = container.querySelector("#app-lang-select");
+      const setLangMenuOpen = (isOpen) => {
+        langMenu.classList.toggle("open", isOpen);
+        langTrigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      };
+      langMenu.addEventListener("mouseenter", () => {
+        setLangMenuOpen(true);
+      });
+      langMenu.addEventListener("mouseleave", () => {
+        setLangMenuOpen(false);
+      });
+      langTrigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setLangMenuOpen(!langMenu.classList.contains("open"));
+      });
+      container.querySelectorAll("[data-lang-option]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          setLangMenuOpen(false);
+          const nextLocale = button.dataset.langOption;
+          if (nextLocale === getLocale()) return;
+          langInUrl = true;
+          setLocale(nextLocale);
+        });
+      });
+      container.querySelector(".app").addEventListener("click", () => {
+        setLangMenuOpen(false);
       });
       cloudTrigger.addEventListener("click", () => {
         openCloudDrawer();
