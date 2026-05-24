@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createCloudIntegrationClient } from '../utils/cloudIntegration.js';
 
+
 describe('cloudIntegration client', () => {
   it('exposes expected capability flags', () => {
     const client = createCloudIntegrationClient();
@@ -50,5 +51,29 @@ describe('cloudIntegration client', () => {
     await expect(
       client.saveResult('uid', 'Name', 'a@b.com', 'ABC', { explorer: 'graph', score: 1, total: 2 })
     ).rejects.toThrow();
+  });
+});
+
+import { DRIVE_SCOPES } from '../utils/cloudIntegration.js';
+
+describe('cloudIntegration — private-slides additions', () => {
+  it('exports both drive.file and drive.readonly in DRIVE_SCOPES', () => {
+    expect(DRIVE_SCOPES).toEqual(expect.arrayContaining([
+      'https://www.googleapis.com/auth/drive.file',
+      'https://www.googleapis.com/auth/drive.readonly',
+    ]));
+    expect(DRIVE_SCOPES.length).toBe(2);
+  });
+
+  it('createCloudIntegrationClient returns the same instance on repeated calls', () => {
+    const a = createCloudIntegrationClient();
+    const b = createCloudIntegrationClient();
+    expect(a).toBe(b);
+  });
+
+  it('the client exposes getAccessToken returning null when not signed in', () => {
+    const client = createCloudIntegrationClient();
+    expect(typeof client.getAccessToken).toBe('function');
+    expect(client.getAccessToken()).toBe(null);
   });
 });

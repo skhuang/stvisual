@@ -2,7 +2,12 @@ import { getResolvedCloudConfig } from '../config/cloudConfig.js';
 import { t } from '../i18n/index.js';
 
 const REQUIRED_FIREBASE_KEYS = ['apiKey', 'authDomain', 'projectId', 'appId'];
-const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
+export const DRIVE_SCOPES = [
+  'https://www.googleapis.com/auth/drive.file',
+  'https://www.googleapis.com/auth/drive.readonly',
+];
+
+let cachedClient = null;
 
 function getMissingFirebaseKeys(firebaseConfig) {
   return REQUIRED_FIREBASE_KEYS.filter((key) => !firebaseConfig?.[key]);
@@ -21,6 +26,12 @@ function createMultipartBody(file, metadata) {
 }
 
 export function createCloudIntegrationClient() {
+  if (cachedClient) return cachedClient;
+  cachedClient = buildClient();
+  return cachedClient;
+}
+
+function buildClient() {
   const config = getResolvedCloudConfig();
   const missingKeys = getMissingFirebaseKeys(config.firebase);
   const isFileProtocol = globalThis.location?.protocol === 'file:';
@@ -37,6 +48,7 @@ export function createCloudIntegrationClient() {
       isSupportedOrigin,
       originWarning: originMessage,
       getUser() { return null; },
+      getAccessToken() { return null; },
       subscribeAuthState(callback) {
         callback(null);
         return () => {};
@@ -73,6 +85,7 @@ export function createCloudIntegrationClient() {
       isSupportedOrigin,
       originWarning: '',
       getUser() { return null; },
+      getAccessToken() { return null; },
       subscribeAuthState(callback) {
         callback(null);
         return () => {};
@@ -110,6 +123,7 @@ export function createCloudIntegrationClient() {
       isSupportedOrigin,
       originWarning: '',
       getUser() { return null; },
+      getAccessToken() { return null; },
       subscribeAuthState(callback) {
         callback(null);
         return () => {};
@@ -157,12 +171,15 @@ export function createCloudIntegrationClient() {
     getUser() {
       return auth.currentUser;
     },
+    getAccessToken() {
+      return driveAccessToken;
+    },
     subscribeAuthState(callback) {
       return auth.onAuthStateChanged(callback);
     },
     async signInWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope(DRIVE_SCOPE);
+      DRIVE_SCOPES.forEach((scope) => provider.addScope(scope));
 
       const result = await auth.signInWithPopup(provider);
       const credential = result.credential;
