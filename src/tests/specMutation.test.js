@@ -8,6 +8,7 @@ import {
   astToString,
   SPEC_MUTATION_OPERATORS,
 } from '../utils/specMutation.js';
+import { createSpecMutationExplorer } from '../components/SpecMutationExplorer.js';
 
 describe('specMutation', () => {
   it('exports the documented operator list', () => {
@@ -79,6 +80,7 @@ describe('specMutation', () => {
       { name: 'sis',      text: '(si && pressure && !override) || (!si && (!pressure || override))' },
       { name: 'train',    text: '!train || (gate && signal)' },
       { name: 'elevator', text: '!moving || !door' },
+      { name: 'latch',    text: '!(x && y)' },
     ];
 
     for (const c of SMV_CASES) {
@@ -97,5 +99,31 @@ describe('specMutation', () => {
         expect(killed / evaluated.length).toBeGreaterThan(0.4);
       });
     }
+  });
+});
+
+describe('SpecMutationExplorer SMV examples', () => {
+  function mount() {
+    window.localStorage.clear();
+    document.body.innerHTML = '';
+    const el = createSpecMutationExplorer();
+    document.body.appendChild(el);
+    return el;
+  }
+
+  it('includes the cross-coupled latch SMV source example', () => {
+    mount();
+    document.querySelector('[data-spec-category="smv"]').click();
+    const latchButton = [...document.querySelectorAll('[data-spec-example]')]
+      .find((btn) => btn.textContent.trim() === 'Cross-coupled latch');
+    expect(latchButton).toBeInTheDocument();
+
+    latchButton.click();
+    expect(document.querySelector('[data-testid="spec-text"]')).toHaveValue('!(x && y)');
+    const source = document.querySelector('[data-testid="spec-smv-source"]').textContent;
+    expect(source).toContain('MODULE main');
+    expect(source).toContain('#define false 0');
+    expect(source).toContain('next (x) := case');
+    expect(source).toContain('INVARSPEC !(x & y)');
   });
 });

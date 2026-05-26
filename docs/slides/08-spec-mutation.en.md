@@ -4,7 +4,7 @@ theme: default
 paginate: true
 size: 16:9
 title: Software Testing Visualization #8 — Specification Mutation + SMV + Safety Monitor FSM
-description: Mutating Boolean specifications, paired with 7 SMV examples and a dual-FSM killer view
+description: Mutating Boolean specifications, paired with 8 SMV examples and a dual-FSM killer view
 lang: en
 ---
 
@@ -75,7 +75,7 @@ The tool exposes two segmented categories:
 | Category | Purpose | Examples |
 | --- | --- | --- |
 | `basic` | Teaching starters | `guard`, `leap`, `triangle` |
-| `smv` | Real model-checking invariants | `smv-mutex`, `smv-cruise`, `smv-sis`, `smv-train`, `smv-elevator`, `smv-garage`, `smv-wiper` |
+| `smv` | Real model-checking invariants | `smv-mutex`, `smv-cruise`, `smv-sis`, `smv-train`, `smv-elevator`, `smv-garage`, `smv-wiper`, `smv-latch` |
 
 > Every SMV example bundles a full NuSMV module; expand the `spec-smv-source` `<details>` to view it.
 
@@ -93,8 +93,9 @@ The tool exposes two segmented categories:
 | `smv-elevator` | Elevator door | `!moving \|\| !door` |
 | `smv-garage` | Garage door controller | `(!u \|\| !t) && (!d \|\| !o)` |
 | `smv-wiper` | Windshield wiper | `!w \|\| (i && (l \|\| h))` |
+| `smv-latch` | Cross-coupled latch | `!(x && y)` |
 
-> All seven are extracted from a NuSMV `INVARSPEC`; the original module is viewable inside the tool.
+> All eight are extracted from a NuSMV `INVARSPEC`; the original module is viewable inside the tool.
 
 <!-- SMV is especially important in formal verification contexts, such as aerospace and automotive safety specifications. -->
 ---
@@ -287,7 +288,7 @@ Behaviour:
 - **6 operators** (ENF / BCR / CRR / LRO / UOI / MCR) apply structural mutations to a Boolean specification.
 - Kill uses the **full $2^n$ truth table** — no separate test set is needed.
 - The **Safety Monitor FSM** materialises a predicate as a two-state automaton; the dual view makes killer assignments visually obvious.
-- The **7 SMV examples** connect the textbook to real model-checking models — from cruise control to garage door safety.
+- The **8 SMV examples** connect the textbook to real model-checking models — from cruise control to garage door safety and latch mutual exclusion.
 
 <!-- Specification Mutation tests whether the specification itself is precise enough. A strong test suite should kill all non-equivalent specification mutants. -->
 ---

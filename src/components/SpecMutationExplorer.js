@@ -272,6 +272,38 @@ ASSIGN
 -- Safety: wipers on implies ignition on and lever not in OFF position
 INVARSPEC !w | (i & (l | h))`,
   },
+  {
+    id: 'smv-latch',
+    name: 'Cross-coupled latch',
+    category: 'smv',
+    text: '!(x && y)',
+    description: 'Cross-coupled Boolean latch: the two outputs should never be true at the same time.',
+    smv: `MODULE main
+#define false 0
+#define true 1
+VAR
+        x, y : boolean;
+ASSIGN
+        init (x) := false;
+        init (y) := false;
+
+        next (x) := case
+            !x & y : true;
+            !y     : true;
+            x      : false;
+            true   : x;
+        esac;
+
+        next (y) := case
+            x & !y : false;
+            x & y  : y;
+            !x & y : false;
+            true   : true;
+        esac;
+
+-- Safety: latch outputs are mutually exclusive
+INVARSPEC !(x & y)`,
+  },
 ];
 
 function loadSaved() {

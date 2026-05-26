@@ -4,7 +4,7 @@ theme: default
 paginate: true
 size: 16:9
 title: 軟體測試視覺化 #8 — Specification Mutation + SMV + Safety Monitor FSM
-description: 對 Boolean 規格做 mutation；對應 7 個 SMV 模型；雙 FSM 顯示 killer assignments
+description: 對 Boolean 規格做 mutation；對應 8 個 SMV 模型；雙 FSM 顯示 killer assignments
 lang: zh-TW
 ---
 
@@ -75,7 +75,7 @@ lang: zh-TW
 | 分類 | 用途 | 範例 |
 | --- | --- | --- |
 | `basic` | 教學起手式 | `guard`、`leap`、`triangle` |
-| `smv` | 對應真實 SMV 模型 | `smv-mutex`、`smv-cruise`、`smv-sis`、`smv-train`、`smv-elevator`、`smv-garage`、`smv-wiper` |
+| `smv` | 對應真實 SMV 模型 | `smv-mutex`、`smv-cruise`、`smv-sis`、`smv-train`、`smv-elevator`、`smv-garage`、`smv-wiper`、`smv-latch` |
 
 > SMV 範例附完整 NuSMV 模組原始碼，按 `spec-smv-source` 摺疊區可展開。
 
@@ -93,8 +93,9 @@ lang: zh-TW
 | `smv-elevator` | 電梯門 | `!moving \|\| !door` |
 | `smv-garage` | 車庫門控制器 | `(!u \|\| !t) && (!d \|\| !o)` |
 | `smv-wiper` | 雨刷控制 | `!w \|\| (i && (l \|\| h))` |
+| `smv-latch` | 交互耦合 latch | `!(x && y)` |
 
-> 7 條皆從 NuSMV `INVARSPEC` 抽出，可在工具裡看原始 SMV 模組。
+> 8 條皆從 NuSMV `INVARSPEC` 抽出，可在工具裡看原始 SMV 模組。
 
 <!-- SMV 在形式驗證（formal verification）場景中特別重要，例如航空、汽車電子的安全規格。 -->
 ---
@@ -287,7 +288,7 @@ return flipped;
 - **6 個 operators**（ENF / BCR / CRR / LRO / UOI / MCR）對 Boolean 規格做結構性突變。
 - Kill 用完整 $2^n$ 真值表，無需測試集 — 直接看「哪個 assignment 在 original 與 mutant 評估出不同值」。
 - **Safety Monitor FSM** 把 predicate 具象化為兩態自動機，雙 FSM 並列直接看出 killer assignments。
-- **7 個 SMV 範例**串起教科書與真實模型檢驗 — 從 cruise control 到車庫門皆有對應。
+- **8 個 SMV 範例**串起教科書與真實模型檢驗 — 從 cruise control、車庫門到 latch 互斥皆有對應。
 
 <!-- Specification Mutation 讓我們測試「規格本身」是否足夠精確。一個好的測試集應該能殺死所有非等價的規格 mutant。 -->
 ---
