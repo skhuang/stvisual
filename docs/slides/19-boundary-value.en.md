@@ -20,7 +20,7 @@ Companion tool: `/section-blackbox` ([BoundaryValueExplorer](../../src/component
 
 ## Why this lecture exists
 
-- A variable with range `1–12` has thousands of possible values — you cannot test them all.
+- A 32-bit `int` input has over 4 billion possible values — you cannot test them all.
 - But defects are **not uniformly distributed**: they cluster at the **boundaries**.
 - Off-by-one errors, `<` vs `<=`, `==` instead of `>=` — all live at the edge.
 - BVA spends your test budget where the bugs actually are.
